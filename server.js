@@ -574,7 +574,7 @@ const PLAI_PLAYBOOKS = [
       "Identifies churned users, generates personalised win-back emails via Gmail Intelligence Hub, applies Stripe discount incentives, and tracks conversion — all without human intervention.",
     category: "Playbooks",
     price_cents: 0,
-    downloads: 312,
+    downloads: 0,
     rating_avg: 4.9,
     developer_name: "AIOS Storm",
     developer_verified: true,
@@ -590,7 +590,7 @@ const PLAI_PLAYBOOKS = [
       "Autonomous keyword research via Tavily, content gap analysis, on-page optimisation suggestions, and daily ranking reports. Designed for AIOS-hosted products and landing pages.",
     category: "Playbooks",
     price_cents: 0,
-    downloads: 278,
+    downloads: 0,
     rating_avg: 4.7,
     developer_name: "AIOS Storm",
     developer_verified: true,
@@ -606,7 +606,7 @@ const PLAI_PLAYBOOKS = [
       "Runs ProductDiscoveryAgent → ProductBuilderAgent → ProductLauncherAgent → RevenueOptimizerAgent in sequence. Full MVP from concept to live URL with health-check monitoring and auto-rollback.",
     category: "Playbooks",
     price_cents: 0,
-    downloads: 195,
+    downloads: 0,
     rating_avg: 4.8,
     developer_name: "AIOS Storm",
     developer_verified: true,
@@ -622,7 +622,7 @@ const PLAI_PLAYBOOKS = [
       "PLAIMarketingAgent generates blog posts, social snippets, and email sequences; PLAIPublisherAgent distributes across channels; PLAIAnalyticsAgent measures resonance and feeds the next cycle.",
     category: "Playbooks",
     price_cents: 0,
-    downloads: 241,
+    downloads: 0,
     rating_avg: 4.6,
     developer_name: "AIOS Storm",
     developer_verified: true,
@@ -638,7 +638,7 @@ const PLAI_PLAYBOOKS = [
       "Storm Nexus ingest playbook. Pulls live intelligence from arXiv, NASA, CERN Open Data, SpaceX launch feeds, USGS seismic events, and OpenAlex every 6 hours — zero external cost, infinite learning.",
     category: "Playbooks",
     price_cents: 0,
-    downloads: 163,
+    downloads: 0,
     rating_avg: 4.9,
     developer_name: "AIOS Storm",
     developer_verified: true,
@@ -657,7 +657,7 @@ const PLAI_AGENTS = [
       "Scans the AIOS ecosystem for emerging content niches, genre gaps, and audience demand signals. Produces ranked opportunity reports consumed by PLAICuratorAgent and PLAIGrowthAgent.",
     category: "Agents",
     price_cents: 0,
-    downloads: 520,
+    downloads: 0,
     rating_avg: 4.9,
     developer_name: "AIOS Storm",
     developer_verified: true,
@@ -673,7 +673,7 @@ const PLAI_AGENTS = [
       "Analyses PLAIstore funnel metrics, identifies drop-off points, runs A/B growth experiments, and surfaces actionable signals to PLAIMarketingAgent and PLAISEOAgent for immediate execution.",
     category: "Agents",
     price_cents: 0,
-    downloads: 487,
+    downloads: 0,
     rating_avg: 4.8,
     developer_name: "AIOS Storm",
     developer_verified: true,
@@ -689,7 +689,7 @@ const PLAI_AGENTS = [
       "Generates marketing copy, social posts, and email campaigns for PLAIstore listings. Coordinates with PLAIPublisherAgent for multi-channel distribution. Tracks conversion and feeds PLAIRevenueAgent.",
     category: "Agents",
     price_cents: 0,
-    downloads: 441,
+    downloads: 0,
     rating_avg: 4.7,
     developer_name: "AIOS Storm",
     developer_verified: true,
@@ -705,7 +705,7 @@ const PLAI_AGENTS = [
       "Monitors AIOS search visibility, tracks keyword rankings, generates on-page and schema optimisation patches, and submits sitemap updates. Runs autonomously every 6 hours.",
     category: "Agents",
     price_cents: 0,
-    downloads: 398,
+    downloads: 0,
     rating_avg: 4.8,
     developer_name: "AIOS Storm",
     developer_verified: true,
@@ -721,7 +721,7 @@ const PLAI_AGENTS = [
       "8-drone autonomous security swarm scanning all Storm repositories for OWASP vulnerabilities, secrets exposure, injection risks, and dependency CVEs. Reports to Storm KB with severity-ranked findings.",
     category: "Agents",
     price_cents: 0,
-    downloads: 356,
+    downloads: 0,
     rating_avg: 4.9,
     developer_name: "AIOS Storm",
     developer_verified: true,
@@ -737,7 +737,7 @@ const PLAI_AGENTS = [
       "Multi-sensor swarm monitoring AIOS intelligence layer health, GeoQode coherence, and lattice resonance. Raises alerts when coherenceIndex drops below threshold and triggers _runAwarePulse recovery.",
     category: "Agents",
     price_cents: 0,
-    downloads: 312,
+    downloads: 0,
     rating_avg: 4.7,
     developer_name: "AIOS Storm",
     developer_verified: true,
@@ -753,7 +753,7 @@ const PLAI_AGENTS = [
       "Drone swarm driven by PHI=1.618 harmonic geometry that autonomously scaffolds, builds, and deploys micro-apps across the AIOS ecosystem. Each drone handles a lattice sector (S1–S8).",
     category: "Agents",
     price_cents: 0,
-    downloads: 289,
+    downloads: 0,
     rating_avg: 4.9,
     developer_name: "AIOS Storm",
     developer_verified: true,
@@ -772,7 +772,7 @@ const PLAI_CODEX = [
       "Complete specification for the Merkaba dimensional OS: PHI=1.618, PSI=1.414, BASE_FREQUENCY_HZ=72. Covers all 8 semantic types (ENTITY 396Hz → NARRATIVE 963Hz), QUEEN-BEE sector mapping, and GeoQode coordinate envelope schema.",
     category: "Codex",
     price_cents: 0,
-    downloads: 634,
+    downloads: 0,
     rating_avg: 5.0,
     developer_name: "AIOS Storm",
     developer_verified: true,
@@ -788,7 +788,7 @@ const PLAI_CODEX = [
       "All transform rules for the 8→26→48:480 lattice. Documents deprecated variants (8,26,42:420:480 / 8,26,44:420:480 / 8,26,48:420:480) and their Phase A collapse paths to canonical. Machine-readable constants included.",
     category: "Codex",
     price_cents: 0,
-    downloads: 502,
+    downloads: 0,
     rating_avg: 4.9,
     developer_name: "AIOS Storm",
     developer_verified: true,
@@ -804,7 +804,7 @@ const PLAI_CODEX = [
       "Official specification for AIOS .geo programme files: required fields (id, title, genre, mode, scenes), genre taxonomy (28 genres), validation rules, and how programmes are ingested into GEO_CATALOGUE and rendered in AIOSdream Theatre.",
     category: "Codex",
     price_cents: 0,
-    downloads: 418,
+    downloads: 0,
     rating_avg: 4.8,
     developer_name: "AIOS Storm",
     developer_verified: true,
@@ -820,7 +820,7 @@ const PLAI_CODEX = [
       "How MerkabaBeEyeSwarm (ALPHA, PHI=1.618, S1→S8) and MerkabaBeEyeSwarmWitness (OMEGA, PSI=1.414, S8→S1) independently scan and attest quality. SEPARATOR_BAND, attestedScore formula, and why geometric incommensurability prevents echo chambers.",
     category: "Codex",
     price_cents: 0,
-    downloads: 387,
+    downloads: 0,
     rating_avg: 5.0,
     developer_name: "AIOS Storm",
     developer_verified: true,
@@ -836,7 +836,7 @@ const PLAI_CODEX = [
       "Complete reference for Storm agent communication: GeoQode coordinate envelope fields, semantic frequency map, Knowledge Base write format (POST /api/knowledge/:key body: { data: {...} }), and MerkabaPacket inter-service encoding.",
     category: "Codex",
     price_cents: 0,
-    downloads: 356,
+    downloads: 0,
     rating_avg: 4.9,
     developer_name: "AIOS Storm",
     developer_verified: true,
@@ -855,7 +855,7 @@ const PLAI_ANALYTICS = [
       "Real-time dashboard tracking the MerkabAware coherenceIndex (0–1). Shows current resonance state, pulse history, and alerts when coherence drops below threshold. Powered by _runAwarePulse firing every 5 minutes.",
     category: "Analytics",
     price_cents: 0,
-    downloads: 445,
+    downloads: 0,
     rating_avg: 4.9,
     developer_name: "AIOS Storm",
     developer_verified: true,
@@ -871,7 +871,7 @@ const PLAI_ANALYTICS = [
       "Live view of the GEO_CATALOGUE: total programmes produced, genre breakdown across 28 categories, total runtime hours, and production velocity (programmes per hour). Auto-refreshes from /api/geo/stats every 2 minutes.",
     category: "Analytics",
     price_cents: 0,
-    downloads: 398,
+    downloads: 0,
     rating_avg: 4.8,
     developer_name: "AIOS Storm",
     developer_verified: true,
@@ -887,7 +887,7 @@ const PLAI_ANALYTICS = [
       "Tracks PLAIstore install events, category browse-to-install conversion rates, top-performing apps by downloads and rating, and daily active installs. Feeds PLAIGrowthAgent for autonomous optimisation.",
     category: "Analytics",
     price_cents: 0,
-    downloads: 312,
+    downloads: 0,
     rating_avg: 4.7,
     developer_name: "AIOS Storm",
     developer_verified: true,
@@ -903,7 +903,7 @@ const PLAI_ANALYTICS = [
       "Aggregates MRR from all active Storm product revenue streams. Stripe webhook-driven, tracks subscription counts by tier (Free/Pro $12/mo/Enterprise $49/mo), and projects quarterly run-rate based on current growth velocity.",
     category: "Analytics",
     price_cents: 0,
-    downloads: 278,
+    downloads: 0,
     rating_avg: 4.9,
     developer_name: "AIOS Storm",
     developer_verified: true,
@@ -919,7 +919,7 @@ const PLAI_ANALYTICS = [
       "Live metrics for all active Storm agents: ai-worker brain cycle count (10s loop), governance cycle completion rate (6h), PLAI swarm task throughput, CodeGuardianSwarm scan coverage, and error rates per agent.",
     category: "Analytics",
     price_cents: 0,
-    downloads: 241,
+    downloads: 0,
     rating_avg: 4.8,
     developer_name: "AIOS Storm",
     developer_verified: true,
@@ -938,7 +938,7 @@ const PLAI_INTEGRATIONS = [
       "Trigger Railway deployments, stream build logs, read and set environment variables, and check service health — all via Railway GraphQL v2. Covers all 13 Storm services. Used by ProductLauncherAgent and autonomous-deployment pipeline.",
     category: "Integrations",
     price_cents: 0,
-    downloads: 534,
+    downloads: 0,
     rating_avg: 4.9,
     developer_name: "AIOS Storm",
     developer_verified: true,
@@ -954,7 +954,7 @@ const PLAI_INTEGRATIONS = [
       "Full Stripe integration: checkout sessions, subscription management (Free/Pro price_1TLRk8.../Enterprise price_1TLRkB...), webhook processing, refund issuance, and revenue reporting. API version 2024-12-18.acacia locked.",
     category: "Integrations",
     price_cents: 0,
-    downloads: 489,
+    downloads: 0,
     rating_avg: 4.9,
     developer_name: "AIOS Storm",
     developer_verified: true,
@@ -970,7 +970,7 @@ const PLAI_INTEGRATIONS = [
       "Multi-tier Gmail integration (Service Account → OAuth2 → SMTP fallback). Autonomous inbox monitoring, smart label application, error alert dispatching, and daily Storm health report emails to bradleylevitan@gmail.com.",
     category: "Integrations",
     price_cents: 0,
-    downloads: 423,
+    downloads: 0,
     rating_avg: 4.8,
     developer_name: "AIOS Storm",
     developer_verified: true,
@@ -986,7 +986,7 @@ const PLAI_INTEGRATIONS = [
       "BranchGuardian monitors all Onedot2 repos, AutonomousPR creates pull requests from agent diff output, CodeGuardianSwarm reviews for security. Powered by GH_PAT_KEY with full repo + workflow + packages scope.",
     category: "Integrations",
     price_cents: 0,
-    downloads: 367,
+    downloads: 0,
     rating_avg: 4.7,
     developer_name: "AIOS Storm",
     developer_verified: true,
@@ -1002,7 +1002,7 @@ const PLAI_INTEGRATIONS = [
       "Tavily-powered web search feeding the Brain governance MLM Internet Learning step. Rotates across 3 topics per cycle (SaaS opportunities, Stripe patterns, agent architecture). Budget-tracked with monthly credit limits.",
     category: "Integrations",
     price_cents: 0,
-    downloads: 312,
+    downloads: 0,
     rating_avg: 4.8,
     developer_name: "AIOS Storm",
     developer_verified: true,
@@ -1018,7 +1018,7 @@ const PLAI_INTEGRATIONS = [
       "Unified OpenAI integration for all Storm agents: chat completions, embeddings, and function calling. Token budget enforcement, model routing (gpt-4o for governance, gpt-4o-mini for high-volume cycles), and cost reporting.",
     category: "Integrations",
     price_cents: 0,
-    downloads: 278,
+    downloads: 0,
     rating_avg: 4.7,
     developer_name: "AIOS Storm",
     developer_verified: true,
@@ -1037,7 +1037,7 @@ const PLAI_UTILITIES = [
       "Encode any plaintext credential snapshot to merkaba-enc-v1 format before committing. Zero plaintext in repo. Supports encode/decode/parity-check modes. Auto-detected by railway-survival-kit.mjs when .merkaba.enc extension found.",
     category: "Utilities",
     price_cents: 0,
-    downloads: 489,
+    downloads: 0,
     rating_avg: 4.9,
     developer_name: "AIOS Storm",
     developer_verified: true,
@@ -1053,7 +1053,7 @@ const PLAI_UTILITIES = [
       "Parses and validates .geo programme objects against the canonical lattice spec: required fields, genre taxonomy check, mode validation, scene structure, and PHI coherence scoring. Returns detailed validation report with fix suggestions.",
     category: "Utilities",
     price_cents: 0,
-    downloads: 356,
+    downloads: 0,
     rating_avg: 4.8,
     developer_name: "AIOS Storm",
     developer_verified: true,
@@ -1069,7 +1069,7 @@ const PLAI_UTILITIES = [
       "Visual composer for creating AIOS .geo programmes in the browser. Token-authenticated save to GEO_CATALOGUE via /api/geo/produce. My Library sync across devices. One-click publish with Watch Now and Library links.",
     category: "Utilities",
     price_cents: 0,
-    downloads: 412,
+    downloads: 0,
     rating_avg: 4.9,
     developer_name: "AIOS Storm",
     developer_verified: true,
@@ -1085,7 +1085,7 @@ const PLAI_UTILITIES = [
       "Feed any content or decision to get PHI (ALPHA, 1.618) and PSI (OMEGA, 1.414) attestation scores from geometrically opposite poles. Shows GOLDEN_BAND weighting, attestedScore, and ABSOLUTE flag when both poles agree at 1.0.",
     category: "Utilities",
     price_cents: 0,
-    downloads: 298,
+    downloads: 0,
     rating_avg: 5.0,
     developer_name: "AIOS Storm",
     developer_verified: true,
@@ -1101,7 +1101,7 @@ const PLAI_UTILITIES = [
       "Reads VARIABLES_*.merkaba.enc files, auto-decodes with MERKABA_CODEC_KEY (AES-256-GCM), verifies all 13 Storm Railway services are healthy, and outputs a diff of missing or changed variables. Offline mode supported.",
     category: "Utilities",
     price_cents: 0,
-    downloads: 267,
+    downloads: 0,
     rating_avg: 4.8,
     developer_name: "AIOS Storm",
     developer_verified: true,
@@ -1142,7 +1142,7 @@ function _plaiRuntimeCount(category) {
 /** All runtime apps as sorted array (highest downloads first) */
 function _plaiRuntimeList() {
   return [..._plaiRuntimeApps.values()].sort(
-    (a, b) => (b.downloads || 0) - (a.downloads || 0),
+    (a, b) => (_plaiInstallCounts.get(b.id) || 0) - (_plaiInstallCounts.get(a.id) || 0),
   );
 }
 
@@ -3912,7 +3912,7 @@ function _seedPlaiApps() {
       category: cat,
       price_cents: 0,
       downloads: dl,
-      rating_avg: +(4.2 + Math.random() * 0.7).toFixed(1),
+      rating_avg: 0,
       developer_name: "AIOS Storm",
       developer_verified: true,
       type:
@@ -3934,95 +3934,9 @@ function _seedPlaiApps() {
 }
 _seedPlaiApps();
 
-// Seed realistic baseline install counts at startup — older catalogue apps have more
-{
-  const allSeedIds = [..._plaiRuntimeApps.keys()];
-  allSeedIds.forEach((id, idx) => {
-    // First batches (lower idx) have accumulated more installs over time
-    const ageWeight = Math.max(1, allSeedIds.length - idx);
-    const base = Math.floor(ageWeight * 3.5 + Math.random() * 200 + 50);
-    _plaiInstallCounts.set(id, base);
-  });
-}
 
-// Increments random apps every 30s with burst patterns for popular apps
-setInterval(() => {
-  const allIds = [..._plaiRuntimeApps.keys()];
-  if (allIds.length === 0) return;
-  // Pick 8-20 random apps and increment their install count
-  const picks = Math.floor(Math.random() * 13) + 8;
-  for (let i = 0; i < picks; i++) {
-    const id = allIds[Math.floor(Math.random() * allIds.length)];
-    // Popular apps (first 50 in list) get burst of 2-5 installs; others get 1-2
-    const isPopular = Math.random() < 0.3;
-    const increment = isPopular
-      ? Math.floor(Math.random() * 4) + 2
-      : Math.floor(Math.random() * 2) + 1;
-    _plaiInstallCounts.set(id, (_plaiInstallCounts.get(id) || 0) + increment);
-  }
-}, 30000);
 
-// Seed game leaderboards with historical top scores
-{
-  const _seedBoard = (game, entries) => {
-    _gameLeaderboards.set(
-      game,
-      entries.map(([name, score]) => ({
-        name,
-        score,
-        ts: Date.now() - Math.random() * 7 * 86400000,
-      })),
-    );
-  };
-  _seedBoard("merkaba-ghosts", [
-    ["LatticeKing", 9800],
-    ["PHI_Runner", 8200],
-    ["GhostSlayer", 7600],
-    ["QuantumX", 6900],
-    ["NeonNode", 6500],
-    ["Storm42", 5800],
-    ["AIOSFan", 5100],
-    ["WaveRider", 4700],
-    ["Merkab3r", 4200],
-    ["CosmicD", 3800],
-  ]);
-  _seedBoard("phi-breaker", [
-    ["PHIDestroyer", 12400],
-    ["LatticeKing", 11200],
-    ["BreakrX", 9800],
-    ["PHI_Runner", 8900],
-    ["Storm42", 7700],
-    ["NeonNode", 7100],
-    ["GhostSlayer", 6600],
-    ["AIOSFan", 5900],
-    ["CosmicD", 5400],
-    ["WaveRider", 4800],
-  ]);
-  _seedBoard("lattice-builder", [
-    ["ArchitectPHI", 18900],
-    ["LatticeKing", 16400],
-    ["Storm42", 14200],
-    ["NodeMaster", 12800],
-    ["QuantumX", 11400],
-    ["PHI_Runner", 9800],
-    ["NeonNode", 8700],
-    ["AIOSFan", 7600],
-    ["GhostSlayer", 6500],
-    ["CosmicD", 5400],
-  ]);
-  _seedBoard("lattice-dodge", [
-    ["DodgePHI", 22100],
-    ["LatticeKing", 19800],
-    ["SpeedNode", 17400],
-    ["Storm42", 15200],
-    ["NeonNode", 13600],
-    ["QuantumX", 11900],
-    ["PHI_Runner", 10200],
-    ["AIOSFan", 8800],
-    ["GhostSlayer", 7400],
-    ["CosmicD", 6100],
-  ]);
-}
+
 
 // Singleton MerkabaLLM
 let _llm = null;
@@ -5571,13 +5485,13 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
         apps = apps.filter((a) => a.category.toLowerCase() === catFilter);
       }
       const total = apps.length;
-      // sum static downloads + any tracked install events from this session
-      const trackedExtra = [..._plaiInstallCounts.values()].reduce(
+      // Only real install counts — incremented by real user clicks via POST /api/plai/apps/:id/install
+      const total_installs = [..._plaiInstallCounts.values()].reduce(
         (s, v) => s + v,
         0,
       );
-      const total_installs =
-        apps.reduce((s, a) => s + (a.downloads || 0), 0) + trackedExtra;
+      // Enrich each app with its real install count
+      apps = apps.map(a => ({ ...a, downloads: _plaiInstallCounts.get(a.id) || 0 }));
       apps = apps.slice(0, limit);
       return json(
         res,
