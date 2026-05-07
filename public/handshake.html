@@ -1,0 +1,875 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>AIOS — Self-Evolving Intelligence</title>
+    <meta name="description" content="AIOS self-evolving intelligence handshake loop. Every verification cycle teaches the system trust, compression, display, and governance." />
+    <meta property="og:title" content="AIOS — Self-Evolving Intelligence" />
+    <meta property="og:description" content="The 6-stage AIOS evolution loop: Handshake · Feedback · Compression · Display · Governance · Next Cycle." />
+    <meta property="og:url" content="https://realaios.com/handshake" />
+    <meta property="og:type" content="website" />
+    <link rel="canonical" href="https://realaios.com/handshake" />
+
+    <!-- A-Frame for VR -->
+    <script src="/vendor/aframe-1.4.0.min.js"></script>
+
+    <style>
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+      :root {
+        --bg: #03050f;
+        --bg2: #070d1e;
+        --cyan:   #00d4ff;
+        --purple: #7c3aed;
+        --pink:   #d946ef;
+        --gold:   #f59e0b;
+        --green:  #22c55e;
+        --blue:   #3b82f6;
+        --text:   #e2e8f0;
+        --dim:    #64748b;
+      }
+
+      html, body { width: 100%; height: 100%; background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; overflow: hidden; }
+
+      /* ── Top Bar ─────────────────────────────────────── */
+      #topbar {
+        position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+        display: flex; align-items: center; justify-content: space-between;
+        padding: 10px 20px;
+        background: rgba(3,5,15,0.88); backdrop-filter: blur(12px);
+        border-bottom: 1px solid rgba(124,58,237,0.25);
+      }
+      .brand { font-size: 14px; font-weight: 700; letter-spacing: 0.1em; color: var(--cyan); }
+      .brand span { color: var(--purple); }
+      nav { display: flex; gap: 6px; }
+      nav a {
+        font-size: 12px; font-weight: 600; letter-spacing: 0.05em;
+        padding: 5px 12px; border-radius: 6px; text-decoration: none;
+        color: var(--dim); transition: all 0.2s;
+      }
+      nav a:hover { color: var(--cyan); background: rgba(0,212,255,0.08); }
+      .mode-btns { display: flex; gap: 6px; }
+      .mode-btn {
+        font-size: 12px; font-weight: 700; letter-spacing: 0.06em;
+        padding: 6px 14px; border-radius: 6px; border: 1px solid transparent;
+        cursor: pointer; transition: all 0.2s;
+      }
+      .mode-btn.active { background: var(--purple); border-color: var(--purple); color: #fff; }
+      .mode-btn:not(.active) { background: transparent; border-color: rgba(124,58,237,0.3); color: var(--dim); }
+      .mode-btn:not(.active):hover { border-color: var(--purple); color: var(--text); }
+
+      /* ── 2D View ─────────────────────────────────────── */
+      #view2d {
+        position: fixed; inset: 0; top: 46px;
+        display: flex; flex-direction: column; align-items: center;
+      }
+      #view2d canvas { display: block; }
+
+      /* Stats overlay */
+      #stats-panel {
+        position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%);
+        display: flex; gap: 12px; z-index: 50;
+        background: rgba(3,5,15,0.75); backdrop-filter: blur(10px);
+        border: 1px solid rgba(124,58,237,0.2); border-radius: 10px;
+        padding: 8px 16px;
+      }
+      .stat { text-align: center; }
+      .stat-val { font-size: 18px; font-weight: 800; color: var(--cyan); }
+      .stat-lbl { font-size: 10px; color: var(--dim); letter-spacing: 0.06em; text-transform: uppercase; }
+
+      /* Stage info overlay */
+      #stage-info {
+        position: fixed; top: 56px; left: 16px;
+        background: rgba(3,5,15,0.8); backdrop-filter: blur(10px);
+        border: 1px solid rgba(0,212,255,0.2); border-radius: 10px;
+        padding: 12px 16px; min-width: 190px; z-index: 50;
+      }
+      #stage-info h3 { font-size: 11px; color: var(--dim); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 8px; }
+      .stage-row { display: flex; align-items: center; gap: 8px; padding: 4px 0; }
+      .stage-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--dim); flex-shrink: 0; transition: all 0.3s; }
+      .stage-dot.active { background: var(--cyan); box-shadow: 0 0 8px var(--cyan); }
+      .stage-dot.done { background: var(--green); }
+      .stage-name { font-size: 12px; color: var(--dim); transition: color 0.3s; }
+      .stage-name.active { color: var(--cyan); font-weight: 700; }
+      .stage-name.done { color: var(--green); }
+
+      /* Coherence bar */
+      #coherence-bar-wrap {
+        position: fixed; top: 56px; right: 16px;
+        background: rgba(3,5,15,0.8); backdrop-filter: blur(10px);
+        border: 1px solid rgba(217,70,239,0.2); border-radius: 10px;
+        padding: 12px 16px; min-width: 160px; z-index: 50;
+      }
+      #coherence-bar-wrap h3 { font-size: 11px; color: var(--dim); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 8px; }
+      .cbar-track { height: 6px; background: rgba(255,255,255,0.08); border-radius: 3px; overflow: hidden; margin-bottom: 6px; }
+      .cbar-fill { height: 100%; border-radius: 3px; transition: width 0.8s ease; background: linear-gradient(90deg, var(--purple), var(--cyan)); }
+      .cbar-val { font-size: 22px; font-weight: 800; color: var(--cyan); }
+      .cbar-lbl { font-size: 10px; color: var(--dim); }
+
+      /* ── VR View ─────────────────────────────────────── */
+      #viewVR {
+        position: fixed; inset: 0; top: 46px;
+        display: none;
+      }
+      #viewVR a-scene { width: 100%; height: 100%; }
+
+      /* VR HUD overlay */
+      #vr-hud {
+        position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%);
+        display: none; gap: 8px; z-index: 200;
+        background: rgba(3,5,15,0.8); backdrop-filter: blur(10px);
+        border: 1px solid rgba(0,212,255,0.25); border-radius: 10px;
+        padding: 8px 16px;
+      }
+      .vr-stat { text-align: center; }
+      .vr-stat-val { font-size: 16px; font-weight: 800; color: var(--cyan); }
+      .vr-stat-lbl { font-size: 9px; color: var(--dim); text-transform: uppercase; letter-spacing: 0.06em; }
+    </style>
+  </head>
+  <body>
+
+    <!-- ── Top Bar ─────────────────────────────────────────────────── -->
+    <div id="topbar">
+      <div class="brand">AIOS <span>·</span> Self-Evolving Intelligence</div>
+      <nav>
+        <a href="/">Home</a>
+        <a href="/lab">Lab</a>
+        <a href="/attest">Attest</a>
+        <a href="/dashboard">Dashboard</a>
+        <a href="/games">Games</a>
+      </nav>
+      <div class="mode-btns">
+        <button class="mode-btn active" id="btn2d" onclick="setMode('2d')">2D View</button>
+        <button class="mode-btn" id="btnVR" onclick="setMode('vr')">VR View</button>
+      </div>
+    </div>
+
+    <!-- ── Stage Sidebar ───────────────────────────────────────────── -->
+    <div id="stage-info">
+      <h3>Evolution Loop</h3>
+      <div id="stage-list"></div>
+    </div>
+
+    <!-- ── Coherence Bar ───────────────────────────────────────────── -->
+    <div id="coherence-bar-wrap">
+      <h3>Coherence</h3>
+      <div class="cbar-val" id="coh-val">—</div>
+      <div class="cbar-track"><div class="cbar-fill" id="coh-bar" style="width:0%"></div></div>
+      <div class="cbar-lbl" id="coh-lbl">awaiting cycle…</div>
+    </div>
+
+    <!-- ── Stats Bar ───────────────────────────────────────────────── -->
+    <div id="stats-panel">
+      <div class="stat"><div class="stat-val" id="st-cycles">0</div><div class="stat-lbl">Cycles</div></div>
+      <div class="stat"><div class="stat-val" id="st-schemas">0</div><div class="stat-lbl">Schemas</div></div>
+      <div class="stat"><div class="stat-val" id="st-rules">0</div><div class="stat-lbl">Rules</div></div>
+      <div class="stat"><div class="stat-val" id="st-anomalies">0</div><div class="stat-lbl">Anomalies</div></div>
+      <div class="stat"><div class="stat-val" id="st-agents">—</div><div class="stat-lbl">Agents</div></div>
+    </div>
+
+    <!-- ── 2D Canvas View ─────────────────────────────────────────── -->
+    <div id="view2d">
+      <canvas id="c2d"></canvas>
+    </div>
+
+    <!-- ── VR View ────────────────────────────────────────────────── -->
+    <div id="viewVR">
+      <div id="vr-hud" style="display:flex;">
+        <div class="vr-stat"><div class="vr-stat-val" id="vr-cycle">0</div><div class="vr-stat-lbl">Cycles</div></div>
+        <div class="vr-stat"><div class="vr-stat-val" id="vr-coh">—</div><div class="vr-stat-lbl">Coherence</div></div>
+        <div class="vr-stat"><div class="vr-stat-val" id="vr-stage">—</div><div class="vr-stat-lbl">Stage</div></div>
+      </div>
+
+      <a-scene
+        id="vrScene"
+        background="color: #03050f"
+        fog="type: exponential; color: #03050f; density: 0.018"
+        renderer="antialias: true; colorManagement: true"
+        vr-mode-ui="enabled: true"
+        embedded
+      >
+        <!-- Camera with gaze cursor -->
+        <a-entity id="rig" position="0 1.6 6">
+          <a-camera
+            look-controls="pointerLockEnabled: false"
+            wasd-controls="enabled: false"
+          >
+            <a-entity
+              cursor="fuse: true; fuseTimeout: 1500"
+              position="0 0 -1"
+              geometry="primitive: ring; radiusInner: 0.012; radiusOuter: 0.018"
+              material="color: #00d4ff; shader: flat; opacity: 0.8"
+              animation__scale="property: scale; startEvents: fusing; easing: easeInCubic; dur: 1500; from: 1 1 1; to: 0.1 0.1 0.1"
+              animation__scaleback="property: scale; startEvents: mouseleave; to: 1 1 1"
+            ></a-entity>
+          </a-camera>
+        </a-entity>
+
+        <!-- ── Starfield particles ──────────────────────────────────── -->
+        <a-entity id="stars"></a-entity>
+
+        <!-- ── Central Merkaba Star ───────────────────────────────── -->
+        <a-entity id="merkaba-center" position="0 1.6 0">
+          <!-- Upward tetrahedron -->
+          <a-entity
+            geometry="primitive: tetrahedron; radius: 0.72"
+            material="color: #7c3aed; wireframe: true; opacity: 0.9"
+            animation="property: rotation; to: 0 360 0; loop: true; dur: 8000; easing: linear"
+          ></a-entity>
+          <!-- Downward tetrahedron (inverted) -->
+          <a-entity
+            rotation="180 0 60"
+            geometry="primitive: tetrahedron; radius: 0.72"
+            material="color: #00d4ff; wireframe: true; opacity: 0.9"
+            animation="property: rotation; to: 180 360 60; loop: true; dur: 12000; easing: linear"
+          ></a-entity>
+          <!-- Core glow sphere -->
+          <a-sphere
+            radius="0.18"
+            material="color: #f59e0b; emissive: #f59e0b; emissiveIntensity: 0.8; opacity: 0.95"
+            animation="property: scale; dir: alternate; loop: true; dur: 1800; to: 1.4 1.4 1.4; easing: easeInOutSine"
+          ></a-sphere>
+          <!-- Outer glow ring -->
+          <a-torus
+            radius="0.85" radius-tubular="0.018"
+            material="color: #d946ef; emissive: #d946ef; emissiveIntensity: 0.4; opacity: 0.5"
+            animation="property: rotation; to: 0 0 360; loop: true; dur: 20000; easing: linear"
+          ></a-torus>
+        </a-entity>
+
+        <!-- ── 6 Evolution Panels ──────────────────────────────────── -->
+        <!-- Panels are at radius=3.8m in a hexagonal ring, y=1.6 -->
+        <!-- 0°=HANDSHAKE, 60°=FEEDBACK, 120°=COMPRESSION, 180°=DISPLAY, 240°=GOVERNANCE, 300°=NEXT -->
+
+        <!-- 1. HANDSHAKE — top (0°) -->
+        <a-entity id="panel-0" position="0 3.5 -3.8" rotation="0 0 0">
+          <a-plane width="2.2" height="1.5"
+            material="color: #0d1433; opacity: 0.88; side: double"
+            animation__glow="property: material.emissive; dir: alternate; loop: true; dur: 2400; to: #1a0a3a; easing: easeInOutSine">
+          </a-plane>
+          <a-entity position="0 0.35 0.01">
+            <a-text value="1. HANDSHAKE" align="center" color="#00d4ff" width="2" font="exo2bold" wrap-count="22"></a-text>
+          </a-entity>
+          <a-entity position="0 0.05 0.01">
+            <a-text value="Verify & Align" align="center" color="#94a3b8" width="1.8" wrap-count="26"></a-text>
+          </a-entity>
+          <a-entity position="0 -0.28 0.01">
+            <a-text value="Dual-agent cross-verification&#10;Alpha × Omega poles attest trust" align="center" color="#64748b" width="1.7" wrap-count="30"></a-text>
+          </a-entity>
+          <!-- Ghost figure -->
+          <a-entity position="-0.75 -0.05 0.05">
+            <a-capsule radius="0.08" height="0.4" material="color: #00d4ff; opacity: 0.25; transparent: true"
+              animation="property: position; dir: alternate; loop: true; dur: 3000; to: -0.75 0.1 0.05; easing: easeInOutSine">
+            </a-capsule>
+          </a-entity>
+          <a-entity position="0.75 -0.05 0.05">
+            <a-capsule radius="0.08" height="0.4" material="color: #7c3aed; opacity: 0.25; transparent: true"
+              animation="property: position; dir: alternate; loop: true; dur: 3600; to: 0.75 0.1 0.05; easing: easeInOutSine">
+            </a-capsule>
+          </a-entity>
+          <!-- Panel border glow -->
+          <a-entity id="panel-0-border">
+            <a-plane width="2.26" height="1.56" material="color: #00d4ff; opacity: 0; side: double" class="panel-border"></a-plane>
+          </a-entity>
+        </a-entity>
+
+        <!-- 2. FEEDBACK — upper-right (60°) x=3.8*sin60=3.29, z=-3.8*cos60=-1.9 -->
+        <a-entity id="panel-1" position="3.29 2.8 -1.9" rotation="0 -60 0">
+          <a-plane width="2.2" height="1.5" material="color: #0d1a14; opacity: 0.88; side: double"></a-plane>
+          <a-entity position="0 0.35 0.01">
+            <a-text value="2. FEEDBACK" align="center" color="#22c55e" width="2" font="exo2bold" wrap-count="22"></a-text>
+          </a-entity>
+          <a-entity position="0 0.05 0.01">
+            <a-text value="Analyze Patterns" align="center" color="#94a3b8" width="1.8" wrap-count="26"></a-text>
+          </a-entity>
+          <a-entity position="0 -0.28 0.01">
+            <a-text value="Anomalies become training data&#10;Reinforcement of optimal paths" align="center" color="#64748b" width="1.7" wrap-count="30"></a-text>
+          </a-entity>
+          <!-- Data viz dots -->
+          <a-entity position="-0.5 -0.1 0.05">
+            <a-sphere radius="0.04" material="color: #22c55e; emissive: #22c55e; emissiveIntensity: 0.7; opacity: 0.8"
+              animation="property: scale; dir: alternate; loop: true; dur: 800; to: 1.5 1.5 1.5; easing: easeInOutSine"></a-sphere>
+          </a-entity>
+          <a-entity position="-0.2 -0.02 0.05">
+            <a-sphere radius="0.04" material="color: #f59e0b; emissive: #f59e0b; emissiveIntensity: 0.7; opacity: 0.8"
+              animation="property: scale; dir: alternate; loop: true; dur: 1100; to: 1.5 1.5 1.5; easing: easeInOutSine"></a-sphere>
+          </a-entity>
+          <a-entity position="0.1 -0.14 0.05">
+            <a-sphere radius="0.04" material="color: #00d4ff; emissive: #00d4ff; emissiveIntensity: 0.7; opacity: 0.8"
+              animation="property: scale; dir: alternate; loop: true; dur: 950; to: 1.5 1.5 1.5; easing: easeInOutSine"></a-sphere>
+          </a-entity>
+          <a-entity position="0.4 -0.08 0.05">
+            <a-sphere radius="0.04" material="color: #d946ef; emissive: #d946ef; emissiveIntensity: 0.7; opacity: 0.8"
+              animation="property: scale; dir: alternate; loop: true; dur: 700; to: 1.5 1.5 1.5; easing: easeInOutSine"></a-sphere>
+          </a-entity>
+        </a-entity>
+
+        <!-- 3. COMPRESSION — lower-right (120°) x=3.8*sin120=3.29, z=3.8*cos60=1.9 -->
+        <a-entity id="panel-2" position="3.29 0.9 1.9" rotation="0 -120 0">
+          <a-plane width="2.2" height="1.5" material="color: #1a0f14; opacity: 0.88; side: double"></a-plane>
+          <a-entity position="0 0.35 0.01">
+            <a-text value="3. COMPRESSION" align="center" color="#d946ef" width="2" font="exo2bold" wrap-count="22"></a-text>
+          </a-entity>
+          <a-entity position="0 0.05 0.01">
+            <a-text value="Optimize Data" align="center" color="#94a3b8" width="1.8" wrap-count="26"></a-text>
+          </a-entity>
+          <a-entity position="0 -0.28 0.01">
+            <a-text value="Identity + trust → signatures&#10;Semantic compression evolves" align="center" color="#64748b" width="1.7" wrap-count="30"></a-text>
+          </a-entity>
+          <!-- Compression rings -->
+          <a-torus position="0 -0.08 0.05" radius="0.25" radius-tubular="0.012"
+            material="color: #d946ef; emissive: #d946ef; emissiveIntensity: 0.5; opacity: 0.7"
+            animation="property: scale; dir: alternate; loop: true; dur: 2000; to: 0.4 0.4 0.4; easing: easeInOutSine">
+          </a-torus>
+          <a-torus position="0 -0.08 0.05" radius="0.38" radius-tubular="0.008"
+            material="color: #7c3aed; emissive: #7c3aed; emissiveIntensity: 0.4; opacity: 0.5"
+            animation="property: scale; dir: alternate; loop: true; dur: 2800; to: 0.5 0.5 0.5; easing: easeInOutSine">
+          </a-torus>
+        </a-entity>
+
+        <!-- 4. DISPLAY — bottom (180°) x=0, z=3.8 -->
+        <a-entity id="panel-3" position="0 -0.2 3.8" rotation="0 180 0">
+          <a-plane width="2.2" height="1.5" material="color: #0a1219; opacity: 0.88; side: double"></a-plane>
+          <a-entity position="0 0.35 0.01">
+            <a-text value="4. DISPLAY" align="center" color="#3b82f6" width="2" font="exo2bold" wrap-count="22"></a-text>
+          </a-entity>
+          <a-entity position="0 0.05 0.01">
+            <a-text value="Adapt Interface" align="center" color="#94a3b8" width="1.8" wrap-count="26"></a-text>
+          </a-entity>
+          <a-entity position="0 -0.28 0.01">
+            <a-text value="Affective display evolution&#10;Dashboards adapt to the audience" align="center" color="#64748b" width="1.7" wrap-count="30"></a-text>
+          </a-entity>
+          <!-- Ghost figures (display panel) -->
+          <a-entity position="-0.5 -0.05 0.05">
+            <a-capsule radius="0.1" height="0.5" material="color: #3b82f6; opacity: 0.22; transparent: true"
+              animation="property: material.opacity; dir: alternate; loop: true; dur: 2200; to: 0.45; easing: easeInOutSine">
+            </a-capsule>
+          </a-entity>
+          <a-entity position="0.5 -0.05 0.05">
+            <a-capsule radius="0.1" height="0.5" material="color: #00d4ff; opacity: 0.22; transparent: true"
+              animation="property: material.opacity; dir: alternate; loop: true; dur: 2800; to: 0.45; easing: easeInOutSine">
+            </a-capsule>
+          </a-entity>
+        </a-entity>
+
+        <!-- 5. GOVERNANCE — lower-left (240°) x=-3.29, z=1.9 -->
+        <a-entity id="panel-4" position="-3.29 0.9 1.9" rotation="0 120 0">
+          <a-plane width="2.2" height="1.5" material="color: #160e0a; opacity: 0.88; side: double"></a-plane>
+          <a-entity position="0 0.35 0.01">
+            <a-text value="5. GOVERNANCE" align="center" color="#f59e0b" width="2" font="exo2bold" wrap-count="22"></a-text>
+          </a-entity>
+          <a-entity position="0 0.05 0.01">
+            <a-text value="Evolve Rules" align="center" color="#94a3b8" width="1.8" wrap-count="26"></a-text>
+          </a-entity>
+          <a-entity position="0 -0.28 0.01">
+            <a-text value="Living constitution from dynamics&#10;Cooperative agents rewarded" align="center" color="#64748b" width="1.7" wrap-count="30"></a-text>
+          </a-entity>
+          <!-- Lock icon group -->
+          <a-entity position="0 -0.1 0.05">
+            <a-box width="0.22" height="0.18" depth="0.05"
+              material="color: #f59e0b; emissive: #f59e0b; emissiveIntensity: 0.5; opacity: 0.8"
+              animation="property: scale; dir: alternate; loop: true; dur: 2600; to: 1.1 1.1 1.1">
+            </a-box>
+            <a-torus position="0 0.14 0" radius="0.09" radius-tubular="0.025"
+              material="color: #f59e0b; emissive: #f59e0b; emissiveIntensity: 0.5; opacity: 0.8"
+              rotation="90 0 0">
+            </a-torus>
+          </a-entity>
+        </a-entity>
+
+        <!-- 6. NEXT HANDSHAKE — upper-left (300°) x=-3.29, z=-1.9 -->
+        <a-entity id="panel-5" position="-3.29 2.8 -1.9" rotation="0 60 0">
+          <a-plane width="2.2" height="1.5" material="color: #0f0d1a; opacity: 0.88; side: double"></a-plane>
+          <a-entity position="0 0.35 0.01">
+            <a-text value="6. NEXT CYCLE" align="center" color="#7c3aed" width="2" font="exo2bold" wrap-count="22"></a-text>
+          </a-entity>
+          <a-entity position="0 0.05 0.01">
+            <a-text value="Refine & Repeat" align="center" color="#94a3b8" width="1.8" wrap-count="26"></a-text>
+          </a-entity>
+          <a-entity position="0 -0.28 0.01">
+            <a-text value="Improved compression & display&#10;Intelligence compounds every cycle" align="center" color="#64748b" width="1.7" wrap-count="30"></a-text>
+          </a-entity>
+          <!-- Ghost figures (multiple — the evolved crowd) -->
+          <a-entity position="-0.6 -0.08 0.05">
+            <a-capsule radius="0.07" height="0.35" material="color: #7c3aed; opacity: 0.2; transparent: true"></a-capsule>
+          </a-entity>
+          <a-entity position="-0.2 -0.05 0.05">
+            <a-capsule radius="0.09" height="0.45" material="color: #7c3aed; opacity: 0.3; transparent: true"></a-capsule>
+          </a-entity>
+          <a-entity position="0.2 -0.05 0.05">
+            <a-capsule radius="0.09" height="0.45" material="color: #00d4ff; opacity: 0.3; transparent: true"></a-capsule>
+          </a-entity>
+          <a-entity position="0.6 -0.08 0.05">
+            <a-capsule radius="0.07" height="0.35" material="color: #00d4ff; opacity: 0.2; transparent: true"></a-capsule>
+          </a-entity>
+        </a-entity>
+
+        <!-- ── Arrow connectors (curved tubes between panels) ──────── -->
+        <!-- Simplified as thin cylinders pointing between panel centers -->
+        <a-entity id="arrows-group"></a-entity>
+
+        <!-- ── Ambient + directional lights ───────────────────────── -->
+        <a-light type="ambient" color="#0a0520" intensity="0.6"></a-light>
+        <a-light type="point" position="0 4 0" color="#7c3aed" intensity="0.8" distance="10"></a-light>
+        <a-light type="point" position="0 -1 0" color="#00d4ff" intensity="0.4" distance="8"></a-light>
+
+        <!-- ── Floor glow ring ──────────────────────────────────────── -->
+        <a-torus position="0 -0.5 0" rotation="90 0 0" radius="4.5" radius-tubular="0.04"
+          material="color: #7c3aed; emissive: #7c3aed; emissiveIntensity: 0.3; opacity: 0.35"
+          animation="property: rotation; to: 90 360 0; loop: true; dur: 30000; easing: linear">
+        </a-torus>
+
+      </a-scene>
+    </div>
+
+    <!-- ─────────────────────────────────────────────────────────── -->
+    <script>
+    "use strict";
+
+    // ── Stage definitions ─────────────────────────────────────────
+    const STAGES = [
+      { id: "HANDSHAKE",   label: "Verify & Align",    color: "#00d4ff", icon: "⬡" },
+      { id: "FEEDBACK",    label: "Analyze Patterns",  color: "#22c55e", icon: "⬡" },
+      { id: "COMPRESSION", label: "Optimize Data",     color: "#d946ef", icon: "⬡" },
+      { id: "DISPLAY",     label: "Adapt Interface",   color: "#3b82f6", icon: "⬡" },
+      { id: "GOVERNANCE",  label: "Evolve Rules",      color: "#f59e0b", icon: "⬡" },
+      { id: "NEXT_CYCLE",  label: "Refine & Repeat",   color: "#7c3aed", icon: "⬡" },
+    ];
+
+    // ── Simulated live state (fallback when API unavailable) ──────
+    const SIM = {
+      cycleCount: 0,
+      stageIndex: 0,
+      coherence: 0.88,
+      schemas: 0,
+      rules: 0,
+      anomalies: 0,
+      agents: 0,
+      trend: "INITIALIZING",
+      history: [],
+    };
+
+    // ── Poll API for live data ─────────────────────────────────────
+    async function fetchStatus() {
+      try {
+        const r = await fetch("/api/handshake/status", { signal: AbortSignal.timeout(3000) });
+        if (!r.ok) throw new Error("no data");
+        return await r.json();
+      } catch { return null; }
+    }
+
+    function applyStatus(s) {
+      if (!s) {
+        // Advance simulation
+        SIM.stageIndex = (SIM.stageIndex + 1) % 6;
+        if (SIM.stageIndex === 0) {
+          SIM.cycleCount++;
+          SIM.coherence = 0.82 + Math.random() * 0.18;
+          SIM.schemas = Math.min(20, SIM.schemas + 1);
+          if (SIM.cycleCount % 3 === 0) SIM.rules = Math.min(16, SIM.rules + 1);
+          if (Math.random() < 0.15) SIM.anomalies++;
+          SIM.agents = 8 + Math.floor(Math.random() * 40);
+          SIM.history.push(SIM.coherence);
+          if (SIM.history.length > 20) SIM.history.shift();
+        }
+        return SIM;
+      }
+      const lastCycle = s.lastCycle?.stages || {};
+      return {
+        cycleCount:  s.cycleCount  || 0,
+        stageIndex:  STAGES.findIndex(st => st.id === s.currentStage),
+        coherence:   lastCycle.handshake?.coherence ?? 0.88,
+        schemas:     s.compressionSchemas || 0,
+        rules:       s.governanceRules || 0,
+        anomalies:   s.anomalyCount || 0,
+        agents:      lastCycle.handshake?.agentsVerified || 0,
+        trend:       lastCycle.feedback?.trend || "INITIALIZING",
+        history:     (s.coherenceHistory || []).map(h => h.coherence),
+      };
+    }
+
+    // ── Mode switching ─────────────────────────────────────────────
+    let currentMode = "2d";
+    function setMode(mode) {
+      currentMode = mode;
+      document.getElementById("view2d").style.display  = mode === "2d" ? "flex" : "none";
+      document.getElementById("viewVR").style.display  = mode === "vr" ? "block" : "none";
+      document.getElementById("vr-hud").style.display  = mode === "vr" ? "flex" : "none";
+      document.getElementById("btn2d").classList.toggle("active", mode === "2d");
+      document.getElementById("btnVR").classList.toggle("active", mode === "vr");
+      if (mode === "2d") resizeCanvas();
+    }
+
+    // ── Build stage sidebar ────────────────────────────────────────
+    const stageList = document.getElementById("stage-list");
+    STAGES.forEach((s, i) => {
+      const row = document.createElement("div");
+      row.className = "stage-row";
+      row.innerHTML = `<div class="stage-dot" id="sdot-${i}"></div><div class="stage-name" id="sname-${i}">1. ${s.id}</div>`;
+      stageList.appendChild(row);
+    });
+
+    // ── 2D Canvas Renderer ─────────────────────────────────────────
+    const canvas = document.getElementById("c2d");
+    const ctx = canvas.getContext("2d");
+    let W = 0, H = 0, CX = 0, CY = 0, R = 0;
+
+    function resizeCanvas() {
+      const bar = document.getElementById("topbar").offsetHeight;
+      W = window.innerWidth;
+      H = window.innerHeight - bar;
+      canvas.width  = W;
+      canvas.height = H;
+      CX = W / 2;
+      CY = H / 2;
+      R  = Math.min(W, H) * 0.34;
+    }
+    window.addEventListener("resize", resizeCanvas);
+    resizeCanvas();
+
+    // Panel layout (6 nodes at 60° each, starting top-center = -90°)
+    function panelPos(i) {
+      const angle = (Math.PI * 2 * i / 6) - Math.PI / 2;
+      return { x: CX + R * Math.cos(angle), y: CY + R * Math.sin(angle), angle };
+    }
+
+    // Star geometry
+    let starAngle1 = 0, starAngle2 = 0;
+    const particles = Array.from({ length: 160 }, () => ({
+      x: Math.random() * 1600, y: Math.random() * 1200,
+      r: Math.random() * 1.5 + 0.3,
+      a: Math.random() * 0.7 + 0.1,
+      speed: Math.random() * 0.2 + 0.05,
+    }));
+
+    function drawStar(cx, cy, size, angle, color, alpha) {
+      ctx.save();
+      ctx.globalAlpha = alpha;
+      ctx.translate(cx, cy);
+      ctx.rotate(angle);
+      ctx.strokeStyle = color;
+      ctx.lineWidth = 1.5;
+      // Triangle 1
+      ctx.beginPath();
+      for (let i = 0; i < 3; i++) {
+        const a = (Math.PI * 2 * i / 3) - Math.PI / 2;
+        const x = size * Math.cos(a), y = size * Math.sin(a);
+        i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+      }
+      ctx.closePath(); ctx.stroke();
+      // Triangle 2 (inverted)
+      ctx.rotate(Math.PI);
+      ctx.beginPath();
+      for (let i = 0; i < 3; i++) {
+        const a = (Math.PI * 2 * i / 3) - Math.PI / 2;
+        const x = size * Math.cos(a), y = size * Math.sin(a);
+        i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+      }
+      ctx.closePath(); ctx.stroke();
+      ctx.restore();
+    }
+
+    function drawArrow(x1, y1, x2, y2, color, alpha, progress) {
+      const dx = x2 - x1, dy = y2 - y1;
+      const len = Math.sqrt(dx * dx + dy * dy);
+      const nx = dx / len, ny = dy / len;
+      const pad = 52; // panel half-size
+      const sx = x1 + nx * pad, sy = y1 + ny * pad;
+      const ex = x2 - nx * pad, ey = y2 - ny * pad;
+
+      // Control point for curve (perpendicular offset)
+      const mx = (sx + ex) / 2, my = (sy + ey) / 2;
+      const perp = { x: -ny * 0.22 * len, y: nx * 0.22 * len };
+      const cpx = mx + perp.x, cpy = my + perp.y;
+
+      ctx.save();
+      ctx.globalAlpha = alpha * 0.6;
+      ctx.strokeStyle = color;
+      ctx.lineWidth = 1.5;
+      ctx.setLineDash([8, 6]);
+      ctx.lineDashOffset = -progress * 20;
+      ctx.beginPath();
+      ctx.moveTo(sx, sy);
+      ctx.quadraticCurveTo(cpx, cpy, ex, ey);
+      ctx.stroke();
+
+      // Arrowhead
+      ctx.globalAlpha = alpha;
+      ctx.setLineDash([]);
+      const arrowAngle = Math.atan2(ey - cpy, ex - cpx);
+      const aSize = 8;
+      ctx.beginPath();
+      ctx.moveTo(ex, ey);
+      ctx.lineTo(ex - aSize * Math.cos(arrowAngle - 0.4), ey - aSize * Math.sin(arrowAngle - 0.4));
+      ctx.lineTo(ex - aSize * Math.cos(arrowAngle + 0.4), ey - aSize * Math.sin(arrowAngle + 0.4));
+      ctx.closePath();
+      ctx.fillStyle = color;
+      ctx.fill();
+      ctx.restore();
+    }
+
+    function drawPanel(i, state) {
+      const { x, y } = panelPos(i);
+      const s = STAGES[i];
+      const isActive = i === state.stageIndex;
+      const isDone   = i < state.stageIndex || (state.stageIndex === 0 && state.cycleCount > 0 && i > 0);
+
+      const pw = 130, ph = 78;
+      const glow = isActive ? 18 : 0;
+
+      ctx.save();
+      // Outer glow
+      if (isActive) {
+        const grad = ctx.createRadialGradient(x, y, 10, x, y, pw);
+        grad.addColorStop(0, s.color + "44");
+        grad.addColorStop(1, "transparent");
+        ctx.fillStyle = grad;
+        ctx.fillRect(x - pw - glow, y - ph - glow, (pw + glow) * 2, (ph + glow) * 2);
+      }
+
+      // Panel background
+      ctx.globalAlpha = isActive ? 0.95 : 0.70;
+      ctx.fillStyle = "#070d1e";
+      ctx.strokeStyle = isActive ? s.color : (isDone ? "#22c55e55" : "#1e2a45");
+      ctx.lineWidth = isActive ? 2 : 1;
+      const rx = 8;
+      ctx.beginPath();
+      ctx.roundRect(x - pw, y - ph, pw * 2, ph * 2, rx);
+      ctx.fill();
+      ctx.stroke();
+
+      // Number circle
+      ctx.globalAlpha = 1;
+      ctx.beginPath();
+      ctx.arc(x - pw + 16, y - ph + 16, 12, 0, Math.PI * 2);
+      ctx.fillStyle = isActive ? s.color : "#1e2a45";
+      ctx.fill();
+      ctx.fillStyle = isActive ? "#03050f" : s.color;
+      ctx.font = "bold 11px 'Segoe UI'";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText(i + 1, x - pw + 16, y - ph + 16);
+
+      // Title
+      ctx.fillStyle = isActive ? s.color : "#94a3b8";
+      ctx.font = `bold ${isActive ? 12 : 11}px 'Segoe UI'`;
+      ctx.textAlign = "center";
+      ctx.textBaseline = "top";
+      ctx.fillText(STAGES[i].id, x, y - ph + 8);
+
+      // Subtitle
+      ctx.fillStyle = "#64748b";
+      ctx.font = "10px 'Segoe UI'";
+      ctx.fillText(s.label, x, y - ph + 26);
+
+      // Active indicator — coherence bar
+      if (isActive) {
+        const bw = pw * 1.5, bh = 4;
+        const bx = x - bw / 2, by = y + ph - 14;
+        ctx.fillStyle = "#1e2a45";
+        ctx.fillRect(bx, by, bw, bh);
+        ctx.fillStyle = s.color;
+        ctx.fillRect(bx, by, bw * state.coherence, bh);
+        ctx.fillStyle = s.color;
+        ctx.font = "9px 'Segoe UI'";
+        ctx.textAlign = "center";
+        ctx.fillText(`${(state.coherence * 100).toFixed(1)}%`, x, by + bh + 5);
+      }
+
+      // Done checkmark
+      if (isDone && !isActive) {
+        ctx.fillStyle = "#22c55e";
+        ctx.font = "12px 'Segoe UI'";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText("✓", x + pw - 14, y - ph + 15);
+      }
+
+      ctx.restore();
+    }
+
+    function updateSidebar(state) {
+      STAGES.forEach((_, i) => {
+        const dot  = document.getElementById(`sdot-${i}`);
+        const name = document.getElementById(`sname-${i}`);
+        if (!dot || !name) return;
+        const isActive = i === state.stageIndex;
+        const isDone   = i < state.stageIndex;
+        dot.className  = "stage-dot" + (isActive ? " active" : isDone ? " done" : "");
+        name.className = "stage-name" + (isActive ? " active" : isDone ? " done" : "");
+        name.textContent = `${i + 1}. ${STAGES[i].id}`;
+      });
+    }
+
+    function updateStats(state) {
+      document.getElementById("st-cycles").textContent   = state.cycleCount;
+      document.getElementById("st-schemas").textContent  = state.schemas;
+      document.getElementById("st-rules").textContent    = state.rules;
+      document.getElementById("st-anomalies").textContent = state.anomalies;
+      document.getElementById("st-agents").textContent   = state.agents || "—";
+
+      const pct = (state.coherence * 100).toFixed(1);
+      document.getElementById("coh-val").textContent  = pct + "%";
+      document.getElementById("coh-bar").style.width  = pct + "%";
+      document.getElementById("coh-lbl").textContent  = state.trend || "stable";
+
+      // VR HUD
+      document.getElementById("vr-cycle").textContent = state.cycleCount;
+      document.getElementById("vr-coh").textContent   = pct + "%";
+      document.getElementById("vr-stage").textContent = STAGES[state.stageIndex]?.id || "—";
+    }
+
+    // ── Coherence history sparkline (drawn in corner) ──────────────
+    function drawSparkline(history, x, y, w, h) {
+      if (history.length < 2) return;
+      ctx.save();
+      ctx.globalAlpha = 0.6;
+      ctx.strokeStyle = "#00d4ff";
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      history.forEach((v, i) => {
+        const px = x + (i / (history.length - 1)) * w;
+        const py = y + h - v * h;
+        i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
+      });
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    // ── Main render loop ───────────────────────────────────────────
+    let frame = 0;
+    let lastState = applyStatus(null);
+
+    function render() {
+      requestAnimationFrame(render);
+      frame++;
+      if (currentMode !== "2d") return;
+
+      ctx.clearRect(0, 0, W, H);
+
+      // Background gradient
+      const bg = ctx.createRadialGradient(CX, CY, 0, CX, CY, Math.max(W, H) * 0.7);
+      bg.addColorStop(0, "#070d1e");
+      bg.addColorStop(1, "#03050f");
+      ctx.fillStyle = bg;
+      ctx.fillRect(0, 0, W, H);
+
+      // Particles
+      particles.forEach(p => {
+        p.x += Math.cos(p.speed * 0.3) * p.speed * 0.3;
+        p.y += Math.sin(p.speed * 0.4) * p.speed * 0.2;
+        if (p.x > W) p.x = 0;
+        if (p.y > H) p.y = 0;
+        ctx.save();
+        ctx.globalAlpha = p.a * (0.4 + 0.6 * Math.abs(Math.sin(frame * 0.003 + p.speed)));
+        ctx.fillStyle = "#ffffff";
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+      });
+
+      // Central star
+      starAngle1 += 0.004;
+      starAngle2 -= 0.003;
+      const pulseScale = 1 + 0.06 * Math.sin(frame * 0.05);
+      const starR = Math.min(W, H) * 0.09 * pulseScale;
+      drawStar(CX, CY, starR,        starAngle1, "#7c3aed", 0.75);
+      drawStar(CX, CY, starR * 0.68, starAngle2, "#00d4ff", 0.60);
+
+      // Central glow
+      const cgr = ctx.createRadialGradient(CX, CY, 0, CX, CY, starR * 1.1);
+      cgr.addColorStop(0, "#f59e0b55");
+      cgr.addColorStop(0.3, "#7c3aed22");
+      cgr.addColorStop(1, "transparent");
+      ctx.fillStyle = cgr;
+      ctx.beginPath();
+      ctx.arc(CX, CY, starR * 1.2, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Outer ring
+      ctx.save();
+      ctx.globalAlpha = 0.15;
+      ctx.strokeStyle = "#7c3aed";
+      ctx.lineWidth = 1;
+      ctx.setLineDash([4, 8]);
+      ctx.beginPath();
+      ctx.arc(CX, CY, R + 60, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.restore();
+
+      // Arrows between consecutive panels
+      const state = lastState;
+      const arrowProgress = (frame % 60) / 60;
+      STAGES.forEach((s, i) => {
+        const next = (i + 1) % 6;
+        const isActive = i === state.stageIndex;
+        const alpha = isActive ? 0.9 : 0.35;
+        const p1 = panelPos(i), p2 = panelPos(next);
+        drawArrow(p1.x, p1.y, p2.x, p2.y, s.color, alpha, isActive ? arrowProgress : 0);
+      });
+
+      // Panels
+      STAGES.forEach((_, i) => drawPanel(i, state));
+
+      // Sparkline (top-right corner)
+      if (state.history.length >= 2) {
+        drawSparkline(state.history, W - 155, 10, 140, 28);
+        ctx.save();
+        ctx.fillStyle = "#64748b";
+        ctx.font = "9px 'Segoe UI'";
+        ctx.textAlign = "left";
+        ctx.fillText("Coherence history", W - 155, 44);
+        ctx.restore();
+      }
+
+      // Title overlay (center)
+      ctx.save();
+      ctx.globalAlpha = 0.15 + 0.04 * Math.sin(frame * 0.04);
+      ctx.fillStyle = "#00d4ff";
+      ctx.font = `bold ${Math.max(11, Math.min(W * 0.012, 15))}px 'Segoe UI'`;
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText("SELF-EVOLVING INTELLIGENCE LOOP", CX, CY + starR * 1.6);
+      ctx.restore();
+    }
+
+    // ── Data poll ─────────────────────────────────────────────────
+    async function poll() {
+      const raw = await fetchStatus();
+      lastState = applyStatus(raw);
+      updateSidebar(lastState);
+      updateStats(lastState);
+    }
+
+    // ── VR star particles (JS-generated) ─────────────────────────
+    function buildVRStars() {
+      const scene = document.getElementById("stars");
+      if (!scene) return;
+      let html = "";
+      for (let i = 0; i < 280; i++) {
+        const x = (Math.random() - 0.5) * 80;
+        const y = (Math.random() - 0.5) * 50;
+        const z = (Math.random() - 0.5) * 80;
+        const r = (Math.random() * 0.04 + 0.01).toFixed(3);
+        const b = (Math.random() * 0.5 + 0.3).toFixed(2);
+        html += `<a-sphere position="${x.toFixed(2)} ${y.toFixed(2)} ${z.toFixed(2)}" radius="${r}" material="color: #ffffff; opacity: ${b}; shader: flat"></a-sphere>`;
+      }
+      scene.innerHTML = html;
+    }
+
+    // ── Boot ──────────────────────────────────────────────────────
+    buildVRStars();
+    poll();
+    setInterval(poll, 6000);
+    setInterval(() => {
+      // Advance simulation stage on each tick when no live data
+      lastState = applyStatus(null);
+      updateSidebar(lastState);
+      updateStats(lastState);
+    }, 4500);
+    render();
+    </script>
+  </body>
+</html>
