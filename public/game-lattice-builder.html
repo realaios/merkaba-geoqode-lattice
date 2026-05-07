@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Lattice Builder — PHI Puzzle · AIOS Arcade</title>
+    <title>Lattice Builder ï¿½ PHI Puzzle ï¿½ AIOS Arcade</title>
     <meta
       name="description"
       content="Reconstruct damaged lattice nodes. Gaze to connect them in the correct PHI sequence. Hand-tracking physics puzzles. AIOS Arcade."
@@ -11,7 +11,7 @@
     <link rel="canonical" href="https://realaios.com/games/lattice-builder" />
     <meta
       property="og:title"
-      content="Lattice Builder — PHI Puzzle · AIOS Arcade"
+      content="Lattice Builder ï¿½ PHI Puzzle ï¿½ AIOS Arcade"
     />
     <meta
       property="og:description"
@@ -27,7 +27,7 @@
       content="https://realaios.com/public/og-image.svg"
     />
     <meta name="twitter:card" content="summary_large_image" />
-    <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+    <script src="/public/vendor/aframe-1.4.0.min.js"></script>
     <style>
       *,
       *::before,
@@ -548,7 +548,7 @@
 
     <!-- LOBBY -->
     <div id="lobby">
-      <div class="lobby-badge">?? AIOS Arcade · Lattice Builder</div>
+      <div class="lobby-badge">?? AIOS Arcade ï¿½ Lattice Builder</div>
       <div class="lobby-title">Lattice Builder</div>
       <div class="lobby-sub">
         Damaged lattice nodes float in sequence order. Gaze at each one in the
@@ -570,7 +570,7 @@
       </div>
       <button class="btn-play" onclick="startGame()">? LAUNCH GAME</button>
       <div class="lobby-hint">
-        Gaze at numbered nodes in order · 1 ? 2 ? 3 ? …
+        Gaze at numbered nodes in order ï¿½ 1 ? 2 ? 3 ? ï¿½
       </div>
       <a href="/vr-hub" class="lobby-back">? Back to VR Hub</a>
     </div>
@@ -621,7 +621,7 @@
     <!-- ROUND WIN -->
     <div id="roundwin">
       <div class="rw-title">? LATTICE RESTORED</div>
-      <div class="rw-sub" id="rw-sub">Round 1 complete · +10 points</div>
+      <div class="rw-sub" id="rw-sub">Round 1 complete ï¿½ +10 points</div>
       <button class="btn-next" onclick="nextRound()">Next Round ?</button>
     </div>
 
@@ -848,7 +848,7 @@
             updateHUD();
             refreshNodeColors();
             document.getElementById("rw-sub").textContent =
-              `Round ${round} complete · +${pts} points`;
+              `Round ${round} complete ï¿½ +${pts} points`;
             setTimeout(() => {
               document.getElementById("roundwin").style.display = "flex";
             }, 500);
@@ -958,7 +958,7 @@
                 look-controls="reverseMouseDrag: false; touchEnabled: true; pointerLockEnabled: false"
                 wasd-controls="enabled: false"
                 fov="80">
-                <!-- Gaze cursor — 1.5s fuse -->
+                <!-- Gaze cursor ï¿½ 1.5s fuse -->
                 <a-cursor
                   id="game-cursor"
                   fuse="true"
@@ -1001,7 +1001,7 @@
             </a-sphere>
 
             <!-- Title -->
-            <a-text value="LATTICE BUILDER · PHI=${PHI}" position="0 5.2 -5" align="center" color="#6b84b8" width="5" font="roboto" material="shader: flat"></a-text>
+            <a-text value="LATTICE BUILDER ï¿½ PHI=${PHI}" position="0 5.2 -5" align="center" color="#6b84b8" width="5" font="roboto" material="shader: flat"></a-text>
 
           </a-scene>`;
 
@@ -1048,7 +1048,7 @@
         document.getElementById("seq-overlay").style.display = "none";
         document.getElementById("go-score-n").textContent = score;
         document.getElementById("go-wave").textContent =
-          `Round ${round} · Sequence length: ${seqLen}`;
+          `Round ${round} ï¿½ Sequence length: ${seqLen}`;
         document.getElementById("gameover").style.display = "flex";
       }
 
@@ -1073,7 +1073,7 @@
       function shareBuilderScore() {
         const scoreEl = document.getElementById("go-score-n");
         const score = scoreEl ? scoreEl.textContent : "0";
-        const text = `I scored ${score} points in AIOS Lattice Builder — can you beat me? ?? #AIOS #LatticePuzzle #realaios`;
+        const text = `I scored ${score} points in AIOS Lattice Builder ï¿½ can you beat me? ?? #AIOS #LatticePuzzle #realaios`;
         const url = "https://realaios.com/game-lattice-builder";
         if (navigator.share) {
           navigator

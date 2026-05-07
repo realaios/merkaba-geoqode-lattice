@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Lattice Dodge — PHI Reflexes · AIOS Arcade</title>
+    <title>Lattice Dodge ï¿½ PHI Reflexes ï¿½ AIOS Arcade</title>
     <meta
       name="description"
       content="Dodge entropy disruptors flying through the 48-node lattice ring. Speed ramps by PHI each wave. AIOS Arcade."
@@ -11,7 +11,7 @@
     <link rel="canonical" href="https://realaios.com/games/lattice-dodge" />
     <meta
       property="og:title"
-      content="Lattice Dodge — PHI Reflexes · AIOS Arcade"
+      content="Lattice Dodge ï¿½ PHI Reflexes ï¿½ AIOS Arcade"
     />
     <meta
       property="og:description"
@@ -27,7 +27,7 @@
       content="https://realaios.com/public/og-image.svg"
     />
     <meta name="twitter:card" content="summary_large_image" />
-    <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+    <script src="/public/vendor/aframe-1.4.0.min.js"></script>
     <style>
       *,
       *::before,
@@ -477,7 +477,7 @@
 
     <!-- LOBBY -->
     <div id="lobby">
-      <div class="lobby-badge">?? AIOS Arcade · Lattice Dodge</div>
+      <div class="lobby-badge">?? AIOS Arcade ï¿½ Lattice Dodge</div>
       <div class="lobby-title">Lattice Dodge</div>
       <div class="lobby-sub">
         Entropy disruptors flood the lattice ring. Move to survive. Each wave is
@@ -489,7 +489,7 @@
           <div class="lobby-stat-l">Lives</div>
         </div>
         <div>
-          <div class="lobby-stat-n">×PHI</div>
+          <div class="lobby-stat-n">ï¿½PHI</div>
           <div class="lobby-stat-l">Speed Scale</div>
         </div>
         <div>
@@ -499,7 +499,7 @@
       </div>
       <button class="btn-play" onclick="startGame()">? LAUNCH GAME</button>
       <div class="lobby-hint">
-        WASD or arrow keys to move · Dodge the red cubes
+        WASD or arrow keys to move ï¿½ Dodge the red cubes
       </div>
       <a href="/vr-hub" class="lobby-back">? Back to VR Hub</a>
     </div>
@@ -646,7 +646,7 @@
         const sy = +(0.5 + Math.random() * 3).toFixed(2);
         const sz = +(Math.cos(angle) * startRadius).toFixed(2);
 
-        // Target: random offset near center (not exact center — avoids spam)
+        // Target: random offset near center (not exact center ï¿½ avoids spam)
         const tx = +((Math.random() - 0.5) * 4).toFixed(2);
         const ty = sy;
         const tz = +((Math.random() - 0.5) * 4).toFixed(2);
@@ -778,7 +778,7 @@
             <!-- Floor -->
             <a-plane position="0 0 0" rotation="-90 0 0" width="40" height="40" color="#030918" material="shader: flat" opacity="0.8"></a-plane>
 
-            <!-- Lattice corridor rings — visual effect of coming at you -->
+            <!-- Lattice corridor rings ï¿½ visual effect of coming at you -->
             <a-torus position="0 1.8 -8" rotation="90 0 0" radius="5" radius-tubular="0.04" color="#00d4ff" opacity="0.3" material="shader: flat"
               animation="property: position; from: 0 1.8 -20; to: 0 1.8 8; dur: 3000; loop: true; easing: easeInQuad"></a-torus>
             <a-torus position="0 1.8 -8" rotation="90 0 0" radius="5" radius-tubular="0.04" color="#9b5cff" opacity="0.25" material="shader: flat"
@@ -858,7 +858,7 @@
         document.getElementById("exit-btn").style.display = "none";
         document.getElementById("go-score-n").textContent = surviveTime;
         document.getElementById("go-wave").textContent =
-          `Wave ${wave} · Score: ${score}`;
+          `Wave ${wave} ï¿½ Score: ${score}`;
         document.getElementById("gameover").style.display = "flex";
       }
 

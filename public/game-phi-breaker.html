@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>PHI Breaker — Lattice Shooter · AIOS Arcade</title>
+    <title>PHI Breaker ï¿½ Lattice Shooter ï¿½ AIOS Arcade</title>
     <meta
       name="description"
       content="Defend the 48-node lattice from entropy disruptors. Gaze to shoot across D480 harmonic space. AIOS Arcade game."
@@ -11,7 +11,7 @@
     <link rel="canonical" href="https://realaios.com/games/phi-breaker" />
     <meta
       property="og:title"
-      content="PHI Breaker — Lattice Shooter · AIOS Arcade"
+      content="PHI Breaker ï¿½ Lattice Shooter ï¿½ AIOS Arcade"
     />
     <meta
       property="og:description"
@@ -24,7 +24,7 @@
       content="https://realaios.com/public/og-image.svg"
     />
     <meta name="twitter:card" content="summary_large_image" />
-    <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+    <script src="/public/vendor/aframe-1.4.0.min.js"></script>
     <style>
       *,
       *::before,
@@ -52,7 +52,7 @@
         overflow: hidden;
       }
 
-      /* NAV — collapsed in game, shown on lobby/gameover */
+      /* NAV ï¿½ collapsed in game, shown on lobby/gameover */
       nav.site-nav {
         position: fixed;
         top: 0;
@@ -489,7 +489,7 @@
 
     <!-- LOBBY -->
     <div id="lobby">
-      <div class="lobby-badge">?? AIOS Arcade · PHI Breaker</div>
+      <div class="lobby-badge">?? AIOS Arcade ï¿½ PHI Breaker</div>
       <div class="lobby-title">PHI Breaker</div>
       <div class="lobby-sub">
         Entropy disruptors are attacking the 48-node lattice. Gaze to lock.
@@ -501,7 +501,7 @@
           <div class="lobby-stat-l">Per Round</div>
         </div>
         <div>
-          <div class="lobby-stat-n">×PHI</div>
+          <div class="lobby-stat-n">ï¿½PHI</div>
           <div class="lobby-stat-l">Wave Scaling</div>
         </div>
         <div>
@@ -511,7 +511,7 @@
       </div>
       <button class="btn-play" onclick="startGame()">? LAUNCH GAME</button>
       <div class="lobby-hint">
-        Gaze to aim · Click or tap to shoot · WASD on desktop
+        Gaze to aim ï¿½ Click or tap to shoot ï¿½ WASD on desktop
       </div>
       <a href="/vr-hub" class="lobby-back">? Back to VR Hub</a>
     </div>
@@ -589,9 +589,9 @@
           const text =
             "I scored " +
             s +
-            " PHI Points in PHI Breaker ? — " +
+            " PHI Points in PHI Breaker ? ï¿½ " +
             w +
-            " — free game at realaios.com";
+            " ï¿½ free game at realaios.com";
           if (navigator.share) {
             navigator
               .share({
@@ -841,7 +841,7 @@
                 look-controls="reverseMouseDrag: false; touchEnabled: true; pointerLockEnabled: false"
                 wasd-controls="enabled: false"
                 fov="80">
-                <!-- Gaze cursor — 1.2s fuse for VR headset -->
+                <!-- Gaze cursor ï¿½ 1.2s fuse for VR headset -->
                 <a-cursor
                   id="game-cursor"
                   fuse="true"
@@ -885,7 +885,7 @@
             <a-sphere position="-2.12 0.3 -2.12" radius="0.08" color="#9b5cff" opacity="0.4" material="shader: flat" animation="property: position; to: -2.12 0.6 -2.12; dur: 1800; dir: alternate; loop: true; easing: easeInOutSine"></a-sphere>
 
             <!-- Lattice label -->
-            <a-text value="D48 LATTICE · PHI=1.618 · DEFEND" position="0 4.5 -6" align="center" color="#6b84b8" width="5" font="roboto" material="shader: flat"></a-text>
+            <a-text value="D48 LATTICE ï¿½ PHI=1.618 ï¿½ DEFEND" position="0 4.5 -6" align="center" color="#6b84b8" width="5" font="roboto" material="shader: flat"></a-text>
 
             <!-- Enemy container -->
             <a-entity id="enemy-root"></a-entity>
@@ -926,7 +926,7 @@
 
         document.getElementById("go-score-n").textContent = score;
         document.getElementById("go-wave").textContent =
-          `Wave ${wave} reached · ${kills} kills`;
+          `Wave ${wave} reached ï¿½ ${kills} kills`;
         document.getElementById("gameover").style.display = "flex";
       }
 
