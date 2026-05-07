@@ -1259,6 +1259,55 @@ function _seedPlaiApps() {
     { cat: "Utilities", name: "API Mock Server", desc: "Generates mock REST APIs from OpenAPI specs. Response delay simulation, error injection, and contract testing.", dl: 267 },
     { cat: "Utilities", name: "Webhook Relay Proxy", desc: "Relays webhooks from external services to localhost during development. HTTPS tunnelling with request inspector.", dl: 334 },
     { cat: "Utilities", name: "Token Budget Tracker", desc: "Tracks OpenAI token usage per feature, user, and model. Budget alerts and per-request cost attribution.", dl: 289 },
+    // ── Batch 4: 50 more apps ──────────────────────────────────────────────
+    // Theatre
+    { cat: "Theatre", name: "Blade Runner 2049 — Holographic City", desc: "Fly over the neon rain of 2049 Los Angeles. Spinner taxi rides, mega-ads, and Wallace Corp tower holography.", dl: 512 },
+    { cat: "Theatre", name: "Dune — Arrakis Desert Vision", desc: "Stand on the Great Flat, watch a sandworm breach the horizon. Spice-field particle storms and Fremen holographic projections.", dl: 478 },
+    { cat: "Theatre", name: "2001: A Space Odyssey — HAL 9000 Interface", desc: "Board the Discovery One. Interact with HAL 9000's red eye, traverse the pod bay, and experience the stargate sequence.", dl: 445 },
+    { cat: "Theatre", name: "Arrival — Heptapod Language Chamber", desc: "Enter the observation chamber. Heptapod logograms form around you. 7-phase time-loop narrative with non-linear storytelling.", dl: 423 },
+    { cat: "Theatre", name: "Interstellar — Tesseract Library", desc: "Navigate Cooper's 5D bookshelf. Time dimensions rendered as spatial lattice. Gravity waveforms and Endurance docking sequence.", dl: 456 },
+    // Cinema
+    { cat: "Cinema", name: "Ex Machina — Nathan's Estate", desc: "Enter the glass-and-concrete retreat. Meet Ava through the interface. Turing test protocols rendered as spatial dialogue sequences.", dl: 398 },
+    { cat: "Cinema", name: "Moon — Sam Bell's Habitat", desc: "Walk through Sarang lunar base. Talk to GERTY. 3-clone ethical dilemma rendered as branching spatial narrative.", dl: 367 },
+    { cat: "Cinema", name: "Her — The Future City", desc: "Wander Theodore's near-future Los Angeles. Samantha's voice spatialized across the skyline. AI relationship milestones as place markers.", dl: 412 },
+    { cat: "Cinema", name: "TRON: Legacy — The Grid", desc: "Enter Kevin Flynn's digital domain. Light cycle grid, recognizer patrols, and End of Line Club ambient rendered in WebXR.", dl: 489 },
+    { cat: "Cinema", name: "Annihilation — Area X Shimmer", desc: "Cross the Shimmer boundary. Mutated flora, humanoid forms, and the lighthouse vault rendered as an immersive horror walk.", dl: 376 },
+    // Playbooks
+    { cat: "Playbooks", name: "Zero-to-MRR Playbook", desc: "14-step sequence: idea validation, landing page, waitlist, onboarding email, pricing, launch, first MRR. All templates included.", dl: 567 },
+    { cat: "Playbooks", name: "Developer Acquisition Playbook", desc: "GitHub presence, hackathon strategy, dev newsletter placement, API docs funnel, and SDK launch. 90-day roadmap.", dl: 489 },
+    { cat: "Playbooks", name: "Enterprise Sales Cycle", desc: "7-stage B2B sales process: ICP definition, outbound sequences, demo framework, legal/procurement, and expansion motion.", dl: 423 },
+    { cat: "Playbooks", name: "Content Compound Growth", desc: "SEO-first content engine: keyword clustering, pillar/spoke architecture, update cadence, backlink outreach, and distribution network.", dl: 398 },
+    { cat: "Playbooks", name: "AI Product Launch Sequence", desc: "Pre-launch hype, beta list, ProductHunt strategy, press kit, first-week retention tactics, and post-launch optimization loop.", dl: 512 },
+    // Agents
+    { cat: "Agents", name: "CompetitorWatchAgent", desc: "Monitors competitor pricing, feature releases, and job posts. Flags strategic changes and generates weekly intelligence briefings.", dl: 445 },
+    { cat: "Agents", name: "TechnicalDebtAgent", desc: "Scans codebase for complexity hotspots, outdated dependencies, and pattern violations. Prioritizes refactoring by risk × effort.", dl: 398 },
+    { cat: "Agents", name: "CustomerJourneyAgent", desc: "Maps user paths through product. Identifies friction points, drop-off moments, and conversion opportunities from event streams.", dl: 478 },
+    { cat: "Agents", name: "PRStrategyAgent", desc: "Identifies PR opportunities, drafts pitches, manages journalist relationships, and tracks coverage sentiment over time.", dl: 356 },
+    { cat: "Agents", name: "GrantResearchAgent", desc: "Scans government and private grants for eligibility. Drafts applications, tracks deadlines, and monitors funding cycles.", dl: 334 },
+    // Codex
+    { cat: "Codex", name: "gRPC Service Template", desc: "Protocol Buffer definitions, generated TypeScript client, interceptors, server-side streaming, and health check integration.", dl: 456 },
+    { cat: "Codex", name: "Event-Driven Architecture", desc: "Kafka + PostgreSQL outbox pattern. Event sourcing, CQRS implementation, saga orchestration, and dead-letter queue handling.", dl: 423 },
+    { cat: "Codex", name: "AI Gateway Template", desc: "Multi-provider LLM routing, rate limiting, cost tracking, prompt versioning, and fallback chain management in Express.", dl: 534 },
+    { cat: "Codex", name: "Zero-Trust API Template", desc: "mTLS client authentication, JWT rotation, IP allowlisting, audit logging, and cryptographic request signing.", dl: 389 },
+    { cat: "Codex", name: "WebAssembly Module Template", desc: "Rust → WASM compilation pipeline, JS bridge layer, memory management utilities, and performance benchmarking suite.", dl: 312 },
+    // Analytics
+    { cat: "Analytics", name: "Feature Flag Analytics", desc: "Tracks flag exposures, conversion deltas, and statistical significance. Integrates with LaunchDarkly, Unleash, and custom toggles.", dl: 345 },
+    { cat: "Analytics", name: "Product-Led Growth Metrics", desc: "PQL identification, expansion signal tracking, time-to-value dashboards, and viral coefficient measurement.", dl: 398 },
+    { cat: "Analytics", name: "Infrastructure Cost Analyzer", desc: "Breaks cloud costs by service, team, and feature. Anomaly detection, budget forecast, and optimization recommendations.", dl: 423 },
+    { cat: "Analytics", name: "Email Campaign Performance", desc: "Open rates, click maps, revenue attribution, list decay analysis, and send-time optimization across ESP providers.", dl: 289 },
+    { cat: "Analytics", name: "Search Intelligence Dashboard", desc: "Keyword ranking, click-through rates, query intent clustering, and SERP feature tracking with weekly trend reports.", dl: 312 },
+    // Integrations
+    { cat: "Integrations", name: "Notion → Database Sync", desc: "Mirrors Notion databases to PostgreSQL. Schema auto-generation, relation mapping, media archival, and incremental sync.", dl: 367 },
+    { cat: "Integrations", name: "Figma Design Token Extractor", desc: "Pulls design tokens from Figma, generates CSS variables and Tailwind config. Watches for changes and auto-updates.", dl: 312 },
+    { cat: "Integrations", name: "Sentry → Linear Integration", desc: "Creates Linear issues from Sentry error groups. Auto-assigns by code owner, links deployments, and tracks resolution.", dl: 289 },
+    { cat: "Integrations", name: "Cloudflare Workers Bridge", desc: "Deploy logic to Cloudflare edge from Railway. KV store sync, R2 media upload, Workers KV cache invalidation.", dl: 345 },
+    { cat: "Integrations", name: "Twilio Voice + SMS Bridge", desc: "Inbound call routing, SMS campaigns, voice transcription, and DTMF menu builder with PostgreSQL call log storage.", dl: 423 },
+    // Utilities
+    { cat: "Utilities", name: "Secret Rotation Manager", desc: "Schedules secret rotations across Railway, Vercel, and GitHub Actions. Zero-downtime key swap with rollback capability.", dl: 312 },
+    { cat: "Utilities", name: "Request Replay Tool", desc: "Records production requests and replays them in staging. Diff mode shows response changes across deployments.", dl: 267 },
+    { cat: "Utilities", name: "Database Schema Visualizer", desc: "Generates interactive ER diagrams from PostgreSQL schemas. Relationship inference, index visualization, and query path tracing.", dl: 345 },
+    { cat: "Utilities", name: "CI/CD Pipeline Analyzer", desc: "Identifies slow steps, flaky tests, and cache inefficiencies in GitHub Actions workflows. Generates optimization reports.", dl: 289 },
+    { cat: "Utilities", name: "Load Test Orchestrator", desc: "k6-based load testing with Railway auto-scaling observation. Ramp patterns, p99 tracking, and bottleneck identification.", dl: 334 },
   ];
   for (const { cat, name, desc, dl } of seed) {
     const bundle = "com.aios." + cat.toLowerCase() + "." + name.toLowerCase().replace(/[^a-z0-9]+/g, ".");
