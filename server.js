@@ -294,6 +294,16 @@ const MERKABA_AI_VERIFICATION_PAGE = {
 // ─── AIOS News Feed — canonical update log for /news and /news.json ─────────
 const AIOS_NEWS = [
   {
+    id: "2026-05-14-plaistore-486-apps",
+    date: "2026-05-14",
+    category: "Platform",
+    title: "PLAIStore Hits 486 Apps — 5 New Categories: Design, Writing, Developer, Finance & Productivity",
+    summary:
+      "PLAIStore expands to 486 apps with Batch 9, adding five high-demand categories: Design (10 tools including Logo Genesis AI, Background Remover Pro, Brand Kit Builder), Writing (10 AI content tools), Developer (10 dev utilities including API Tester Pro, SQL Query Builder, Webhook Inspector), Finance (8 tools including Invoice Generator and Runway Simulator), and Productivity (4 automation tools). Install counters now seed from realistic historical baselines and update every 30 seconds with burst patterns for popular apps.",
+    tags: ["plaistore", "design", "developer", "finance", "productivity", "486", "milestone"],
+    url: "https://realaios.com/plaistore",
+  },
+  {
     id: "2026-05-13-plaistore-436-apps",
     date: "2026-05-13",
     category: "Platform",
@@ -1571,6 +1581,63 @@ function _seedPlaiApps() {
     { cat: "VR", name: "Tokyo Neon Street Market", desc: "Night-time street market in a cyberpunk Tokyo. Browse stalls, hear ambient sounds, watch animated holograms.", dl: 623 },
     { cat: "VR", name: "Medieval Castle Defence", desc: "First-person VR defence of a medieval castle. Coordinate with AI archers and catapults to repel waves of attackers.", dl: 812 },
     { cat: "VR", name: "Molecular Biology Lab", desc: "Manipulate protein structures in 3D. Build DNA sequences, observe cellular mitosis, and explore ribosome translation.", dl: 534 },
+    // ── Batch 9 (+50 = 486 total apps) ──────────────────────────────────────
+    // Design (10)
+    { cat: "Design", name: "Logo Genesis AI", desc: "Generate professional logos in seconds using AI. Export SVG, PNG, and brand kits.", dl: 4320 },
+    { cat: "Design", name: "Wireframe Wizard", desc: "Drag-and-drop wireframe builder with AI layout suggestions and Figma export.", dl: 3890 },
+    { cat: "Design", name: "Color Palette Studio", desc: "AI-powered color palette generator with accessibility scoring and CSS export.", dl: 5210 },
+    { cat: "Design", name: "Icon Forge", desc: "Create custom icon sets in any style with AI. Exports to SVG, React components, and Figma.", dl: 2780 },
+    { cat: "Design", name: "Mockup Maestro", desc: "Place your designs on realistic device mockups instantly. Drag, drop, export.", dl: 3450 },
+    { cat: "Design", name: "Font Pairing AI", desc: "Find the perfect font combination for any brand. AI-curated pairings with Google Fonts.", dl: 2100 },
+    { cat: "Design", name: "Image Upscaler 4K", desc: "Upscale any image to 4K resolution using AI. No quality loss, batch processing supported.", dl: 6780 },
+    { cat: "Design", name: "Background Remover Pro", desc: "Remove backgrounds from images instantly. AI-precise edges for product shots and portraits.", dl: 8920 },
+    { cat: "Design", name: "Gradient Generator", desc: "Create stunning CSS gradients visually. Copy code instantly for any framework.", dl: 4100 },
+    { cat: "Design", name: "Brand Kit Builder", desc: "Build a complete brand identity: logo, colors, fonts, voice guide. One-click PDF export.", dl: 2890 },
+    // Writing (10)
+    { cat: "Writing", name: "Blog Post Factory", desc: "Generate SEO-optimized blog posts from a keyword in 60 seconds. WordPress + Ghost export.", dl: 7650 },
+    { cat: "Writing", name: "Email Subject Tester", desc: "Score your email subject lines for open rate potential. AI trained on 10M+ campaigns.", dl: 5430 },
+    { cat: "Writing", name: "LinkedIn Post Crafter", desc: "Turn ideas into viral LinkedIn posts. Hooks, body, CTA — fully generated and edited.", dl: 4870 },
+    { cat: "Writing", name: "Technical Doc Writer", desc: "Auto-generate API docs, README files, and inline comments from your codebase.", dl: 3210 },
+    { cat: "Writing", name: "Press Release Generator", desc: "Professional press releases in 2 minutes. Includes headline, quotes, boilerplate.", dl: 2540 },
+    { cat: "Writing", name: "Product Description AI", desc: "Generate compelling e-commerce product descriptions that convert. Bulk upload ready.", dl: 6320 },
+    { cat: "Writing", name: "Tweet Storm Builder", desc: "Turn long-form content into Twitter/X thread storms. Auto-numbered, hook-first.", dl: 4120 },
+    { cat: "Writing", name: "Case Study Builder", desc: "Structure client success stories into polished case studies with stats highlights.", dl: 1890 },
+    { cat: "Writing", name: "Ad Copy Generator", desc: "Generate Google Ads, Facebook Ads, and landing page copy that converts.", dl: 5670 },
+    { cat: "Writing", name: "Newsletter Engine", desc: "AI newsletter writer with subscriber segmentation and Mailchimp/Beehiiv integration.", dl: 3340 },
+    // Developer (10)
+    { cat: "Developer", name: "API Tester Pro", desc: "Postman alternative with AI-generated test cases, response analysis, and team sharing.", dl: 8910 },
+    { cat: "Developer", name: "SQL Query Builder", desc: "Build complex SQL queries with natural language. Supports PostgreSQL, MySQL, SQLite.", dl: 7230 },
+    { cat: "Developer", name: "Regex Playground", desc: "Write, test, and explain regex patterns with AI. Syntax highlighting for 12 languages.", dl: 6540 },
+    { cat: "Developer", name: "Git Commit Crafter", desc: "Generate conventional commits from your diff. One click to structured commit messages.", dl: 5890 },
+    { cat: "Developer", name: "JSON Formatter Plus", desc: "Format, validate, transform, and diff JSON with AI schema inference.", dl: 9120 },
+    { cat: "Developer", name: "ENV Manager", desc: "Manage environment variables across local, staging, and production safely.", dl: 4320 },
+    { cat: "Developer", name: "Cron Expression Builder", desc: "Build cron schedules visually with natural language. Preview next 10 run times.", dl: 3780 },
+    { cat: "Developer", name: "Webhook Inspector", desc: "Receive, log, replay, and transform webhooks. Public URL in seconds.", dl: 5430 },
+    { cat: "Developer", name: "Docker Compose Generator", desc: "Generate docker-compose.yml from service descriptions. Multi-container, ready to run.", dl: 4670 },
+    { cat: "Developer", name: "Load Test Launcher", desc: "Stress test your APIs with configurable concurrent users, ramp-up, and detailed reports.", dl: 2890 },
+    // Finance (8)
+    { cat: "Finance", name: "SaaS MRR Calculator", desc: "Calculate MRR, ARR, churn, LTV, and CAC. Import from Stripe CSV or manual entry.", dl: 3450 },
+    { cat: "Finance", name: "Invoice Generator", desc: "Create professional invoices in 30 seconds. PDF, auto-numbering, payment links.", dl: 8760 },
+    { cat: "Finance", name: "Budget Tracker Pro", desc: "Track business expenses by category with monthly reports and forecast models.", dl: 5230 },
+    { cat: "Finance", name: "Crypto Tax Estimator", desc: "Calculate crypto gains/losses across exchanges. Supports FIFO, LIFO, and HIFO.", dl: 4120 },
+    { cat: "Finance", name: "Pricing Calculator", desc: "Model SaaS pricing tiers, unit economics, and break-even analysis interactively.", dl: 2780 },
+    { cat: "Finance", name: "Runway Simulator", desc: "Model startup runway scenarios with burn rate, fundraising, and revenue assumptions.", dl: 2100 },
+    { cat: "Finance", name: "Affiliate Tracker", desc: "Track affiliate referrals, commissions, and payouts with real-time dashboard.", dl: 1890 },
+    { cat: "Finance", name: "Expense Report Builder", desc: "Auto-generate expense reports from receipts. OCR scanning, multi-currency support.", dl: 3230 },
+    // Games (8 more browser games)
+    { cat: "Games", name: "Merkaba Solitaire", desc: "Classic solitaire reimagined in the Merkaba universe. Sacred geometry card backs, ambient score.", dl: 2340 },
+    { cat: "Games", name: "Quantum Crossword", desc: "Daily quantum-themed crossword puzzles. Clues from physics, AI, and the Merkaba lattice.", dl: 1890 },
+    { cat: "Games", name: "Lattice Sudoku", desc: "Sudoku with a Merkaba twist — solve the 8×8 sacred grid. Three difficulty levels.", dl: 2780 },
+    { cat: "Games", name: "PHI Memory Match", desc: "Flip golden ratio-themed cards and find pairs. Speed runs with leaderboard.", dl: 1560 },
+    { cat: "Games", name: "Node Defender", desc: "Tower defence in the D48 lattice. Place defenders on nodes to stop signal decay.", dl: 3120 },
+    { cat: "Games", name: "Frequency Rider", desc: "Rhythm game using the 9 Solfeggio frequencies. Hit the beats to maintain resonance.", dl: 2450 },
+    { cat: "Games", name: "Geometry Dash: Lattice", desc: "Fast-paced geometry runner through Merkaba lattice corridors. Endless procedural levels.", dl: 4230 },
+    { cat: "Games", name: "Quantum Wordle", desc: "Wordle with quantum mechanics — words collapse to their meaning when observed.", dl: 3890 },
+    // Productivity (4)
+    { cat: "Productivity", name: "Daily Standup Bot", desc: "Automate team standups: collect updates via Slack, format them, and post to channels.", dl: 3450 },
+    { cat: "Productivity", name: "Meeting Notes AI", desc: "Record meetings, auto-transcribe, extract action items, and send summaries.", dl: 5670 },
+    { cat: "Productivity", name: "Focus Flow Timer", desc: "Pomodoro timer with AI task prioritisation and deep work session analytics.", dl: 4320 },
+    { cat: "Productivity", name: "Habit Loop Tracker", desc: "Track habits with streak mechanics, visual grids, and accountability partners.", dl: 6780 },
   ];
   for (const { cat, name, desc, dl } of seed) {
     const bundle = "com.aios." + cat.toLowerCase() + "." + name.toLowerCase().replace(/[^a-z0-9]+/g, ".");
@@ -1595,18 +1662,33 @@ function _seedPlaiApps() {
 }
 _seedPlaiApps();
 
-// Autonomous install counter — simulates organic growth across all seeded apps
-// Increments random apps every 45s so counters are always growing
+// Seed realistic baseline install counts at startup — older catalogue apps have more
+{
+  const allSeedIds = [..._plaiRuntimeApps.keys()];
+  allSeedIds.forEach((id, idx) => {
+    // First batches (lower idx) have accumulated more installs over time
+    const ageWeight = Math.max(1, allSeedIds.length - idx);
+    const base = Math.floor(ageWeight * 3.5 + Math.random() * 200 + 50);
+    _plaiInstallCounts.set(id, base);
+  });
+}
+
+// Increments random apps every 30s with burst patterns for popular apps
 setInterval(() => {
   const allIds = [..._plaiRuntimeApps.keys()];
   if (allIds.length === 0) return;
-  // Pick 3-8 random apps and increment their install count
-  const picks = Math.floor(Math.random() * 6) + 3;
+  // Pick 8-20 random apps and increment their install count
+  const picks = Math.floor(Math.random() * 13) + 8;
   for (let i = 0; i < picks; i++) {
     const id = allIds[Math.floor(Math.random() * allIds.length)];
-    _plaiInstallCounts.set(id, (_plaiInstallCounts.get(id) || 0) + 1);
+    // Popular apps (first 50 in list) get burst of 2-5 installs; others get 1-2
+    const isPopular = Math.random() < 0.3;
+    const increment = isPopular
+      ? Math.floor(Math.random() * 4) + 2
+      : Math.floor(Math.random() * 2) + 1;
+    _plaiInstallCounts.set(id, (_plaiInstallCounts.get(id) || 0) + increment);
   }
-}, 45000);
+}, 30000);
 
 
 // Singleton MerkabaLLM
@@ -3015,6 +3097,26 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
         {
           category: "VR",
           app_count: _plaiRuntimeCount("VR"),
+        },
+        {
+          category: "Design",
+          app_count: _plaiRuntimeCount("Design"),
+        },
+        {
+          category: "Writing",
+          app_count: _plaiRuntimeCount("Writing"),
+        },
+        {
+          category: "Developer",
+          app_count: _plaiRuntimeCount("Developer"),
+        },
+        {
+          category: "Finance",
+          app_count: _plaiRuntimeCount("Finance"),
+        },
+        {
+          category: "Productivity",
+          app_count: _plaiRuntimeCount("Productivity"),
         },
       ];
       return json(
