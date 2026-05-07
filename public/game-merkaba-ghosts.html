@@ -1390,16 +1390,29 @@
         gameoverEl.classList.add("active");
         playTone(216, 1200, 0.2);
         // Submit score to leaderboard
-        const playerName = localStorage.getItem("aios_player_name") || "Anonymous";
-        fetch("/api/game/score", {method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({game:"merkaba-ghosts",name:playerName,score})})
-          .then(r=>r.json()).then(d=>{
-            if(d.ok && d.rank<=10){
-              const m=document.createElement("div");
-              m.style.cssText="margin-top:0.6rem;font-size:0.8rem;color:#00f5d4;font-weight:700;";
-              m.textContent="\uD83C\uDFC6 You're #"+d.rank+" on the leaderboard!";
+        const playerName =
+          localStorage.getItem("aios_player_name") || "Anonymous";
+        fetch("/api/game/score", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            game: "merkaba-ghosts",
+            name: playerName,
+            score,
+          }),
+        })
+          .then((r) => r.json())
+          .then((d) => {
+            if (d.ok && d.rank <= 10) {
+              const m = document.createElement("div");
+              m.style.cssText =
+                "margin-top:0.6rem;font-size:0.8rem;color:#00f5d4;font-weight:700;";
+              m.textContent =
+                "\uD83C\uDFC6 You're #" + d.rank + " on the leaderboard!";
               gameoverEl.querySelector(".gameover-card")?.appendChild(m);
             }
-          }).catch(()=>{});
+          })
+          .catch(() => {});
         loadLeaderboard();
       }
 
@@ -1657,15 +1670,22 @@
       // Load and display top scores in lobby
       function loadLeaderboard() {
         fetch("/api/game/merkaba-ghosts/leaderboard")
-          .then(r=>r.json())
-          .then(d=>{
+          .then((r) => r.json())
+          .then((d) => {
             const el = document.getElementById("lobby-lb-rows");
             if (!el || !d.leaderboard) return;
-            const colors = ["#ffd700","#c0c0c0","#cd7f32"];
-            el.innerHTML = d.leaderboard.slice(0,10).map((e,i)=>
-              `<span style="color:${colors[i]||'rgba(255,255,255,0.6)'}">${i+1}. ${e.name}</span> <span style="float:right;color:#00f5d4;">${e.score.toLocaleString()}</span><br>`
-            ).join("") || '<span style="color:rgba(255,255,255,0.3)">No scores yet — be the first!</span>';
-          }).catch(()=>{});
+            const colors = ["#ffd700", "#c0c0c0", "#cd7f32"];
+            el.innerHTML =
+              d.leaderboard
+                .slice(0, 10)
+                .map(
+                  (e, i) =>
+                    `<span style="color:${colors[i] || "rgba(255,255,255,0.6)"}">${i + 1}. ${e.name}</span> <span style="float:right;color:#00f5d4;">${e.score.toLocaleString()}</span><br>`,
+                )
+                .join("") ||
+              '<span style="color:rgba(255,255,255,0.3)">No scores yet — be the first!</span>';
+          })
+          .catch(() => {});
       }
       loadLeaderboard();
     </script>

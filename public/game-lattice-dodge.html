@@ -496,9 +496,35 @@
           <div class="lobby-stat-l">Waves</div>
         </div>
       </div>
-      <div id="lobby-leaderboard" style="margin:1rem 0;width:100%;max-width:320px;background:rgba(0,0,0,0.35);border:1px solid rgba(0,245,212,0.2);border-radius:10px;padding:0.75rem 1rem;font-size:0.8rem;">
-        <div style="color:#00f5d4;font-weight:700;margin-bottom:0.4rem;letter-spacing:0.05em;">🏆 TOP SCORES</div>
-        <div id="lobby-lb-rows" style="line-height:1.7;color:rgba(255,255,255,0.65);">Loading...</div>
+      <div
+        id="lobby-leaderboard"
+        style="
+          margin: 1rem 0;
+          width: 100%;
+          max-width: 320px;
+          background: rgba(0, 0, 0, 0.35);
+          border: 1px solid rgba(0, 245, 212, 0.2);
+          border-radius: 10px;
+          padding: 0.75rem 1rem;
+          font-size: 0.8rem;
+        "
+      >
+        <div
+          style="
+            color: #00f5d4;
+            font-weight: 700;
+            margin-bottom: 0.4rem;
+            letter-spacing: 0.05em;
+          "
+        >
+          🏆 TOP SCORES
+        </div>
+        <div
+          id="lobby-lb-rows"
+          style="line-height: 1.7; color: rgba(255, 255, 255, 0.65)"
+        >
+          Loading...
+        </div>
       </div>
       <button class="btn-play" onclick="startGame()">? LAUNCH GAME</button>
       <div class="lobby-hint">
@@ -869,8 +895,26 @@
         document.getElementById("gameover").style.display = "flex";
         // Submit to leaderboard
         const pn = localStorage.getItem("aios_player_name") || "Anonymous";
-        fetch("/api/game/score",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({game:"lattice-dodge",name:pn,score})})
-          .then(r=>r.json()).then(d=>{ if(d.ok&&d.rank<=10){const m=document.createElement("div");m.style.cssText="margin-top:0.6rem;font-size:0.8rem;color:#00f5d4;font-weight:700;";m.textContent="\uD83C\uDFC6 You're #"+d.rank+" on the leaderboard!";document.getElementById("gameover").querySelector(".gameover-card")?.appendChild(m);}}).catch(()=>{});
+        fetch("/api/game/score", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ game: "lattice-dodge", name: pn, score }),
+        })
+          .then((r) => r.json())
+          .then((d) => {
+            if (d.ok && d.rank <= 10) {
+              const m = document.createElement("div");
+              m.style.cssText =
+                "margin-top:0.6rem;font-size:0.8rem;color:#00f5d4;font-weight:700;";
+              m.textContent =
+                "\uD83C\uDFC6 You're #" + d.rank + " on the leaderboard!";
+              document
+                .getElementById("gameover")
+                .querySelector(".gameover-card")
+                ?.appendChild(m);
+            }
+          })
+          .catch(() => {});
         loadLeaderboard();
       }
 
