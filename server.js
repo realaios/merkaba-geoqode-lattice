@@ -1210,6 +1210,55 @@ function _seedPlaiApps() {
     { cat: "Utilities", name: "Markdown to Slide Deck", desc: "Converts markdown to reveal.js presentations. Custom themes, speaker notes, and PDF export.", dl: 312 },
     { cat: "Utilities", name: "Load Test Runner", desc: "k6-based load testing with Artillery fallback. Generates HTML reports with latency percentiles and error rates.", dl: 278 },
     { cat: "Utilities", name: "Secret Scanner", desc: "Scans git history for leaked credentials. Entropy analysis, pattern matching, and Railway env var sync check.", dl: 334 },
+    // ── Batch 3: 50 more apps ──────────────────────────────────────────────
+    // Theatre
+    { cat: "Theatre", name: "Minority Report: PreCrime", desc: "Step into the PreCrime Division. Gesture-control holographic displays. Precog visions appear as spatial overlays.", dl: 278 },
+    { cat: "Theatre", name: "Ready Player One: OASIS", desc: "Enter the OASIS starting zone. Easter egg hunt mode active. DeLorean and Iron Giant unlockable.", dl: 345 },
+    { cat: "Theatre", name: "Strange Days: SQUID Feed", desc: "Experience a memory recording from 1999 LA. Neural feedback reacts to gaze direction. Loop on exit.", dl: 189 },
+    { cat: "Theatre", name: "Westworld: Mesa Hub", desc: "Walk Mesa Hub's corridors. Android hosts freeze on gaze lock. Bernard's office unlocks at dwell 10s.", dl: 234 },
+    { cat: "Theatre", name: "Black Mirror: San Junipero", desc: "Explore San Junipero's neon beachfront. Era shifts with controller tilt. Kelly and Yorkie appear at dusk.", dl: 267 },
+    // Cinema
+    { cat: "Cinema", name: "Metropolis: Machine City", desc: "Fritz Lang's 1927 vision rendered in VR. Worker city below, elite towers above. Maria robot encounter.", dl: 198 },
+    { cat: "Cinema", name: "Brazil: Ministry of Truth", desc: "Navigate Sam Lowry's bureaucratic nightmare. Ducts everywhere. Dream flight sequence triggered by paperwork.", dl: 167 },
+    { cat: "Cinema", name: "Dark City: Strangers' Lab", desc: "The Strangers' underground laboratory. Sky dome cracks at midnight. Shell Beach is always just out of reach.", dl: 212 },
+    { cat: "Cinema", name: "Altered Carbon: Bay City", desc: "Neo-noir Bay City skyline. DHF stack viewer shows past sleeves. Raven's hotel lobby fully explorable.", dl: 245 },
+    { cat: "Cinema", name: "Upgrade: STEM Interface", desc: "Grey's neural overlay interface. STEM voice responds to dwell. Combat subroutines visualised as flow diagrams.", dl: 189 },
+    // Playbooks
+    { cat: "Playbooks", name: "SaaS Free Trial Optimiser", desc: "Maximise trial-to-paid conversion. Day-3 activation nudges, feature gating strategy, and time-limit psychology.", dl: 312 },
+    { cat: "Playbooks", name: "API Monetisation Ladder", desc: "Move from free tier to paid API. Usage-based pricing calculator, rate limit tiers, and Stripe metered billing.", dl: 267 },
+    { cat: "Playbooks", name: "LinkedIn Thought Leadership", desc: "30-day LinkedIn authority playbook. Hook formulas, carousel templates, comment strategy, and DM sequences.", dl: 289 },
+    { cat: "Playbooks", name: "Community-Led Growth Kit", desc: "Build a paid community from scratch. Discord setup, onboarding rituals, leaderboard mechanics, and cohort events.", dl: 234 },
+    { cat: "Playbooks", name: "Open Source GTM Guide", desc: "Take an OSS project commercial. GitHub sponsor tiers, cloud-hosted version, enterprise support packaging.", dl: 198 },
+    // Agents
+    { cat: "Agents", name: "Invoice Generator Agent", desc: "Auto-generates Stripe invoices from time-tracking data. PDF export, multi-currency, and payment link inclusion.", dl: 278 },
+    { cat: "Agents", name: "Domain Monitor Bot", desc: "Tracks domain availability for brand keywords. Instant alerts on drops. Bulk registration queue management.", dl: 245 },
+    { cat: "Agents", name: "Meeting Summary Agent", desc: "Transcribes and summarises meetings via Whisper. Action item extraction with assignee detection. Notion sync.", dl: 312 },
+    { cat: "Agents", name: "A/B Copy Tester", desc: "Generates 5 headline variants, serves them via edge A/B, tracks CTR, and auto-promotes the winner.", dl: 234 },
+    { cat: "Agents", name: "Backlink Monitor", desc: "Tracks new and lost backlinks daily. Domain authority scoring, toxic link detection, and disavow file generation.", dl: 198 },
+    // Codex
+    { cat: "Codex", name: "Drizzle ORM Starter", desc: "Drizzle ORM with PostgreSQL: schema migrations, query builder patterns, transactions, and Railway deployment.", dl: 467 },
+    { cat: "Codex", name: "Hono Edge API", desc: "Cloudflare Workers API with Hono: JWT auth, D1 database, R2 storage, KV sessions, and type-safe routes.", dl: 389 },
+    { cat: "Codex", name: "Remix Full-Stack App", desc: "Remix with Vite, PostgreSQL, Stripe, auth, and Railway deployment. SEO-optimised with nested loaders.", dl: 423 },
+    { cat: "Codex", name: "tRPC Monorepo Kit", desc: "End-to-end type-safe API with tRPC, Next.js, Prisma, and shared type packages. Zero-config type inference.", dl: 356 },
+    { cat: "Codex", name: "Redis Caching Patterns", desc: "Production Redis patterns: cache-aside, write-through, distributed locking, pub/sub, and sorted set leaderboards.", dl: 312 },
+    // Analytics
+    { cat: "Analytics", name: "Subscription Health Score", desc: "Composite health score from login frequency, feature adoption, and support ticket rate. Predicts churn 21 days out.", dl: 267 },
+    { cat: "Analytics", name: "Pricing Elasticity Model", desc: "Tests price sensitivity across customer segments. Recommends optimal price points with revenue impact projections.", dl: 234 },
+    { cat: "Analytics", name: "Organic Search Tracker", desc: "Daily rank tracking for 500 keywords. Competitor position monitoring, SERP feature capture, and trend alerts.", dl: 198 },
+    { cat: "Analytics", name: "Infrastructure Cost Analyser", desc: "Maps Railway, AWS, and Cloudflare costs to features. ROI calculator for each service. Waste detection alerts.", dl: 245 },
+    { cat: "Analytics", name: "Support Ticket Sentiment", desc: "Classifies support tickets by emotion and urgency. Identifies product pain points from language patterns.", dl: 178 },
+    // Integrations
+    { cat: "Integrations", name: "Webflow CMS Sync", desc: "Syncs PostgreSQL content to Webflow CMS Collections. Schema mapping, media upload, and scheduled refresh.", dl: 267 },
+    { cat: "Integrations", name: "Linear → GitHub Sync", desc: "Bi-directional sync between Linear issues and GitHub issues. Status mapping, label sync, and PR linking.", dl: 234 },
+    { cat: "Integrations", name: "Resend Email API Bridge", desc: "Resend.com integration with template management, audience segmentation, bounce handling, and analytics.", dl: 289 },
+    { cat: "Integrations", name: "Supabase Realtime Bridge", desc: "Mirror PostgreSQL change events to Supabase Realtime. Powers live dashboards without extra infrastructure.", dl: 245 },
+    { cat: "Integrations", name: "Typeform → PostgreSQL", desc: "Auto-syncs Typeform responses to PostgreSQL. Schema inference, webhook handling, and Slack notifications.", dl: 198 },
+    // Utilities
+    { cat: "Utilities", name: "PostgreSQL Backup Tool", desc: "Automated pg_dump to S3/R2 with encryption, retention policies, point-in-time restore, and Slack alerts.", dl: 389 },
+    { cat: "Utilities", name: "Environment Diff Checker", desc: "Compares .env files across Railway environments. Highlights missing variables, type mismatches, and secrets drift.", dl: 312 },
+    { cat: "Utilities", name: "API Mock Server", desc: "Generates mock REST APIs from OpenAPI specs. Response delay simulation, error injection, and contract testing.", dl: 267 },
+    { cat: "Utilities", name: "Webhook Relay Proxy", desc: "Relays webhooks from external services to localhost during development. HTTPS tunnelling with request inspector.", dl: 334 },
+    { cat: "Utilities", name: "Token Budget Tracker", desc: "Tracks OpenAI token usage per feature, user, and model. Budget alerts and per-request cost attribution.", dl: 289 },
   ];
   for (const { cat, name, desc, dl } of seed) {
     const bundle = "com.aios." + cat.toLowerCase() + "." + name.toLowerCase().replace(/[^a-z0-9]+/g, ".");
