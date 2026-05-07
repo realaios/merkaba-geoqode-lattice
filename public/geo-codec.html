@@ -1998,7 +1998,7 @@
           </div>
           <div class="dp-row">
             <span class="dp-key">Lattice</span
-            ><span class="dp-val p">8→26→48:480</span>
+            ><span class="dp-val p">AIOS</span>
           </div>
           <div class="dp-row">
             <span class="dp-key">Swarm</span
@@ -2396,8 +2396,7 @@
           <strong style="color: rgba(255, 255, 255, 0.75)">Methodology:</strong>
           The .geo file encodes 48 scenes × 75 seconds = 3,600 seconds (60
           minutes) of generative 4K audiovisual content as render instructions —
-          renderer name, frequency, waveform, spatial parameters, and D48
-          lattice coordinates. The mp4 reference (22.5 GB) is calculated as: 50
+          renderer name, frequency, waveform, spatial parameters, and AI grid coordinates. The mp4 reference (22.5 GB) is calculated as: 50
           Mbps (Blu-ray 4K class bitrate) × 3,600 seconds ÷ 8 = 22,500,000,000
           bytes. This is a fair comparison: both encode 60 minutes of 4K visual
           content. The .geo format encodes <em>how to render it</em>; mp4
@@ -4039,10 +4038,10 @@
               drone: true,
             },
             geoqode: {
-              architectureSignature: "8,26,48:480",
+              platform: "AIOS",
               semanticType: "PHYSICS",
               frequency: 852,
-              phiCoefficient: 1.618,
+              phiCoefficient: 1.0,
               coherence: 0.97,
             },
             swarm: {
@@ -4197,17 +4196,17 @@
             arNative: true,
           },
           geoqode: {
-            architectureSignature: "8,26,48:480",
+            platform: "AIOS",
             semanticType: "PHYSICS",
             frequency: 852,
             latticeNode: 6,
             harmonicNode: 48,
-            phiCoefficient: 1.618,
-            psiCoefficient: 1.414,
+            phiCoefficient: 1.0,
+            psiCoefficient: 1.0,
             coherence: 0.97,
             domain: "quantum-arch",
-            d48Expansion: "CANONICAL",
-            d480Expansion: "FULL_HARMONIC",
+            gridExpansion: "CANONICAL",
+            spectrumExpansion: "FULL_HARMONIC",
           },
           swarm: {
             studio: "AIOSProducerSwarm",

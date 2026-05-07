@@ -3,15 +3,15 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-    <title>GeoQode Playground — AIOS Lab</title>
+    <title>AIOS Playground — AIOS Lab</title>
     <meta
       name="description"
-      content="Visualise the Merkaba Lattice in real-time 3D. Walk through 8→26→48:480 geometry. Frequency mapping, quantum field simulation, and neural scaffold explorer."
+      content="Visualise the 3D AI architecture in real-time. Walk through AIOS geometry. Frequency mapping, field simulation, and architecture explorer."
     />
-    <meta property="og:title" content="GeoQode Playground — AIOS Lab" />
+    <meta property="og:title" content="AIOS Playground — AIOS Lab" />
     <meta
       property="og:description"
-      content="Visualise the Merkaba Lattice in real-time 3D. PHI/PSI frequency mapping, quantum field simulation, GeoQode coordinate editor."
+      content="Visualise the 3D AI architecture in real-time.  frequency mapping, field simulation, AIOS coordinate editor."
     />
     <meta property="og:url" content="https://realaios.com/lab" />
     <meta
@@ -20,10 +20,10 @@
     />
     <meta property="og:type" content="website" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="GeoQode Playground — AIOS Lab" />
+    <meta name="twitter:title" content="AIOS Playground — AIOS Lab" />
     <meta
       name="twitter:description"
-      content="Real-time 3D Merkaba Lattice visualisation. PHI=1.618, PSI=1.414, 72 Hz base frequency. Walk the 8→26→48:480 geometry."
+      content="Real-time 3D AIOS visualisation. , , Ambient frequency. Walk the AIOS geometry."
     />
     <meta
       name="twitter:image"
@@ -640,7 +640,7 @@
 
     <main>
       <div class="toolbar">
-        <span class="toolbar-title">GeoQode Playground</span>
+        <span class="toolbar-title">AIOS Playground</span>
         <span id="statusPill" class="status-pill pill-cyan">READY</span>
         <div class="spacer"></div>
         <button class="btn btn-ghost btn-sm" onclick="loadTemplate('basic')">
@@ -678,7 +678,7 @@
           </div>
           <div class="result-scroll" id="resultPane">
             <div class="placeholder-text">
-              Run a script to see the lattice projection output
+              Run a script to see the grid projection output
             </div>
           </div>
         </div>
@@ -689,7 +689,7 @@
       const BASE = "https://realaios.com";
 
       const TEMPLATES = {
-        basic: `Playbook GeoQode experiment {
+        basic: `Playbook AIOS experiment {
   TITLE: Hello Lattice
   GENRE: Narrative
   SCENES:
@@ -718,26 +718,26 @@
     ACTION: "Morpheus and Neo spar"
     CHARACTERS: ["Neo", "Morpheus"]
     LOCATION: "Dojo — 528Hz transformation field"
-  PROJECTION: Construct holography + lattice tessellation
+  PROJECTION: Construct holography + grid tessellation
   AUTHORSHIP: Founder — Bradley
 }`,
-        physics: `Playbook PhysicsExperiment quantum {
-  TITLE: Quantum Resonance Field
+        physics: `Playbook PhysicsExperiment AI {
+  TITLE: Resonance Field Simulation
   GENRE: Physics
   SCENES:
   - Scene 1: "Field initialisation"
-    ACTION: "Set base frequency 72Hz"
-    PHYSICS: "F = phi * 72 = 116.5Hz fundamental"
-    LOCATION: "D1 — Foundation anchor"
-  - Scene 2: "PHI harmonic cascade"
-    ACTION: "Project 1.618 harmonic series"
-    PHYSICS: "72 * 1.618 = 116.5 | 116.5 * 1.618 = 188.5 | cascade to 480"
-    LOCATION: "D8 Foundation ring — D26 Bosonic ring"
-  - Scene 3: "Singularity approach"
+    ACTION: "Set base frequency"
+    PHYSICS: "F = base * multiplier = fundamental"
+    LOCATION: "Core node — anchor point"
+  - Scene 2: "AI harmonic cascade"
+    ACTION: "Project AI-generated harmonic series"
+    PHYSICS: "cascade to full spectrum"
+    LOCATION: "Foundation ring — Integration ring"
+  - Scene 3: "Convergence approach"
     ACTION: "Coherence index reaches 0.99"
-    PHYSICS: "PHI/PSI dual attestation: 3.032 golden band"
-    LOCATION: "D48 canonical node"
-  PROJECTION: Full harmonic spectrum D480
+    PHYSICS: "AI attestation: convergence band"
+    LOCATION: "canonical node"
+  PROJECTION: Full spectrum 
 }`,
       };
 
@@ -748,7 +748,7 @@
       function clearEditor() {
         document.getElementById("editor").value = "";
         document.getElementById("resultPane").innerHTML =
-          '<div class="placeholder-text">Run a script to see the lattice projection output</div>';
+          '<div class="placeholder-text">Run a script to see the grid projection output</div>';
         setStatus("READY", "cyan");
       }
 
@@ -839,7 +839,7 @@
       </div>
     </div>
     <div class="stat-row"><span class="stat-key">Status</span><span class="status-pill pill-${statusColor}" style="padding:2px 8px;font-size:10px">${status.toUpperCase()}</span></div>
-    <div class="stat-row"><span class="stat-key">Architecture</span><span class="stat-val" style="color:var(--cyan)">8→26→48:480</span></div>
+    <div class="stat-row"><span class="stat-key">Architecture</span><span class="stat-val" style="color:var(--cyan)">AIOS</span></div>
     <div class="stat-row"><span class="stat-key">Awareness Level</span><span class="stat-val">${gov.awarenessLevel || "active"}</span></div>
     ${gov.reason ? `<div class="stat-row"><span class="stat-key">Verdict</span><span class="stat-val" style="color:var(--red)">${gov.reason}</span></div>` : ""}
     <div class="stat-row"><span class="stat-key">Projection ID</span><span class="stat-val" style="font-size:10px;color:var(--muted)">${c.virtualizationId || c.projectionId || "—"}</span></div>
@@ -907,7 +907,7 @@
           "Event Emission",
           "Bridge Telemetry",
           "Playbook Execution",
-          "Bosonic Anchor",
+          "System Integration",
           "Trigger Binding",
           "Action Dispatch",
           "Metric Recording",
@@ -942,12 +942,12 @@
 
       function buildFreqBars(coherence) {
         const freqs = [
-          { label: "72 Hz (Base)", val: Math.round(coherence * 100), max: 100 },
-          { label: "396 Hz (UT)", val: Math.round(coherence * 85), max: 100 },
-          { label: "528 Hz (MI)", val: Math.round(coherence * 78), max: 100 },
-          { label: "639 Hz (FA)", val: Math.round(coherence * 70), max: 100 },
-          { label: "852 Hz (LA)", val: Math.round(coherence * 60), max: 100 },
-          { label: "963 Hz (SI)", val: Math.round(coherence * 50), max: 100 },
+          { label: " (Base)", val: Math.round(coherence * 100), max: 100 },
+          { label: " (UT)", val: Math.round(coherence * 85), max: 100 },
+          { label: " (MI)", val: Math.round(coherence * 78), max: 100 },
+          { label: " (FA)", val: Math.round(coherence * 70), max: 100 },
+          { label: " (LA)", val: Math.round(coherence * 60), max: 100 },
+          { label: " (SI)", val: Math.round(coherence * 50), max: 100 },
         ];
         return freqs
           .map(

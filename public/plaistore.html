@@ -1477,7 +1477,7 @@
                     <span style="font-size:1.5rem;">${x.icon}</span>
                     <div>
                       <div style="font-weight:700;font-size:0.95rem;color:#edf4ff;">${x.name}</div>
-                      <div style="font-size:0.72rem;color:${x.accent};font-weight:600;">${x.category} · ${x.sem} · ${x.freq} Hz</div>
+                      <div style="font-size:0.72rem;color:${x.accent};font-weight:600;">${x.category} · ${x.sem} · ${x.freq}</div>
                     </div>
                     <span style="margin-left:auto;font-size:0.65rem;background:#22c55e;color:#000;padding:0.15rem 0.45rem;border-radius:3px;font-weight:700;">LIVE</span>
                   </div>
@@ -2087,7 +2087,7 @@
           "#fb923c",
         ];
         const ICONS = {
-          quantum: "⚛",
+          AI: "⚛",
           cosmic: "✦",
           cinematic: "🎬",
           neural: "🧠",
@@ -2095,7 +2095,7 @@
           mystical: "✡",
           cosmos: "🌌",
           mind: "∞",
-          holographic: "◎",
+          immersive: "◎",
           psychedelic: "〜",
           temporal: "⏱",
           aurora: "⌇",
@@ -2124,7 +2124,7 @@
             </div>
             <div style="font-size:0.78rem;color:#64748b;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-bottom:0.7rem">${p.logline || p.description || "An AI-generated .geo programme."}</div>
             <div style="display:flex;align-items:center;justify-content:space-between">
-              <span style="font-size:0.65rem;font-weight:600;color:${acc};background:${acc}12;padding:2px 8px;border-radius:8px">${p.hz || 528} Hz · ${(p.spatialProfile || "Stereo").toUpperCase()}</span>
+              <span style="font-size:0.65rem;font-weight:600;color:${acc};background:${acc}12;padding:2px 8px;border-radius:8px">${p.hz || 528} · ${(p.spatialProfile || "Stereo").toUpperCase()}</span>
               <a href="/aiosdream?renderer=${p.renderer || "matrix"}" onclick="event.stopPropagation()" style="font-size:0.78rem;font-weight:700;background:${acc};color:#000;padding:0.3rem 0.8rem;border-radius:16px;text-decoration:none">▶ Watch</a>
             </div>
           </div>`;

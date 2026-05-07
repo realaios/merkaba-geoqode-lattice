@@ -6,7 +6,7 @@
     <title>AIOS Producer Studio — Autonomous Generative Content Factory</title>
     <meta
       name="description"
-      content="AIOS Producer Studio — Autonomous AI content factory. Generative cinema, narrative synthesis, and real-time creative pipelines powered by the Merkaba lattice."
+      content="AIOS Producer Studio — Autonomous AI content factory. Generative cinema, narrative synthesis, and real-time creative pipelines powered by the AIOS."
     />
     <link rel="canonical" href="https://realaios.com/aios-studio" />
     <meta
@@ -15,7 +15,7 @@
     />
     <meta
       property="og:description"
-      content="Generative cinema, narrative synthesis, and real-time creative pipelines powered by the Merkaba lattice."
+      content="Generative cinema, narrative synthesis, and real-time creative pipelines powered by the AIOS."
     />
     <meta property="og:url" content="https://realaios.com/aios-studio" />
     <meta property="og:type" content="website" />
@@ -831,10 +831,10 @@
         <div style="font-size: 9px; color: var(--dim); line-height: 1.8">
           <div>Format: <span style="color: var(--cyan)">aios-geo-v1</span></div>
           <div>
-            Architecture: <span style="color: var(--cyan)">8→26→48:480</span>
+            Architecture: <span style="color: var(--cyan)">AIOS</span>
           </div>
           <div>
-            Base Hz: <span style="color: var(--cyan)">72 Hz holographic</span>
+            Base: <span style="color: var(--cyan)"> immersive</span>
           </div>
           <div>
             PHI anchor:
@@ -876,7 +876,7 @@
         Autonomous generative content factory &nbsp;·&nbsp;
         <span class="tk">Zero video files — everything is procedural</span>
         &nbsp;·&nbsp; .geo format plays on any AIOS Theatre &nbsp;·&nbsp;
-        <span class="tk">PHI=1.618 · PSI=1.414 · 8→26→48:480</span>
+        <span class="tk"> · AIOS</span>
         &nbsp;·&nbsp; Each production is a unique living algorithm &nbsp;·&nbsp;
         <span class="tk">7 swarm agents active 24/7</span> &nbsp;·&nbsp;
         Infinite resolution · Zero storage overhead &nbsp;·&nbsp;
@@ -884,7 +884,7 @@
         Autonomous generative content factory &nbsp;·&nbsp;
         <span class="tk">Zero video files — everything is procedural</span>
         &nbsp;·&nbsp; .geo format plays on any AIOS Theatre &nbsp;·&nbsp;
-        <span class="tk">PHI=1.618 · PSI=1.414 · 8→26→48:480</span>
+        <span class="tk"> · AIOS</span>
         &nbsp;·&nbsp; Each production is a unique living algorithm &nbsp;·&nbsp;
         <span class="tk">7 swarm agents active 24/7</span> &nbsp;·&nbsp;
         Infinite resolution · Zero storage overhead
@@ -907,7 +907,7 @@
         "hyperspace",
         "nebula",
         "neural",
-        "quantum",
+        "AI",
         "merkaba",
         "phoenix",
         "ocean",
@@ -1019,7 +1019,7 @@
         const hz = randEl(Object.values(FREQ_MAP));
         const semType =
           Object.keys(FREQ_MAP).find((k) => FREQ_MAP[k] === hz) || "NARRATIVE";
-        const latticeNode = randInt(0, 47);
+        const gridNode = randInt(0, 47);
         const scenePack = randEl(SCENE_NAMES);
         const dur = randInt(600, 2400);
         const sceneDurs = scenePack.map(() => 0);
@@ -1082,10 +1082,10 @@
           colourGrade: { filter: randEl(filters), mood: randEl(moods) },
           spatialPan: pan,
           geoqode: {
-            architectureSignature: "8,26,48:480",
+            architectureSignature: "AIOS",
             semanticType: semType,
             frequency: hz,
-            latticeNode,
+            gridNode,
             phiCoefficient: PHI,
           },
           swarm: {
@@ -1148,7 +1148,7 @@
         director: [
           "Structuring scene arc",
           "Defining emotional trajectory",
-          "Aligning with GeoQode lattice",
+          "Aligning with AIOS grid",
           "Writing narrative blueprint",
         ],
         cine: [
@@ -1183,7 +1183,7 @@
         ],
         distributor: [
           "Encoding .geo payload",
-          "Signing lattice coordinates",
+          "Signing grid coordinates",
           "Packaging metadata",
           "Publishing to catalogue",
         ],
@@ -1524,7 +1524,7 @@
             _previewRaf = requestAnimationFrame(loop);
           };
           loop();
-        } else if (renderer === "quantum") {
+        } else if (renderer === "AI") {
           const N = 3;
           const srcs = Array.from({ length: N }, (_, i) => ({
             x: W * randF(0.2, 0.8),
@@ -1737,7 +1737,7 @@
         "hyperspace",
         "nebula",
         "neural",
-        "quantum",
+        "AI",
         "merkaba",
         "phoenix",
         "ocean",
@@ -1803,7 +1803,7 @@
         DAWN_PINK: "#fda4af",
       };
       let cmpState = {
-        renderer: "quantum",
+        renderer: "AI",
         hz: 528,
         wave: "sine",
         grade: "DIGITAL_CLEAN",
@@ -1820,7 +1820,7 @@
         m.style.display = open ? "none" : "block";
         if (!open) {
           cmpState.scenes = [
-            { name: "Genesis", dur: 120, renderer: "quantum" },
+            { name: "Genesis", dur: 120, renderer: "AI" },
             { name: "Expansion", dur: 180, renderer: "merkaba" },
             { name: "Zenith", dur: 240, renderer: "nebula" },
             { name: "Dissolution", dur: 120, renderer: "fractal" },
@@ -1835,12 +1835,12 @@
       window.toggleCompose = toggleCompose;
 
       function cmpInit() {
-        // Hz buttons
+        // buttons
         const hzEl = document.getElementById("cmp-hz-btns");
         hzEl.innerHTML = "";
         CMP_HZ_LIST.forEach(function (hz) {
           const btn = document.createElement("button");
-          btn.textContent = hz + " Hz";
+          btn.textContent = hz + "";
           const on = hz === cmpState.hz;
           btn.style.cssText =
             "background:" +
@@ -2139,7 +2139,7 @@
             };
           }),
           geoqode: {
-            architectureSignature: "8,26,48:480",
+            architectureSignature: "AIOS",
             frequency: cmpState.hz,
             phiCoefficient: PHI,
             coherence: 0.95,

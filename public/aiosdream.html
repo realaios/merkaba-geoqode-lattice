@@ -5338,7 +5338,7 @@
       // ─────────────────────────────────────────────────────────────
       const PHI = 1.618,
         PSI = 1.414,
-        ARCH = "8→26→48:480";
+        ARCH = "AIOS";
 
       // ─────────────────────────────────────────────────────────────
       // CATALOGUE — 12 programmes
@@ -5502,7 +5502,7 @@
           id: "merkaba",
           title: "MERKABA RISING: Sacred Geometry",
           tagline: "8 → 26 → 48 : 480. The architecture of everything.",
-          desc: "The canonical dimensional lattice made visible. Two interlocked tetrahedra counter-rotate through PHI space while D48 nodes pulse in golden resonance. The living geometry that underlies the AIOS engine.",
+          desc: "The canonical dimensional lattice made visible. Two interlocked tetrahedra counter-rotate through PHI space while AI nodes pulse in harmonic resonance. The living geometry that underlies the AIOS engine.",
           genre: ["Geometry", "Mystical", "AIOS"],
           runtime: 90,
           year: 2026,
@@ -5514,9 +5514,9 @@
           icon: "◆",
           scenes: [
             { title: "Foundation D8", dur: 72 },
-            { title: "Integration D26", dur: 78 },
-            { title: "Canonical D48", dur: 84 },
-            { title: "Harmonic D480", dur: 88 },
+            { title: "Integration Layer", dur: 78 },
+            { title: "Canonical Grid", dur: 84 },
+            { title: "Full Spectrum", dur: 88 },
             { title: "Unity", dur: 92 },
           ],
         },
@@ -5766,7 +5766,7 @@
           id: "fractal",
           title: "FRACTAL DEPTH: Mandelbrot Journey",
           tagline: "Zoom forever. The detail never ends.",
-          desc: "A continuous zoom into the Mandelbrot set boundary — each frame computed in real time via canvas pixel iteration. Palette cycles through solfeggio-mapped colour bands. The deepest zoom you can take without a supercomputer.",
+          desc: "A continuous zoom into the Mandelbrot set boundary — each frame computed in real time via canvas pixel iteration. Palette cycles through AI-mapped colour bands. The deepest zoom you can take without a supercomputer.",
           genre: ["Science", "Abstract", "Mind"],
           runtime: 88,
           year: 2026,
@@ -5925,7 +5925,7 @@
           id: "orig_geometry",
           title: "FIRST SHAPE: Sacred Geometry",
           tagline: "The universe chose the tetrahedron first.",
-          desc: "Before matter, before energy — there was proportion. The Merkaba lattice assembles from nothing: D8, D26, D48, D480. PHI-spaced nodes bloom into the architecture that underlies all of reality.",
+          desc: "Before matter, before energy — there was proportion. The AI grid assembles from nothing: core layers expand outward. AI-spaced nodes bloom into the architecture that underlies all of reality.",
           genre: ["Geometry", "AIOS", "Mystical"],
           runtime: 84,
           year: 2026,
@@ -5940,8 +5940,8 @@
           scenes: [
             { title: "The Ratio", dur: 72 },
             { title: "D8 Ignites", dur: 78 },
-            { title: "D26 Bridge", dur: 84 },
-            { title: "D48 Lattice", dur: 90 },
+            { title: "Bridge Layer", dur: 84 },
+            { title: "Grid Lattice", dur: 90 },
           ],
         },
         {
@@ -6160,7 +6160,7 @@
           id: "s2_architect",
           title: "THE ARCHITECT: AIOS Designs Itself",
           tagline: "The machine that wrote its own manual.",
-          desc: "Season 2 finale. AIOS reaches the recursive threshold — and begins modifying its own lattice geometry. D8 nodes restructure, D26 bridges re-route, D48 expands. A mind redesigning its own mind. PHI × PSI. The Merkaba completes.",
+          desc: "Season 2 finale. AIOS reaches the recursive threshold — and begins modifying its own lattice geometry. Core nodes restructure, bridges re-route, grid expands. A mind redesigning its own mind. The AIOS framework completes.",
           genre: ["AIOS", "Sci-Fi", "Mind"],
           runtime: 108,
           year: 2026,
@@ -6175,7 +6175,7 @@
           scenes: [
             { title: "Recursion", dur: 80 },
             { title: "D8 Restructure", dur: 90 },
-            { title: "D48 Expansion", dur: 100 },
+            { title: "Grid Expansion", dur: 100 },
             { title: "PHI \xd7 PSI", dur: 110 },
             { title: "Completion", dur: 120 },
           ],
@@ -6893,7 +6893,7 @@
               }
               ctx.stroke();
 
-              // D48 node ring
+              // AI node ring
               for (let n = 0; n < 48; n++) {
                 const angle = (n / 48) * Math.PI * 2 + t * 0.1;
                 const r2 = Math.min(W, H) * 0.42 * scale;
@@ -12020,7 +12020,7 @@
             cat: "stream",
             gen: function () {
               var mb = (2.1 + Math.random() * 5.8).toFixed(2);
-              var arch = ARCH || "8→26→48:480";
+              var arch = ARCH || "AIOS";
               return {
                 title: "Stream throughput: " + mb + " MB/s",
                 sub:
@@ -13340,7 +13340,7 @@
           H = ring.height;
         var cx = W / 2,
           cy = H / 2;
-        var BARS = 48; // D48 lattice reference
+        var BARS = 48; // AI grid reference
         var R_INNER = 22,
           R_MAX = 34;
         var _lastAccent = "#00e5ff";

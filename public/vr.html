@@ -176,7 +176,7 @@
         margin: 0 auto 2rem;
         line-height: 1.6;
       }
-      .lattice-sig {
+      .grid-sig {
         display: inline-block;
         font-family: monospace;
         font-size: 0.8rem;
@@ -463,12 +463,12 @@
       }
 
       /* ── Lattice Info ── */
-      .lattice-panel {
+      .grid-panel {
         max-width: 900px;
         margin: 0 auto 3rem;
         padding: 0 2rem;
       }
-      .lattice-panel .info-grid {
+      .grid-panel .info-grid {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
         gap: 0.75rem;
@@ -701,13 +701,13 @@
       </nav>
 
       <div class="vr-hero">
-        <div class="lattice-sig">8→26→48:480 · PHI=1.618 · PSI=1.414</div>
+        <div class="grid-sig">AIOS · </div>
         <h1>Merkaba Dimensional Theatre<br />in Virtual Reality</h1>
         <p>
-          The same PHI lattice geometry that powers the AIOS intelligence engine
+          The same PHI 3D geometry that powers the AIOS intelligence engine
           — now navigable in full immersive VR.
           <span id="vr-prog-count">23</span> live programmes across 9
-          categories, spatially anchored to the 48-node canonical lattice. Works
+          categories, spatially anchored to the node canonical grid. Works
           on Meta Quest 2 &amp; 3 via browser. Zero install — no app required.
         </p>
 
@@ -897,27 +897,27 @@
       </div>
 
       <!-- ── Lattice Constants ── -->
-      <div class="lattice-panel">
+      <div class="grid-panel">
         <div class="info-grid">
           <div class="info-cell">
             <div class="ic-label">Architecture</div>
-            <div class="ic-val">8→26→48:480</div>
+            <div class="ic-val">AIOS</div>
           </div>
           <div class="info-cell">
-            <div class="ic-label">PHI (Golden Root)</div>
-            <div class="ic-val">1.618</div>
+            <div class="ic-label">Platform</div>
+            <div class="ic-val">WebXR</div>
           </div>
           <div class="info-cell">
-            <div class="ic-label">PSI (Silver Bridge)</div>
-            <div class="ic-val">1.414</div>
+            <div class="ic-label">Rendering</div>
+            <div class="ic-val">A-Frame 1.4</div>
           </div>
           <div class="info-cell">
-            <div class="ic-label">Golden Band</div>
-            <div class="ic-val">3.032</div>
+            <div class="ic-label">AI Engine</div>
+            <div class="ic-val">AIOS</div>
           </div>
           <div class="info-cell">
-            <div class="ic-label">Base Frequency</div>
-            <div class="ic-val">72 Hz</div>
+            <div class="ic-label">Device</div>
+            <div class="ic-val"></div>
           </div>
           <div class="info-cell">
             <div class="ic-label">VR Platform</div>
@@ -937,8 +937,8 @@
             margin-top: 0.4rem;
           "
         >
-          6 programmes · PHI=1.618 lattice geometry · Spatial audio at GeoQode
-          Hz
+          6 programmes ·  3D geometry · Spatial audio at AIOS
+         
         </div>
       </div>
       <div class="programme-grid" id="prog-grid">
@@ -959,9 +959,9 @@
       const PHI = 1.618;
       const PSI = 1.414;
       const BASE_FREQ = 72;
-      const CANONICAL_ARCH = "8→26→48:480";
+      const PLATFORM_ID = "AIOS";
 
-      // ── GeoQode Semantic Frequencies ────────────────────────────────────
+      // ── AIOS Semantic Frequencies ────────────────────────────────────
       const SEMANTIC = {
         ENTITY: { hz: 396, color: "#ef4444" },
         LOCATION: { hz: 417, color: "#22c55e" },
@@ -983,7 +983,7 @@
           desc: "Digital rain, code cascades, reality deconstruction in pure cyberpunk geometry.",
           shortDesc: "Enter the simulation. See the code behind reality.",
           panelAngle: 0,
-          latticeNode: 0,
+          gridNode: 0,
         },
         {
           name: "inception",
@@ -993,17 +993,17 @@
           desc: "Folding cities, layered dream states, time dilation across dimensional planes.",
           shortDesc: "Navigate layered dream architectures in spatial VR.",
           panelAngle: 60,
-          latticeNode: 8,
+          gridNode: 8,
         },
         {
           name: "starwars",
           display: "Star Wars Galactic Theatre",
           sem: "ACTION",
           cat: "cinema",
-          desc: "Hyperspace jumps, orbital battles, Force resonance across the galactic lattice.",
+          desc: "Hyperspace jumps, orbital battles, Force resonance across the galactic grid.",
           shortDesc: "Immersive galactic storytelling across the stars.",
           panelAngle: 120,
-          latticeNode: 16,
+          gridNode: 16,
         },
         {
           name: "apollo11",
@@ -1013,7 +1013,7 @@
           desc: "Lunar descent telemetry, mission control simulation, historical immersion.",
           shortDesc: "One small step — in full immersive VR.",
           panelAngle: 180,
-          latticeNode: 24,
+          gridNode: 24,
         },
         {
           name: "governance",
@@ -1023,7 +1023,7 @@
           desc: "Policy chambers, global AI debate, collaborative decision architecture.",
           shortDesc: "Shape the future of AI policy in a virtual summit.",
           panelAngle: 240,
-          latticeNode: 32,
+          gridNode: 32,
         },
         {
           name: "investordeck",
@@ -1033,27 +1033,27 @@
           desc: "Market signals, funding landscape, spatial revenue intelligence visualisation.",
           shortDesc: "Pitch decks and market intelligence in 3D.",
           panelAngle: 300,
-          latticeNode: 40,
+          gridNode: 40,
         },
         {
           name: "merkaba-meditate",
           display: "Merkaba Meditation Space",
           sem: "HOLOGRAPHIC",
           cat: "wellness",
-          desc: "Float at the centre of the 48-node Merkaba lattice. PHI geometry rotates at 72 Hz base resonance.",
+          desc: "Float at the centre of the node AIOS. geometry rotates at Ambient resonance.",
           shortDesc: "Float inside the living Merkaba. Pure resonance.",
           panelAngle: 45,
-          latticeNode: 3,
+          gridNode: 3,
         },
         {
           name: "forest-528",
-          display: "Forest 528 Hz Sanctuary",
+          display: "Forest  Sanctuary",
           sem: "EMOTION",
           cat: "wellness",
-          desc: "Ancient forest at 528 Hz transformation frequency. Binaural audio, spatial wind, bioluminescent flora.",
-          shortDesc: "528 Hz forest sanctuary. Stress gone in 5 min.",
+          desc: "Ancient forest at  transformation frequency. Binaural audio, spatial wind, bioluminescent flora.",
+          shortDesc: " forest sanctuary. Stress gone in 5 min.",
           panelAngle: 90,
-          latticeNode: 9,
+          gridNode: 9,
         },
         {
           name: "breathwork",
@@ -1063,37 +1063,37 @@
           desc: "Guided breathwork sessions with visual breath-tracking orbs. 4-7-8 protocol in full VR.",
           shortDesc: "Breathe with visual guides. Parasympathetic reset.",
           panelAngle: 135,
-          latticeNode: 15,
+          gridNode: 15,
         },
         {
           name: "phi-breaker",
           display: "PHI Breaker — Lattice Shooter",
           sem: "ACTION",
           cat: "arcade",
-          desc: "Defend the 48-node lattice from entropy. Shoot frequency disruptors across D480 harmonic space.",
-          shortDesc: "Defend the lattice. Shoot across D480 space.",
+          desc: "Defend the 3D grid from entropy. Shoot frequency disruptors across 3D space.",
+          shortDesc: "Defend the grid. Shoot across  space.",
           panelAngle: 150,
-          latticeNode: 2,
+          gridNode: 2,
         },
         {
-          name: "lattice-builder",
+          name: "grid-builder",
           display: "Lattice Builder — Puzzle VR",
           sem: "PHYSICS",
           cat: "arcade",
-          desc: "Reconstruct damaged lattice nodes. Align PHI harmonics. Physics-based puzzle solving.",
-          shortDesc: "Rebuild the lattice. Physics puzzles in your hands.",
+          desc: "Reconstruct damaged nodes. Align PHI harmonics. Physics-based puzzle solving.",
+          shortDesc: "Rebuild the grid. Physics puzzles in your hands.",
           panelAngle: 210,
-          latticeNode: 10,
+          gridNode: 10,
         },
         {
-          name: "quantum-field",
+          name: "AI-field",
           display: "Quantum Field Visualiser",
           sem: "PHYSICS",
           cat: "lab",
-          desc: "Walk through quantum field fluctuations, observe wave function collapse, navigate probability clouds.",
+          desc: "Walk through field simulation fluctuations, observe wave function collapse, navigate probability clouds.",
           shortDesc: "Quantum mechanics as a spatial experience.",
           panelAngle: 270,
-          latticeNode: 12,
+          gridNode: 12,
         },
         {
           name: "ancient-rome",
@@ -1103,7 +1103,7 @@
           desc: "Walk the Roman Forum, enter the Colosseum, witness the height of the Empire reconstructed at scale.",
           shortDesc: "Time-travel to Rome. Walk among senators.",
           panelAngle: 30,
-          latticeNode: 33,
+          gridNode: 33,
         },
         {
           name: "human-body",
@@ -1113,7 +1113,7 @@
           desc: "Shrink to cellular scale. Navigate the bloodstream, neural pathways, and DNA double helix.",
           shortDesc: "Fly through your own bloodstream at cell scale.",
           panelAngle: 330,
-          latticeNode: 36,
+          gridNode: 36,
         },
         {
           name: "spatial-canvas",
@@ -1123,17 +1123,17 @@
           desc: "Paint in full 3D space with hand tracking. PHI-golden spiral brush guides. Export as GLB.",
           shortDesc: "Paint in mid-air. Export as a VR scene.",
           panelAngle: 75,
-          latticeNode: 43,
+          gridNode: 43,
         },
         {
           name: "frequency-composer",
           display: "Frequency Composer — Spatial Audio",
           sem: "EMOTION",
           cat: "art",
-          desc: "Compose music by positioning sound orbs in 3D at Solfeggio frequencies.",
-          shortDesc: "Compose by placing sounds in space. Solfeggio.",
+          desc: "Compose music by positioning sound orbs in 3D space. Spatial audio.",
+          shortDesc: "Compose by placing sounds in space. Spatial audio.",
           panelAngle: 105,
-          latticeNode: 45,
+          gridNode: 45,
         },
         {
           name: "training-sim",
@@ -1143,17 +1143,17 @@
           desc: "Onboard teams in immersive 3D. Skills assessment, compliance drills, scenario replay.",
           shortDesc: "Train your team in VR. Zero travel cost.",
           panelAngle: 115,
-          latticeNode: 35,
+          gridNode: 35,
         },
         {
           name: "remote-hq",
           display: "Remote HQ — Virtual Office",
           sem: "LOCATION",
           cat: "enterprise",
-          desc: "Persistent spatial office anchored to the lattice. Meet, present, and collaborate at 417 Hz.",
-          shortDesc: "Your office. In the lattice. Always on.",
+          desc: "Persistent spatial office anchored to the grid. Meet, present, and collaborate at .",
+          shortDesc: "Your office. In the grid. Always on.",
           panelAngle: 125,
-          latticeNode: 37,
+          gridNode: 37,
         },
         {
           name: "molecular",
@@ -1163,37 +1163,37 @@
           desc: "Handle molecules with your hands in VR. Build bonds, run reactions, walk through DNA helices at nanoscale.",
           shortDesc: "Molecular science with your own hands.",
           panelAngle: 135,
-          latticeNode: 18,
+          gridNode: 18,
         },
         {
-          name: "lattice-lounge",
-          display: "Lattice Lounge — Social Hub",
+          name: "grid-lounge",
+          display: "The Lounge — Social Hub",
           sem: "DIALOGUE",
           cat: "social",
-          desc: "The ambient social gathering place of realaios.com. Presence indicators, spatial voice, 639 Hz DIALOGUE field. Feel the lattice breathe.",
-          shortDesc: "Meet anyone in the lattice. 639 Hz presence.",
+          desc: "The ambient social gathering place of realaios.com. Presence indicators, spatial voice,  DIALOGUE field. Feel the grid breathe.",
+          shortDesc: "Meet anyone in the grid.  presence.",
           panelAngle: 155,
-          latticeNode: 4,
+          gridNode: 4,
         },
         {
           name: "merkaba-lab",
-          display: "Merkaba GeoQode Lab",
+          display: "Merkaba AIOS Lab",
           sem: "HOLOGRAPHIC",
           cat: "lab",
-          desc: "Live Merkaba 8→26→48:480 lattice navigation. Walk through PHI/PSI geometry, explore GeoQode semantic frequencies in full 3D.",
-          shortDesc: "Navigate the living 48-node lattice in full VR.",
+          desc: "Live Merkaba AIOS grid navigation. Walk through  geometry, explore AIOS semantic frequencies in full 3D.",
+          shortDesc: "Navigate the living 3D grid in full VR.",
           panelAngle: 195,
-          latticeNode: 0,
+          gridNode: 0,
         },
         {
           name: "geoqode-studio",
-          display: "GeoQode Studio — VR Builder",
+          display: "AIOS Studio — VR Builder",
           sem: "HOLOGRAPHIC",
           cat: "creator",
-          desc: "Live GeoQode coordinate explorer and lattice node builder. Assign PHI/PSI frequencies to A-Frame scenes and test in real-time.",
-          shortDesc: "Build with GeoQode. Test in the live lattice.",
+          desc: "Live AIOS coordinate explorer and node builder. Assign  frequencies to A-Frame scenes and test in real-time.",
+          shortDesc: "Build with AIOS. Test in the live grid.",
           panelAngle: 225,
-          latticeNode: 0,
+          gridNode: 0,
         },
         {
           name: "plaistore-dev",
@@ -1203,7 +1203,7 @@
           desc: "Submit and distribute your VR experiences. API keys, analytics dashboard, 70/30 revenue split, and promotion on realaios.com.",
           shortDesc: "Publish your VR XP. Get paid. Grow.",
           panelAngle: 255,
-          latticeNode: 4,
+          gridNode: 4,
         },
         // ── NEW: LAB ───────────────────────────────────────────────────
         {
@@ -1211,30 +1211,30 @@
           display: "Solar System — Orbital VR",
           sem: "LOCATION",
           cat: "lab",
-          desc: "Orbital mechanics at true scale. Walk Jupiter's surface, orbit Saturn's rings. 417 Hz spatial anchoring.",
+          desc: "Orbital mechanics at true scale. Walk Jupiter's surface, orbit Saturn's rings.  spatial anchoring.",
           shortDesc: "Walk Jupiter. Orbit Saturn's rings at true scale.",
           panelAngle: 15,
-          latticeNode: 14,
+          gridNode: 14,
         },
         {
           name: "fractal-space",
           display: "Fractal Space — Infinite Zoom",
           sem: "NARRATIVE",
           cat: "lab",
-          desc: "Infinite zoom through Mandelbrot and Julia sets rendered as navigable 3D caverns. 963 Hz depth field.",
+          desc: "Infinite zoom through Mandelbrot and Julia sets rendered as navigable 3D caverns.  depth field.",
           shortDesc: "Navigate fractal caverns at infinite depth.",
           panelAngle: 20,
-          latticeNode: 20,
+          gridNode: 20,
         },
         {
-          name: "solfeggio-map",
-          display: "Solfeggio Frequency Map",
+          name: "audio-map",
+          display: "Spectrum Journey",
           sem: "HOLOGRAPHIC",
           cat: "lab",
-          desc: "Walk the full 396–963 Hz solfeggio spectrum as colour-coded spatial chambers.",
-          shortDesc: "Step through frequency chambers 396→963 Hz.",
+          desc: "Walk the full spectrum of colour-coded spatial chambers.",
+          shortDesc: "Step through frequency chambers 396→.",
           panelAngle: 25,
-          latticeNode: 22,
+          gridNode: 22,
         },
         // ── NEW: EDUCATION ───────────────────────────────────────────
         {
@@ -1242,20 +1242,20 @@
           display: "Mathematical Dimensions — 4D Space",
           sem: "PHYSICS",
           cat: "education",
-          desc: "Walk through 4D hypercubes, Klein bottles, and PHI spirals as physical places. 852 Hz structural field.",
-          shortDesc: "4D hypercubes as physical rooms. PHI geometry.",
+          desc: "Walk through 4D hypercubes, Klein bottles, and PHI spirals as physical places.  structural field.",
+          shortDesc: "4D hypercubes as physical rooms. geometry.",
           panelAngle: 35,
-          latticeNode: 26,
+          gridNode: 26,
         },
         {
           name: "language-immersion",
           display: "Language Immersion Worlds",
           sem: "DIALOGUE",
           cat: "education",
-          desc: "Learn Mandarin in Beijing, Spanish in Barcelona — AI conversation partners at every corner. 639 Hz dialogue field.",
-          shortDesc: "AI tutors in photorealistic city VR. 639 Hz.",
+          desc: "Learn Mandarin in Beijing, Spanish in Barcelona — AI conversation partners at every corner.  dialogue field.",
+          shortDesc: "AI tutors in photorealistic city VR. .",
           panelAngle: 40,
-          latticeNode: 28,
+          gridNode: 28,
         },
         // ── NEW: ART ──────────────────────────────────────────────────────
         {
@@ -1263,20 +1263,20 @@
           display: "Infinite AI Gallery",
           sem: "NARRATIVE",
           cat: "art",
-          desc: "Infinitely expanding AI-generated art museum. PHI-spiral wings. New exhibits daily. 963 Hz presence.",
+          desc: "Infinitely expanding AI-generated art museum. PHI-spiral wings. New exhibits daily.  presence.",
           shortDesc: "PHI-spiral museum. New AI exhibits every day.",
           panelAngle: 50,
-          latticeNode: 31,
+          gridNode: 31,
         },
         {
           name: "generative-theatre",
           display: "Generative Theatre — AI Plays",
           sem: "DIALOGUE",
           cat: "art",
-          desc: "AI-written plays performed by spatial avatars in real time. Every show unique. 639 Hz dialogue field.",
+          desc: "AI-written plays performed by spatial avatars in real time. Every show unique.  dialogue field.",
           shortDesc: "Every show unique. Spatial avatar actors.",
           panelAngle: 55,
-          latticeNode: 34,
+          gridNode: 34,
         },
         // ── NEW: SOCIAL ──────────────────────────────────────────────────
         {
@@ -1284,20 +1284,20 @@
           display: "AIOS Live Events — VR Broadcasts",
           sem: "ACTION",
           cat: "social",
-          desc: "VR concerts, keynotes, launches. Real-time spatial audio, 6DoF movement, 528 Hz action field.",
+          desc: "VR concerts, keynotes, launches. Real-time spatial audio, 6DoF movement,  action field.",
           shortDesc: "Live concerts and keynotes in 6DoF spatial audio.",
           panelAngle: 65,
-          latticeNode: 5,
+          gridNode: 5,
         },
         {
           name: "creator-studio",
           display: "Creator Studio — Build VR Scenes",
           sem: "NARRATIVE",
           cat: "creator",
-          desc: "Build, remix, share VR scenes with GeoQode coordinate assignment. Collaborative A-Frame editing.",
-          shortDesc: "Build and share VR scenes. GeoQode native.",
+          desc: "Build, remix, share VR scenes with AIOS coordinate assignment. Collaborative A-Frame editing.",
+          shortDesc: "Build and share VR scenes. AIOS native.",
           panelAngle: 70,
-          latticeNode: 6,
+          gridNode: 6,
         },
         {
           name: "aios-academy",
@@ -1307,7 +1307,7 @@
           desc: "Cohort-based spatial learning. Live instructor in VR, spatial whiteboards, group exploration.",
           shortDesc: "Live instructors in VR. Cohort learning.",
           panelAngle: 80,
-          latticeNode: 40,
+          gridNode: 40,
         },
         // ── NEW: WELLNESS ───────────────────────────────────────────────
         {
@@ -1315,61 +1315,61 @@
           display: "Ocean Presence — Infinite Horizon",
           sem: "EMOTION",
           cat: "wellness",
-          desc: "Infinite ocean horizon with dynamic waves. 417 Hz spatial anchor tone. Pure stillness and presence.",
-          shortDesc: "Infinite ocean. 417 Hz. Pure presence.",
+          desc: "Infinite ocean horizon with dynamic waves. ambient tone. Pure stillness and presence.",
+          shortDesc: "Infinite ocean. . Pure presence.",
           panelAngle: 85,
-          latticeNode: 16,
+          gridNode: 16,
         },
         {
           name: "cosmos-963",
-          display: "963 Hz Cosmos — Crown Field",
+          display: " Cosmos — Crown Field",
           sem: "NARRATIVE",
           cat: "wellness",
-          desc: "Cosmic void with 963 Hz crown frequency, galactic particle field, and silent expansion.",
-          shortDesc: "963 Hz. Cosmic void. Universal consciousness.",
+          desc: "Cosmic void with ambient audio, galactic particle field, and silent expansion.",
+          shortDesc: ". Cosmic void. Universal consciousness.",
           panelAngle: 95,
-          latticeNode: 47,
+          gridNode: 47,
         },
         {
           name: "mountain-silence",
-          display: "Mountain Silence — 741 Hz Clarity",
+          display: "Mountain Silence —  Clarity",
           sem: "EMOTION",
           cat: "wellness",
-          desc: "Alpine panorama at golden hour with 741 Hz expression frequency. Silence, elevation, and clarity.",
-          shortDesc: "Alpine summit. 741 Hz. Pure clarity.",
+          desc: "Alpine panorama at golden hour with  expression frequency. Silence, elevation, and clarity.",
+          shortDesc: "Alpine summit. . Pure clarity.",
           panelAngle: 100,
-          latticeNode: 27,
+          gridNode: 27,
         },
         // ── NEW: ARCADE ───────────────────────────────────────────────────
         {
-          name: "lattice-dodge",
+          name: "grid-dodge",
           display: "Lattice Dodge — PHI Reflexes",
           sem: "ACTION",
           cat: "arcade",
-          desc: "Dodge entropy disruptors flying through the 48-node lattice ring. Speed ramps by PHI each wave.",
+          desc: "Dodge entropy disruptors flying through the 3D grid ring. Speed ramps by each wave.",
           shortDesc: "Dodge. Survive. PHI-speed waves.",
           panelAngle: 165,
-          latticeNode: 7,
+          gridNode: 7,
         },
         {
           name: "phi-architect",
           display: "PHI Architect — Build or Dissolve",
           sem: "PHYSICS",
           cat: "arcade",
-          desc: "Build PHI-perfect structures in zero gravity before the tide dissolves them. Geometry as survival.",
+          desc: "Build perfect structures in zero gravity before the tide dissolves them. Geometry as survival.",
           shortDesc: "Build PHI structures. The tide erases imperfection.",
           panelAngle: 175,
-          latticeNode: 8,
+          gridNode: 8,
         },
         {
           name: "swarm-defender",
           display: "Swarm Defender — 8 Drones",
           sem: "ACTION",
           cat: "arcade",
-          desc: "Command an 8-drone swarm in PHI formation to repel lattice entropy invasions. 639 Hz control field.",
-          shortDesc: "Lead 8 drones. PHI formations. Defend the lattice.",
+          desc: "Command an 8-drone swarm in PHI formation to repel entropy invasions. spatial control.",
+          shortDesc: "Lead 8 drones. PHI formations. Defend the grid.",
           panelAngle: 185,
-          latticeNode: 9,
+          gridNode: 9,
         },
       ];
 
@@ -1425,10 +1425,10 @@
           <div class="card-header">
             <div class="card-dot"></div>
             <span class="card-name">${prog.display}</span>
-            <span class="card-freq">${sem.hz} Hz</span>
+            <span class="card-freq">${sem.hz}</span>
           </div>
           <div class="card-desc">${prog.desc}</div>
-          <div style="font-size:0.72rem;color:#6b84b8;margin-bottom:0.75rem;">Node ${prog.latticeNode} · ${prog.sem}</div>
+          <div style="font-size:0.72rem;color:#6b84b8;margin-bottom:0.75rem;">Node ${prog.gridNode} · ${prog.sem}</div>
           <div class="card-actions">
             <a class="btn-vr" href="/vr?prog=${prog.name}" onclick="launchProgVR('${prog.name}',event)">🥽 Launch VR</a>
             <button style="border:none;background:transparent;color:var(--muted);cursor:pointer;padding:0.5rem 0.4rem;font-size:0.82rem;" onclick="shareProgLink('${prog.name}')" title="Copy link">🔗</button>
@@ -1563,7 +1563,7 @@
               </a-text>
               <!-- Frequency badge -->
               <a-text
-                value="${sem.hz} Hz · Node ${prog.latticeNode}"
+                value="${sem.hz} · Node ${prog.gridNode}"
                 position="0 0.28 0.01"
                 align="center"
                 color="#6b84b8"
@@ -1683,17 +1683,9 @@
             font="roboto"
             material="shader: flat">
           </a-text>
-          <a-text
-            value="${CANONICAL_ARCH}   PHI=${PHI}   PSI=${PSI}"
-            position="0 3.5 -3"
-            align="center"
-            color="#6b84b8"
-            width="4.5"
-            font="roboto"
-            material="shader: flat">
-          </a-text>`;
+`;
 
-        // Ambient particle field (D480 harmonic ring)
+        // Ambient particle field ( harmonic ring)
         let particlesHTML = "";
         for (let i = 0; i < 48; i++) {
           const t = (i / 48) * Math.PI * 2;
@@ -1806,7 +1798,7 @@
           `<button id="vr-exit-btn" onclick="exitVRScene()">&#x2715; Exit</button>` +
           `<div id="vr-loading" style="position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:${bgColor};color:#00d4ff;font-family:'Courier New',monospace;font-size:1.5rem;z-index:9998;">Loading scene…</div>`;
 
-        // Determine ambient Hz for this programme
+        // Determine ambient for this programme
         const semHz = currentProg
           ? (
               SEMANTIC[

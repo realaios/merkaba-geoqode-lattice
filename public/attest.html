@@ -11,7 +11,7 @@
     <meta property="og:title" content="PHI/PSI Dual Attestation — AIOS" />
     <meta
       property="og:description"
-      content="Two independent AI swarms verify every decision from opposite geometric poles. PHI=1.618 Alpha · PSI=1.414 Omega. Coherence 1.0 — not a feature, a law."
+      content="Two independent AI verification agents cross-validate every decision from opposite poles. Coherence 1.0 — not a feature, a law."
     />
     <meta property="og:url" content="https://realaios.com/attest" />
     <meta
@@ -546,9 +546,9 @@
               id="attestText"
               placeholder="Paste any text, decision, code, narrative, or hypothesis here...
 
-The PHI scanner sweeps S1→S8 sectors using the Golden Root (φ=1.618).
-The PSI scanner sweeps S8→S1 (reversed) using the Silver Bridge (ψ=1.414).
-When both poles agree at 1.0 → attestedScore = 3.032/3.032 = ABSOLUTE.
+The Alpha scanner sweeps sector S1→S8 from one pole.
+The Omega scanner sweeps S8→S1 from the opposite pole.
+When both poles agree at 1.0 → coherence = ABSOLUTE.
 
 Try: a research hypothesis, a system design decision, or a code review snippet."
             ></textarea>
@@ -593,7 +593,7 @@ Try: a research hypothesis, a system design decision, or a code review snippet."
             <div class="dual-poles">
               <div class="pole pole-alpha">
                 <div class="pole-label">Alpha Pole</div>
-                <div class="pole-constant">φ 1.618</div>
+                <div class="pole-constant">φ Alpha</div>
                 <div class="pole-name">Golden Root<br />BESX Scanner</div>
                 <div
                   class="pole-score"
@@ -606,7 +606,7 @@ Try: a research hypothesis, a system design decision, or a code review snippet."
               </div>
               <div class="pole pole-omega">
                 <div class="pole-label">Omega Pole</div>
-                <div class="pole-constant">ψ 1.414</div>
+                <div class="pole-constant">ψ Omega</div>
                 <div class="pole-name">Silver Bridge<br />Witness Scanner</div>
                 <div
                   class="pole-score"
@@ -620,9 +620,9 @@ Try: a research hypothesis, a system design decision, or a code review snippet."
             </div>
 
             <div class="band">
-              <div class="band-label">Golden Band (φ + ψ)</div>
-              <div class="band-value" id="goldBand">3.032</div>
-              <div class="band-detail">Digit sum = 8 = FOUNDATION_NODES</div>
+              <div class="band-label">Verification Band</div>
+              <div class="band-value" id="goldBand">1.0</div>
+              <div class="band-detail">coherence baseline</div>
             </div>
 
             <div class="verdict-box" id="verdictBox" style="display: none">
@@ -640,9 +640,9 @@ Try: a research hypothesis, a system design decision, or a code review snippet."
               ><span class="stat-val" id="coherenceVal">—</span>
             </div>
             <div class="stat-row">
-              <span class="stat-key">Architecture</span
+              <span class="stat-key">Platform</span
               ><span class="stat-val" style="color: var(--cyan)"
-                >8→26→48:480</span
+                >AIOS</span
               >
             </div>
           </div>
@@ -654,7 +654,7 @@ Try: a research hypothesis, a system design decision, or a code review snippet."
       const BASE = "https://realaios.com";
 
       const EXAMPLES = [
-        "Hypothesis: The canonical architecture 8→26→48:480 represents a genuinely stable geometric lattice because the digit sum of 480 (=12) reduces to 3, while 48 = 8×6 = PHI-resonant expansion of the 8-node foundation ring. Therefore the architecture is self-consistent across all harmonic scales.",
+        "Hypothesis: Deploying a zero-trust authentication layer with biometric second factor and hardware key backup achieves the optimal balance between security strength and user friction for an enterprise context.",
         "Decision: We should deploy the new authentication system to production. It uses JWT tokens with 256-bit secrets, parameterized SQL queries, and rate limiting at 100 req/15min. The system has been tested against OWASP Top 10 vulnerabilities.",
         "INT. THE CONSTRUCT. Neo stands in a white room. MORPHEUS offers two pills. ACTION: Neo reaches for the red pill. PHYSICS: The simulation begins to dissolve. LOCATION: Machine fields — 852Hz structural order. NARRATIVE: The awakening begins.",
       ];
@@ -697,7 +697,7 @@ Try: a research hypothesis, a system design decision, or a code review snippet."
           box.classList.add("verdict-attested");
           icon.textContent = "⬡";
           text.textContent = "SCANNER_ATTESTED — ABSOLUTE";
-          sub.textContent = `Score ${attested.toFixed(3)} / 3.032 = ${(attested / 3.032).toFixed(4)}`;
+          sub.textContent = `Coherence ${(coherence * 100).toFixed(1)}% — attestation complete`;
         } else if (coherence >= 0.8) {
           box.classList.add("verdict-attested");
           icon.textContent = "✓";
@@ -753,7 +753,7 @@ Try: a research hypothesis, a system design decision, or a code review snippet."
           const sysCoherence = sys.swarmCoherence || 0;
           const phi = 1.618,
             psi = 1.414,
-            band = phi + psi; // 3.032
+            band = phi + psi; // verification band
           const alphaWeight = phi / band; // 0.5337
           const omegaWeight = psi / band; // 0.4663
 

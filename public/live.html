@@ -625,7 +625,7 @@
           <div class="player-aspect">
             <canvas id="live-canvas"></canvas>
             <div class="player-overlay"></div>
-            <!-- GeoQode Hz overlay — Hebrew letter + frequency label -->
+            <!-- AIOS overlay — Hebrew letter + frequency label -->
             <div
               id="hz-overlay"
               style="
@@ -661,7 +661,7 @@
                   text-transform: uppercase;
                 "
               >
-                528 Hz &middot; Hey &middot; Activation
+                 &middot; Hey &middot; Activation
               </div>
             </div>
             <div class="channel-badge">
@@ -1137,10 +1137,9 @@
       };
       const RENDERER_KEYS = Object.keys(RENDERERS);
 
-      // ── GeoQode Hz → Hebrew letter + canvas colour modulation ────────────────
-      // Each Solfeggio frequency maps to a Hebrew letter (gematria operator) and a
-      // hue-rotate angle so the entire renderer canvas shifts to the correct colour
-      // band.  528 Hz (ACTION / Hey / gematria 5) is the visual baseline: 0° shift.
+      // ── AIOS → canvas colour modulation ────────────────────────────────
+      // Each frequency band maps to a hue-rotate angle so the entire renderer
+      // canvas shifts to the correct colour band.
       const HZ_GEOQODE = {
         396: {
           letter: "\u05D0",
@@ -1209,7 +1208,7 @@
         if (!ov) return;
         ov.querySelector(".hz-letter").textContent = info.letter;
         ov.querySelector(".hz-label").textContent =
-          `${hz} Hz \u00B7 ${info.name} \u00B7 ${info.meaning}`;
+          `${hz} \u00B7 ${info.name} \u00B7 ${info.meaning}`;
       }
 
       // ── STATE ──────────────────────────────────────────────────────────────────
@@ -1295,7 +1294,7 @@
       <div class="sched-time">${formatTime(i * 120)}</div>
       <div>
         <div class="sched-title">${p.title || "Live Programme"}</div>
-        <div class="sched-genres">${genres} · ${p.hz || p.audio?.hz || "528"} Hz</div>
+        <div class="sched-genres">${genres} · ${p.hz || p.audio?.hz || "528"}</div>
       </div>
     </div>`;
           })
@@ -1317,7 +1316,7 @@
             return `<div class="np-card" style="cursor:pointer" onclick="jumpToSlot(${scheduleIndex + 1 + i})">
       <div class="np-card-badge" style="background:rgba(0,212,255,0.1);color:var(--cyan)">NEXT ${i + 1}</div>
       <div class="np-card-title">${p.title || "Programme"}</div>
-      <div class="np-card-meta">${genres} · ${p.hz || p.audio?.hz || "528"} Hz · in ${(i + 1) * 2}min</div>
+      <div class="np-card-meta">${genres} · ${p.hz || p.audio?.hz || "528"} · in ${(i + 1) * 2}min</div>
     </div>`;
           })
           .join("");
@@ -1328,7 +1327,7 @@
         document.getElementById("np-title").textContent =
           p.title || "Live .geo Programme";
         document.getElementById("np-sub").textContent =
-          `AIOSProducerSwarm · ${p.renderer?.type || p.renderer || ""} · ${(p.genre || p.genres || []).slice(0, 2).join(", ")} · ${p.hz || p.audio?.hz || "528"} Hz`;
+          `AIOSProducerSwarm · ${p.renderer?.type || p.renderer || ""} · ${(p.genre || p.genres || []).slice(0, 2).join(", ")} · ${p.hz || p.audio?.hz || "528"}`;
         const tagsEl = document.getElementById("np-tags");
         tagsEl.innerHTML =
           (p.genre || p.genres || [])
@@ -1350,7 +1349,7 @@
             dna: "galaxy",
             cosmos3d: "galaxy",
             neural: "circuit",
-            quantum: "hyperspace",
+            AI: "hyperspace",
             inception: "hyperspace",
             phoenix: "fire",
             ocean: "aurora",

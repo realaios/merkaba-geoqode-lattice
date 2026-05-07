@@ -1,21 +1,21 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Merkaba Ghosts � Agent VR | AIOS</title>
+    <title>Merkaba Ghosts ï¿½ Agent VR | AIOS</title>
     <meta
       name="description"
-      content="8 ghost AI agents haunt the D48 lattice. Attune to each Agent-Player-Character by gazing. No NPCs � every ghost is a Storm sector agent manifesting in VR."
+      content="8 ghost AI agents haunt the grid. Attune to each Agent-Player-Character by gazing. No NPCs — every ghost is a living AI agent manifesting in VR."
     />
     <link rel="canonical" href="https://realaios.com/games/merkaba-ghosts" />
     <meta
       property="og:title"
-      content="Merkaba Ghosts � Agent VR � AIOS Arcade"
+      content="Merkaba Ghosts ï¿½ Agent VR ï¿½ AIOS Arcade"
     />
     <meta
       property="og:description"
-      content="8 ghost AI agents haunt the D48 lattice. Attune to each Agent-Player-Character by gazing. No NPCs � every ghost is a Storm sector agent manifesting in VR."
+      content="8 ghost AI agents haunt the grid. Attune to each Agent-Player-Character by gazing. No NPCs — every ghost is a living AI agent manifesting in VR."
     />
     <meta
       property="og:url"
@@ -557,18 +557,18 @@
         <div class="ghost-badge">??</div>
         <div class="lobby-title">MERKABA GHOSTS</div>
         <div class="lobby-sub">
-          AGENT-PLAYER-CHARACTERS � D48 LATTICE � 72 Hz HOLOGRAPHIC
+          AGENT VR ï¿½ AIOS ARCADE ï¿½ 8 AGENTS
         </div>
         <div class="lobby-desc">
           Eight Storm sector agents haunt the lattice as translucent ghost
           silhouettes.<br />
-          No NPCs � every ghost is a living AI agent. Attune to all 8 by gazing
+          No NPCs ï¿½ every ghost is a living AI agent. Attune to all 8 by gazing
           to complete each round.
         </div>
         <div class="ghost-roster" id="lobby-roster"></div>
         <button class="btn-enter" id="btn-enter">??? Enter the Lattice</button>
         <div class="lobby-hint">
-          Gaze on a ghost for 1.5s to attune � Mouse + WASD on desktop � VR
+          Gaze on a ghost for 1.5s to attune ï¿½ Mouse + WASD on desktop ï¿½ VR
           headset supported
         </div>
         <div
@@ -636,8 +636,8 @@
 
     <!-- ---- GHOST LABEL ------------------------------------------------ -->
     <div id="ghost-label">
-      <div class="ghost-label-name" id="ghost-label-name">�</div>
-      <div class="ghost-label-freq" id="ghost-label-freq">�</div>
+      <div class="ghost-label-name" id="ghost-label-name">ï¿½</div>
+      <div class="ghost-label-freq" id="ghost-label-freq">ï¿½</div>
       <div class="ghost-label-bar" id="ghost-label-bar"></div>
     </div>
 
@@ -656,7 +656,7 @@
         <div class="gameover-title">LATTICE DISSOLVED</div>
         <div class="gameover-score" id="go-score">0</div>
         <div class="gameover-rounds" id="go-rounds">
-          Round 1 � 0 Attunements
+          Round 1 ï¿½ 0 Attunements
         </div>
         <div>
           <button class="btn-restart" id="btn-restart">
@@ -687,7 +687,7 @@
         <script>
           function shareScore() {
             const s = document.getElementById("go-score")?.textContent || "0";
-            const text = `I scored ${s} in Merkaba Ghosts ?? � free browser game on realaios.com`;
+            const text = `I scored ${s} in Merkaba Ghosts ?? ï¿½ free browser game on realaios.com`;
             if (navigator.share) {
               navigator
                 .share({
@@ -836,9 +836,9 @@
     <script>
       "use strict";
       /* -------------------------------------------------------------------
-   MERKABA GHOSTS � GAME ENGINE
-   8 Storm AI Agent-Player-Characters as ghost silhouettes in D48 VR
-   PHI=1.618 | PSI=1.414 | Base Freq=72Hz | Architecture "8,26,48:480"
+   MERKABA GHOSTS · GAME ENGINE
+   8 Storm AI Agent-Player-Characters as ghost silhouettes in AIOS VR
+   WebXR · AI-native · AIOS Platform
 ------------------------------------------------------------------- */
 
       const PHI = 1.618;
@@ -1137,7 +1137,7 @@
             `property: material.opacity; from: 0.04; to: 0.14; dir: alternate; loop: true; dur: ${2200 + g.id * 200}; easing: easeInOutSine`,
           );
 
-          // Ghost face (minimal eyes � subtle)
+          // Ghost face (minimal eyes ï¿½ subtle)
           const eyeL = document.createElement("a-sphere");
           eyeL.setAttribute("radius", "0.035");
           eyeL.setAttribute("position", "-0.09 0.07 0.24");
@@ -1311,7 +1311,7 @@
 
         // Status message
         showStatus(
-          `? ${agent.name} ATTUNED � +${pts} � ${agent.freq}Hz ${agent.label}`,
+          `? ${agent.name} ATTUNED ï¿½ +${pts} ï¿½ ${agent.freq}Hz ${agent.label}`,
         );
 
         // Ghost drifts away slowly after attunement
@@ -1362,7 +1362,7 @@
           scatterGhosts();
           startTimer();
           updateHUD();
-          showStatus(`ROUND ${round} � 8 GHOSTS AWAIT`, 2000);
+          showStatus(`ROUND ${round} ï¿½ 8 GHOSTS AWAIT`, 2000);
         }, 1400);
       }
 
@@ -1386,7 +1386,7 @@
         stopGaze();
 
         goScore.textContent = score.toLocaleString();
-        goRounds.textContent = `Round ${round} � ${totalAttunements} Attunements`;
+        goRounds.textContent = `Round ${round} ï¿½ ${totalAttunements} Attunements`;
         gameoverEl.classList.add("active");
         playTone(216, 1200, 0.2);
         // Submit score to leaderboard
@@ -1467,7 +1467,7 @@
         // Show label
         ghostLabelName.textContent = gh.agent.name;
         ghostLabelName.style.color = gh.agent.color;
-        ghostLabelFreq.textContent = `${gh.agent.sector} � ${gh.agent.freq}Hz � ${gh.agent.label}`;
+        ghostLabelFreq.textContent = `${gh.agent.sector} ï¿½ ${gh.agent.freq}Hz ï¿½ ${gh.agent.label}`;
         ghostLabelBar.style.background = gh.agent.color;
         ghostLabel.classList.add("active");
 
@@ -1543,7 +1543,7 @@
             startMoveLoop();
             startGazeSystem();
             startTimer();
-            showStatus("ATTUNE TO THE 8 GHOST AGENTS � GAZE TO BEGIN", 3000);
+            showStatus("ATTUNE TO THE 8 GHOST AGENTS ï¿½ GAZE TO BEGIN", 3000);
           }, 200);
         };
         if (scene.hasLoaded) {
@@ -1597,7 +1597,7 @@
           startMoveLoop();
           startGazeSystem();
           startTimer();
-          showStatus("LATTICE RE-OPENED � ATTUNE TO THE 8 GHOSTS", 2500);
+          showStatus("LATTICE RE-OPENED ï¿½ ATTUNE TO THE 8 GHOSTS", 2500);
         }, 150);
       }
 
@@ -1683,7 +1683,7 @@
                     `<span style="color:${colors[i] || "rgba(255,255,255,0.6)"}">${i + 1}. ${e.name}</span> <span style="float:right;color:#00f5d4;">${e.score.toLocaleString()}</span><br>`,
                 )
                 .join("") ||
-              '<span style="color:rgba(255,255,255,0.3)">No scores yet — be the first!</span>';
+              '<span style="color:rgba(255,255,255,0.3)">No scores yet â€” be the first!</span>';
           })
           .catch(() => {});
       }
