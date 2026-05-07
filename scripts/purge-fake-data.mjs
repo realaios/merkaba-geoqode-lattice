@@ -27,7 +27,7 @@ console.log(`✅ [1] Replaced ${before1} hardcoded downloads: NNN → 0`);
 if (c.includes("4.2 + Math.random() * 0.7")) {
   c = c.replace(
     /rating_avg:\s*\+\(4\.2 \+ Math\.random\(\) \* 0\.7\)\.toFixed\(1\),/g,
-    "rating_avg: 0,"
+    "rating_avg: 0,",
   );
   console.log("✅ [2] Removed fake random rating_avg → 0");
 } else {
@@ -42,10 +42,17 @@ if (biStart !== -1) {
   // Find the closing } of the block (it's wrapped in { ... })
   // The pattern is: // Seed realistic...\n{\n  ...\n}\n
   const blockOpen = c.indexOf("{", biStart);
-  let depth = 0, blockClose = -1;
+  let depth = 0,
+    blockClose = -1;
   for (let i = blockOpen; i < c.length; i++) {
     if (c[i] === "{") depth++;
-    else if (c[i] === "}") { depth--; if (depth === 0) { blockClose = i; break; } }
+    else if (c[i] === "}") {
+      depth--;
+      if (depth === 0) {
+        blockClose = i;
+        break;
+      }
+    }
   }
   if (blockClose !== -1) {
     c = c.slice(0, biStart) + c.slice(blockClose + 1);
@@ -62,11 +69,15 @@ if (aiStart !== -1) {
   // The pattern is: // comment\nsetInterval(() => {\n  ...\n}, 30000);\n
   const siStart = c.indexOf("setInterval(", aiStart);
   // Find the matching closing ), 30000);
-  let depth = 0, siClose = -1;
+  let depth = 0,
+    siClose = -1;
   for (let i = siStart + "setInterval(".length; i < c.length; i++) {
     if (c[i] === "(") depth++;
     else if (c[i] === ")") {
-      if (depth === 0) { siClose = i; break; }
+      if (depth === 0) {
+        siClose = i;
+        break;
+      }
       depth--;
     }
   }
@@ -75,7 +86,9 @@ if (aiStart !== -1) {
   c = c.slice(0, aiStart) + c.slice(endIdx).replace(/^\s*\n/, "\n");
   console.log("✅ [4] Removed auto-increment setInterval (30s fake counter)");
 } else {
-  console.log("ℹ️  [4] Auto-increment setInterval not found (already removed?)");
+  console.log(
+    "ℹ️  [4] Auto-increment setInterval not found (already removed?)",
+  );
 }
 
 // ── 5. Seeded leaderboard fake scores block ───────────────────────────────
@@ -83,10 +96,17 @@ const lbStart = "// Seed game leaderboards with historical top scores";
 const lbIdx = c.indexOf(lbStart);
 if (lbIdx !== -1) {
   const blockOpen = c.indexOf("{", lbIdx);
-  let depth = 0, blockClose = -1;
+  let depth = 0,
+    blockClose = -1;
   for (let i = blockOpen; i < c.length; i++) {
     if (c[i] === "{") depth++;
-    else if (c[i] === "}") { depth--; if (depth === 0) { blockClose = i; break; } }
+    else if (c[i] === "}") {
+      depth--;
+      if (depth === 0) {
+        blockClose = i;
+        break;
+      }
+    }
   }
   if (blockClose !== -1) {
     c = c.slice(0, lbIdx) + c.slice(blockClose + 1).replace(/^\s*\n/, "\n");
@@ -111,7 +131,9 @@ if (c.includes(oldSort)) {
   c = c.replace(oldSort, newSort);
   console.log("✅ [6] Fixed _plaiRuntimeList() to sort by real install counts");
 } else {
-  console.log("⚠️  [6] _plaiRuntimeList sort pattern not matched exactly — check manually");
+  console.log(
+    "⚠️  [6] _plaiRuntimeList sort pattern not matched exactly — check manually",
+  );
 }
 
 // ── 7. Fix total_installs to use only real data ───────────────────────────
@@ -127,9 +149,13 @@ const newTotal = `      const total_installs = [..._plaiInstallCounts.values()].
       );`;
 if (c.includes(oldTotal)) {
   c = c.replace(oldTotal, newTotal);
-  console.log("✅ [7] Fixed total_installs to sum only real _plaiInstallCounts");
+  console.log(
+    "✅ [7] Fixed total_installs to sum only real _plaiInstallCounts",
+  );
 } else {
-  console.log("⚠️  [7] total_installs pattern not matched exactly — check manually");
+  console.log(
+    "⚠️  [7] total_installs pattern not matched exactly — check manually",
+  );
 }
 
 // ── 8. Enrich app downloads with real install counts in GET response ───────
@@ -147,11 +173,17 @@ const newSlice = `      // Enrich each app with real install count (only real us
         { ok: true, apps, total, total_installs },`;
 if (c.includes(oldSlice)) {
   c = c.replace(oldSlice, newSlice);
-  console.log("✅ [8] Enriched app downloads with real install counts before API response");
+  console.log(
+    "✅ [8] Enriched app downloads with real install counts before API response",
+  );
 } else {
-  console.log("⚠️  [8] apps.slice pattern not matched exactly — check manually");
+  console.log(
+    "⚠️  [8] apps.slice pattern not matched exactly — check manually",
+  );
 }
 
 writeFileSync(file, c, "utf8");
 console.log("\n🎯 server.js updated — all fake/simulated data removed.");
-console.log("   Only real user clicks via POST /api/plai/apps/:id/install count now.");
+console.log(
+  "   Only real user clicks via POST /api/plai/apps/:id/install count now.",
+);

@@ -648,10 +648,10 @@
       <div class="site-nav-links">
         <a href="/games">ðŸŽ® Games</a><a href="/aiosdream">Theatre</a
         ><a href="/vr">ðŸ¥½ VR</a><a href="/vr-hub">VR Hub</a
-        ><a href="/plaistore">PLAIstore</a><a href="/geo-library">ðŸ“š Library</a
-        ><a href="/geo-codec">.geo</a><a href="/aios-studio">Studio</a
-        ><a href="/lab">Lab</a><a href="/news">ðŸ“° News</a
-        ><a href="/products">âš¡ Products</a>
+        ><a href="/plaistore">PLAIstore</a
+        ><a href="/geo-library">ðŸ“š Library</a><a href="/geo-codec">.geo</a
+        ><a href="/aios-studio">Studio</a><a href="/lab">Lab</a
+        ><a href="/news">ðŸ“° News</a><a href="/products">âš¡ Products</a>
       </div>
       <div class="site-nav-right">
         <a href="/live" class="site-nav-live">â— LIVE</a
@@ -668,8 +668,8 @@
       <p class="hero-sub">
         Create immersive WebXR experiences for Meta Quest 2/3, deploy to
         __VR_TOTAL__ slots across __VR_CATS__ categories, and reach AIOS users
-        with zero install friction. Powered by A-Frame 1.4, AIOS geometry,
-        and the  resonance grid.
+        with zero install friction. Powered by A-Frame 1.4, AIOS geometry, and
+        the resonance grid.
       </p>
       <div class="hero-ctas">
         <a href="#quickstart" class="btn-primary">âš¡ Quick Start (5 min)</a>
@@ -715,8 +715,8 @@
           <h3>Build your WebXR scene</h3>
           <p>
             Use A-Frame 1.4.0 to build a self-contained HTML file. Add AIOS
-            frequency metadata. Works in any browser â€” Quest-optimized with our
-            template.
+            frequency metadata. Works in any browser â€” Quest-optimized with
+            our template.
           </p>
           <a class="step-link" href="#quickstart">â†’ A-Frame template</a>
         </div>
@@ -735,8 +735,7 @@
           <p>
             POST your experience manifest to
             <code>/api/plai/developer/apps</code>. Include bundle_id,
-            entry_point, category=VR, and AIOS metadata (category,
-            gridNode).
+            entry_point, category=VR, and AIOS metadata (category, gridNode).
           </p>
           <a class="step-link" href="#submit">â†’ Submission API</a>
         </div>
@@ -757,7 +756,9 @@
 
     <!-- â”€â”€ QUICK START â”€â”€ -->
     <div class="section" id="quickstart">
-      <div class="section-title">âš¡ Quick Start â€” <span>5 Minutes</span></div>
+      <div class="section-title">
+        âš¡ Quick Start â€” <span>5 Minutes</span>
+      </div>
       <p class="section-sub">
         Copy this template, host it on HTTPS, and submit. That's it.
       </p>
@@ -766,8 +767,8 @@
       <div class="code-block">
         <button class="code-copy" onclick="copyBlock(this)">Copy</button>
         <span class="cmt"
-          >&lt;!-- Save as index.html â†’ host on HTTPS â†’ submit URL to PLAIstore
-          --&gt;</span
+          >&lt;!-- Save as index.html â†’ host on HTTPS â†’ submit URL to
+          PLAIstore --&gt;</span
         >
         <span class="tag">&lt;!DOCTYPE html&gt;</span>
         <span class="tag">&lt;html</span> lang=<span class="str">"en"</span
@@ -814,9 +815,7 @@
           >"#0a0a0f"</span
         ><span class="tag">&gt;&lt;/a-sky&gt;</span>
 
-        <span class="cmt"
-          >&lt;!-- Lattice anchor sphere â€”  radius --&gt;</span
-        >
+        <span class="cmt">&lt;!-- Lattice anchor sphere â€” radius --&gt;</span>
         <span class="tag">&lt;a-sphere</span>
         position=<span class="str">"0 1.6 -3"</span> radius=<span class="str"
           >"1.618"</span
@@ -870,14 +869,22 @@
         >
         <span class="kw">const</span>
         <span class="fn">AIOS_CATEGORIES</span> = [
-        <span class="str">"Cinema"</span>,      <span class="cmt">// narrative film-like worlds</span>
-        <span class="str">"Enterprise"</span>,  <span class="cmt">// business, training, boardroom</span>
-        <span class="str">"Lab"</span>,          <span class="cmt">// science, geometry, exploration</span>
-        <span class="str">"Arcade"</span>,       <span class="cmt">// games, action, competition</span>
-        <span class="str">"Wellness"</span>,     <span class="cmt">// meditation, calm, nature</span>
-        <span class="str">"Education"</span>,    <span class="cmt">// learning, tutorials</span>
-        <span class="str">"Social"</span>,       <span class="cmt">// multiplayer, community</span>
-        <span class="str">"Art"</span>           <span class="cmt">// creative, gallery, interactive</span>
+        <span class="str">"Cinema"</span>,
+        <span class="cmt">// narrative film-like worlds</span>
+        <span class="str">"Enterprise"</span>,
+        <span class="cmt">// business, training, boardroom</span>
+        <span class="str">"Lab"</span>,
+        <span class="cmt">// science, geometry, exploration</span>
+        <span class="str">"Arcade"</span>,
+        <span class="cmt">// games, action, competition</span>
+        <span class="str">"Wellness"</span>,
+        <span class="cmt">// meditation, calm, nature</span>
+        <span class="str">"Education"</span>,
+        <span class="cmt">// learning, tutorials</span>
+        <span class="str">"Social"</span>,
+        <span class="cmt">// multiplayer, community</span>
+        <span class="str">"Art"</span>
+        <span class="cmt">// creative, gallery, interactive</span>
         ];
       </div>
     </div>
@@ -969,12 +976,12 @@
             <span class="cat-card-icon">ðŸ§˜</span>
             <div>
               <div class="cat-card-name">Wellness</div>
-              <div class="cat-card-freq"> Â· EMOTION</div>
+              <div class="cat-card-freq">Â· EMOTION</div>
             </div>
           </div>
           <div class="cat-card-desc">
-            Meditative and healing experiences â€” Merkaba Meditation, Forest 528,
-            Breathwork, Cosmos 963. Binaural audio layer.
+            Meditative and healing experiences â€” Merkaba Meditation, Forest
+            528, Breathwork, Cosmos 963. Binaural audio layer.
           </div>
           <div class="cat-card-meta">
             <span class="tag-pill">gridRing: Canonical</span
@@ -1037,7 +1044,7 @@
             <span class="cat-card-icon">ðŸŽ¨</span>
             <div>
               <div class="cat-card-name">Art &amp; Music</div>
-              <div class="cat-card-freq"> Â· EMOTION</div>
+              <div class="cat-card-freq">Â· EMOTION</div>
             </div>
           </div>
           <div class="cat-card-desc">
@@ -1103,8 +1110,7 @@
         <span class="str">"narrative"</span>], <span class="fn">meta</span>: {
         <span class="fn">category</span>: <span class="str">"Cinema"</span>,
         <span class="cmt">// AIOS category</span>
-        <span class="fn">type</span>:
-        <span class="str">"Narrative"</span>,
+        <span class="fn">type</span>: <span class="str">"Narrative"</span>,
         <span class="cmt">// content type</span>
         <span class="fn">gridNode</span>: <span class="num">0</span>,
         <span class="cmt">// 0â€“47</span>
@@ -1130,8 +1136,8 @@
     <div class="section" id="api">
       <div class="section-title"><span>API Reference</span></div>
       <p class="section-sub">
-        Public read-only APIs â€” no auth required for GET endpoints. Use these to
-        build directory integrations, portfolio sites, or discovery tools.
+        Public read-only APIs â€” no auth required for GET endpoints. Use these
+        to build directory integrations, portfolio sites, or discovery tools.
       </p>
 
       <table class="api-table">
@@ -1148,8 +1154,8 @@
             <td><span class="method method-get">GET</span></td>
             <td class="endpoint">/api/aios/vr/taxonomy</td>
             <td>
-              Full VR taxonomy JSON â€” all __VR_CATS__ categories + __VR_TOTAL__
-              experiences (__VR_LIVE__ live)
+              Full VR taxonomy JSON â€” all __VR_CATS__ categories +
+              __VR_TOTAL__ experiences (__VR_LIVE__ live)
             </td>
             <td>Cache-Control: 5min Â· CORS *</td>
           </tr>
@@ -1242,7 +1248,7 @@
           <h3>Railway</h3>
           <p>
             Full Node.js/server hosting for dynamic VR scenes that need APIs,
-            databases, or server-side rendering.  routing built in.
+            databases, or server-side rendering. routing built in.
           </p>
           <a
             class="step-link"
@@ -1308,8 +1314,8 @@
     <div class="section" id="quest">
       <div class="section-title">Meta Quest <span>Optimization</span></div>
       <p class="section-sub">
-        Quest 2 and 3 are your primary targets. These constraints ensure 
-        smooth rendering and minimal battery drain.
+        Quest 2 and 3 are your primary targets. These constraints ensure smooth
+        rendering and minimal battery drain.
       </p>
 
       <ul class="checklist">
@@ -1397,13 +1403,14 @@
         </div>
         <div class="faq-item">
           <button class="faq-q" onclick="toggleFaq(this)">
-            Can my scene use a backend / API? <span class="faq-chevron">â–¼</span>
+            Can my scene use a backend / API?
+            <span class="faq-chevron">â–¼</span>
           </button>
           <div class="faq-a">
-            Absolutely. Your entry_point can be any URL â€” a static HTML file, a
-            server-rendered page, a Next.js app, anything. You can call any API
-            from within the scene. Multi-user social experiences use WebSockets
-            for presence.
+            Absolutely. Your entry_point can be any URL â€” a static HTML file,
+            a server-rendered page, a Next.js app, anything. You can call any
+            API from within the scene. Multi-user social experiences use
+            WebSockets for presence.
           </div>
         </div>
         <div class="faq-item">
@@ -1411,11 +1418,12 @@
             What are the AIOS meta tags? <span class="faq-chevron">â–¼</span>
           </button>
           <div class="faq-a">
-            <code>aios:category</code> (one of the supported content categories),
-            <code>aios:type</code> (e.g. Cinema, Arcade, Wellness, Enterprise, Education),
-            <code>aios:node</code> (grid slot 0â€“47), and
-            <code>aios:renderer</code> (ai | standard). These anchor your
-            experience in the AIOS grid and are used for AI-driven content curation.
+            <code>aios:category</code> (one of the supported content
+            categories), <code>aios:type</code> (e.g. Cinema, Arcade, Wellness,
+            Enterprise, Education), <code>aios:node</code> (grid slot 0â€“47),
+            and <code>aios:renderer</code> (ai | standard). These anchor your
+            experience in the AIOS grid and are used for AI-driven content
+            curation.
           </div>
         </div>
         <div class="faq-item">
@@ -1470,8 +1478,7 @@
         <a href="/dashboard">Awareness</a>
       </nav>
       <p class="footer-copy">
-        AIOS VR Developer Portal Â· realaios.com Â·  Â·
-        AIOS<br />
+        AIOS VR Developer Portal Â· realaios.com Â· Â· AIOS<br />
         &copy; <span id="yr"></span> Brains4Ai Â·
         <a href="https://getbrains4ai.com" style="color: inherit"
           >getbrains4ai.com</a

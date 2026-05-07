@@ -1142,7 +1142,8 @@ function _plaiRuntimeCount(category) {
 /** All runtime apps as sorted array (highest downloads first) */
 function _plaiRuntimeList() {
   return [..._plaiRuntimeApps.values()].sort(
-    (a, b) => (_plaiInstallCounts.get(b.id) || 0) - (_plaiInstallCounts.get(a.id) || 0),
+    (a, b) =>
+      (_plaiInstallCounts.get(b.id) || 0) - (_plaiInstallCounts.get(a.id) || 0),
   );
 }
 
@@ -3934,10 +3935,6 @@ function _seedPlaiApps() {
 }
 _seedPlaiApps();
 
-
-
-
-
 // Singleton MerkabaLLM
 let _llm = null;
 function getLLM() {
@@ -5491,7 +5488,10 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
         0,
       );
       // Enrich each app with its real install count
-      apps = apps.map(a => ({ ...a, downloads: _plaiInstallCounts.get(a.id) || 0 }));
+      apps = apps.map((a) => ({
+        ...a,
+        downloads: _plaiInstallCounts.get(a.id) || 0,
+      }));
       apps = apps.slice(0, limit);
       return json(
         res,

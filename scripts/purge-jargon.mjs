@@ -67,7 +67,10 @@ const GLOBAL = [
   ["PHI=1.618", ""],
   ["PSI=1.414", ""],
   ["PHI/PSI dual-attested", ""],
-  ["PHI/PSI lattice coordinates, semantic frequencies,", "immersive coordinates and metadata,"],
+  [
+    "PHI/PSI lattice coordinates, semantic frequencies,",
+    "immersive coordinates and metadata,",
+  ],
   ["PHI/PSI", ""],
   ["PHI-resonant intelligence grid that runs AIOS", "AI engine that runs AIOS"],
   ["PHI-resonant architecture", "spatial architecture"],
@@ -90,7 +93,10 @@ const GLOBAL = [
   ["SCANNER_ATTESTED", ""],
   ["frequency resonance", "audio"],
   ["DIALOGUE-frequency resonance", "spatial audio"],
-  ["Force resonance across the galactic void", "Force across the galactic void"],
+  [
+    "Force resonance across the galactic void",
+    "Force across the galactic void",
+  ],
   ["639 Hz control field", "spatial control"],
   ["spatial voice, PHI-resonant architecture", "spatial voice and open layout"],
 
@@ -106,10 +112,16 @@ const GLOBAL = [
   [" lattice rings", " capacity limits"],
   ["lattice ring from all directions", "all directions"],
   ["lattice ring", "grid"],
-  ["Walk through the\n              8→26→48:480 geometry. Frequency mapping, quantum field simulation,\n              neural scaffold explorer.", "Explore the 3D architecture in real-time."],
+  [
+    "Walk through the\n              8→26→48:480 geometry. Frequency mapping, quantum field simulation,\n              neural scaffold explorer.",
+    "Explore the 3D architecture in real-time.",
+  ],
 
   // Hz frequencies — all variants
-  ["396–963 Hz solfeggio spectrum as colour-coded spatial chambers", "spectrum of colour-coded spatial chambers"],
+  [
+    "396–963 Hz solfeggio spectrum as colour-coded spatial chambers",
+    "spectrum of colour-coded spatial chambers",
+  ],
   ["Solfeggio frequency chambers", "Immersive audio chambers"],
   ["Solfeggio Frequency Map", "Spectrum Journey"],
   ["solfeggio", "audio"],
@@ -169,13 +181,19 @@ const GLOBAL = [
   ["Merkaba GeoQode OS", "AIOS"],
   ["GeoQode OS", "AIOS"],
   ["GeoQode", "AIOS"],
-  ["geoqode (in text)"],  // placeholder — handled below with regex
+  ["geoqode (in text)"], // placeholder — handled below with regex
 
   // Merkaba in non-game-name contexts
-  ["Merkaba Lattice\" — the", "AI engine that powers"],
+  ['Merkaba Lattice" — the', "AI engine that powers"],
   ["Merkaba Lattice</strong> — the", "AI</strong> engine that powers"],
-  ["<strong style=\"color: #00d4ff\">Merkaba Lattice</strong>", "<strong style=\"color: #00d4ff\">AI</strong>"],
-  ["Visualise the Merkaba Lattice in real-time 3D.", "Visualise the 3D AI architecture in real-time."],
+  [
+    '<strong style="color: #00d4ff">Merkaba Lattice</strong>',
+    '<strong style="color: #00d4ff">AI</strong>',
+  ],
+  [
+    "Visualise the Merkaba Lattice in real-time 3D.",
+    "Visualise the 3D AI architecture in real-time.",
+  ],
   ["Walk through the\n              8→26→48:480 geometry.", ""],
   ["Merkaba Lattice in real-time 3D", "3D AI architecture in real-time"],
   ["Merkaba Lattice", "AIOS"],
@@ -190,7 +208,10 @@ const GLOBAL = [
   // Holographic jargon
   ["holographic data panels", "interactive data panels"],
   ["holographic data pan", "interactive data pan"],
-  ["float through your pitch as holographic", "float through your pitch as interactive"],
+  [
+    "float through your pitch as holographic",
+    "float through your pitch as interactive",
+  ],
   ["holographic", "immersive"],
 
   // Quantum jargon (not game names)
@@ -209,7 +230,10 @@ const GLOBAL = [
   ["Lattice Lounge", "The Lounge"],
   ["the lattice ring", "the grid"],
   ["the lattice", "the grid"],
-  ["Assign PHI/PSI lattice coordinates and AIOS freq", "Assign 3D coordinates and AIOS metadata"],
+  [
+    "Assign PHI/PSI lattice coordinates and AIOS freq",
+    "Assign 3D coordinates and AIOS metadata",
+  ],
   ["lattice nodes", "nodes"],
   ["lattice node", "node"],
   ["lattice geometry", "3D geometry"],
@@ -219,15 +243,21 @@ const GLOBAL = [
   ["reconstruct the lattice", "reconstruct the grid"],
   ["the 3D grid.", "the pattern."],
   ["flooding the lattice", "flooding from"],
-  ["lattice", "grid"],  // catch-all for remaining non-game uses
+  ["lattice", "grid"], // catch-all for remaining non-game uses
 
   // Footer / nav text cleanup
   ["Merkaba GeoQode OS", "AIOS"],
   ["AIOS · Built on AIOS", "AIOS"],
 
   // Additional structural phrases
-  ["Frequency mapping, AI field simulation,\n              neural scaffold explorer", "Explore the 3D AI architecture in real-time"],
-  ["Visualise the 3D AI architecture in real-time. Walk through the\n              8→26→48:480 geometry.", "Visualise the 3D AI architecture in real-time."],
+  [
+    "Frequency mapping, AI field simulation,\n              neural scaffold explorer",
+    "Explore the 3D AI architecture in real-time",
+  ],
+  [
+    "Visualise the 3D AI architecture in real-time. Walk through the\n              8→26→48:480 geometry.",
+    "Visualise the 3D AI architecture in real-time.",
+  ],
   ["neural scaffold explorer", "architecture explorer"],
   ["PHYSICS 852", "PHYSICS"],
 ];
@@ -243,7 +273,7 @@ const FILES = {
     ],
     // Structured data description
     [
-      'AIOS — autonomous AI operating system by Brains4Ai. Geometric lattice architecture (8→26→48:480). Self-healing, resonance-certified,\n PHI/PSI dual-attested.',
+      "AIOS — autonomous AI operating system by Brains4Ai. Geometric lattice architecture (8→26→48:480). Self-healing, resonance-certified,\n PHI/PSI dual-attested.",
       "AIOS — autonomous AI operating system by Brains4Ai. Self-healing AI-native platform for games, VR, and apps.",
     ],
     [
@@ -252,7 +282,10 @@ const FILES = {
     ],
     // Game card subtitles
     ["Dodge lattice nodes · Survive", "Dodge obstacles · Survive"],
-    ["Build the 48-node lattice · PHI geometry", "Pattern puzzle · Memory challenge"],
+    [
+      "Build the 48-node lattice · PHI geometry",
+      "Pattern puzzle · Memory challenge",
+    ],
     // Events section cleanup
     [
       "Matrix Reloaded premiere in VR. Investor Q&As. PHI Breaker\n              tournaments. GeoQode Developer Summit. Live countdown timers.\n              Limited attendance per the 26- and 48-node lattice rings.",
@@ -291,14 +324,8 @@ const FILES = {
     ["AIOS VR Platform · Powered by Merkaba 8→26→48:480", "AIOS VR Platform"],
     ["AIOS VR Platform · Powered by AIOS", "AIOS VR Platform"],
     // Hero tech line — remove jargon tags
-    [
-      '<span>PHI=1.618 · PSI=1.414</span> · <span>72 Hz AIOS Base</span>',
-      "",
-    ],
-    [
-      '<span>PHI=1.618 · PSI=1.414</span> · <span>72  AIOS Base</span>',
-      "",
-    ],
+    ["<span>PHI=1.618 · PSI=1.414</span> · <span>72 Hz AIOS Base</span>", ""],
+    ["<span>PHI=1.618 · PSI=1.414</span> · <span>72  AIOS Base</span>", ""],
     // Footer
     ["AIOS VR Platform · Powered by Merkaba AIOS", "AIOS VR Platform"],
     // Cinema descriptions
@@ -442,15 +469,18 @@ const FILES = {
     ],
     // Lattice Lounge event title
     ["🏛️ Lattice Lounge — Grand Opening", "🏛️ The Lounge — Grand Opening"],
-    ["presence, spatial voice, PHI-resonant architecture. Ope", "presence, spatial voice and open layout. Ope"],
+    [
+      "presence, spatial voice, PHI-resonant architecture. Ope",
+      "presence, spatial voice and open layout. Ope",
+    ],
     // Dev banner
     [
-      'No gatekeeping. The AIOS SDK gives your ex\n          PHI/PSI lattice coordinates, semantic frequencies, and',
-      'No gatekeeping. The AIOS SDK gives your experiences',
+      "No gatekeeping. The AIOS SDK gives your ex\n          PHI/PSI lattice coordinates, semantic frequencies, and",
+      "No gatekeeping. The AIOS SDK gives your experiences",
     ],
     [
-      'No gatekeeping. The AIOS SDK gives your ex\n          immersive coordinates and metadata,',
-      'No gatekeeping. The AIOS SDK gives your experiences',
+      "No gatekeeping. The AIOS SDK gives your ex\n          immersive coordinates and metadata,",
+      "No gatekeeping. The AIOS SDK gives your experiences",
     ],
     // Footer bottom
     [
@@ -465,8 +495,14 @@ const FILES = {
 
   "games.html": [
     // Title and meta
-    ["AIOS Arcade — Games born from the lattice", "AIOS Arcade — Free Browser Games"],
-    ["AIOS Arcade — Games born from the Merkaba lattice", "AIOS Arcade — Free Browser Games"],
+    [
+      "AIOS Arcade — Games born from the lattice",
+      "AIOS Arcade — Free Browser Games",
+    ],
+    [
+      "AIOS Arcade — Games born from the Merkaba lattice",
+      "AIOS Arcade — Free Browser Games",
+    ],
     [
       'content="Browser and VR games built on PHI geometry and the 48-node Merkaba lattice. Play free on any device. VR headset optional."',
       'content="Browser and VR games. Play free on any device or in VR. No download needed."',
@@ -488,20 +524,20 @@ const FILES = {
     ['<span class="pill-phi">', '<span class="pill-phi" style="display:none">'],
     // Game descriptions
     [
-      'Defend the 48-node lattice from entropy waves. Shoot frequency disruptors across D480 harmonic space.',
-      'Defend against entropy waves. Shoot disruptors across 3D space.',
+      "Defend the 48-node lattice from entropy waves. Shoot frequency disruptors across D480 harmonic space.",
+      "Defend against entropy waves. Shoot disruptors across 3D space.",
     ],
     [
-      'Dodge entropy cubes flooding the lattice ring from all directions. Speed ramps by PHI each wave. 3 lives.',
-      'Dodge entropy cubes from all directions. Speed ramps each wave. 3 lives.',
+      "Dodge entropy cubes flooding the lattice ring from all directions. Speed ramps by PHI each wave. 3 lives.",
+      "Dodge entropy cubes from all directions. Speed ramps each wave. 3 lives.",
     ],
     [
-      'Gaze damaged lattice nodes in PHI sequence order to reconstruct the lattice. Memory puzzle. Rounds grow.',
-      'Gaze and select nodes in the correct sequence to rebuild the grid. Memory puzzle. Rounds grow.',
+      "Gaze damaged lattice nodes in PHI sequence order to reconstruct the lattice. Memory puzzle. Rounds grow.",
+      "Gaze and select nodes in the correct sequence to rebuild the grid. Memory puzzle. Rounds grow.",
     ],
     [
-      '8 Storm sector agents haunt the D48 lattice as ghost silhouettes. Attune to each APC by gazing. No NPCs.',
-      '8 AI sector agents haunt the space as ghost silhouettes. Attune to each ghost by gazing. No NPCs.',
+      "8 Storm sector agents haunt the D48 lattice as ghost silhouettes. Attune to each APC by gazing. No NPCs.",
+      "8 AI sector agents haunt the space as ghost silhouettes. Attune to each ghost by gazing. No NPCs.",
     ],
   ],
 };
@@ -546,11 +582,10 @@ for (const file of allFiles) {
 
   // Safety guard: restore game names that may have been clobbered
   // These replacements only fix cases where "lattice"/"merkaba" global caught game names
-  src = src
-    .replace(/Merkaba ghosts/gi, (m) => {
-      // Only restore if it's actually the game name context (href or title)
-      return m;
-    });
+  src = src.replace(/Merkaba ghosts/gi, (m) => {
+    // Only restore if it's actually the game name context (href or title)
+    return m;
+  });
 
   // Restore exact game names if they got mangled by global "lattice" → "grid" replacements
   // "Lattice Dodge" and "Lattice Builder" contain "Lattice" — protect them
@@ -563,7 +598,7 @@ for (const file of allFiles) {
     .replace(/\bgrid Builder\b/g, "Lattice Builder")
     .replace(/\bGrid Builder\b/g, "Lattice Builder")
     .replace(/\bMerkaba Ghosts\b/g, "Merkaba Ghosts") // already correct — no-op but explicit
-    .replace(/\bPHI Breaker\b/g, "PHI Breaker");      // already correct — no-op but explicit
+    .replace(/\bPHI Breaker\b/g, "PHI Breaker"); // already correct — no-op but explicit
 
   save(file, src);
 }
