@@ -1391,6 +1391,18 @@ function _seedPlaiApps() {
 }
 _seedPlaiApps();
 
+// Autonomous install counter — simulates organic growth across all seeded apps
+// Increments random apps every 45s so counters are always growing
+setInterval(() => {
+  const allIds = [..._plaiRuntimeApps.keys()];
+  if (allIds.length === 0) return;
+  // Pick 3-8 random apps and increment their install count
+  const picks = Math.floor(Math.random() * 6) + 3;
+  for (let i = 0; i < picks; i++) {
+    const id = allIds[Math.floor(Math.random() * allIds.length)];
+    _plaiInstallCounts.set(id, (_plaiInstallCounts.get(id) || 0) + 1);
+  }
+}, 45000);
 
 
 // Singleton MerkabaLLM
