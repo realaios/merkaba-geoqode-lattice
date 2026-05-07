@@ -3434,34 +3434,34 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
       (pathname === "/games" || pathname === "/games/")
     ) {
       if (!GAMES_HUB_HTML) return json(res, 404, { error: "not found" });
-      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-store" });
       res.end(GAMES_HUB_HTML);
       return;
     }
     if (req.method === "GET" && pathname === "/games/phi-breaker") {
       if (!GAME_PHI_BREAKER_HTML) return json(res, 404, { error: "not found" });
-      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-store" });
       res.end(GAME_PHI_BREAKER_HTML);
       return;
     }
     if (req.method === "GET" && pathname === "/games/lattice-dodge") {
       if (!GAME_LATTICE_DODGE_HTML)
         return json(res, 404, { error: "not found" });
-      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-store" });
       res.end(GAME_LATTICE_DODGE_HTML);
       return;
     }
     if (req.method === "GET" && pathname === "/games/lattice-builder") {
       if (!GAME_LATTICE_BUILDER_HTML)
         return json(res, 404, { error: "not found" });
-      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-store" });
       res.end(GAME_LATTICE_BUILDER_HTML);
       return;
     }
     if (req.method === "GET" && pathname === "/games/merkaba-ghosts") {
       if (!GAME_MERKABA_GHOSTS_HTML)
         return json(res, 404, { error: "not found" });
-      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-store" });
       res.end(GAME_MERKABA_GHOSTS_HTML);
       return;
     }
