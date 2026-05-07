@@ -3008,6 +3008,14 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
           category: "Utilities",
           app_count: PLAI_UTILITIES.length + _plaiRuntimeCount("Utilities"),
         },
+        {
+          category: "Games",
+          app_count: _plaiRuntimeCount("Games"),
+        },
+        {
+          category: "VR",
+          app_count: _plaiRuntimeCount("VR"),
+        },
       ];
       return json(
         res,
