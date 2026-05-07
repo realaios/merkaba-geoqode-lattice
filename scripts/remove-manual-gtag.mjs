@@ -15,13 +15,19 @@ const dirs = [
 const SKIP = new Set(["googlea5a53438b491ad23.html"]);
 
 // The exact block we injected (inserted before </head>)
-const TAG_PATTERN = /\n\s{0,4}<!-- Google tag \(gtag\.js\) -->\n\s{0,4}<script async src="https:\/\/www\.googletagmanager\.com\/gtag\/js\?id=AW-18009079831"><\/script>\n\s{0,4}<script>\n\s{0,8}window\.dataLayer = window\.dataLayer \|\| \[\];\n\s{0,8}function gtag\(\)\{dataLayer\.push\(arguments\);\}\n\s{0,8}gtag\('js', new Date\(\)\);\n\s{0,8}gtag\('config', 'AW-18009079831'\);\n\s{0,4}<\/script>\n<\/head>/;
+const TAG_PATTERN =
+  /\n\s{0,4}<!-- Google tag \(gtag\.js\) -->\n\s{0,4}<script async src="https:\/\/www\.googletagmanager\.com\/gtag\/js\?id=AW-18009079831"><\/script>\n\s{0,4}<script>\n\s{0,8}window\.dataLayer = window\.dataLayer \|\| \[\];\n\s{0,8}function gtag\(\)\{dataLayer\.push\(arguments\);\}\n\s{0,8}gtag\('js', new Date\(\)\);\n\s{0,8}gtag\('config', 'AW-18009079831'\);\n\s{0,4}<\/script>\n<\/head>/;
 
-let updated = 0, skipped = 0;
+let updated = 0,
+  skipped = 0;
 
 for (const dir of dirs) {
   let files;
-  try { files = readdirSync(dir); } catch { continue; }
+  try {
+    files = readdirSync(dir);
+  } catch {
+    continue;
+  }
   for (const name of files) {
     if (!name.endsWith(".html") || SKIP.has(name)) continue;
     const path = join(dir, name);

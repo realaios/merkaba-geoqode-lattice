@@ -20,11 +20,17 @@ const GTAG = `
 
 const SKIP = new Set(["googlea5a53438b491ad23.html"]);
 
-let total = 0, skipped = 0, updated = 0;
+let total = 0,
+  skipped = 0,
+  updated = 0;
 
 function processDir(dir) {
   let files;
-  try { files = readdirSync(dir); } catch { return; }
+  try {
+    files = readdirSync(dir);
+  } catch {
+    return;
+  }
   for (const name of files) {
     if (!name.endsWith(".html") || SKIP.has(name)) continue;
     const path = join(dir, name);

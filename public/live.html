@@ -569,8 +569,7 @@
         }
       }
     </style>
-  
-</head>
+  </head>
   <body>
     <nav class="site-nav">
       <a href="/" class="site-nav-logo">⬡ AIOS</a>
@@ -1399,8 +1398,7 @@
         try {
           const d = await (await fetch("/api/geo/stats")).json();
           const el = (id) => document.getElementById(id);
-          if (el("ss-total"))
-            el("ss-total").textContent = d.catalogue || "—";
+          if (el("ss-total")) el("ss-total").textContent = d.catalogue || "—";
           if (el("ss-produced"))
             el("ss-produced").textContent = d.productionCount || "—";
           if (el("ss-hrs"))

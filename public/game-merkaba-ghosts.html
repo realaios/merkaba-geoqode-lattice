@@ -527,8 +527,7 @@
         }
       }
     </style>
-  
-</head>
+  </head>
   <body>
     <!-- ---- SITE NAV ---------------------------------------------------- -->
     <nav class="site-nav" id="site-nav">
@@ -571,6 +570,29 @@
         <div class="lobby-hint">
           Gaze on a ghost for 1.5s to attune � Mouse + WASD on desktop � VR
           headset supported
+        </div>
+        <div
+          id="lobby-leaderboard"
+          style="margin-top: 1.2rem; width: 100%; text-align: left"
+        >
+          <div
+            style="
+              font-size: 0.7rem;
+              letter-spacing: 0.12em;
+              color: rgba(255, 255, 255, 0.4);
+              margin-bottom: 0.5rem;
+            "
+          >
+            &#127942; TOP SCORES
+          </div>
+          <div
+            id="lobby-lb-rows"
+            style="
+              font-size: 0.75rem;
+              line-height: 1.8;
+              color: rgba(255, 255, 255, 0.7);
+            "
+          ></div>
         </div>
       </div>
     </div>
@@ -1367,6 +1389,18 @@
         goRounds.textContent = `Round ${round} � ${totalAttunements} Attunements`;
         gameoverEl.classList.add("active");
         playTone(216, 1200, 0.2);
+        // Submit score to leaderboard
+        const playerName = localStorage.getItem("aios_player_name") || "Anonymous";
+        fetch("/api/game/score", {method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({game:"merkaba-ghosts",name:playerName,score})})
+          .then(r=>r.json()).then(d=>{
+            if(d.ok && d.rank<=10){
+              const m=document.createElement("div");
+              m.style.cssText="margin-top:0.6rem;font-size:0.8rem;color:#00f5d4;font-weight:700;";
+              m.textContent="\uD83C\uDFC6 You're #"+d.rank+" on the leaderboard!";
+              gameoverEl.querySelector(".gameover-card")?.appendChild(m);
+            }
+          }).catch(()=>{});
+        loadLeaderboard();
       }
 
       // -- Desktop gaze detection (mouse pointer over A-Frame scene) ----
@@ -1619,6 +1653,21 @@
         },
         true,
       );
+
+      // Load and display top scores in lobby
+      function loadLeaderboard() {
+        fetch("/api/game/merkaba-ghosts/leaderboard")
+          .then(r=>r.json())
+          .then(d=>{
+            const el = document.getElementById("lobby-lb-rows");
+            if (!el || !d.leaderboard) return;
+            const colors = ["#ffd700","#c0c0c0","#cd7f32"];
+            el.innerHTML = d.leaderboard.slice(0,10).map((e,i)=>
+              `<span style="color:${colors[i]||'rgba(255,255,255,0.6)'}">${i+1}. ${e.name}</span> <span style="float:right;color:#00f5d4;">${e.score.toLocaleString()}</span><br>`
+            ).join("") || '<span style="color:rgba(255,255,255,0.3)">No scores yet — be the first!</span>';
+          }).catch(()=>{});
+      }
+      loadLeaderboard();
     </script>
   </body>
 </html>

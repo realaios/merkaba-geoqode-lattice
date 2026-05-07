@@ -15,12 +15,12 @@ $files = Get-ChildItem $dir -Filter "*.html" | Where-Object { $_.Name -ne "googl
 
 $count = 0
 foreach ($f in $files) {
-  $c = [System.IO.File]::ReadAllText($f.FullName, [System.Text.Encoding]::UTF8)
-  if ($c.Contains("AW-18009079831")) { Write-Host "SKIP: $($f.Name)"; continue }
-  if (-not $c.Contains("</head>")) { Write-Host "NO_HEAD: $($f.Name)"; continue }
-  $new = $c.Replace("</head>", $gtag)
-  [System.IO.File]::WriteAllText($f.FullName, $new, (New-Object System.Text.UTF8Encoding $false))
-  Write-Host "OK: $($f.Name)"
-  $count++
+    $c = [System.IO.File]::ReadAllText($f.FullName, [System.Text.Encoding]::UTF8)
+    if ($c.Contains("AW-18009079831")) { Write-Host "SKIP: $($f.Name)"; continue }
+    if (-not $c.Contains("</head>")) { Write-Host "NO_HEAD: $($f.Name)"; continue }
+    $new = $c.Replace("</head>", $gtag)
+    [System.IO.File]::WriteAllText($f.FullName, $new, (New-Object System.Text.UTF8Encoding $false))
+    Write-Host "OK: $($f.Name)"
+    $count++
 }
 Write-Host "Done: $count files updated"

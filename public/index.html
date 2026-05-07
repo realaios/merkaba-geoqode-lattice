@@ -1325,8 +1325,7 @@
         }
       }
     </style>
-  
-</head>
+  </head>
   <body>
     <!-- -- NAV -- -->
     <nav class="site-nav">
@@ -2622,7 +2621,8 @@
                 0,
               );
               const plaiEl = document.getElementById("stat-plai-count");
-              if (plaiEl && totalApps > 0) plaiEl.textContent = Math.max(totalApps, 200) + "+";
+              if (plaiEl && totalApps > 0)
+                plaiEl.textContent = Math.max(totalApps, 200) + "+";
             }
             const grid = document.getElementById("plai-cat-grid");
             if (grid && d.categories) {
