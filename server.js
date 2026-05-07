@@ -294,6 +294,16 @@ const MERKABA_AI_VERIFICATION_PAGE = {
 // ─── AIOS News Feed — canonical update log for /news and /news.json ─────────
 const AIOS_NEWS = [
   {
+    id: "2026-05-13-plaistore-436-apps",
+    date: "2026-05-13",
+    category: "Platform",
+    title: "PLAIStore Crosses 436 Apps — Games Category Launches, A-Frame Self-Hosted for Reliability",
+    summary:
+      "PLAIStore now catalogues 436 apps across 11 categories after Batch 8 adds a dedicated Games category (8 browser games), 10 AI Agents, 10 Codex templates covering Next.js 15, FastAPI, Go Fiber, NestJS, and tRPC, 10 Integrations, 6 Analytics tools, and 6 VR experiences. Alongside this milestone, AIOS self-hosted A-Frame 1.4.0 to eliminate CDN redirect issues — all 4 arcade games now load directly from realaios.com infrastructure for zero-dependency reliability. Install counters grow autonomously every 45 seconds.",
+    tags: ["plaistore", "games", "milestone", "436", "aframe", "self-hosted", "reliability"],
+    url: "https://realaios.com/plaistore",
+  },
+  {
     id: "2026-05-12-plaistore-386-apps",
     date: "2026-05-12",
     category: "Platform",
@@ -1504,6 +1514,63 @@ function _seedPlaiApps() {
     { cat: "Playbooks", name: "International Expansion Playbook", desc: "Market prioritisation framework, localisation checklist, regulatory requirements by jurisdiction, and growth channel adaptation matrix.", dl: 556 },
     { cat: "Playbooks", name: "Technical Hiring Playbook", desc: "Full-cycle engineering hiring: job spec templates, take-home vs live-coding debate, offer structuring, and onboarding 30-60-90 plans.", dl: 489 },
     { cat: "Playbooks", name: "Incident Response Playbook", desc: "P0/P1/P2 incident severity matrix, communication templates, post-mortem structure, blameless culture practices, and SLA recovery protocols.", dl: 534 },
+    // ── Batch 8 (50 apps → 436 total) ─────────────────────────────────────
+    // Games & Entertainment (8)
+    { cat: "Games", name: "Neon Drift Racer", desc: "Browser-based top-down racer through neon lattice highways. Drift corners to charge your PHI boost meter. 8 tracks, local leaderboard.", dl: 892 },
+    { cat: "Games", name: "Quantum Tetromino", desc: "Tetris-style puzzle game where pieces carry geometric frequencies. Match same-frequency blocks to trigger harmonic chain reactions.", dl: 734 },
+    { cat: "Games", name: "Lattice Sniper", desc: "First-person VR sniper game. Identify valid lattice nodes vs corrupted imposters using frequency analysis. 5 difficulty tiers.", dl: 611 },
+    { cat: "Games", name: "Merkaba Pinball", desc: "Geometric pinball machine built on the D48 lattice. Each bumper emits a frequency tone on hit. Unlock all 8 sectors to win.", dl: 478 },
+    { cat: "Games", name: "Code Runner 48", desc: "Infinite side-scroller where your character is an AI agent navigating a corrupted codebase. Jump over bugs, collect tokens.", dl: 1024 },
+    { cat: "Games", name: "Frequency Frogger", desc: "Cross the 8 frequency rivers without getting hit by low-coherence waveforms. Each river runs at a different Solfeggio frequency.", dl: 556 },
+    { cat: "Games", name: "PHI Tower Defense", desc: "Place geometric defenders along the 48-node lattice perimeter. Enemies scale by PHI each wave. 12 unique defender types.", dl: 813 },
+    { cat: "Games", name: "Holographic Maze Runner", desc: "First-person maze built from holographic geometry. Find the coherence crystal before your frequency degrades. Procedurally generated.", dl: 445 },
+    // AI Agents (10)
+    { cat: "Agents", name: "Legal Contract Reviewer", desc: "Scans contracts for unfavorable clauses, missing indemnity terms, IP ownership risks, and jurisdiction mismatches. Outputs redline suggestions.", dl: 723 },
+    { cat: "Agents", name: "Cold Email Personaliser", desc: "Researches prospect LinkedIn + company news, generates hyper-personalised outreach emails. A/B variant generation built in.", dl: 956 },
+    { cat: "Agents", name: "PR Crisis Monitor", desc: "Watches social media and news for brand mentions with negative sentiment. Drafts response templates and alerts on-call team.", dl: 384 },
+    { cat: "Agents", name: "Developer Onboarding Guide", desc: "Reads your codebase, generates interactive onboarding docs, identifies undocumented APIs, creates architecture diagrams.", dl: 612 },
+    { cat: "Agents", name: "Recruitment Screener", desc: "Parses CVs, scores against job description criteria, generates interview questions, schedules callbacks. GDPR-compliant.", dl: 489 },
+    { cat: "Agents", name: "Market Research Synthesiser", desc: "Aggregates industry reports, analyst notes, and competitor filings into a structured research brief with key takeaways.", dl: 731 },
+    { cat: "Agents", name: "Compliance Checklist Generator", desc: "Reads your product spec and generates compliance checklists for GDPR, SOC2, HIPAA, PCI-DSS based on data flow.", dl: 567 },
+    { cat: "Agents", name: "Investor Update Writer", desc: "Pulls MRR, churn, milestone data from your CRM and database, drafts a polished monthly investor update email.", dl: 634 },
+    { cat: "Agents", name: "Customer Feedback Analyser", desc: "Ingests review data from App Store, G2, Trustpilot. Clusters themes, tracks sentiment over time, surfaces feature requests.", dl: 812 },
+    { cat: "Agents", name: "Procurement Bid Writer", desc: "Reads RFP documents, generates compliant bid responses with pricing tables, technical specs, and capability statements.", dl: 298 },
+    // Codex Templates (10)
+    { cat: "Codex", name: "Next.js 15 App Router Starter", desc: "Production-ready Next.js 15 with App Router, TypeScript, Tailwind CSS, shadcn/ui, Prisma ORM, NextAuth, and Vercel deployment config.", dl: 2341 },
+    { cat: "Codex", name: "FastAPI + PostgreSQL API", desc: "Async FastAPI backend with PostgreSQL via asyncpg, Alembic migrations, JWT auth, Redis caching, Docker Compose.", dl: 1876 },
+    { cat: "Codex", name: "Remix + Cloudflare Workers", desc: "Full-stack Remix app deployed to Cloudflare Workers with D1 database, KV storage, and R2 object storage.", dl: 934 },
+    { cat: "Codex", name: "SvelteKit + PocketBase", desc: "SvelteKit frontend with PocketBase as a self-hosted backend. Real-time subscriptions, file uploads, OAuth built in.", dl: 723 },
+    { cat: "Codex", name: "Go Fiber REST API", desc: "High-performance Go REST API using Fiber framework, GORM ORM, JWT middleware, Swagger docs, Docker multi-stage build.", dl: 1243 },
+    { cat: "Codex", name: "NestJS Microservices", desc: "NestJS monorepo with multiple microservices, RabbitMQ message bus, API gateway, service discovery, Docker Compose orchestration.", dl: 834 },
+    { cat: "Codex", name: "Astro + MDX Blog", desc: "Blazing-fast static blog with Astro, MDX content collections, RSS feed, sitemap generation, SEO optimization, Vercel/Netlify deploy.", dl: 1567 },
+    { cat: "Codex", name: "React Native + Expo Starter", desc: "Cross-platform mobile app starter with Expo Router, Zustand, React Query, NativeWind, Expo Notifications, and EAS build config.", dl: 1123 },
+    { cat: "Codex", name: "Stripe Billing Boilerplate", desc: "Complete Stripe billing integration: subscriptions, usage-based billing, customer portal, webhook handling, proration logic.", dl: 987 },
+    { cat: "Codex", name: "tRPC + Drizzle ORM Stack", desc: "End-to-end typesafe API with tRPC, Drizzle ORM, Zod validation, Next.js App Router, and PostgreSQL.", dl: 756 },
+    // Integrations (10)
+    { cat: "Integrations", name: "Linear → GitHub Auto-PR", desc: "When a Linear issue moves to In Progress, automatically creates a GitHub branch and draft PR with the issue description.", dl: 634 },
+    { cat: "Integrations", name: "Notion → Airtable Sync", desc: "Bi-directional sync between Notion databases and Airtable bases. Field mapping config, conflict resolution, audit log.", dl: 512 },
+    { cat: "Integrations", name: "Slack → Trello Task Creator", desc: "React to any Slack message with 📋 to create a Trello card with the message content, sender, and channel context.", dl: 789 },
+    { cat: "Integrations", name: "Typeform → HubSpot CRM", desc: "New Typeform submission → creates HubSpot contact, assigns to rep by territory, sends personalised welcome email.", dl: 623 },
+    { cat: "Integrations", name: "Stripe → Segment Events", desc: "Tracks Stripe payment lifecycle events (trial start, upgrade, downgrade, churn) as Segment events for analytics.", dl: 445 },
+    { cat: "Integrations", name: "GitHub Actions → Slack Deploy Bot", desc: "Posts formatted deploy notifications to Slack on GitHub Actions workflow complete. Includes diff summary and rollback link.", dl: 891 },
+    { cat: "Integrations", name: "Zendesk → Linear Escalator", desc: "When a Zendesk ticket breaches SLA or hits priority threshold, auto-creates a Linear bug with full ticket context.", dl: 367 },
+    { cat: "Integrations", name: "Google Analytics → Slack Digest", desc: "Daily GA4 metrics digest posted to Slack: sessions, conversions, top pages, bounce rate, revenue. Trend arrows included.", dl: 534 },
+    { cat: "Integrations", name: "Webflow → Mailchimp CMS Sync", desc: "Publishes new Webflow CMS items to a Mailchimp campaign automatically. Template mapping, tag assignment, send scheduling.", dl: 423 },
+    { cat: "Integrations", name: "PagerDuty → Jira Incident Tracker", desc: "PagerDuty alert triggered → creates Jira incident ticket, links runbook, notifies on-call engineer via Slack DM.", dl: 589 },
+    // Analytics (6)
+    { cat: "Analytics", name: "SaaS Revenue Dashboard", desc: "Live dashboard: MRR, ARR, LTV, CAC, payback period, net revenue retention. Connects to Stripe. Exportable to PDF.", dl: 1234 },
+    { cat: "Analytics", name: "Product Usage Heatmap", desc: "Visualises feature usage frequency across your app. Identify adoption gaps, power users, and churn-risk segments.", dl: 856 },
+    { cat: "Analytics", name: "Email Campaign Analyser", desc: "Aggregates open rates, click rates, unsubscribes across ESP providers. Identifies optimal send times and subject line patterns.", dl: 634 },
+    { cat: "Analytics", name: "Infrastructure Cost Tracker", desc: "Pulls cloud spend from AWS, GCP, Railway, Vercel. Allocates costs by service, tracks anomalies, forecasts monthly bill.", dl: 712 },
+    { cat: "Analytics", name: "Sales Pipeline Velocity", desc: "Tracks average deal velocity by stage, rep, and source. Identifies bottlenecks and forecasts quarterly close probability.", dl: 523 },
+    { cat: "Analytics", name: "API Health Score Card", desc: "Monitors your API endpoints for latency, error rate, and availability. Weekly scorecard emailed to engineering team.", dl: 445 },
+    // VR (6)
+    { cat: "VR", name: "Ancient Athens Agora", desc: "Walk through the Ancient Athenian Agora at its peak in 400 BC. Socrates debates philosophy at the Stoa. Fully 3D, Quest-compatible.", dl: 367 },
+    { cat: "VR", name: "Quantum Computing Lab", desc: "Interactive VR tour of a quantum computer. Manipulate qubits, observe superposition, and run simple quantum circuits.", dl: 489 },
+    { cat: "VR", name: "Northern Lights Observatory", desc: "Aurora Borealis at the Arctic Circle. Realistic particle simulation of solar wind interacting with the magnetosphere.", dl: 734 },
+    { cat: "VR", name: "Tokyo Neon Street Market", desc: "Night-time street market in a cyberpunk Tokyo. Browse stalls, hear ambient sounds, watch animated holograms.", dl: 623 },
+    { cat: "VR", name: "Medieval Castle Defence", desc: "First-person VR defence of a medieval castle. Coordinate with AI archers and catapults to repel waves of attackers.", dl: 812 },
+    { cat: "VR", name: "Molecular Biology Lab", desc: "Manipulate protein structures in 3D. Build DNA sequences, observe cellular mitosis, and explore ribosome translation.", dl: 534 },
   ];
   for (const { cat, name, desc, dl } of seed) {
     const bundle = "com.aios." + cat.toLowerCase() + "." + name.toLowerCase().replace(/[^a-z0-9]+/g, ".");
