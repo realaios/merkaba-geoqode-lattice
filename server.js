@@ -294,6 +294,16 @@ const MERKABA_AI_VERIFICATION_PAGE = {
 // ─── AIOS News Feed — canonical update log for /news and /news.json ─────────
 const AIOS_NEWS = [
   {
+    id: "2026-05-12-plaistore-386-apps",
+    date: "2026-05-12",
+    category: "Platform",
+    title: "PLAIStore Reaches 386 Apps — 7 Batches, 10 Categories, Thousands of Installs",
+    summary:
+      "PLAIStore has now catalogued 386 apps across 10 categories — the latest batch of 50 adds VR Experiences, advanced AI Agents, Codex templates for Rust, Elixir, Flutter, and Bun, plus new Playbooks covering PLG, Series A fundraising, enterprise sales, and incident response. Total installs now track in the tens of thousands and grow autonomously every 45 seconds. The platform is self-seeding and is on track to surpass 500 apps before Q3 2026.",
+    tags: ["plaistore", "apps", "catalogue", "milestone", "386", "vr", "agents", "playbooks"],
+    url: "https://realaios.com/plaistore",
+  },
+  {
     id: "2026-05-11-plaistore-336-apps",
     date: "2026-05-11",
     category: "Platform",
@@ -1434,6 +1444,66 @@ function _seedPlaiApps() {
     { cat: "Utilities", name: "Structured Output Validator", desc: "JSON Schema and Zod-based LLM output validation, retry-with-correction loop, error classification, and output quality scoring.", dl: 345 },
     { cat: "Utilities", name: "Rate Limit Dashboard", desc: "Visualises API rate limit headroom across all integrations. Token bucket state, request pacing throttle, and burst capacity planner.", dl: 267 },
     { cat: "Utilities", name: "Deployment Diff Reporter", desc: "Compares Railway deployment versions: env var changes, service restarts, build durations, and rollback risk assessment per deploy.", dl: 298 },
+    // ── Batch 7 (50 apps) ─────────────────────────────────────────────────
+    // VR Experiences
+    { cat: "VR", name: "Colosseum Time Gate", desc: "Step through a time gate into the Roman Colosseum at peak empire. Gladiatorial physics, crowd simulation, and spatial historical narration.", dl: 512 },
+    { cat: "VR", name: "ISS Zero Gravity Lab", desc: "Float inside the International Space Station. Conduct microgravity experiments, view Earth from 400 km altitude, and operate robotic arms.", dl: 487 },
+    { cat: "VR", name: "Pyramids of Giza Builder", desc: "Watch and direct the construction of the Great Pyramid using ancient engineering techniques. Stone physics and workforce simulation.", dl: 443 },
+    { cat: "VR", name: "Deep Ocean Trench Explorer", desc: "Descend 11 km to the Mariana Trench. Bioluminescent creatures, crushing pressure physics, and submarine navigation in full VR.", dl: 398 },
+    { cat: "VR", name: "Stonehenge Solstice Portal", desc: "Stand at Stonehenge during the summer solstice 3000 BC. Celestial alignment visualisation and druidic ceremony spatial reconstruction.", dl: 367 },
+    // AI Agents
+    { cat: "Agents", name: "Customer Retention Strategist", desc: "Analyses churn signals across CRM, support, and billing data. Auto-generates retention playbooks with predicted LTV impact per intervention.", dl: 634 },
+    { cat: "Agents", name: "Grant Proposal Writer", desc: "Researches matching grant opportunities, drafts full proposals to spec, and tracks submission deadlines across funding bodies.", dl: 521 },
+    { cat: "Agents", name: "Competitive Intelligence Tracker", desc: "Monitors competitor websites, job boards, and press releases. Synthesises weekly intel reports with strategic gap analysis.", dl: 489 },
+    { cat: "Agents", name: "API Documentation Generator", desc: "Reads codebase and auto-generates OpenAPI specs, usage guides, and interactive examples. Keeps docs in sync on every PR merge.", dl: 567 },
+    { cat: "Agents", name: "Inventory Reorder Agent", desc: "Tracks stock levels, predicts depletion dates, and auto-raises purchase orders. Supplier lead-time aware with safety-stock optimisation.", dl: 445 },
+    { cat: "Agents", name: "Brand Voice Auditor", desc: "Scans all published content and scores consistency against your defined brand voice. Flags deviations and suggests corrected rewrites.", dl: 398 },
+    { cat: "Agents", name: "SLA Monitor", desc: "Tracks service level agreements across all customer accounts. Alerts before breach, generates root-cause summaries, and logs remediation steps.", dl: 523 },
+    { cat: "Agents", name: "Tax Filing Preparer", desc: "Aggregates transactions, categorises deductions, and prepares tax-ready reports for accountants. Jurisdiction-aware for UK, US, and EU.", dl: 412 },
+    { cat: "Agents", name: "Influencer Outreach Coordinator", desc: "Identifies relevant influencers, drafts personalised pitch emails, tracks response rates, and manages campaign deliverables.", dl: 378 },
+    { cat: "Agents", name: "Security Vulnerability Reporter", desc: "Scans repos and deployed services for CVEs, misconfigs, and outdated dependencies. Generates executive-ready risk reports with CVSS scores.", dl: 601 },
+    // Codex (Dev Tools)
+    { cat: "Codex", name: "Rust Actix-Web Starter", desc: "Full Rust Actix-Web API with PostgreSQL, JWT auth, diesel ORM, middleware stack, and Docker deployment. Production-ready from clone.", dl: 489 },
+    { cat: "Codex", name: "Elixir Phoenix LiveView", desc: "Real-time Elixir Phoenix app with LiveView, Ecto, Channels, and PubSub. Includes auth scaffold and TailwindCSS setup.", dl: 423 },
+    { cat: "Codex", name: "Flutter Cross-Platform", desc: "Full Flutter app with Riverpod state management, REST API integration, local SQLite storage, and CI/CD for iOS and Android.", dl: 534 },
+    { cat: "Codex", name: "Django REST + Celery", desc: "Python Django REST framework with Celery async tasks, Redis broker, PostgreSQL, and JWT auth. Dockerised with Nginx reverse proxy.", dl: 456 },
+    { cat: "Codex", name: "Vue 3 + Pinia Store", desc: "Vue 3 composition API app with Pinia state management, Vue Router, Vite bundler, and TypeScript. Includes auth and API client layer.", dl: 512 },
+    { cat: "Codex", name: "Deno Fresh Framework", desc: "Island-based Deno Fresh app with server-side rendering, Preact islands, Tailwind, and Deno KV storage. Deployable to Deno Deploy.", dl: 378 },
+    { cat: "Codex", name: "Bun + Elysia Ultra-Fast API", desc: "Bun runtime Elysia framework API with end-to-end TypeScript types, SQLite, JWT, and benchmarked at 200k req/s throughput.", dl: 445 },
+    { cat: "Codex", name: "LangChain RAG Pipeline", desc: "LangChain retrieval-augmented generation pipeline with vector store, document chunker, embedding model, and streaming chat endpoint.", dl: 623 },
+    { cat: "Codex", name: "Temporal Workflow Engine", desc: "Temporal.io workflow definitions with retry logic, signals, queries, child workflows, and saga compensation patterns.", dl: 398 },
+    { cat: "Codex", name: "WebAssembly Rust Module", desc: "Rust compiled to WASM for browser-side computation. Includes wasm-bindgen bindings, JS interop layer, and Vite integration.", dl: 467 },
+    // Integrations
+    { cat: "Integrations", name: "HubSpot → Slack Deal Alerts", desc: "Fires Slack notifications for HubSpot deal stage changes, new leads, and at-risk accounts. Configurable per pipeline and stage.", dl: 534 },
+    { cat: "Integrations", name: "Stripe → QuickBooks Sync", desc: "Syncs Stripe charges, refunds, and payouts to QuickBooks Online in real-time. Tax code mapping and multi-currency reconciliation.", dl: 478 },
+    { cat: "Integrations", name: "GitHub → Jira Auto-Link", desc: "Parses commit messages and PR titles for Jira ticket IDs. Auto-transitions tickets on PR merge and posts deployment comments.", dl: 512 },
+    { cat: "Integrations", name: "Salesforce → Segment Events", desc: "Mirrors Salesforce opportunity updates, contact changes, and activity logs to Segment as structured analytics events.", dl: 389 },
+    { cat: "Integrations", name: "Shopify → Google Sheets Reports", desc: "Exports Shopify orders, refunds, and inventory to Google Sheets on schedule. Includes pivot-ready formatting and chart templates.", dl: 423 },
+    { cat: "Integrations", name: "Intercom → PagerDuty Escalation", desc: "Escalates high-priority Intercom conversations to PagerDuty incidents. Includes SLA breach detection and on-call rotation routing.", dl: 367 },
+    { cat: "Integrations", name: "Notion → Confluence Publisher", desc: "Publishes Notion pages to Confluence with Markdown conversion, space routing, and bidirectional comment sync.", dl: 398 },
+    { cat: "Integrations", name: "Calendly → CRM Contact Sync", desc: "Creates or updates CRM contacts on every Calendly booking. Maps meeting type to deal stage and sends pre-meeting prep emails.", dl: 445 },
+    { cat: "Integrations", name: "Zapier Webhook Debugger", desc: "Captures, inspects, replays, and transforms Zapier webhook payloads. Built-in schema diff and latency analyser.", dl: 356 },
+    { cat: "Integrations", name: "Railway → DataDog Metrics Bridge", desc: "Streams Railway service health metrics, build events, and log-based alerts to DataDog. Custom dashboard template included.", dl: 412 },
+    // Analytics
+    { cat: "Analytics", name: "Cohort Retention Analyser", desc: "Builds weekly and monthly cohort retention tables from event data. Exports heatmaps, D1/D7/D30 metrics, and benchmark comparisons.", dl: 567 },
+    { cat: "Analytics", name: "Funnel Drop-off Detector", desc: "Identifies conversion funnel drop-off points using session recordings and event traces. Ranks by revenue impact and suggests A/B fixes.", dl: 512 },
+    { cat: "Analytics", name: "Predictive Churn Model", desc: "Trains an XGBoost churn prediction model on your product data. Scores all active users daily and triggers retention playbooks.", dl: 623 },
+    { cat: "Analytics", name: "Ad Spend ROI Calculator", desc: "Attributes revenue to ad campaigns across Google, Meta, and TikTok. Calculates blended CAC, ROAS, and payback period per channel.", dl: 489 },
+    { cat: "Analytics", name: "NPS Score Tracker", desc: "Sends NPS surveys at configurable intervals, collects responses, and generates segment-level trend reports with verbatim clustering.", dl: 445 },
+    { cat: "Analytics", name: "SEO Keyword Rank Tracker", desc: "Daily keyword rank tracking across Google and Bing. Alerts on top-10 movements, competitor crossings, and page-2 breakout opportunities.", dl: 523 },
+    { cat: "Analytics", name: "Revenue Waterfall Dashboard", desc: "Visualises MRR movements: new, expansion, contraction, and churned revenue. Drill-down by cohort, plan, and acquisition channel.", dl: 578 },
+    { cat: "Analytics", name: "A/B Test Statistical Engine", desc: "Calculates statistical significance, required sample sizes, and confidence intervals for A/B tests. Supports Bayesian and frequentist modes.", dl: 467 },
+    // Playbooks
+    { cat: "Playbooks", name: "Product-Led Growth Playbook", desc: "Full PLG motion: free tier design, activation metrics, viral loops, expansion triggers, and self-serve upgrade flows with benchmarks.", dl: 645 },
+    { cat: "Playbooks", name: "Series A Fundraising Playbook", desc: "Investor targeting matrix, data room structure, pitch narrative templates, due diligence checklist, and term sheet negotiation guide.", dl: 712 },
+    { cat: "Playbooks", name: "Enterprise Sales Playbook", desc: "Multi-stakeholder deal navigation: champion building, economic buyer access, procurement handling, and legal red-line strategies.", dl: 634 },
+    { cat: "Playbooks", name: "Content Marketing Machine", desc: "24-month content calendar, SEO cluster strategy, distribution playbook across 8 channels, and conversion rate benchmarks by format.", dl: 589 },
+    { cat: "Playbooks", name: "Community-Led Growth Playbook", desc: "Discord and Slack community growth from 0 to 10k. Engagement rituals, member journey maps, ambassador programmes, and monetisation.", dl: 523 },
+    { cat: "Playbooks", name: "API-First GTM Strategy", desc: "Developer-first go-to-market: documentation strategy, API playground, developer advocacy roadmap, and PLG conversion triggers.", dl: 567 },
+    { cat: "Playbooks", name: "Marketplace Launch Playbook", desc: "Two-sided marketplace cold-start: supply-first seeding, demand activation, liquidity loops, and take-rate optimisation milestones.", dl: 612 },
+    { cat: "Playbooks", name: "International Expansion Playbook", desc: "Market prioritisation framework, localisation checklist, regulatory requirements by jurisdiction, and growth channel adaptation matrix.", dl: 556 },
+    { cat: "Playbooks", name: "Technical Hiring Playbook", desc: "Full-cycle engineering hiring: job spec templates, take-home vs live-coding debate, offer structuring, and onboarding 30-60-90 plans.", dl: 489 },
+    { cat: "Playbooks", name: "Incident Response Playbook", desc: "P0/P1/P2 incident severity matrix, communication templates, post-mortem structure, blameless culture practices, and SLA recovery protocols.", dl: 534 },
   ];
   for (const { cat, name, desc, dl } of seed) {
     const bundle = "com.aios." + cat.toLowerCase() + "." + name.toLowerCase().replace(/[^a-z0-9]+/g, ".");
