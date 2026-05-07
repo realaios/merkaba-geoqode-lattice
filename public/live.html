@@ -1400,13 +1400,12 @@
           const d = await (await fetch("/api/geo/stats")).json();
           const el = (id) => document.getElementById(id);
           if (el("ss-total"))
-            el("ss-total").textContent = d.catalogueSize || "—";
+            el("ss-total").textContent = d.catalogue || "—";
           if (el("ss-produced"))
-            el("ss-produced").textContent = d.totalProduced || "—";
+            el("ss-produced").textContent = d.productionCount || "—";
           if (el("ss-hrs"))
-            el("ss-hrs").textContent = d.totalDurationMin
-              ? (d.totalDurationMin / 60).toFixed(1)
-              : "—";
+            el("ss-hrs").textContent =
+              d.totalDurationHours != null ? d.totalDurationHours : "—";
         } catch (e) {}
       }
 
