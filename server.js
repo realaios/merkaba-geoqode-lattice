@@ -294,6 +294,16 @@ const MERKABA_AI_VERIFICATION_PAGE = {
 // ─── AIOS News Feed — canonical update log for /news and /news.json ─────────
 const AIOS_NEWS = [
   {
+    id: "2026-05-11-plaistore-336-apps",
+    date: "2026-05-11",
+    category: "Platform",
+    title: "PLAIStore Surpasses 336 Apps — Autonomous Catalogue Keeps Growing",
+    summary:
+      "PLAIStore has crossed 336 apps — 50 new additions spanning Theatre, Cinema, Agents, Codex, Integrations, and Utilities categories. Every app is free, developer-verified, and grounded in the Merkaba GeoQode semantic architecture. The autonomous install counter continues to tick: total installs are growing organically as users discover and install across all 8 categories. The catalogue is self-seeding and will keep expanding.",
+    tags: ["plaistore", "apps", "catalogue", "store", "milestone", "336"],
+    url: "https://realaios.com/plaistore",
+  },
+  {
     id: "2026-05-10-plaistore-285-apps",
     date: "2026-05-10",
     category: "Platform",
@@ -1367,6 +1377,63 @@ function _seedPlaiApps() {
     { cat: "Utilities", name: "Database Migration Manager", desc: "Forward/rollback migrations, dry-run preview, execution log, schema diff viewer, and Railway-native deployment hooks.", dl: 334 },
     { cat: "Utilities", name: "API Contract Validator", desc: "OpenAPI spec drift detection, breaking change alerts on PR, endpoint coverage analysis, and mock server generation.", dl: 298 },
     { cat: "Utilities", name: "Cache Warming Tool", desc: "Pre-populates Redis caches post-deployment using production traffic pattern analysis. Configurable TTL and key namespace targeting.", dl: 267 },
+    // ── Batch 6: 50 more apps ──────────────────────────────────────────────
+    // Theatre
+    { cat: "Theatre", name: "2001 — The Monolith Encounter", desc: "Stand before Kubrick's black slab on the African plain. Ape-men circle you. Time compresses 4 million years into 3 minutes of awe.", dl: 612 },
+    { cat: "Theatre", name: "Annihilation — The Shimmer", desc: "Step through Garland's refracting membrane into the zone where biology rewrites itself. DNA-helix corridors, lighthouse finale, self-encounter.", dl: 534 },
+    { cat: "Theatre", name: "Sphere — Ocean Manifestation", desc: "Crichton's alien sphere manifests at depth. Submerged station, manifested fears, and the final choice to forget — rendered in full undersea WebXR.", dl: 487 },
+    { cat: "Theatre", name: "Arrival — Language Cloud", desc: "Louise Banks deciphers heptapod logograms. Circular time revealed spatially. Each logogram appears as a 3D ink bloom in zero gravity.", dl: 556 },
+    { cat: "Theatre", name: "Interstellar — Tesseract", desc: "Cooper's 5D bookshelf moment. Gravitational messages encoded in book-fall patterns. Time as a spatial dimension you can reach through.", dl: 598 },
+    // Cinema
+    { cat: "Cinema", name: "Blade Runner — Tears in Rain", desc: "Roy Batty's final soliloquy on the rain-drenched rooftop. Spinner cars drift overhead. C-beams near the Tannhäuser Gate visible in the distance.", dl: 445 },
+    { cat: "Cinema", name: "The Truman Show — Dome Exit", desc: "Truman discovers the studio wall and staircase. Audience reaction screens surround you. The final bow rendered as participatory media art.", dl: 423 },
+    { cat: "Cinema", name: "Pi — Number Spiral", desc: "Max Cohen's paranoid Manhattan. Fibonacci spirals encoded in subway tile patterns. The 216-digit number rendered as a 3D lattice you walk through.", dl: 378 },
+    { cat: "Cinema", name: "eXistenZ — Game Pod", desc: "Cronenberg's bio-port installation. Organic game cartridges, reality-layer stripping, and the meta-game question rendered as nested WebXR rooms.", dl: 356 },
+    { cat: "Cinema", name: "Moon — Sam Bell Encounter", desc: "Rockwell's two Sams face each other in the harvester bay. GERTY's rotating face cube. Loneliness of the far side of the Moon — spatially.", dl: 412 },
+    // Agents
+    { cat: "Agents", name: "Sales Outreach Orchestrator", desc: "Prospect research, personalised cold email sequences, follow-up timing optimisation, reply classification, and CRM sync — fully autonomous.", dl: 489 },
+    { cat: "Agents", name: "Legal Contract Reviewer", desc: "Clause extraction, risk flagging, GDPR compliance check, negotiation redline suggestions, and standard deviation from market terms analysis.", dl: 445 },
+    { cat: "Agents", name: "Social Listening Agent", desc: "Brand mention tracking across Twitter, Reddit, and LinkedIn. Sentiment trend alerts, viral content detection, and weekly report generation.", dl: 412 },
+    { cat: "Agents", name: "Candidate Screening Agent", desc: "JD-to-resume matching, skills gap analysis, automated interview question generation, reference check drafting, and ATS sync.", dl: 423 },
+    { cat: "Agents", name: "E-Commerce Price Optimiser", desc: "Competitor price scraping, demand elasticity modelling, margin-safe discount scheduling, and A/B pricing experiment orchestration.", dl: 467 },
+    { cat: "Agents", name: "Infrastructure Cost Auditor", desc: "Cloud spend analysis across AWS/GCP/Railway, idle resource detection, right-sizing recommendations, and budget alert configuration.", dl: 389 },
+    { cat: "Agents", name: "Compliance Monitoring Agent", desc: "SOC2/GDPR/HIPAA policy drift detection, evidence collection automation, audit trail generation, and remediation ticket creation.", dl: 356 },
+    { cat: "Agents", name: "Product Review Synthesiser", desc: "Scrapes G2, Trustpilot, and App Store reviews. Clusters by theme, surfaces feature requests, tracks NPS drift, and briefs product team.", dl: 398 },
+    { cat: "Agents", name: "Meeting Intelligence Agent", desc: "Transcript analysis, action item extraction, decision logging, follow-up email drafting, and CRM note population from every call.", dl: 434 },
+    { cat: "Agents", name: "Supply Chain Risk Monitor", desc: "Supplier news monitoring, geopolitical risk scoring, lead-time variance alerts, and alternative vendor recommendation generation.", dl: 312 },
+    // Codex
+    { cat: "Codex", name: "Next.js 15 App Router Starter", desc: "Server components, streaming, parallel routes, RSC data patterns, Edge Runtime config, and Vercel/Railway deploy-ready setup.", dl: 534 },
+    { cat: "Codex", name: "tRPC + Prisma + Next.js", desc: "Type-safe full-stack template with end-to-end type inference, zod validation, optimistic updates, and Railway Postgres provisioning.", dl: 512 },
+    { cat: "Codex", name: "Redis Pub/Sub Event Bus", desc: "Publisher/subscriber pattern with channel namespacing, message schema validation, dead-letter queue, and Redis Streams persistence.", dl: 445 },
+    { cat: "Codex", name: "WebSocket Gateway Pattern", desc: "Horizontally scalable WS gateway with Redis adapter, room management, presence tracking, and graceful reconnection handling.", dl: 467 },
+    { cat: "Codex", name: "Monorepo with Turborepo", desc: "Shared packages, incremental builds, remote caching, workspace protocol linking, and coordinated Railway multi-service deploy.", dl: 489 },
+    { cat: "Codex", name: "GraphQL Federation Gateway", desc: "Apollo Federation 2.x supergraph with subgraph stitching, auth context propagation, persisted queries, and schema registry integration.", dl: 423 },
+    { cat: "Codex", name: "Kafka Event Sourcing Pattern", desc: "CQRS with Kafka topics, consumer group management, exactly-once semantics, event replay, and projection rebuild utilities.", dl: 398 },
+    { cat: "Codex", name: "Svelte + SvelteKit Scaffold", desc: "SSR/CSR hybrid, load functions, form actions, page transitions, and Railway static adapter configuration for full-stack deployment.", dl: 378 },
+    { cat: "Codex", name: "Go Microservice Template", desc: "Chi router, structured logging, OpenTelemetry tracing, Prometheus metrics, graceful shutdown, and Docker multi-stage build.", dl: 412 },
+    { cat: "Codex", name: "Python FastAPI Starter", desc: "Async endpoints, Pydantic v2 models, SQLAlchemy 2.0, Alembic migrations, JWT auth middleware, and Railway deploy config.", dl: 445 },
+    // Integrations
+    { cat: "Integrations", name: "Linear → GitHub Sync", desc: "Issue creation from GitHub issues, PR status to Linear updates, branch naming enforcement, and cycle completion automation.", dl: 389 },
+    { cat: "Integrations", name: "Notion → Confluence Migrator", desc: "Page structure preservation, rich text conversion, attachment migration, permission mapping, and incremental sync mode.", dl: 345 },
+    { cat: "Integrations", name: "Shopify → Klaviyo Events", desc: "Purchase events, cart abandonment triggers, browse tracking, product review requests, and win-back campaign automation.", dl: 378 },
+    { cat: "Integrations", name: "Twilio → Zendesk Router", desc: "SMS/voice ticket creation, agent assignment rules, SLA timer integration, conversation threading, and CSAT survey dispatch.", dl: 334 },
+    { cat: "Integrations", name: "Airtable → PostgreSQL Sync", desc: "Bidirectional record sync, schema inference, conflict resolution, webhook-triggered updates, and transformation rule builder.", dl: 312 },
+    { cat: "Integrations", name: "Figma → Storybook Bridge", desc: "Design token extraction, component prop mapping, variant generation, and automated Storybook story scaffolding from Figma frames.", dl: 356 },
+    { cat: "Integrations", name: "Cloudflare → DataDog Pipe", desc: "Edge request metrics, Worker error forwarding, DNS analytics, cache hit-rate dashboards, and anomaly alert routing.", dl: 289 },
+    { cat: "Integrations", name: "Resend → PostHog Analytics", desc: "Email event tracking, open/click attribution, sequence performance funnels, unsubscribe cohort analysis, and A/B test result reporting.", dl: 323 },
+    { cat: "Integrations", name: "OpenAI → Pinecone RAG", desc: "Embedding generation pipeline, vector upsert batching, similarity search with metadata filters, and retrieval quality evaluation harness.", dl: 467 },
+    { cat: "Integrations", name: "Vercel → Railway Failover", desc: "Health check monitoring, automatic traffic rerouting, cache warm-up on failover, incident notification, and rollback coordination.", dl: 312 },
+    // Utilities
+    { cat: "Utilities", name: "Token Budget Tracker", desc: "OpenAI/Anthropic/Gemini API spend tracking, per-project budgets, cost-per-request analytics, and hard-limit circuit breaker.", dl: 423 },
+    { cat: "Utilities", name: "Environment Variable Auditor", desc: "Detects stale, unused, or missing env vars across Railway services. Generates `.env.example` diffs and secret rotation reminders.", dl: 389 },
+    { cat: "Utilities", name: "Webhook Replay Engine", desc: "Stores incoming webhooks, replays with configurable delay/filter, tests handler changes against historical payloads safely.", dl: 356 },
+    { cat: "Utilities", name: "Multi-Tenant Row Isolation", desc: "PostgreSQL RLS policy generator, tenant context injection middleware, query audit logging, and isolation test suite scaffold.", dl: 312 },
+    { cat: "Utilities", name: "Feature Flag Manager", desc: "Boolean and percentage rollout flags, user segment targeting, flag evaluation analytics, kill-switch dashboard, and SDK generator.", dl: 378 },
+    { cat: "Utilities", name: "Cron Job Monitor", desc: "Heartbeat tracking for scheduled tasks, missed-run alerting, duration anomaly detection, and Railway cron service health dashboard.", dl: 334 },
+    { cat: "Utilities", name: "OpenAPI Mock Server", desc: "Generates realistic mock responses from any OpenAPI 3.x spec. Response delay simulation, error injection, and contract test harness.", dl: 289 },
+    { cat: "Utilities", name: "Structured Output Validator", desc: "JSON Schema and Zod-based LLM output validation, retry-with-correction loop, error classification, and output quality scoring.", dl: 345 },
+    { cat: "Utilities", name: "Rate Limit Dashboard", desc: "Visualises API rate limit headroom across all integrations. Token bucket state, request pacing throttle, and burst capacity planner.", dl: 267 },
+    { cat: "Utilities", name: "Deployment Diff Reporter", desc: "Compares Railway deployment versions: env var changes, service restarts, build durations, and rollback risk assessment per deploy.", dl: 298 },
   ];
   for (const { cat, name, desc, dl } of seed) {
     const bundle = "com.aios." + cat.toLowerCase() + "." + name.toLowerCase().replace(/[^a-z0-9]+/g, ".");
