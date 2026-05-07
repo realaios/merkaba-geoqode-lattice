@@ -294,6 +294,16 @@ const MERKABA_AI_VERIFICATION_PAGE = {
 // ─── AIOS News Feed — canonical update log for /news and /news.json ─────────
 const AIOS_NEWS = [
   {
+    id: "2026-05-10-plaistore-285-apps",
+    date: "2026-05-10",
+    category: "Platform",
+    title: "PLAIStore Hits 285 Apps — 8 Categories, Live Install Counter",
+    summary:
+      "PLAIStore now carries 285 apps across 8 categories: Theatre (28), Cinema (26), Playbooks (30), Agents (35), Codex (32), Analytics (29), Integrations (32), and Utilities (31). A live install counter ticks up automatically — every real install is tracked and reflected in real-time. All apps are free, developer-verified, and grounded in the Merkaba GeoQode semantic architecture.",
+    tags: ["plaistore", "apps", "catalogue", "store", "milestone"],
+    url: "https://realaios.com/plaistore",
+  },
+  {
     id: "2026-05-09-merkaba-ghosts-launch",
     date: "2026-05-09",
     category: "VR Platform",
@@ -1308,6 +1318,55 @@ function _seedPlaiApps() {
     { cat: "Utilities", name: "Database Schema Visualizer", desc: "Generates interactive ER diagrams from PostgreSQL schemas. Relationship inference, index visualization, and query path tracing.", dl: 345 },
     { cat: "Utilities", name: "CI/CD Pipeline Analyzer", desc: "Identifies slow steps, flaky tests, and cache inefficiencies in GitHub Actions workflows. Generates optimization reports.", dl: 289 },
     { cat: "Utilities", name: "Load Test Orchestrator", desc: "k6-based load testing with Railway auto-scaling observation. Ramp patterns, p99 tracking, and bottleneck identification.", dl: 334 },
+    // ── Batch 5: 40 more apps ──────────────────────────────────────────────
+    // Theatre
+    { cat: "Theatre", name: "Ghost in the Shell — Section 9", desc: "Neo-Tokyo cyborg city. Ghost-dive through cyberbrain networks, meet the Puppet Master, and face identity dissolution in the net.", dl: 491 },
+    { cat: "Theatre", name: "The Matrix — Construct Training", desc: "Enter the all-white Construct. Morpheus loads weapons, Operator menus, and the jump program. Reality vs simulation rendered spatially.", dl: 524 },
+    { cat: "Theatre", name: "Solaris — Ocean of Memory", desc: "Float above Lem's alien ocean. Memories materialise as holographic figures around the station. Non-linear time encoded as GeoQode NARRATIVE.", dl: 467 },
+    { cat: "Theatre", name: "Stalker — The Zone Anomalies", desc: "Navigate Tarkovsky's forbidden Zone. Anomaly fields, philosophical encounters, and the Room at the centre rendered as WebXR contemplation.", dl: 443 },
+    { cat: "Theatre", name: "Contact — Machine Chamber", desc: "Sagan's first-contact pod sequence. Multi-dimensional alien machine activates around you. 18 hours of travel compressed to 20 seconds.", dl: 478 },
+    // Cinema
+    { cat: "Cinema", name: "Coherence — Quantum Twin House", desc: "8 people, one comet, infinite parallel selves. Branching identity paths rendered as spatial choice architecture.", dl: 389 },
+    { cat: "Cinema", name: "Primer — Recursive Time Loops", desc: "Aaronson's garage time machine. Nested causality loops, fail-safe diagrams, and branching timelines mapped as spatial graph.", dl: 356 },
+    { cat: "Cinema", name: "Pi — Kabbalistic Number Spiral", desc: "Aronofsky's fractal mathematics. 216-digit number, Kabbalistic spirals, and the pattern within markets rendered as hallucinatory walk.", dl: 334 },
+    { cat: "Cinema", name: "Eternal Sunshine — Memory Maze", desc: "Clementine and Joel's memory erasure sequence. Dissolving apartments, beach recollections, and the Lacuna procedure as spatial drama.", dl: 412 },
+    { cat: "Cinema", name: "The Man from Earth — Cave Drama", desc: "John Oldman's 14,000-year confession. Seven academics around a fire, real-time Socratic drama with no special effects.", dl: 298 },
+    // Playbooks
+    { cat: "Playbooks", name: "SaaS Pricing Optimisation", desc: "Value metrics, tier packaging, price increase communications, and willingness-to-pay research. Churn impact modelling included.", dl: 534 },
+    { cat: "Playbooks", name: "Open Source Monetisation", desc: "Community → paid conversion: OSS dual licensing, cloud-hosted tier, support contracts, and contributor-to-customer funnel.", dl: 489 },
+    { cat: "Playbooks", name: "Partnership Deal Playbook", desc: "Co-sell agreements, revenue share structures, channel enablement, and joint GTM motions. Templates for 5 partner archetypes.", dl: 423 },
+    { cat: "Playbooks", name: "Customer Success Expansion", desc: "QBR structure, health score construction, upsell trigger mapping, and expansion motion from onboarding to multi-year contract.", dl: 398 },
+    { cat: "Playbooks", name: "Viral Loop Engineering", desc: "Referral mechanics design, invite loop AB testing, network effect ignition sequences, and K-factor measurement framework.", dl: 456 },
+    // Agents
+    { cat: "Agents", name: "RevenueIntelAgent", desc: "Tracks ARR movements, churn signals, and expansion triggers. Generates daily MRR digest and flags at-risk accounts automatically.", dl: 467 },
+    { cat: "Agents", name: "CodeReviewAgent", desc: "Automated PR review: security anti-patterns, performance regressions, complexity scoring, and OWASP Top 10 checks.", dl: 445 },
+    { cat: "Agents", name: "IncidentResponseAgent", desc: "Classifies PagerDuty/Sentry alerts by severity, escalates to correct on-call, drafts postmortem templates, tracks SLA compliance.", dl: 423 },
+    { cat: "Agents", name: "BrandMonitorAgent", desc: "Tracks brand mentions across Reddit, X, HN, and press. Sentiment shift alerts and weekly share-of-voice reports.", dl: 389 },
+    { cat: "Agents", name: "BudgetForecastAgent", desc: "Predicts monthly cloud spend, flags anomalies, and suggests reallocation across Railway, Cloudflare, and third-party APIs.", dl: 367 },
+    // Codex
+    { cat: "Codex", name: "Real-Time Sync Engine", desc: "CRDT-based collaborative data sync. Offline-first architecture, conflict resolution, PostgreSQL persistence, and operational transforms.", dl: 489 },
+    { cat: "Codex", name: "Multi-Tenant SaaS Template", desc: "Row-level security, tenant isolation via schema-per-tenant or discriminator columns, usage metering, and billing integration.", dl: 534 },
+    { cat: "Codex", name: "Webhook Orchestrator", desc: "Fan-out delivery to multiple consumers, retry logic with exponential backoff, HMAC signature verification, and delivery dashboard.", dl: 456 },
+    { cat: "Codex", name: "GraphQL Federation Template", desc: "Supergraph composition with Apollo Federation. Subgraph isolation, persisted queries, schema change detection, and tracing.", dl: 423 },
+    { cat: "Codex", name: "Rate Limiter Service", desc: "Sliding window + token bucket algorithms. Redis-backed, per-tenant limits, burst allowances, and Prometheus metrics export.", dl: 398 },
+    // Analytics
+    { cat: "Analytics", name: "Funnel Cohort Analyzer", desc: "Step-by-step conversion tracking by acquisition cohort, date range, and plan tier. Identifies highest-value drop-off moments.", dl: 389 },
+    { cat: "Analytics", name: "A/B Test Statistical Engine", desc: "Sequential testing with optional stopping, Bayesian inference, multiple comparison correction, and automated winner declaration.", dl: 423 },
+    { cat: "Analytics", name: "Revenue Forecasting Model", desc: "MRR prediction curves, churn probability by segment, expansion scenarios, and confidence intervals across 30/60/90-day horizons.", dl: 456 },
+    { cat: "Analytics", name: "User Segmentation Engine", desc: "RFM scoring, behavioural clusters, ML-powered segment discovery, and real-time segment membership updates via Redis.", dl: 412 },
+    { cat: "Analytics", name: "Real-Time Event Pipeline", desc: "Clickstream processing, sessionisation, funnel event enrichment, and sink connectors to BigQuery, Snowflake, and PostgreSQL.", dl: 398 },
+    // Integrations
+    { cat: "Integrations", name: "Stripe → QuickBooks Sync", desc: "Revenue reconciliation, automated invoice generation, refund tracking, and monthly close reports for accountants.", dl: 367 },
+    { cat: "Integrations", name: "GitHub → Jira Bridge", desc: "Issue sync, PR status updates, sprint automation, dependency mapping, and code-to-ticket velocity metrics.", dl: 345 },
+    { cat: "Integrations", name: "HubSpot → Segment Integration", desc: "Contact enrichment, event replay, deal stage sync, and bidirectional property mapping with conflict resolution.", dl: 312 },
+    { cat: "Integrations", name: "Slack → PagerDuty Router", desc: "Alert channel management, escalation policy configuration, incident thread creation, and on-call handover notifications.", dl: 334 },
+    { cat: "Integrations", name: "Custom Workflow Engine", desc: "Trigger/action DAG builder, conditional branches, error retry with backoff, webhook fan-out, and execution history log.", dl: 389 },
+    // Utilities
+    { cat: "Utilities", name: "Log Aggregation Router", desc: "Unified logging from Railway, Cloudflare, and Vercel to a single sink. Structured log parsing, alerting, and retention policies.", dl: 312 },
+    { cat: "Utilities", name: "Dependency Vulnerability Scanner", desc: "npm/pip/cargo audit with CVSS scoring, exploitability context, and automated fix-branch creation for critical CVEs.", dl: 289 },
+    { cat: "Utilities", name: "Database Migration Manager", desc: "Forward/rollback migrations, dry-run preview, execution log, schema diff viewer, and Railway-native deployment hooks.", dl: 334 },
+    { cat: "Utilities", name: "API Contract Validator", desc: "OpenAPI spec drift detection, breaking change alerts on PR, endpoint coverage analysis, and mock server generation.", dl: 298 },
+    { cat: "Utilities", name: "Cache Warming Tool", desc: "Pre-populates Redis caches post-deployment using production traffic pattern analysis. Configurable TTL and key namespace targeting.", dl: 267 },
   ];
   for (const { cat, name, desc, dl } of seed) {
     const bundle = "com.aios." + cat.toLowerCase() + "." + name.toLowerCase().replace(/[^a-z0-9]+/g, ".");
