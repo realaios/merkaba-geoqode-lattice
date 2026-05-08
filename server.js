@@ -4109,7 +4109,6 @@ const server = createServer(async (req, res) => {
         `  <url><loc>https://realaios.com/vr</loc><lastmod>${now}</lastmod><changefreq>daily</changefreq><priority>0.92</priority></url>`,
         `  <url><loc>https://realaios.com/aiosdream</loc><lastmod>${now}</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>`,
         `  <url><loc>https://realaios.com/plaistore</loc><lastmod>${now}</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>`,
-        `  <url><loc>https://realaios.com/aios-playground</loc><lastmod>${now}</lastmod><changefreq>weekly</changefreq><priority>0.88</priority></url>`,
         `  <url><loc>https://realaios.com/experiences</loc><lastmod>${now}</lastmod><changefreq>daily</changefreq><priority>0.9</priority></url>`,
         `  <url><loc>https://realaios.com/ai</loc><lastmod>${now}</lastmod><changefreq>weekly</changefreq><priority>0.95</priority></url>`,
         `  <url><loc>https://realaios.com/start</loc><lastmod>${now}</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>`,
@@ -4149,6 +4148,7 @@ const server = createServer(async (req, res) => {
         `  <url><loc>https://realaios.com/games/grid-dodge</loc><lastmod>${now}</lastmod><changefreq>monthly</changefreq><priority>0.82</priority></url>`,
         `  <url><loc>https://realaios.com/games/grid-builder</loc><lastmod>${now}</lastmod><changefreq>monthly</changefreq><priority>0.82</priority></url>`,
         `  <url><loc>https://realaios.com/geo-codec</loc><lastmod>${now}</lastmod><changefreq>weekly</changefreq><priority>0.88</priority></url>`,
+        `  <url><loc>https://realaios.com/vr-developer</loc><lastmod>${now}</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>`,
         // AIOSdream programme deep-links — 37 SEO-indexable cinema URLs
         ...[
           "matrix",
