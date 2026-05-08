@@ -4028,7 +4028,10 @@ const server = createServer(async (req, res) => {
 
   // HEAD — identical to GET but no body; satisfies SEO crawlers and uptime monitors
   if (req.method === "HEAD") {
-    res.writeHead(200, { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-cache" });
+    res.writeHead(200, {
+      "Content-Type": "text/html; charset=utf-8",
+      "Cache-Control": "no-cache",
+    });
     res.end();
     return;
   }
@@ -6342,7 +6345,8 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
       req.method === "GET" &&
       (pathname === "/vr-developer" || pathname === "/vr-developer/")
     ) {
-      if (!VR_DEV_HTML) return json(res, 404, { ok: false, error: "Not found" });
+      if (!VR_DEV_HTML)
+        return json(res, 404, { ok: false, error: "Not found" });
       res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
       res.end(VR_DEV_HTML);
       return;
@@ -6904,7 +6908,6 @@ function filterXP(cat, btn) {
       }
       return;
     }
-
 
     if (
       req.method === "GET" &&
