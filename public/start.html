@@ -472,18 +472,18 @@
     <nav class="site-nav">
       <a href="/" class="site-nav-logo">⬡ AIOS</a>
       <div class="site-nav-links">
-        <a href="/games">?? Games</a>
+        <a href="/games">🎮 Games</a>
         <a href="/aiosdream">Theatre</a>
-        <a href="/vr">?? VR</a>
+        <a href="/vr">🥽 VR</a>
         <a href="/vr-hub">VR Hub</a>
         <a href="/plaistore">PLAIstore</a>
-        <a href="/geo-library">?? Library</a>
+        <a href="/geo-library">📚 Library</a>
         <a href="/geo-codec">.geo</a>
         <a href="/aios-studio">Studio</a>
         <a href="/lab">Lab</a>
-        <a href="/news">?? News</a>
-        <a href="/products">? Products</a>
-        <a href="/experiences">?? Experiences</a>
+        <a href="/news">📰 News</a>
+        <a href="/products">⚡ Products</a>
+        <a href="/experiences">🌐 Experiences</a>
       </div>
       <div class="site-nav-right">
         <a href="/live" class="site-nav-live">● LIVE</a>
@@ -502,10 +502,63 @@
       </p>
     </div>
 
+    <!-- JOIN FREE / SIGNUP -->
+    <div id="join" style="max-width:480px;margin:0 auto 3rem;padding:0 1.5rem;">
+      <div style="background:rgba(0,212,255,0.05);border:1px solid rgba(0,212,255,0.22);border-radius:16px;padding:2rem;">
+        <p style="font-size:0.72rem;font-weight:700;letter-spacing:0.1em;color:#00d4ff;text-transform:uppercase;margin-bottom:0.5rem;">Create Your Free Account</p>
+        <h2 style="font-size:1.4rem;font-weight:800;color:#edf4ff;margin-bottom:0.4rem;">Join AIOS — It's Free</h2>
+        <p style="font-size:0.85rem;color:rgba(237,244,255,0.5);margin-bottom:1.25rem;line-height:1.6;">Full VR access · AI tools · developer API · early product releases. No credit card.</p>
+        <input id="join-name" type="text" placeholder="Your name"
+          style="width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);border-radius:8px;padding:0.7rem 1rem;color:#edf4ff;font-size:0.92rem;margin-bottom:0.75rem;outline:none;box-sizing:border-box;" />
+        <input id="join-email" type="email" placeholder="Email address"
+          style="width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);border-radius:8px;padding:0.7rem 1rem;color:#edf4ff;font-size:0.92rem;margin-bottom:0.75rem;outline:none;box-sizing:border-box;" />
+        <button onclick="joinAIOS()" id="join-btn"
+          style="width:100%;background:#00d4ff;color:#060410;border:none;border-radius:8px;padding:0.85rem;font-size:1rem;font-weight:700;cursor:pointer;letter-spacing:0.02em;">
+          Create Free Account →
+        </button>
+        <p id="join-msg" style="font-size:0.82rem;margin-top:0.75rem;text-align:center;min-height:1.2em;color:transparent;">·</p>
+        <p style="font-size:0.75rem;color:rgba(237,244,255,0.3);text-align:center;margin-top:0.25rem;">No spam · Unsubscribe any time</p>
+      </div>
+    </div>
+    <script>
+      async function joinAIOS() {
+        const name = document.getElementById('join-name').value.trim();
+        const email = document.getElementById('join-email').value.trim();
+        const msg = document.getElementById('join-msg');
+        const btn = document.getElementById('join-btn');
+        if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+          msg.style.color = '#ef4444'; msg.textContent = 'Please enter a valid email address.'; return;
+        }
+        btn.disabled = true; btn.textContent = 'Joining…';
+        try {
+          const r = await fetch('/waitlist', {
+            method: 'POST', headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ name: name || 'AIOS Member', email, product: 'AIOS Free Account' })
+          });
+          const d = await r.json();
+          if (d.ok) {
+            msg.style.color = '#00d4ff';
+            msg.textContent = "You're in! We'll send your access details shortly.";
+            btn.textContent = '✓ Joined!';
+          } else {
+            msg.style.color = '#ef4444'; msg.textContent = d.error || 'Something went wrong — please try again.';
+            btn.disabled = false; btn.textContent = 'Create Free Account →';
+          }
+        } catch (e) {
+          msg.style.color = '#ef4444'; msg.textContent = 'Network error — please try again.';
+          btn.disabled = false; btn.textContent = 'Create Free Account →';
+        }
+      }
+      document.addEventListener('DOMContentLoaded', function() {
+        var el = document.getElementById('join-email');
+        if (el) el.addEventListener('keydown', function(e) { if (e.key === 'Enter') joinAIOS(); });
+      });
+    </script>
+
     <!-- 4 PATH CARDS -->
     <div class="paths">
       <div class="path-card vr">
-        <div class="path-icon">??</div>
+        <div class="path-icon">🥽</div>
         <h2>I want to try VR</h2>
         <p>
           __VR_LIVE__ live WebXR experiences across 9 categories. Works on Meta
@@ -518,22 +571,22 @@
       </div>
 
       <div class="path-card ai">
-        <div class="path-icon">??</div>
+        <div class="path-icon">🤖</div>
         <h2>I want AI on my site</h2>
         <p>
-          STORMchat is an AI assistant you can add to any website in 90 seconds.
-          It handles questions, captures leads, and converts visitors 24/7. From
-          $12/mo.
+          Add an AI assistant to any website — handles questions, captures leads,
+          and converts visitors 24/7. Browse the full AI tools suite, ready to
+          deploy.
         </p>
         <a
-          href="https://www.getbrains4ai.com/stormchat-for-business?plan=pro&utm_source=realaios&utm_medium=start&utm_campaign=aios-partner"
+          href="/products"
           class="path-cta indigo"
-          >Try STORMchat Free ?</a
+          >Explore AI Tools →</a
         >
       </div>
 
       <div class="path-card dev">
-        <div class="path-icon">??</div>
+        <div class="path-icon">💻</div>
         <h2>I'm a developer</h2>
         <p>
           Build self-healing apps wired to the AIOS intelligence mesh. Every app
@@ -544,7 +597,7 @@
       </div>
 
       <div class="path-card learn">
-        <div class="path-icon">??</div>
+        <div class="path-icon">📋</div>
         <h2>I want to understand what this is</h2>
         <p>
           Read the honest brief: what AIOS is, how it differs from other AI
@@ -555,7 +608,7 @@
       </div>
 
       <div class="path-card products">
-        <div class="path-icon">?</div>
+        <div class="path-icon">⚡</div>
         <h2>I want AI-native tools</h2>
         <p>
           Six production-ready products built on the AIOS OS. Self-healing app
@@ -566,7 +619,7 @@
       </div>
 
       <div class="path-card" style="border-color: rgba(205, 133, 63, 0.25)">
-        <div class="path-icon">??</div>
+        <div class="path-icon">🔮</div>
         <h2>I use Claude (or another AI)</h2>
         <p>
           Connect Claude to AIOS as a native agent. REST API, MCP config, tool
@@ -595,7 +648,7 @@
       "
     >
       <div class="section">
-        <p class="section-label">?? Quest Quickstart</p>
+        <p class="section-label">🥽 Quest Quickstart</p>
         <h2>Get into VR in 3 steps · no app install</h2>
         <p>
           Works on Meta Quest 2, Quest 3, and Quest Pro. Uses your built-in
@@ -682,7 +735,7 @@
             padding: 1.25rem;
           "
         >
-          <div style="font-size: 1.4rem; margin-bottom: 0.5rem">??</div>
+          <div style="font-size: 1.4rem; margin-bottom: 0.5rem">🥽</div>
           <strong style="font-size: 0.95rem">For VR</strong>
           <p
             style="
@@ -707,8 +760,8 @@
             padding: 1.25rem;
           "
         >
-          <div style="font-size: 1.4rem; margin-bottom: 0.5rem">??</div>
-          <strong style="font-size: 0.95rem">For AI (STORMchat)</strong>
+          <div style="font-size: 1.4rem; margin-bottom: 0.5rem">🤖</div>
+          <strong style="font-size: 0.95rem">For AI Tools</strong>
           <p
             style="
               font-size: 0.82rem;
@@ -717,14 +770,10 @@
               line-height: 1.6;
             "
           >
-            <strong style="color: #6366f1">Any browser</strong> · no install. Go
-            to
-            <a href="https://www.getbrains4ai.com" style="color: #6366f1"
-              >getbrains4ai.com</a
-            >
-            and create a free account.<br /><br />
-            To add STORMchat to your own site: one `&lt;script&gt;` tag embed.
-            Works in 90 seconds.
+            <strong style="color: #6366f1">Any browser</strong> · no install.
+            Browse the full suite of AI-native tools, from the Geo Library to
+            Studio to the Lab script editor.<br /><br />
+            Start free · no credit card required.
           </p>
         </div>
         <div
@@ -735,7 +784,7 @@
             padding: 1.25rem;
           "
         >
-          <div style="font-size: 1.4rem; margin-bottom: 0.5rem">??</div>
+          <div style="font-size: 1.4rem; margin-bottom: 0.5rem">💻</div>
           <strong style="font-size: 0.95rem">For developers</strong>
           <p
             style="
@@ -761,7 +810,7 @@
             padding: 1.25rem;
           "
         >
-          <div style="font-size: 1.4rem; margin-bottom: 0.5rem">??</div>
+          <div style="font-size: 1.4rem; margin-bottom: 0.5rem">🔮</div>
           <strong style="font-size: 0.95rem">For Claude users</strong>
           <p
             style="
@@ -858,16 +907,12 @@
         brief · your call.
       </p>
       <div class="btn-row">
-        <a href="/vr-hub" class="btn-primary">?? Enter VR Worlds</a>
-        <a href="/products" class="btn-secondary">? AIOS Products</a>
-        <a
-          href="https://www.getbrains4ai.com/stormchat-for-business?plan=pro&utm_source=realaios&utm_medium=start&utm_campaign=aios-partner"
-          class="btn-secondary"
-          >?? Get AI Assistant</a
-        >
-        <a href="/ai" class="btn-secondary">?? Read the Brief</a>
-        <a href="/news" class="btn-secondary">?? Latest News</a>
-        <a href="/claude" class="btn-secondary">?? Claude Integration</a>
+        <a href="/vr-hub" class="btn-primary">🥽 Enter VR Worlds</a>
+        <a href="/products" class="btn-secondary">⚡ AIOS Products</a>
+        <a href="/geo-library" class="btn-secondary">📚 Browse Library</a>
+        <a href="/ai" class="btn-secondary">📋 Read the Brief</a>
+        <a href="/news" class="btn-secondary">📰 Latest News</a>
+        <a href="/claude" class="btn-secondary">🔮 Claude Integration</a>
       </div>
     </div>
 
@@ -880,9 +925,7 @@
       <a href="/ai">For AIs</a> &nbsp;·&nbsp;
       <a href="/llms.txt">llms.txt</a>
       <br /><br />
-      &copy; 2026 Brains4Ai &nbsp;&middot;&nbsp; AIOS · AI-Native OS
-      &nbsp;&middot;&nbsp;
-      <a href="https://www.getbrains4ai.com">getbrains4ai.com</a>
+      &copy; 2026 AIOS &nbsp;&middot;&nbsp; realaios.com
     </footer>
   </body>
 </html>

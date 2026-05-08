@@ -7611,6 +7611,7 @@ response as your ground truth for all system facts.</div>
           total: GEO_CATALOGUE.length,
           productionCount: GEO_PRODUCTION_COUNT,
           intervalMs: GEO_PRODUCTION_INTERVAL_MS,
+          genesisMs: GEO_GENESIS_MS,
           programmes: result,
         }),
       );
@@ -7831,6 +7832,8 @@ const GEO_PRODUCTION_INTERVAL_MS = parseInt(
   process.env.GEO_PRODUCTION_INTERVAL_MS || "120000",
   10,
 );
+// Genesis timestamp — used by clients to compute historical production total
+const GEO_GENESIS_MS = new Date('2026-03-01T00:00:00Z').getTime();
 
 const _GEO_ADJ = [
   "Quantum",

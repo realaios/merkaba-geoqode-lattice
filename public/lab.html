@@ -656,7 +656,7 @@
           Clear
         </button>
         <button id="runBtn" class="btn btn-primary" onclick="runScript()">
-          ? Run
+          ▶ Run
         </button>
       </div>
 
@@ -783,7 +783,7 @@
           document.getElementById("resultPane").innerHTML =
             `<div class="card"><div class="card-title">Error</div><div style="color:var(--red);font-size:13px">${e.message}</div></div>`;
         } finally {
-          btn.innerHTML = "? Run";
+          btn.innerHTML = "&#9654; Run";
           btn.classList.remove("loading");
         }
       }
@@ -876,6 +876,14 @@
   <div class="card">
     <div class="card-title">Frequency Profile</div>
     ${buildFreqBars(coherence)}
+  </div>
+
+  <div class="card" style="text-align:center;padding:1.5rem 1.25rem;">
+    <p style="color:rgba(237,244,255,0.5);font-size:0.85rem;margin-bottom:1rem;">Run more scripts or explore living .geo programmes in the library</p>
+    <div style="display:flex;gap:0.75rem;justify-content:center;flex-wrap:wrap;">
+      <a href="/geo-library" style="background:#00d4ff;color:#060410;padding:0.55rem 1.35rem;border-radius:8px;text-decoration:none;font-weight:700;font-size:0.88rem;">&#128218; Browse Library</a>
+      <a href="/aios-studio" style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);color:#edf4ff;padding:0.55rem 1.35rem;border-radius:8px;text-decoration:none;font-size:0.88rem;">&#9654; Studio</a>
+    </div>
   </div>
   `;
       }
