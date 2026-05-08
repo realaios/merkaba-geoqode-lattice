@@ -3,15 +3,15 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Lattice Dodge · PHI Reflexes · AIOS Arcade</title>
+    <title>Grid Dodge · PHI Reflexes · AIOS Arcade</title>
     <meta
       name="description"
       content="Dodge entropy disruptors flying through the 48-node lattice ring. Speed ramps by PHI each wave. AIOS Arcade."
     />
-    <link rel="canonical" href="https://realaios.com/games/lattice-dodge" />
+    <link rel="canonical" href="https://realaios.com/games/grid-dodge" />
     <meta
       property="og:title"
-      content="Lattice Dodge · PHI Reflexes · AIOS Arcade"
+      content="Grid Dodge · PHI Reflexes · AIOS Arcade"
     />
     <meta
       property="og:description"
@@ -19,7 +19,7 @@
     />
     <meta
       property="og:url"
-      content="https://realaios.com/games/lattice-dodge"
+      content="https://realaios.com/games/grid-dodge"
     />
     <meta property="og:type" content="website" />
     <meta
@@ -477,8 +477,8 @@
 
     <!-- LOBBY -->
     <div id="lobby">
-      <div class="lobby-badge">🎮⬡ AIOS Arcade · Lattice Dodge</div>
-      <div class="lobby-title">Lattice Dodge</div>
+      <div class="lobby-badge">🎮⬡ AIOS Arcade · Grid Dodge</div>
+      <div class="lobby-title">Grid Dodge</div>
       <div class="lobby-sub">
         Entropy disruptors flood the lattice ring. Move to survive. Each wave is
         PHI times faster than the last. How long can you hold?
@@ -899,7 +899,7 @@
         fetch("/api/game/score", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ game: "lattice-dodge", name: pn, score }),
+          body: JSON.stringify({ game: "grid-dodge", name: pn, score }),
         })
           .then((r) => r.json())
           .then((d) => {
@@ -941,11 +941,11 @@
       function shareDodgeScore() {
         const scoreEl = document.getElementById("go-score-n");
         const score = scoreEl ? scoreEl.textContent : "0";
-        const text = `I survived ${score} seconds in AIOS Lattice Dodge! ?? #AIOS #LatticeGame #realaios`;
-        const url = "https://realaios.com/game-lattice-dodge";
+        const text = `I survived ${score} seconds in AIOS Grid Dodge! ?? #AIOS #AIOSGames #realaios`;
+        const url = "https://realaios.com/games/grid-dodge";
         if (navigator.share) {
           navigator
-            .share({ title: "AIOS Lattice Dodge", text, url })
+            .share({ title: "AIOS Grid Dodge", text, url })
             .catch(() => {});
         } else {
           const tw =

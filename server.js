@@ -4146,8 +4146,8 @@ const server = createServer(async (req, res) => {
         `  <url><loc>https://realaios.com/games</loc><lastmod>${now}</lastmod><changefreq>weekly</changefreq><priority>0.88</priority></url>`,
         `  <url><loc>https://realaios.com/games/merkaba-ghosts</loc><lastmod>${now}</lastmod><changefreq>monthly</changefreq><priority>0.82</priority></url>`,
         `  <url><loc>https://realaios.com/games/phi-breaker</loc><lastmod>${now}</lastmod><changefreq>monthly</changefreq><priority>0.82</priority></url>`,
-        `  <url><loc>https://realaios.com/games/lattice-dodge</loc><lastmod>${now}</lastmod><changefreq>monthly</changefreq><priority>0.82</priority></url>`,
-        `  <url><loc>https://realaios.com/games/lattice-builder</loc><lastmod>${now}</lastmod><changefreq>monthly</changefreq><priority>0.82</priority></url>`,
+        `  <url><loc>https://realaios.com/games/grid-dodge</loc><lastmod>${now}</lastmod><changefreq>monthly</changefreq><priority>0.82</priority></url>`,
+        `  <url><loc>https://realaios.com/games/grid-builder</loc><lastmod>${now}</lastmod><changefreq>monthly</changefreq><priority>0.82</priority></url>`,
         `  <url><loc>https://realaios.com/geo-codec</loc><lastmod>${now}</lastmod><changefreq>weekly</changefreq><priority>0.88</priority></url>`,
         // AIOSdream programme deep-links — 37 SEO-indexable cinema URLs
         ...[
@@ -6236,7 +6236,7 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
       res.end(GAME_PHI_BREAKER_HTML);
       return;
     }
-    if (req.method === "GET" && pathname === "/games/lattice-dodge") {
+    if (req.method === "GET" && pathname === "/games/grid-dodge") {
       if (!GAME_LATTICE_DODGE_HTML)
         return json(res, 404, { error: "not found" });
       res.writeHead(200, {
@@ -6246,7 +6246,7 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
       res.end(GAME_LATTICE_DODGE_HTML);
       return;
     }
-    if (req.method === "GET" && pathname === "/games/lattice-builder") {
+    if (req.method === "GET" && pathname === "/games/grid-builder") {
       if (!GAME_LATTICE_BUILDER_HTML)
         return json(res, 404, { error: "not found" });
       res.writeHead(200, {

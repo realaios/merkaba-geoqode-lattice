@@ -3,15 +3,15 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Lattice Builder · PHI Puzzle · AIOS Arcade</title>
+    <title>Grid Builder · PHI Puzzle · AIOS Arcade</title>
     <meta
       name="description"
       content="Reconstruct damaged lattice nodes. Gaze to connect them in the correct PHI sequence. Hand-tracking physics puzzles. AIOS Arcade."
     />
-    <link rel="canonical" href="https://realaios.com/games/lattice-builder" />
+    <link rel="canonical" href="https://realaios.com/games/grid-builder" />
     <meta
       property="og:title"
-      content="Lattice Builder · PHI Puzzle · AIOS Arcade"
+      content="Grid Builder · PHI Puzzle · AIOS Arcade"
     />
     <meta
       property="og:description"
@@ -19,7 +19,7 @@
     />
     <meta
       property="og:url"
-      content="https://realaios.com/games/lattice-builder"
+      content="https://realaios.com/games/grid-builder"
     />
     <meta property="og:type" content="website" />
     <meta
@@ -548,8 +548,8 @@
 
     <!-- LOBBY -->
     <div id="lobby">
-      <div class="lobby-badge">🎮⬡ AIOS Arcade · Lattice Builder</div>
-      <div class="lobby-title">Lattice Builder</div>
+      <div class="lobby-badge">🎮⬡ AIOS Arcade · Grid Builder</div>
+      <div class="lobby-title">Grid Builder</div>
       <div class="lobby-sub">
         Damaged lattice nodes float in sequence order. Gaze at each one in the
         correct PHI order to reconstruct the lattice. Get longer each round.
@@ -1031,7 +1031,7 @@
             </a-sphere>
 
             <!-- Title -->
-            <a-text value="LATTICE BUILDER · PHI=${PHI}" position="0 5.2 -5" align="center" color="#6b84b8" width="5" font="roboto" material="shader: flat"></a-text>
+            <a-text value="GRID BUILDER · PHI=${PHI}" position="0 5.2 -5" align="center" color="#6b84b8" width="5" font="roboto" material="shader: flat"></a-text>
 
           </a-scene>`;
 
@@ -1089,7 +1089,7 @@
         fetch("/api/game/score", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ game: "lattice-builder", name: pn, score }),
+          body: JSON.stringify({ game: "grid-builder", name: pn, score }),
         })
           .then((r) => r.json())
           .then((d) => {
@@ -1130,11 +1130,11 @@
       function shareBuilderScore() {
         const scoreEl = document.getElementById("go-score-n");
         const score = scoreEl ? scoreEl.textContent : "0";
-        const text = `I scored ${score} points in AIOS Lattice Builder · can you beat me? ?? #AIOS #LatticePuzzle #realaios`;
-        const url = "https://realaios.com/game-lattice-builder";
+        const text = `I scored ${score} points in AIOS Grid Builder · can you beat me? ?? #AIOS #AIOSGames #realaios`;
+        const url = "https://realaios.com/games/grid-builder";
         if (navigator.share) {
           navigator
-            .share({ title: "AIOS Lattice Builder", text, url })
+            .share({ title: "AIOS Grid Builder", text, url })
             .catch(() => {});
         } else {
           const tw =
