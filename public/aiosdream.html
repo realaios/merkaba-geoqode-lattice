@@ -164,7 +164,9 @@
         color: #fff;
       }
       @media (max-width: 900px) {
-        .nav-site-links { display: none; }
+        .nav-site-links {
+          display: none;
+        }
       }
       .nav-icon-btn {
         background: none;
@@ -3919,7 +3921,10 @@
           <a href="/aios-playground">NEXGEN</a>
           <a
             href="/live"
-            onclick="event.preventDefault(); _openLivePanel();"
+            onclick="
+              event.preventDefault();
+              _openLivePanel();
+            "
             style="
               font-weight: 700;
               color: #ef4444 !important;
@@ -3979,7 +3984,7 @@
             id="amb-btn"
             title="Ambient Mixer"
             onclick="_openAmb(event)"
-            style="font-size: 21px; opacity: 0.55;"
+            style="font-size: 21px; opacity: 0.55"
           >
             🎛
           </button>
@@ -4242,8 +4247,26 @@
           <p class="hero-desc" id="hero-desc"></p>
           <div class="hero-meta" id="hero-meta"></div>
           <div class="hero-btns">
-            <button class="btn-play" id="hero-play" onclick="if(typeof currentProg!=='undefined'&&currentProg)openPlayer(currentProg.id,0)">▶ Play Now</button>
-            <button class="btn-info" id="hero-info" onclick="if(typeof currentProg!=='undefined'&&currentProg)openInfo(currentProg.id)">ⓘ More Info</button>
+            <button
+              class="btn-play"
+              id="hero-play"
+              onclick="
+                if (typeof currentProg !== 'undefined' && currentProg)
+                  openPlayer(currentProg.id, 0);
+              "
+            >
+              ▶ Play Now
+            </button>
+            <button
+              class="btn-info"
+              id="hero-info"
+              onclick="
+                if (typeof currentProg !== 'undefined' && currentProg)
+                  openInfo(currentProg.id);
+              "
+            >
+              ⓘ More Info
+            </button>
             <button
               onclick="_shufflePlay()"
               title="Play a random episode"
