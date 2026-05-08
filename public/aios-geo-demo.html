@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>AIOS Embed SDK — aios-geo.js Demo</title>
+    <meta name="description" content="Embed live AIOS visualisations on any webpage using the aios-geo.js SDK." />
+    <link rel="canonical" href="https://realaios.com/aios-geo-demo" />
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      :root {
+        --bg: #03050d;
+        --bg2: #070d1a;
+        --cyan: #00e5ff;
+        --purple: #7c3aed;
+        --text: #e2e8f0;
+        --muted: #64748b;
+        --border: rgba(0, 229, 255, 0.1);
+      }
+      body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; line-height: 1.7; }
+      a { color: var(--cyan); text-decoration: none; }
+      a:hover { text-decoration: underline; }
+
+      /* nav */
+      nav.site-nav { position: sticky; top: 0; z-index: 50; display: flex; align-items: center; justify-content: space-between; padding: 14px 28px; background: rgba(3,5,13,0.95); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); }
+      .site-nav-logo { font-size: 18px; font-weight: 900; color: var(--cyan); }
+      .site-nav-links { display: flex; gap: 18px; font-size: 13px; color: var(--muted); }
+      .site-nav-links a { color: var(--muted); }
+      .site-nav-links a:hover { color: var(--cyan); text-decoration: none; }
+      .site-nav-right { display: flex; gap: 12px; align-items: center; }
+      .site-nav-live { font-size: 11px; font-weight: 800; color: #ef4444; letter-spacing: .05em; animation: pulse 1.2s ease-in-out infinite; }
+      @keyframes pulse { 0%,100%{opacity:1}50%{opacity:.5} }
+      .site-nav-cta { background: var(--cyan); color: #000; font-weight: 700; font-size: 12px; padding: 6px 14px; border-radius: 6px; }
+
+      main { max-width: 880px; margin: 0 auto; padding: 60px 28px 100px; }
+      .badge { display: inline-block; background: rgba(0,229,255,0.08); border: 1px solid rgba(0,229,255,0.2); border-radius: 6px; padding: 4px 12px; font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--cyan); margin-bottom: 20px; }
+      h1 { font-size: 2.4rem; font-weight: 900; letter-spacing: -0.04em; margin-bottom: 12px; }
+      h1 span { background: linear-gradient(135deg, var(--cyan), var(--purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+      .hero-sub { font-size: 1rem; color: #aaa; margin-bottom: 40px; max-width: 560px; }
+      h2 { font-size: 1.1rem; font-weight: 800; margin: 48px 0 16px; color: var(--text); padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+      p { color: #b0bec5; font-size: 0.95rem; margin-bottom: 12px; }
+
+      /* demo grid */
+      .demo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; margin: 24px 0; }
+      .demo-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; }
+      .demo-canvas-wrap { height: 200px; }
+      .demo-info { padding: 14px 16px; font-size: 13px; color: var(--muted); }
+      .demo-info strong { display: block; color: var(--text); font-size: 14px; margin-bottom: 4px; }
+
+      /* code blocks */
+      pre { background: rgba(0,0,0,0.45); border: 1px solid var(--border); border-radius: 10px; padding: 18px 22px; overflow-x: auto; margin: 12px 0 24px; }
+      code { font-family: 'JetBrains Mono', Consolas, monospace; font-size: 0.82rem; color: #b0bec5; }
+      .hl { color: var(--cyan); }
+      .cm { color: var(--muted); font-style: italic; }
+
+      /* inline code */
+      p code { background: rgba(0,229,255,0.07); border: 1px solid rgba(0,229,255,0.15); padding: 2px 7px; border-radius: 5px; color: var(--cyan); font-size: 0.82rem; }
+
+      /* options table */
+      table { width: 100%; border-collapse: collapse; font-size: 0.88rem; margin: 16px 0 28px; }
+      th { text-align: left; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); padding: 8px 12px; border-bottom: 1px solid var(--border); }
+      td { padding: 10px 12px; border-bottom: 1px solid rgba(255,255,255,0.04); color: #b0bec5; vertical-align: top; }
+      td:first-child { font-family: monospace; color: var(--cyan); font-size: 0.85rem; }
+      td code { color: #a78bfa; background: rgba(124,58,237,0.08); border: 1px solid rgba(124,58,237,0.2); padding: 1px 6px; border-radius: 4px; }
+      tr:last-child td { border-bottom: none; }
+
+      footer { text-align: center; padding: 60px 28px 40px; color: var(--muted); font-size: 0.85rem; border-top: 1px solid var(--border); }
+    </style>
+  </head>
+  <body>
+    <nav class="site-nav">
+      <a href="/" class="site-nav-logo">&#x2B21; AIOS</a>
+      <div class="site-nav-links">
+        <a href="/games">🎮 Games</a>
+        <a href="/aiosdream">Theatre</a>
+        <a href="/vr">🥽 VR</a>
+        <a href="/plaistore">PLAIstore</a>
+        <a href="/geo-library">📚 Library</a>
+        <a href="/geo-codec">.geo</a>
+        <a href="/aios-studio">Studio</a>
+        <a href="/lab">Lab</a>
+      </div>
+      <div class="site-nav-right">
+        <a href="/live" class="site-nav-live">&#9679; LIVE</a>
+        <a href="/start" class="site-nav-cta">Start Free →</a>
+      </div>
+    </nav>
+
+    <main>
+      <div class="badge">Embed SDK</div>
+      <h1><span>aios-geo.js</span></h1>
+      <p class="hero-sub">
+        Drop a single <code>&lt;script&gt;</code> tag into any page to embed live AIOS
+        visualisations — Merkaba handshake animations or live .geo programme renderers.
+      </p>
+
+      <!-- LIVE DEMOS -->
+      <h2>Live Demos</h2>
+      <div class="demo-grid">
+
+        <div class="demo-card">
+          <div class="demo-canvas-wrap" data-aios data-aios-mode="merkaba" data-aios-label="528 Hz"></div>
+          <div class="demo-info">
+            <strong>Merkaba Handshake · 528 Hz</strong>
+            Default embed. Two counter-rotating tetrahedra — PHI-driven coherence animation.
+          </div>
+        </div>
+
+        <div class="demo-card">
+          <div class="demo-canvas-wrap" data-aios data-aios-mode="merkaba" data-aios-freq="396" data-aios-label="396 Hz"></div>
+          <div class="demo-info">
+            <strong>Merkaba · 396 Hz</strong>
+            Lower frequency (entity resonance band). Slower pulse rhythm.
+          </div>
+        </div>
+
+        <div class="demo-card">
+          <div class="demo-canvas-wrap" data-aios data-aios-mode="merkaba" data-aios-freq="963" data-aios-label="963 Hz"></div>
+          <div class="demo-info">
+            <strong>Merkaba · 963 Hz</strong>
+            High-frequency (narrative/projection band). Rapid coherence pulse.
+          </div>
+        </div>
+
+      </div>
+
+      <!-- QUICK START -->
+      <h2>Quick Start</h2>
+      <p>Load the SDK and call <code>AIOS.init()</code> on any container element:</p>
+      <pre><code><span class="cm">&lt;!-- 1. Container --&gt;</span>
+&lt;<span class="hl">div</span> id=<span class="hl">"aios-vis"</span> style=<span class="hl">"width:400px;height:300px"</span>&gt;&lt;/div&gt;
+
+<span class="cm">&lt;!-- 2. Load SDK --&gt;</span>
+&lt;<span class="hl">script</span> src=<span class="hl">"https://realaios.com/aios-geo.js"</span>&gt;&lt;/script&gt;
+
+<span class="cm">&lt;!-- 3. Initialise --&gt;</span>
+&lt;<span class="hl">script</span>&gt;
+  AIOS.init({ target: <span class="hl">'#aios-vis'</span> });
+&lt;/script&gt;</code></pre>
+
+      <!-- DATA-ATTRIBUTE AUTO INIT -->
+      <h2>Auto-Init with Data Attributes</h2>
+      <p>Add <code>data-aios</code> to any element — the SDK initialises it automatically after the DOM loads:</p>
+      <pre><code>&lt;<span class="hl">div</span> data-aios
+     data-aios-mode=<span class="hl">"merkaba"</span>
+     data-aios-freq=<span class="hl">"528"</span>
+     data-aios-label=<span class="hl">"My Label"</span>
+     style=<span class="hl">"width:400px;height:300px"</span>&gt;
+&lt;/div&gt;
+
+&lt;<span class="hl">script</span> src=<span class="hl">"https://realaios.com/aios-geo.js"</span>&gt;&lt;/script&gt;</code></pre>
+
+      <!-- RENDER A .GEO PROGRAMME -->
+      <h2>Render a .geo Programme</h2>
+      <p>Fetch a live programme from the AIOS catalogue by ID and render it:</p>
+      <pre><code>AIOS.init({
+  target:  <span class="hl">'#aios-vis'</span>,
+  mode:    <span class="hl">'geo'</span>,
+  geoId:   <span class="hl">'matrix-awakening'</span>,   <span class="cm">// any ID from /api/geo/catalogue</span>
+});</code></pre>
+
+      <p>Or pass an inline .geo object directly:</p>
+      <pre><code>AIOS.init({
+  target: <span class="hl">'#aios-vis'</span>,
+  mode:   <span class="hl">'geo'</span>,
+  geo: {
+    id:     <span class="hl">'my-prog'</span>,
+    title:  <span class="hl">'My Programme'</span>,
+    scenes: [{ frequency: <span class="hl">528</span>, nodes: <span class="hl">8</span> }],
+  },
+});</code></pre>
+
+      <!-- OPTIONS -->
+      <h2>Options Reference</h2>
+      <table>
+        <tr><th>Option</th><th>Type</th><th>Default</th><th>Description</th></tr>
+        <tr><td>target</td><td>string | Element</td><td>—</td><td>CSS selector or DOM element to render into. <strong>Required.</strong></td></tr>
+        <tr><td>mode</td><td>string</td><td><code>'merkaba'</code></td><td><code>'merkaba'</code> — Merkaba handshake animation. <code>'geo'</code> — .geo programme renderer.</td></tr>
+        <tr><td>geoId</td><td>string</td><td>—</td><td>Programme ID to fetch from <code>/api/geo/:id</code>. Used when <code>mode='geo'</code>.</td></tr>
+        <tr><td>geo</td><td>object</td><td>—</td><td>Inline .geo programme object (skip the API fetch).</td></tr>
+        <tr><td>frequency</td><td>number</td><td><code>528</code></td><td>Hz frequency for Merkaba pulse rhythm (396, 528, 639, 741, 852, 963…).</td></tr>
+        <tr><td>label</td><td>string</td><td><code>''</code></td><td>Watermark label shown inside the canvas.</td></tr>
+        <tr><td>autoplay</td><td>boolean</td><td><code>true</code></td><td>Start animation immediately on init.</td></tr>
+        <tr><td>width</td><td>number</td><td>container width</td><td>Canvas pixel width.</td></tr>
+        <tr><td>height</td><td>number</td><td>container height</td><td>Canvas pixel height.</td></tr>
+      </table>
+
+      <!-- API -->
+      <h2>AIOS API</h2>
+      <table>
+        <tr><th>Method</th><th>Description</th></tr>
+        <tr><td>AIOS.init(options)</td><td>Create a single instance in a target element. Returns the instance handle.</td></tr>
+        <tr><td>AIOS.embed(selector, options)</td><td>Initialise AIOS in all elements matching <code>selector</code>. Returns array of instances.</td></tr>
+        <tr><td>AIOS.stop()</td><td>Pause all running instances.</td></tr>
+        <tr><td>AIOS.play()</td><td>Resume all paused instances.</td></tr>
+      </table>
+
+      <!-- LOAD URL -->
+      <h2>SDK URL</h2>
+      <pre><code>https://realaios.com/aios-geo.js</code></pre>
+      <p>The script is served with <code>Access-Control-Allow-Origin: *</code> and <code>Cache-Control: max-age=3600</code>. It has zero external dependencies and works in all modern browsers.</p>
+
+    </main>
+
+    <footer>
+      &copy; 2026 AIOS &mdash; <a href="https://realaios.com">realaios.com</a>
+    </footer>
+
+    <!-- Load SDK (self-referencing demo) -->
+    <script src="/aios-geo.js"></script>
+  </body>
+</html>

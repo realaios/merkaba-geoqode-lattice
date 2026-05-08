@@ -6880,7 +6880,22 @@ function filterXP(cat, btn) {
       return;
     }
 
-    // ── GET /start — newcomer onboarding page ────────────────────────────
+    // ── GET /aios-geo-demo — AIOS Embed SDK demo page ──────────────────────
+    if (
+      req.method === "GET" &&
+      (pathname === "/aios-geo-demo" || pathname === "/aios-geo-demo/")
+    ) {
+      const demoPath = join(PUBLIC_DIR, "aios-geo-demo.html");
+      if (existsSync(demoPath)) {
+        res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+        res.end(readFileSync(demoPath, "utf-8"));
+      } else {
+        return json(res, 404, { ok: false, error: "Demo page not found" });
+      }
+      return;
+    }
+
+
     if (
       req.method === "GET" &&
       (pathname === "/start" || pathname === "/start/")
@@ -7015,6 +7030,24 @@ function filterXP(cat, btn) {
       res.end(
         `const CACHE='aios-v3';const PRE=['/aiosdream','/geo-codec','/aios-studio','/geo-library','/live'];self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(PRE).catch(()=>{})).then(()=>self.skipWaiting())));self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k!==CACHE).map(k=>caches.delete(k)))).then(()=>clients.claim())));self.addEventListener('fetch',e=>{if(e.request.method!=='GET')return;try{const u=new URL(e.request.url);if(u.protocol!=='https:'&&u.protocol!=='http:')return;if(u.origin!==self.location.origin)return;}catch(err){return;}e.respondWith(caches.match(e.request).then(h=>h||fetch(e.request).then(r=>{if(r&&r.ok&&r.type==='basic'){const c=r.clone();caches.open(CACHE).then(x=>x.put(e.request,c).catch(()=>{}));}return r;}).catch(()=>h)));});`,
       );
+      return;
+    }
+
+    // ── GET /aios-geo.js — AIOS GeoQode Embed SDK ──────────────────────────
+    if (req.method === "GET" && pathname === "/aios-geo.js") {
+      const geoJsPath = join(PUBLIC_DIR, "aios-geo.js");
+      if (existsSync(geoJsPath)) {
+        const content = readFileSync(geoJsPath, "utf-8");
+        res.writeHead(200, {
+          "Content-Type": "text/javascript; charset=utf-8",
+          "Cache-Control": "public, max-age=3600, stale-while-revalidate=300",
+          "Access-Control-Allow-Origin": "*",
+          "Cross-Origin-Resource-Policy": "cross-origin",
+        });
+        res.end(content);
+      } else {
+        return json(res, 404, { ok: false, error: "aios-geo.js not found" });
+      }
       return;
     }
 
