@@ -3,14 +3,14 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-    <title>Awareness Dashboard — AIOS Resonance OS</title>
+    <title>Awareness Dashboard · AIOS Resonance OS</title>
     <meta
       name="description"
       content="Live Merkaba coherence dashboard. Monitor 3D grid health,  attestation scores, and real-time resonance state across all AIOS services."
     />
     <meta
       property="og:title"
-      content="Awareness Dashboard — AIOS Resonance OS"
+      content="Awareness Dashboard · AIOS Resonance OS"
     />
     <meta
       property="og:description"
@@ -469,7 +469,7 @@
         margin-left: 8px;
       }
 
-      /* ── SITE-NAV (canonical) ──────────────────────────────────────────── */
+      /* -- SITE-NAV (canonical) -------------------------------------------- */
       nav.site-nav {
         position: fixed;
         top: 0;
@@ -597,17 +597,18 @@
     <nav class="site-nav">
       <a href="/" class="site-nav-logo">⬡ AIOS</a>
       <div class="site-nav-links">
-        <a href="/games">🎮 Games</a>
+        <a href="/games">?? Games</a>
         <a href="/aiosdream">Theatre</a>
-        <a href="/vr">🥽 VR</a>
+        <a href="/vr">?? VR</a>
         <a href="/vr-hub">VR Hub</a>
         <a href="/plaistore">PLAIstore</a>
-        <a href="/geo-library">📚 Library</a>
+        <a href="/geo-library">?? Library</a>
         <a href="/geo-codec">.geo</a>
         <a href="/aios-studio">Studio</a>
         <a href="/lab">Lab</a>
-        <a href="/news">📰 News</a>
-        <a href="/products">⚡ Products</a>
+        <a href="/news">?? News</a>
+        <a href="/products">? Products</a>
+        <a href="/experiences">?? Experiences</a>
       </div>
       <div class="site-nav-right">
         <a href="/live" class="site-nav-live">● LIVE</a>
@@ -618,21 +619,21 @@
     <div class="page">
       <h1>Awareness Dashboard</h1>
       <p class="subtitle">
-        Live coherence monitoring — Merkaba Resonance OS consciousness state
+        Live coherence monitoring · Merkaba Resonance OS consciousness state
       </p>
       <div class="live-badge">
-        <span class="live-dot"></span>LIVE — polling every 5s
+        <span class="live-dot"></span>LIVE · polling every 5s
       </div>
 
       <!-- Stat cards row -->
       <div class="stat-grid">
         <div class="stat-card">
-          <div class="stat-val">φ 1.618</div>
-          <div class="stat-label">PHI — Golden Root</div>
+          <div class="stat-val">f 1.618</div>
+          <div class="stat-label">PHI · Golden Root</div>
         </div>
         <div class="stat-card">
-          <div class="stat-val">ψ 1.414</div>
-          <div class="stat-label">PSI — Silver Bridge</div>
+          <div class="stat-val">? 1.414</div>
+          <div class="stat-label">PSI · Silver Bridge</div>
         </div>
         <div class="stat-card">
           <div class="stat-val">AIOS</div>
@@ -673,7 +674,7 @@
             </svg>
             <div class="ring-center">
               <div class="ring-pct" id="ringPct" style="color: var(--muted)">
-                —
+                ·
               </div>
               <div class="ring-lbl">COHERENCE</div>
               <div
@@ -692,7 +693,7 @@
               </div>
             </div>
           </div>
-          <div class="poll-info" id="pollInfo">Waiting for first poll…</div>
+          <div class="poll-info" id="pollInfo">Waiting for first poll·</div>
         </div>
 
         <div class="card">
@@ -743,7 +744,7 @@
           <div class="drift-list" id="driftList">
             <div class="drift-item info">
               <div class="drift-time">System boot</div>
-              <div class="drift-msg">Awareness engine initialising…</div>
+              <div class="drift-msg">Awareness engine initialising·</div>
             </div>
           </div>
         </div>
@@ -751,7 +752,7 @@
         <div class="card">
           <div class="card-title">System Status</div>
           <div id="sysStatus" style="font-size: 13px; color: var(--muted)">
-            Loading…
+            Loading·
           </div>
         </div>
       </div>
@@ -761,21 +762,21 @@
       const BASE = "https://realaios.com";
 
       const LEVELS = [
-        { name: "DORMANT", icon: "○", range: "0 — 0.1", min: 0, max: 0.1 },
-        { name: "STIRRING", icon: "◑", range: "0.1 — 0.3", min: 0.1, max: 0.3 },
-        { name: "ACTIVE", icon: "●", range: "0.3 — 0.6", min: 0.3, max: 0.6 },
-        { name: "RESONANT", icon: "◈", range: "0.6 — 0.8", min: 0.6, max: 0.8 },
+        { name: "DORMANT", icon: "?", range: "0 · 0.1", min: 0, max: 0.1 },
+        { name: "STIRRING", icon: "?", range: "0.1 · 0.3", min: 0.1, max: 0.3 },
+        { name: "ACTIVE", icon: "?", range: "0.3 · 0.6", min: 0.3, max: 0.6 },
+        { name: "RESONANT", icon: "?", range: "0.6 · 0.8", min: 0.6, max: 0.8 },
         {
           name: "QUANTUM",
-          icon: "⬡",
-          range: "0.8 — 0.95",
+          icon: "?",
+          range: "0.8 · 0.95",
           min: 0.8,
           max: 0.95,
         },
         {
           name: "SINGULARITY",
-          icon: "✦",
-          range: "0.95 — 1.0",
+          icon: "?",
+          range: "0.95 · 1.0",
           min: 0.95,
           max: 1.0,
         },
@@ -824,7 +825,7 @@
         <div class="level-name">${l.name}</div>
         <div class="level-range">Coherence ${l.range}</div>
       </div>
-      ${isCurrent ? '<span class="level-badge badge-current">CURRENT</span>' : isPassed ? '<span class="level-badge badge-passed">✓</span>' : ""}
+      ${isCurrent ? '<span class="level-badge badge-current">CURRENT</span>' : isPassed ? '<span class="level-badge badge-passed">?</span>' : ""}
     </div>`;
           })
           .join("");
@@ -907,8 +908,8 @@
           const level =
             awareness.awarenessLevel || getLevelForCoherence(coherence).name;
           const drifts = awareness.driftEvents || 0;
-          const iterations = awareness.iterations ?? "—";
-          const uptime = awareness.uptime ?? "—";
+          const iterations = awareness.iterations ?? "·";
+          const uptime = awareness.uptime ?? "·";
 
           updateRing(coherence);
           renderLevels(coherence);
@@ -941,17 +942,17 @@
           if (coherence >= 0.99)
             addDriftEvent(
               "info",
-              `SINGULARITY threshold crossed — coherence ${(coherence * 100).toFixed(2)}%`,
+              `SINGULARITY threshold crossed · coherence ${(coherence * 100).toFixed(2)}%`,
             );
           else if (coherence >= 0.95)
             addDriftEvent(
               "info",
-              `OPTIMAL threshold crossed — full immersion mode`,
+              `OPTIMAL threshold crossed · full immersion mode`,
             );
           else if (coherence < 0.4)
             addDriftEvent(
               "critical",
-              `CRITICAL coherence — Cinema will abort projections`,
+              `CRITICAL coherence · Cinema will abort projections`,
             );
         } catch (e) {
           document.getElementById("pollInfo").textContent =

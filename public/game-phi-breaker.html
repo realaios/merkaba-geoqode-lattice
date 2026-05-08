@@ -1,9 +1,9 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>PHI Breaker � Lattice Shooter � AIOS Arcade</title>
+    <title>PHI Breaker · Lattice Shooter · AIOS Arcade</title>
     <meta
       name="description"
       content="Defend the AIOS grid from entropy disruptors. Gaze to shoot. WebXR arcade game."
@@ -11,7 +11,7 @@
     <link rel="canonical" href="https://realaios.com/games/phi-breaker" />
     <meta
       property="og:title"
-      content="PHI Breaker � Lattice Shooter � AIOS Arcade"
+      content="PHI Breaker · Lattice Shooter · AIOS Arcade"
     />
     <meta
       property="og:description"
@@ -52,7 +52,7 @@
         overflow: hidden;
       }
 
-      /* NAV � collapsed in game, shown on lobby/gameover */
+      /* NAV · collapsed in game, shown on lobby/gameover */
       nav.site-nav {
         position: fixed;
         top: 0;
@@ -466,7 +466,7 @@
   <body>
     <!-- NAV (lobby only) -->
     <nav class="site-nav" id="site-nav">
-      <a href="/" class="site-nav-logo">? AIOS</a>
+      <a href="/" class="site-nav-logo">⬡ AIOS</a>
       <div class="site-nav-links">
         <a href="/games">?? Games</a>
         <a href="/aiosdream">Theatre</a>
@@ -479,16 +479,17 @@
         <a href="/lab">Lab</a>
         <a href="/news">?? News</a>
         <a href="/products">? Products</a>
+        <a href="/experiences">🌐 Experiences</a>
       </div>
       <div class="site-nav-right">
-        <a href="/live" class="site-nav-live">? LIVE</a>
-        <a href="/start" class="site-nav-cta">Start Free ?</a>
+        <a href="/live" class="site-nav-live">● LIVE</a>
+        <a href="/start" class="site-nav-cta">Start Free →</a>
       </div>
     </nav>
 
     <!-- LOBBY -->
     <div id="lobby">
-      <div class="lobby-badge">?? AIOS Arcade � PHI Breaker</div>
+      <div class="lobby-badge">🎮⬡ AIOS Arcade · PHI Breaker</div>
       <div class="lobby-title">PHI Breaker</div>
       <div class="lobby-sub">
         Entropy disruptors are attacking the AIOS grid. Gaze to lock. Click to
@@ -500,7 +501,7 @@
           <div class="lobby-stat-l">Per Round</div>
         </div>
         <div>
-          <div class="lobby-stat-n">�PHI</div>
+          <div class="lobby-stat-n">·PHI</div>
           <div class="lobby-stat-l">Wave Scaling</div>
         </div>
         <div>
@@ -538,11 +539,11 @@
           Loading...
         </div>
       </div>
-      <button class="btn-play" onclick="startGame()">? LAUNCH GAME</button>
+      <button class="btn-play" onclick="startGame()">🚀 LAUNCH GAME</button>
       <div class="lobby-hint">
         Gaze to aim — Click or tap to shoot — WASD on desktop
       </div>
-      <a href="/vr-hub" class="lobby-back">? Back to VR Hub</a>
+      <a href="/vr-hub" class="lobby-back">← Back to VR Hub</a>
     </div>
 
     <!-- A-FRAME SCENE CONTAINER -->
@@ -574,7 +575,7 @@
     </div>
 
     <!-- EXIT BTN -->
-    <button id="exit-btn" onclick="exitGame()">? Exit</button>
+    <button id="exit-btn" onclick="exitGame()">✕ Exit</button>
 
     <!-- CROSSHAIR -->
     <div id="crosshair"><div class="crosshair-ring"></div></div>
@@ -588,8 +589,8 @@
       </div>
       <div class="go-wave" id="go-wave">Wave 1 reached</div>
       <div class="go-actions">
-        <button class="btn-retry" onclick="restartGame()">? Play Again</button>
-        <a href="/vr-hub" class="btn-back-go">? VR Hub</a>
+        <button class="btn-retry" onclick="restartGame()">↩ Play Again</button>
+        <a href="/vr-hub" class="btn-back-go">🥽 VR Hub</a>
       </div>
       <button
         id="btn-share-phi"
@@ -618,9 +619,9 @@
           const text =
             "I scored " +
             s +
-            " PHI Points in PHI Breaker ? � " +
+            " PHI Points in PHI Breaker ? · " +
             w +
-            " � free game at realaios.com";
+            " · free game at realaios.com";
           if (navigator.share) {
             navigator
               .share({
@@ -635,9 +636,9 @@
                 .writeText(text + "\nhttps://realaios.com/game-phi-breaker")
                 .then(function () {
                   var btn = document.getElementById("btn-share-phi");
-                  btn.textContent = "? Copied!";
+                  btn.textContent = "✓ Copied!";
                   setTimeout(function () {
-                    btn.textContent = "? Share My Score";
+                    btn.textContent = "📤 Share My Score";
                   }, 2500);
                 })
                 .catch(function () {
@@ -870,7 +871,7 @@
                 look-controls="reverseMouseDrag: false; touchEnabled: true; pointerLockEnabled: false"
                 wasd-controls="enabled: false"
                 fov="80">
-                <!-- Gaze cursor � 1.2s fuse for VR headset -->
+                <!-- Gaze cursor · 1.2s fuse for VR headset -->
                 <a-cursor
                   id="game-cursor"
                   fuse="true"
@@ -959,7 +960,7 @@
 
         document.getElementById("go-score-n").textContent = score;
         document.getElementById("go-wave").textContent =
-          `Wave ${wave} reached � ${kills} kills`;
+          `Wave ${wave} reached · ${kills} kills`;
         document.getElementById("gameover").style.display = "flex";
         // Submit to leaderboard
         const pn = localStorage.getItem("aios_player_name") || "Anonymous";

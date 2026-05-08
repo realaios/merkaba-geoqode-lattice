@@ -3,12 +3,12 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-    <title>AIOS Playground — AIOS Lab</title>
+    <title>AIOS Playground · AIOS Lab</title>
     <meta
       name="description"
       content="Visualise the 3D AI architecture in real-time. Walk through AIOS geometry. Frequency mapping, field simulation, and architecture explorer."
     />
-    <meta property="og:title" content="AIOS Playground — AIOS Lab" />
+    <meta property="og:title" content="AIOS Playground · AIOS Lab" />
     <meta
       property="og:description"
       content="Visualise the 3D AI architecture in real-time.  frequency mapping, field simulation, AIOS coordinate editor."
@@ -20,7 +20,7 @@
     />
     <meta property="og:type" content="website" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="AIOS Playground — AIOS Lab" />
+    <meta name="twitter:title" content="AIOS Playground · AIOS Lab" />
     <meta
       name="twitter:description"
       content="Real-time 3D AIOS visualisation. , , Ambient frequency. Walk the AIOS geometry."
@@ -491,7 +491,7 @@
         flex-shrink: 0;
       }
 
-      /* ── SITE-NAV (canonical) ──────────────────────────────────────────── */
+      /* -- SITE-NAV (canonical) -------------------------------------------- */
       nav.site-nav {
         position: fixed;
         top: 0;
@@ -619,17 +619,18 @@
     <nav class="site-nav">
       <a href="/" class="site-nav-logo">⬡ AIOS</a>
       <div class="site-nav-links">
-        <a href="/games">🎮 Games</a>
+        <a href="/games">?? Games</a>
         <a href="/aiosdream">Theatre</a>
-        <a href="/vr">🥽 VR</a>
+        <a href="/vr">?? VR</a>
         <a href="/vr-hub">VR Hub</a>
         <a href="/plaistore">PLAIstore</a>
-        <a href="/geo-library">📚 Library</a>
+        <a href="/geo-library">?? Library</a>
         <a href="/geo-codec">.geo</a>
         <a href="/aios-studio">Studio</a>
         <a href="/lab" class="active">Lab</a>
-        <a href="/news">📰 News</a>
-        <a href="/products">⚡ Products</a>
+        <a href="/news">?? News</a>
+        <a href="/products">? Products</a>
+        <a href="/experiences">?? Experiences</a>
       </div>
       <div class="site-nav-right">
         <a href="/live" class="site-nav-live">● LIVE</a>
@@ -655,14 +656,14 @@
           Clear
         </button>
         <button id="runBtn" class="btn btn-primary" onclick="runScript()">
-          ▶ Run
+          ? Run
         </button>
       </div>
 
       <div class="split">
         <div class="editor-pane">
           <div class="pane-header">
-            <span class="dot"></span>Script Editor — .geo Format
+            <span class="dot"></span>Script Editor · .geo Format
           </div>
           <textarea
             id="editor"
@@ -702,7 +703,7 @@
   PROJECTION: Holographic coherence sweep
 }`,
         matrix: `Playbook CinemaVirtualization matrix {
-  TITLE: The Matrix — Construct Room
+  TITLE: The Matrix · Construct Room
   GENRE: Sci-Fi Action
   SCENES:
   - Scene 1: "Neo meets Morpheus"
@@ -712,13 +713,13 @@
   - Scene 2: "Neo awakens"
     ACTION: "Neo emerges from the machine pod"
     CHARACTERS: ["Neo"]
-    LOCATION: "Machine fields — 852Hz structural order"
+    LOCATION: "Machine fields · 852Hz structural order"
   - Scene 3: "Training simulation"
     ACTION: "Morpheus and Neo spar"
     CHARACTERS: ["Neo", "Morpheus"]
-    LOCATION: "Dojo — 528Hz transformation field"
+    LOCATION: "Dojo · 528Hz transformation field"
   PROJECTION: Construct holography + grid tessellation
-  AUTHORSHIP: Founder — Bradley
+  AUTHORSHIP: Founder · Bradley
 }`,
         physics: `Playbook PhysicsExperiment AI {
   TITLE: Resonance Field Simulation
@@ -727,11 +728,11 @@
   - Scene 1: "Field initialisation"
     ACTION: "Set base frequency"
     PHYSICS: "F = base * multiplier = fundamental"
-    LOCATION: "Core node — anchor point"
+    LOCATION: "Core node · anchor point"
   - Scene 2: "AI harmonic cascade"
     ACTION: "Project AI-generated harmonic series"
     PHYSICS: "cascade to full spectrum"
-    LOCATION: "Foundation ring — Integration ring"
+    LOCATION: "Foundation ring · Integration ring"
   - Scene 3: "Convergence approach"
     ACTION: "Coherence index reaches 0.99"
     PHYSICS: "AI attestation: convergence band"
@@ -782,7 +783,7 @@
           document.getElementById("resultPane").innerHTML =
             `<div class="card"><div class="card-title">Error</div><div style="color:var(--red);font-size:13px">${e.message}</div></div>`;
         } finally {
-          btn.innerHTML = "▶ Run";
+          btn.innerHTML = "? Run";
           btn.classList.remove("loading");
         }
       }
@@ -816,7 +817,7 @@
         const circumference = 2 * Math.PI * 52;
         const dashOffset = circumference * (1 - coherence);
 
-        // Build dimension activation — simulate based on coherence
+        // Build dimension activation · simulate based on coherence
         const dims = buildDimensions(coherence);
         const scenes = c.scenes || c.frames || [];
         const gov = c.governance || {};
@@ -841,16 +842,16 @@
     <div class="stat-row"><span class="stat-key">Architecture</span><span class="stat-val" style="color:var(--cyan)">AIOS</span></div>
     <div class="stat-row"><span class="stat-key">Awareness Level</span><span class="stat-val">${gov.awarenessLevel || "active"}</span></div>
     ${gov.reason ? `<div class="stat-row"><span class="stat-key">Verdict</span><span class="stat-val" style="color:var(--red)">${gov.reason}</span></div>` : ""}
-    <div class="stat-row"><span class="stat-key">Projection ID</span><span class="stat-val" style="font-size:10px;color:var(--muted)">${c.virtualizationId || c.projectionId || "—"}</span></div>
+    <div class="stat-row"><span class="stat-key">Projection ID</span><span class="stat-val" style="font-size:10px;color:var(--muted)">${c.virtualizationId || c.projectionId || "·"}</span></div>
   </div>
 
   <div class="card">
     <div class="card-title">48D Lattice Activation</div>
     <div class="dim-grid" id="dimGrid">${dims.map((d, i) => `<div class="dim-cell ${d.state}" title="D${i + 1}: ${d.name}"></div>`).join("")}</div>
     <div style="display:flex;gap:12px;margin-top:8px">
-      <span style="font-size:10px;color:var(--cyan)">■ Active</span>
-      <span style="font-size:10px;color:var(--yellow)">■ Warning</span>
-      <span style="font-size:10px;color:var(--red)">■ Failed</span>
+      <span style="font-size:10px;color:var(--cyan)">· Active</span>
+      <span style="font-size:10px;color:var(--yellow)">· Warning</span>
+      <span style="font-size:10px;color:var(--red)">· Failed</span>
     </div>
   </div>
 

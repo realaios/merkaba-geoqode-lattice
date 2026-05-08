@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>AIOS LIVE — 24/7 .geo Broadcast Channel</title>
+    <title>AIOS LIVE · 24/7 .geo Broadcast Channel</title>
     <meta
       name="description"
       content="AIOS LIVE: The world's first AI-native 24/7 broadcast channel. AIOSProducerSwarm generates a new .geo programme every 2 minutes. No pre-recorded media."
@@ -11,7 +11,7 @@
     <link rel="canonical" href="https://realaios.com/live" />
     <meta
       property="og:title"
-      content="AIOS LIVE — 24/7 AI-Native Broadcast Channel"
+      content="AIOS LIVE · 24/7 AI-Native Broadcast Channel"
     />
     <meta
       property="og:description"
@@ -446,7 +446,7 @@
         color: var(--cyan);
       }
 
-      /* ── SITE-NAV (canonical) ──────────────────────────────────────────── */
+      /* -- SITE-NAV (canonical) -------------------------------------------- */
       nav.site-nav {
         position: fixed;
         top: 0;
@@ -574,17 +574,18 @@
     <nav class="site-nav">
       <a href="/" class="site-nav-logo">⬡ AIOS</a>
       <div class="site-nav-links">
-        <a href="/games">🎮 Games</a>
+        <a href="/games">?? Games</a>
         <a href="/aiosdream">Theatre</a>
-        <a href="/vr">🥽 VR</a>
+        <a href="/vr">?? VR</a>
         <a href="/vr-hub">VR Hub</a>
         <a href="/plaistore">PLAIstore</a>
-        <a href="/geo-library">📚 Library</a>
+        <a href="/geo-library">?? Library</a>
         <a href="/geo-codec">.geo</a>
         <a href="/aios-studio">Studio</a>
         <a href="/lab">Lab</a>
-        <a href="/news">📰 News</a>
-        <a href="/products">⚡ Products</a>
+        <a href="/news">?? News</a>
+        <a href="/products">? Products</a>
+        <a href="/experiences">?? Experiences</a>
       </div>
       <div class="site-nav-right">
         <a href="/live" class="site-nav-live">● LIVE</a>
@@ -595,20 +596,20 @@
     <!-- STATS STRIP -->
     <div class="stats-strip">
       <div class="strip-stat">
-        <span class="strip-num" id="ss-total" style="color: var(--cyan)">—</span
+        <span class="strip-num" id="ss-total" style="color: var(--cyan)">·</span
         ><span class="strip-label">In Library</span>
       </div>
       <div class="strip-stat">
         <span class="strip-num" id="ss-produced" style="color: var(--teal)"
-          >—</span
+          >·</span
         ><span class="strip-label">Produced Today</span>
       </div>
       <div class="strip-stat">
-        <span class="strip-num" id="ss-hrs" style="color: var(--purple)">—</span
+        <span class="strip-num" id="ss-hrs" style="color: var(--purple)">·</span
         ><span class="strip-label">Hours of Content</span>
       </div>
       <div class="strip-stat">
-        <span class="strip-num" id="ss-next" style="color: var(--gold)">—</span
+        <span class="strip-num" id="ss-next" style="color: var(--gold)">·</span
         ><span class="strip-label">Next .geo in</span>
       </div>
       <div class="strip-stat">
@@ -625,7 +626,7 @@
           <div class="player-aspect">
             <canvas id="live-canvas"></canvas>
             <div class="player-overlay"></div>
-            <!-- AIOS overlay — Hebrew letter + frequency label -->
+            <!-- AIOS overlay · Hebrew letter + frequency label -->
             <div
               id="hz-overlay"
               style="
@@ -684,7 +685,7 @@
             <div class="now-playing">
               <div class="np-meta">
                 <div>
-                  <div class="np-title" id="np-title">Loading…</div>
+                  <div class="np-title" id="np-title">Loading·</div>
                   <div class="np-sub" id="np-sub">
                     AIOSProducerSwarm · .geo v2
                   </div>
@@ -696,10 +697,10 @@
                     class="ctrl-btn"
                     href="/aiosdream"
                     target="_blank"
-                    >⛶ Full</a
+                    >? Full</a
                   >
                   <a id="np-watch" class="ctrl-btn primary" href="/aiosdream"
-                    >▶ Watch</a
+                    >? Watch</a
                   >
                 </div>
               </div>
@@ -719,7 +720,7 @@
           <p class="section-head" style="margin-top: 0.5rem">Choose Renderer</p>
           <div class="renderer-pills" id="renderer-pills"></div>
           <p class="section-head" style="margin-top: 1rem">
-            Coming Up — Next in Queue
+            Coming Up · Next in Queue
           </p>
           <div id="upcoming-list"></div>
         </div>
@@ -727,13 +728,13 @@
 
       <!-- SIDEBAR: schedule -->
       <div class="sidebar">
-        <p class="section-head">📅 Today's Schedule</p>
+        <p class="section-head">?? Today's Schedule</p>
         <div id="schedule-list"></div>
       </div>
     </div>
 
     <script>
-      // ── RENDERERS (subset — fast-starting, good standalone) ────────────────────
+      // -- RENDERERS (subset · fast-starting, good standalone) --------------------
       const RENDERERS = {
         matrix: {
           label: "Matrix",
@@ -744,7 +745,7 @@
             const cols = Math.floor(W / 16),
               drops = Array(cols).fill(1);
             const chars =
-              "アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワン0123456789ABCDEF";
+              "?????????????????????????????????????????????0123456789ABCDEF";
             let t = 0;
             return setInterval(() => {
               ctx.fillStyle = "rgba(0,0,0,0.05)";
@@ -1137,7 +1138,7 @@
       };
       const RENDERER_KEYS = Object.keys(RENDERERS);
 
-      // ── AIOS → canvas colour modulation ────────────────────────────────
+      // -- AIOS ? canvas colour modulation --------------------------------
       // Each frequency band maps to a hue-rotate angle so the entire renderer
       // canvas shifts to the correct colour band.
       const HZ_GEOQODE = {
@@ -1211,7 +1212,7 @@
           `${hz} \u00B7 ${info.name} \u00B7 ${info.meaning}`;
       }
 
-      // ── STATE ──────────────────────────────────────────────────────────────────
+      // -- STATE ------------------------------------------------------------------
       let activeRenderer = "matrix";
       let rendererHandle = null;
       let catalogue = [];
@@ -1221,7 +1222,7 @@
       let slotElapsed = 0;
       let countdown = 120;
 
-      // ── CANVAS SETUP ─────────────────────────────────────────────────────────
+      // -- CANVAS SETUP ---------------------------------------------------------
       const cv = document.getElementById("live-canvas");
       function resizeCanvas() {
         const rect = cv.parentElement.getBoundingClientRect();
@@ -1244,7 +1245,7 @@
         rendererHandle = RENDERERS[key]?.start(cv) ?? null;
       }
 
-      // ── RENDERER PILLS ────────────────────────────────────────────────────────
+      // -- RENDERER PILLS --------------------------------------------------------
       const pillsEl = document.getElementById("renderer-pills");
       RENDERER_KEYS.forEach((k) => {
         const b = document.createElement("button");
@@ -1256,7 +1257,7 @@
       });
       startRenderer(activeRenderer);
 
-      // ── AUDIO VISUALISER ──────────────────────────────────────────────────────
+      // -- AUDIO VISUALISER ------------------------------------------------------
       const avCv = document.getElementById("audio-viz");
       const avCtx = avCv ? avCv.getContext("2d") : null;
       let avT = 0;
@@ -1273,7 +1274,7 @@
       }
       drawAudioViz();
 
-      // ── API & SCHEDULE ────────────────────────────────────────────────────────
+      // -- API & SCHEDULE --------------------------------------------------------
       function formatTime(offsetSec) {
         const now = new Date();
         now.setSeconds(now.getSeconds() + offsetSec);
@@ -1307,7 +1308,7 @@
         const next = progs.slice(1, 5);
         if (!next.length) {
           el.innerHTML =
-            '<p style="color:var(--muted);font-size:0.8rem">Loading queue…</p>';
+            '<p style="color:var(--muted);font-size:0.8rem">Loading queue·</p>';
           return;
         }
         el.innerHTML = next
@@ -1397,16 +1398,16 @@
         try {
           const d = await (await fetch("/api/geo/stats")).json();
           const el = (id) => document.getElementById(id);
-          if (el("ss-total")) el("ss-total").textContent = d.catalogue || "—";
+          if (el("ss-total")) el("ss-total").textContent = d.catalogue || "·";
           if (el("ss-produced"))
-            el("ss-produced").textContent = d.productionCount || "—";
+            el("ss-produced").textContent = d.productionCount || "·";
           if (el("ss-hrs"))
             el("ss-hrs").textContent =
-              d.totalDurationHours != null ? d.totalDurationHours : "—";
+              d.totalDurationHours != null ? d.totalDurationHours : "·";
         } catch (e) {}
       }
 
-      // ── PROGRESS + COUNTDOWN ──────────────────────────────────────────────────
+      // -- PROGRESS + COUNTDOWN --------------------------------------------------
       setInterval(() => {
         slotElapsed++;
         countdown = Math.max(0, 120 - slotElapsed);
@@ -1425,7 +1426,7 @@
         }
       }, 1000);
 
-      // ── INIT ──────────────────────────────────────────────────────────────────
+      // -- INIT ------------------------------------------------------------------
       loadCatalogue();
       loadStats();
       setInterval(loadStats, 60000);

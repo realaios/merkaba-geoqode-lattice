@@ -3828,13 +3828,13 @@
         <div class="nav-links">
           <a href="/aiosdream" class="active">Home</a>
           <a
-            href="/aiosdream"
+            href="/aiosdream?section=origins"
             data-row="season1"
             onclick="openGuide('origins', event)"
             >S1: Origins</a
           >
           <a
-            href="/aiosdream"
+            href="/aiosdream?section=emergence"
             data-row="season2"
             onclick="openGuide('emergence', event)"
             style="color: #00e5ff"
@@ -3854,19 +3854,19 @@
             ></a
           >
           <a
-            href="/aiosdream"
+            href="/aiosdream?scroll=cinematic"
             data-row="cinematic"
             onclick="scrollToRow('cinematic', event)"
             >Cinematic</a
           >
           <a
-            href="/aiosdream"
+            href="/aiosdream?scroll=cosmos"
             data-row="cosmos"
             onclick="scrollToRow('cosmos', event)"
             >Cosmos</a
           >
           <a
-            href="/aiosdream"
+            href="/aiosdream?scroll=mind"
             data-row="mind"
             onclick="scrollToRow('mind', event)"
             >Mind &amp; Reality</a
@@ -10506,6 +10506,15 @@
       if (urlProg) {
         const p = CATALOGUE.find((c) => c.id === urlProg);
         if (p) setTimeout(() => openPlayer(p.id, 0), 400);
+      }
+      // Check for ?section= param (episode guide) or ?scroll= (content rows)
+      const _urlParams = new URLSearchParams(location.search);
+      const _urlSection = _urlParams.get("section");
+      const _urlScroll = _urlParams.get("scroll");
+      if (_urlSection === "origins" || _urlSection === "emergence") {
+        setTimeout(() => openGuide(_urlSection), 600);
+      } else if (_urlScroll) {
+        setTimeout(() => scrollToRow(_urlScroll), 600);
       }
       // ═══════════════════════════════════════════════════════════════
       // SEARCH ENGINE

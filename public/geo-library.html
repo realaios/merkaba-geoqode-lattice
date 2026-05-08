@@ -3,20 +3,20 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>AIOS GEO Library — Live .geo Catalogue | realaios.com</title>
+    <title>AIOS GEO Library · Live .geo Catalogue | realaios.com</title>
     <meta
       name="description"
-      content="The world's first AI-native video library. Every programme is a living .geo file — infinite resolution, zero waste, produced 24/7 by AIOSProducerSwarm."
+      content="The world's first AI-native video library. Every programme is a living .geo file · infinite resolution, zero waste, produced 24/7 by AIOSProducerSwarm."
     />
     <meta name="robots" content="index,follow" />
     <link rel="canonical" href="https://realaios.com/geo-library" />
     <meta
       property="og:title"
-      content="AIOS GEO Library — Live .geo Catalogue"
+      content="AIOS GEO Library · Live .geo Catalogue"
     />
     <meta
       property="og:description"
-      content="The world's first AI-native video library. Every programme is a living .geo file — infinite resolution, zero waste, produced 24/7 by AIOSProducerSwarm."
+      content="The world's first AI-native video library. Every programme is a living .geo file · infinite resolution, zero waste, produced 24/7 by AIOSProducerSwarm."
     />
     <meta property="og:url" content="https://realaios.com/geo-library" />
     <meta property="og:type" content="website" />
@@ -225,7 +225,7 @@
         border-color: var(--cyan);
         color: var(--text);
       }
-      /* Renderer engine chips — indigo accent */
+      /* Renderer engine chips · indigo accent */
       .renderer-chip {
         background: rgba(91, 33, 182, 0.12);
         border: 1px solid rgba(139, 92, 246, 0.22);
@@ -250,7 +250,7 @@
         border-color: #8b5cf6;
         color: #e9d5ff;
       }
-      /* Sort buttons — amber/gold accent */
+      /* Sort buttons · amber/gold accent */
       .sort-btn {
         background: rgba(251, 191, 36, 0.07);
         border: 1px solid rgba(251, 191, 36, 0.18);
@@ -599,7 +599,7 @@
         }
       }
 
-      /* ── SITE-NAV (canonical) ──────────────────────────────────────────── */
+      /* -- SITE-NAV (canonical) -------------------------------------------- */
       nav.site-nav {
         position: fixed;
         top: 0;
@@ -728,17 +728,18 @@
     <nav class="site-nav">
       <a href="/" class="site-nav-logo">⬡ AIOS</a>
       <div class="site-nav-links">
-        <a href="/games">🎮 Games</a>
+        <a href="/games">?? Games</a>
         <a href="/aiosdream">Theatre</a>
-        <a href="/vr">🥽 VR</a>
+        <a href="/vr">?? VR</a>
         <a href="/vr-hub">VR Hub</a>
         <a href="/plaistore">PLAIstore</a>
-        <a href="/geo-library" class="active">📚 Library</a>
+        <a href="/geo-library" class="active">?? Library</a>
         <a href="/geo-codec">.geo</a>
         <a href="/aios-studio">Studio</a>
         <a href="/lab">Lab</a>
-        <a href="/news">📰 News</a>
-        <a href="/products">⚡ Products</a>
+        <a href="/news">?? News</a>
+        <a href="/products">? Products</a>
+        <a href="/experiences">?? Experiences</a>
       </div>
       <div class="site-nav-right">
         <a href="/live" class="site-nav-live">● LIVE</a>
@@ -754,7 +755,7 @@
       <h1 class="lib-title">The .geo Library</h1>
       <p class="lib-sub">
         Every programme is a living
-        <code style="color: var(--cyan)">.geo</code> file — AI-rendered,
+        <code style="color: var(--cyan)">.geo</code> file · AI-rendered,
         infinite resolution, zero wasted bytes. New titles produced every 2
         minutes by the swarm, 24 hours a day.
       </p>
@@ -762,24 +763,24 @@
 
     <div class="stats-bar" style="padding: 1rem 2rem">
       <div class="stat">
-        <div class="stat-val" id="stat-count">—</div>
+        <div class="stat-val" id="stat-count">·</div>
         <div class="stat-lbl">Programmes in Library</div>
       </div>
       <div class="stat">
-        <div class="stat-val" id="stat-produced">—</div>
+        <div class="stat-val" id="stat-produced">·</div>
         <div class="stat-lbl">Total Produced</div>
       </div>
       <div class="stat">
-        <div class="stat-val" id="stat-hours">—</div>
+        <div class="stat-val" id="stat-hours">·</div>
         <div class="stat-lbl">Hours of Content</div>
       </div>
       <div class="stat">
-        <div class="stat-val" id="stat-kb">—</div>
+        <div class="stat-val" id="stat-kb">·</div>
         <div class="stat-lbl">Total Library Size</div>
       </div>
       <div class="stat">
         <div class="stat-val" id="stat-vs">
-          <span style="font-size: 1rem; color: var(--muted)">vs mp4:</span> —
+          <span style="font-size: 1rem; color: var(--muted)">vs mp4:</span> ·
         </div>
         <div class="stat-lbl">Compression Ratio</div>
       </div>
@@ -789,27 +790,27 @@
       <!-- Row 1: Search + sort + result count + refresh -->
       <div class="filter-row">
         <div class="search-wrap">
-          <span class="search-icon">⌕</span>
+          <span class="search-icon">?</span>
           <input
             class="filter-search"
             type="text"
-            placeholder="Search titles, renderers… (press /)"
+            placeholder="Search titles, renderers· (press /)"
             id="search-input"
             autocomplete="off"
           />
           <button class="search-clear" id="search-clear" title="Clear search">
-            ✕
+            ?
           </button>
         </div>
         <div style="display: flex; gap: 4px; flex-wrap: wrap" id="sort-btns">
           <button class="sort-btn active" data-sort="newest">Newest</button>
           <button class="sort-btn" data-sort="longest">Longest</button>
           <button class="sort-btn" data-sort="shortest">Shortest</button>
-          <button class="sort-btn" data-sort="hz-hi">Hz ↑</button>
+          <button class="sort-btn" data-sort="hz-hi">Hz ?</button>
           <button class="sort-btn" data-sort="size-lo">Smallest</button>
         </div>
-        <span class="result-count" id="result-count">— programmes</span>
-        <button class="refresh-btn" id="refresh-btn">↻</button>
+        <span class="result-count" id="result-count">· programmes</span>
+        <button class="refresh-btn" id="refresh-btn">?</button>
       </div>
       <!-- Row 2: Genre filter chips -->
       <div class="filter-row" id="genre-row">
@@ -835,15 +836,15 @@
 
     <div class="toast" id="toast"></div>
     <div class="status-line">
-      <span class="status-green">● LIVE</span>
-      <span id="status-text">Loading AIOSProducerSwarm catalogue…</span>
+      <span class="status-green">? LIVE</span>
+      <span id="status-text">Loading AIOSProducerSwarm catalogue·</span>
       <span style="margin-left: auto" id="status-refresh"
         >Auto-refreshes every 30s</span
       >
     </div>
 
     <script>
-      // ── Mini Renderers (client-side, 5fps, card preview) ─────────────────────────
+      // -- Mini Renderers (client-side, 5fps, card preview) -------------------------
       const MINI_RENDERERS = {
         matrix(ctx, w, h, t) {
           ctx.fillStyle = "rgba(0,0,0,0.15)";
@@ -1116,7 +1117,7 @@
         storm: "matrix",
       };
 
-      // ── State ─────────────────────────────────────────────────────────────────────
+      // -- State ---------------------------------------------------------------------
       let allProgrammes = [];
       let filteredProgrammes = [];
       let activeGenre = "ALL";
@@ -1127,7 +1128,7 @@
       let cardFrameT = {};
       let _searchDebounce = null;
 
-      // ── Catalogue Fetch ────────────────────────────────────────────────────────────
+      // -- Catalogue Fetch ------------------------------------------------------------
       async function fetchCatalogue() {
         try {
           const r = await fetch("/api/geo/catalogue?limit=100");
@@ -1155,7 +1156,7 @@
           document.getElementById("stat-kb").textContent =
             kb.toFixed(0) + " KB";
           document.getElementById("stat-vs").innerHTML =
-            `<span style="font-size:1rem;color:var(--muted)">vs mp4:</span> ${kb < 1 ? "∞" : Math.round((data.count * 5000) / kb).toLocaleString() + "x"}`;
+            `<span style="font-size:1rem;color:var(--muted)">vs mp4:</span> ${kb < 1 ? "8" : Math.round((data.count * 5000) / kb).toLocaleString() + "x"}`;
 
           document.getElementById("status-text").textContent =
             `${allProgrammes.length} programmes · ${data.productionCount ?? 0} produced · ` +
@@ -1166,11 +1167,11 @@
 
           if (isNew)
             showToast(
-              `🎬 New programme produced: "${allProgrammes[0]?.title}"`,
+              `?? New programme produced: "${allProgrammes[0]?.title}"`,
             );
         } catch (e) {
           document.getElementById("status-text").textContent =
-            "Connection error — retrying…";
+            "Connection error · retrying·";
         }
       }
 
@@ -1187,7 +1188,7 @@
         } catch (_) {}
       }
 
-      // ── Renderer Chip Population ──────────────────────────────────────────────────
+      // -- Renderer Chip Population --------------------------------------------------
       function populateRendererChips() {
         var renderers = [];
         var seen = {};
@@ -1238,7 +1239,7 @@
         });
       }
 
-      // ── Sort ─────────────────────────────────────────────────────────────────────
+      // -- Sort ---------------------------------------------------------------------
       function applySort(progs) {
         var s = progs.slice();
         switch (activeSort) {
@@ -1270,7 +1271,7 @@
         }
       }
 
-      // ── Filter / Search ───────────────────────────────────────────────────────────
+      // -- Filter / Search -----------------------------------------------------------
       function applyFilter() {
         var q = searchQuery.toLowerCase().trim();
         var result = allProgrammes.filter(function (p) {
@@ -1298,7 +1299,7 @@
         var rc = document.getElementById("result-count");
         if (rc) {
           if (allProgrammes.length === 0) {
-            rc.textContent = "— programmes";
+            rc.textContent = "· programmes";
           } else if (filteredProgrammes.length === allProgrammes.length) {
             rc.innerHTML =
               "<em>" + filteredProgrammes.length + "</em> programmes";
@@ -1313,13 +1314,13 @@
         renderGrid();
       }
 
-      // ── Grid Render ────────────────────────────────────────────────────────────────
+      // -- Grid Render ----------------------------------------------------------------
       function renderGrid() {
         stopAllCanvases();
         const el = document.getElementById("library");
 
         if (!filteredProgrammes.length) {
-          el.innerHTML = `<div class="empty"><div class="empty-icon">◌</div><p>No programmes match that filter yet.<br>The swarm produces a new one every 2 minutes.</p></div>`;
+          el.innerHTML = `<div class="empty"><div class="empty-icon">?</div><p>No programmes match that filter yet.<br>The swarm produces a new one every 2 minutes.</p></div>`;
           return;
         }
 
@@ -1329,15 +1330,15 @@
             const genres = (p.genre || [])
               .map((g) => `<span class="genre-pill">${g}</span>`)
               .join("");
-            const dur = p.duration ? fmtDur(p.duration) : "—";
+            const dur = p.duration ? fmtDur(p.duration) : "·";
             const rendKey = RENDERER_MAP[p.renderer?.type] || "default";
             const isCanonical = p.canonical || /^s2_/.test(p.id);
             return `<div class="card" onclick="watchProgramme('${p.id}')" data-id="${p.id}">
       <div class="card-canvas-wrap">
         <canvas class="card-canvas" data-renderer="${rendKey}" data-idx="${i}" width="280" height="158"></canvas>
-        ${isCanonical ? '<div class="card-fresh" style="background:rgba(0,229,255,0.85);color:#06040e;letter-spacing:0.12em">⬡ S2 CANONICAL</div>' : isFresh ? '<div class="card-fresh">● FRESH</div>' : ""}
-        <div class="card-geo-badge">● .GEO v2</div>
-        <div class="card-play">▶</div>
+        ${isCanonical ? '<div class="card-fresh" style="background:rgba(0,229,255,0.85);color:#06040e;letter-spacing:0.12em">? S2 CANONICAL</div>' : isFresh ? '<div class="card-fresh">? FRESH</div>' : ""}
+        <div class="card-geo-badge">? .GEO v2</div>
+        <div class="card-play">?</div>
       </div>
       <div class="card-body">
         <div class="card-title">${p.title}</div>
@@ -1346,9 +1347,9 @@
         <div class="card-meta">
           <span>${dur}</span>
           <span class="card-hz">${p.audio?.hz || 528} Hz</span>
-          <span class="card-kb">${p.fileSizeKB || "—"} KB</span>
+          <span class="card-kb">${p.fileSizeKB || "·"} KB</span>
         </div>
-        <div class="card-renderer">⚡ ${(p.renderer?.type || "quantum").toUpperCase()} · ${p.swarm?.agents?.director || "QuantumDirector"}</div>
+        <div class="card-renderer">? ${(p.renderer?.type || "quantum").toUpperCase()} · ${p.swarm?.agents?.director || "QuantumDirector"}</div>
       </div>
     </div>`;
           })
@@ -1360,7 +1361,7 @@
         });
       }
 
-      // ── Mini Canvas Renderer ───────────────────────────────────────────────────────
+      // -- Mini Canvas Renderer -------------------------------------------------------
       const _activeRafs = new Map();
 
       function startMiniRenderer(canvas) {
@@ -1393,11 +1394,11 @@
         _activeRafs.clear();
       }
 
-      // ── Watch ──────────────────────────────────────────────────────────────────────
+      // -- Watch ----------------------------------------------------------------------
       function watchProgramme(id) {
         const prog = allProgrammes.find((p) => p.id === id);
         if (!prog) return;
-        // Canonical S2 episodes — deep-link directly into the AIOSdream player
+        // Canonical S2 episodes · deep-link directly into the AIOSdream player
         if (prog.canonical || /^s2_/.test(id)) {
           window.location.href = `/aiosdream?prog=${encodeURIComponent(id)}`;
           return;
@@ -1406,7 +1407,7 @@
         window.location.href = `/aiosdream?renderer=${rendererType}`;
       }
 
-      // ── Utilities ─────────────────────────────────────────────────────────────────
+      // -- Utilities -----------------------------------------------------------------
       function fmtDur(s) {
         const h = Math.floor(s / 3600),
           m = Math.floor((s % 3600) / 60);
@@ -1420,7 +1421,7 @@
         setTimeout(() => t.classList.remove("show"), 3500);
       }
 
-      // ── Genre filter buttons ──────────────────────────────────────────────────────
+      // -- Genre filter buttons ------------------------------------------------------
       document
         .getElementById("genre-row")
         .querySelectorAll(".filter-btn")
@@ -1438,7 +1439,7 @@
           });
         });
 
-      // ── Sort buttons ──────────────────────────────────────────────────────────────
+      // -- Sort buttons --------------------------------------------------------------
       document
         .getElementById("sort-btns")
         .querySelectorAll(".sort-btn")
@@ -1456,7 +1457,7 @@
           });
         });
 
-      // ── Search: debounced input + clear button + / keyboard shortcut ──────────────
+      // -- Search: debounced input + clear button + / keyboard shortcut --------------
       var _searchInp = document.getElementById("search-input");
       var _searchClear = document.getElementById("search-clear");
 
@@ -1495,10 +1496,10 @@
         .getElementById("refresh-btn")
         .addEventListener("click", function () {
           fetchCatalogue();
-          showToast("↻ Refreshing catalogue…");
+          showToast("? Refreshing catalogue·");
         });
 
-      // ── Init ──────────────────────────────────────────────────────────────────────
+      // -- Init ----------------------------------------------------------------------
       fetchCatalogue();
       setInterval(fetchCatalogue, 30_000);
     </script>

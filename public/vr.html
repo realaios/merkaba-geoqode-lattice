@@ -3,19 +3,19 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>AIOS VR — __VR_LIVE__ Live Worlds · Meta Quest · realaios.com</title>
+    <title>AIOS VR · __VR_LIVE__ Live Worlds · Meta Quest · realaios.com</title>
     <meta
       name="description"
-      content="__VR_LIVE__ live WebXR experiences for Meta Quest 2/3 — Cinema, Enterprise, Lab, Arcade, Wellness, Social, Creator, Education, Art. Zero install, browser only."
+      content="__VR_LIVE__ live WebXR experiences for Meta Quest 2/3 · Cinema, Enterprise, Lab, Arcade, Wellness, Social, Creator, Education, Art. Zero install, browser only."
     />
     <meta name="theme-color" content="#050a14" />
     <meta
       property="og:title"
-      content="AIOS VR — __VR_LIVE__ Live Worlds for Meta Quest"
+      content="AIOS VR · __VR_LIVE__ Live Worlds for Meta Quest"
     />
     <meta
       property="og:description"
-      content="__VR_LIVE__ live WebXR experiences across 9 categories. Zero install — open realaios.com/vr in your Meta Quest Browser and dive in."
+      content="__VR_LIVE__ live WebXR experiences across 9 categories. Zero install · open realaios.com/vr in your Meta Quest Browser and dive in."
     />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://realaios.com/vr" />
@@ -26,18 +26,18 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta
       name="twitter:title"
-      content="AIOS VR — __VR_LIVE__ Live WebXR Experiences for Meta Quest"
+      content="AIOS VR · __VR_LIVE__ Live WebXR Experiences for Meta Quest"
     />
     <meta
       name="twitter:description"
-      content="__VR_LIVE__ live immersive worlds across 9 categories. Zero install — launch direct from Meta Quest Browser."
+      content="__VR_LIVE__ live immersive worlds across 9 categories. Zero install · launch direct from Meta Quest Browser."
     />
     <meta
       name="twitter:image"
       content="https://realaios.com/public/og-image.svg"
     />
     <link rel="canonical" href="https://realaios.com/vr" />
-    <!-- A-Frame 1.5.0 — WebXR foundation -->
+    <!-- A-Frame 1.5.0 · WebXR foundation -->
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
     <style>
       * {
@@ -62,7 +62,7 @@
         min-height: 100vh;
       }
 
-      /* ── Flat (non-VR) overlay ── */
+      /* -- Flat (non-VR) overlay -- */
       #flat-ui {
         position: relative;
         z-index: 10;
@@ -71,7 +71,7 @@
         flex-direction: column;
       }
 
-      /* ── Nav ── */
+      /* -- Nav -- */
       nav {
         display: flex;
         align-items: center;
@@ -137,7 +137,7 @@
         font-weight: 600;
       }
 
-      /* ── Hero ── */
+      /* -- Hero -- */
       .vr-hero {
         text-align: center;
         padding: 4rem 2rem 2rem;
@@ -188,7 +188,7 @@
         margin-bottom: 1.5rem;
       }
 
-      /* ── VR Entry Button ── */
+      /* -- VR Entry Button -- */
       #enter-vr-btn {
         display: flex; /* always shown; label upgrades on Quest */
         align-items: center;
@@ -247,7 +247,7 @@
         text-decoration: none;
       }
 
-      /* ── Programme Grid ── */
+      /* -- Programme Grid -- */
       .section-title {
         text-align: center;
         font-size: 1.4rem;
@@ -330,7 +330,7 @@
         line-height: 1.5;
         margin-bottom: 1rem;
       }
-      /* ── Share Button ── */
+      /* -- Share Button -- */
       #share-btn {
         display: inline-flex;
         align-items: center;
@@ -358,7 +358,7 @@
         margin-top: 0.4rem;
       }
 
-      /* ── Category tab strip ── */
+      /* -- Category tab strip -- */
       .cat-strip {
         display: flex;
         gap: 0.5rem;
@@ -395,7 +395,7 @@
         background: rgba(0, 212, 255, 0.06);
       }
 
-      /* ── Stat bar under hero ── */
+      /* -- Stat bar under hero -- */
       .vr-stats {
         display: flex;
         gap: 2rem;
@@ -462,7 +462,7 @@
         border-color: var(--cyan);
       }
 
-      /* ── Lattice Info ── */
+      /* -- Lattice Info -- */
       .grid-panel {
         max-width: 900px;
         margin: 0 auto 3rem;
@@ -493,7 +493,7 @@
         font-family: monospace;
       }
 
-      /* ── A-Frame scene container ── */
+      /* -- A-Frame scene container -- */
       #vr-scene-container {
         display: none;
         position: fixed;
@@ -551,7 +551,7 @@
         }
       }
 
-      /* ── SITE-NAV (canonical) ──────────────────────────────────────────── */
+      /* -- SITE-NAV (canonical) -------------------------------------------- */
       nav.site-nav {
         position: fixed;
         top: 0;
@@ -676,22 +676,23 @@
     </style>
   </head>
   <body>
-    <!-- ── Flat UI (shown in browser / non-VR) ── -->
+    <!-- -- Flat UI (shown in browser / non-VR) -- -->
     <div id="flat-ui">
       <nav class="site-nav">
         <a href="/" class="site-nav-logo">⬡ AIOS</a>
         <div class="site-nav-links">
-          <a href="/games">🎮 Games</a>
+          <a href="/games">?? Games</a>
           <a href="/aiosdream">Theatre</a>
-          <a href="/vr" class="active">🥽 VR</a>
+          <a href="/vr" class="active">?? VR</a>
           <a href="/vr-hub">VR Hub</a>
           <a href="/plaistore">PLAIstore</a>
-          <a href="/geo-library">📚 Library</a>
+          <a href="/geo-library">?? Library</a>
           <a href="/geo-codec">.geo</a>
           <a href="/aios-studio">Studio</a>
           <a href="/lab">Lab</a>
-          <a href="/news">📰 News</a>
-          <a href="/products">⚡ Products</a>
+          <a href="/news">?? News</a>
+          <a href="/products">? Products</a>
+        <a href="/experiences">?? Experiences</a>
         </div>
         <div class="site-nav-right">
           <a href="/live" class="site-nav-live">● LIVE</a>
@@ -703,16 +704,16 @@
         <div class="grid-sig">AIOS ·</div>
         <h1>Merkaba Dimensional Theatre<br />in Virtual Reality</h1>
         <p>
-          The same PHI 3D geometry that powers the AIOS intelligence engine —
+          The same PHI 3D geometry that powers the AIOS intelligence engine ·
           now navigable in full immersive VR.
           <span id="vr-prog-count">23</span> live programmes across 9
           categories, spatially anchored to the node canonical grid. Works on
-          Meta Quest 2 &amp; 3 via browser. Zero install — no app required.
+          Meta Quest 2 &amp; 3 via browser. Zero install · no app required.
         </p>
 
-        <!-- Enter button — always shown; label updates based on device -->
+        <!-- Enter button · always shown; label updates based on device -->
         <button id="enter-vr-btn" onclick="enterVRScene()">
-          🎬 Enter Cinema Mode
+          ?? Enter Cinema Mode
         </button>
 
         <!-- Quest VR mode note -->
@@ -721,18 +722,18 @@
           id="vr-not-supported"
           style="display: none"
         >
-          🎬 <strong>Running in Cinema Mode (desktop).</strong><br />
+          ?? <strong>Running in Cinema Mode (desktop).</strong><br />
           For full spatial VR, open this page on a Meta Quest browser:
           <code>realaios.com/vr</code>
         </div>
 
         <p class="vr-quest-hint">
-          On Meta Quest? Open Browser → navigate to
+          On Meta Quest? Open Browser ? navigate to
           <a href="https://realaios.com/vr" target="_blank">realaios.com/vr</a>
-          → tap 🥽 Enter VR Mode
+          ? tap ?? Enter VR Mode
         </p>
-        <button id="share-btn" onclick="copyVRLink()">🔗 Copy VR Link</button>
-        <div id="share-confirm">✓ Link copied to clipboard!</div>
+        <button id="share-btn" onclick="copyVRLink()">?? Copy VR Link</button>
+        <div id="share-confirm">? Link copied to clipboard!</div>
       </div>
 
       <!-- Stats bar -->
@@ -777,7 +778,7 @@
             margin: 0 0 0.7rem;
           "
         >
-          🆕 New to AIOS VR? Here's how
+          ?? New to AIOS VR? Here's how
         </p>
         <div
           style="
@@ -788,7 +789,7 @@
           "
         >
           <div style="flex: 1; min-width: 140px">
-            <div style="font-size: 1.5rem; margin-bottom: 0.25rem">1️⃣</div>
+            <div style="font-size: 1.5rem; margin-bottom: 0.25rem">1??</div>
             <div
               style="
                 font-size: 0.82rem;
@@ -806,7 +807,7 @@
             </div>
           </div>
           <div style="flex: 1; min-width: 140px">
-            <div style="font-size: 1.5rem; margin-bottom: 0.25rem">2️⃣</div>
+            <div style="font-size: 1.5rem; margin-bottom: 0.25rem">2??</div>
             <div
               style="
                 font-size: 0.82rem;
@@ -832,7 +833,7 @@
             </div>
           </div>
           <div style="flex: 1; min-width: 140px">
-            <div style="font-size: 1.5rem; margin-bottom: 0.25rem">3️⃣</div>
+            <div style="font-size: 1.5rem; margin-bottom: 0.25rem">3??</div>
             <div
               style="
                 font-size: 0.82rem;
@@ -845,7 +846,7 @@
             </div>
             <div style="font-size: 0.75rem; color: #7a90b8; line-height: 1.5">
               Choose any experience below, tap
-              <strong style="color: #edf4ff">🥽 Enter VR Mode</strong>
+              <strong style="color: #edf4ff">?? Enter VR Mode</strong>
             </div>
           </div>
         </div>
@@ -858,44 +859,44 @@
       <!-- Category tabs -->
       <div class="cat-strip">
         <button class="cat-tab active" onclick="filterProgs('all', this)">
-          ✦ All
+          ? All
         </button>
         <button class="cat-tab" onclick="filterProgs('cinema', this)">
-          🎬 Cinema
+          ?? Cinema
         </button>
         <button class="cat-tab" onclick="filterProgs('enterprise', this)">
-          🏢 Enterprise
+          ?? Enterprise
         </button>
         <button class="cat-tab" onclick="filterProgs('lab', this)">
-          🔬 Lab
+          ?? Lab
         </button>
         <button class="cat-tab" onclick="filterProgs('arcade', this)">
-          🎮 Arcade
+          ?? Arcade
         </button>
         <button class="cat-tab" onclick="filterProgs('wellness', this)">
-          🧘 Wellness
+          ?? Wellness
         </button>
         <button class="cat-tab" onclick="filterProgs('education', this)">
-          📚 Education
+          ?? Education
         </button>
         <button class="cat-tab" onclick="filterProgs('art', this)">
-          🎨 Art
+          ?? Art
         </button>
         <button class="cat-tab" onclick="filterProgs('social', this)">
-          👥 Social
+          ?? Social
         </button>
         <button class="cat-tab" onclick="filterProgs('creator', this)">
-          🛠️ Creator
+          ??? Creator
         </button>
         <a
           href="/vr-hub"
           class="cat-tab"
           style="border-color: rgba(0, 212, 255, 0.3); color: var(--cyan)"
-          >🗂️ Full Hub →</a
+          >??? Full Hub ?</a
         >
       </div>
 
-      <!-- ── Lattice Constants ── -->
+      <!-- -- Lattice Constants -- -->
       <div class="grid-panel">
         <div class="info-grid">
           <div class="info-cell">
@@ -925,7 +926,7 @@
         </div>
       </div>
 
-      <!-- ── Programme Cards ── -->
+      <!-- -- Programme Cards -- -->
       <div class="section-title">
         Choose a <span>Dimensional Experience</span>
         <div
@@ -944,22 +945,22 @@
       </div>
     </div>
 
-    <!-- ── VR Scene Container (injected when Enter VR clicked) ── -->
+    <!-- -- VR Scene Container (injected when Enter VR clicked) -- -->
     <div id="vr-scene-container">
-      <button id="vr-exit-btn" onclick="exitVRScene()">✕ Exit VR</button>
+      <button id="vr-exit-btn" onclick="exitVRScene()">? Exit VR</button>
       <!-- A-Frame scene injected here dynamically -->
     </div>
 
     <script>
       "use strict";
 
-      // ── Canonical Constants ──────────────────────────────────────────────
+      // -- Canonical Constants ----------------------------------------------
       const PHI = 1.618;
       const PSI = 1.414;
       const BASE_FREQ = 72;
       const PLATFORM_ID = "AIOS";
 
-      // ── AIOS Semantic Frequencies ────────────────────────────────────
+      // -- AIOS Semantic Frequencies ------------------------------------
       const SEMANTIC = {
         ENTITY: { hz: 396, color: "#ef4444" },
         LOCATION: { hz: 417, color: "#22c55e" },
@@ -971,7 +972,7 @@
         HOLOGRAPHIC: { hz: 72, color: "#00d4ff" },
       };
 
-      // ── Theatre Programmes ───────────────────────────────────────────────
+      // -- Theatre Programmes -----------------------------------------------
       const PROGRAMMES = [
         {
           name: "matrix",
@@ -1009,7 +1010,7 @@
           sem: "LOCATION",
           cat: "cinema",
           desc: "Lunar descent telemetry, mission control simulation, historical immersion.",
-          shortDesc: "One small step — in full immersive VR.",
+          shortDesc: "One small step · in full immersive VR.",
           panelAngle: 180,
           gridNode: 24,
         },
@@ -1055,7 +1056,7 @@
         },
         {
           name: "breathwork",
-          display: "Breathwork — Holotropic VR",
+          display: "Breathwork · Holotropic VR",
           sem: "EMOTION",
           cat: "wellness",
           desc: "Guided breathwork sessions with visual breath-tracking orbs. 4-7-8 protocol in full VR.",
@@ -1065,7 +1066,7 @@
         },
         {
           name: "phi-breaker",
-          display: "PHI Breaker — Lattice Shooter",
+          display: "PHI Breaker · Lattice Shooter",
           sem: "ACTION",
           cat: "arcade",
           desc: "Defend the 3D grid from entropy. Shoot frequency disruptors across 3D space.",
@@ -1075,7 +1076,7 @@
         },
         {
           name: "grid-builder",
-          display: "Lattice Builder — Puzzle VR",
+          display: "Lattice Builder · Puzzle VR",
           sem: "PHYSICS",
           cat: "arcade",
           desc: "Reconstruct damaged nodes. Align PHI harmonics. Physics-based puzzle solving.",
@@ -1095,7 +1096,7 @@
         },
         {
           name: "ancient-rome",
-          display: "Ancient Rome — 100 AD",
+          display: "Ancient Rome · 100 AD",
           sem: "LOCATION",
           cat: "education",
           desc: "Walk the Roman Forum, enter the Colosseum, witness the height of the Empire reconstructed at scale.",
@@ -1115,7 +1116,7 @@
         },
         {
           name: "spatial-canvas",
-          display: "Spatial Canvas — 3D Painting",
+          display: "Spatial Canvas · 3D Painting",
           sem: "EMOTION",
           cat: "art",
           desc: "Paint in full 3D space with hand tracking. PHI-golden spiral brush guides. Export as GLB.",
@@ -1125,7 +1126,7 @@
         },
         {
           name: "frequency-composer",
-          display: "Frequency Composer — Spatial Audio",
+          display: "Frequency Composer · Spatial Audio",
           sem: "EMOTION",
           cat: "art",
           desc: "Compose music by positioning sound orbs in 3D space. Spatial audio.",
@@ -1145,7 +1146,7 @@
         },
         {
           name: "remote-hq",
-          display: "Remote HQ — Virtual Office",
+          display: "Remote HQ · Virtual Office",
           sem: "LOCATION",
           cat: "enterprise",
           desc: "Persistent spatial office anchored to the grid. Meet, present, and collaborate at .",
@@ -1165,7 +1166,7 @@
         },
         {
           name: "grid-lounge",
-          display: "The Lounge — Social Hub",
+          display: "The Lounge · Social Hub",
           sem: "DIALOGUE",
           cat: "social",
           desc: "The ambient social gathering place of realaios.com. Presence indicators, spatial voice,  DIALOGUE field. Feel the grid breathe.",
@@ -1185,7 +1186,7 @@
         },
         {
           name: "geoqode-studio",
-          display: "AIOS Studio — VR Builder",
+          display: "AIOS Studio · VR Builder",
           sem: "HOLOGRAPHIC",
           cat: "creator",
           desc: "Live AIOS coordinate explorer and node builder. Assign  frequencies to A-Frame scenes and test in real-time.",
@@ -1203,10 +1204,10 @@
           panelAngle: 255,
           gridNode: 4,
         },
-        // ── NEW: LAB ───────────────────────────────────────────────────
+        // -- NEW: LAB ---------------------------------------------------
         {
           name: "solar-system",
-          display: "Solar System — Orbital VR",
+          display: "Solar System · Orbital VR",
           sem: "LOCATION",
           cat: "lab",
           desc: "Orbital mechanics at true scale. Walk Jupiter's surface, orbit Saturn's rings.  spatial anchoring.",
@@ -1216,7 +1217,7 @@
         },
         {
           name: "fractal-space",
-          display: "Fractal Space — Infinite Zoom",
+          display: "Fractal Space · Infinite Zoom",
           sem: "NARRATIVE",
           cat: "lab",
           desc: "Infinite zoom through Mandelbrot and Julia sets rendered as navigable 3D caverns.  depth field.",
@@ -1230,14 +1231,14 @@
           sem: "HOLOGRAPHIC",
           cat: "lab",
           desc: "Walk the full spectrum of colour-coded spatial chambers.",
-          shortDesc: "Step through frequency chambers 396→.",
+          shortDesc: "Step through frequency chambers 396?.",
           panelAngle: 25,
           gridNode: 22,
         },
-        // ── NEW: EDUCATION ───────────────────────────────────────────
+        // -- NEW: EDUCATION -------------------------------------------
         {
           name: "mathematical-dims",
-          display: "Mathematical Dimensions — 4D Space",
+          display: "Mathematical Dimensions · 4D Space",
           sem: "PHYSICS",
           cat: "education",
           desc: "Walk through 4D hypercubes, Klein bottles, and PHI spirals as physical places.  structural field.",
@@ -1250,12 +1251,12 @@
           display: "Language Immersion Worlds",
           sem: "DIALOGUE",
           cat: "education",
-          desc: "Learn Mandarin in Beijing, Spanish in Barcelona — AI conversation partners at every corner.  dialogue field.",
+          desc: "Learn Mandarin in Beijing, Spanish in Barcelona · AI conversation partners at every corner.  dialogue field.",
           shortDesc: "AI tutors in photorealistic city VR. .",
           panelAngle: 40,
           gridNode: 28,
         },
-        // ── NEW: ART ──────────────────────────────────────────────────────
+        // -- NEW: ART ------------------------------------------------------
         {
           name: "ai-gallery",
           display: "Infinite AI Gallery",
@@ -1268,7 +1269,7 @@
         },
         {
           name: "generative-theatre",
-          display: "Generative Theatre — AI Plays",
+          display: "Generative Theatre · AI Plays",
           sem: "DIALOGUE",
           cat: "art",
           desc: "AI-written plays performed by spatial avatars in real time. Every show unique.  dialogue field.",
@@ -1276,10 +1277,10 @@
           panelAngle: 55,
           gridNode: 34,
         },
-        // ── NEW: SOCIAL ──────────────────────────────────────────────────
+        // -- NEW: SOCIAL --------------------------------------------------
         {
           name: "live-events",
-          display: "AIOS Live Events — VR Broadcasts",
+          display: "AIOS Live Events · VR Broadcasts",
           sem: "ACTION",
           cat: "social",
           desc: "VR concerts, keynotes, launches. Real-time spatial audio, 6DoF movement,  action field.",
@@ -1289,7 +1290,7 @@
         },
         {
           name: "creator-studio",
-          display: "Creator Studio — Build VR Scenes",
+          display: "Creator Studio · Build VR Scenes",
           sem: "NARRATIVE",
           cat: "creator",
           desc: "Build, remix, share VR scenes with AIOS coordinate assignment. Collaborative A-Frame editing.",
@@ -1299,7 +1300,7 @@
         },
         {
           name: "aios-academy",
-          display: "AIOS Academy — Spatial Learning",
+          display: "AIOS Academy · Spatial Learning",
           sem: "LOCATION",
           cat: "education",
           desc: "Cohort-based spatial learning. Live instructor in VR, spatial whiteboards, group exploration.",
@@ -1307,10 +1308,10 @@
           panelAngle: 80,
           gridNode: 40,
         },
-        // ── NEW: WELLNESS ───────────────────────────────────────────────
+        // -- NEW: WELLNESS -----------------------------------------------
         {
           name: "ocean-presence",
-          display: "Ocean Presence — Infinite Horizon",
+          display: "Ocean Presence · Infinite Horizon",
           sem: "EMOTION",
           cat: "wellness",
           desc: "Infinite ocean horizon with dynamic waves. ambient tone. Pure stillness and presence.",
@@ -1320,7 +1321,7 @@
         },
         {
           name: "cosmos-963",
-          display: " Cosmos — Crown Field",
+          display: " Cosmos · Crown Field",
           sem: "NARRATIVE",
           cat: "wellness",
           desc: "Cosmic void with ambient audio, galactic particle field, and silent expansion.",
@@ -1330,7 +1331,7 @@
         },
         {
           name: "mountain-silence",
-          display: "Mountain Silence —  Clarity",
+          display: "Mountain Silence ·  Clarity",
           sem: "EMOTION",
           cat: "wellness",
           desc: "Alpine panorama at golden hour with  expression frequency. Silence, elevation, and clarity.",
@@ -1338,10 +1339,10 @@
           panelAngle: 100,
           gridNode: 27,
         },
-        // ── NEW: ARCADE ───────────────────────────────────────────────────
+        // -- NEW: ARCADE ---------------------------------------------------
         {
           name: "grid-dodge",
-          display: "Lattice Dodge — PHI Reflexes",
+          display: "Lattice Dodge · PHI Reflexes",
           sem: "ACTION",
           cat: "arcade",
           desc: "Dodge entropy disruptors flying through the 3D grid ring. Speed ramps by each wave.",
@@ -1351,7 +1352,7 @@
         },
         {
           name: "phi-architect",
-          display: "PHI Architect — Build or Dissolve",
+          display: "PHI Architect · Build or Dissolve",
           sem: "PHYSICS",
           cat: "arcade",
           desc: "Build perfect structures in zero gravity before the tide dissolves them. Geometry as survival.",
@@ -1361,7 +1362,7 @@
         },
         {
           name: "swarm-defender",
-          display: "Swarm Defender — 8 Drones",
+          display: "Swarm Defender · 8 Drones",
           sem: "ACTION",
           cat: "arcade",
           desc: "Command an 8-drone swarm in PHI formation to repel entropy invasions. spatial control.",
@@ -1371,16 +1372,16 @@
         },
       ];
 
-      // ── URL param: ?prog=matrix to pre-select ───────────────────────────
+      // -- URL param: ?prog=matrix to pre-select ---------------------------
       const params = new URLSearchParams(location.search);
       const preselect = params.get("prog");
 
-      // ── Build programme cards ────────────────────────────────────────────
+      // -- Build programme cards --------------------------------------------
       const grid = document.getElementById("prog-grid");
       const progCountEl = document.getElementById("vr-prog-count");
       if (progCountEl) progCountEl.textContent = PROGRAMMES.length;
 
-      // ── Sync stats bar from live taxonomy ───────────────────────────────
+      // -- Sync stats bar from live taxonomy -------------------------------
       fetch("/api/aios/vr/taxonomy")
         .then((r) => (r.ok ? r.json() : null))
         .then((d) => {
@@ -1428,13 +1429,13 @@
           <div class="card-desc">${prog.desc}</div>
           <div style="font-size:0.72rem;color:#6b84b8;margin-bottom:0.75rem;">Node ${prog.gridNode} · ${prog.sem}</div>
           <div class="card-actions">
-            <a class="btn-vr" href="/vr?prog=${prog.name}" onclick="launchProgVR('${prog.name}',event)">🥽 Launch VR</a>
-            <button style="border:none;background:transparent;color:var(--muted);cursor:pointer;padding:0.5rem 0.4rem;font-size:0.82rem;" onclick="shareProgLink('${prog.name}')" title="Copy link">🔗</button>
+            <a class="btn-vr" href="/vr?prog=${prog.name}" onclick="launchProgVR('${prog.name}',event)">?? Launch VR</a>
+            <button style="border:none;background:transparent;color:var(--muted);cursor:pointer;padding:0.5rem 0.4rem;font-size:0.82rem;" onclick="shareProgLink('${prog.name}')" title="Copy link">??</button>
           </div>`;
         grid.appendChild(card);
       }
 
-      // ── Category filter ──────────────────────────────────────────────────
+      // -- Category filter --------------------------------------------------
       function filterProgs(cat, el) {
         document
           .querySelectorAll(".cat-tab")
@@ -1446,7 +1447,7 @@
         });
       }
 
-      // ── Copy VR link ─────────────────────────────────────────────────────
+      // -- Copy VR link -----------------------------------------------------
       async function copyVRLink() {
         const url = `https://realaios.com/vr${location.search}`;
         try {
@@ -1483,21 +1484,21 @@
           document.body.removeChild(ta);
         }
         const c = document.getElementById("share-confirm");
-        c.textContent = `✓ Copied: realaios.com/vr?prog=${progName}`;
+        c.textContent = `? Copied: realaios.com/vr?prog=${progName}`;
         c.style.display = "block";
         setTimeout(() => {
           c.style.display = "none";
-          c.textContent = "✓ Link copied to clipboard!";
+          c.textContent = "? Link copied to clipboard!";
         }, 2500);
       }
 
-      // ── WebXR Detection ──────────────────────────────────────────────────
+      // -- WebXR Detection --------------------------------------------------
       const enterBtn = document.getElementById("enter-vr-btn");
       const noSupportEl = document.getElementById("vr-not-supported");
       let webXRSupported = false;
 
-      // Always show the enter button — Cinema Mode works on any device.
-      // Upgrade label to "🥽 Enter VR Mode" if Quest WebXR is detected.
+      // Always show the enter button · Cinema Mode works on any device.
+      // Upgrade label to "?? Enter VR Mode" if Quest WebXR is detected.
       enterBtn.style.display = "flex";
 
       if (navigator.xr) {
@@ -1506,13 +1507,13 @@
           .then((supported) => {
             webXRSupported = supported;
             if (supported) {
-              enterBtn.textContent = "🥽 Enter VR Mode";
+              enterBtn.textContent = "?? Enter VR Mode";
             }
           })
           .catch(() => {});
       }
 
-      // ── A-Frame Scene Builder ────────────────────────────────────────────
+      // -- A-Frame Scene Builder --------------------------------------------
       function buildAFrameScene(startProg) {
         const R = 5.5; // panel radius in metres
         let panelsHTML = "";
@@ -1590,7 +1591,7 @@
                 material="shader: flat"
                 cursor-listener>
                 <a-text
-                  value="🥽  Launch Programme"
+                  value="??  Launch Programme"
                   align="center"
                   color="#ffffff"
                   width="1.2"
@@ -1756,7 +1757,7 @@
           </a-scene>`;
       }
 
-      // ── VR Session Management ─────────────────────────────────────────────
+      // -- VR Session Management ---------------------------------------------
       let currentProg = preselect || null;
       let audioCtx = null;
       let oscillator = null;
@@ -1794,7 +1795,7 @@
         const bgColor = "#050a14";
         container.innerHTML =
           `<button id="vr-exit-btn" onclick="exitVRScene()">&#x2715; Exit</button>` +
-          `<div id="vr-loading" style="position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:${bgColor};color:#00d4ff;font-family:'Courier New',monospace;font-size:1.5rem;z-index:9998;">Loading scene…</div>`;
+          `<div id="vr-loading" style="position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:${bgColor};color:#00d4ff;font-family:'Courier New',monospace;font-size:1.5rem;z-index:9998;">Loading scene·</div>`;
 
         // Determine ambient for this programme
         const semHz = currentProg
@@ -1806,7 +1807,7 @@
           : BASE_FREQ;
 
         // Load MAL scene async, fall back to legacy builder on error
-        // Note: getMALLoader / MAL_SCENE_MAP may not be defined yet — always
+        // Note: getMALLoader / MAL_SCENE_MAP may not be defined yet · always
         // fall through to the legacy builder which is fully self-contained.
         const _malPromise = (function () {
           try {
@@ -1880,7 +1881,7 @@
       function launchProgVR(progName, e) {
         e && e.preventDefault();
         currentProg = progName;
-        // Always enter — Cinema Mode works on desktop too
+        // Always enter · Cinema Mode works on desktop too
         enterVRScene(progName);
       }
 
@@ -1904,7 +1905,7 @@
         });
       }
 
-      // ── Auto-enter if ?prog= param present ───────────────────────────────
+      // -- Auto-enter if ?prog= param present -------------------------------
       if (preselect) {
         enterVRScene(preselect);
       }
