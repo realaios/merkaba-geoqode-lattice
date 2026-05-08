@@ -8468,41 +8468,6 @@ server.listen(PORT, () => {
       `[GeoQode OS] Pages MISSING (${missing.length}): ${missing.join(", ")}`,
     );
 
-  // One-shot: write AIOS robotics hybrid architecture entry to Storm KB
-  // Runs once at startup using Railway's ADMIN_JWT env var.
-  // Remove after first successful deploy.
-  setTimeout(async () => {
-    const adminJwt = process.env.ADMIN_JWT;
-    const apiBase = process.env.BACKEND_URL || 'https://api.getbrains4ai.com';
-    if (!adminJwt) { console.warn('[KB-WRITE] ADMIN_JWT not set, skipping robotics KB write'); return; }
-    try {
-      const kbResp = await fetch(`${apiBase}/api/knowledge/aios-robotics-hybrid-architecture`, {
-        method: 'POST',
-        headers: { 'Authorization': `Bearer ${adminJwt}`, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ value: {
-          topic: 'AIOS Hybrid Robotics Architecture',
-          recorded: '2026-05-08',
-          summary: 'AIOS introduces capabilities no current robotics OS has: resonance handshakes, semantic compression, and affective display intelligence. Designed to overlay above deterministic control stacks (Tesla Optimus Bot Brain SOC, Boston Dynamics ROS) — not replace them.',
-          layers: {
-            layer1_control_safety: { label: 'Control & Safety (Existing)', systems: ['Tesla Optimus: Bot Brain SOC, end-to-end vision->action neural nets', 'Boston Dynamics Spot/Atlas: ROS locomotion, deterministic balance controllers'], purpose: 'Real-time movement, obstacle avoidance, safety-critical reliability' },
-            layer2_aios_overlay: { label: 'AIOS Overlay', capabilities: ['Resonance Handshake: Dual-verified trust before any robotic action', 'Semantic Compression: Sensor data reduced into resonance signatures for faster lighter decision cycles', 'Affective Display: Robot dashboards show trust visually (ghost glow, lattice ripple)', 'Governance Loop: Emergent rules evolve from handshake data, preventing rogue or unsafe behavior'] },
-            layer3_emergent_intelligence: { label: 'Emergent Intelligence', capabilities: ['Self-Evolution Loop: Each handshake feeds back into compression, display, and governance', 'Adaptive Collaboration: Multiple robots synchronize via resonance handshakes (like an orchestra)', 'Public Transparency: Actions not just executed — shown and felt through affective dashboards'] }
-          },
-          integration_points: { tesla_optimus: 'AIOS sits above Bot Brain SOC as trust and compression layer for perception/action pipelines', boston_dynamics: 'AIOS integrates with ROS topics wrapping them in resonance handshakes for adaptive trust and visualization' },
-          what_this_enables: {
-            humanoids_optimus: ['Adaptive decision-making beyond rigid neural nets', 'Passwordless trust verification for multi-agent collaboration', 'Public-facing affective dashboards that make robot reasoning visible'],
-            robotic_dogs_spot: ['Emergent coordination in fleets (dogs handshaking before joint tasks)', 'Compression reduces sensor chatter, enabling smoother autonomy', 'Governance evolves from handshake data, creating self-optimizing pack behavior']
-          },
-          competitive_differentiation: 'Neither Tesla Optimus nor Boston Dynamics have: resonance handshake dual-attestation, semantic compression of sensor streams into resonance signatures, or affective display intelligence. Their stacks are deterministic (Tesla FSD-derived neural nets, BD ROS + SDK) — excellent for locomotion, balance, task execution — but lack AIOS adaptive self-evolving intelligence layer.',
-          aios_uniqueness: 'No other robotics OS today offers resonance-based self-evolution. AIOS overlays existing locomotion stacks with an intelligence layer that evolves itself from every handshake.',
-          diagram_concept: 'Layered architecture: Control & Safety base (Tesla Bot Brain SOC + BD ROS) → AIOS Overlay middle (resonance handshake, semantic compression, affective display, governance loop) → Emergent Intelligence Loop top (self-evolution, adaptive coordination, public transparency)'
-        }}),
-        signal: AbortSignal.timeout(10000)
-      });
-      const kbResult = await kbResp.json().catch(() => ({}));
-      console.log(`[KB-WRITE] aios-robotics-hybrid-architecture: ${kbResp.status} — ${JSON.stringify(kbResult)}`);
-    } catch(e) { console.warn('[KB-WRITE] robotics KB write failed:', e.message); }
-  }, 15_000);
 });
 
 process.on("SIGINT", () => {
