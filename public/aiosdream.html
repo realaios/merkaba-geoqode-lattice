@@ -144,7 +144,27 @@
       .nav-right {
         display: flex;
         align-items: center;
-        gap: 16px;
+        gap: 10px;
+      }
+      .nav-site-links {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        flex-shrink: 1;
+        overflow: hidden;
+      }
+      .nav-site-links a {
+        font-size: 14px;
+        color: var(--muted);
+        transition: color 0.2s;
+        white-space: nowrap;
+        text-decoration: none;
+      }
+      .nav-site-links a:hover {
+        color: #fff;
+      }
+      @media (max-width: 900px) {
+        .nav-site-links { display: none; }
       }
       .nav-icon-btn {
         background: none;
@@ -602,10 +622,11 @@
       }
       .hero-content {
         position: absolute;
-        bottom: 120px;
+        bottom: 200px;
         left: 60px;
         max-width: 560px;
         transition: opacity 0.6s;
+        z-index: 5;
       }
       .hero-content.fading {
         opacity: 0;
@@ -743,8 +764,12 @@
       .browse-scroll {
         position: relative;
         z-index: 1;
-        margin-top: -130px;
+        margin-top: -80px;
         padding-bottom: 80px;
+        pointer-events: none;
+      }
+      .browse-scroll * {
+        pointer-events: auto;
       }
 
       /* ── ROW ── */
@@ -895,22 +920,31 @@
       }
       .card-hover {
         position: absolute;
-        top: 130px;
-        left: -10px;
-        right: -10px;
-        background: var(--card-bg);
-        border-radius: 0 0 8px 8px;
-        border: 1px solid var(--border);
-        border-top: none;
-        padding: 12px;
+        inset: 0;
+        background: rgba(10, 13, 26, 0.96);
+        backdrop-filter: blur(6px);
+        -webkit-backdrop-filter: blur(6px);
+        border-radius: 6px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        padding: 10px 12px;
         z-index: 20;
         opacity: 0;
         pointer-events: none;
-        transition: opacity 0.2s 0.1s;
+        transition: opacity 0.18s;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
       }
       .card:hover .card-hover {
         opacity: 1;
         pointer-events: all;
+      }
+      /* Touch/mobile: disable hover panel, tap goes straight to info modal */
+      @media (pointer: coarse) {
+        .card:hover .card-hover {
+          opacity: 0;
+          pointer-events: none;
+        }
       }
       .card-hover-title {
         font-size: 13px;
@@ -3723,7 +3757,7 @@
           left: 20px;
           right: 20px;
           max-width: none;
-          bottom: 80px;
+          bottom: 160px;
         }
         .hero-dots {
           left: 20px;
@@ -3874,84 +3908,38 @@
         </div>
       </div>
       <div class="nav-right">
-        <a
-          href="/games"
-          style="font-size: 15px; color: var(--muted); transition: color 0.2s"
-          onmouseover="this.style.color = '#fff'"
-          onmouseout="this.style.color = 'var(--muted)'"
-          >🎮 Games</a
-        >
-        <a
-          href="/vr-hub"
-          style="font-size: 15px; color: var(--muted); transition: color 0.2s"
-          onmouseover="this.style.color = '#fff'"
-          onmouseout="this.style.color = 'var(--muted)'"
-          >🥽 VR Hub</a
-        >
-        <a
-          href="/aios-studio"
-          style="font-size: 15px; color: var(--muted); transition: color 0.2s"
-          onmouseover="this.style.color = '#fff'"
-          onmouseout="this.style.color = 'var(--muted)'"
-          >⚡ Studio</a
-        >
-        <a
-          href="/geo-codec"
-          style="font-size: 15px; color: var(--muted); transition: color 0.2s"
-          onmouseover="this.style.color = '#fff'"
-          onmouseout="this.style.color = 'var(--muted)'"
-          >● .geo</a
-        >
-        <a
-          href="/geo-library"
-          style="font-size: 15px; color: var(--muted); transition: color 0.2s"
-          onmouseover="this.style.color = '#fff'"
-          onmouseout="this.style.color = 'var(--muted)'"
-          >📚 Library</a
-        >
-        <a
-          href="/plaistore"
-          style="font-size: 15px; color: var(--muted); transition: color 0.2s"
-          onmouseover="this.style.color = '#fff'"
-          onmouseout="this.style.color = 'var(--muted)'"
-          >PLAIstore</a
-        >
-        <a
-          href="/aios-playground"
-          style="font-size: 15px; color: var(--muted); transition: color 0.2s"
-          onmouseover="this.style.color = '#fff'"
-          onmouseout="this.style.color = 'var(--muted)'"
-          >🎮 NEXGEN</a
-        >
-        <a
-          href="/live"
-          onclick="
-            event.preventDefault();
-            _openLivePanel();
-          "
-          style="
-            font-size: 15px;
-            font-weight: 700;
-            color: #ef4444;
-            transition: color 0.2s;
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-          "
-          onmouseover="this.style.opacity = '0.75'"
-          onmouseout="this.style.opacity = '1'"
-          ><span
+        <!-- Site navigation links — hidden on mobile (≤900px) -->
+        <div class="nav-site-links">
+          <a href="/games">🎮 Games</a>
+          <a href="/vr-hub">🥽 VR Hub</a>
+          <a href="/aios-studio">⚡ Studio</a>
+          <a href="/geo-codec">● .geo</a>
+          <a href="/geo-library">📚 Library</a>
+          <a href="/plaistore">PLAIstore</a>
+          <a href="/aios-playground">NEXGEN</a>
+          <a
+            href="/live"
+            onclick="event.preventDefault(); _openLivePanel();"
             style="
-              width: 6px;
-              height: 6px;
-              border-radius: 50%;
-              background: #ef4444;
-              display: inline-block;
-              animation: livePulse 1.2s ease-in-out infinite;
+              font-weight: 700;
+              color: #ef4444 !important;
+              display: inline-flex;
+              align-items: center;
+              gap: 4px;
             "
-          ></span
-          >LIVE</a
-        >
+            ><span
+              style="
+                width: 6px;
+                height: 6px;
+                border-radius: 50%;
+                background: #ef4444;
+                display: inline-block;
+                animation: livePulse 1.2s ease-in-out infinite;
+              "
+            ></span
+            >LIVE</a
+          >
+        </div>
         <button
           class="nav-icon-btn"
           title="Search (Ctrl+K)"
@@ -3991,25 +3979,9 @@
             id="amb-btn"
             title="Ambient Mixer"
             onclick="_openAmb(event)"
-            style="
-              font-size: 21px;
-              opacity: 0.55;
-              display: flex;
-              flex-direction: column;
-              align-items: center;
-              gap: 1px;
-            "
+            style="font-size: 21px; opacity: 0.55;"
           >
             🎛
-            <span
-              style="
-                font-size: 9px;
-                letter-spacing: 0.04em;
-                opacity: 0.7;
-                line-height: 1;
-              "
-              >AMBIENT</span
-            >
           </button>
           <span
             class="q-badge"
@@ -4270,8 +4242,8 @@
           <p class="hero-desc" id="hero-desc"></p>
           <div class="hero-meta" id="hero-meta"></div>
           <div class="hero-btns">
-            <button class="btn-play" id="hero-play">▶ Play Now</button>
-            <button class="btn-info" id="hero-info">ⓘ More Info</button>
+            <button class="btn-play" id="hero-play" onclick="if(typeof currentProg!=='undefined'&&currentProg)openPlayer(currentProg.id,0)">▶ Play Now</button>
+            <button class="btn-info" id="hero-info" onclick="if(typeof currentProg!=='undefined'&&currentProg)openInfo(currentProg.id)">ⓘ More Info</button>
             <button
               onclick="_shufflePlay()"
               title="Play a random episode"
@@ -9150,9 +9122,15 @@
               <button class="card-btn-list" onclick="_queueAdd('${prog.id}',event)" title="Add to Queue" style="font-size:15px;letter-spacing:0">➕</button>
             </div>
           </div>`;
-        card.addEventListener("click", () =>
-          openPlayer(prog.id, hasProgress && !watched ? _pSc : 0),
-        );
+        card.addEventListener("click", (e) => {
+          // On touch/coarse devices: show info first (hover panel is disabled)
+          // On desktop: hover already reveals the panel, click → play
+          if (window.matchMedia("(pointer: coarse)").matches) {
+            openInfo(prog.id, e);
+          } else {
+            openPlayer(prog.id, hasProgress && !watched ? _pSc : 0);
+          }
+        });
         card.addEventListener("mouseenter", () => _startCardPreview(prog.id));
         card.addEventListener("mouseleave", () => _stopCardPreview(prog.id));
         return card;
