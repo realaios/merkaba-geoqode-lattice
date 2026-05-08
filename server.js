@@ -4026,6 +4026,13 @@ const server = createServer(async (req, res) => {
     return;
   }
 
+  // HEAD — identical to GET but no body; satisfies SEO crawlers and uptime monitors
+  if (req.method === "HEAD") {
+    res.writeHead(200, { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-cache" });
+    res.end();
+    return;
+  }
+
   try {
     // ── 67aios.com — route entire hostname to anti-review marketing page ──
     const host = (req.headers.host || "").replace(/:\d+$/, "").toLowerCase();
@@ -6335,7 +6342,10 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
       req.method === "GET" &&
       (pathname === "/vr-developer" || pathname === "/vr-developer/")
     ) {
-      return json(res, 404, { ok: false, error: "Not found" });
+      if (!VR_DEV_HTML) return json(res, 404, { ok: false, error: "Not found" });
+      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+      res.end(VR_DEV_HTML);
+      return;
     }
 
     // ── GET /api/aios/vr/taxonomy — Full VR experience taxonomy (CI/CD) ──
