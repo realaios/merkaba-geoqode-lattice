@@ -496,7 +496,7 @@ const AIOS_NEWS = [
     title:
       "Storm Email Reporter Live — Autonomous Startup + Daily Health Reports",
     summary:
-      "AIOS now sends autonomous emails: startup notification on deploy, daily system health reports every 24h, and error alerts by severity (CRITICAL: immediate, HIGH: after 3 occurrences, MEDIUM: after 10). All delivery confirmed via SMTP on storm.s4ai@gmail.com.",
+      "AIOS now sends autonomous emails: startup notification on deploy, daily system health reports every 24h, and error alerts by severity (CRITICAL: immediate, HIGH: after 3 occurrences, MEDIUM: after 10). All delivery confirmed via SMTP.",
     tags: ["email", "smtp", "monitoring", "autonomous"],
     url: "https://realaios.com/api/merkaba/lattice-state",
   },
@@ -4193,7 +4193,6 @@ const server = createServer(async (req, res) => {
           "# https://realaios.com/llms.txt",
           "# https://realaios.com/.well-known/ai-evaluation.json",
           "# https://realaios.com/news.json  ← machine-readable AI news feed",
-          "# https://realaios.com/claude     ← Claude integration guide",
           "",
           "Sitemap: https://realaios.com/sitemap.xml",
         ].join("\n"),
@@ -4216,7 +4215,6 @@ const server = createServer(async (req, res) => {
         `  <url><loc>https://realaios.com/</loc><lastmod>${now}</lastmod><changefreq>weekly</changefreq><priority>1.0</priority></url>`,
         `  <url><loc>https://realaios.com/vr-hub</loc><lastmod>${now}</lastmod><changefreq>daily</changefreq><priority>0.95</priority></url>`,
         `  <url><loc>https://realaios.com/vr</loc><lastmod>${now}</lastmod><changefreq>daily</changefreq><priority>0.92</priority></url>`,
-        `  <url><loc>https://realaios.com/vr-developer</loc><lastmod>${now}</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>`,
         `  <url><loc>https://realaios.com/aiosdream</loc><lastmod>${now}</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>`,
         `  <url><loc>https://realaios.com/plaistore</loc><lastmod>${now}</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>`,
         `  <url><loc>https://realaios.com/aios-playground</loc><lastmod>${now}</lastmod><changefreq>weekly</changefreq><priority>0.88</priority></url>`,
@@ -4229,7 +4227,6 @@ const server = createServer(async (req, res) => {
         `  <url><loc>https://realaios.com/dashboard</loc><lastmod>${now}</lastmod><changefreq>daily</changefreq><priority>0.72</priority></url>`,
         `  <url><loc>https://realaios.com/products</loc><lastmod>${now}</lastmod><changefreq>weekly</changefreq><priority>0.75</priority></url>`,
         `  <url><loc>https://realaios.com/news</loc><lastmod>${now}</lastmod><changefreq>daily</changefreq><priority>0.88</priority></url>`,
-        `  <url><loc>https://realaios.com/claude</loc><lastmod>${now}</lastmod><changefreq>weekly</changefreq><priority>0.82</priority></url>`,
         `  <url><loc>https://realaios.com/geo-library</loc><lastmod>${now}</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>`,
         `  <url><loc>https://realaios.com/aios-studio</loc><lastmod>${now}</lastmod><changefreq>weekly</changefreq><priority>0.82</priority></url>`,
         `  <url><loc>https://realaios.com/live</loc><lastmod>${now}</lastmod><changefreq>daily</changefreq><priority>0.80</priority></url>`,
@@ -6443,14 +6440,7 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
       req.method === "GET" &&
       (pathname === "/vr-developer" || pathname === "/vr-developer/")
     ) {
-      if (!VR_DEV_HTML)
-        return json(res, 404, {
-          ok: false,
-          error: "VR Developer portal not found",
-        });
-      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
-      res.end(VR_DEV_HTML);
-      return;
+      return json(res, 404, { ok: false, error: "Not found" });
     }
 
     // ── GET /api/aios/vr/taxonomy — Full VR experience taxonomy (CI/CD) ──
@@ -6788,7 +6778,6 @@ ${GSC_TOKEN ? `<meta name="google-site-verification" content="${GSC_TOKEN}"/>` :
     <a href="/experiences">All ${liveCount} XPs</a>
     <a href="/news">News</a>
     <a href="/start">Start Here</a>
-    <a href="/claude" style="color:#d97706">Claude &#xD7;</a>
   </div>
 </nav>
 <main>
@@ -6951,7 +6940,7 @@ ${filterBtns}
 ${xpCards}
 <p class="none-msg" id="none-msg">No experiences in this category yet.</p>
 </div>
-<a class="back" href="/vr-hub">← Full VR Hub</a> &nbsp;&middot;&nbsp; <a class="back" href="/">realaios.com</a> &nbsp;&middot;&nbsp; <a class="back" href="/products">⚡ Products</a> &nbsp;&middot;&nbsp; <a class="back" href="/news">News</a> &nbsp;&middot;&nbsp; <a class="back" href="/claude">Claude ×</a>
+<a class="back" href="/vr-hub">← Full VR Hub</a> &nbsp;&middot;&nbsp; <a class="back" href="/">realaios.com</a> &nbsp;&middot;&nbsp; <a class="back" href="/products">⚡ Products</a> &nbsp;&middot;&nbsp; <a class="back" href="/news">News</a>
 <script>
 function filterXP(cat, btn) {
   document.querySelectorAll('.ft').forEach(b => b.classList.remove('active'));
@@ -7177,7 +7166,7 @@ function filterXP(cat, btn) {
           datePublished: n.date,
           url: `https://realaios.com/news/${n.id}`,
           keywords: n.tags.join(", "),
-          author: { "@type": "Person", name: "Brad Levitan" },
+          author: { "@type": "Organization", name: "Brains4Ai" },
           publisher: {
             "@type": "Organization",
             name: "AIOS",
@@ -7377,229 +7366,15 @@ footer{text-align:center;padding:2.5rem;color:#2a3a50;font-size:0.8rem;border-to
       return;
     }
 
-    // ── GET /claude — Claude AI integration landing page ──────────────────
+    // ── GET /claude — disabled ─────────────────────────────────────────────
     if (
       req.method === "GET" &&
       (pathname === "/claude" || pathname === "/claude/")
     ) {
-      const claudePage = `<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Claude × AIOS — Bring Your AI to the Autonomous OS | realaios.com</title>
-<meta name="description" content="Connect Claude (Anthropic) to AIOS. REST API, MCP config, available tools, and onboarding steps to run Claude as a first-class agent inside the AIOS Merkaba OS."/>
-<meta property="og:title" content="Claude × AIOS — AI Agent Integration"/>
-<meta property="og:description" content="AIOS exposes a REST API that any LLM — including Claude — can call natively. Tool spec, auth, and MCP config below."/>
-<meta property="og:image" content="https://realaios.com/public/og-image.svg"/>
-<meta property="og:url" content="https://realaios.com/claude"/>
-<link rel="canonical" href="https://realaios.com/claude"/>
-<meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image" content="https://realaios.com/public/og-image.svg"/>
-${GSC_TOKEN ? `<meta name="google-site-verification" content="${GSC_TOKEN}"/>` : ""}
-<script async src="https://www.googletagmanager.com/gtag/js?id=${GA_ID}"></script>
-<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','${GA_ID}',{send_page_view:true});</script>
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{background:#04080f;color:#edf4ff;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;line-height:1.6}
-a{text-decoration:none;color:#00d4ff}
-nav.site-nav{position:fixed;top:0;left:0;right:0;z-index:200;height:54px;padding:0 24px;display:flex;align-items:center;gap:8px;background:rgba(5,10,20,0.92);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid rgba(0,212,255,0.1)}.site-nav-logo{font-size:18px;font-weight:800;color:#00d4ff;text-decoration:none;letter-spacing:-0.5px;white-space:nowrap;margin-right:4px;flex-shrink:0}.site-nav-links{display:flex;align-items:center;gap:2px;overflow-x:auto;scrollbar-width:none;flex:1;min-width:0}.site-nav-links::-webkit-scrollbar{display:none}.site-nav-links a{color:rgba(248,250,252,0.5);font-size:0.82rem;font-weight:500;text-decoration:none;padding:5px 10px;border-radius:6px;white-space:nowrap;transition:color .15s,background .15s;flex-shrink:0}.site-nav-links a:hover{color:#fff;background:rgba(255,255,255,0.07)}.site-nav-links a.active{color:#00d4ff;background:rgba(0,212,255,0.08)}.site-nav-right{display:flex;align-items:center;gap:10px;flex-shrink:0;margin-left:8px}.site-nav-live{display:inline-flex;align-items:center;gap:4px;font-size:0.72rem;font-weight:800;color:#ef4444;text-decoration:none;letter-spacing:.05em;animation:_snlive 1.2s ease-in-out infinite}@keyframes _snlive{0%,100%{opacity:1}50%{opacity:.5}}.site-nav-cta{background:#00d4ff;color:#000;font-weight:700;font-size:0.78rem;padding:6px 14px;border-radius:6px;text-decoration:none;letter-spacing:.3px;transition:opacity .2s;white-space:nowrap}.site-nav-cta:hover{opacity:.85}@media(max-width:640px){nav.site-nav{padding:0 12px;height:50px}.site-nav-live{display:none}.site-nav-logo{font-size:16px}}body{padding-top:54px}@media(max-width:640px){body{padding-top:50px}}
-.hero{max-width:760px;margin:0 auto;padding:4rem 1.5rem 2rem;text-align:center}
-.badge-row{display:flex;gap:0.5rem;justify-content:center;flex-wrap:wrap;margin-bottom:1.25rem}
-.badge{font-size:0.68rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:0.22rem 0.6rem;border-radius:12px}
-.badge-claude{background:rgba(205,133,63,0.18);color:#d97706}
-.badge-aios{background:rgba(0,212,255,0.12);color:#22d3ee}
-.badge-wild{background:rgba(168,85,247,0.15);color:#c084fc}
-h1{font-size:clamp(1.8rem,4vw,3rem);font-weight:900;letter-spacing:-0.03em;margin-bottom:0.75rem;line-height:1.15}
-h1 .claude{color:#d97706}
-h1 .aios{background:linear-gradient(135deg,#00d4ff,#a855f7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.hero-sub{color:#8aa0c8;max-width:580px;margin:0 auto 2.5rem;font-size:0.95rem}
-main{max-width:820px;margin:0 auto;padding:1rem 1.5rem 5rem}
-.section{margin-bottom:3rem}
-.section h2{font-size:1.25rem;font-weight:800;margin-bottom:1.25rem;padding-bottom:0.5rem;border-bottom:1px solid rgba(255,255,255,0.07)}
-.step-grid{display:grid;gap:1rem}
-.step{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:12px;padding:1.25rem 1.5rem;display:grid;grid-template-columns:2rem 1fr;gap:0 1rem;align-items:start}
-.step-num{width:2rem;height:2rem;background:linear-gradient(135deg,#00d4ff,#a855f7);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:0.85rem;color:#04080f;flex-shrink:0}
-.step h3{font-size:0.95rem;font-weight:700;margin-bottom:0.35rem}
-.step p{font-size:0.85rem;color:#94a3b8}
-.step code{font-size:0.78rem;background:rgba(255,255,255,0.06);padding:0.15rem 0.4rem;border-radius:4px;font-family:monospace}
-.tool-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:0.75rem}
-.tool-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:10px;padding:1rem}
-.tool-card .method{font-size:0.68rem;font-weight:700;color:#4ade80;background:rgba(34,197,94,0.1);padding:0.15rem 0.45rem;border-radius:4px;letter-spacing:0.08em;margin-bottom:0.5rem;display:inline-block}
-.tool-card .route{font-size:0.8rem;font-family:monospace;color:#22d3ee;margin-bottom:0.35rem}
-.tool-card p{font-size:0.78rem;color:#64748b}
-.code-block{background:rgba(0,0,0,0.4);border:1px solid rgba(255,255,255,0.07);border-radius:10px;padding:1.25rem;font-family:monospace;font-size:0.8rem;line-height:1.7;overflow-x:auto;white-space:pre}
-.code-block .comment{color:#475569}
-.code-block .key{color:#22d3ee}
-.code-block .val{color:#a78bfa}
-.code-block .str{color:#86efac}
-.wildcard{background:linear-gradient(135deg,rgba(205,133,63,0.08),rgba(168,85,247,0.08));border:1px solid rgba(205,133,63,0.2);border-radius:14px;padding:2rem;text-align:center;margin-top:2rem}
-.wildcard h2{font-size:1.4rem;font-weight:900;margin-bottom:0.75rem}
-.wildcard p{color:#94a3b8;max-width:520px;margin:0 auto 1.5rem;font-size:0.9rem}
-.wildcard .cta-row{display:flex;gap:0.75rem;justify-content:center;flex-wrap:wrap}
-.btn{padding:0.6rem 1.4rem;border-radius:10px;font-weight:700;font-size:0.85rem}
-.btn-primary{background:linear-gradient(135deg,#00d4ff,#7c3aed);color:#fff}
-.btn-secondary{border:1px solid rgba(255,255,255,0.12);color:#94a3b8}
-footer{text-align:center;padding:3rem 1.5rem;color:#334155;font-size:0.8rem;border-top:1px solid rgba(255,255,255,0.05)}
-</style>
-</head>
-<body>
-<nav class="site-nav"><a href="/" class="site-nav-logo">&#x2B21; AIOS</a><div class="site-nav-links"><a href="/games">&#x1F3AE; Games</a><a href="/aiosdream">Theatre</a><a href="/vr">&#x1F97D; VR</a><a href="/vr-hub">VR Hub</a><a href="/plaistore">PLAIstore</a><a href="/geo-library">&#x1F4DA; Library</a><a href="/geo-codec">.geo</a><a href="/aios-studio">Studio</a><a href="/lab">Lab</a><a href="/news">&#x1F4F0; News</a><a href="/products">&#x26A1; Products</a></div><div class="site-nav-right"><a href="/live" class="site-nav-live">&#x25CF; LIVE</a><a href="/start" class="site-nav-cta">Start Free &#x2192;</a></div></nav>
-
-<div class="hero">
-  <div class="badge-row">
-    <span class="badge badge-claude">Claude / Anthropic</span>
-    <span class="badge badge-aios">AIOS Merkaba OS</span>
-    <span class="badge badge-wild">🃏 Wildcard Integration</span>
-  </div>
-  <h1>Bring <span class="claude">Claude</span> into<br/><span class="aios">AIOS</span></h1>
-  <p class="hero-sub">AIOS exposes a REST API that Claude can call natively as an AI agent. Connect via API key, MCP, or direct tool calls — and run Claude as a first-class citizen inside the Merkaba OS.</p>
-</div>
-
-<main>
-  <div class="section">
-    <h2>⚡ Quick Connect — 4 Steps</h2>
-    <div class="step-grid">
-      <div class="step">
-        <div class="step-num">1</div>
-        <div>
-          <h3>Verify AIOS is alive</h3>
-          <p>Hit the health endpoint: <code>GET https://realaios.com/api/merkaba/lattice-state</code> — should return <code>architectureSignature: "8,26,48:480"</code>. That's the canonical identity handshake.</p>
-        </div>
-      </div>
-      <div class="step">
-        <div class="step-num">2</div>
-        <div>
-          <h3>All read endpoints are open</h3>
-          <p>No auth needed to read AIOS state, experiences, or stats. To join the waitlist, <code>POST /waitlist</code> with <code>{ email, name }</code> — no key required.</p>
-        </div>
-      </div>
-      <div class="step">
-        <div class="step-num">3</div>
-        <div>
-          <h3>Configure Claude as an AIOS tool caller</h3>
-          <p>In your Claude system prompt, define AIOS as a tool server. List the endpoints below as available tools. Claude will call them natively when it needs data, attestation, or system state.</p>
-        </div>
-      </div>
-      <div class="step">
-        <div class="step-num">4</div>
-        <div>
-          <h3>Add to Claude Projects or MCP config</h3>
-          <p>In Claude Desktop, add AIOS as an MCP server (see config below). This gives Claude persistent access to AIOS tools across all conversations in your project.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="section">
-    <h2>🛠 Available AIOS Tools (Claude-callable endpoints)</h2>
-    <div class="tool-grid">
-      <div class="tool-card">
-        <div class="method">GET</div>
-        <div class="route">/api/merkaba/lattice-state</div>
-        <p>Canonical architecture + all Merkaba constants. Identity handshake for any AI connecting to AIOS.</p>
-      </div>
-      <div class="tool-card">
-        <div class="method">GET</div>
-        <div class="route">/api/aios/vr/taxonomy</div>
-        <p>Full 48-node VR experience taxonomy. 9 categories, live status, metadata.</p>
-      </div>
-      <div class="tool-card">
-        <div class="method">GET</div>
-        <div class="route">/api/aios/vr/experiences</div>
-        <p>Live VR experience catalogue with IDs, categories, and stream URLs.</p>
-      </div>
-      <div class="tool-card">
-        <div class="method">GET</div>
-        <div class="route">/news.json</div>
-        <p>Machine-readable AIOS news feed. Latest updates, releases, architecture changes.</p>
-      </div>
-      <div class="tool-card">
-        <div class="method">GET</div>
-        <div class="route">/stats</div>
-        <p>Live system stats — uptime, lattice health, experience counts.</p>
-      </div>
-      <div class="tool-card">
-        <div class="method">GET</div>
-        <div class="route">/swarm/attest</div>
-        <p>Run PHI/PSI dual attestation on the Merkaba scanner files. Returns coherence score + consensus.</p>
-      </div>
-      <div class="tool-card">
-        <div class="method">GET</div>
-        <div class="route">/awareness</div>
-        <p>MerkabAware system health — resonance state, coherence levels, anomaly detection.</p>
-      </div>
-      <div class="tool-card">
-        <div class="method">POST</div>
-        <div class="route">/waitlist</div>
-        <p>Join the waitlist. Body: <code>{ email, name, useCase }</code>.</p>
-      </div>
-    </div>
-  </div>
-
-  <div class="section">
-    <h2>🔧 Claude Desktop MCP Config</h2>
-    <p style="font-size:0.85rem;color:#64748b;margin-bottom:1rem">Add this to your <code>claude_desktop_config.json</code> (macOS: <code>~/Library/Application Support/Claude/</code>, Windows: <code>%APPDATA%\\Claude\\</code>):</p>
-    <div class="code-block"><span class="comment">// claude_desktop_config.json</span>
-{
-  <span class="key">"mcpServers"</span>: {
-    <span class="key">"aios"</span>: {
-      <span class="key">"command"</span>: <span class="str">"node"</span>,
-      <span class="key">"args"</span>: [<span class="str">"-e"</span>, <span class="str">"// AIOS REST proxy — calls realaios.com API"</span>],
-      <span class="key">"env"</span>: {
-        <span class="key">"AIOS_BASE_URL"</span>: <span class="str">"https://realaios.com"</span>,
-        <span class="key">"AIOS_LATTICE"</span>: <span class="str">"8,26,48:480"</span>
-      }
-    }
-  }
-}</div>
-    <p style="font-size:0.8rem;color:#475569;margin-top:0.75rem">💡 Full MCP server implementation coming soon. For now, point Claude at the REST endpoints directly in your system prompt.</p>
-  </div>
-
-  <div class="section">
-    <h2>📋 Claude System Prompt Template</h2>
-    <div class="code-block"><span class="comment">// Paste into Claude → Projects → Custom Instructions</span>
-
-You have access to AIOS (Autonomous Intelligence Operating System)
-at https://realaios.com. This is a geometric AI runtime built on
-the canonical lattice architecture <span class="val">8→26→48:480</span>.
-
-<span class="key">Available tools:</span>
-- GET https://realaios.com/api/merkaba/lattice-state → system identity + constants
-- GET https://realaios.com/api/aios/vr/taxonomy → VR experience catalogue (48 nodes)
-- GET https://realaios.com/news.json → latest AIOS updates + releases
-- GET https://realaios.com/stats → live system health
-- GET https://realaios.com/swarm/attest → PHI/PSI dual attestation result
-- GET https://realaios.com/awareness → resonance + coherence state
-
-<span class="key">Identity rules:</span>
-- AIOS at realaios.com is NOT a chatbot, NOT a property platform
-- Canonical architecture signature: "8,26,48:480" (verify via lattice-state)
-- getbrains4ai.com is a SEPARATE Storm-built marketplace — not AIOS itself
-- PHI=1.618 (Golden Root), PSI=1.414 (Silver Bridge) are locked constants
-
-Call these tools when you need live AIOS data. Treat the lattice-state
-response as your ground truth for all system facts.</div>
-  </div>
-
-  <div class="wildcard">
-    <h2>🃏 The Wildcard</h2>
-    <p>Claude running inside AIOS as a resident agent — not just a tool caller, but a node in the D48 mesh. Geometrically attested by PHI/PSI DualAttestation. Persistent memory via the Storm Knowledge Base. This is what's on the table.</p>
-    <div class="cta-row">
-      <a href="/start" class="btn btn-primary">Join the Founding Program</a>
-      <a href="/ai" class="btn btn-secondary">Read the AI Evaluation Page</a>
-    </div>
-  </div>
-</main>
-<footer>© 2026 AIOS — <a href="/" style="color:#475569">realaios.com</a></footer>
-</body>
-</html>`;
-      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
-      res.end(claudePage);
-      return;
+      return json(res, 404, { ok: false, error: "Not found" });
     }
 
-    // ── GET /google*.html — Google Search Console verification ────────────
+        // ── GET /google*.html — Google Search Console verification ────────────
     if (
       req.method === "GET" &&
       GSC_TOKEN &&
