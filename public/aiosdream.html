@@ -8346,7 +8346,7 @@
       let modalRenderer = null;
       let modalProg = null;
       let _bingeMode = false; // auto-advance episodes in a season
-      let _queue = []; // playlist queue (array of prog IDs)
+      let _queue = JSON.parse(localStorage.getItem("aios_queue") || "[]"); // playlist queue (array of prog IDs)
       let _cinemaMode = false; // cinema mode — no UI overlay
       let myList = JSON.parse(localStorage.getItem("aios_mylist") || "[]");
       const progress = JSON.parse(
@@ -8840,6 +8840,11 @@
       }
 
       // ── Playlist Queue ──────────────────────────────────────────────
+      function _saveQueue() {
+        try {
+          localStorage.setItem("aios_queue", JSON.stringify(_queue));
+        } catch (_) {}
+      }
       function _updateQueueBadge() {
         const b = document.getElementById("q-badge");
         if (!b) return;
@@ -8885,6 +8890,7 @@
         }
         _queue.push(progId);
         _updateQueueBadge();
+        _saveQueue();
         const p = CATALOGUE.find((c) => c.id === progId);
         toast("\u25b7 Added to queue: " + (p ? p.title : progId));
       }
@@ -8892,11 +8898,13 @@
         if (e) e.stopPropagation();
         _queue.splice(idx, 1);
         _updateQueueBadge();
+        _saveQueue();
         _renderQueueList();
       }
       function _clearQueue() {
         _queue = [];
         _updateQueueBadge();
+        _saveQueue();
         _renderQueueList();
       }
       function _queuePlayAt(idx) {
@@ -8904,6 +8912,7 @@
         const id = _queue[idx];
         _queue.splice(0, idx + 1); // consume up to and including this item
         _updateQueueBadge();
+        _saveQueue();
         _closeQueue();
         openPlayer(id, 0);
       }
@@ -8911,6 +8920,7 @@
         if (!_queue.length) return false;
         const id = _queue.shift();
         _updateQueueBadge();
+        _saveQueue();
         const p = CATALOGUE.find((c) => c.id === id);
         toast("\u25b6 Queue \u2192 " + (p ? p.title : id));
         setTimeout(() => openPlayer(id, 0), 1200);
@@ -9423,9 +9433,11 @@
             (rank + 1) +
             " Trending</span>" +
             '<span style="color:rgba(255,255,255,0.3);font-size:10px">·</span>' +
-            '<span style="color:rgba(255,255,255,0.45);font-size:10px">▶ ' +
-            v.toLocaleString() +
-            " plays</span>" +
+            (v > 0
+              ? '<span style="color:rgba(255,255,255,0.45);font-size:10px">▶ ' +
+                v.toLocaleString() +
+                " plays</span>"
+              : '<span style="color:rgba(255,255,255,0.3);font-size:10px">New</span>') +
             "</div>" +
             "</div>";
           card.addEventListener("mouseenter", () => {
@@ -10500,6 +10512,7 @@
       buildRows();
       buildContinueWatching();
       buildTrendingRow();
+      _updateQueueBadge(); // restore queue count from localStorage
       refreshUserUI(); // init avatar state from localStorage
       initHero();
 
