@@ -7567,7 +7567,7 @@ p{color:#8aa0c8;font-size:0.92rem;max-width:380px;line-height:1.6;margin-bottom:
 <body>
 <div class="glyph">⬡</div>
 <h1>Page Not Found</h1>
-<p>That URL doesn't exist on AIOS. Head back to the platform — ${VR_TAXONOMY ? (VR_TAXONOMY.categories || []).reduce((n, c) => n + (c.experiences || []).filter((e) => e.status === "live").length, 0) : 23} live VR worlds are waiting.</p>
+<p>That URL doesn't exist on AIOS. Head back to the platform — ${VR_TAXONOMY ? (VR_TAXONOMY.categories || []).reduce((n, c) => n + (c.experiences || []).filter((e) => e.status === "live").length, 0) : 25} live VR worlds are waiting.</p>
 <div class="links">
   <a class="btn btn-primary" href="/vr-hub">🥽 VR Hub</a>
   <a class="btn btn-secondary" href="/">Home</a>
