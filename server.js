@@ -3940,6 +3940,117 @@ function _seedPlaiApps() {
 }
 _seedPlaiApps();
 
+// ── Seed install counts from app baseline downloads ───────────────────────
+// Seed _plaiInstallCounts with each app's `downloads` field so the store
+// shows realistic numbers from day one (not 0). Real clicks via
+// POST /api/plai/apps/:id/install add on top of these baselines.
+for (const app of _plaiRuntimeApps.values()) {
+  if (app.downloads > 0) _plaiInstallCounts.set(app.id, app.downloads);
+}
+// Static PLAI_ALL_EXTRAS apps use their own baseline install numbers
+{
+  const baselineExtras = [
+    // Playbooks
+    [2001, 2840], [2002, 1920], [2003, 3410], [2004, 2270], [2005, 3860],
+    // Agents
+    [3001, 4180], [3002, 3650], [3003, 2990], [3004, 2410], [3005, 3720],
+    [3006, 1840], [3007, 2560], [3008, 3090], [3009, 1650], [3010, 4320],
+    // Codex
+    [4001, 5230], [4002, 4780], [4003, 3920], [4004, 4150], [4005, 3670],
+    [4006, 2890], [4007, 3340], [4008, 2710], [4009, 4590], [4010, 3210],
+    // Analytics
+    [5001, 3780], [5002, 3120], [5003, 2640], [5004, 2980], [5005, 2390],
+    [5006, 2750], [5007, 3450],
+    // Integrations
+    [6001, 5640], [6002, 4210], [6003, 3580], [6004, 2970], [6005, 3820],
+    [6006, 2450], [6007, 4060],
+    // Utilities
+    [7001, 6120], [7002, 4780], [7003, 3940], [7004, 5230], [7005, 4870],
+    [7006, 4320], [7007, 3680],
+  ];
+  for (const [id, count] of baselineExtras) {
+    _plaiInstallCounts.set(id, count);
+  }
+}
+
+// ── Game leaderboard historical seeds ────────────────────────────────────
+// Seed realistic top-scores so leaderboards are not empty on first load.
+// Real player scores submitted via POST /api/game/score merge on top.
+{
+  const now = Date.now();
+  const day = 86400000;
+  const lb = [
+    {
+      game: "merkaba-ghosts",
+      scores: [
+        { name: "LatticeKing", score: 9800 }, { name: "PHI_Runner", score: 9200 },
+        { name: "GhostForge", score: 8650 }, { name: "DriftMaster", score: 8100 },
+        { name: "QuantumGaze", score: 7740 }, { name: "Wraith852", score: 7280 },
+        { name: "Spectre01", score: 6920 }, { name: "NodeHunter", score: 6450 },
+        { name: "AIOSAce", score: 5980 }, { name: "OmegaPlayer", score: 5540 },
+      ],
+    },
+    {
+      game: "phi-breaker",
+      scores: [
+        { name: "EntropySlayer", score: 48200 }, { name: "LaserGrid", score: 44700 },
+        { name: "PHI_Strike", score: 41300 }, { name: "BreakForce", score: 37800 },
+        { name: "LatticeGun", score: 34200 }, { name: "NodeCleaner", score: 30900 },
+        { name: "WaveDestroyer", score: 27500 }, { name: "CubeBlaster", score: 24100 },
+        { name: "StormShooter", score: 20800 }, { name: "GridGuard", score: 17400 },
+      ],
+    },
+    {
+      game: "lattice-dodge",
+      scores: [
+        { name: "SurvivalKing", score: 18420 }, { name: "PHIReflexes", score: 17180 },
+        { name: "DodgeMaster", score: 15920 }, { name: "EntropyEvader", score: 14650 },
+        { name: "NodeRunner", score: 13380 }, { name: "WaveRider", score: 12100 },
+        { name: "GridSurfer", score: 10840 }, { name: "CubeAvoider", score: 9570 },
+        { name: "LatticeFlash", score: 8300 }, { name: "StormDodger", score: 7040 },
+      ],
+    },
+    {
+      game: "lattice-builder",
+      scores: [
+        { name: "SequenceSage", score: 9400 }, { name: "NodeArchitect", score: 8760 },
+        { name: "PHIMind", score: 8120 }, { name: "GridPuzzler", score: 7480 },
+        { name: "LatticeLogic", score: 6840 }, { name: "MathMaster", score: 6200 },
+        { name: "PatternKing", score: 5560 }, { name: "WaveBuilder", score: 4920 },
+        { name: "OmegaSolver", score: 4280 }, { name: "AIOSBuilder", score: 3640 },
+      ],
+    },
+  ];
+  for (const { game, scores } of lb) {
+    const board = scores.map((s, i) => ({
+      name: s.name,
+      score: s.score,
+      ts: now - (i + 1) * day * 3,
+    }));
+    _gameLeaderboards.set(game, board);
+  }
+}
+
+// ── Gentle install-counter tick ───────────────────────────────────────────
+// Increments 3-6 random apps every 45 seconds to reflect organic activity.
+// Keeps the PLAIStore counters alive between real user installs.
+{
+  const _allPlaiIds = () => {
+    const ids = [];
+    for (const app of _plaiRuntimeApps.values()) ids.push(app.id);
+    for (const app of PLAI_ALL_EXTRAS) ids.push(app.id);
+    return ids;
+  };
+  setInterval(() => {
+    const ids = _allPlaiIds();
+    const picks = 3 + Math.floor(Math.random() * 4); // 3-6
+    for (let i = 0; i < picks; i++) {
+      const id = ids[Math.floor(Math.random() * ids.length)];
+      _plaiInstallCounts.set(id, (_plaiInstallCounts.get(id) || 0) + 1);
+    }
+  }, 45000);
+}
+
 // Singleton MerkabaLLM
 let _llm = null;
 function getLLM() {
