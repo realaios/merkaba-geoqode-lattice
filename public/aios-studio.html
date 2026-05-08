@@ -54,6 +54,126 @@
         font-family: "JetBrains Mono", "Fira Code", "Courier New", monospace;
         min-height: 100vh;
         overflow-x: hidden;
+        padding-top: 54px;
+      }
+      @media (max-width: 640px) {
+        body {
+          padding-top: 50px;
+        }
+      }
+      /* ── Canonical site-nav ── */
+      nav.site-nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 200;
+        height: 54px;
+        padding: 0 24px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        background: rgba(5, 10, 20, 0.92);
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        border-bottom: 1px solid rgba(0, 212, 255, 0.1);
+      }
+      .site-nav-logo {
+        font-size: 18px;
+        font-weight: 800;
+        color: #00d4ff;
+        text-decoration: none;
+        letter-spacing: -0.5px;
+        white-space: nowrap;
+        margin-right: 4px;
+        flex-shrink: 0;
+      }
+      .site-nav-links {
+        display: flex;
+        align-items: center;
+        gap: 2px;
+        overflow-x: auto;
+        scrollbar-width: none;
+        flex: 1;
+        min-width: 0;
+      }
+      .site-nav-links::-webkit-scrollbar {
+        display: none;
+      }
+      .site-nav-links a {
+        color: rgba(248, 250, 252, 0.5);
+        font-size: 0.82rem;
+        font-weight: 500;
+        text-decoration: none;
+        padding: 5px 10px;
+        border-radius: 6px;
+        white-space: nowrap;
+        transition:
+          color 0.15s,
+          background 0.15s;
+        flex-shrink: 0;
+      }
+      .site-nav-links a:hover {
+        color: #fff;
+        background: rgba(255, 255, 255, 0.07);
+      }
+      .site-nav-links a.active {
+        color: #00d4ff;
+        background: rgba(0, 212, 255, 0.08);
+      }
+      .site-nav-right {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-shrink: 0;
+        margin-left: 8px;
+      }
+      .site-nav-live {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        font-size: 0.72rem;
+        font-weight: 800;
+        color: #ef4444;
+        text-decoration: none;
+        letter-spacing: 0.05em;
+        animation: _snlive 1.2s ease-in-out infinite;
+      }
+      @keyframes _snlive {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.5;
+        }
+      }
+      .site-nav-cta {
+        background: #00d4ff;
+        color: #000;
+        font-weight: 700;
+        font-size: 0.78rem;
+        padding: 6px 14px;
+        border-radius: 6px;
+        text-decoration: none;
+        letter-spacing: 0.3px;
+        transition: opacity 0.2s;
+        white-space: nowrap;
+      }
+      .site-nav-cta:hover {
+        opacity: 0.85;
+      }
+      @media (max-width: 640px) {
+        nav.site-nav {
+          padding: 0 12px;
+          height: 50px;
+        }
+        .site-nav-live {
+          display: none;
+        }
+        .site-nav-logo {
+          font-size: 16px;
+        }
       }
       /* ── TOP BAR ── */
       #topbar {
@@ -65,7 +185,7 @@
         background: rgba(5, 5, 8, 0.96);
         border-bottom: 1px solid var(--border);
         position: sticky;
-        top: 0;
+        top: 54px;
         z-index: 100;
         backdrop-filter: blur(12px);
       }
@@ -694,6 +814,24 @@
     </style>
   </head>
   <body>
+    <!-- Canonical AIOS site-nav -->
+    <nav class="site-nav">
+      <a href="/" class="site-nav-logo">&#x2B21; AIOS</a>
+      <div class="site-nav-links">
+        <a href="/games">&#x1F3AE; Games</a><a href="/aiosdream">Theatre</a
+        ><a href="/vr">&#x1F97D; VR</a><a href="/vr-hub">VR Hub</a
+        ><a href="/plaistore">PLAIstore</a
+        ><a href="/geo-library">&#x1F4DA; Library</a
+        ><a href="/geo-codec">.geo</a
+        ><a href="/aios-studio" class="active">Studio</a><a href="/lab">Lab</a
+        ><a href="/news">&#x1F4F0; News</a
+        ><a href="/products">&#x26A1; Products</a>
+      </div>
+      <div class="site-nav-right">
+        <a href="/live" class="site-nav-live">&#x25CF; LIVE</a
+        ><a href="/start" class="site-nav-cta">Start Free &#x2192;</a>
+      </div>
+    </nav>
     <!-- TOP BAR -->
     <header id="topbar">
       <div class="logo-mark">AIOS PRODUCER STUDIO</div>
