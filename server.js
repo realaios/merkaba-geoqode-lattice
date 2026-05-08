@@ -7833,7 +7833,7 @@ const GEO_PRODUCTION_INTERVAL_MS = parseInt(
   10,
 );
 // Genesis timestamp — used by clients to compute historical production total
-const GEO_GENESIS_MS = new Date('2026-03-01T00:00:00Z').getTime();
+const GEO_GENESIS_MS = new Date("2026-03-01T00:00:00Z").getTime();
 
 const _GEO_ADJ = [
   "Quantum",
@@ -8467,7 +8467,6 @@ server.listen(PORT, () => {
     console.warn(
       `[GeoQode OS] Pages MISSING (${missing.length}): ${missing.join(", ")}`,
     );
-
 });
 
 process.on("SIGINT", () => {

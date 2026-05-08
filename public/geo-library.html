@@ -722,8 +722,7 @@
         }
       }
     </style>
-  
-</head>
+  </head>
   <body>
     <nav class="site-nav">
       <a href="/" class="site-nav-logo">⬡ AIOS</a>
@@ -1144,10 +1143,14 @@
           document.getElementById("stat-count").textContent =
             data.count ?? allProgrammes.length;
           // Historical production since genesis — gives a growing all-time total
-          const genesisMs = data.genesisMs || new Date('2026-03-01T00:00:00Z').getTime();
+          const genesisMs =
+            data.genesisMs || new Date("2026-03-01T00:00:00Z").getTime();
           const genesisInterval = data.intervalMs || 120000;
-          const historicalTotal = Math.floor((Date.now() - genesisMs) / genesisInterval);
-          document.getElementById("stat-produced").textContent = historicalTotal.toLocaleString();
+          const historicalTotal = Math.floor(
+            (Date.now() - genesisMs) / genesisInterval,
+          );
+          document.getElementById("stat-produced").textContent =
+            historicalTotal.toLocaleString();
           const hours =
             allProgrammes.reduce((a, p) => a + (p.duration || 0), 0) / 3600;
           document.getElementById("stat-hours").textContent =
@@ -1410,42 +1413,58 @@
       }
 
       function openGeoPlayer(prog) {
-        const overlay = document.getElementById('geo-player-overlay');
-        document.getElementById('geo-player-title').textContent = prog.title;
-        document.getElementById('geo-player-sub').textContent = prog.subtitle || '';
+        const overlay = document.getElementById("geo-player-overlay");
+        document.getElementById("geo-player-title").textContent = prog.title;
+        document.getElementById("geo-player-sub").textContent =
+          prog.subtitle || "";
         const hz = prog.audio?.hz || prog.geoqode?.frequency || 528;
-        const dur = prog.duration ? fmtDur(prog.duration) : '·';
-        const kb = prog.fileSizeKB || ((prog.fileSizeBytes || 0) / 1024).toFixed(1) || '·';
-        document.getElementById('geo-player-meta').textContent =
-          `${hz} Hz · ${dur} · ${kb} KB · ${(prog.renderer?.type || 'quantum').toUpperCase()}`;
-        const tags = (prog.genre || []).map(g =>
-          `<span style="background:rgba(155,77,255,0.18);border:1px solid rgba(155,77,255,0.3);border-radius:20px;padding:2px 10px;font-size:0.78rem;color:#c4b5fd">${g}</span>`
-        ).join(' ');
-        document.getElementById('geo-player-tags').innerHTML = tags;
+        const dur = prog.duration ? fmtDur(prog.duration) : "·";
+        const kb =
+          prog.fileSizeKB ||
+          ((prog.fileSizeBytes || 0) / 1024).toFixed(1) ||
+          "·";
+        document.getElementById("geo-player-meta").textContent =
+          `${hz} Hz · ${dur} · ${kb} KB · ${(prog.renderer?.type || "quantum").toUpperCase()}`;
+        const tags = (prog.genre || [])
+          .map(
+            (g) =>
+              `<span style="background:rgba(155,77,255,0.18);border:1px solid rgba(155,77,255,0.3);border-radius:20px;padding:2px 10px;font-size:0.78rem;color:#c4b5fd">${g}</span>`,
+          )
+          .join(" ");
+        document.getElementById("geo-player-tags").innerHTML = tags;
         // Canvas renderer
-        const canvas = document.getElementById('geo-player-canvas');
-        canvas.width = Math.round(canvas.offsetWidth * (window.devicePixelRatio || 1));
-        canvas.height = Math.round(canvas.offsetHeight * (window.devicePixelRatio || 1));
-        const rendKey = RENDERER_MAP[prog.renderer?.type] || 'default';
+        const canvas = document.getElementById("geo-player-canvas");
+        canvas.width = Math.round(
+          canvas.offsetWidth * (window.devicePixelRatio || 1),
+        );
+        canvas.height = Math.round(
+          canvas.offsetHeight * (window.devicePixelRatio || 1),
+        );
+        const rendKey = RENDERER_MAP[prog.renderer?.type] || "default";
         const fn = MINI_RENDERERS[rendKey] || MINI_RENDERERS.default;
-        const ctx = canvas.getContext('2d');
+        const ctx = canvas.getContext("2d");
         if (overlay._stopFn) overlay._stopFn();
         let active = true;
-        overlay._stopFn = () => { active = false; };
+        overlay._stopFn = () => {
+          active = false;
+        };
         (function frame(t) {
           if (!active) return;
           fn.call({}, ctx, canvas.width, canvas.height, t);
           requestAnimationFrame(() => frame(t + 0.025));
         })(0);
-        overlay.style.display = 'flex';
-        document.body.style.overflow = 'hidden';
+        overlay.style.display = "flex";
+        document.body.style.overflow = "hidden";
       }
 
       function closeGeoPlayer() {
-        const overlay = document.getElementById('geo-player-overlay');
-        if (overlay._stopFn) { overlay._stopFn(); overlay._stopFn = null; }
-        overlay.style.display = 'none';
-        document.body.style.overflow = '';
+        const overlay = document.getElementById("geo-player-overlay");
+        if (overlay._stopFn) {
+          overlay._stopFn();
+          overlay._stopFn = null;
+        }
+        overlay.style.display = "none";
+        document.body.style.overflow = "";
       }
 
       // -- Utilities -----------------------------------------------------------------
@@ -1546,24 +1565,135 @@
     </script>
 
     <!-- Geo Programme Fullscreen Player Overlay -->
-    <div id="geo-player-overlay" style="display:none;position:fixed;inset:0;z-index:999;background:#070710;flex-direction:column;">
-      <div style="position:relative;flex:1;overflow:hidden;min-height:0;">
-        <canvas id="geo-player-canvas" style="width:100%;height:100%;display:block;" width="800" height="500"></canvas>
-        <button onclick="closeGeoPlayer()"
-          style="position:absolute;top:1rem;right:1rem;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);color:#edf4ff;padding:0.5rem 1.1rem;border-radius:8px;cursor:pointer;font-size:0.9rem;font-weight:600;">
+    <div
+      id="geo-player-overlay"
+      style="
+        display: none;
+        position: fixed;
+        inset: 0;
+        z-index: 999;
+        background: #070710;
+        flex-direction: column;
+      "
+    >
+      <div style="position: relative; flex: 1; overflow: hidden; min-height: 0">
+        <canvas
+          id="geo-player-canvas"
+          style="width: 100%; height: 100%; display: block"
+          width="800"
+          height="500"
+        ></canvas>
+        <button
+          onclick="closeGeoPlayer()"
+          style="
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #edf4ff;
+            padding: 0.5rem 1.1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+          "
+        >
           ✕ Close
         </button>
-        <div style="position:absolute;bottom:0;left:0;right:0;height:40%;background:linear-gradient(transparent,rgba(7,7,16,0.95));pointer-events:none;"></div>
+        <div
+          style="
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 40%;
+            background: linear-gradient(transparent, rgba(7, 7, 16, 0.95));
+            pointer-events: none;
+          "
+        ></div>
       </div>
-      <div style="padding:1.25rem 1.5rem;background:#0d0d1c;border-top:1px solid rgba(255,255,255,0.07);flex-shrink:0;">
-        <div id="geo-player-title" style="font-size:1.3rem;font-weight:800;color:#edf4ff;margin-bottom:0.2rem;"></div>
-        <div id="geo-player-sub" style="color:rgba(237,244,255,0.5);margin-bottom:0.5rem;font-size:0.88rem;"></div>
-        <div id="geo-player-tags" style="display:flex;gap:0.4rem;flex-wrap:wrap;margin-bottom:0.6rem;"></div>
-        <div id="geo-player-meta" style="color:#00d4ff;font-size:0.78rem;font-family:monospace;"></div>
-        <div style="margin-top:1rem;display:flex;gap:0.75rem;flex-wrap:wrap;">
-          <a href="/aiosdream" style="background:#00d4ff;color:#060410;padding:0.55rem 1.25rem;border-radius:8px;text-decoration:none;font-weight:700;font-size:0.9rem;">⬡ Open in Theatre</a>
-          <button onclick="closeGeoPlayer()" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);color:#edf4ff;padding:0.55rem 1.25rem;border-radius:8px;cursor:pointer;font-size:0.9rem;">← Back to Library</button>
-          <a href="/aios-studio" style="background:rgba(0,229,255,0.08);border:1px solid rgba(0,229,255,0.2);color:#00e5ff;padding:0.55rem 1.25rem;border-radius:8px;text-decoration:none;font-size:0.9rem;">Studio →</a>
+      <div
+        style="
+          padding: 1.25rem 1.5rem;
+          background: #0d0d1c;
+          border-top: 1px solid rgba(255, 255, 255, 0.07);
+          flex-shrink: 0;
+        "
+      >
+        <div
+          id="geo-player-title"
+          style="
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: #edf4ff;
+            margin-bottom: 0.2rem;
+          "
+        ></div>
+        <div
+          id="geo-player-sub"
+          style="
+            color: rgba(237, 244, 255, 0.5);
+            margin-bottom: 0.5rem;
+            font-size: 0.88rem;
+          "
+        ></div>
+        <div
+          id="geo-player-tags"
+          style="
+            display: flex;
+            gap: 0.4rem;
+            flex-wrap: wrap;
+            margin-bottom: 0.6rem;
+          "
+        ></div>
+        <div
+          id="geo-player-meta"
+          style="color: #00d4ff; font-size: 0.78rem; font-family: monospace"
+        ></div>
+        <div
+          style="margin-top: 1rem; display: flex; gap: 0.75rem; flex-wrap: wrap"
+        >
+          <a
+            href="/aiosdream"
+            style="
+              background: #00d4ff;
+              color: #060410;
+              padding: 0.55rem 1.25rem;
+              border-radius: 8px;
+              text-decoration: none;
+              font-weight: 700;
+              font-size: 0.9rem;
+            "
+            >⬡ Open in Theatre</a
+          >
+          <button
+            onclick="closeGeoPlayer()"
+            style="
+              background: rgba(255, 255, 255, 0.08);
+              border: 1px solid rgba(255, 255, 255, 0.15);
+              color: #edf4ff;
+              padding: 0.55rem 1.25rem;
+              border-radius: 8px;
+              cursor: pointer;
+              font-size: 0.9rem;
+            "
+          >
+            ← Back to Library
+          </button>
+          <a
+            href="/aios-studio"
+            style="
+              background: rgba(0, 229, 255, 0.08);
+              border: 1px solid rgba(0, 229, 255, 0.2);
+              color: #00e5ff;
+              padding: 0.55rem 1.25rem;
+              border-radius: 8px;
+              text-decoration: none;
+              font-size: 0.9rem;
+            "
+            >Studio →</a
+          >
         </div>
       </div>
     </div>
