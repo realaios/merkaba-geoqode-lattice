@@ -491,12 +491,12 @@
     <nav class="site-nav">
       <a href="/" class="site-nav-logo">⬡ AIOS</a>
       <div class="site-nav-links">
-        <a href="/games">?? Games</a><a href="/aiosdream">Theatre</a><a href="/vr">?? VR</a
+        <a href="/games">🎮 Games</a><a href="/aiosdream">Theatre</a><a href="/vr">🥽 VR</a
         ><a href="/vr-hub">VR Hub</a><a href="/plaistore">PLAIstore</a
-        ><a href="/geo-library">?? Library</a><a href="/geo-codec">.geo</a
+        ><a href="/geo-library">📚 Library</a><a href="/geo-codec">.geo</a
         ><a href="/aios-studio">Studio</a><a href="/lab">Lab</a
-        ><a href="/news">?? News</a><a href="/products">? Products</a>
-        <a href="/experiences">?? Experiences</a>
+        ><a href="/news">📰 News</a><a href="/products">⚡ Products</a>
+        <a href="/experiences">🌐 Experiences</a>
       </div>
       <div class="site-nav-right">
         <a href="/live" class="site-nav-live">● LIVE</a
@@ -586,7 +586,7 @@ Write a narrative, screenplay, or .geo playbook. The Theatre Engine will parse s
                   style="margin-top: 0"
                   onclick="projectCustom()"
                 >
-                  ? Project
+                  ▶ Project
                 </button>
               </div>
             </div>
@@ -620,42 +620,42 @@ Write a narrative, screenplay, or .geo playbook. The Theatre Engine will parse s
       const PROGRAMMES = [
         {
           name: "matrix",
-          icon: "??",
+          icon: "🎬",
           title: "The Matrix",
           genre: "Sci-Fi Action",
           mode: "HOLOGRAPHIC",
         },
         {
           name: "inception",
-          icon: "??",
+          icon: "🌀",
           title: "Inception",
           genre: "Mind-Bending",
           mode: "INTERACTIVE",
         },
         {
           name: "starwars",
-          icon: "?",
+          icon: "⭐",
           title: "Star Wars",
           genre: "Epic Space Opera",
           mode: "HOLOGRAPHIC",
         },
         {
           name: "apollo11",
-          icon: "??",
+          icon: "🚀",
           title: "Apollo 11",
           genre: "Documentary",
           mode: "DOCUMENTARY",
         },
         {
           name: "governance",
-          icon: "??",
+          icon: "⚖️",
           title: "Governance",
           genre: "Narrative",
           mode: "GOVERNANCE",
         },
         {
           name: "investordeck",
-          icon: "??",
+          icon: "📊",
           title: "Investor Deck",
           genre: "Narrative",
           mode: "ADAPTIVE",
@@ -744,7 +744,7 @@ Write a narrative, screenplay, or .geo playbook. The Theatre Engine will parse s
         } finally {
           allBtns.forEach((b) => {
             b.disabled = false;
-            b.innerHTML = "? Project";
+            b.innerHTML = "▶ Project";
           });
         }
       }
@@ -879,7 +879,7 @@ Write a narrative, screenplay, or .geo playbook. The Theatre Engine will parse s
       .map((l) => {
         const passed = coherence >= l.threshold;
         return `<div style="display:flex;align-items:center;gap:8px;padding:4px 0;font-size:12px">
-        <span style="color:${passed ? l.color : "var(--muted)"}">?</span>
+        <span style="color:${passed ? l.color : "var(--muted)"}">●</span>
         <span style="color:${passed ? l.color : "var(--muted)"};">${l.label}</span>
         <span style="color:var(--muted);margin-left:auto">${(l.threshold * 100).toFixed(0)}%</span>
         <span style="font-size:11px;color:${passed ? "var(--green)" : "var(--red)"}">${passed ? "PASS" : "FAIL"}</span>

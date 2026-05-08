@@ -1435,10 +1435,10 @@
             <span class="card-freq">${sem.hz}</span>
           </div>
           <div class="card-desc">${prog.desc}</div>
-          <div style="font-size:0.72rem;color:#6b84b8;margin-bottom:0.75rem;">Node ${prog.gridNode} · ${prog.sem}</div>
+
           <div class="card-actions">
-            <a class="btn-vr" href="/vr?prog=${prog.name}" onclick="launchProgVR('${prog.name}',event)">?? Launch VR</a>
-            <button style="border:none;background:transparent;color:var(--muted);cursor:pointer;padding:0.5rem 0.4rem;font-size:0.82rem;" onclick="shareProgLink('${prog.name}')" title="Copy link">??</button>
+            <a class="btn-vr" href="/vr?prog=${prog.name}" onclick="launchProgVR('${prog.name}',event)">🥽 Launch VR</a>
+            <button style="border:none;background:transparent;color:var(--muted);cursor:pointer;padding:0.5rem 0.4rem;font-size:0.82rem;" onclick="shareProgLink('${prog.name}')" title="Copy link">🔗</button>
           </div>`;
         grid.appendChild(card);
       }
@@ -1506,7 +1506,7 @@
       let webXRSupported = false;
 
       // Always show the enter button · Cinema Mode works on any device.
-      // Upgrade label to "?? Enter VR Mode" if Quest WebXR is detected.
+      // Upgrade label to "🥽 Enter VR Mode" if Quest WebXR is detected.
       enterBtn.style.display = "flex";
 
       if (navigator.xr) {
@@ -1515,7 +1515,7 @@
           .then((supported) => {
             webXRSupported = supported;
             if (supported) {
-              enterBtn.textContent = "?? Enter VR Mode";
+              enterBtn.textContent = "🥽 Enter VR Mode";
             }
           })
           .catch(() => {});
@@ -1599,7 +1599,7 @@
                 material="shader: flat"
                 cursor-listener>
                 <a-text
-                  value="??  Launch Programme"
+                  value="🥽  Launch Programme"
                   align="center"
                   color="#ffffff"
                   width="1.2"

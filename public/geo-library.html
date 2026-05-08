@@ -727,18 +727,18 @@
     <nav class="site-nav">
       <a href="/" class="site-nav-logo">⬡ AIOS</a>
       <div class="site-nav-links">
-        <a href="/games">?? Games</a>
+        <a href="/games">🎮 Games</a>
         <a href="/aiosdream">Theatre</a>
-        <a href="/vr">?? VR</a>
+        <a href="/vr">🥽 VR</a>
         <a href="/vr-hub">VR Hub</a>
         <a href="/plaistore">PLAIstore</a>
-        <a href="/geo-library" class="active">?? Library</a>
+        <a href="/geo-library" class="active">📚 Library</a>
         <a href="/geo-codec">.geo</a>
         <a href="/aios-studio">Studio</a>
         <a href="/lab">Lab</a>
-        <a href="/news">?? News</a>
-        <a href="/products">? Products</a>
-        <a href="/experiences">?? Experiences</a>
+        <a href="/news">📰 News</a>
+        <a href="/products">⚡ Products</a>
+        <a href="/experiences">🌐 Experiences</a>
       </div>
       <div class="site-nav-right">
         <a href="/live" class="site-nav-live">● LIVE</a>
@@ -1403,12 +1403,7 @@
       function watchProgramme(id) {
         const prog = allProgrammes.find((p) => p.id === id);
         if (!prog) return;
-        // Canonical S2 episodes · deep-link directly into the AIOSdream player
-        if (prog.canonical || /^s2_/.test(id)) {
-          window.location.href = `/aiosdream?prog=${encodeURIComponent(id)}`;
-          return;
-        }
-        // Generated geo programmes · open inline fullscreen player
+        // All geo programmes open inline fullscreen player
         openGeoPlayer(prog);
       }
 
