@@ -4274,10 +4274,13 @@ const server = createServer(async (req, res) => {
       const cardsHTML = PRODUCT_LIST.map(
         (p) => `
       <a href="/products/${p.slug}" style="display:block;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:2rem;text-decoration:none;transition:border-color 0.2s;position:relative;overflow:hidden" onmouseover="this.style.borderColor='${p.color}44'" onmouseout="this.style.borderColor='rgba(255,255,255,0.08)'">
-        <div style="font-size:2rem;margin-bottom:0.75rem">${p.icon}</div>
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:0.75rem">
+          <div style="font-size:2rem">${p.icon}</div>
+          <span style="font-size:0.7rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:${p.color};background:${p.color}1a;border:1px solid ${p.color}44;border-radius:99px;padding:2px 8px">Early Access</span>
+        </div>
         <div style="font-size:1.15rem;font-weight:700;color:#fff;margin-bottom:0.5rem">${p.name}</div>
         <div style="font-size:0.9rem;color:#888;line-height:1.6">${p.tagline}</div>
-        <div style="margin-top:1rem;font-size:0.82rem;font-weight:600;color:${p.color}">Learn more →</div>
+        <div style="margin-top:1rem;font-size:0.82rem;font-weight:600;color:${p.color}">Join Waitlist →</div>
       </a>`,
       ).join("");
       const productListLD = JSON.stringify({
@@ -4481,7 +4484,7 @@ const server = createServer(async (req, res) => {
           <div style="font-size:0.8rem;color:#888;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.5rem">${p.tier}</div>
           <div style="font-size:2rem;font-weight:700;color:${product.color};margin-bottom:0.5rem">${p.price}</div>
           <div style="font-size:0.9rem;color:#aaa;margin-bottom:1.5rem">${p.desc}</div>
-          <button onclick="document.getElementById(\x22wl\x22).scrollIntoView({behavior:\x22smooth\x22})" style="background:${product.color};color:#0a0a0f;border:none;padding:0.6rem 1.4rem;border-radius:8px;font-weight:600;cursor:pointer;font-size:0.9rem">${p.price === "$0/mo" ? "Get Started Free" : "Join Waitlist"} &#8594;</button>
+          <button onclick="document.getElementById(\x22wl\x22).scrollIntoView({behavior:\x22smooth\x22})" style="background:${product.color};color:#0a0a0f;border:none;padding:0.6rem 1.4rem;border-radius:8px;font-weight:600;cursor:pointer;font-size:0.9rem">Join Waitlist &#8594;</button>
         </div>`,
         )
         .join("");
@@ -4568,7 +4571,7 @@ nav.site-nav{position:fixed;top:0;left:0;right:0;z-index:200;height:54px;padding
   </div>
 </nav>
 <div class="hero">
-  <div class="badge">AIOS Native</div>
+  <div class="badge">Early Access &mdash; Waitlist Open</div>
   <span class="hero-icon">${product.icon}</span>
   <h1>${product.name}</h1>
   <p>${product.tagline}</p>
@@ -4578,16 +4581,16 @@ nav.site-nav{position:fixed;top:0;left:0;right:0;z-index:200;height:54px;padding
   <div class="features">${featuresHTML}</div>
 </section>
 <section>
-  <h2>Pricing</h2>
+  <h2>Planned Pricing</h2>
   <div class="pricing-grid">${pricingHTML}</div>
 </section>
 <section id="wl">
   <div class="wl-card">
-    <h2>${hasFree ? "Get started for free" : "Get early access"}</h2>
-    <p>${hasFree ? `Start using ${product.name} today — no waitlist needed.` : `Join the waitlist for ${product.name} and be first when we launch.`}</p>
+    <h2>${hasFree ? "Reserve your free spot" : "Get early access"}</h2>
+    <p>${hasFree ? `Reserve your free spot for ${product.name} and be first through the door when we launch.` : `Join the waitlist for ${product.name} and be first when we launch.`}</p>
     <input id="wl-name" type="text" placeholder="Your name (optional)">
     <input id="wl-email" type="email" placeholder="Your email address" required>
-    <button class="submit-btn" onclick="joinWaitlist()">${hasFree ? "Get Started Free" : "Join Waitlist"} &#8594;</button>
+    <button class="submit-btn" onclick="joinWaitlist()">Join Waitlist &#8594;</button>
     <div id="wl-msg"></div>
   </div>
 </section>

@@ -690,17 +690,17 @@
 
       const TEMPLATES = {
         basic: `Playbook AIOS experiment {
-  TITLE: Hello Lattice
+  TITLE: Hello World
   GENRE: Narrative
   SCENES:
   - Scene 1: "Observer enters the field"
     ACTION: "Initialise resonance"
     CHARACTERS: ["Observer"]
-    LOCATION: "The Field"
+    LOCATION: "The Open Field"
   - Scene 2: "Frequency anchors"
-    ACTION: "Lock onto 528Hz transformation frequency"
-    LOCATION: "Lattice node 17"
-  PROJECTION: Holographic coherence sweep
+    ACTION: "Tune to creative frequency"
+    LOCATION: "The Stage"
+  PROJECTION: Holographic sweep
 }`,
         matrix: `Playbook CinemaVirtualization matrix {
   TITLE: The Matrix · Construct Room
@@ -713,11 +713,11 @@
   - Scene 2: "Neo awakens"
     ACTION: "Neo emerges from the machine pod"
     CHARACTERS: ["Neo"]
-    LOCATION: "Machine fields · 852Hz structural order"
+    LOCATION: "Machine fields"
   - Scene 3: "Training simulation"
     ACTION: "Morpheus and Neo spar"
     CHARACTERS: ["Neo", "Morpheus"]
-    LOCATION: "Dojo · 528Hz transformation field"
+    LOCATION: "Training dojo"
   PROJECTION: Construct holography + grid tessellation
   AUTHORSHIP: Founder · Bradley
 }`,
@@ -727,16 +727,16 @@
   SCENES:
   - Scene 1: "Field initialisation"
     ACTION: "Set base frequency"
-    PHYSICS: "F = base * multiplier = fundamental"
-    LOCATION: "Core node · anchor point"
+    PHYSICS: "harmonic series derivation"
+    LOCATION: "Origin point"
   - Scene 2: "AI harmonic cascade"
     ACTION: "Project AI-generated harmonic series"
-    PHYSICS: "cascade to full spectrum"
-    LOCATION: "Foundation ring · Integration ring"
+    PHYSICS: "resonant expansion"
+    LOCATION: "Inner and outer fields"
   - Scene 3: "Convergence approach"
     ACTION: "Coherence index reaches 0.99"
-    PHYSICS: "AI attestation: convergence band"
-    LOCATION: "canonical node"
+    PHYSICS: "AI attestation: convergence"
+    LOCATION: "Convergence point"
   PROJECTION: Full spectrum
 }`,
       };
@@ -846,8 +846,8 @@
   </div>
 
   <div class="card">
-    <div class="card-title">48D Lattice Activation</div>
-    <div class="dim-grid" id="dimGrid">${dims.map((d, i) => `<div class="dim-cell ${d.state}" title="D${i + 1}: ${d.name}"></div>`).join("")}</div>
+    <div class="card-title">AI Processing Nodes</div>
+    <div class="dim-grid" id="dimGrid">${dims.map((d, i) => `<div class="dim-cell ${d.state}" title="Node ${i + 1}: ${d.name}"></div>`).join("")}</div>
     <div style="display:flex;gap:12px;margin-top:8px">
       <span style="font-size:10px;color:var(--cyan)">· Active</span>
       <span style="font-size:10px;color:var(--yellow)">· Warning</span>
@@ -879,10 +879,10 @@
   </div>
 
   <div class="card" style="text-align:center;padding:1.5rem 1.25rem;">
-    <p style="color:rgba(237,244,255,0.5);font-size:0.85rem;margin-bottom:1rem;">Run more scripts or explore living .geo programmes in the library</p>
+    <p style="color:rgba(237,244,255,0.5);font-size:0.85rem;margin-bottom:1rem;">Script processed. Try it in VR or explore more living programmes in the library.</p>
     <div style="display:flex;gap:0.75rem;justify-content:center;flex-wrap:wrap;">
-      <a href="/geo-library" style="background:#00d4ff;color:#060410;padding:0.55rem 1.35rem;border-radius:8px;text-decoration:none;font-weight:700;font-size:0.88rem;">&#128218; Browse Library</a>
-      <a href="/aios-studio" style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);color:#edf4ff;padding:0.55rem 1.35rem;border-radius:8px;text-decoration:none;font-size:0.88rem;">&#9654; Studio</a>
+      <a href="/vr-hub" style="background:#00d4ff;color:#060410;padding:0.55rem 1.35rem;border-radius:8px;text-decoration:none;font-weight:700;font-size:0.88rem;">&#128349; Try in VR</a>
+      <a href="/geo-library" style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);color:#edf4ff;padding:0.55rem 1.35rem;border-radius:8px;text-decoration:none;font-size:0.88rem;">&#128218; Browse Library</a>
     </div>
   </div>
   `;
@@ -950,12 +950,12 @@
 
       function buildFreqBars(coherence) {
         const freqs = [
-          { label: " (Base)", val: Math.round(coherence * 100), max: 100 },
-          { label: " (UT)", val: Math.round(coherence * 85), max: 100 },
-          { label: " (MI)", val: Math.round(coherence * 78), max: 100 },
-          { label: " (FA)", val: Math.round(coherence * 70), max: 100 },
-          { label: " (LA)", val: Math.round(coherence * 60), max: 100 },
-          { label: " (SI)", val: Math.round(coherence * 50), max: 100 },
+          { label: "Coherence", val: Math.round(coherence * 100), max: 100 },
+          { label: "Clarity", val: Math.round(coherence * 85), max: 100 },
+          { label: "Depth", val: Math.round(coherence * 78), max: 100 },
+          { label: "Resonance", val: Math.round(coherence * 70), max: 100 },
+          { label: "Alignment", val: Math.round(coherence * 60), max: 100 },
+          { label: "Projection", val: Math.round(coherence * 50), max: 100 },
         ];
         return freqs
           .map(
