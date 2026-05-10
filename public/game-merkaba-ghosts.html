@@ -533,18 +533,18 @@
     <nav class="site-nav" id="site-nav">
       <a href="/" class="site-nav-logo">⬡ AIOS</a>
       <div class="site-nav-links">
-        <a href="/games">🎮 Games</a>
+        <a href="/games"> Games</a>
         <a href="/aiosdream">Theatre</a>
-        <a href="/vr">🥽 VR</a>
+        <a href="/vr"> VR</a>
         <a href="/vr-hub">VR Hub</a>
         <a href="/plaistore">PLAIstore</a>
-        <a href="/geo-library">📚 Library</a>
+        <a href="/geo-library"> Library</a>
         <a href="/geo-codec">.geo</a>
         <a href="/aios-studio">Studio</a>
         <a href="/lab">Lab</a>
-        <a href="/news">📰 News</a>
-        <a href="/products">⚡ Products</a>
-        <a href="/experiences">🌐 Experiences</a>
+        <a href="/news"> News</a>
+        <a href="/products"> Products</a>
+        <a href="/experiences"> Experiences</a>
       </div>
       <div class="site-nav-right">
         <a href="/live" class="site-nav-live">● LIVE</a>
@@ -555,7 +555,7 @@
     <!-- ---- LOBBY ------------------------------------------------------ -->
     <div id="lobby">
       <div class="lobby-card">
-        <div class="ghost-badge">👻🌀</div>
+        <div class="ghost-badge"></div>
         <div class="lobby-title">MERKABA GHOSTS</div>
         <div class="lobby-sub">AGENT VR · AIOS ARCADE · 8 AGENTS</div>
         <div class="lobby-desc">
@@ -565,7 +565,7 @@
           gazing to complete each round.
         </div>
         <div class="ghost-roster" id="lobby-roster"></div>
-        <button class="btn-enter" id="btn-enter">🔮 Enter the Lattice</button>
+        <button class="btn-enter" id="btn-enter"> Enter the Lattice</button>
         <div class="lobby-hint">
           Gaze on a ghost for 1.5s to attune · Mouse + WASD on desktop · VR
           headset supported
@@ -651,7 +651,7 @@
     <!-- ---- GAME OVER --------------------------------------------------- -->
     <div id="gameover">
       <div class="gameover-card">
-        <div class="gameover-icon">💀</div>
+        <div class="gameover-icon"></div>
         <div class="gameover-title">LATTICE DISSOLVED</div>
         <div class="gameover-score" id="go-score">0</div>
         <div class="gameover-rounds" id="go-rounds">
@@ -661,7 +661,7 @@
           <button class="btn-restart" id="btn-restart">
             ? Re-enter Lattice
           </button>
-          <a href="/games" class="btn-back">🎮 Arcade</a>
+          <a href="/games" class="btn-back"> Arcade</a>
         </div>
         <button
           id="btn-share-score"
@@ -686,7 +686,7 @@
         <script>
           function shareScore() {
             const s = document.getElementById("go-score")?.textContent || "0";
-            const text = `I scored ${s} in Merkaba Ghosts 👻 · free browser game on realaios.com`;
+            const text = `I scored ${s} in Merkaba Ghosts  · free browser game on realaios.com`;
             if (navigator.share) {
               navigator
                 .share({
@@ -700,10 +700,10 @@
                 ?.writeText(text + "\nhttps://realaios.com/game-merkaba-ghosts")
                 .then(() => {
                   document.getElementById("btn-share-score").textContent =
-                    "✅ Copied!";
+                    " Copied!";
                   setTimeout(() => {
                     document.getElementById("btn-share-score").textContent =
-                      "📤 Share My Score";
+                      " Share My Score";
                   }, 2500);
                 })
                 .catch(() => {
@@ -866,7 +866,7 @@
           freq: 528,
           color: "#00d4ff",
           label: "ACTION",
-          emoji: "💻",
+          emoji: "",
         },
         {
           id: 2,
@@ -875,7 +875,7 @@
           freq: 963,
           color: "#f97316",
           label: "NARRATIVE",
-          emoji: "📖",
+          emoji: "",
         },
         {
           id: 3,
@@ -884,7 +884,7 @@
           freq: 396,
           color: "#22c55e",
           label: "ENTITY",
-          emoji: "📇",
+          emoji: "",
         },
         {
           id: 4,
@@ -893,7 +893,7 @@
           freq: 72,
           color: "#fbbf24",
           label: "HOLOGRAPHIC",
-          emoji: "🔮",
+          emoji: "",
         },
         {
           id: 5,
@@ -902,7 +902,7 @@
           freq: 741,
           color: "#ec4899",
           label: "EMOTION",
-          emoji: "💜",
+          emoji: "",
         },
         {
           id: 6,
@@ -911,7 +911,7 @@
           freq: 528,
           color: "#ef4444",
           label: "ACTION",
-          emoji: "🔥",
+          emoji: "",
         },
         {
           id: 7,
@@ -920,7 +920,7 @@
           freq: 852,
           color: "#a78bfa",
           label: "PHYSICS",
-          emoji: "🛡️",
+          emoji: "️",
         },
       ];
 

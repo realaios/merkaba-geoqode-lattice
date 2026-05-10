@@ -727,18 +727,18 @@
     <nav class="site-nav">
       <a href="/" class="site-nav-logo">⬡ AIOS</a>
       <div class="site-nav-links">
-        <a href="/games">🎮 Games</a>
+        <a href="/games"> Games</a>
         <a href="/aiosdream">Theatre</a>
-        <a href="/vr">🥽 VR</a>
+        <a href="/vr"> VR</a>
         <a href="/vr-hub">VR Hub</a>
         <a href="/plaistore">PLAIstore</a>
-        <a href="/geo-library" class="active">📚 Library</a>
+        <a href="/geo-library" class="active"> Library</a>
         <a href="/geo-codec">.geo</a>
         <a href="/aios-studio">Studio</a>
         <a href="/lab">Lab</a>
-        <a href="/news">📰 News</a>
-        <a href="/products">⚡ Products</a>
-        <a href="/experiences">🌐 Experiences</a>
+        <a href="/news"> News</a>
+        <a href="/products"> Products</a>
+        <a href="/experiences"> Experiences</a>
       </div>
       <div class="site-nav-right">
         <a href="/live" class="site-nav-live">● LIVE</a>
@@ -1172,7 +1172,7 @@
 
           if (isNew)
             showToast(
-              `🎬 New programme produced: "${allProgrammes[0]?.title}"`,
+              ` New programme produced: "${allProgrammes[0]?.title}"`,
             );
         } catch (e) {
           document.getElementById("status-text").textContent =
@@ -1343,7 +1343,7 @@
         <canvas class="card-canvas" data-renderer="${rendKey}" data-idx="${i}" width="280" height="158"></canvas>
         ${isCanonical ? '<div class="card-fresh" style="background:rgba(0,229,255,0.85);color:#06040e;letter-spacing:0.12em">● S2 CANONICAL</div>' : isFresh ? '<div class="card-fresh">✦ FRESH</div>' : ""}
         <div class="card-geo-badge">● .GEO v2</div>
-        <div class="card-play">▶</div>
+        <div class="card-play"></div>
       </div>
       <div class="card-body">
         <div class="card-title">${p.title}</div>
@@ -1354,7 +1354,7 @@
           <span class="card-hz">${p.audio?.hz || 528} Hz</span>
           <span class="card-kb">${p.fileSizeKB || "·"} KB</span>
         </div>
-        <div class="card-renderer">⚡ ${(p.renderer?.type || "quantum").toUpperCase()} · ${p.swarm?.agents?.director || "QuantumDirector"}</div>
+        <div class="card-renderer"> ${(p.renderer?.type || "quantum").toUpperCase()} · ${p.swarm?.agents?.director || "QuantumDirector"}</div>
       </div>
     </div>`;
           })

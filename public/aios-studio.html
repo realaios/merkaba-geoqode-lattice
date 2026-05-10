@@ -837,7 +837,7 @@
       <div class="logo-mark">AIOS PRODUCER STUDIO</div>
       <nav class="topnav">
         <a href="/">HOME</a>
-        <a href="/games">🎮 Games</a>
+        <a href="/games"> Games</a>
         <a href="/aiosdream">Theatre</a>
         <a href="/vr-hub">AIOSOCULIS</a>
         <a href="/aios-studio" class="active">STUDIO</a>
@@ -1235,43 +1235,43 @@
       const AGENTS = [
         {
           id: "director",
-          icon: "🎬",
+          icon: "",
           name: "QuantumDirector",
           role: "Programme Vision & Scene Structure",
         },
         {
           id: "cine",
-          icon: "🎨",
+          icon: "",
           name: "ChromaCine",
           role: "Renderer Palette & Composition",
         },
         {
           id: "composer",
-          icon: "🎵",
+          icon: "",
           name: "HarmonicForge",
           role: "Audio Frequencies & LFO Design",
         },
         {
           id: "fx",
-          icon: "✨",
+          icon: "",
           name: "ParticleForge",
           role: "Particle Systems & Visual FX",
         },
         {
           id: "colorist",
-          icon: "🎞️",
+          icon: "️",
           name: "LatticeColorist",
           role: "Colour Grading & Mood Overlays",
         },
         {
           id: "editor",
-          icon: "✂️",
+          icon: "️",
           name: "TemporalEditor",
           role: "Scene Pacing & Timing",
         },
         {
           id: "distributor",
-          icon: "🚀",
+          icon: "",
           name: "GeoDistributor",
           role: "Packaging & .geo Release",
         },
@@ -1396,7 +1396,7 @@
       border-radius:4px;background:${active ? "rgba(0,229,255,0.08)" : "transparent"}`;
           div.innerHTML = `
       <span style="color:${done ? "var(--green)" : active ? "var(--cyan)" : "var(--dim)"}">
-        ${done ? "✓" : active ? "▶" : "○"}
+        ${done ? "✓" : active ? "" : "○"}
       </span>
       <span style="color:${done ? "var(--green)" : active ? "var(--cyan)" : "var(--dim)"};
                   letter-spacing:2px;font-size:9px">
@@ -1448,7 +1448,7 @@
         <div class="geo-title">${g.title}</div>
         <div class="geo-meta">${g.renderer.type.toUpperCase()} · ${g.audio.hz}Hz · ${Math.round(g.runtime / 60)}m</div>
       </div>
-      <button class="geo-dl" onclick="downloadGeo('${g.id}')">⬇ .geo</button>`;
+      <button class="geo-dl" onclick="downloadGeo('${g.id}')"> .geo</button>`;
           el.appendChild(div);
         });
       }
@@ -2477,7 +2477,7 @@
             "display:flex;flex-direction:column;align-items:center;gap:12px;" +
             "box-shadow:0 8px 40px rgba(0,0,0,0.8);max-width:400px;width:90vw;text-align:center";
           toast.innerHTML =
-            '<div style="font-size:15px;color:#a78bfa;font-weight:700;letter-spacing:1px;">🔒 Free Account Required</div>' +
+            '<div style="font-size:15px;color:#a78bfa;font-weight:700;letter-spacing:1px;"> Free Account Required</div>' +
             '<div style="font-size:13px;color:var(--dim);line-height:1.6;">Sign up free to publish your programme to the AIOS catalogue and load it in Theatre.</div>' +
             '<div style="display:flex;gap:10px;width:100%;">' +
             '<a href="/start" style="flex:1;background:rgba(124,58,237,0.15);border:1px solid rgba(124,58,237,0.4);' +
@@ -2528,7 +2528,7 @@
               '<div style="display:flex;gap:8px;justify-content:center;">' +
               '<a href="/aiosdream?prog=' +
               (cmpState.publishedId || "") +
-              '" target="_blank" style="background:rgba(74,222,128,0.15);border:1px solid rgba(74,222,128,0.4);color:#4ade80;text-decoration:none;font-size:11px;font-weight:700;letter-spacing:2px;padding:8px 14px;border-radius:5px;">▶ WATCH NOW</a>' +
+              '" target="_blank" style="background:rgba(74,222,128,0.15);border:1px solid rgba(74,222,128,0.4);color:#4ade80;text-decoration:none;font-size:11px;font-weight:700;letter-spacing:2px;padding:8px 14px;border-radius:5px;"> WATCH NOW</a>' +
               '<a href="/geo-library" target="_blank" style="background:rgba(0,229,255,0.08);border:1px solid rgba(0,229,255,0.2);color:var(--cyan);text-decoration:none;font-size:11px;font-weight:700;letter-spacing:2px;padding:8px 14px;border-radius:5px;">LIBRARY</a>' +
               '<button onclick="this.parentNode.parentNode.remove()" style="background:none;border:1px solid rgba(255,255,255,0.1);color:var(--dim);font-family:inherit;font-size:11px;padding:8px 12px;border-radius:5px;cursor:pointer;">✕</button>' +
               "</div>";
@@ -2956,7 +2956,7 @@ Building programme…</pre
               cursor: pointer;
             "
           >
-            ⬇ EXPORT .GEO
+             EXPORT .GEO
           </button>
           <button
             onclick="cmpSendToTheatre()"
@@ -2974,7 +2974,7 @@ Building programme…</pre
               cursor: pointer;
             "
           >
-            ▶ OPEN IN THEATRE
+             OPEN IN THEATRE
           </button>
           <button
             onclick="cmpSaveToLibrary()"
@@ -2992,7 +2992,7 @@ Building programme…</pre
               cursor: pointer;
             "
           >
-            💾 SAVE TO LIBRARY
+             SAVE TO LIBRARY
           </button>
         </div>
       </div>

@@ -453,18 +453,18 @@
     <nav class="site-nav" id="site-nav">
       <a href="/" class="site-nav-logo">⬡ AIOS</a>
       <div class="site-nav-links">
-        <a href="/games">🎮 Games</a>
+        <a href="/games"> Games</a>
         <a href="/aiosdream">Theatre</a>
-        <a href="/vr">🥽 VR</a>
+        <a href="/vr"> VR</a>
         <a href="/vr-hub">VR Hub</a>
         <a href="/plaistore">PLAIstore</a>
-        <a href="/geo-library">📚 Library</a>
+        <a href="/geo-library"> Library</a>
         <a href="/geo-codec">.geo</a>
         <a href="/aios-studio">Studio</a>
         <a href="/lab">Lab</a>
-        <a href="/news">📰 News</a>
-        <a href="/products">⚡ Products</a>
-        <a href="/experiences">🌐 Experiences</a>
+        <a href="/news"> News</a>
+        <a href="/products"> Products</a>
+        <a href="/experiences"> Experiences</a>
       </div>
       <div class="site-nav-right">
         <a href="/live" class="site-nav-live">● LIVE</a>
@@ -474,7 +474,7 @@
 
     <!-- LOBBY -->
     <div id="lobby">
-      <div class="lobby-badge">🎮⬡ AIOS Arcade · Grid Dodge</div>
+      <div class="lobby-badge">⬡ AIOS Arcade · Grid Dodge</div>
       <div class="lobby-title">Grid Dodge</div>
       <div class="lobby-sub">
         Entropy disruptors flood the lattice ring. Move to survive. Each wave is
@@ -515,7 +515,7 @@
             letter-spacing: 0.05em;
           "
         >
-          🏆 TOP SCORES
+           TOP SCORES
         </div>
         <div
           id="lobby-lb-rows"
@@ -524,7 +524,7 @@
           Loading...
         </div>
       </div>
-      <button class="btn-play" onclick="startGame()">🚀 LAUNCH GAME</button>
+      <button class="btn-play" onclick="startGame()"> LAUNCH GAME</button>
       <div class="lobby-hint">
         WASD or arrow keys to move — Dodge the red cubes
       </div>
@@ -574,7 +574,7 @@
       </div>
       <div class="go-wave" id="go-wave">Wave 1</div>
       <div class="go-actions">
-        <button class="btn-retry" onclick="restartGame()">↩ Play Again</button>
+        <button class="btn-retry" onclick="restartGame()"> Play Again</button>
         <button
           class="btn-retry"
           onclick="shareDodgeScore()"
@@ -585,7 +585,7 @@
         >
           &#x2197;&#xFE0F; Share
         </button>
-        <a href="/vr-hub" class="btn-back-go">🥽 VR Hub</a>
+        <a href="/vr-hub" class="btn-back-go"> VR Hub</a>
       </div>
     </div>
 
@@ -938,7 +938,7 @@
       function shareDodgeScore() {
         const scoreEl = document.getElementById("go-score-n");
         const score = scoreEl ? scoreEl.textContent : "0";
-        const text = `I survived ${score} seconds in AIOS Grid Dodge! 🎮 #AIOS #AIOSGames #realaios`;
+        const text = `I survived ${score} seconds in AIOS Grid Dodge!  #AIOS #AIOSGames #realaios`;
         const url = "https://realaios.com/games/grid-dodge";
         if (navigator.share) {
           navigator

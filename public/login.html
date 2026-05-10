@@ -1,125 +1,288 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>Sign In — AIOS</title>
-  <meta name="description" content="Sign in to your AIOS account."/>
-  <meta name="robots" content="noindex"/>
-  <link rel="canonical" href="https://realaios.com/login"/>
-  <style>
-    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-    :root{--cyan:#00d4ff;--indigo:#6366f1;--bg:#07080f;--surface:rgba(255,255,255,0.04);--border:rgba(0,212,255,0.18);--text:#f8fafc;--muted:rgba(248,250,252,0.55)}
-    body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:1.5rem}
-    .card{width:100%;max-width:420px;background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:2.5rem 2rem}
-    .logo{display:flex;align-items:center;gap:0.6rem;margin-bottom:2rem;justify-content:center;text-decoration:none}
-    .logo-mark{width:36px;height:36px;background:linear-gradient(135deg,var(--cyan),var(--indigo));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;font-weight:900;color:#07080f}
-    .logo-text{font-size:1.15rem;font-weight:800;letter-spacing:0.04em;color:var(--text)}
-    h1{font-size:1.45rem;font-weight:800;text-align:center;margin-bottom:0.35rem}
-    .subtitle{text-align:center;color:var(--muted);font-size:0.9rem;margin-bottom:2rem}
-    .field{margin-bottom:1.1rem}
-    .field label{display:block;font-size:0.8rem;font-weight:600;color:var(--muted);margin-bottom:0.45rem;letter-spacing:0.04em;text-transform:uppercase}
-    .field input{width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:0.7rem 1rem;color:var(--text);font-size:0.95rem;outline:none;transition:border-color .2s}
-    .field input:focus{border-color:var(--cyan)}
-    .field input::placeholder{color:rgba(248,250,252,0.3)}
-    .btn{width:100%;background:linear-gradient(135deg,var(--cyan),var(--indigo));color:#07080f;border:none;border-radius:8px;padding:0.8rem;font-size:1rem;font-weight:700;cursor:pointer;margin-top:0.5rem;transition:opacity .2s}
-    .btn:hover{opacity:0.9}
-    .btn:disabled{opacity:0.5;cursor:not-allowed}
-    .error{background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.3);border-radius:8px;padding:0.7rem 1rem;font-size:0.87rem;color:#fca5a5;margin-bottom:1rem;display:none}
-    .error.show{display:block}
-    .divider{text-align:center;font-size:0.83rem;color:var(--muted);margin:1.5rem 0 0}
-    .divider a{color:var(--cyan);text-decoration:none;font-weight:600}
-    .divider a:hover{text-decoration:underline}
-    .back{display:block;text-align:center;font-size:0.82rem;color:var(--muted);margin-top:1.5rem;text-decoration:none}
-    .back:hover{color:var(--cyan)}
-  </style>
-</head>
-<body>
-  <div class="card">
-    <a class="logo" href="/">
-      <div class="logo-mark">A</div>
-      <span class="logo-text">AIOS</span>
-    </a>
-
-    <h1>Welcome back</h1>
-    <p class="subtitle">Sign in to your AIOS account</p>
-
-    <div class="error" id="err"></div>
-
-    <div class="field">
-      <label for="email">Email</label>
-      <input type="email" id="email" name="email" placeholder="you@example.com" autocomplete="email" required/>
-    </div>
-    <div class="field">
-      <label for="password">Password</label>
-      <input type="password" id="password" name="password" placeholder="Your password" autocomplete="current-password" required/>
-    </div>
-
-    <button class="btn" id="submit-btn" type="button">Sign In →</button>
-
-    <p class="divider">No account yet? <a href="/signup">Create one free</a></p>
-  </div>
-
-  <a class="back" href="/">← Back to realaios.com</a>
-
-  <script>
-    (function () {
-      var btn = document.getElementById("submit-btn");
-      var errEl = document.getElementById("err");
-
-      function showError(msg) {
-        errEl.textContent = msg;
-        errEl.classList.add("show");
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Sign In — AIOS</title>
+    <meta name="description" content="Sign in to your AIOS account." />
+    <meta name="robots" content="noindex" />
+    <link rel="canonical" href="https://realaios.com/login" />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
       }
-      function hideError() { errEl.classList.remove("show"); }
-
-      // If already logged in, go straight to PLAIStore
-      if (localStorage.getItem("plai_jwt")) {
-        window.location.replace("/plaistore");
-        return;
+      :root {
+        --cyan: #00d4ff;
+        --indigo: #6366f1;
+        --bg: #07080f;
+        --surface: rgba(255, 255, 255, 0.04);
+        --border: rgba(0, 212, 255, 0.18);
+        --text: #f8fafc;
+        --muted: rgba(248, 250, 252, 0.55);
       }
+      body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 1.5rem;
+      }
+      .card {
+        width: 100%;
+        max-width: 420px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 2.5rem 2rem;
+      }
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        margin-bottom: 2rem;
+        justify-content: center;
+        text-decoration: none;
+      }
+      .logo-mark {
+        width: 36px;
+        height: 36px;
+        background: linear-gradient(135deg, var(--cyan), var(--indigo));
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.1rem;
+        font-weight: 900;
+        color: #07080f;
+      }
+      .logo-text {
+        font-size: 1.15rem;
+        font-weight: 800;
+        letter-spacing: 0.04em;
+        color: var(--text);
+      }
+      h1 {
+        font-size: 1.45rem;
+        font-weight: 800;
+        text-align: center;
+        margin-bottom: 0.35rem;
+      }
+      .subtitle {
+        text-align: center;
+        color: var(--muted);
+        font-size: 0.9rem;
+        margin-bottom: 2rem;
+      }
+      .field {
+        margin-bottom: 1.1rem;
+      }
+      .field label {
+        display: block;
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: var(--muted);
+        margin-bottom: 0.45rem;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+      .field input {
+        width: 100%;
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 8px;
+        padding: 0.7rem 1rem;
+        color: var(--text);
+        font-size: 0.95rem;
+        outline: none;
+        transition: border-color 0.2s;
+      }
+      .field input:focus {
+        border-color: var(--cyan);
+      }
+      .field input::placeholder {
+        color: rgba(248, 250, 252, 0.3);
+      }
+      .btn {
+        width: 100%;
+        background: linear-gradient(135deg, var(--cyan), var(--indigo));
+        color: #07080f;
+        border: none;
+        border-radius: 8px;
+        padding: 0.8rem;
+        font-size: 1rem;
+        font-weight: 700;
+        cursor: pointer;
+        margin-top: 0.5rem;
+        transition: opacity 0.2s;
+      }
+      .btn:hover {
+        opacity: 0.9;
+      }
+      .btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+      .error {
+        background: rgba(239, 68, 68, 0.12);
+        border: 1px solid rgba(239, 68, 68, 0.3);
+        border-radius: 8px;
+        padding: 0.7rem 1rem;
+        font-size: 0.87rem;
+        color: #fca5a5;
+        margin-bottom: 1rem;
+        display: none;
+      }
+      .error.show {
+        display: block;
+      }
+      .divider {
+        text-align: center;
+        font-size: 0.83rem;
+        color: var(--muted);
+        margin: 1.5rem 0 0;
+      }
+      .divider a {
+        color: var(--cyan);
+        text-decoration: none;
+        font-weight: 600;
+      }
+      .divider a:hover {
+        text-decoration: underline;
+      }
+      .back {
+        display: block;
+        text-align: center;
+        font-size: 0.82rem;
+        color: var(--muted);
+        margin-top: 1.5rem;
+        text-decoration: none;
+      }
+      .back:hover {
+        color: var(--cyan);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <a class="logo" href="/">
+        <div class="logo-mark">A</div>
+        <span class="logo-text">AIOS</span>
+      </a>
 
-      var redirectTo = new URLSearchParams(window.location.search).get("redirect") || "/plaistore";
+      <h1>Welcome back</h1>
+      <p class="subtitle">Sign in to your AIOS account</p>
 
-      btn.addEventListener("click", async function () {
-        hideError();
-        var email = document.getElementById("email").value.trim();
-        var password = document.getElementById("password").value;
+      <div class="error" id="err"></div>
 
-        if (!email) return showError("Email address is required.");
-        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return showError("Please enter a valid email address.");
-        if (!password) return showError("Password is required.");
+      <div class="field">
+        <label for="email">Email</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          placeholder="you@example.com"
+          autocomplete="email"
+          required
+        />
+      </div>
+      <div class="field">
+        <label for="password">Password</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          placeholder="Your password"
+          autocomplete="current-password"
+          required
+        />
+      </div>
 
-        btn.disabled = true;
-        btn.textContent = "Signing in…";
+      <button class="btn" id="submit-btn" type="button">Sign In →</button>
 
-        try {
-          var r = await fetch("/api/auth/login", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email: email, password: password })
-          });
-          var data = await r.json().catch(function () { return {}; });
+      <p class="divider">
+        No account yet? <a href="/signup">Create one free</a>
+      </p>
+    </div>
 
-          if (r.ok && (data.token || data.jwt)) {
-            localStorage.setItem("plai_jwt", data.token || data.jwt);
-            window.location.replace(redirectTo);
-          } else {
-            showError(data.error || data.message || "Invalid email or password.");
+    <a class="back" href="/">← Back to realaios.com</a>
+
+    <script>
+      (function () {
+        var btn = document.getElementById("submit-btn");
+        var errEl = document.getElementById("err");
+
+        function showError(msg) {
+          errEl.textContent = msg;
+          errEl.classList.add("show");
+        }
+        function hideError() {
+          errEl.classList.remove("show");
+        }
+
+        // If already logged in, go straight to PLAIStore
+        if (localStorage.getItem("plai_jwt")) {
+          window.location.replace("/plaistore");
+          return;
+        }
+
+        var redirectTo =
+          new URLSearchParams(window.location.search).get("redirect") ||
+          "/plaistore";
+
+        btn.addEventListener("click", async function () {
+          hideError();
+          var email = document.getElementById("email").value.trim();
+          var password = document.getElementById("password").value;
+
+          if (!email) return showError("Email address is required.");
+          if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
+            return showError("Please enter a valid email address.");
+          if (!password) return showError("Password is required.");
+
+          btn.disabled = true;
+          btn.textContent = "Signing in…";
+
+          try {
+            var r = await fetch("/api/auth/login", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ email: email, password: password }),
+            });
+            var data = await r.json().catch(function () {
+              return {};
+            });
+
+            if (r.ok && (data.token || data.jwt)) {
+              localStorage.setItem("plai_jwt", data.token || data.jwt);
+              window.location.replace(redirectTo);
+            } else {
+              showError(
+                data.error || data.message || "Invalid email or password.",
+              );
+              btn.disabled = false;
+              btn.textContent = "Sign In →";
+            }
+          } catch (e) {
+            showError("Connection error. Please try again.");
             btn.disabled = false;
             btn.textContent = "Sign In →";
           }
-        } catch (e) {
-          showError("Connection error. Please try again.");
-          btn.disabled = false;
-          btn.textContent = "Sign In →";
-        }
-      });
+        });
 
-      document.querySelectorAll("input").forEach(function (inp) {
-        inp.addEventListener("keydown", function (e) { if (e.key === "Enter") btn.click(); });
-      });
-    })();
-  </script>
-</body>
+        document.querySelectorAll("input").forEach(function (inp) {
+          inp.addEventListener("keydown", function (e) {
+            if (e.key === "Enter") btn.click();
+          });
+        });
+      })();
+    </script>
+  </body>
 </html>

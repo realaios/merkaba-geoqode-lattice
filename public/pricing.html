@@ -1,284 +1,597 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>Pricing — AIOS</title>
-  <meta name="description" content="AIOS Pro — unlimited PLAIStore access, VR Hub premium, AI tools and more. Free to join."/>
-  <link rel="canonical" href="https://realaios.com/pricing"/>
-  <style>
-    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-    :root{--cyan:#00d4ff;--indigo:#6366f1;--bg:#07080f;--surface:rgba(255,255,255,0.04);--surface2:rgba(255,255,255,0.07);--border:rgba(0,212,255,0.18);--border2:rgba(99,102,241,0.35);--text:#f8fafc;--muted:rgba(248,250,252,0.55);--gold:#f59e0b;--green:#10b981}
-    body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;min-height:100vh}
-
-    /* NAV */
-    .nav{display:flex;align-items:center;justify-content:space-between;padding:1rem 2rem;border-bottom:1px solid rgba(255,255,255,0.07)}
-    .nav-logo{display:flex;align-items:center;gap:0.5rem;text-decoration:none;color:var(--text);font-weight:800;font-size:1.05rem}
-    .nav-logo-mark{width:30px;height:30px;background:linear-gradient(135deg,var(--cyan),var(--indigo));border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:0.85rem;font-weight:900;color:#07080f}
-    .nav-links{display:flex;align-items:center;gap:1.5rem}
-    .nav-links a{color:var(--muted);text-decoration:none;font-size:0.9rem;transition:color .15s}
-    .nav-links a:hover{color:var(--text)}
-    .nav-links a.active{color:var(--cyan)}
-    .nav-cta{background:linear-gradient(135deg,var(--cyan),var(--indigo));color:#07080f !important;font-weight:700;padding:0.4rem 1rem;border-radius:6px;font-size:0.85rem}
-
-    /* HERO */
-    .hero{text-align:center;padding:4rem 1.5rem 2rem}
-    .hero-badge{display:inline-block;background:rgba(0,212,255,0.1);border:1px solid rgba(0,212,255,0.25);color:var(--cyan);font-size:0.75rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:0.3rem 0.9rem;border-radius:100px;margin-bottom:1.25rem}
-    .hero h1{font-size:clamp(2rem,5vw,3rem);font-weight:900;letter-spacing:-0.02em;margin-bottom:0.75rem}
-    .hero p{color:var(--muted);font-size:1.05rem;max-width:500px;margin:0 auto 0.5rem}
-
-    /* SUCCESS/CANCEL BANNER */
-    .banner{display:none;max-width:560px;margin:0 auto 2rem;padding:1rem 1.25rem;border-radius:10px;font-size:0.9rem;font-weight:600}
-    .banner.success{background:rgba(16,185,129,0.12);border:1px solid rgba(16,185,129,0.3);color:#6ee7b7;display:block}
-    .banner.cancel{background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.25);color:#fca5a5;display:block}
-
-    /* CARDS */
-    .plans{display:flex;gap:1.5rem;justify-content:center;flex-wrap:wrap;max-width:820px;margin:2rem auto;padding:0 1.5rem}
-    .plan{flex:1;min-width:280px;max-width:360px;background:var(--surface);border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:2rem}
-    .plan.featured{background:var(--surface2);border-color:var(--border2);position:relative;box-shadow:0 0 0 1px rgba(99,102,241,0.2),0 20px 60px rgba(99,102,241,0.1)}
-    .plan-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,var(--cyan),var(--indigo));color:#07080f;font-size:0.7rem;font-weight:800;letter-spacing:0.08em;text-transform:uppercase;padding:0.3rem 1rem;border-radius:100px;white-space:nowrap}
-    .plan-name{font-size:1.1rem;font-weight:800;margin-bottom:0.25rem}
-    .plan-price{margin:1rem 0}
-    .plan-price .amount{font-size:2.5rem;font-weight:900;letter-spacing:-0.03em}
-    .plan-price .period{color:var(--muted);font-size:0.9rem}
-    .plan-desc{color:var(--muted);font-size:0.85rem;margin-bottom:1.5rem;line-height:1.5}
-    .plan-btn{display:block;width:100%;padding:0.75rem;border-radius:8px;font-size:0.95rem;font-weight:700;cursor:pointer;text-align:center;border:none;text-decoration:none;transition:opacity .2s}
-    .plan-btn.free{background:rgba(255,255,255,0.08);color:var(--text)}
-    .plan-btn.free:hover{background:rgba(255,255,255,0.12)}
-    .plan-btn.pro{background:linear-gradient(135deg,var(--cyan),var(--indigo));color:#07080f}
-    .plan-btn.pro:hover{opacity:0.9}
-    .plan-btn:disabled{opacity:0.5;cursor:not-allowed}
-    .plan-btn.active-plan{background:rgba(16,185,129,0.15);color:#6ee7b7;border:1px solid rgba(16,185,129,0.3);cursor:default}
-    .features{list-style:none;margin-top:1.5rem;display:flex;flex-direction:column;gap:0.65rem}
-    .features li{display:flex;align-items:flex-start;gap:0.6rem;font-size:0.88rem;color:var(--muted)}
-    .features li .icon{color:var(--green);font-size:0.85rem;margin-top:0.1rem;flex-shrink:0}
-    .features li .icon.no{color:rgba(255,255,255,0.2)}
-
-    /* LOADING SPINNER */
-    .spinner{display:inline-block;width:16px;height:16px;border:2px solid rgba(7,8,15,0.3);border-top-color:#07080f;border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;margin-right:6px}
-    @keyframes spin{to{transform:rotate(360deg)}}
-
-    /* FAQ */
-    .faq{max-width:620px;margin:3rem auto;padding:0 1.5rem 4rem}
-    .faq h2{font-size:1.4rem;font-weight:800;text-align:center;margin-bottom:2rem}
-    .faq-item{border-bottom:1px solid rgba(255,255,255,0.07);padding:1.1rem 0}
-    .faq-item:last-child{border-bottom:none}
-    .faq-item dt{font-weight:700;font-size:0.95rem;margin-bottom:0.4rem}
-    .faq-item dd{color:var(--muted);font-size:0.88rem;line-height:1.6}
-
-    @media(max-width:640px){.nav-links{display:none}.plans{flex-direction:column;align-items:center}}
-  </style>
-</head>
-<body>
-
-  <nav class="nav">
-    <a class="nav-logo" href="/">
-      <div class="nav-logo-mark">A</div>
-      AIOS
-    </a>
-    <div class="nav-links">
-      <a href="/plaistore">PLAIStore</a>
-      <a href="/games">Games</a>
-      <a href="/vr-hub">VR Hub</a>
-      <a href="/pricing" class="active">Pricing</a>
-    </div>
-    <div>
-      <a class="nav-cta" href="/signup" id="nav-auth-btn">Get Started</a>
-    </div>
-  </nav>
-
-  <div class="hero">
-    <div class="hero-badge">Simple pricing</div>
-    <h1>Free forever.<br>Go Pro for everything.</h1>
-    <p>AIOS is free to join and use. Upgrade to Pro for unlimited access to all PLAIStore apps and premium features.</p>
-  </div>
-
-  <div class="banner" id="banner-success">
-    ✓ Welcome to AIOS Pro! Your subscription is now active. Enjoy unlimited access.
-  </div>
-  <div class="banner" id="banner-cancel">
-    Your checkout was cancelled. No charge was made.
-  </div>
-
-  <div class="plans">
-    <!-- FREE -->
-    <div class="plan">
-      <div class="plan-name">Free</div>
-      <div class="plan-price">
-        <span class="amount">$0</span>
-        <span class="period"> / forever</span>
-      </div>
-      <p class="plan-desc">Everything you need to get started with AIOS. No credit card required.</p>
-      <button class="plan-btn free" id="btn-free">Get started free</button>
-      <ul class="features">
-        <li><span class="icon">✓</span>AIOS account &amp; identity</li>
-        <li><span class="icon">✓</span>486+ free PLAIStore apps</li>
-        <li><span class="icon">✓</span>All 4 AIOS games</li>
-        <li><span class="icon">✓</span>VR Hub (basic)</li>
-        <li><span class="icon">✓</span>GeoQode explorer</li>
-        <li><span class="icon no">—</span><span style="opacity:.4">Premium PLAIStore apps</span></li>
-        <li><span class="icon no">—</span><span style="opacity:.4">VR Hub premium content</span></li>
-        <li><span class="icon no">—</span><span style="opacity:.4">AIOS Studio (advanced)</span></li>
-      </ul>
-    </div>
-
-    <!-- PRO -->
-    <div class="plan featured">
-      <div class="plan-badge">Most popular</div>
-      <div class="plan-name">AIOS Pro</div>
-      <div class="plan-price">
-        <span class="amount" id="pro-price">$9.99</span>
-        <span class="period"> / month</span>
-      </div>
-      <p class="plan-desc">Everything in Free, plus unlimited access to all PLAIStore apps and premium AIOS features.</p>
-      <button class="plan-btn pro" id="btn-pro">Upgrade to Pro →</button>
-      <ul class="features">
-        <li><span class="icon">✓</span>Everything in Free</li>
-        <li><span class="icon">✓</span>All premium PLAIStore apps</li>
-        <li><span class="icon">✓</span>VR Hub premium content</li>
-        <li><span class="icon">✓</span>AIOS Studio — full access</li>
-        <li><span class="icon">✓</span>Priority AI tools</li>
-        <li><span class="icon">✓</span>No ads</li>
-        <li><span class="icon">✓</span><strong>Coming soon:</strong> publish apps to PLAIStore</li>
-        <li><span class="icon">✓</span>Priority support</li>
-      </ul>
-    </div>
-  </div>
-
-  <!-- FAQ -->
-  <div class="faq">
-    <h2>Frequently asked questions</h2>
-    <dl>
-      <div class="faq-item">
-        <dt>Can I use AIOS for free?</dt>
-        <dd>Yes. AIOS Free gives you a full account, all 486+ free PLAIStore apps, games, VR basics and GeoQode — forever. No credit card required.</dd>
-      </div>
-      <div class="faq-item">
-        <dt>What's in AIOS Pro?</dt>
-        <dd>Pro unlocks every app in PLAIStore (including premium ones), VR Hub premium content, full AIOS Studio access, priority AI features, and removes ads. Billed monthly at $9.99. Cancel anytime.</dd>
-      </div>
-      <div class="faq-item">
-        <dt>Can I cancel anytime?</dt>
-        <dd>Yes. Cancel your Pro subscription at any time from your account. You keep Pro access until the end of your billing period.</dd>
-      </div>
-      <div class="faq-item">
-        <dt>Is this the same account as getbrains4ai.com?</dt>
-        <dd>Yes — AIOS and Brains4Ai share the same account system. One login, one subscription.</dd>
-      </div>
-      <div class="faq-item">
-        <dt>How does payment work?</dt>
-        <dd>Payments are processed securely by Stripe. AIOS never stores your card details.</dd>
-      </div>
-    </dl>
-  </div>
-
-  <script>
-  (function () {
-    var params = new URLSearchParams(window.location.search);
-    if (params.get("success") === "1") {
-      document.getElementById("banner-success").classList.add("success");
-      // Clean URL
-      history.replaceState({}, "", "/pricing");
-    }
-    if (params.get("cancel") === "1") {
-      document.getElementById("banner-cancel").classList.add("cancel");
-      history.replaceState({}, "", "/pricing");
-    }
-
-    var jwt = localStorage.getItem("plai_jwt");
-    var btnFree = document.getElementById("btn-free");
-    var btnPro = document.getElementById("btn-pro");
-    var navBtn = document.getElementById("nav-auth-btn");
-
-    // Decode JWT claims (display only — no signature check)
-    function decodeJwt(token) {
-      try {
-        var parts = token.split(".");
-        var payload = JSON.parse(atob(parts[1].replace(/-/g, "+").replace(/_/g, "/")));
-        return payload;
-      } catch (e) { return null; }
-    }
-
-    // Check Pro status
-    async function checkStatus() {
-      if (!jwt) {
-        btnFree.textContent = "Create free account";
-        btnFree.onclick = function () { window.location.href = "/signup"; };
-        btnPro.textContent = "Upgrade to Pro →";
-        btnPro.onclick = handleCheckout;
-        return;
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Pricing — AIOS</title>
+    <meta
+      name="description"
+      content="AIOS Pro — unlimited PLAIStore access, VR Hub premium, AI tools and more. Free to join."
+    />
+    <link rel="canonical" href="https://realaios.com/pricing" />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      :root {
+        --cyan: #00d4ff;
+        --indigo: #6366f1;
+        --bg: #07080f;
+        --surface: rgba(255, 255, 255, 0.04);
+        --surface2: rgba(255, 255, 255, 0.07);
+        --border: rgba(0, 212, 255, 0.18);
+        --border2: rgba(99, 102, 241, 0.35);
+        --text: #f8fafc;
+        --muted: rgba(248, 250, 252, 0.55);
+        --gold: #f59e0b;
+        --green: #10b981;
+      }
+      body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        min-height: 100vh;
       }
 
-      var claims = decodeJwt(jwt);
-      if (claims) {
-        navBtn.textContent = "My Account";
-        navBtn.href = "/plaistore";
+      /* NAV */
+      .nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 1rem 2rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+      }
+      .nav-logo {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        text-decoration: none;
+        color: var(--text);
+        font-weight: 800;
+        font-size: 1.05rem;
+      }
+      .nav-logo-mark {
+        width: 30px;
+        height: 30px;
+        background: linear-gradient(135deg, var(--cyan), var(--indigo));
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.85rem;
+        font-weight: 900;
+        color: #07080f;
+      }
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+      }
+      .nav-links a {
+        color: var(--muted);
+        text-decoration: none;
+        font-size: 0.9rem;
+        transition: color 0.15s;
+      }
+      .nav-links a:hover {
+        color: var(--text);
+      }
+      .nav-links a.active {
+        color: var(--cyan);
+      }
+      .nav-cta {
+        background: linear-gradient(135deg, var(--cyan), var(--indigo));
+        color: #07080f !important;
+        font-weight: 700;
+        padding: 0.4rem 1rem;
+        border-radius: 6px;
+        font-size: 0.85rem;
       }
 
-      btnFree.textContent = "Current plan";
-      btnFree.classList.add("active-plan");
-      btnFree.disabled = true;
+      /* HERO */
+      .hero {
+        text-align: center;
+        padding: 4rem 1.5rem 2rem;
+      }
+      .hero-badge {
+        display: inline-block;
+        background: rgba(0, 212, 255, 0.1);
+        border: 1px solid rgba(0, 212, 255, 0.25);
+        color: var(--cyan);
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        padding: 0.3rem 0.9rem;
+        border-radius: 100px;
+        margin-bottom: 1.25rem;
+      }
+      .hero h1 {
+        font-size: clamp(2rem, 5vw, 3rem);
+        font-weight: 900;
+        letter-spacing: -0.02em;
+        margin-bottom: 0.75rem;
+      }
+      .hero p {
+        color: var(--muted);
+        font-size: 1.05rem;
+        max-width: 500px;
+        margin: 0 auto 0.5rem;
+      }
 
-      // Check subscription status
-      try {
-        var r = await fetch("/api/aios/billing/status", {
-          headers: { "Authorization": "Bearer " + jwt }
-        });
-        var data = await r.json().catch(function () { return {}; });
-        var tier = (data.subscription && data.subscription.tier) || data.tier || "free";
-        if (tier === "pro" || tier === "enterprise") {
-          btnPro.textContent = "✓ Active Plan";
-          btnPro.classList.remove("pro");
-          btnPro.classList.add("active-plan");
+      /* SUCCESS/CANCEL BANNER */
+      .banner {
+        display: none;
+        max-width: 560px;
+        margin: 0 auto 2rem;
+        padding: 1rem 1.25rem;
+        border-radius: 10px;
+        font-size: 0.9rem;
+        font-weight: 600;
+      }
+      .banner.success {
+        background: rgba(16, 185, 129, 0.12);
+        border: 1px solid rgba(16, 185, 129, 0.3);
+        color: #6ee7b7;
+        display: block;
+      }
+      .banner.cancel {
+        background: rgba(239, 68, 68, 0.1);
+        border: 1px solid rgba(239, 68, 68, 0.25);
+        color: #fca5a5;
+        display: block;
+      }
+
+      /* CARDS */
+      .plans {
+        display: flex;
+        gap: 1.5rem;
+        justify-content: center;
+        flex-wrap: wrap;
+        max-width: 820px;
+        margin: 2rem auto;
+        padding: 0 1.5rem;
+      }
+      .plan {
+        flex: 1;
+        min-width: 280px;
+        max-width: 360px;
+        background: var(--surface);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 16px;
+        padding: 2rem;
+      }
+      .plan.featured {
+        background: var(--surface2);
+        border-color: var(--border2);
+        position: relative;
+        box-shadow:
+          0 0 0 1px rgba(99, 102, 241, 0.2),
+          0 20px 60px rgba(99, 102, 241, 0.1);
+      }
+      .plan-badge {
+        position: absolute;
+        top: -12px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: linear-gradient(135deg, var(--cyan), var(--indigo));
+        color: #07080f;
+        font-size: 0.7rem;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        padding: 0.3rem 1rem;
+        border-radius: 100px;
+        white-space: nowrap;
+      }
+      .plan-name {
+        font-size: 1.1rem;
+        font-weight: 800;
+        margin-bottom: 0.25rem;
+      }
+      .plan-price {
+        margin: 1rem 0;
+      }
+      .plan-price .amount {
+        font-size: 2.5rem;
+        font-weight: 900;
+        letter-spacing: -0.03em;
+      }
+      .plan-price .period {
+        color: var(--muted);
+        font-size: 0.9rem;
+      }
+      .plan-desc {
+        color: var(--muted);
+        font-size: 0.85rem;
+        margin-bottom: 1.5rem;
+        line-height: 1.5;
+      }
+      .plan-btn {
+        display: block;
+        width: 100%;
+        padding: 0.75rem;
+        border-radius: 8px;
+        font-size: 0.95rem;
+        font-weight: 700;
+        cursor: pointer;
+        text-align: center;
+        border: none;
+        text-decoration: none;
+        transition: opacity 0.2s;
+      }
+      .plan-btn.free {
+        background: rgba(255, 255, 255, 0.08);
+        color: var(--text);
+      }
+      .plan-btn.free:hover {
+        background: rgba(255, 255, 255, 0.12);
+      }
+      .plan-btn.pro {
+        background: linear-gradient(135deg, var(--cyan), var(--indigo));
+        color: #07080f;
+      }
+      .plan-btn.pro:hover {
+        opacity: 0.9;
+      }
+      .plan-btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+      .plan-btn.active-plan {
+        background: rgba(16, 185, 129, 0.15);
+        color: #6ee7b7;
+        border: 1px solid rgba(16, 185, 129, 0.3);
+        cursor: default;
+      }
+      .features {
+        list-style: none;
+        margin-top: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.65rem;
+      }
+      .features li {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.6rem;
+        font-size: 0.88rem;
+        color: var(--muted);
+      }
+      .features li .icon {
+        color: var(--green);
+        font-size: 0.85rem;
+        margin-top: 0.1rem;
+        flex-shrink: 0;
+      }
+      .features li .icon.no {
+        color: rgba(255, 255, 255, 0.2);
+      }
+
+      /* LOADING SPINNER */
+      .spinner {
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        border: 2px solid rgba(7, 8, 15, 0.3);
+        border-top-color: #07080f;
+        border-radius: 50%;
+        animation: spin 0.7s linear infinite;
+        vertical-align: middle;
+        margin-right: 6px;
+      }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      /* FAQ */
+      .faq {
+        max-width: 620px;
+        margin: 3rem auto;
+        padding: 0 1.5rem 4rem;
+      }
+      .faq h2 {
+        font-size: 1.4rem;
+        font-weight: 800;
+        text-align: center;
+        margin-bottom: 2rem;
+      }
+      .faq-item {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+        padding: 1.1rem 0;
+      }
+      .faq-item:last-child {
+        border-bottom: none;
+      }
+      .faq-item dt {
+        font-weight: 700;
+        font-size: 0.95rem;
+        margin-bottom: 0.4rem;
+      }
+      .faq-item dd {
+        color: var(--muted);
+        font-size: 0.88rem;
+        line-height: 1.6;
+      }
+
+      @media (max-width: 640px) {
+        .nav-links {
+          display: none;
+        }
+        .plans {
+          flex-direction: column;
+          align-items: center;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="nav">
+      <a class="nav-logo" href="/">
+        <div class="nav-logo-mark">A</div>
+        AIOS
+      </a>
+      <div class="nav-links">
+        <a href="/plaistore">PLAIStore</a>
+        <a href="/games">Games</a>
+        <a href="/vr-hub">VR Hub</a>
+        <a href="/pricing" class="active">Pricing</a>
+      </div>
+      <div>
+        <a class="nav-cta" href="/signup" id="nav-auth-btn">Get Started</a>
+      </div>
+    </nav>
+
+    <div class="hero">
+      <div class="hero-badge">Simple pricing</div>
+      <h1>Free forever.<br />Go Pro for everything.</h1>
+      <p>
+        AIOS is free to join and use. Upgrade to Pro for unlimited access to all
+        PLAIStore apps and premium features.
+      </p>
+    </div>
+
+    <div class="banner" id="banner-success">
+      ✓ Welcome to AIOS Pro! Your subscription is now active. Enjoy unlimited
+      access.
+    </div>
+    <div class="banner" id="banner-cancel">
+      Your checkout was cancelled. No charge was made.
+    </div>
+
+    <div class="plans">
+      <!-- FREE -->
+      <div class="plan">
+        <div class="plan-name">Free</div>
+        <div class="plan-price">
+          <span class="amount">$0</span>
+          <span class="period"> / forever</span>
+        </div>
+        <p class="plan-desc">
+          Everything you need to get started with AIOS. No credit card required.
+        </p>
+        <button class="plan-btn free" id="btn-free">Get started free</button>
+        <ul class="features">
+          <li><span class="icon">✓</span>AIOS account &amp; identity</li>
+          <li><span class="icon">✓</span>486+ free PLAIStore apps</li>
+          <li><span class="icon">✓</span>All 4 AIOS games</li>
+          <li><span class="icon">✓</span>VR Hub (basic)</li>
+          <li><span class="icon">✓</span>GeoQode explorer</li>
+          <li>
+            <span class="icon no">—</span
+            ><span style="opacity: 0.4">Premium PLAIStore apps</span>
+          </li>
+          <li>
+            <span class="icon no">—</span
+            ><span style="opacity: 0.4">VR Hub premium content</span>
+          </li>
+          <li>
+            <span class="icon no">—</span
+            ><span style="opacity: 0.4">AIOS Studio (advanced)</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- PRO -->
+      <div class="plan featured">
+        <div class="plan-badge">Most popular</div>
+        <div class="plan-name">AIOS Pro</div>
+        <div class="plan-price">
+          <span class="amount" id="pro-price">$9.99</span>
+          <span class="period"> / month</span>
+        </div>
+        <p class="plan-desc">
+          Everything in Free, plus unlimited access to all PLAIStore apps and
+          premium AIOS features.
+        </p>
+        <button class="plan-btn pro" id="btn-pro">Upgrade to Pro →</button>
+        <ul class="features">
+          <li><span class="icon">✓</span>Everything in Free</li>
+          <li><span class="icon">✓</span>All premium PLAIStore apps</li>
+          <li><span class="icon">✓</span>VR Hub premium content</li>
+          <li><span class="icon">✓</span>AIOS Studio — full access</li>
+          <li><span class="icon">✓</span>Priority AI tools</li>
+          <li><span class="icon">✓</span>No ads</li>
+          <li>
+            <span class="icon">✓</span><strong>Coming soon:</strong> publish
+            apps to PLAIStore
+          </li>
+          <li><span class="icon">✓</span>Priority support</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- FAQ -->
+    <div class="faq">
+      <h2>Frequently asked questions</h2>
+      <dl>
+        <div class="faq-item">
+          <dt>Can I use AIOS for free?</dt>
+          <dd>
+            Yes. AIOS Free gives you a full account, all 486+ free PLAIStore
+            apps, games, VR basics and GeoQode — forever. No credit card
+            required.
+          </dd>
+        </div>
+        <div class="faq-item">
+          <dt>What's in AIOS Pro?</dt>
+          <dd>
+            Pro unlocks every app in PLAIStore (including premium ones), VR Hub
+            premium content, full AIOS Studio access, priority AI features, and
+            removes ads. Billed monthly at $9.99. Cancel anytime.
+          </dd>
+        </div>
+        <div class="faq-item">
+          <dt>Can I cancel anytime?</dt>
+          <dd>
+            Yes. Cancel your Pro subscription at any time from your account. You
+            keep Pro access until the end of your billing period.
+          </dd>
+        </div>
+        <div class="faq-item">
+          <dt>Is this the same account as getbrains4ai.com?</dt>
+          <dd>
+            Yes — AIOS and Brains4Ai share the same account system. One login,
+            one subscription.
+          </dd>
+        </div>
+        <div class="faq-item">
+          <dt>How does payment work?</dt>
+          <dd>
+            Payments are processed securely by Stripe. AIOS never stores your
+            card details.
+          </dd>
+        </div>
+      </dl>
+    </div>
+
+    <script>
+      (function () {
+        var params = new URLSearchParams(window.location.search);
+        if (params.get("success") === "1") {
+          document.getElementById("banner-success").classList.add("success");
+          // Clean URL
+          history.replaceState({}, "", "/pricing");
+        }
+        if (params.get("cancel") === "1") {
+          document.getElementById("banner-cancel").classList.add("cancel");
+          history.replaceState({}, "", "/pricing");
+        }
+
+        var jwt = localStorage.getItem("plai_jwt");
+        var btnFree = document.getElementById("btn-free");
+        var btnPro = document.getElementById("btn-pro");
+        var navBtn = document.getElementById("nav-auth-btn");
+
+        // Decode JWT claims (display only — no signature check)
+        function decodeJwt(token) {
+          try {
+            var parts = token.split(".");
+            var payload = JSON.parse(
+              atob(parts[1].replace(/-/g, "+").replace(/_/g, "/")),
+            );
+            return payload;
+          } catch (e) {
+            return null;
+          }
+        }
+
+        // Check Pro status
+        async function checkStatus() {
+          if (!jwt) {
+            btnFree.textContent = "Create free account";
+            btnFree.onclick = function () {
+              window.location.href = "/signup";
+            };
+            btnPro.textContent = "Upgrade to Pro →";
+            btnPro.onclick = handleCheckout;
+            return;
+          }
+
+          var claims = decodeJwt(jwt);
+          if (claims) {
+            navBtn.textContent = "My Account";
+            navBtn.href = "/plaistore";
+          }
+
+          btnFree.textContent = "Current plan";
+          btnFree.classList.add("active-plan");
+          btnFree.disabled = true;
+
+          // Check subscription status
+          try {
+            var r = await fetch("/api/aios/billing/status", {
+              headers: { Authorization: "Bearer " + jwt },
+            });
+            var data = await r.json().catch(function () {
+              return {};
+            });
+            var tier =
+              (data.subscription && data.subscription.tier) ||
+              data.tier ||
+              "free";
+            if (tier === "pro" || tier === "enterprise") {
+              btnPro.textContent = "✓ Active Plan";
+              btnPro.classList.remove("pro");
+              btnPro.classList.add("active-plan");
+              btnPro.disabled = true;
+              // Show free as "downgrade"
+              btnFree.textContent = "Downgrade to Free";
+              btnFree.disabled = false;
+              btnFree.onclick = function () {
+                window.location.href =
+                  "https://api.getbrains4ai.com/api/billing/cancel";
+              };
+            } else {
+              btnPro.onclick = handleCheckout;
+            }
+          } catch (e) {
+            btnPro.onclick = handleCheckout;
+          }
+        }
+
+        async function handleCheckout() {
+          if (!jwt) {
+            window.location.href = "/login?redirect=/pricing";
+            return;
+          }
           btnPro.disabled = true;
-          // Show free as "downgrade"
-          btnFree.textContent = "Downgrade to Free";
-          btnFree.disabled = false;
-          btnFree.onclick = function () {
-            window.location.href = "https://api.getbrains4ai.com/api/billing/cancel";
-          };
-        } else {
-          btnPro.onclick = handleCheckout;
+          btnPro.innerHTML = '<span class="spinner"></span>Preparing checkout…';
+
+          try {
+            var r = await fetch("/api/aios/checkout", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: "Bearer " + jwt,
+              },
+              body: JSON.stringify({ tier: "pro" }),
+            });
+            var data = await r.json().catch(function () {
+              return {};
+            });
+            if (r.ok && data.url) {
+              window.location.href = data.url;
+            } else {
+              alert(data.error || "Checkout unavailable. Please try again.");
+              btnPro.disabled = false;
+              btnPro.innerHTML = "Upgrade to Pro →";
+            }
+          } catch (e) {
+            alert("Connection error. Please try again.");
+            btnPro.disabled = false;
+            btnPro.innerHTML = "Upgrade to Pro →";
+          }
         }
-      } catch (e) {
-        btnPro.onclick = handleCheckout;
-      }
-    }
 
-    async function handleCheckout() {
-      if (!jwt) {
-        window.location.href = "/login?redirect=/pricing";
-        return;
-      }
-      btnPro.disabled = true;
-      btnPro.innerHTML = '<span class="spinner"></span>Preparing checkout…';
-
-      try {
-        var r = await fetch("/api/aios/checkout", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": "Bearer " + jwt
-          },
-          body: JSON.stringify({ tier: "pro" })
-        });
-        var data = await r.json().catch(function () { return {}; });
-        if (r.ok && data.url) {
-          window.location.href = data.url;
-        } else {
-          alert(data.error || "Checkout unavailable. Please try again.");
-          btnPro.disabled = false;
-          btnPro.innerHTML = "Upgrade to Pro →";
-        }
-      } catch (e) {
-        alert("Connection error. Please try again.");
-        btnPro.disabled = false;
-        btnPro.innerHTML = "Upgrade to Pro →";
-      }
-    }
-
-    checkStatus();
-  })();
-  </script>
-</body>
+        checkStatus();
+      })();
+    </script>
+  </body>
 </html>

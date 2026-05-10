@@ -956,19 +956,19 @@
         <div id="agent-roster"></div>
 
         <button class="btn btn-start" onclick="showScreen('playground')">
-          ⚡ START
+           START
         </button>
         <button class="btn btn-blue" onclick="showMiniGames()">
-          🎮 Mini-Games
+           Mini-Games
         </button>
         <button class="btn btn-orange" onclick="showScreen('music')">
-          🎵 Music Mode
+           Music Mode
         </button>
         <button class="btn btn-purple" onclick="showScreen('data')">
-          🌌 Data Adventure
+           Data Adventure
         </button>
         <button class="btn btn-settings" onclick="openSettings()">
-          ⚙ Settings
+           Settings
         </button>
       </div>
     </div>
@@ -1064,7 +1064,7 @@
       <div class="mg-body" id="body-chaos" style="display: none">
         <div class="chaos-info">
           <button class="btn-chaos" id="chaos-btn" onclick="startChaos()">
-            💥 SHATTER
+             SHATTER
           </button>
           <div>
             <span style="color: var(--muted); font-size: 13px"
@@ -1100,7 +1100,7 @@
           <button class="topbar-back" onclick="showScreen('home')">
             ← Home
           </button>
-          <span class="topbar-title">🎵 MUSIC MODE</span>
+          <span class="topbar-title"> MUSIC MODE</span>
         </div>
         <button
           class="topbar-back"
@@ -1118,7 +1118,7 @@
           onclick="toggleRecord()"
           title="Record"
         >
-          ⏺
+          
         </button>
         <button
           class="music-btn"
@@ -1126,13 +1126,13 @@
           onclick="toggleLoop()"
           title="Loop"
         >
-          🔁
+          
         </button>
         <button class="music-btn" onclick="changeScale()" title="Scale">
-          🎼
+          
         </button>
         <button class="music-btn" onclick="changeOctave()" title="Octave">
-          🎹
+          
         </button>
       </div>
     </div>
@@ -1146,7 +1146,7 @@
           <button class="topbar-back" onclick="showScreen('home')">
             ← Home
           </button>
-          <span class="topbar-title">🌌 DATA ADVENTURE</span>
+          <span class="topbar-title"> DATA ADVENTURE</span>
         </div>
         <button
           class="topbar-back"
@@ -1181,7 +1181,7 @@
 
     <div id="settings-panel">
       <div class="settings-box">
-        <div class="settings-title">⚙ Settings</div>
+        <div class="settings-title"> Settings</div>
         <div class="settings-row">
           <span class="settings-label">Sound</span>
           <button
@@ -1313,28 +1313,28 @@
         {
           id: "phy",
           color: "#4da6ff",
-          emoji: "🔵",
+          emoji: "",
           name: "Physicist",
           thought: ["E=mc² ∞", "Lattice stable!", "PHI detected"],
         },
         {
           id: "act",
           color: "#ff9f40",
-          emoji: "🟠",
+          emoji: "",
           name: "Actor",
           thought: ["ACTION!", "Moving...", "Running code"],
         },
         {
           id: "narr",
           color: "#b066ff",
-          emoji: "🟣",
+          emoji: "",
           name: "Narrator",
           thought: ["The story grows...", "Chapter 48", "Continuity!"],
         },
         {
           id: "enti",
           color: "#55ff88",
-          emoji: "🟢",
+          emoji: "",
           name: "Entity",
           thought: [
             "I exist!",
@@ -1345,28 +1345,28 @@
         {
           id: "holo",
           color: "#ffd840",
-          emoji: "🟡",
+          emoji: "",
           name: "Hologram",
           thought: ["AIOS pulse", "Self-referencing!", "Base lattice"],
         },
         {
           id: "emo",
           color: "#ff6060",
-          emoji: "🔴",
+          emoji: "",
           name: "Empath",
           thought: ["Resonating!", "639 Hz...", "Feeling the ring"],
         },
         {
           id: "loc",
           color: "#00e5ff",
-          emoji: "🔷",
+          emoji: "",
           name: "Locator",
           thought: ["417 Hz lock", "Spatial anchor", "Coordinates set"],
         },
         {
           id: "dial",
           color: "#ff60c8",
-          emoji: "🩷",
+          emoji: "",
           name: "Dialogist",
           thought: ["Exchange!", "Communicating...", "639 Hz"],
         },
@@ -1998,11 +1998,11 @@
         _rmMoves = 30,
         _rmLevel = 1;
       const RM_COLORS = [
-        { color: "#ff6060", emoji: "😤", cls: "emo" },
-        { color: "#4da6ff", emoji: "😊", cls: "phy" },
-        { color: "#55ff88", emoji: "😄", cls: "enti" },
-        { color: "#ffd840", emoji: "🌟", cls: "holo" },
-        { color: "#b066ff", emoji: "🤔", cls: "narr" },
+        { color: "#ff6060", emoji: "", cls: "emo" },
+        { color: "#4da6ff", emoji: "", cls: "phy" },
+        { color: "#55ff88", emoji: "", cls: "enti" },
+        { color: "#ffd840", emoji: "", cls: "holo" },
+        { color: "#b066ff", emoji: "", cls: "narr" },
       ];
 
       function initRM() {
@@ -2458,7 +2458,7 @@
           cy = _chaosCanvas.height / 2;
         _chaosShattered = true;
         _chaosStart = Date.now();
-        document.getElementById("chaos-btn").textContent = "💥 Reorganizing...";
+        document.getElementById("chaos-btn").textContent = " Reorganizing...";
         document.getElementById("chaos-btn").disabled = true;
         _chaosAgents.forEach((a) => a.shatter(cx, cy));
         if (SETTINGS.sound) {
@@ -2487,7 +2487,7 @@
             );
             setTimeout(() => {
               _chaosShattered = false;
-              document.getElementById("chaos-btn").textContent = "💥 SHATTER";
+              document.getElementById("chaos-btn").textContent = " SHATTER";
               document.getElementById("chaos-btn").disabled = false;
               const cx2 = _chaosCanvas.width / 2,
                 cy2 = _chaosCanvas.height / 2;
@@ -2572,7 +2572,7 @@
         [261.63, 311.13, 349.23, 369.99, 415.3, 466.16, 523.25, 554.37], // C Dorian
         [261.63, 293.66, 349.23, 392, 466.16, 523.25, 587.33, 622.25], // Pentatonic
       ];
-      const SCALE_NAMES = ["♦ Major", "♣ Minor", "⬡ Dorian", "✦ Pentatonic"];
+      const SCALE_NAMES = [" Major", " Minor", "⬡ Dorian", "✦ Pentatonic"];
 
       function noteForType(typeId) {
         const map = {
