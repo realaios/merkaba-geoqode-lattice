@@ -1515,22 +1515,18 @@
     <nav class="site-nav">
       <a href="/" class="site-nav-logo">⬡ AIOS</a>
       <div class="site-nav-links">
-        <a href="/games"> Games</a>
-        <a href="/aiosdream">Theatre</a>
-        <a href="/vr"> VR</a>
+        <a href="/experiences"> Experiences</a>
         <a href="/vr-hub" class="active">VR Hub</a>
+        <a href="/vr"> VR</a>
+        <a href="/games"> Games</a>
+        <a href="/aiosdream">2D Preview</a>
         <a href="/plaistore">PLAIstore</a>
         <a href="/geo-library"> Library</a>
         <a href="/geo-codec">.geo</a>
         <a href="/aios-studio">Studio</a>
-        <a href="/lab">Lab</a>
-        <a href="/news"> News</a>
-        <a href="/products"> Products</a>
-        <a href="/experiences"> Experiences</a>
       </div>
       <div class="site-nav-right">
-        <a href="/live" class="site-nav-live">● LIVE</a>
-        <a href="/start" class="site-nav-cta">Start Free →</a>
+        <a href="/login" class="site-nav-cta">Sign In</a>
       </div>
     </nav>
 
@@ -1544,20 +1540,21 @@
         delivered through your Quest Browser. Open URL. Dive in.
       </p>
       <div class="hero-ctas">
-        <a href="/vr" class="btn-primary"> Launch VR Theatre</a>
+        <a href="/vr" class="btn-primary"> Launch VR Experience</a>
         <a href="#browse" class="btn-secondary"> Browse All Categories</a>
         <a
           href="/experiences"
           class="btn-secondary"
           style="border-color: rgba(34, 197, 94, 0.3); color: #22c55e"
-          > __VR_LIVE__ Live Now</a
+        >
+          __VR_LIVE__ Live Now</a
         >
       </div>
       <!-- Quest detected CTA -->
       <div id="quest-hero-cta">
-        <div class="quest-label"> Meta Quest Browser Detected</div>
+        <div class="quest-label">Meta Quest Browser Detected</div>
         <div class="quest-action">
-          Tap <a href="/vr">Enter VR Theatre</a> to launch full immersive mode
+          Tap <a href="/vr">Enter VR Mode</a> to launch full immersive mode
           instantly · no download, no app install required.
         </div>
       </div>
@@ -1570,20 +1567,20 @@
     <!-- -- STATS ----------------------------------------------------------- -->
     <div class="stats-bar">
       <div class="stat">
-        <span class="stat-num" id="stat-xp">50</span
+        <span class="stat-num" id="stat-xp">—</span
         ><span class="stat-label">VR Experiences</span>
       </div>
       <div class="stat">
-        <span class="stat-num" id="stat-live">25</span
+        <span class="stat-num" id="stat-live">—</span
         ><span class="stat-label">Live Now</span>
       </div>
       <div class="stat">
-        <span class="stat-num">9</span
+        <span class="stat-num" id="stat-categories">—</span
         ><span class="stat-label">Categories</span>
       </div>
       <div class="stat">
         <span class="stat-num">0</span
-        ><span class="stat-label">Downloads Required</span>
+        ><span class="stat-label">App Downloads (Browser Mode)</span>
       </div>
       <div class="stat">
         <span class="stat-num">24/7</span
@@ -1594,9 +1591,9 @@
     <!-- -- UPCOMING EVENTS ------------------------------------------------ -->
     <div class="events-section" id="events">
       <div class="events-header">
-        <div class="events-title"> Upcoming Events</div>
-        <span class="live-badge" id="live-now-badge" style="display: none"
-          > LIVE NOW</span
+        <div class="events-title">Scheduled Events (Live Feed)</div>
+        <span class="live-badge" id="live-now-badge" style="display: none">
+          LIVE NOW</span
         >
       </div>
       <div class="events-scroll" id="events-scroll">
@@ -1616,9 +1613,9 @@
     <!-- -- SEARCH BAR ------------------------------------------------------ -->
     <div class="search-bar-wrap">
       <div class="search-bar">
-        <span style="color: rgba(248, 250, 252, 0.3); font-size: 0.95rem"
-          ></span
-        >
+        <span
+          style="color: rgba(248, 250, 252, 0.3); font-size: 0.95rem"
+        ></span>
         <input
           type="text"
           id="xp-search"
@@ -1638,24 +1635,22 @@
     <!-- -- CATEGORY NAV PILLS ----------------------------------------------- -->
     <div class="cat-nav" id="browse">
       <a href="#cinema" class="cat-pill active" data-cat="cinema"> Cinema</a>
-      <a href="#enterprise" class="cat-pill" data-cat="enterprise"
-        > Enterprise</a
+      <a href="#enterprise" class="cat-pill" data-cat="enterprise">
+        Enterprise</a
       >
       <a href="#lab" class="cat-pill" data-cat="lab"> Lab</a>
       <a href="#arcade" class="cat-pill" data-cat="arcade"> Arcade</a>
       <a href="#wellness" class="cat-pill" data-cat="wellness"> Wellness</a>
       <a href="#social" class="cat-pill" data-cat="social"> Social</a>
       <a href="#creator" class="cat-pill" data-cat="creator">️ Creator</a>
-      <a href="#education" class="cat-pill" data-cat="education"
-        > Education</a
-      >
+      <a href="#education" class="cat-pill" data-cat="education"> Education</a>
       <a href="#art" class="cat-pill" data-cat="art"> Art & Music</a>
     </div>
 
     <!-- -- FEATURED EXPERIENCE ---------------------------------------------- -->
     <div class="section">
       <div class="section-header">
-        <div class="section-title">★ Featured Experience</div>
+        <div class="section-title">★ Featured from Live Catalogue</div>
       </div>
       <a href="/vr?prog=matrix" class="featured-card">
         <div
@@ -1667,24 +1662,24 @@
               rgba(0, 20, 0, 0.8)
             );
           "
-        >
-          
-        </div>
+        ></div>
         <div class="featured-content">
-          <div class="featured-kicker"> Cinema · 852 Hz · Featured</div>
-          <div class="featured-title">The Matrix · Dimensional Simulation</div>
-          <div class="featured-desc">
-            Step inside the most iconic digital reality ever conceived. Code
-            rain, 3D environment geometry visualised as the matrix grid, and
-            structural ambient field. Navigate the simulation in full 6DoF with
-            hand tracking.
+          <div class="featured-kicker" id="featured-kicker">
+            Live Feed · Featured
+          </div>
+          <div class="featured-title" id="featured-title">
+            Loading featured experience…
+          </div>
+          <div class="featured-desc" id="featured-desc">
+            Pulling the latest featured experience from the live VR catalogue.
           </div>
           <div class="featured-actions">
             <a
               href="/vr?prog=matrix"
               class="feat-btn feat-btn-primary"
               onclick="event.stopPropagation()"
-              > Enter in VR</a
+            >
+              Enter in VR</a
             >
           </div>
         </div>
@@ -1696,7 +1691,7 @@
       <div class="cat-section-header">
         <div>
           <div class="cat-section-title" style="color: var(--cinema)">
-             Cinema <span class="live-pill">4 live</span>
+            Cinema <span class="live-pill">4 live</span>
           </div>
           <div class="cat-section-desc">
             Iconic narrative universes reimagined as immersive dimensional
@@ -1713,7 +1708,7 @@
       <div class="cat-section-header">
         <div>
           <div class="cat-section-title" style="color: var(--enterprise)">
-             Enterprise <span class="live-pill">4 live</span>
+            Enterprise <span class="live-pill">4 live</span>
           </div>
           <div class="cat-section-desc">
             Boardrooms, investor decks, training · production VR for business
@@ -1758,7 +1753,7 @@
             Onboarding, compliance, and safety training · spatial, interactive,
             retainable. Replace slide decks permanently.
           </div>
-          <div class="ent-price"> Coming Q3 2026 · Join Waitlist</div>
+          <div class="ent-price">Coming Q3 2026 · Join Waitlist</div>
         </a>
         <a
           class="ent-card"
@@ -1770,7 +1765,7 @@
             Immersive product demo environments. Let customers explore,
             interact, and convert · all in browser VR.
           </div>
-          <div class="ent-price"> Coming Q3 2026 · Join Waitlist</div>
+          <div class="ent-price">Coming Q3 2026 · Join Waitlist</div>
         </a>
         <a
           class="ent-card"
@@ -1782,7 +1777,7 @@
             Persistent virtual office · spatial collaboration for distributed
             teams. Daily standups, war rooms, whiteboarding in VR.
           </div>
-          <div class="ent-price"> Coming Q4 2026 · Join Waitlist</div>
+          <div class="ent-price">Coming Q4 2026 · Join Waitlist</div>
         </a>
         <a
           class="ent-card"
@@ -1794,7 +1789,7 @@
             Test software UX in VR space. Catch issues no 2D screen review
             reveals. Spatial bug reports with 3D annotation.
           </div>
-          <div class="ent-price"> Coming Q4 2026 · Contact</div>
+          <div class="ent-price">Coming Q4 2026 · Contact</div>
         </a>
       </div>
     </div>
@@ -1804,7 +1799,7 @@
       <div class="cat-section-header">
         <div>
           <div class="cat-section-title" style="color: var(--lab)">
-             Lab <span class="live-pill">6 live</span>
+            Lab <span class="live-pill">6 live</span>
           </div>
           <div class="cat-section-desc">
             Educational and scientific visualisation · reality as data
@@ -1820,7 +1815,7 @@
       <div class="cat-section-header">
         <div>
           <div class="cat-section-title" style="color: var(--arcade)">
-             Arcade <span class="live-pill">5 live</span>
+            Arcade <span class="live-pill">5 live</span>
           </div>
           <div class="cat-section-desc">
             Instant-play XR games. Open URL. Score. Zero friction.
@@ -1841,7 +1836,7 @@
       <div class="cat-section-header">
         <div>
           <div class="cat-section-title" style="color: var(--wellness)">
-             Wellness <span class="live-pill">6 live</span>
+            Wellness <span class="live-pill">6 live</span>
           </div>
           <div class="cat-section-desc">
             Immersive audio chambers, breathwork, presence · science-backed VR
@@ -1857,7 +1852,7 @@
       <div class="cat-section-header">
         <div>
           <div class="cat-section-title" style="color: var(--social)">
-             Social <span class="live-pill">4 live</span>
+            Social <span class="live-pill">4 live</span>
           </div>
           <div class="cat-section-desc">
             Shared spaces, live events, community · VR without isolation
@@ -1965,7 +1960,7 @@
         <a href="/lab" class="xp-card" style="--accent: var(--creator)">
           <div class="xp-thumb" style="background: rgba(248, 250, 252, 0.05)">
             <div class="xp-thumb-bg"></div>
-            
+
             <div class="xp-badge badge-live">Live</div>
           </div>
           <div class="xp-body">
@@ -1988,7 +1983,7 @@
         >
           <div class="xp-thumb" style="background: rgba(248, 250, 252, 0.05)">
             <div class="xp-thumb-bg"></div>
-            
+
             <div class="xp-badge badge-live">Live</div>
           </div>
           <div class="xp-body">
@@ -2034,7 +2029,7 @@
       <div class="cat-section-header">
         <div>
           <div class="cat-section-title" style="color: #f97316">
-             Education <span class="live-pill">4 live</span>
+            Education <span class="live-pill">4 live</span>
           </div>
           <div class="cat-section-desc">
             History, science, maths and language · learn by being there
@@ -2049,7 +2044,7 @@
       <div class="cat-section-header">
         <div>
           <div class="cat-section-title" style="color: #ec4899">
-             Art & Music <span class="live-pill">4 live</span>
+            Art & Music <span class="live-pill">4 live</span>
           </div>
           <div class="cat-section-desc">
             Create at resonance · spatial canvas, frequency composition, AI
@@ -2072,8 +2067,8 @@
         </div>
       </div>
       <div class="dev-banner-actions">
-        <a href="/vr-developer" class="btn-primary" style="font-size: 0.9rem"
-          > Developer Portal →</a
+        <a href="/vr-developer" class="btn-primary" style="font-size: 0.9rem">
+          Developer Portal →</a
         >
         <a href="/lab" class="btn-secondary" style="font-size: 0.85rem"
           >AIOS SDK →</a
@@ -2766,17 +2761,39 @@
           if (!d || !d.categories) return;
           let total = 0;
           let live = 0;
+          let categories = 0;
+          const allExperiences = [];
           d.categories.forEach((c) => {
+            categories += 1;
             total += (c.experiences || []).length;
             live += (c.experiences || []).filter(
               (e) => e.status === "live",
             ).length;
+            (c.experiences || []).forEach((xp) =>
+              allExperiences.push({ ...xp, _category: c.id || c.name || "VR" }),
+            );
           });
-          if (total)
-            document.getElementById("stat-xp").textContent = total + "+";
-          if (live) {
-            const el = document.getElementById("stat-live");
-            if (el) el.textContent = live;
+          document.getElementById("stat-xp").textContent = total;
+          document.getElementById("stat-live").textContent = live;
+          document.getElementById("stat-categories").textContent = categories;
+
+          const featured =
+            allExperiences.find((e) => e.status === "live") ||
+            allExperiences[0] ||
+            null;
+          if (featured) {
+            const card = document.querySelector(".featured-card");
+            if (featured.entry) card.href = featured.entry;
+            const fk = document.getElementById("featured-kicker");
+            const ft = document.getElementById("featured-title");
+            const fd = document.getElementById("featured-desc");
+            if (fk)
+              fk.textContent = `${featured._category || "VR"} · ${featured.hz || 528} Hz · ${featured.status === "live" ? "Live" : "Catalogue"}`;
+            if (ft) ft.textContent = featured.title || "Featured Experience";
+            if (fd)
+              fd.textContent =
+                featured.desc ||
+                "Live experience loaded from the current VR taxonomy feed.";
           }
         })
         .catch(() => {
@@ -2785,7 +2802,7 @@
             .then((r) => (r.ok ? r.json() : null))
             .then((d) => {
               if (d && d.total)
-                document.getElementById("stat-xp").textContent = d.total + "+";
+                document.getElementById("stat-xp").textContent = d.total;
             })
             .catch(() => {});
         });

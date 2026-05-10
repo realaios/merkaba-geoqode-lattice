@@ -768,7 +768,7 @@
   </head>
   <body>
     <!-- Canonical AIOS site-nav -->
-    <nav class="site-nav"><a href="/" class="site-nav-logo"> AIOS</a><div class="site-nav-links"><a href="/games"> Games</a><a href="/aiosdream">Theatre</a><a href="/vr"> VR</a><a href="/vr-hub">VR Hub</a><a href="/plaistore" class="active">PLAIstore</a><a href="/geo-library"> Library</a><a href="/geo-codec">.geo</a><a href="/aios-studio">Studio</a><a href="/lab">Lab</a><a href="/news"> News</a><a href="/products"> Products</a><a href="/pricing" style="color:#a5b4fc;font-weight:600"> Pro</a></div><div class="site-nav-right"><a href="/live" class="site-nav-live">&#x25CF; LIVE</a><a href="/start" class="site-nav-cta">Start Free &#x2192;</a></div></nav>
+    <nav class="site-nav"><a href="/" class="site-nav-logo"> AIOS</a><div class="site-nav-links"><a href="/experiences"> Experiences</a><a href="/vr-hub">VR Hub</a><a href="/vr"> VR</a><a href="/games"> Games</a><a href="/aiosdream">2D Preview</a><a href="/plaistore" class="active">PLAIstore</a><a href="/geo-library"> Library</a><a href="/geo-codec">.geo</a><a href="/aios-studio">Studio</a></div><div class="site-nav-right"><a href="/login" class="site-nav-cta">Sign In</a></div></nav>
     <!-- Header -->
     <header class="header">
       <div class="header-inner">
@@ -782,7 +782,7 @@
             <input
               type="text"
               id="search-input"
-              placeholder="Search apps, theatre, cinema..."
+              placeholder="Search apps, experiences, tools..."
               autocomplete="off"
             />
           </div>
@@ -805,7 +805,7 @@
     <section class="hero">
       <h1>The AIOS App <span>Marketplace</span></h1>
       <p>
-        Discover Theatre programmes, Cinema playbooks, AI agents, and tools
+        Discover VR, 2D preview programmes, AI agents, and tools
         built natively for the AIOS platform.
       </p>
       <div class="hero-stats">
@@ -814,7 +814,7 @@
           <div class="hero-stat-label">Apps</div>
         </div>
         <div class="hero-stat">
-          <div class="hero-stat-num" id="stat-categories">15</div>
+          <div class="hero-stat-num" id="stat-categories">—</div>
           <div class="hero-stat-label">Categories</div>
         </div>
 
@@ -825,7 +825,7 @@
       <!-- Category filter chips -->
       <div class="categories" id="category-chips">
         <div class="cat-chip active" data-cat="all">All</div>
-        <div class="cat-chip" data-cat="Theatre">Theatre</div>
+        <div class="cat-chip" data-cat="Theatre">2D Preview</div>
         <div class="cat-chip" data-cat="Cinema">Cinema</div>
         <div class="cat-chip" data-cat="Playbooks">Playbooks</div>
         <div class="cat-chip" data-cat="Agents">Agents</div>
@@ -1442,7 +1442,7 @@
           renderGrid("apps-grid", allApps);
         } catch {
           document.getElementById("apps-grid").innerHTML =
-            '<div class="empty"><div class="empty-icon"></div><p>Failed to load apps</p></div>';
+            '<div class="empty"><div class="empty-icon"></div><p>Apps unavailable right now.</p></div>';
         }
       }
 
@@ -1472,13 +1472,8 @@
             data.total || cats.length;
           renderCats(cats);
         } catch {
-          // Static fallback — always show category tiles
-          renderCats(
-            Object.keys(CATEGORY_ICONS).map((name) => ({
-              category: name,
-              app_count: name === "Theatre" ? 6 : 0,
-            })),
-          );
+          document.getElementById("cat-grid").innerHTML =
+            '<div class="empty"><p>Categories unavailable right now.</p></div>';
         }
       }
 

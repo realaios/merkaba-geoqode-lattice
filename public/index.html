@@ -1328,30 +1328,26 @@
     <nav class="site-nav">
       <a href="/" class="site-nav-logo">⬡ AIOS</a>
       <div class="site-nav-links">
-        <a href="/games"> Games</a>
-        <a href="/aiosdream">Theatre</a>
-        <a href="/vr"> VR</a>
+        <a href="/experiences"> Experiences</a>
         <a href="/vr-hub">VR Hub</a>
+        <a href="/vr"> VR</a>
+        <a href="/games"> Games</a>
+        <a href="/aiosdream">2D Preview</a>
         <a href="/plaistore">PLAIstore</a>
         <a href="/geo-library"> Library</a>
         <a href="/geo-codec">.geo</a>
         <a href="/aios-studio">Studio</a>
-        <a href="/lab">Lab</a>
-        <a href="/news"> News</a>
-        <a href="/products"> Products</a>
-        <a href="/experiences"> Experiences</a>
       </div>
       <div class="site-nav-right">
-        <a href="/live" class="site-nav-live">● LIVE</a>
-        <a href="/start" class="site-nav-cta">Start Free →</a>
+        <a href="/login" class="site-nav-cta">Sign In</a>
       </div>
     </nav>
 
     <!-- -- HERO -- -->
     <section class="hero">
       <div class="hero-eyebrow">
-         __GAME_COUNT__ games &nbsp;·&nbsp;  __VR_LIVE__ VR worlds
-        &nbsp;·&nbsp;  live AI cinema &nbsp;·&nbsp;
+        __GAME_COUNT__ games &nbsp;·&nbsp; __VR_LIVE__ VR worlds &nbsp;·&nbsp;
+        live AI cinema &nbsp;·&nbsp;
         <strong style="color: #00d4ff">free, right now, on your phone</strong>
       </div>
       <h1 class="hero-title">AIOS</h1>
@@ -1406,7 +1402,7 @@
               this.style.transform = '';
             "
           >
-             Play Free Games →
+            Play Free Games →
           </a>
           <a
             href="/vr-hub"
@@ -1427,7 +1423,7 @@
             onmouseover="this.style.transform = 'translateY(-2px)'"
             onmouseout="this.style.transform = ''"
           >
-             Enter VR Now
+            Enter VR Now
           </a>
           <a
             href="/aiosdream"
@@ -1448,7 +1444,7 @@
             onmouseover="this.style.transform = 'translateY(-2px)'"
             onmouseout="this.style.transform = ''"
           >
-             Watch Live
+            Watch Live
           </a>
           <a
             href="/plaistore"
@@ -1475,7 +1471,7 @@
               this.style.background = 'rgba(0,212,255,0.08)';
             "
           >
-             PLAIStore
+            PLAIStore
           </a>
         </div>
         <p style="font-size: 0.78rem; color: #6b7280; margin: 0">
@@ -1981,7 +1977,7 @@
         </div>
       </div>
       <div class="stat">
-        <div class="stat-value" id="stat-plai-count">486+</div>
+        <div class="stat-value" id="stat-plai-count">—</div>
         <div class="stat-label">
           PLAIStore apps · agents, tools, cinema &amp; games
         </div>
@@ -2165,7 +2161,8 @@
               font-size: 0.85rem;
               text-decoration: none;
             "
-            > Play Free Games →</a
+          >
+            Play Free Games →</a
           >
           <a
             href="/vr-hub"
@@ -2234,7 +2231,7 @@
                 margin-bottom: 0.6rem;
               "
             >
-               AIOSdream Theatre · Free &amp; Live
+              AIOSdream Theatre · Free &amp; Live
             </div>
             <h2
               style="
@@ -2572,7 +2569,8 @@
               this.style.opacity = '1';
               this.style.transform = '';
             "
-            > Browse PLAIStore →</a
+          >
+            Browse PLAIStore →</a
           >
         </div>
       </div>
@@ -2623,7 +2621,7 @@
               );
               const plaiEl = document.getElementById("stat-plai-count");
               if (plaiEl && totalApps > 0)
-                plaiEl.textContent = Math.max(totalApps, 200) + "+";
+                plaiEl.textContent = totalApps.toLocaleString();
             }
             const grid = document.getElementById("plai-cat-grid");
             if (grid && d.categories) {
@@ -2884,7 +2882,8 @@
               text-transform: uppercase;
               margin-bottom: 1.2rem;
             "
-          >AIOS VR Platform · Live Now
+          >
+            AIOS VR Platform · Live Now
           </div>
           <h2
             style="
@@ -2938,7 +2937,8 @@
               font-weight: 700;
               text-decoration: none;
             "
-            > Cinema</a
+          >
+            Cinema</a
           >
           <a
             href="/vr-hub#enterprise"
@@ -2955,7 +2955,8 @@
               font-weight: 700;
               text-decoration: none;
             "
-            > Enterprise</a
+          >
+            Enterprise</a
           >
           <a
             href="/vr-hub#lab"
@@ -2972,7 +2973,8 @@
               font-weight: 700;
               text-decoration: none;
             "
-            > Lab</a
+          >
+            Lab</a
           >
           <a
             href="/vr-hub#arcade"
@@ -2989,7 +2991,8 @@
               font-weight: 700;
               text-decoration: none;
             "
-            > Arcade</a
+          >
+            Arcade</a
           >
           <a
             href="/vr-hub#wellness"
@@ -3006,7 +3009,8 @@
               font-weight: 700;
               text-decoration: none;
             "
-            > Wellness</a
+          >
+            Wellness</a
           >
           <a
             href="/vr-hub#social"
@@ -3023,7 +3027,8 @@
               font-weight: 700;
               text-decoration: none;
             "
-            > Social</a
+          >
+            Social</a
           >
           <a
             href="/vr-hub#creator"
@@ -3057,7 +3062,8 @@
               font-weight: 700;
               text-decoration: none;
             "
-            > Education</a
+          >
+            Education</a
           >
           <a
             href="/vr-hub#art"
@@ -3074,7 +3080,8 @@
               font-weight: 700;
               text-decoration: none;
             "
-            > Art &amp; Music</a
+          >
+            Art &amp; Music</a
           >
         </div>
 
@@ -3360,7 +3367,7 @@
               letter-spacing: 0.01em;
             "
           >
-             Explore VR Hub
+            Explore VR Hub
           </a>
         </div>
       </div>
@@ -3448,9 +3455,7 @@
             "
           >
             <li>
-              <a href="/news" style="color: #00d4ff"
-                > AIOS News · build log</a
-              >
+              <a href="/news" style="color: #00d4ff"> AIOS News · build log</a>
             </li>
           </ul>
         </div>
