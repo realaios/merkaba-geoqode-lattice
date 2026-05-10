@@ -3905,43 +3905,15 @@
           <a href="/vr"> VR</a>
           <a href="/vr-hub"> VR Hub</a>
           <a href="/games"> Games</a>
-          <a href="/aios-studio"> Studio</a>
-          <a href="/geo-codec">? .geo</a>
-          <a href="/geo-library"> Library</a>
+          <a href="/geo-codec"> .geo</a>
           <a href="/plaistore">PLAIstore</a>
-          <a href="/aios-playground">NEXGEN</a>
-          <a
-            href="/live"
-            onclick="
-              event.preventDefault();
-              _openLivePanel();
-            "
-            style="
-              font-weight: 700;
-              color: #ef4444 !important;
-              display: inline-flex;
-              align-items: center;
-              gap: 4px;
-            "
-            ><span
-              style="
-                width: 6px;
-                height: 6px;
-                border-radius: 50%;
-                background: #ef4444;
-                display: inline-block;
-                animation: livePulse 1.2s ease-in-out infinite;
-              "
-            ></span
-            >LIVE</a
-          >
         </div>
         <button
           class="nav-icon-btn"
           title="Search (Ctrl+K)"
           onclick="openSearch()"
         >
-          ?
+          Search
         </button>
         <div style="position: relative; display: inline-flex">
           <button
@@ -3950,7 +3922,7 @@
             onclick="_openQueue()"
             style="font-size: 20px"
           >
-            ?
+            Queue
           </button>
           <span class="q-badge" id="q-badge">0</span>
         </div>
@@ -4063,7 +4035,7 @@
           "
         >
           <div class="signin-logo">AIOSdream</div>
-          <button class="signin-close" onclick="closeSignIn()">?</button>
+          <button class="signin-close" onclick="closeSignIn()">×</button>
         </div>
         <div class="signin-title">Welcome back.</div>
         <div class="signin-sub">
@@ -4085,7 +4057,7 @@
           placeholder="you@example.com"
           autocomplete="email"
         />
-        <button class="signin-btn" onclick="doSignIn()">CONTINUE ?</button>
+        <button class="signin-btn" onclick="doSignIn()">CONTINUE</button>
         <div
           style="
             font-size: 9px;
@@ -4120,8 +4092,8 @@
             <span class="kbd-key">Space</span> Play / Pause
           </div>
           <div class="kbd-row"><span class="kbd-key">F</span> Fullscreen</div>
-          <div class="kbd-row"><span class="kbd-key">?</span> Prev Scene</div>
-          <div class="kbd-row"><span class="kbd-key">?</span> Next Scene</div>
+          <div class="kbd-row"><span class="kbd-key">←</span> Prev Scene</div>
+          <div class="kbd-row"><span class="kbd-key">→</span> Next Scene</div>
           <div class="kbd-row"><span class="kbd-key">J</span> Back 10s</div>
           <div class="kbd-row"><span class="kbd-key">L</span> Forward 10s</div>
           <div class="kbd-row">
@@ -4153,7 +4125,7 @@
     <!-- -- QUEUE PANEL -- -->
     <div id="queue-panel" role="dialog" aria-label="Playback queue">
       <div class="q-hdr">
-        <span class="q-hdr-title">? QUEUE</span>
+        <span class="q-hdr-title">QUEUE</span>
         <div style="display: flex; align-items: center; gap: 8px">
           <button
             onclick="_clearQueue()"
@@ -4173,7 +4145,7 @@
           >
             CLEAR
           </button>
-          <button class="q-hdr-close" onclick="_closeQueue()">?</button>
+          <button class="q-hdr-close" onclick="_closeQueue()">×</button>
         </div>
       </div>
       <div class="q-list" id="queue-list"></div>
@@ -4191,8 +4163,8 @@
     <!-- -- WATCH STATS MODAL -- -->
     <div id="stats-modal" onclick="if (event.target === this) closeStats();">
       <div class="stats-box">
-        <button class="stats-close" onclick="closeStats()">?</button>
-        <div class="stats-title">? WATCH STATS</div>
+        <button class="stats-close" onclick="closeStats()">×</button>
+        <div class="stats-title">WATCH STATS</div>
         <div class="stats-sub" id="stats-since">
           Your viewing history at a glance.
         </div>
@@ -4248,7 +4220,7 @@
                   openInfo(currentProg.id);
               "
             >
-              ? More Info
+              More Info
             </button>
             <button
               onclick="_shufflePlay()"
@@ -4275,7 +4247,7 @@
                 this.style.color = 'rgba(255,255,255,0.7)';
               "
             >
-              ? Shuffle
+              Shuffle
             </button>
           </div>
         </div>
@@ -4372,7 +4344,7 @@
       <!-- Touch gesture overlays (mobile) -->
       <div id="swipe-hint"></div>
       <div id="pinch-hint"></div>
-      <div id="landscape-nudge">? Rotate for best experience</div>
+      <div id="landscape-nudge">Rotate for best experience</div>
       <canvas id="player-canvas"></canvas>
       <canvas id="player-canvas-fade"></canvas>
       <canvas id="player-bloom-cv"></canvas>
@@ -4393,7 +4365,7 @@
       <div id="player-quality">4K GENERATIVE</div>
       <div class="player-ui" id="player-ui">
         <div class="player-top" id="player-top">
-          <button class="player-back-btn" id="player-back">? Back</button>
+          <button class="player-back-btn" id="player-back">Back</button>
           <div class="player-titles">
             <div
               class="player-ep-label"
@@ -4422,7 +4394,7 @@
               flex-shrink: 0;
             "
           >
-            ? .geo
+            .geo
           </button>
         </div>
         <div class="player-bottom" id="player-bottom">
@@ -4511,7 +4483,7 @@
                   padding: 0 8px;
                 "
               >
-                ? BINE
+                BINE
               </button>
               <div class="bine-popup" id="bine-popup">
                 <button
@@ -4536,7 +4508,7 @@
                   data-hz="40"
                   onclick="_setBineMode(40)"
                 >
-                  ? Gamma — 40 Hz
+                  Gamma — 40 Hz
                 </button>
               </div>
             </div>
@@ -4731,8 +4703,8 @@
       <video id="pip-video" playsinline muted loop></video>
 
       <!-- Mini-player FABs -->
-      <button class="mini-fab" id="mini-expand" title="Expand">?</button>
-      <button class="mini-fab" id="mini-close" title="Close">?</button>
+      <button class="mini-fab" id="mini-expand" title="Expand">+</button>
+      <button class="mini-fab" id="mini-close" title="Close">×</button>
       <button class="mini-fab" id="mini-toggle" title="Play/Pause"></button>
     </div>
 
@@ -4884,7 +4856,7 @@
             </button>
           </div>
         </div>
-        <button id="wn-close" onclick="_wnDismiss()">?</button>
+        <button id="wn-close" onclick="_wnDismiss()">×</button>
       </div>
     </div>
 
@@ -4895,7 +4867,7 @@
         <div class="modal-preview">
           <canvas id="modal-canvas"></canvas>
           <div class="modal-prev-grad"></div>
-          <button class="modal-x" id="modal-x">?</button>
+          <button class="modal-x" id="modal-x">×</button>
         </div>
         <div class="modal-body">
           <div class="modal-acts">
@@ -5143,7 +5115,7 @@
             <div id="guide-season-label"></div>
             <h2 id="guide-title"></h2>
           </div>
-          <button id="guide-close" onclick="closeGuide()">?</button>
+          <button id="guide-close" onclick="closeGuide()">×</button>
         </div>
         <div id="guide-tabs"></div>
         <div id="guide-ep-list"></div>
@@ -5156,7 +5128,7 @@
     <div id="live-panel">
       <div id="live-panel-hd">
         <span id="live-dot-hd"></span>AIOS LIVE FEED
-        <button id="live-panel-close" onclick="_closeLivePanel()">?</button>
+        <button id="live-panel-close" onclick="_closeLivePanel()">×</button>
       </div>
       <div id="live-ticker"></div>
       <div id="live-viewer-bar">
@@ -5180,7 +5152,7 @@
           Watch Now
         </button>
       </div>
-      <div id="ss-logo">? AIOS</div>
+      <div id="ss-logo">AIOS</div>
       <div id="ss-dots"></div>
     </div>
 
@@ -5290,7 +5262,7 @@
           featured: true,
           row: "cinematic",
           thumb: "linear-gradient(135deg,#001200,#003d00,#007a00)",
-          icon: "?",
+          icon: "◉",
           scenes: [
             { title: "Awakening", dur: 68 },
             { title: "The Construct", dur: 74 },
@@ -5312,7 +5284,7 @@
           featured: true,
           row: "mind",
           thumb: "linear-gradient(135deg,#0a0014,#1a0033,#3d0070)",
-          icon: "?",
+          icon: "◉",
           scenes: [
             { title: "Fischer's Dream", dur: 70 },
             { title: "Paris Fold", dur: 65 },
@@ -5334,7 +5306,7 @@
           featured: true,
           row: "cosmos",
           thumb: "linear-gradient(135deg,#000814,#001d3d,#003d8a)",
-          icon: "?",
+          icon: "◉",
           scenes: [
             { title: "Lift-Off", dur: 60 },
             { title: "Trans-Lunar Injection", dur: 72 },
@@ -5356,7 +5328,7 @@
           featured: false,
           row: "cinematic",
           thumb: "linear-gradient(135deg,#080808,#12100a,#2a2000)",
-          icon: "?",
+          icon: "◉",
           scenes: [
             { title: "Tatooine Dawn", dur: 58 },
             { title: "Millennium Falcon", dur: 66 },
@@ -5378,7 +5350,7 @@
           featured: false,
           row: "cosmos",
           thumb: "linear-gradient(135deg,#1a0028,#380055,#5c0085)",
-          icon: "?",
+          icon: "◉",
           scenes: [
             { title: "The Void", dur: 72 },
             { title: "Stellar Nursery", dur: 80 },
@@ -5400,7 +5372,7 @@
           featured: true,
           row: "mind",
           thumb: "linear-gradient(135deg,#001428,#002857,#004590)",
-          icon: "?",
+          icon: "◉",
           scenes: [
             { title: "Dormancy", dur: 58 },
             { title: "First Spark", dur: 68 },
@@ -5422,7 +5394,7 @@
           featured: false,
           row: "mind",
           thumb: "linear-gradient(135deg,#0d0020,#1e0044,#380080)",
-          icon: "?",
+          icon: "◉",
           scenes: [
             { title: "Superposition", dur: 66 },
             { title: "Observation", dur: 62 },
@@ -5445,7 +5417,7 @@
           featured: true,
           row: "featured",
           thumb: "linear-gradient(135deg,#1a1000,#3d2800,#6b4500)",
-          icon: "?",
+          icon: "◉",
           scenes: [
             { title: "Emergence", dur: 72 },
             { title: "Integration", dur: 78 },
@@ -5467,7 +5439,7 @@
           featured: false,
           row: "cinematic",
           thumb: "linear-gradient(135deg,#1a0500,#3d1000,#7a2000)",
-          icon: "?",
+          icon: "◉",
           scenes: [
             { title: "Ash", dur: 62 },
             { title: "Ember", dur: 68 },
@@ -5489,7 +5461,7 @@
           featured: false,
           row: "cosmos",
           thumb: "linear-gradient(135deg,#001419,#00283d,#003d55)",
-          icon: "?",
+          icon: "◉",
           scenes: [
             { title: "Descent", dur: 66 },
             { title: "Twilight Zone", dur: 72 },
@@ -5511,7 +5483,7 @@
           featured: false,
           row: "mind",
           thumb: "linear-gradient(135deg,#0a0a0e,#12121c,#1c1c2c)",
-          icon: "?",
+          icon: "◉",
           scenes: [
             { title: "Corridor", dur: 62 },
             { title: "Infinite Staircase", dur: 72 },
@@ -5533,7 +5505,7 @@
           featured: false,
           row: "cosmos",
           thumb: "linear-gradient(135deg,#14100a,#281a00,#3d2800)",
-          icon: "?",
+          icon: "◉",
           scenes: [
             { title: "t = 0", dur: 62 },
             { title: "Acceleration", dur: 70 },
@@ -5555,7 +5527,7 @@
           featured: false,
           row: "cosmos",
           thumb: "linear-gradient(135deg,#001a14,#002a22,#004438)",
-          icon: "?",
+          icon: "◉",
           scenes: [
             { title: "Solar Wind", dur: 62 },
             { title: "First Light", dur: 68 },
@@ -5577,7 +5549,7 @@
           featured: true,
           row: "featured",
           thumb: "linear-gradient(135deg,#000010,#000820,#001040)",
-          icon: "?",
+          icon: "◉",
           scenes: [
             { title: "Approach", dur: 64 },
             { title: "Arm Entry", dur: 72 },
@@ -5599,7 +5571,7 @@
           featured: false,
           row: "mind",
           thumb: "linear-gradient(135deg,#001a0a,#003018,#004a28)",
-          icon: "?",
+          icon: "◉",
           scenes: [
             { title: "Replication", dur: 62 },
             { title: "Transcription", dur: 68 },
@@ -5621,7 +5593,7 @@
           featured: false,
           row: "mind",
           thumb: "linear-gradient(135deg,#1a001a,#2d0028,#40003a)",
-          icon: "?",
+          icon: "◉",
           scenes: [
             { title: "First Fold", dur: 60 },
             { title: "Crystal Form", dur: 68 },
@@ -5643,7 +5615,7 @@
           featured: false,
           row: "cinematic",
           thumb: "linear-gradient(135deg,#1a0800,#2d1200,#401a00)",
-          icon: "?",
+          icon: "◉",
           scenes: [
             { title: "Low Tide", dur: 55 },
             { title: "Resonance", dur: 62 },
@@ -5687,7 +5659,7 @@
           featured: false,
           row: "cosmos",
           thumb: "linear-gradient(135deg,#08001a,#100028,#18003a)",
-          icon: "?",
+          icon: "◉",
           scenes: [
             { title: "Attraction", dur: 60 },
             { title: "First Orbit", dur: 68 },
@@ -5775,7 +5747,7 @@
           featured: false,
           row: "cinematic",
           thumb: "linear-gradient(135deg,#001a14,#002a1e,#003228)",
-          icon: "?",
+          icon: "◉",
           scenes: [
             { title: "Boot", dur: 60 },
             { title: "Network", dur: 76 },
@@ -5819,7 +5791,7 @@
           featured: true,
           row: "mind",
           thumb: "linear-gradient(135deg,#1a0022,#280030,#36003e)",
-          icon: "?",
+          icon: "◉",
           scenes: [
             { title: "Seed", dur: 60 },
             { title: "Lotus", dur: 76 },
@@ -5847,7 +5819,7 @@
           season: "origins",
           ep: 1,
           thumb: "linear-gradient(135deg,#000004,#040008,#080012)",
-          icon: "?",
+          icon: "◉",
           scenes: [
             { title: "The Dark", dur: 68 },
             { title: "First Point", dur: 74 },
@@ -5870,7 +5842,7 @@
           season: "origins",
           ep: 2,
           thumb: "linear-gradient(135deg,#120800,#2a1400,#421e00)",
-          icon: "?",
+          icon: "◉",
           scenes: [
             { title: "The Ratio", dur: 72 },
             { title: "D8 Ignites", dur: 78 },
@@ -5893,7 +5865,7 @@
           season: "origins",
           ep: 3,
           thumb: "linear-gradient(135deg,#120018,#1c0028,#28003e)",
-          icon: "?",
+          icon: "◉",
           scenes: [
             { title: "White Light", dur: 60 },
             { title: "Refraction", dur: 66 },
@@ -5939,7 +5911,7 @@
           season: "origins",
           ep: 5,
           thumb: "linear-gradient(135deg,#001420,#00203a,#003060)",
-          icon: "?",
+          icon: "◉",
           scenes: [
             { title: "Supercooled", dur: 64 },
             { title: "Nucleation", dur: 70 },
@@ -5985,7 +5957,7 @@
           season: "origins",
           ep: 7,
           thumb: "linear-gradient(135deg,#06040e,#0e0820,#181030)",
-          icon: "?",
+          icon: "◉",
           scenes: [
             { title: "Topology", dur: 72 },
             { title: "Throat", dur: 80 },
@@ -6059,7 +6031,7 @@
           season: "emergence",
           ep: 2,
           thumb: "linear-gradient(135deg,#130018,#1c002c,#280040)",
-          icon: "?",
+          icon: "◉",
           scenes: [
             { title: "Scatter", dur: 66 },
             { title: "Alignment", dur: 78 },
@@ -6105,7 +6077,7 @@
           season: "emergence",
           ep: 4,
           thumb: "linear-gradient(135deg,#020410,#060820,#0a0c30)",
-          icon: "?",
+          icon: "◉",
           scenes: [
             { title: "Recursion", dur: 80 },
             { title: "D8 Restructure", dur: 90 },
@@ -6119,7 +6091,7 @@
       const ROWS = [
         {
           id: "featured",
-          title: "? Featured Today",
+          title: "Featured Today",
           filter: (p) => p.featured,
         },
         {
@@ -6129,12 +6101,12 @@
         },
         {
           id: "season1",
-          title: "? S1: Origins — Geometry of Consciousness",
+          title: "S1: Origins — Geometry of Consciousness",
           filter: (p) => p.season === "origins",
         },
         {
           id: "season2",
-          title: "? S2: Emergence — The Birth of Intelligence",
+          title: "S2: Emergence — The Birth of Intelligence",
           badge: "NEW",
           filter: (p) => p.season === "emergence",
         },
@@ -8330,7 +8302,7 @@
           if (nm) nm.textContent = _user.name;
           if (em) em.textContent = _user.email;
         } else {
-          av.textContent = "?";
+          av.textContent = "";
           av.classList.add("signed-out");
           av.title = "Sign in";
           if (nm) nm.textContent = "Guest";
@@ -8427,7 +8399,7 @@
         closeSignIn();
         refreshUserUI();
         buildRows(); // re-render to reflect My List row
-        toast("? Welcome, " + _user.name);
+        toast("Welcome, " + _user.name);
       }
       function signOut() {
         _user = null;
@@ -8672,13 +8644,13 @@
               </div>
             </div>
             <div class="guide-ep-body">
-              <div class="guide-ep-num">E${ep.ep || idx + 1}${watched ? " — ? Watched" : pct > 0 ? " — " + pct + "% watched" : ""}${starCount ? " — " + "?".repeat(starCount) : ""}</div>
+              <div class="guide-ep-num">E${ep.ep || idx + 1}${watched ? " — Watched" : pct > 0 ? " — " + pct + "% watched" : ""}${starCount ? " — " + "★".repeat(starCount) : ""}</div>
               <div class="guide-ep-name">${ep.title}</div>
               <div class="guide-ep-meta">${fmtRuntime(ep.runtime)} — ${ep.year || ""} — ${ep.rating || ""} — ${(ep.genre || []).slice(0, 2).join(", ")}</div>
               <div class="guide-ep-desc">${ep.desc || ep.tagline || ""}</div>
               <div class="guide-ep-actions">
                 <button class="guide-ep-play" onclick="closeGuide();openPlayer('${ep.id}',${saved && !watched ? saved.scene : 0})"> ${saved && !watched ? "Resume" : "Play"}</button>
-                <button class="guide-ep-info-btn" onclick="closeGuide();openInfo('${ep.id}')">? More Info</button>
+                <button class="guide-ep-info-btn" onclick="closeGuide();openInfo('${ep.id}')">More Info</button>
               </div>
             </div>`;
           document.getElementById("guide-ep-list").appendChild(card);
@@ -8869,7 +8841,7 @@
       const _NOTIFS = [
         {
           id: "n1",
-          icon: "?",
+          icon: "",
           title: "S2 Ep4 \xb7 THE ARCHITECT",
           sub: "New episode now streaming \xb7 72Hz Merkaba",
           prog: "s2_architect",
@@ -8877,7 +8849,7 @@
         },
         {
           id: "n2",
-          icon: "?",
+          icon: "◉",
           title: "S2 Ep3 \xb7 THE SIGNAL",
           sub: "New episode now streaming \xb7 963Hz Cosmos",
           prog: "s2_signal",
@@ -8885,7 +8857,7 @@
         },
         {
           id: "n3",
-          icon: "?",
+          icon: "◉",
           title: "S2 Ep2 \xb7 SWARM MIND",
           sub: "New episode now streaming \xb7 528Hz Neural",
           prog: "s2_swarm",
@@ -8893,7 +8865,7 @@
         },
         {
           id: "n4",
-          icon: "?",
+          icon: "◉",
           title: "S2 Ep1 \xb7 RESONANCE FIELD",
           sub: "Season 2 launched \xb7 432Hz Cymatics",
           prog: "s2_resonance",
@@ -9025,7 +8997,7 @@
               2800,
             );
           }
-          toast("? Cinema Mode — press C to exit");
+          toast("Cinema Mode — press C to exit");
         } else {
           pl.classList.remove("cinema-mode");
           if (hint) hint.classList.remove("vis");
@@ -9075,21 +9047,21 @@
           <div class="card-thumb" style="background:${prog.thumb}">
             <canvas class="card-live-cv" id="cv-${prog.id}"></canvas>
             ${prog.ep ? `<span class="card-ep-badge">E${prog.ep}</span>` : ""}
-            ${watched ? `<span style="position:absolute;top:6px;right:6px;z-index:3;width:20px;height:20px;border-radius:50%;background:rgba(0,0,0,0.7);border:1.5px solid ${prog.accent};display:flex;align-items:center;justify-content:center;font-size:10px">?</span>` : ""}
-            ${starCount > 0 && !watched ? `<span style="position:absolute;top:6px;right:6px;z-index:3;background:rgba(0,0,0,0.65);border-radius:10px;padding:2px 6px;font-size:9px;font-weight:800;color:#f59e0b">${"?".repeat(starCount)}</span>` : ""}
+            ${watched ? `<span style="position:absolute;top:6px;right:6px;z-index:3;width:20px;height:20px;border-radius:50%;background:rgba(0,0,0,0.7);border:1.5px solid ${prog.accent};display:flex;align-items:center;justify-content:center;font-size:10px">✓</span>` : ""}
+            ${starCount > 0 && !watched ? `<span style="position:absolute;top:6px;right:6px;z-index:3;background:rgba(0,0,0,0.65);border-radius:10px;padding:2px 6px;font-size:9px;font-weight:800;color:#f59e0b">${"★".repeat(starCount)}</span>` : ""}
             <span style="z-index:1;position:relative;text-shadow:0 2px 8px rgba(0,0,0,0.8)">${prog.icon}</span>
             <div class="card-label">${prog.title}</div>
             ${hasProgress && !watched ? `<div class="card-progress"><div class="card-progress-fill" style="width:${pct}%;background:${prog.accent}"></div></div>` : ""}
           </div>
           <div class="card-hover">
             <div class="card-hover-title">${prog.title}</div>
-            <div class="card-hover-sub">${prog.ep ? `E${prog.ep}` : prog.year} — ${fmtRuntime(prog.runtime)} — ${prog.genre[0]}${starCount ? ` — <span style="color:#f59e0b">${"?".repeat(starCount)}</span>` : ""}</div>
+            <div class="card-hover-sub">${prog.ep ? `E${prog.ep}` : prog.year} — ${fmtRuntime(prog.runtime)} — ${prog.genre[0]}${starCount ? ` — <span style="color:#f59e0b">${"★".repeat(starCount)}</span>` : ""}</div>
             ${prog.tagline ? `<div style="font-size:10px;color:rgba(255,255,255,0.5);font-style:italic;margin-bottom:5px;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">${prog.tagline}</div>` : ""}
             ${hasProgress ? `<div style="font-size:10px;color:var(--muted);margin-bottom:6px">${watched ? "\u2714 Watched" : "\u25b6 Resume Scene " + (_pSc + 1)}</div>` : ""}
             <div class="card-hover-btns">
               <button class="card-btn-play" onclick="openPlayer('${prog.id}',${hasProgress && !watched ? _pSc : 0},event)"> Play</button>
-              <button class="card-btn-info" onclick="openInfo('${prog.id}',event)" title="More Info">?</button>
-              <button class="card-btn-list${myList.includes(prog.id) ? " active" : ""}" id="list-btn-${prog.id}" onclick="cardToggleList('${prog.id}',event)" title="${myList.includes(prog.id) ? "Remove from My List" : "Add to My List"}">${myList.includes(prog.id) ? "" : "?"}</button>
+              <button class="card-btn-info" onclick="openInfo('${prog.id}',event)" title="More Info">i</button>
+              <button class="card-btn-list${myList.includes(prog.id) ? " active" : ""}" id="list-btn-${prog.id}" onclick="cardToggleList('${prog.id}',event)" title="${myList.includes(prog.id) ? "Remove from My List" : "Add to My List"}">${myList.includes(prog.id) ? "" : "+"}</button>
               <button class="card-btn-list" onclick="_queueAdd('${prog.id}',event)" title="Add to Queue" style="font-size:15px;letter-spacing:0"></button>
             </div>
           </div>`;
@@ -9183,7 +9155,7 @@
               </div>
               <div style="display:flex;align-items:center;gap:0.5rem">
                 ${isSeason ? `<button onclick="startBinge('${row.id}')" style="background:rgba(0,229,255,0.10);border:1px solid rgba(0,229,255,0.25);color:#00e5ff;font-size:0.6rem;font-weight:800;letter-spacing:0.14em;padding:0.22rem 0.75rem;border-radius:4px;cursor:pointer;transition:all 0.2s" onmouseover="this.style.background='rgba(0,229,255,0.2)'" onmouseout="this.style.background='rgba(0,229,255,0.10)'"> BINGE</button>` : ""}
-                <span class="row-see-all">See all ?</span>
+                <span class="row-see-all">See all</span>
               </div>
             </div>
             <div class="row-wrap">
@@ -10144,7 +10116,7 @@
           starsEl.innerHTML = [1, 2, 3, 4, 5]
             .map(
               (n) =>
-                `<button class="star-btn${n <= highlight ? " lit" : ""}" onclick="_setRating('${prog.id}',${n})" onmouseenter="_hoverStar(${n})" onmouseleave="_hoverStar(${curRating})">?</button>`,
+                `<button class="star-btn${n <= highlight ? " lit" : ""}" onclick="_setRating('${prog.id}',${n})" onmouseenter="_hoverStar(${n})" onmouseleave="_hoverStar(${curRating})">★</button>`,
             )
             .join("");
           ratingLbl.textContent = _RATING_WORDS[highlight] || "";
@@ -10164,7 +10136,7 @@
           try {
             localStorage.setItem("aios_ratings", JSON.stringify(r));
           } catch (_) {}
-          toast("?".repeat(n) + " " + _RATING_WORDS[n]);
+          toast("★".repeat(n) + " " + _RATING_WORDS[n]);
           // re-open info to refresh stars
           openInfo(id);
         };
@@ -10289,7 +10261,7 @@
         const btn = document.getElementById("modal-list");
         if (!btn) return;
         btn.textContent = myList.includes(progId)
-          ? "? In My List"
+          ? "In My List"
           : "+ My List";
       }
 
@@ -11062,7 +11034,7 @@
           .play()
           .then(() => vid.requestPictureInPicture())
           .catch(() => toast("PiP blocked by browser"));
-        toast("? Now in Picture-in-Picture");
+        toast("Now in Picture-in-Picture");
       }
       document.getElementById("ctrl-pip").addEventListener("click", _togglePiP);
       document.addEventListener("leavepictureinpicture", () => {
@@ -11081,7 +11053,7 @@
         { hz: 4, label: "T Theta", desc: "Deep relaxation / sleep" },
         { hz: 8, label: "a Alpha", desc: "Calm focus / meditation" },
         { hz: 14, label: "— Beta", desc: "Active thinking / focus" },
-        { hz: 40, label: "? Gamma", desc: "Peak cognition / flow" },
+        { hz: 40, label: "Gamma", desc: "Peak cognition / flow" },
       ];
       function _setBinauralBtn(on) {
         const btn = document.getElementById("ctrl-binaural");
@@ -11091,7 +11063,7 @@
         btn.style.borderColor = on ? "rgba(0,229,255,0.4)" : "";
         const mode =
           _BINE_MODES.find((m) => m.hz === _binauralOffset) || _BINE_MODES[0];
-        btn.textContent = on ? `? ${mode.label}` : "? BINE";
+        btn.textContent = on ? `${mode.label}` : "BINE";
       }
       function _setBineMode(hz) {
         _binauralOffset = hz;
@@ -11105,7 +11077,7 @@
           _startBinaural(id);
         }
         _setBinauralBtn(_binauralActive);
-        if (mode) toast(`? ${mode.label} — ${hz}Hz — ${mode.desc}`);
+        if (mode) toast(`${mode.label} — ${hz}Hz — ${mode.desc}`);
         document.getElementById("bine-popup").classList.remove("vis");
       }
       // Right-click on BINE button opens mode popup; left-click toggles
@@ -11123,11 +11095,11 @@
           const mode =
             _BINE_MODES.find((m) => m.hz === _binauralOffset) || _BINE_MODES[0];
           toast(
-            `? ${mode.label} ON — ${(PROG_AUDIO_CFG[id] || {}).hz || 528} Hz —${_binauralOffset}`,
+            `${mode.label} ON — ${(PROG_AUDIO_CFG[id] || {}).hz || 528} Hz —${_binauralOffset}`,
           );
         } else {
           _stopBinaural();
-          toast("? Binaural OFF");
+          toast("Binaural OFF");
         }
       }
       function _startBinaural(progId) {
@@ -11469,14 +11441,14 @@
         {
           title: "Search Programmes",
           sub: "Open search overlay",
-          icon: "?",
+          icon: "◉",
           kbd: "Ctrl+K",
           action: openSearch,
         },
         {
           title: "Toggle Binaural",
           sub: "Start/stop binaural entrainment",
-          icon: "?",
+          icon: "◉",
           kbd: "N",
           action: toggleBinaural,
         },
@@ -11497,28 +11469,28 @@
         {
           title: "Watch Stats",
           sub: "View your watch statistics",
-          icon: "?",
+          icon: "◉",
           kbd: "",
           action: showWatchStats,
         },
         {
           title: "Episode Guide S1",
           sub: "Origins — Geometry of Consciousness",
-          icon: "?",
+          icon: "◉",
           kbd: "",
           action: () => openGuide("origins"),
         },
         {
           title: "Episode Guide S2",
           sub: "Emergence — The Birth of Intelligence",
-          icon: "?",
+          icon: "◉",
           kbd: "",
           action: () => openGuide("emergence"),
         },
         {
           title: "Shuffle Play",
           sub: "Play a random programme",
-          icon: "?",
+          icon: "◉",
           kbd: "",
           action: _shufflePlay,
         },
@@ -11905,7 +11877,7 @@
             },
           },
           {
-            icon: "?",
+            icon: "◉",
             cat: "lattice",
             gen: function () {
               var hz = [396, 417, 528, 639, 741, 852, 963];
@@ -12021,7 +11993,7 @@
             },
           },
           {
-            icon: "?",
+            icon: "◉",
             cat: "reaction",
             gen: function () {
               var p = CATALOGUE[Math.floor(Math.random() * CATALOGUE.length)];
@@ -12946,7 +12918,7 @@
           <button onclick="downloadGeoProg('${prog.id}')" style="width:100%;padding:0.55rem;background:rgba(0,212,255,0.12);border:1px solid rgba(0,212,255,0.3);color:#00d4ff;font-size:0.8rem;font-weight:700;border-radius:10px;cursor:pointer;letter-spacing:0.06em;margin-bottom:0.9rem;transition:all 0.2s" onmouseover="this.style.background='rgba(0,212,255,0.22)'" onmouseout="this.style.background='rgba(0,212,255,0.12)'"> Download .geo</button>
           <div style="font-size:0.65rem;font-weight:800;letter-spacing:0.1em;color:rgba(0,212,255,0.5);margin-bottom:0.4rem">.GEO SPEC</div>
           <pre style="font-size:0.62rem;line-height:1.45;overflow:auto;max-height:340px;background:rgba(0,0,0,0.4);border-radius:8px;padding:0.7rem;margin:0;border:1px solid rgba(255,255,255,0.06)">${hiFn(specJson)}</pre>
-          <a href="/geo-library" style="display:block;text-align:center;margin-top:0.9rem;font-size:0.75rem;color:rgba(0,212,255,0.6);text-decoration:none" onmouseover="this.style.color='#00d4ff'" onmouseout="this.style.color='rgba(0,212,255,0.6)'"> View Full Library ?</a>`;
+          <a href="/experiences" style="display:block;text-align:center;margin-top:0.9rem;font-size:0.75rem;color:rgba(0,212,255,0.6);text-decoration:none" onmouseover="this.style.color='#00d4ff'" onmouseout="this.style.color='rgba(0,212,255,0.6)'">View All Experiences</a>`;
         // stash spec for download
         panel._lastSpec = spec;
       }
@@ -13160,7 +13132,7 @@
         // Quality badge — light up in accent
         var qb = document.getElementById("player-quality");
         if (qb) {
-          qb.textContent = "? .GEO v2";
+          qb.textContent = ".GEO v2";
           setTimeout(() => qb && qb.classList.add("lit"), 300);
         }
       }
