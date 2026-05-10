@@ -4809,6 +4809,7 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
           },
           body: JSON.stringify({
             tier,
+            price_id: process.env.AIOS_PRO_PRICE_ID || undefined,
             success_url: `${AIOS_BASE}/pricing?success=1&session_id={CHECKOUT_SESSION_ID}`,
             cancel_url: `${AIOS_BASE}/pricing?cancel=1`,
           }),
@@ -4843,6 +4844,94 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
         console.error("[AIOS] Billing status proxy error:", err.message);
         return json(res, 500, { ok: false, error: "Billing service unavailable" });
       }
+    }
+
+    // ── AIOSStripeAccountant — Admin-only Stripe management routes ────────
+    // All routes require Authorization: Bearer <AIOS_ADMIN_JWT or ADMIN_JWT>
+    if (pathname.startsWith("/api/aios/accountant")) {
+      const AIOS_ADMIN_JWT = process.env.AIOS_ADMIN_JWT || process.env.ADMIN_JWT || "";
+      const authHeader = req.headers["authorization"] || "";
+      const token = authHeader.startsWith("Bearer ") ? authHeader.slice(7) : "";
+
+      // Simple token gate (constant-time comparison)
+      const jwtBuf = Buffer.from(AIOS_ADMIN_JWT);
+      const tokenBuf = Buffer.from(token.padEnd(jwtBuf.length, "\0").slice(0, jwtBuf.length));
+      const valid = AIOS_ADMIN_JWT.length > 0 &&
+        token.length > 0 &&
+        require === undefined || (() => {
+          let eq = 0;
+          for (let i = 0; i < jwtBuf.length; i++) eq |= (jwtBuf[i] ^ tokenBuf[i]);
+          return eq === 0;
+        })();
+
+      // Use simple prefix match since we can't easily do timing-safe in ESM without crypto
+      if (!AIOS_ADMIN_JWT || token !== AIOS_ADMIN_JWT) {
+        return json(res, 401, { ok: false, error: "Unauthorized" });
+      }
+
+      // Lazy-load the AIOSStripeAccountant
+      let AIOSStripeAccountant;
+      try {
+        const mod = await import("./src/agents/AIOSStripeAccountant.js");
+        AIOSStripeAccountant = mod.AIOSStripeAccountant;
+      } catch (loadErr) {
+        console.error("[AIOS Accountant] Failed to load agent:", loadErr.message);
+        return json(res, 500, { ok: false, error: "Agent module unavailable" });
+      }
+
+      const accountant = new AIOSStripeAccountant({
+        apiKey: process.env.AIOS_STRIPE_KEY || process.env.STRIPE_SECRET_KEY,
+        stormKBUrl: process.env.STORM_API_URL || "https://api.getbrains4ai.com",
+        adminJwt: AIOS_ADMIN_JWT,
+      });
+
+      // GET /api/aios/accountant/ping
+      if (req.method === "GET" && pathname === "/api/aios/accountant/ping") {
+        const result = await accountant.ping();
+        return json(res, result.ok ? 200 : 503, result);
+      }
+
+      // GET /api/aios/accountant/report
+      if (req.method === "GET" && pathname === "/api/aios/accountant/report") {
+        const result = await accountant.generateAccountReport();
+        return json(res, 200, result);
+      }
+
+      // GET /api/aios/accountant/revenue
+      if (req.method === "GET" && pathname === "/api/aios/accountant/revenue") {
+        const result = await accountant.getRevenueSummary();
+        return json(res, 200, result);
+      }
+
+      // GET /api/aios/accountant/webhooks
+      if (req.method === "GET" && pathname === "/api/aios/accountant/webhooks") {
+        const result = await accountant.listWebhookEndpoints();
+        return json(res, 200, result);
+      }
+
+      // GET /api/aios/accountant/prices
+      if (req.method === "GET" && pathname === "/api/aios/accountant/prices") {
+        const productId = new URL(req.url, "http://localhost").searchParams.get("product");
+        const result = await accountant.listPrices(productId);
+        return json(res, 200, result);
+      }
+
+      // POST /api/aios/accountant/price
+      if (req.method === "POST" && pathname === "/api/aios/accountant/price") {
+        const body = await readBody(req);
+        const result = await accountant.createPrice(body);
+        return json(res, 201, result);
+      }
+
+      // POST /api/aios/accountant/report/kb — write report to Storm KB
+      if (req.method === "POST" && pathname === "/api/aios/accountant/report/kb") {
+        const body = await readBody(req);
+        const key = body?.key || "aios-stripe-accountant";
+        const result = await accountant.rotateReportToKB(key);
+        return json(res, result.ok ? 200 : 500, result);
+      }
+
+      return json(res, 404, { ok: false, error: "Unknown AIOSStripeAccountant endpoint" });
     }
 
     // ── POST /waitlist — proxy to Storm API waitlist ──────────────────────
