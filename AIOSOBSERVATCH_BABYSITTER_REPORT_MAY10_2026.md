@@ -1,3 +1,5 @@
+<!-- markdownlint-disable-file MD031 MD026 MD040 MD034 MD036 -->
+
 # AIOSOVERwatch + Babysitter COMPREHENSIVE SYSTEM REPORT
 
 **Generated**: 2026-05-10T18:00:20.591Z
@@ -59,7 +61,7 @@
 ### Core Monitoring (4)
 
 - **AIOSOVERwatch** — 24/7 living system directory (this agent)
-- **AIOSBuggerOffAgent** — Code quality scanner (9 patterns, 5min cycle)
+- **AIOSBuggerOffAgent** — Code quality scanner (15 patterns, 5min cycle)
 - **AIOSWorkerBee** — PHI=1.618 (Alpha) Railway fleet watcher (3min)
 - **AIOSWitnessHandshake** — PSI=1.414 (Omega) dual-attestation witness (3min + 90s offset)
 

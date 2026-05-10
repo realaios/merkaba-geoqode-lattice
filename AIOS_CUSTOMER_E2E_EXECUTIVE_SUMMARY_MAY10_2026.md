@@ -1,3 +1,5 @@
+<!-- markdownlint-disable-file MD031 MD026 MD040 MD034 MD036 -->
+
 # AIOS Customer E2E Verification — Executive Summary
 
 **Date**: May 10, 2026

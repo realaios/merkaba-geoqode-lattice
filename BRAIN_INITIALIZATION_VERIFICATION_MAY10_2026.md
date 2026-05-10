@@ -1,3 +1,5 @@
+<!-- markdownlint-disable-file MD031 MD026 MD040 MD034 MD036 -->
+
 # ✅ BRAIN INITIALIZATION VERIFICATION — May 10, 2026
 
 **Status**: 🟢 **FULLY WIRED & READY FOR EXECUTION**
@@ -17,7 +19,7 @@
 
 ---
 
-## 🌐 AIOSOBVERWATCH INITIALIZATION FLOW
+## 🌐 AIOSOVERwatch INITIALIZATION FLOW
 
 **Code Location**: `pwai-ai-worker/agent-core/brain.js` lines 689-699
 

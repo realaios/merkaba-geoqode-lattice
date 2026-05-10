@@ -1,3 +1,5 @@
+<!-- markdownlint-disable-file MD031 MD026 MD040 MD034 MD036 -->
+
 # AIOS SYSTEM-WIDE SWEEP — COMPLETION REPORT
 
 **Status**: ✅ COMPLETE | **Date**: May 10, 2026 | **Commit**: f30f2f2

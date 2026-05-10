@@ -1,0 +1,62 @@
+{
+  "snapshotId": "AIOS-HCS-2026-05-10",
+  "policy": "must_only_evolve_never_de_evolve",
+  "purpose": "Future comparison baseline for AIOSOVERwatch, Babysitter reports, and canonical drift checks.",
+  "generatedAt": "2026-05-10",
+  "canonical": {
+    "architecture": "8,26,48:480",
+    "architectureDisplay": "8→26→48:480",
+    "phi": 1.618,
+    "psi": 1.414,
+    "baseFrequencyHz": 72,
+    "foundationNodes": 8,
+    "bosonicNodes": 26,
+    "canonicalLatticeNodes": 48,
+    "harmonicSpectrumNodes": 480
+  },
+  "stormControlPlane": {
+    "projectId": "86780148-dc3b-4b59-963b-6a01402e489e",
+    "productionEnvironmentId": "a50f2a09-2c38-4308-acd4-ef146cd1fe2f",
+    "developEnvironmentId": "114cf2c2-866c-4f8d-971a-c4ba2f1fde79",
+    "primaryApiDomain": "api.getbrains4ai.com",
+    "customerSite": "getbrains4ai.com",
+    "adminSite": "admin.getbrains4ai.com"
+  },
+  "runtimeGuardians": {
+    "AIOSOVERwatch": {
+      "role": "system_directory_endpoint_watcher",
+      "agentCount": 21,
+      "endpointCount": 6,
+      "cycleMinutes": 5
+    },
+    "AIOSBuggerOffAgent": {
+      "role": "code_quality_and_anti_drift_scanner",
+      "patternCount": 15,
+      "detectsLegacyRailwayIds": true,
+      "detectsVrCounterDrift": true,
+      "detectsHardcodedVrStatSeeds": true
+    },
+    "AIOSWorkerBee": {
+      "role": "alpha_pole_fleet_watcher",
+      "active": true
+    },
+    "AIOSWitnessHandshake": {
+      "role": "omega_pole_probe",
+      "active": true
+    }
+  },
+  "canonicalInvariants": [
+    "VR counters must derive from taxonomy or token injection, never stale hardcoded seeds.",
+    "Legacy Railway IDs are permitted only as explicit detector signatures, not as runtime targets.",
+    "Backward-compatible shims may exist, but canonical entry points must be the default target.",
+    "Any canonical change requires a new snapshot version.",
+    "All future change must be monotonic: evolve only, never de-evolve."
+  ],
+  "comparisonChecklist": [
+    "Confirm runtime IDs match the Storm control plane table.",
+    "Confirm AIOSOVERwatch and Babysitter reports match the current guardian counts.",
+    "Confirm docs and memory point to this snapshot version.",
+    "Confirm no executable script defaults to legacy project/env identifiers.",
+    "Confirm every future change is monotonic and explicitly versioned."
+  ]
+}
