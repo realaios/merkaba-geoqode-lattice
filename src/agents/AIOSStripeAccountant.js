@@ -24,9 +24,9 @@ import { createHmac } from "crypto";
 // ── Canonical lattice constants (mirrors transform-420.js) ───────────────
 const PHI = 1.618;
 const PSI = 1.414;
-const GOLDEN_BAND = PHI + PSI;           // 3.032
-const ALPHA_WEIGHT = PHI / GOLDEN_BAND;  // ≈ 0.5337
-const OMEGA_WEIGHT = PSI / GOLDEN_BAND;  // ≈ 0.4663
+const GOLDEN_BAND = PHI + PSI; // 3.032
+const ALPHA_WEIGHT = PHI / GOLDEN_BAND; // ≈ 0.5337
+const OMEGA_WEIGHT = PSI / GOLDEN_BAND; // ≈ 0.4663
 const BASE_FREQUENCY_HZ = 72;
 const CANONICAL_ARCHITECTURE = "8,26,48:480";
 
@@ -59,7 +59,12 @@ class AIOSAuditor {
       psi: PSI,
     };
     this.log.push(entry);
-    return { approved, score: omegaScore, reason: risks.details.join("; ") || "OK", entry };
+    return {
+      approved,
+      score: omegaScore,
+      reason: risks.details.join("; ") || "OK",
+      entry,
+    };
   }
 
   _assessRisk(operation, params) {
@@ -67,7 +72,11 @@ class AIOSAuditor {
     let score = 1.0;
 
     // Deletion operations carry inherent risk
-    if (operation.startsWith("delete") || operation.startsWith("cancel") || operation.startsWith("archive")) {
+    if (
+      operation.startsWith("delete") ||
+      operation.startsWith("cancel") ||
+      operation.startsWith("archive")
+    ) {
       details.push(`${operation} is a destructive/terminal operation`);
       score -= 0.1;
     }
@@ -112,8 +121,10 @@ class AIOSAuditor {
 // ── AIOSStripeAccountant ─────────────────────────────────────────────────
 export class AIOSStripeAccountant {
   constructor({ apiKey, stormKBUrl, adminJwt } = {}) {
-    this.apiKey = apiKey || process.env.AIOS_STRIPE_KEY || process.env.STRIPE_SECRET_KEY;
-    this.stormKBUrl = stormKBUrl || process.env.STORM_API_URL || "https://api.getbrains4ai.com";
+    this.apiKey =
+      apiKey || process.env.AIOS_STRIPE_KEY || process.env.STRIPE_SECRET_KEY;
+    this.stormKBUrl =
+      stormKBUrl || process.env.STORM_API_URL || "https://api.getbrains4ai.com";
     this.adminJwt = adminJwt || process.env.ADMIN_JWT;
     this.auditor = new AIOSAuditor();
     this.operationCount = 0;
@@ -129,7 +140,9 @@ export class AIOSStripeAccountant {
     };
 
     if (!this.apiKey) {
-      console.warn("[AIOSStripeAccountant] No Stripe API key found. Set AIOS_STRIPE_KEY or STRIPE_SECRET_KEY.");
+      console.warn(
+        "[AIOSStripeAccountant] No Stripe API key found. Set AIOS_STRIPE_KEY or STRIPE_SECRET_KEY.",
+      );
     }
   }
 
@@ -142,11 +155,14 @@ export class AIOSStripeAccountant {
     const omega = this.auditor.witness(operation, params);
 
     // Dual attestation score
-    const attestedScore = alphaScore * ALPHA_WEIGHT + omega.score * OMEGA_WEIGHT;
-    const coherence = attestedScore / GOLDEN_BAND * GOLDEN_BAND; // normalised = attestedScore
+    const attestedScore =
+      alphaScore * ALPHA_WEIGHT + omega.score * OMEGA_WEIGHT;
+    const coherence = (attestedScore / GOLDEN_BAND) * GOLDEN_BAND; // normalised = attestedScore
 
     if (!omega.approved) {
-      throw new Error(`[AIOSAuditor] Omega pole rejected '${operation}': ${omega.reason}`);
+      throw new Error(
+        `[AIOSAuditor] Omega pole rejected '${operation}': ${omega.reason}`,
+      );
     }
 
     this.operationCount++;
@@ -188,7 +204,10 @@ export class AIOSStripeAccountant {
     let url = `${STRIPE_BASE}${path}`;
     let fetchBody;
 
-    if (body && (method === "POST" || method === "PUT" || method === "DELETE")) {
+    if (
+      body &&
+      (method === "POST" || method === "PUT" || method === "DELETE")
+    ) {
       headers["Content-Type"] = "application/x-www-form-urlencoded";
       fetchBody = this._encode(body);
     } else if (body && method === "GET") {
@@ -196,11 +215,18 @@ export class AIOSStripeAccountant {
       if (qs) url += `?${qs}`;
     }
 
-    const res = await fetch(url, { method, headers, body: fetchBody, signal: AbortSignal.timeout(20000) });
+    const res = await fetch(url, {
+      method,
+      headers,
+      body: fetchBody,
+      signal: AbortSignal.timeout(20000),
+    });
     const data = await res.json().catch(() => ({}));
 
     if (!res.ok) {
-      const err = new Error(`Stripe API error [${res.status}]: ${data.error?.message || "unknown"}`);
+      const err = new Error(
+        `Stripe API error [${res.status}]: ${data.error?.message || "unknown"}`,
+      );
       err.status = res.status;
       err.stripeError = data.error;
       throw err;
@@ -218,7 +244,9 @@ export class AIOSStripeAccountant {
         if (typeof v === "object" && !Array.isArray(v)) {
           parts.push(this._encode(v, key));
         } else if (Array.isArray(v)) {
-          v.forEach((item, i) => parts.push(`${key}[${i}]=${encodeURIComponent(item)}`));
+          v.forEach((item, i) =>
+            parts.push(`${key}[${i}]=${encodeURIComponent(item)}`),
+          );
         } else {
           parts.push(`${key}=${encodeURIComponent(v)}`);
         }
@@ -258,7 +286,7 @@ export class AIOSStripeAccountant {
         "metadata[source]": "AIOSStripeAccountant",
         "metadata[lattice]": CANONICAL_ARCHITECTURE,
         ...params.metadata,
-      })
+      }),
     );
   }
 
@@ -277,12 +305,15 @@ export class AIOSStripeAccountant {
     if (params.product) body.product = params.product;
     if (params.product_data) {
       body["product_data[name]"] = params.product_data.name;
-      if (params.product_data.description) body["product_data[statement_descriptor]"] = params.product_data.description.substring(0, 22);
+      if (params.product_data.description)
+        body["product_data[statement_descriptor]"] =
+          params.product_data.description.substring(0, 22);
     }
     if (params.nickname) body.nickname = params.nickname;
     if (params.recurring) {
       body["recurring[interval]"] = params.recurring.interval || "month";
-      if (params.recurring.interval_count) body["recurring[interval_count]"] = params.recurring.interval_count;
+      if (params.recurring.interval_count)
+        body["recurring[interval_count]"] = params.recurring.interval_count;
     }
     if (params.metadata) {
       for (const [k, v] of Object.entries(params.metadata)) {
@@ -290,8 +321,10 @@ export class AIOSStripeAccountant {
       }
     }
 
-    return this._attestedCall("createPrice", { ...params, _liveMode: !this.apiKey?.startsWith("sk_test") }, () =>
-      this._stripe("POST", "/prices", body)
+    return this._attestedCall(
+      "createPrice",
+      { ...params, _liveMode: !this.apiKey?.startsWith("sk_test") },
+      () => this._stripe("POST", "/prices", body),
     );
   }
 
@@ -301,7 +334,11 @@ export class AIOSStripeAccountant {
    */
   async listPrices(productId) {
     return this._attestedCall("listPrices", { productId }, () =>
-      this._stripe("GET", "/prices", { product: productId, limit: 20, active: "true" })
+      this._stripe("GET", "/prices", {
+        product: productId,
+        limit: 20,
+        active: "true",
+      }),
     );
   }
 
@@ -311,7 +348,7 @@ export class AIOSStripeAccountant {
    */
   async archivePrice(priceId) {
     return this._attestedCall("archivePrice", { priceId }, () =>
-      this._stripe("POST", `/prices/${priceId}`, { active: "false" })
+      this._stripe("POST", `/prices/${priceId}`, { active: "false" }),
     );
   }
 
@@ -322,7 +359,8 @@ export class AIOSStripeAccountant {
   async createCheckoutSession(params) {
     const body = {
       mode: "subscription",
-      success_url: params.successUrl || "https://realaios.com/pricing?success=1",
+      success_url:
+        params.successUrl || "https://realaios.com/pricing?success=1",
       cancel_url: params.cancelUrl || "https://realaios.com/pricing?cancel=1",
       "line_items[0][price]": params.priceId,
       "line_items[0][quantity]": "1",
@@ -337,7 +375,7 @@ export class AIOSStripeAccountant {
     }
 
     return this._attestedCall("createCheckoutSession", params, () =>
-      this._stripe("POST", "/checkout/sessions", body)
+      this._stripe("POST", "/checkout/sessions", body),
     );
   }
 
@@ -349,7 +387,7 @@ export class AIOSStripeAccountant {
     const params = { limit: opts.limit || 20 };
     if (opts.email) params.email = opts.email;
     return this._attestedCall("listCustomers", opts, () =>
-      this._stripe("GET", "/customers", params)
+      this._stripe("GET", "/customers", params),
     );
   }
 
@@ -359,7 +397,7 @@ export class AIOSStripeAccountant {
    */
   async getSubscription(subscriptionId) {
     return this._attestedCall("getSubscription", { subscriptionId }, () =>
-      this._stripe("GET", `/subscriptions/${subscriptionId}`)
+      this._stripe("GET", `/subscriptions/${subscriptionId}`),
     );
   }
 
@@ -370,12 +408,19 @@ export class AIOSStripeAccountant {
    */
   async cancelSubscription(subscriptionId, immediate = false) {
     if (immediate) {
-      return this._attestedCall("cancelSubscription", { subscriptionId, immediate }, () =>
-        this._stripe("DELETE", `/subscriptions/${subscriptionId}`)
+      return this._attestedCall(
+        "cancelSubscription",
+        { subscriptionId, immediate },
+        () => this._stripe("DELETE", `/subscriptions/${subscriptionId}`),
       );
     }
-    return this._attestedCall("cancelSubscription", { subscriptionId, immediate }, () =>
-      this._stripe("POST", `/subscriptions/${subscriptionId}`, { cancel_at_period_end: "true" })
+    return this._attestedCall(
+      "cancelSubscription",
+      { subscriptionId, immediate },
+      () =>
+        this._stripe("POST", `/subscriptions/${subscriptionId}`, {
+          cancel_at_period_end: "true",
+        }),
     );
   }
 
@@ -388,7 +433,7 @@ export class AIOSStripeAccountant {
     if (opts.customerId) params.customer = opts.customerId;
     if (opts.status) params.status = opts.status;
     return this._attestedCall("listInvoices", opts, () =>
-      this._stripe("GET", "/invoices", params)
+      this._stripe("GET", "/invoices", params),
     );
   }
 
@@ -439,7 +484,7 @@ export class AIOSStripeAccountant {
         created: { gte: monthAgo },
       });
 
-      const paid = (charges.data || []).filter(c => c.paid && !c.refunded);
+      const paid = (charges.data || []).filter((c) => c.paid && !c.refunded);
       const totalRevenue = paid.reduce((sum, c) => sum + c.amount, 0);
 
       return {
@@ -447,7 +492,7 @@ export class AIOSStripeAccountant {
         chargeCount: paid.length,
         total_cents: totalRevenue,
         total_usd: (totalRevenue / 100).toFixed(2),
-        monthly_avg_usd: ((totalRevenue / months) / 100).toFixed(2),
+        monthly_avg_usd: (totalRevenue / months / 100).toFixed(2),
         generatedAt: new Date().toISOString(),
       };
     });
@@ -460,15 +505,18 @@ export class AIOSStripeAccountant {
   async createWebhookEndpoint(params) {
     const body = {
       url: params.url,
-      "enabled_events[0]": params.events?.[0] || "customer.subscription.created",
+      "enabled_events[0]":
+        params.events?.[0] || "customer.subscription.created",
     };
     if (params.events) {
-      params.events.forEach((e, i) => { body[`enabled_events[${i}]`] = e; });
+      params.events.forEach((e, i) => {
+        body[`enabled_events[${i}]`] = e;
+      });
     }
     if (params.description) body.description = params.description;
 
     return this._attestedCall("createWebhookEndpoint", params, () =>
-      this._stripe("POST", "/webhook_endpoints", body)
+      this._stripe("POST", "/webhook_endpoints", body),
     );
   }
 
@@ -477,7 +525,7 @@ export class AIOSStripeAccountant {
    */
   async listWebhookEndpoints() {
     return this._attestedCall("listWebhookEndpoints", {}, () =>
-      this._stripe("GET", "/webhook_endpoints", { limit: 20 })
+      this._stripe("GET", "/webhook_endpoints", { limit: 20 }),
     );
   }
 
@@ -487,7 +535,7 @@ export class AIOSStripeAccountant {
    */
   async deleteWebhookEndpoint(webhookId) {
     return this._attestedCall("deleteWebhookEndpoint", { webhookId }, () =>
-      this._stripe("DELETE", `/webhook_endpoints/${webhookId}`)
+      this._stripe("DELETE", `/webhook_endpoints/${webhookId}`),
     );
   }
 
@@ -497,7 +545,7 @@ export class AIOSStripeAccountant {
   async listApiKeys() {
     return this._attestedCall("listApiKeys", {}, () =>
       this._stripe("GET", "/radar/value_lists") // Not a direct API keys endpoint — use account info
-        .catch(() => ({ note: "API key listing requires dashboard access" }))
+        .catch(() => ({ note: "API key listing requires dashboard access" })),
     );
   }
 
@@ -506,16 +554,27 @@ export class AIOSStripeAccountant {
    */
   async generateAccountReport() {
     return this._attestedCall("generateAccountReport", {}, async () => {
-      const [revSummary, monthlyRev, webhooks, invoiceData] = await Promise.all([
-        this.getRevenueSummary().then(r => r.data).catch(() => null),
-        this.getMonthlyRevenue(3).then(r => r.data).catch(() => null),
-        this.listWebhookEndpoints().then(r => r.data).catch(() => ({ data: [] })),
-        this.listInvoices({ status: "open", limit: 10 }).then(r => r.data).catch(() => ({ data: [] })),
-      ]);
+      const [revSummary, monthlyRev, webhooks, invoiceData] = await Promise.all(
+        [
+          this.getRevenueSummary()
+            .then((r) => r.data)
+            .catch(() => null),
+          this.getMonthlyRevenue(3)
+            .then((r) => r.data)
+            .catch(() => null),
+          this.listWebhookEndpoints()
+            .then((r) => r.data)
+            .catch(() => ({ data: [] })),
+          this.listInvoices({ status: "open", limit: 10 })
+            .then((r) => r.data)
+            .catch(() => ({ data: [] })),
+        ],
+      );
 
       const auditorLog = this.auditor.getLog();
-      const attestedOps = auditorLog.filter(l => l.approved).length;
-      const coherence = auditorLog.length > 0 ? attestedOps / auditorLog.length : 1.0;
+      const attestedOps = auditorLog.filter((l) => l.approved).length;
+      const coherence =
+        auditorLog.length > 0 ? attestedOps / auditorLog.length : 1.0;
 
       return {
         reportType: "AIOSStripeAccountant_FullReport",
@@ -534,7 +593,12 @@ export class AIOSStripeAccountant {
         },
         webhooks: {
           count: webhooks.data?.length || 0,
-          endpoints: (webhooks.data || []).map(w => ({ id: w.id, url: w.url, status: w.status, events: w.enabled_events?.length })),
+          endpoints: (webhooks.data || []).map((w) => ({
+            id: w.id,
+            url: w.url,
+            status: w.status,
+            events: w.enabled_events?.length,
+          })),
         },
         openInvoices: {
           count: invoiceData.data?.length || 0,
@@ -560,7 +624,9 @@ export class AIOSStripeAccountant {
     }
 
     if (!this.adminJwt) {
-      console.warn("[AIOSStripeAccountant] No ADMIN_JWT — cannot write to Storm KB");
+      console.warn(
+        "[AIOSStripeAccountant] No ADMIN_JWT — cannot write to Storm KB",
+      );
       return { ok: false, error: "ADMIN_JWT not set" };
     }
 
@@ -592,7 +658,8 @@ export class AIOSStripeAccountant {
       note: "Stripe Checkout allowed domains must be added via the Stripe Dashboard.",
       instructions: `Navigate to: https://dashboard.stripe.com/settings/checkout → Add '${domain}' to allowed domains.`,
       domain,
-      dashboardUrl: "https://dashboard.stripe.com/acct_1EzfcTIJzmUyfM4K/settings/checkout",
+      dashboardUrl:
+        "https://dashboard.stripe.com/acct_1EzfcTIJzmUyfM4K/settings/checkout",
     };
   }
 
@@ -601,7 +668,7 @@ export class AIOSStripeAccountant {
    */
   async getAccount() {
     return this._attestedCall("getAccount", {}, () =>
-      this._stripe("GET", "/account")
+      this._stripe("GET", "/account"),
     );
   }
 
@@ -614,7 +681,8 @@ export class AIOSStripeAccountant {
       return {
         ok: true,
         accountId: account.id,
-        displayName: account.display_name || account.settings?.dashboard?.display_name,
+        displayName:
+          account.display_name || account.settings?.dashboard?.display_name,
         country: account.country,
         currency: account.default_currency,
         livemode: !this.apiKey?.startsWith("sk_test"),

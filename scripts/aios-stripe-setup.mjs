@@ -37,7 +37,10 @@ if (existsSync(envPath)) {
     const eqIdx = trimmed.indexOf("=");
     if (eqIdx === -1) continue;
     const k = trimmed.slice(0, eqIdx).trim();
-    const v = trimmed.slice(eqIdx + 1).trim().replace(/^["']|["']$/g, "");
+    const v = trimmed
+      .slice(eqIdx + 1)
+      .trim()
+      .replace(/^["']|["']$/g, "");
     if (!process.env[k]) process.env[k] = v;
   }
 }
@@ -52,19 +55,27 @@ if (existsSync(apiEnvPath)) {
     const eqIdx = trimmed.indexOf("=");
     if (eqIdx === -1) continue;
     const k = trimmed.slice(0, eqIdx).trim();
-    const v = trimmed.slice(eqIdx + 1).trim().replace(/^["']|["']$/g, "");
+    const v = trimmed
+      .slice(eqIdx + 1)
+      .trim()
+      .replace(/^["']|["']$/g, "");
     if (!process.env[k]) process.env[k] = v;
   }
 }
 
-const STRIPE_KEY = process.env.AIOS_STRIPE_KEY || process.env.STRIPE_SECRET_KEY || process.env.STRIPE_LIVE_KEY;
+const STRIPE_KEY =
+  process.env.AIOS_STRIPE_KEY ||
+  process.env.STRIPE_SECRET_KEY ||
+  process.env.STRIPE_LIVE_KEY;
 const DRY_RUN = process.env.AIOS_STRIPE_DRY_RUN === "1";
 const STRIPE_BASE = "https://api.stripe.com/v1";
 
 if (!STRIPE_KEY || STRIPE_KEY === "change_me") {
   console.error("\n❌ No Stripe key found!\n");
   console.error("Set AIOS_STRIPE_KEY or STRIPE_SECRET_KEY and re-run:");
-  console.error("  AIOS_STRIPE_KEY=sk_live_xxx node scripts/aios-stripe-setup.mjs\n");
+  console.error(
+    "  AIOS_STRIPE_KEY=sk_live_xxx node scripts/aios-stripe-setup.mjs\n",
+  );
   process.exit(1);
 }
 
@@ -73,8 +84,12 @@ const KEY_PREFIX = STRIPE_KEY.substring(0, 12) + "...";
 
 console.log(`\n🌩️  AIOSStripeAccountant Setup`);
 console.log(`   Key: ${KEY_PREFIX} (${IS_LIVE ? "⚡ LIVE" : "🧪 TEST"})`);
-console.log(`   Dry-run: ${DRY_RUN ? "YES (no writes)" : "NO (writes enabled)"}`);
-console.log(`   Canonical: 8→26→48:480 | PHI=1.618 | PSI=1.414 | GOLDEN_BAND=3.032\n`);
+console.log(
+  `   Dry-run: ${DRY_RUN ? "YES (no writes)" : "NO (writes enabled)"}`,
+);
+console.log(
+  `   Canonical: 8→26→48:480 | PHI=1.618 | PSI=1.414 | GOLDEN_BAND=3.032\n`,
+);
 
 // ── Stripe helpers ────────────────────────────────────────────────────────
 function encode(obj, prefix = "") {
@@ -85,7 +100,9 @@ function encode(obj, prefix = "") {
       if (typeof v === "object" && !Array.isArray(v)) {
         parts.push(encode(v, key));
       } else if (Array.isArray(v)) {
-        v.forEach((item, i) => parts.push(`${key}[${i}]=${encodeURIComponent(item)}`));
+        v.forEach((item, i) =>
+          parts.push(`${key}[${i}]=${encodeURIComponent(item)}`),
+        );
       } else {
         parts.push(`${key}=${encodeURIComponent(v)}`);
       }
@@ -106,7 +123,10 @@ async function stripeGet(path, params = {}) {
     signal: AbortSignal.timeout(15000),
   });
   const data = await res.json();
-  if (!res.ok) throw new Error(`Stripe GET ${path} [${res.status}]: ${data.error?.message}`);
+  if (!res.ok)
+    throw new Error(
+      `Stripe GET ${path} [${res.status}]: ${data.error?.message}`,
+    );
   return data;
 }
 
@@ -122,24 +142,34 @@ async function stripePost(path, body) {
     signal: AbortSignal.timeout(15000),
   });
   const data = await res.json();
-  if (!res.ok) throw new Error(`Stripe POST ${path} [${res.status}]: ${data.error?.message}`);
+  if (!res.ok)
+    throw new Error(
+      `Stripe POST ${path} [${res.status}]: ${data.error?.message}`,
+    );
   return data;
 }
 
 // ── STEP 1: Verify account access ─────────────────────────────────────────
 console.log("Step 1: Verifying Stripe account access...");
 const account = await stripeGet("/account");
-console.log(`  ✅ Account: ${account.id} (${account.email || account.display_name || "getbrains4ai.com"})`);
+console.log(
+  `  ✅ Account: ${account.id} (${account.email || account.display_name || "getbrains4ai.com"})`,
+);
 console.log(`     Livemode: ${!STRIPE_KEY.startsWith("sk_test")}\n`);
 
 // ── STEP 2: Check if AIOS Pro already exists ──────────────────────────────
 console.log("Step 2: Checking for existing AIOS Pro price...");
-const existingPrices = await stripeGet("/prices", { limit: 100, active: "true" });
-const existingAIOSPrice = existingPrices.data?.find(p => {
+const existingPrices = await stripeGet("/prices", {
+  limit: 100,
+  active: "true",
+});
+const existingAIOSPrice = existingPrices.data?.find((p) => {
   const product = p.product;
   const nickname = p.nickname || "";
-  return nickname.toLowerCase().includes("aios pro") ||
-    p.metadata?.source === "AIOSStripeAccountant";
+  return (
+    nickname.toLowerCase().includes("aios pro") ||
+    p.metadata?.source === "AIOSStripeAccountant"
+  );
 });
 
 let aiostProPriceId = null;
@@ -150,7 +180,9 @@ if (existingAIOSPrice) {
   aiosProProductId = existingAIOSPrice.product;
   console.log(`  ℹ️  AIOS Pro price already exists:`);
   console.log(`     Price ID: ${aiostProPriceId}`);
-  console.log(`     Amount: $${(existingAIOSPrice.unit_amount / 100).toFixed(2)}/${existingAIOSPrice.recurring?.interval}`);
+  console.log(
+    `     Amount: $${(existingAIOSPrice.unit_amount / 100).toFixed(2)}/${existingAIOSPrice.recurring?.interval}`,
+  );
   console.log(`     Product: ${aiosProProductId}\n`);
 } else {
   console.log("  No existing AIOS Pro price found. Will create.\n");
@@ -163,7 +195,8 @@ if (!aiostProPriceId) {
   if (!DRY_RUN) {
     const product = await stripePost("/products", {
       name: "AIOS Pro",
-      description: "AIOS Pro — Full access to all premium PLAIStore apps, VR Hub content, and exclusive AIOS features. The complete AI Operating System experience.",
+      description:
+        "AIOS Pro — Full access to all premium PLAIStore apps, VR Hub content, and exclusive AIOS features. The complete AI Operating System experience.",
       metadata: {
         source: "AIOSStripeAccountant",
         lattice: "8,26,48:480",
@@ -172,7 +205,9 @@ if (!aiostProPriceId) {
       },
     });
     aiosProProductId = product.id;
-    console.log(`  ✅ Created product: ${aiosProProductId} (${product.name})\n`);
+    console.log(
+      `  ✅ Created product: ${aiosProProductId} (${product.name})\n`,
+    );
 
     console.log("Step 4: Creating $9.99/month recurring price...");
     const price = await stripePost("/prices", {
@@ -195,7 +230,9 @@ if (!aiostProPriceId) {
     console.log(`     Amount: $9.99/month`);
     console.log(`     Product: ${aiosProProductId}\n`);
   } else {
-    console.log("  [DRY RUN] Would create AIOS Pro product + $9.99/month price\n");
+    console.log(
+      "  [DRY RUN] Would create AIOS Pro product + $9.99/month price\n",
+    );
     aiostProPriceId = "price_DRY_RUN_PLACEHOLDER";
     aiosProProductId = "prod_DRY_RUN_PLACEHOLDER";
   }
@@ -206,12 +243,10 @@ if (!aiostProPriceId) {
 // ── STEP 5: Check webhooks ────────────────────────────────────────────────
 console.log("Step 5: Checking webhook endpoints...");
 const webhooks = await stripeGet("/webhook_endpoints", { limit: 20 });
-const stormWebhook = webhooks.data?.find(w =>
-  w.url?.includes("api.getbrains4ai.com/api/stripe/webhook")
+const stormWebhook = webhooks.data?.find((w) =>
+  w.url?.includes("api.getbrains4ai.com/api/stripe/webhook"),
 );
-const aiosWebhook = webhooks.data?.find(w =>
-  w.url?.includes("realaios.com")
-);
+const aiosWebhook = webhooks.data?.find((w) => w.url?.includes("realaios.com"));
 
 const AIOS_EVENTS = [
   "customer.subscription.created",
@@ -224,8 +259,10 @@ const AIOS_EVENTS = [
 ];
 
 console.log(`  Found ${webhooks.data?.length || 0} webhook endpoint(s):`);
-for (const wh of (webhooks.data || [])) {
-  console.log(`    ${wh.status === "enabled" ? "✅" : "❌"} ${wh.url} (${wh.enabled_events?.length || 0} events)`);
+for (const wh of webhooks.data || []) {
+  console.log(
+    `    ${wh.status === "enabled" ? "✅" : "❌"} ${wh.url} (${wh.enabled_events?.length || 0} events)`,
+  );
 }
 
 if (!aiosWebhook && !DRY_RUN) {
@@ -234,30 +271,42 @@ if (!aiosWebhook && !DRY_RUN) {
   if (stormWebhook) {
     // Update existing Storm webhook to ensure AIOS events are included
     const currentEvents = stormWebhook.enabled_events || [];
-    const missingEvents = AIOS_EVENTS.filter(e => !currentEvents.includes(e) && !currentEvents.includes("*"));
+    const missingEvents = AIOS_EVENTS.filter(
+      (e) => !currentEvents.includes(e) && !currentEvents.includes("*"),
+    );
     if (missingEvents.length > 0) {
       const allEvents = [...new Set([...currentEvents, ...missingEvents])];
       const updateBody = {};
-      allEvents.forEach((e, i) => { updateBody[`enabled_events[${i}]`] = e; });
+      allEvents.forEach((e, i) => {
+        updateBody[`enabled_events[${i}]`] = e;
+      });
       await stripePost(`/webhook_endpoints/${stormWebhook.id}`, updateBody);
-      console.log(`  ✅ Updated Storm webhook to include ${missingEvents.length} AIOS events`);
+      console.log(
+        `  ✅ Updated Storm webhook to include ${missingEvents.length} AIOS events`,
+      );
     } else {
       console.log("  ✅ Storm webhook already has all required AIOS events");
     }
   } else {
     // Create new webhook
     const whBody = { url: "https://api.getbrains4ai.com/api/stripe/webhook" };
-    AIOS_EVENTS.forEach((e, i) => { whBody[`enabled_events[${i}]`] = e; });
+    AIOS_EVENTS.forEach((e, i) => {
+      whBody[`enabled_events[${i}]`] = e;
+    });
     whBody["metadata[source]"] = "AIOSStripeAccountant";
     const newWh = await stripePost("/webhook_endpoints", whBody);
     console.log(`  ✅ Created webhook: ${newWh.id}`);
     console.log(`     URL: ${newWh.url}`);
-    console.log(`     Secret: ${newWh.secret?.substring(0, 10)}... (save as STRIPE_WEBHOOK_SECRET)\n`);
+    console.log(
+      `     Secret: ${newWh.secret?.substring(0, 10)}... (save as STRIPE_WEBHOOK_SECRET)\n`,
+    );
   }
 } else if (DRY_RUN) {
   console.log("\n  [DRY RUN] Would ensure AIOS events on Storm webhook\n");
 } else {
-  console.log(`\n  ✅ AIOS webhook already configured at: ${aiosWebhook.url}\n`);
+  console.log(
+    `\n  ✅ AIOS webhook already configured at: ${aiosWebhook.url}\n`,
+  );
 }
 
 // ── STEP 6: Print Railway env vars ────────────────────────────────────────
@@ -276,7 +325,9 @@ console.log("═".repeat(60));
 // ── STEP 7: Checkout domain notice ────────────────────────────────────────
 console.log(`\n📌 MANUAL STEP REQUIRED — Add realaios.com to Stripe:`);
 console.log(`   Dashboard → Settings → Checkout:`);
-console.log(`   https://dashboard.stripe.com/acct_1EzfcTIJzmUyfM4K/settings/checkout`);
+console.log(
+  `   https://dashboard.stripe.com/acct_1EzfcTIJzmUyfM4K/settings/checkout`,
+);
 console.log(`   Add: https://realaios.com to allowed domains\n`);
 
 console.log(`\n✅ AIOSStripeAccountant setup complete!`);
