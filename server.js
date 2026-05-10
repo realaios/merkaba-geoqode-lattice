@@ -4735,18 +4735,27 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
       const body = await readBody(req);
       const { name, email, password } = body;
       if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(email).trim())) {
-        return json(res, 400, { ok: false, error: "Valid email address required" });
+        return json(res, 400, {
+          ok: false,
+          error: "Valid email address required",
+        });
       }
       if (!password || String(password).length < 8) {
-        return json(res, 400, { ok: false, error: "Password must be at least 8 characters" });
+        return json(res, 400, {
+          ok: false,
+          error: "Password must be at least 8 characters",
+        });
       }
-      const STORM_API = process.env.STORM_API_URL || "https://api.getbrains4ai.com";
+      const STORM_API =
+        process.env.STORM_API_URL || "https://api.getbrains4ai.com";
       try {
         const upstream = await fetch(`${STORM_API}/api/auth/register`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            name: String(name || "AIOS User").trim().slice(0, 120),
+            name: String(name || "AIOS User")
+              .trim()
+              .slice(0, 120),
             email: String(email).trim().slice(0, 254),
             password: String(password),
           }),
@@ -4756,7 +4765,10 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
         return json(res, upstream.status, data);
       } catch (err) {
         console.error("[AIOS] Auth register proxy error:", err.message);
-        return json(res, 500, { ok: false, error: "Registration service unavailable. Please try again." });
+        return json(res, 500, {
+          ok: false,
+          error: "Registration service unavailable. Please try again.",
+        });
       }
     }
 
@@ -4765,9 +4777,13 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
       const body = await readBody(req);
       const { email, password } = body;
       if (!email || !password) {
-        return json(res, 400, { ok: false, error: "Email and password are required" });
+        return json(res, 400, {
+          ok: false,
+          error: "Email and password are required",
+        });
       }
-      const STORM_API = process.env.STORM_API_URL || "https://api.getbrains4ai.com";
+      const STORM_API =
+        process.env.STORM_API_URL || "https://api.getbrains4ai.com";
       try {
         const upstream = await fetch(`${STORM_API}/api/auth/login`, {
           method: "POST",
@@ -4782,7 +4798,10 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
         return json(res, upstream.status, data);
       } catch (err) {
         console.error("[AIOS] Auth login proxy error:", err.message);
-        return json(res, 500, { ok: false, error: "Login service unavailable. Please try again." });
+        return json(res, 500, {
+          ok: false,
+          error: "Login service unavailable. Please try again.",
+        });
       }
     }
 
@@ -4791,21 +4810,25 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
     if (req.method === "POST" && pathname === "/api/aios/checkout") {
       const authHeader = req.headers["authorization"] || "";
       if (!authHeader.startsWith("Bearer ")) {
-        return json(res, 401, { ok: false, error: "Authentication required. Please sign in first." });
+        return json(res, 401, {
+          ok: false,
+          error: "Authentication required. Please sign in first.",
+        });
       }
       const body = await readBody(req);
       const tier = (body && body.tier) || "pro";
       if (tier !== "pro" && tier !== "enterprise") {
         return json(res, 400, { ok: false, error: "Invalid tier. Use: pro" });
       }
-      const STORM_API = process.env.STORM_API_URL || "https://api.getbrains4ai.com";
+      const STORM_API =
+        process.env.STORM_API_URL || "https://api.getbrains4ai.com";
       const AIOS_BASE = "https://realaios.com";
       try {
         const upstream = await fetch(`${STORM_API}/api/billing/checkout`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            "Authorization": authHeader,
+            Authorization: authHeader,
           },
           body: JSON.stringify({
             tier,
@@ -4819,10 +4842,16 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
         if (upstream.ok && data.checkoutUrl) {
           return json(res, 200, { ok: true, url: data.checkoutUrl });
         }
-        return json(res, upstream.status, { ok: false, error: data.error || "Checkout unavailable. Please try again." });
+        return json(res, upstream.status, {
+          ok: false,
+          error: data.error || "Checkout unavailable. Please try again.",
+        });
       } catch (err) {
         console.error("[AIOS] Checkout proxy error:", err.message);
-        return json(res, 500, { ok: false, error: "Checkout service unavailable. Please try again." });
+        return json(res, 500, {
+          ok: false,
+          error: "Checkout service unavailable. Please try again.",
+        });
       }
     }
 
@@ -4832,39 +4861,33 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
       if (!authHeader.startsWith("Bearer ")) {
         return json(res, 401, { ok: false, error: "Authentication required" });
       }
-      const STORM_API = process.env.STORM_API_URL || "https://api.getbrains4ai.com";
+      const STORM_API =
+        process.env.STORM_API_URL || "https://api.getbrains4ai.com";
       try {
         const upstream = await fetch(`${STORM_API}/api/billing/subscription`, {
-          headers: { "Authorization": authHeader },
+          headers: { Authorization: authHeader },
           signal: AbortSignal.timeout(8000),
         });
         const data = await upstream.json().catch(() => ({}));
         return json(res, upstream.status, data);
       } catch (err) {
         console.error("[AIOS] Billing status proxy error:", err.message);
-        return json(res, 500, { ok: false, error: "Billing service unavailable" });
+        return json(res, 500, {
+          ok: false,
+          error: "Billing service unavailable",
+        });
       }
     }
 
     // ── AIOSStripeAccountant — Admin-only Stripe management routes ────────
     // All routes require Authorization: Bearer <AIOS_ADMIN_JWT or ADMIN_JWT>
     if (pathname.startsWith("/api/aios/accountant")) {
-      const AIOS_ADMIN_JWT = process.env.AIOS_ADMIN_JWT || process.env.ADMIN_JWT || "";
+      const AIOS_ADMIN_JWT =
+        process.env.AIOS_ADMIN_JWT || process.env.ADMIN_JWT || "";
       const authHeader = req.headers["authorization"] || "";
       const token = authHeader.startsWith("Bearer ") ? authHeader.slice(7) : "";
 
-      // Simple token gate (constant-time comparison)
-      const jwtBuf = Buffer.from(AIOS_ADMIN_JWT);
-      const tokenBuf = Buffer.from(token.padEnd(jwtBuf.length, "\0").slice(0, jwtBuf.length));
-      const valid = AIOS_ADMIN_JWT.length > 0 &&
-        token.length > 0 &&
-        require === undefined || (() => {
-          let eq = 0;
-          for (let i = 0; i < jwtBuf.length; i++) eq |= (jwtBuf[i] ^ tokenBuf[i]);
-          return eq === 0;
-        })();
-
-      // Use simple prefix match since we can't easily do timing-safe in ESM without crypto
+      // Simple token gate
       if (!AIOS_ADMIN_JWT || token !== AIOS_ADMIN_JWT) {
         return json(res, 401, { ok: false, error: "Unauthorized" });
       }
@@ -4875,7 +4898,10 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
         const mod = await import("./src/agents/AIOSStripeAccountant.js");
         AIOSStripeAccountant = mod.AIOSStripeAccountant;
       } catch (loadErr) {
-        console.error("[AIOS Accountant] Failed to load agent:", loadErr.message);
+        console.error(
+          "[AIOS Accountant] Failed to load agent:",
+          loadErr.message,
+        );
         return json(res, 500, { ok: false, error: "Agent module unavailable" });
       }
 
@@ -4904,14 +4930,19 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
       }
 
       // GET /api/aios/accountant/webhooks
-      if (req.method === "GET" && pathname === "/api/aios/accountant/webhooks") {
+      if (
+        req.method === "GET" &&
+        pathname === "/api/aios/accountant/webhooks"
+      ) {
         const result = await accountant.listWebhookEndpoints();
         return json(res, 200, result);
       }
 
       // GET /api/aios/accountant/prices
       if (req.method === "GET" && pathname === "/api/aios/accountant/prices") {
-        const productId = new URL(req.url, "http://localhost").searchParams.get("product");
+        const productId = new URL(req.url, "http://localhost").searchParams.get(
+          "product",
+        );
         const result = await accountant.listPrices(productId);
         return json(res, 200, result);
       }
@@ -4924,14 +4955,20 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
       }
 
       // POST /api/aios/accountant/report/kb — write report to Storm KB
-      if (req.method === "POST" && pathname === "/api/aios/accountant/report/kb") {
+      if (
+        req.method === "POST" &&
+        pathname === "/api/aios/accountant/report/kb"
+      ) {
         const body = await readBody(req);
         const key = body?.key || "aios-stripe-accountant";
         const result = await accountant.rotateReportToKB(key);
         return json(res, result.ok ? 200 : 500, result);
       }
 
-      return json(res, 404, { ok: false, error: "Unknown AIOSStripeAccountant endpoint" });
+      return json(res, 404, {
+        ok: false,
+        error: "Unknown AIOSStripeAccountant endpoint",
+      });
     }
 
     // ── POST /waitlist — proxy to Storm API waitlist ──────────────────────
@@ -6500,24 +6537,36 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
     }
 
     // ── GET /signup — Create AIOS account ───────────────────────────────
-    if (req.method === "GET" && (pathname === "/signup" || pathname === "/signup/")) {
-      if (!SIGNUP_HTML) return json(res, 404, { ok: false, error: "Signup page not found" });
+    if (
+      req.method === "GET" &&
+      (pathname === "/signup" || pathname === "/signup/")
+    ) {
+      if (!SIGNUP_HTML)
+        return json(res, 404, { ok: false, error: "Signup page not found" });
       res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
       res.end(SIGNUP_HTML);
       return;
     }
 
     // ── GET /login — Sign in to AIOS ─────────────────────────────────────
-    if (req.method === "GET" && (pathname === "/login" || pathname === "/login/")) {
-      if (!LOGIN_HTML) return json(res, 404, { ok: false, error: "Login page not found" });
+    if (
+      req.method === "GET" &&
+      (pathname === "/login" || pathname === "/login/")
+    ) {
+      if (!LOGIN_HTML)
+        return json(res, 404, { ok: false, error: "Login page not found" });
       res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
       res.end(LOGIN_HTML);
       return;
     }
 
     // ── GET /pricing — AIOS subscription pricing ─────────────────────────
-    if (req.method === "GET" && (pathname === "/pricing" || pathname === "/pricing/")) {
-      if (!PRICING_HTML) return json(res, 404, { ok: false, error: "Pricing page not found" });
+    if (
+      req.method === "GET" &&
+      (pathname === "/pricing" || pathname === "/pricing/")
+    ) {
+      if (!PRICING_HTML)
+        return json(res, 404, { ok: false, error: "Pricing page not found" });
       res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
       res.end(PRICING_HTML);
       return;
