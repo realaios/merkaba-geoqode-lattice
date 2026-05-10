@@ -1631,9 +1631,7 @@
           id="search-clear"
           title="Clear search"
           style="display: none"
-        >
-          ?
-        </button>
+        ></button>
       </div>
     </div>
 
@@ -2834,7 +2832,7 @@
                 <div class="event-countdown" id="cd-${ev.id}">${ev.isLive ? " LIVE NOW" : "·"}</div>
                 <div class="event-meta">
                   <span> ${dateStr}</span>
-                  <span>? ${ev.durationMinutes || 60}min</span>
+                  <span>${ev.durationMinutes || 60}min</span>
                   <span> ${ev.maxAttendees || "8"} max</span>
                 </div>
                 ${ev.vrUrl ? `<a href="${ev.vrUrl}" class="event-enter-btn"> ${ev.isLive ? "Join Now" : "View →"}</a>` : ""}

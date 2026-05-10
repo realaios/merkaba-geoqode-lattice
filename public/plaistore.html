@@ -768,7 +768,7 @@
   </head>
   <body>
     <!-- Canonical AIOS site-nav -->
-    <nav class="site-nav"><a href="/" class="site-nav-logo">&#x2B21; AIOS</a><div class="site-nav-links"><a href="/games">&#x1F3AE; Games</a><a href="/aiosdream">Theatre</a><a href="/vr">&#x1F97D; VR</a><a href="/vr-hub">VR Hub</a><a href="/plaistore" class="active">PLAIstore</a><a href="/geo-library">&#x1F4DA; Library</a><a href="/geo-codec">.geo</a><a href="/aios-studio">Studio</a><a href="/lab">Lab</a><a href="/news">&#x1F4F0; News</a><a href="/products">&#x26A1; Products</a><a href="/pricing" style="color:#a5b4fc;font-weight:600">&#x2B50; Pro</a></div><div class="site-nav-right"><a href="/live" class="site-nav-live">&#x25CF; LIVE</a><a href="/start" class="site-nav-cta">Start Free &#x2192;</a></div></nav>
+    <nav class="site-nav"><a href="/" class="site-nav-logo"> AIOS</a><div class="site-nav-links"><a href="/games"> Games</a><a href="/aiosdream">Theatre</a><a href="/vr"> VR</a><a href="/vr-hub">VR Hub</a><a href="/plaistore" class="active">PLAIstore</a><a href="/geo-library"> Library</a><a href="/geo-codec">.geo</a><a href="/aios-studio">Studio</a><a href="/lab">Lab</a><a href="/news"> News</a><a href="/products"> Products</a><a href="/pricing" style="color:#a5b4fc;font-weight:600"> Pro</a></div><div class="site-nav-right"><a href="/live" class="site-nav-live">&#x25CF; LIVE</a><a href="/start" class="site-nav-cta">Start Free &#x2192;</a></div></nav>
     <!-- Header -->
     <header class="header">
       <div class="header-inner">
@@ -796,7 +796,7 @@
           onclick="signOut()"
           title="Click to sign out"
         >
-          &#x1F464; <span id="nav-user-label"></span>
+           <span id="nav-user-label"></span>
         </div>
       </div>
     </header>
@@ -1157,7 +1157,7 @@
     <!-- Auth modal -->
     <div id="upgrade-modal" onclick="if(event.target===this)closeUpgradeModal()">
       <div class="upgrade-modal-card">
-        <div style="font-size:2.5rem;margin-bottom:0.75rem">&#x2B50;</div>
+        <div style="font-size:2.5rem;margin-bottom:0.75rem"></div>
         <h2 style="font-size:1.25rem;font-weight:800;margin-bottom:0.5rem">AIOS Pro Required</h2>
         <p style="color:rgba(248,250,252,0.55);font-size:0.88rem;line-height:1.6;margin-bottom:1.5rem">This app is exclusive to AIOS Pro members.<br>Unlock all premium apps for $9.99/month.</p>
         <a href="/pricing" style="display:block;background:linear-gradient(135deg,#00d4ff,#6366f1);color:#07080f;font-weight:700;padding:0.75rem;border-radius:8px;text-decoration:none;margin-bottom:0.75rem;font-size:0.95rem">View AIOS Pro Plans →</a>
@@ -1506,7 +1506,7 @@
         const price =
           app.price_cents === 0
             ? '<span class="app-badge badge-free">Free</span>'
-            : `<span class="app-badge badge-pro">&#x2B50; PRO</span>`;
+            : `<span class="app-badge badge-pro"> PRO</span>`;
         const devName = app.developer_name || "AIOS";
         const verified = app.developer_verified
           ? '<span class="app-verified"></span>'
@@ -1556,7 +1556,7 @@
             : app.type === "cinema-vr"
               ? `<a href="${esc(launchUrl)}" class="btn btn-outline" style="border-color:#00d4ff;color:#00d4ff"> Watch in Cinema VR</a>`
               : "";
-          const installLabel = appPriceCents > 0 && userTier === "free" ? "&#x2B50; Get with Pro" : "Install";
+          const installLabel = appPriceCents > 0 && userTier === "free" ? " Get with Pro" : "Install";
           document.getElementById("modal-body").innerHTML = `
         <div class="modal-app-header">
           <div class="modal-icon">${icon}</div>
