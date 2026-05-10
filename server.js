@@ -170,6 +170,11 @@ const LOGIN_HTML = existsSync(LOGIN_HTML_PATH)
   ? withMeta(readFileSync(LOGIN_HTML_PATH, "utf-8"))
   : null;
 
+const PRICING_HTML_PATH = join(PUBLIC_DIR, "pricing.html");
+const PRICING_HTML = existsSync(PRICING_HTML_PATH)
+  ? withMeta(readFileSync(PRICING_HTML_PATH, "utf-8"))
+  : null;
+
 const VR_HTML_PATH = join(PUBLIC_DIR, "vr.html");
 const VR_HTML = existsSync(VR_HTML_PATH)
   ? withMeta(readFileSync(VR_HTML_PATH, "utf-8"))
@@ -4781,6 +4786,65 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
       }
     }
 
+    // ── POST /api/aios/checkout — Stripe checkout for AIOS Pro ────────────
+    // Proxies to Storm API billing/checkout with AIOS-specific redirect URLs.
+    if (req.method === "POST" && pathname === "/api/aios/checkout") {
+      const authHeader = req.headers["authorization"] || "";
+      if (!authHeader.startsWith("Bearer ")) {
+        return json(res, 401, { ok: false, error: "Authentication required. Please sign in first." });
+      }
+      const body = await readBody(req);
+      const tier = (body && body.tier) || "pro";
+      if (tier !== "pro" && tier !== "enterprise") {
+        return json(res, 400, { ok: false, error: "Invalid tier. Use: pro" });
+      }
+      const STORM_API = process.env.STORM_API_URL || "https://api.getbrains4ai.com";
+      const AIOS_BASE = "https://realaios.com";
+      try {
+        const upstream = await fetch(`${STORM_API}/api/billing/checkout`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": authHeader,
+          },
+          body: JSON.stringify({
+            tier,
+            success_url: `${AIOS_BASE}/pricing?success=1&session_id={CHECKOUT_SESSION_ID}`,
+            cancel_url: `${AIOS_BASE}/pricing?cancel=1`,
+          }),
+          signal: AbortSignal.timeout(15000),
+        });
+        const data = await upstream.json().catch(() => ({}));
+        if (upstream.ok && data.checkoutUrl) {
+          return json(res, 200, { ok: true, url: data.checkoutUrl });
+        }
+        return json(res, upstream.status, { ok: false, error: data.error || "Checkout unavailable. Please try again." });
+      } catch (err) {
+        console.error("[AIOS] Checkout proxy error:", err.message);
+        return json(res, 500, { ok: false, error: "Checkout service unavailable. Please try again." });
+      }
+    }
+
+    // ── GET /api/aios/billing/status — subscription status proxy ──────────
+    if (req.method === "GET" && pathname === "/api/aios/billing/status") {
+      const authHeader = req.headers["authorization"] || "";
+      if (!authHeader.startsWith("Bearer ")) {
+        return json(res, 401, { ok: false, error: "Authentication required" });
+      }
+      const STORM_API = process.env.STORM_API_URL || "https://api.getbrains4ai.com";
+      try {
+        const upstream = await fetch(`${STORM_API}/api/billing/subscription`, {
+          headers: { "Authorization": authHeader },
+          signal: AbortSignal.timeout(8000),
+        });
+        const data = await upstream.json().catch(() => ({}));
+        return json(res, upstream.status, data);
+      } catch (err) {
+        console.error("[AIOS] Billing status proxy error:", err.message);
+        return json(res, 500, { ok: false, error: "Billing service unavailable" });
+      }
+    }
+
     // ── POST /waitlist — proxy to Storm API waitlist ──────────────────────
     if (req.method === "POST" && pathname === "/waitlist") {
       const body = await readBody(req);
@@ -6359,6 +6423,14 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
       if (!LOGIN_HTML) return json(res, 404, { ok: false, error: "Login page not found" });
       res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
       res.end(LOGIN_HTML);
+      return;
+    }
+
+    // ── GET /pricing — AIOS subscription pricing ─────────────────────────
+    if (req.method === "GET" && (pathname === "/pricing" || pathname === "/pricing/")) {
+      if (!PRICING_HTML) return json(res, 404, { ok: false, error: "Pricing page not found" });
+      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+      res.end(PRICING_HTML);
       return;
     }
 
