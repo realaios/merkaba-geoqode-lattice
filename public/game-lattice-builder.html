@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Grid Builder · PHI Puzzle · AIOS Arcade</title>
+    <title>Grid Builder — PHI Puzzle — AIOS Arcade</title>
     <meta
       name="description"
       content="Reconstruct damaged lattice nodes. Gaze to connect them in the correct PHI sequence. Hand-tracking physics puzzles. AIOS Arcade."
@@ -11,7 +11,7 @@
     <link rel="canonical" href="https://realaios.com/games/grid-builder" />
     <meta
       property="og:title"
-      content="Grid Builder · PHI Puzzle · AIOS Arcade"
+      content="Grid Builder — PHI Puzzle — AIOS Arcade"
     />
     <meta
       property="og:description"
@@ -24,6 +24,7 @@
       content="https://realaios.com/public/og-image.svg"
     />
     <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" type="image/svg+xml" href="/public/favicon.svg" />
     <script src="/public/vendor/aframe-1.4.0.min.js"></script>
     <style>
       *,
@@ -522,30 +523,19 @@
   <body>
     <!-- NAV -->
     <nav class="site-nav" id="site-nav">
-      <a href="/" class="site-nav-logo">⬡ AIOS</a>
+      <a href="/" class="site-nav-logo">&#x2B21; AIOS</a>
       <div class="site-nav-links">
-        <a href="/games"> Games</a>
-        <a href="/aiosdream">Theatre</a>
-        <a href="/vr"> VR</a>
-        <a href="/vr-hub">VR Hub</a>
-        <a href="/plaistore">PLAIstore</a>
-        <a href="/geo-library"> Library</a>
-        <a href="/geo-codec">.geo</a>
-        <a href="/aios-studio">Studio</a>
-        <a href="/lab">Lab</a>
-        <a href="/news"> News</a>
-        <a href="/products"> Products</a>
-        <a href="/experiences"> Experiences</a>
+        <a href="/experiences">Experiences</a><a href="/vr-hub">VR Hub</a><a href="/vr">&#x1F97D; VR</a><a href="/games" class="active">&#x1F3AE; Games</a><a href="/plaistore">PLAIstore</a><a href="/geo-library">&#x1F4DA; Library</a><a href="/geo-codec">.geo</a><a href="/aios-studio">Studio</a><a href="/pricing">Pricing</a>
       </div>
       <div class="site-nav-right">
-        <a href="/live" class="site-nav-live">● LIVE</a>
-        <a href="/start" class="site-nav-cta">Start Free →</a>
+        <a href="/live" class="site-nav-live">&#x25CF; LIVE</a>
+        <a href="/start" class="site-nav-cta">Start Free &#x2192;</a>
       </div>
     </nav>
 
     <!-- LOBBY -->
     <div id="lobby">
-      <div class="lobby-badge">⬡ AIOS Arcade · Grid Builder</div>
+      <div class="lobby-badge">? AIOS Arcade — Grid Builder</div>
       <div class="lobby-title">Grid Builder</div>
       <div class="lobby-sub">
         Damaged lattice nodes float in sequence order. Gaze at each one in the
@@ -557,7 +547,7 @@
           <div class="lobby-stat-l">Max Nodes</div>
         </div>
         <div>
-          <div class="lobby-stat-n">3→8</div>
+          <div class="lobby-stat-n">3?8</div>
           <div class="lobby-stat-l">Sequence Length</div>
         </div>
         <div>
@@ -597,9 +587,9 @@
       </div>
       <button class="btn-play" onclick="startGame()"> LAUNCH GAME</button>
       <div class="lobby-hint">
-        Gaze at numbered nodes in order · 1 ? 2 ? 3 ? ·
+        Gaze at numbered nodes in order — 1 ? 2 ? 3 ? —
       </div>
-      <a href="/vr-hub" class="lobby-back">← Back to VR Hub</a>
+      <a href="/vr-hub" class="lobby-back">? Back to VR Hub</a>
     </div>
 
     <!-- GAME CONTAINER -->
@@ -634,7 +624,7 @@
     <div id="seq-overlay">
       <div class="seq-banner">
         <div class="seq-banner-label">Connect nodes in order</div>
-        <div class="seq-banner-nums" id="seq-banner-nums">1 → 2 → 3</div>
+        <div class="seq-banner-nums" id="seq-banner-nums">1 ? 2 ? 3</div>
         <div class="seq-banner-next" id="seq-banner-next">Gaze at node 1</div>
       </div>
     </div>
@@ -643,13 +633,13 @@
     <div id="success-flash"></div>
 
     <!-- EXIT BTN -->
-    <button id="exit-btn" onclick="exitGame()">✕ Exit</button>
+    <button id="exit-btn" onclick="exitGame()">? Exit</button>
 
     <!-- ROUND WIN -->
     <div id="roundwin">
       <div class="rw-title"> LATTICE RESTORED</div>
-      <div class="rw-sub" id="rw-sub">Round 1 complete · +10 points</div>
-      <button class="btn-next" onclick="nextRound()">Next Round →</button>
+      <div class="rw-sub" id="rw-sub">Round 1 complete — +10 points</div>
+      <button class="btn-next" onclick="nextRound()">Next Round ?</button>
     </div>
 
     <!-- GAME OVER (too many wrong guesses) -->
@@ -875,7 +865,7 @@
             updateHUD();
             refreshNodeColors();
             document.getElementById("rw-sub").textContent =
-              `Round ${round} complete · +${pts} points`;
+              `Round ${round} complete — +${pts} points`;
             setTimeout(() => {
               document.getElementById("roundwin").style.display = "flex";
             }, 500);
@@ -985,7 +975,7 @@
                 look-controls="reverseMouseDrag: false; touchEnabled: true; pointerLockEnabled: false"
                 wasd-controls="enabled: false"
                 fov="80">
-                <!-- Gaze cursor · 1.5s fuse -->
+                <!-- Gaze cursor — 1.5s fuse -->
                 <a-cursor
                   id="game-cursor"
                   fuse="true"
@@ -1028,7 +1018,7 @@
             </a-sphere>
 
             <!-- Title -->
-            <a-text value="GRID BUILDER · PHI=${PHI}" position="0 5.2 -5" align="center" color="#6b84b8" width="5" font="roboto" material="shader: flat"></a-text>
+            <a-text value="GRID BUILDER — PHI=${PHI}" position="0 5.2 -5" align="center" color="#6b84b8" width="5" font="roboto" material="shader: flat"></a-text>
 
           </a-scene>`;
 
@@ -1079,7 +1069,7 @@
         document.getElementById("seq-overlay").style.display = "none";
         document.getElementById("go-score-n").textContent = score;
         document.getElementById("go-wave").textContent =
-          `Round ${round} · Sequence length: ${seqLen}`;
+          `Round ${round} — Sequence length: ${seqLen}`;
         document.getElementById("gameover").style.display = "flex";
         // Submit to leaderboard
         const pn = localStorage.getItem("aios_player_name") || "Anonymous";
@@ -1127,7 +1117,7 @@
       function shareBuilderScore() {
         const scoreEl = document.getElementById("go-score-n");
         const score = scoreEl ? scoreEl.textContent : "0";
-        const text = `I scored ${score} points in AIOS Grid Builder · can you beat me?  #AIOS #AIOSGames #realaios`;
+        const text = `I scored ${score} points in AIOS Grid Builder — can you beat me?  #AIOS #AIOSGames #realaios`;
         const url = "https://realaios.com/games/grid-builder";
         if (navigator.share) {
           navigator

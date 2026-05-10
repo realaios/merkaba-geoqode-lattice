@@ -3,15 +3,15 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-    <title>PHI/PSI Dual Attestation · AIOS Swarm</title>
+    <title>PHI/PSI Dual Attestation — AIOS Swarm</title>
     <meta
       name="description"
-      content="Every critical AIOS decision verified by two opposing AI poles before execution. PHI/PSI dual attestation · coherence score 1.0, zero echo-chamber by design."
+      content="Every critical AIOS decision verified by two opposing AI poles before execution. PHI/PSI dual attestation — coherence score 1.0, zero echo-chamber by design."
     />
-    <meta property="og:title" content="PHI/PSI Dual Attestation · AIOS" />
+    <meta property="og:title" content="PHI/PSI Dual Attestation — AIOS" />
     <meta
       property="og:description"
-      content="Two independent AI verification agents cross-validate every decision from opposite poles. Coherence 1.0 · not a feature, a law."
+      content="Two independent AI verification agents cross-validate every decision from opposite poles. Coherence 1.0 — not a feature, a law."
     />
     <meta property="og:url" content="https://realaios.com/attest" />
     <meta
@@ -20,9 +20,10 @@
     />
     <meta property="og:type" content="website" />
     <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" type="image/svg+xml" href="/public/favicon.svg" />
     <meta
       name="twitter:title"
-      content="PHI/PSI Dual Attestation · AIOS Swarm"
+      content="PHI/PSI Dual Attestation — AIOS Swarm"
     />
     <meta
       name="twitter:description"
@@ -515,19 +516,13 @@
   </head>
   <body>
     <nav class="site-nav">
-      <a href="/" class="site-nav-logo">⬡ AIOS</a>
+      <a href="/" class="site-nav-logo">&#x2B21; AIOS</a>
       <div class="site-nav-links">
-        <a href="/games"> Games</a><a href="/aiosdream">Theatre</a
-        ><a href="/vr"> VR</a><a href="/vr-hub">VR Hub</a
-        ><a href="/plaistore">PLAIstore</a><a href="/geo-library"> Library</a
-        ><a href="/geo-codec">.geo</a><a href="/aios-studio">Studio</a
-        ><a href="/lab">Lab</a><a href="/news"> News</a
-        ><a href="/products"> Products</a>
-        <a href="/experiences"> Experiences</a>
+        <a href="/experiences">Experiences</a><a href="/vr-hub">VR Hub</a><a href="/vr">&#x1F97D; VR</a><a href="/games">&#x1F3AE; Games</a><a href="/plaistore">PLAIstore</a><a href="/geo-library">&#x1F4DA; Library</a><a href="/geo-codec">.geo</a><a href="/aios-studio">Studio</a><a href="/pricing">Pricing</a>
       </div>
       <div class="site-nav-right">
-        <a href="/live" class="site-nav-live">● LIVE</a
-        ><a href="/start" class="site-nav-cta">Start Free →</a>
+        <a href="/live" class="site-nav-live">? LIVE</a
+        ><a href="/start" class="site-nav-cta">Start Free &#x2192;</a>
       </div>
     </nav>
 
@@ -535,7 +530,7 @@
       <h1>PHI/PSI Dual Attestation</h1>
       <p class="subtitle">
         Run any content through the BESX Alpha (f=1.618) and Witness Omega
-        (?=1.414) scanner pair. Genuinely distinct geometric poles · cannot
+        (?=1.414) scanner pair. Genuinely distinct geometric poles — cannot
         echo-chamber.
       </p>
 
@@ -599,7 +594,7 @@ Try: a research hypothesis, a system design decision, or a code review snippet."
                   id="phiScore"
                   style="color: var(--muted)"
                 >
-                  ·
+                  —
                 </div>
                 <div class="pole-sub">S1 ? S8</div>
               </div>
@@ -612,7 +607,7 @@ Try: a research hypothesis, a system design decision, or a code review snippet."
                   id="psiScore"
                   style="color: var(--muted)"
                 >
-                  ·
+                  —
                 </div>
                 <div class="pole-sub">S8 ? S1</div>
               </div>
@@ -632,11 +627,11 @@ Try: a research hypothesis, a system design decision, or a code review snippet."
 
             <div class="stat-row">
               <span class="stat-key">Attested Score</span
-              ><span class="stat-val" id="attestedScore">·</span>
+              ><span class="stat-val" id="attestedScore">—</span>
             </div>
             <div class="stat-row">
               <span class="stat-key">Coherence</span
-              ><span class="stat-val" id="coherenceVal">·</span>
+              ><span class="stat-val" id="coherenceVal">—</span>
             </div>
             <div class="stat-row">
               <span class="stat-key">Platform</span
@@ -653,7 +648,7 @@ Try: a research hypothesis, a system design decision, or a code review snippet."
       const EXAMPLES = [
         "Hypothesis: Deploying a zero-trust authentication layer with biometric second factor and hardware key backup achieves the optimal balance between security strength and user friction for an enterprise context.",
         "Decision: We should deploy the new authentication system to production. It uses JWT tokens with 256-bit secrets, parameterized SQL queries, and rate limiting at 100 req/15min. The system has been tested against OWASP Top 10 vulnerabilities.",
-        "INT. THE CONSTRUCT. Neo stands in a white room. MORPHEUS offers two pills. ACTION: Neo reaches for the red pill. PHYSICS: The simulation begins to dissolve. LOCATION: Machine fields · 852Hz structural order. NARRATIVE: The awakening begins.",
+        "INT. THE CONSTRUCT. Neo stands in a white room. MORPHEUS offers two pills. ACTION: Neo reaches for the red pill. PHYSICS: The simulation begins to dissolve. LOCATION: Machine fields — 852Hz structural order. NARRATIVE: The awakening begins.",
       ];
       let exIdx = 0;
 
@@ -665,13 +660,13 @@ Try: a research hypothesis, a system design decision, or a code review snippet."
 
       function setScore(id, score) {
         const el = document.getElementById(id);
-        if (score === null || score === undefined || score === "·") {
-          el.textContent = "·";
+        if (score === null || score === undefined || score === "—") {
+          el.textContent = "—";
           el.style.color = "var(--muted)";
           return;
         }
         const val = typeof score === "number" ? score : parseFloat(score);
-        el.textContent = isNaN(val) ? "·" : val.toFixed(3);
+        el.textContent = isNaN(val) ? "—" : val.toFixed(3);
         el.style.color =
           val >= 0.9
             ? "var(--green)"
@@ -693,23 +688,23 @@ Try: a research hypothesis, a system design decision, or a code review snippet."
         if (coherence >= 0.99) {
           box.classList.add("verdict-attested");
           icon.textContent = "?";
-          text.textContent = "SCANNER_ATTESTED · ABSOLUTE";
-          sub.textContent = `Coherence ${(coherence * 100).toFixed(1)}% · attestation complete`;
+          text.textContent = "SCANNER_ATTESTED — ABSOLUTE";
+          sub.textContent = `Coherence ${(coherence * 100).toFixed(1)}% — attestation complete`;
         } else if (coherence >= 0.8) {
           box.classList.add("verdict-attested");
           icon.textContent = "?";
-          text.textContent = "ATTESTED · NOMINAL";
-          sub.textContent = `Score ${attested?.toFixed(3) || "·"} · coherence ${(coherence * 100).toFixed(1)}%`;
+          text.textContent = "ATTESTED — NOMINAL";
+          sub.textContent = `Score ${attested?.toFixed(3) || "—"} — coherence ${(coherence * 100).toFixed(1)}%`;
         } else if (coherence >= 0.5) {
           box.classList.add("verdict-warning");
           icon.textContent = "?";
           text.textContent = "PARTIAL ATTESTATION";
-          sub.textContent = `Coherence ${(coherence * 100).toFixed(1)}% · PHI/PSI poles diverge`;
+          sub.textContent = `Coherence ${(coherence * 100).toFixed(1)}% — PHI/PSI poles diverge`;
         } else {
           box.classList.add("verdict-fail");
           icon.textContent = "?";
           text.textContent = "ATTESTATION FAILED";
-          sub.textContent = `Coherence ${(coherence * 100).toFixed(1)}% · below critical threshold`;
+          sub.textContent = `Coherence ${(coherence * 100).toFixed(1)}% — below critical threshold`;
         }
       }
 
@@ -726,8 +721,8 @@ Try: a research hypothesis, a system design decision, or a code review snippet."
         document.getElementById("verdictBox").style.display = "none";
         setScore("phiScore", null);
         setScore("psiScore", null);
-        document.getElementById("attestedScore").textContent = "·";
-        document.getElementById("coherenceVal").textContent = "·";
+        document.getElementById("attestedScore").textContent = "—";
+        document.getElementById("coherenceVal").textContent = "—";
 
         try {
           // Get system attestation score
@@ -788,7 +783,7 @@ Try: a research hypothesis, a system design decision, or a code review snippet."
 
       async function runSystemSweep() {
         document.getElementById("sweepResult").innerHTML =
-          '<div class="placeholder">Sweeping 7 lattice source files·</div>';
+          '<div class="placeholder">Sweeping 7 lattice source files—</div>';
         try {
           const r = await fetch(BASE + "/swarm/sweep?attest=1");
           const d = await r.json();
@@ -802,7 +797,7 @@ Try: a research hypothesis, a system design decision, or a code review snippet."
         <div class="finding-cell"><div class="finding-count count-medium">${f.medium || 0}</div><div class="finding-label">Medium</div></div>
         <div class="finding-cell"><div class="finding-count count-low">${f.low || 0}</div><div class="finding-label">Low</div></div>
       </div>
-      <div class="stat-row" style="margin-bottom:12px"><span class="stat-key">Ecosystem Status</span><span style="color:var(--green);font-weight:700">${d.ecosystemStatus || "·"}</span></div>
+      <div class="stat-row" style="margin-bottom:12px"><span class="stat-key">Ecosystem Status</span><span style="color:var(--green);font-weight:700">${d.ecosystemStatus || "—"}</span></div>
       <div class="stat-row" style="margin-bottom:12px"><span class="stat-key">Swarm Coherence</span><span style="color:var(--cyan);font-weight:700">${((d.swarmCoherence || 0) * 100).toFixed(1)}%</span></div>
       <div class="file-list">
         ${files

@@ -3,15 +3,15 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-    <title>AIOS Playground · AIOS Lab</title>
+    <title>AIOS Lab · GeoQode Playground</title>
     <meta
       name="description"
-      content="Visualise the 3D AI architecture in real-time. Walk through AIOS geometry. Frequency mapping, field simulation, and architecture explorer."
+      content="Explore AIOS geometry in real-time. Frequency mapping, field simulation, and GeoQode coordinate editor."
     />
-    <meta property="og:title" content="AIOS Playground · AIOS Lab" />
+    <meta property="og:title" content="AIOS Lab · GeoQode Playground" />
     <meta
       property="og:description"
-      content="Visualise the 3D AI architecture in real-time.  frequency mapping, field simulation, AIOS coordinate editor."
+      content="Explore AIOS geometry in real-time. Frequency mapping, field simulation, GeoQode coordinate editor."
     />
     <meta property="og:url" content="https://realaios.com/lab" />
     <meta
@@ -20,10 +20,11 @@
     />
     <meta property="og:type" content="website" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="AIOS Playground · AIOS Lab" />
+    <link rel="icon" type="image/svg+xml" href="/public/favicon.svg" />
+    <meta name="twitter:title" content="AIOS Lab · GeoQode Playground" />
     <meta
       name="twitter:description"
-      content="Real-time 3D AIOS visualisation. , , Ambient frequency. Walk the AIOS geometry."
+      content="Real-time AIOS geometry. Frequency mapping, field simulation, GeoQode coordinate editor."
     />
     <meta
       name="twitter:image"
@@ -76,59 +77,21 @@
         pointer-events: none;
         z-index: 0;
       }
-      nav {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        z-index: 100;
-        padding: 14px 28px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        background: rgba(5, 10, 20, 0.9);
-        backdrop-filter: blur(12px);
-        border-bottom: 1px solid var(--border);
-      }
-      .nav-brand {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        text-decoration: none;
-      }
-      .nav-logo {
+.nav-logo {
         font-size: 18px;
         font-weight: 800;
         color: var(--cyan);
       }
-      .nav-badge {
-        font-size: 10px;
-        font-weight: 700;
-        letter-spacing: 2px;
-        color: var(--muted);
-        border: 1px solid var(--border);
-        padding: 2px 7px;
-        border-radius: 4px;
-        text-transform: uppercase;
-      }
-      .nav-links {
+.nav-links {
         display: flex;
         gap: 20px;
         align-items: center;
       }
-      .nav-links a {
-        color: var(--muted);
-        text-decoration: none;
-        font-size: 13px;
-        font-weight: 500;
-        transition: color 0.2s;
-      }
-      .nav-links a:hover,
+.nav-links a:hover,
       .nav-links a.active {
         color: var(--cyan);
       }
-      main {
-        padding-top: 70px;
+      main { padding-top: 54px;
         height: 100vh;
         display: flex;
         flex-direction: column;
@@ -616,25 +579,14 @@
     </style>
   </head>
   <body>
-    <nav class="site-nav">
-      <a href="/" class="site-nav-logo">⬡ AIOS</a>
+        <nav class="site-nav">
+      <a href="/" class="site-nav-logo">&#x2B21; AIOS</a>
       <div class="site-nav-links">
-        <a href="/games"> Games</a>
-        <a href="/aiosdream">Theatre</a>
-        <a href="/vr"> VR</a>
-        <a href="/vr-hub">VR Hub</a>
-        <a href="/plaistore">PLAIstore</a>
-        <a href="/geo-library"> Library</a>
-        <a href="/geo-codec">.geo</a>
-        <a href="/aios-studio">Studio</a>
-        <a href="/lab" class="active">Lab</a>
-        <a href="/news"> News</a>
-        <a href="/products"> Products</a>
-        <a href="/experiences"> Experiences</a>
+        <a href="/experiences">Experiences</a><a href="/vr-hub">VR Hub</a><a href="/vr">&#x1F97D; VR</a><a href="/games">&#x1F3AE; Games</a><a href="/plaistore">PLAIstore</a><a href="/geo-library">&#x1F4DA; Library</a><a href="/geo-codec">.geo</a><a href="/aios-studio">Studio</a><a href="/lab" class="active">Lab</a>
       </div>
       <div class="site-nav-right">
-        <a href="/live" class="site-nav-live">● LIVE</a>
-        <a href="/start" class="site-nav-cta">Start Free →</a>
+        <a href="/live" class="site-nav-live">&#x25CF; LIVE</a>
+        <a href="/start" class="site-nav-cta">Start Free &#x2192;</a>
       </div>
     </nav>
 
@@ -663,7 +615,7 @@
       <div class="split">
         <div class="editor-pane">
           <div class="pane-header">
-            <span class="dot"></span>Script Editor · .geo Format
+            <span class="dot"></span>Script Editor — .geo Format
           </div>
           <textarea
             id="editor"
@@ -703,7 +655,7 @@
   PROJECTION: Holographic sweep
 }`,
         matrix: `Playbook CinemaVirtualization matrix {
-  TITLE: The Matrix · Construct Room
+  TITLE: The Matrix — Construct Room
   GENRE: Sci-Fi Action
   SCENES:
   - Scene 1: "Neo meets Morpheus"
@@ -719,7 +671,7 @@
     CHARACTERS: ["Neo", "Morpheus"]
     LOCATION: "Training dojo"
   PROJECTION: Construct holography + grid tessellation
-  AUTHORSHIP: Founder · Bradley
+  AUTHORSHIP: Founder — Bradley
 }`,
         physics: `Playbook PhysicsExperiment AI {
   TITLE: Resonance Field Simulation
@@ -817,7 +769,7 @@
         const circumference = 2 * Math.PI * 52;
         const dashOffset = circumference * (1 - coherence);
 
-        // Build dimension activation · simulate based on coherence
+        // Build dimension activation — simulate based on coherence
         const dims = buildDimensions(coherence);
         const scenes = c.scenes || c.frames || [];
         const gov = c.governance || {};
@@ -842,16 +794,16 @@
     <div class="stat-row"><span class="stat-key">Architecture</span><span class="stat-val" style="color:var(--cyan)">AIOS</span></div>
     <div class="stat-row"><span class="stat-key">Awareness Level</span><span class="stat-val">${gov.awarenessLevel || "active"}</span></div>
     ${gov.reason ? `<div class="stat-row"><span class="stat-key">Verdict</span><span class="stat-val" style="color:var(--red)">${gov.reason}</span></div>` : ""}
-    <div class="stat-row"><span class="stat-key">Projection ID</span><span class="stat-val" style="font-size:10px;color:var(--muted)">${c.virtualizationId || c.projectionId || "·"}</span></div>
+    <div class="stat-row"><span class="stat-key">Projection ID</span><span class="stat-val" style="font-size:10px;color:var(--muted)">${c.virtualizationId || c.projectionId || "—"}</span></div>
   </div>
 
   <div class="card">
     <div class="card-title">AI Processing Nodes</div>
     <div class="dim-grid" id="dimGrid">${dims.map((d, i) => `<div class="dim-cell ${d.state}" title="Node ${i + 1}: ${d.name}"></div>`).join("")}</div>
     <div style="display:flex;gap:12px;margin-top:8px">
-      <span style="font-size:10px;color:var(--cyan)">· Active</span>
-      <span style="font-size:10px;color:var(--yellow)">· Warning</span>
-      <span style="font-size:10px;color:var(--red)">· Failed</span>
+      <span style="font-size:10px;color:var(--cyan)">— Active</span>
+      <span style="font-size:10px;color:var(--yellow)">— Warning</span>
+      <span style="font-size:10px;color:var(--red)">— Failed</span>
     </div>
   </div>
 

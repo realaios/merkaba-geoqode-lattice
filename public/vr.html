@@ -3,19 +3,19 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>AIOS VR · __VR_LIVE__ Live Worlds · Meta Quest · realaios.com</title>
+    <title>AIOS VR — __VR_LIVE__ Live Worlds — Meta Quest — realaios.com</title>
     <meta
       name="description"
-      content="__VR_LIVE__ live WebXR experiences for Meta Quest 2/3 · Cinema, Enterprise, Lab, Arcade, Wellness, Social, Creator, Education, Art. Zero install, browser only."
+      content="__VR_LIVE__ live WebXR experiences for Meta Quest 2/3 — Cinema, Enterprise, Lab, Arcade, Wellness, Social, Creator, Education, Art. Zero install, browser only."
     />
     <meta name="theme-color" content="#050a14" />
     <meta
       property="og:title"
-      content="AIOS VR · __VR_LIVE__ Live Worlds for Meta Quest"
+      content="AIOS VR — __VR_LIVE__ Live Worlds for Meta Quest"
     />
     <meta
       property="og:description"
-      content="__VR_LIVE__ live WebXR experiences across 9 categories. Zero install · open realaios.com/vr in your Meta Quest Browser and dive in."
+      content="__VR_LIVE__ live WebXR experiences across 9 categories. Zero install — open realaios.com/vr in your Meta Quest Browser and dive in."
     />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://realaios.com/vr" />
@@ -24,20 +24,21 @@
       content="https://realaios.com/public/og-image.svg"
     />
     <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" type="image/svg+xml" href="/public/favicon.svg" />
     <meta
       name="twitter:title"
-      content="AIOS VR · __VR_LIVE__ Live WebXR Experiences for Meta Quest"
+      content="AIOS VR — __VR_LIVE__ Live WebXR Experiences for Meta Quest"
     />
     <meta
       name="twitter:description"
-      content="__VR_LIVE__ live immersive worlds across 9 categories. Zero install · launch direct from Meta Quest Browser."
+      content="__VR_LIVE__ live immersive worlds across 9 categories. Zero install — launch direct from Meta Quest Browser."
     />
     <meta
       name="twitter:image"
       content="https://realaios.com/public/og-image.svg"
     />
     <link rel="canonical" href="https://realaios.com/vr" />
-    <!-- A-Frame 1.5.0 · WebXR foundation -->
+    <!-- A-Frame 1.5.0 — WebXR foundation -->
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
     <style>
       * {
@@ -673,45 +674,44 @@
           padding-top: 50px;
         }
       }
+      /* FOOTER */
+      footer {
+        padding: 2.5rem 1.5rem;
+        text-align: center;
+        border-top: 1px solid var(--border);
+        color: var(--muted);
+        font-size: 0.8rem;
+      }
+      footer a { color: var(--cyan); text-decoration: none; }
+      footer a:hover { opacity: 0.8; }
     </style>
   </head>
   <body>
     <!-- -- Flat UI (shown in browser / non-VR) -- -->
     <div id="flat-ui">
       <nav class="site-nav">
-        <a href="/" class="site-nav-logo">⬡ AIOS</a>
+        <a href="/" class="site-nav-logo">&#x2B21; AIOS</a>
         <div class="site-nav-links">
-          <a href="/games"> Games</a>
-          <a href="/aiosdream">Theatre</a>
-          <a href="/vr" class="active"> VR</a>
-          <a href="/vr-hub">VR Hub</a>
-          <a href="/plaistore">PLAIstore</a>
-          <a href="/geo-library"> Library</a>
-          <a href="/geo-codec">.geo</a>
-          <a href="/aios-studio">Studio</a>
-          <a href="/lab">Lab</a>
-          <a href="/news"> News</a>
-          <a href="/products"> Products</a>
-          <a href="/experiences"> Experiences</a>
-        </div>
+        <a href="/experiences">Experiences</a><a href="/vr-hub">VR Hub</a><a href="/vr" class="active">&#x1F97D; VR</a><a href="/games">&#x1F3AE; Games</a><a href="/plaistore">PLAIstore</a><a href="/geo-library">&#x1F4DA; Library</a><a href="/geo-codec">.geo</a><a href="/aios-studio">Studio</a><a href="/pricing">Pricing</a>
+      </div>
         <div class="site-nav-right">
-          <a href="/live" class="site-nav-live">● LIVE</a>
-          <a href="/start" class="site-nav-cta">Start Free →</a>
+          <a href="/live" class="site-nav-live">&#x25CF; LIVE</a>
+          <a href="/start" class="site-nav-cta">Start Free &#x2192;</a>
         </div>
       </nav>
 
       <div class="vr-hero">
-        <div class="grid-sig">AIOS VR ·</div>
+        <div class="grid-sig">AIOS VR &#x1F97D;</div>
         <h1>AIOS Dimensional Theatre<br />in Virtual Reality</h1>
         <p>
-          Autonomous AI-generated spatial experiences · fully navigable in
+          Autonomous AI-generated spatial experiences — fully navigable in
           immersive VR.
           <span id="vr-prog-count">__VR_LIVE__</span> live programmes across 9
-          categories. Works on Meta Quest 2 &amp; 3 via browser. Zero install ·
+          categories. Works on Meta Quest 2 &amp; 3 via browser. Zero install —
           no app required.
         </p>
 
-        <!-- Enter button · always shown; label updates based on device -->
+        <!-- Enter button — always shown; label updates based on device -->
         <button id="enter-vr-btn" onclick="enterVRScene()">
           Enter Cinema Mode
         </button>
@@ -854,8 +854,8 @@
           </div>
         </div>
         <p style="margin: 0.9rem 0 0; font-size: 0.72rem; color: #4a6080">
-          No app install · No account required · Works on Quest 2, Quest 3 &amp;
-          Quest Pro · Also works on any WebXR browser
+          No app install — No account required — Works on Quest 2, Quest 3 &amp;
+          Quest Pro — Also works on any WebXR browser
         </p>
       </div>
 
@@ -885,14 +885,14 @@
           Social
         </button>
         <button class="cat-tab" onclick="filterProgs('creator', this)">
-          ️ Creator
+          Creator
         </button>
         <a
           href="/vr-hub"
           class="cat-tab"
           style="border-color: rgba(0, 212, 255, 0.3); color: var(--cyan)"
         >
-          Full Hub →</a
+          Full Hub &#x2192;</a
         >
       </div>
 
@@ -937,7 +937,7 @@
             margin-top: 0.4rem;
           "
         >
-          6 programmes · 3D geometry · Spatial audio at AIOS
+          6 programmes — 3D geometry — Spatial audio at AIOS
         </div>
       </div>
       <div class="programme-grid" id="prog-grid">
@@ -1010,7 +1010,7 @@
           sem: "LOCATION",
           cat: "cinema",
           desc: "Lunar descent telemetry, mission control simulation, historical immersion.",
-          shortDesc: "One small step · in full immersive VR.",
+          shortDesc: "One small step — in full immersive VR.",
           panelAngle: 180,
           gridNode: 24,
         },
@@ -1056,7 +1056,7 @@
         },
         {
           name: "breathwork",
-          display: "Breathwork · Holotropic VR",
+          display: "Breathwork — Holotropic VR",
           sem: "EMOTION",
           cat: "wellness",
           desc: "Guided breathwork sessions with visual breath-tracking orbs. 4-7-8 protocol in full VR.",
@@ -1066,7 +1066,7 @@
         },
         {
           name: "phi-breaker",
-          display: "PHI Breaker · Lattice Shooter",
+          display: "PHI Breaker — Lattice Shooter",
           sem: "ACTION",
           cat: "arcade",
           desc: "Defend the 3D grid from entropy. Shoot frequency disruptors across 3D space.",
@@ -1076,7 +1076,7 @@
         },
         {
           name: "grid-builder",
-          display: "Lattice Builder · Puzzle VR",
+          display: "Lattice Builder — Puzzle VR",
           sem: "PHYSICS",
           cat: "arcade",
           desc: "Reconstruct damaged nodes. Align PHI harmonics. Physics-based puzzle solving.",
@@ -1096,7 +1096,7 @@
         },
         {
           name: "ancient-rome",
-          display: "Ancient Rome · 100 AD",
+          display: "Ancient Rome — 100 AD",
           sem: "LOCATION",
           cat: "education",
           desc: "Walk the Roman Forum, enter the Colosseum, witness the height of the Empire reconstructed at scale.",
@@ -1116,7 +1116,7 @@
         },
         {
           name: "spatial-canvas",
-          display: "Spatial Canvas · 3D Painting",
+          display: "Spatial Canvas — 3D Painting",
           sem: "EMOTION",
           cat: "art",
           desc: "Paint in full 3D space with hand tracking. PHI-golden spiral brush guides. Export as GLB.",
@@ -1126,7 +1126,7 @@
         },
         {
           name: "frequency-composer",
-          display: "Frequency Composer · Spatial Audio",
+          display: "Frequency Composer — Spatial Audio",
           sem: "EMOTION",
           cat: "art",
           desc: "Compose music by positioning sound orbs in 3D space. Spatial audio.",
@@ -1146,7 +1146,7 @@
         },
         {
           name: "remote-hq",
-          display: "Remote HQ · Virtual Office",
+          display: "Remote HQ — Virtual Office",
           sem: "LOCATION",
           cat: "enterprise",
           desc: "Persistent spatial office anchored to the grid. Meet, present, and collaborate at .",
@@ -1166,7 +1166,7 @@
         },
         {
           name: "grid-lounge",
-          display: "The Lounge · Social Hub",
+          display: "The Lounge — Social Hub",
           sem: "DIALOGUE",
           cat: "social",
           desc: "The ambient social gathering place of realaios.com. Presence indicators, spatial voice,  DIALOGUE field. Feel the grid breathe.",
@@ -1186,7 +1186,7 @@
         },
         {
           name: "geoqode-studio",
-          display: "AIOS Studio · VR Builder",
+          display: "AIOS Studio — VR Builder",
           sem: "HOLOGRAPHIC",
           cat: "creator",
           desc: "Live AIOS coordinate explorer and node builder. Assign  frequencies to A-Frame scenes and test in real-time.",
@@ -1207,7 +1207,7 @@
         // -- NEW: LAB ---------------------------------------------------
         {
           name: "solar-system",
-          display: "Solar System · Orbital VR",
+          display: "Solar System — Orbital VR",
           sem: "LOCATION",
           cat: "lab",
           desc: "Orbital mechanics at true scale. Walk Jupiter's surface, orbit Saturn's rings.  spatial anchoring.",
@@ -1217,7 +1217,7 @@
         },
         {
           name: "fractal-space",
-          display: "Fractal Space · Infinite Zoom",
+          display: "Fractal Space — Infinite Zoom",
           sem: "NARRATIVE",
           cat: "lab",
           desc: "Infinite zoom through Mandelbrot and Julia sets rendered as navigable 3D caverns.  depth field.",
@@ -1231,14 +1231,14 @@
           sem: "HOLOGRAPHIC",
           cat: "lab",
           desc: "Walk the full spectrum of colour-coded spatial chambers.",
-          shortDesc: "Step through frequency chambers 396?.",
+          shortDesc: "Step through frequency chambers 396Hz.",
           panelAngle: 25,
           gridNode: 22,
         },
         // -- NEW: EDUCATION -------------------------------------------
         {
           name: "mathematical-dims",
-          display: "Mathematical Dimensions · 4D Space",
+          display: "Mathematical Dimensions — 4D Space",
           sem: "PHYSICS",
           cat: "education",
           desc: "Walk through 4D hypercubes, Klein bottles, and PHI spirals as physical places.  structural field.",
@@ -1251,7 +1251,7 @@
           display: "Language Immersion Worlds",
           sem: "DIALOGUE",
           cat: "education",
-          desc: "Learn Mandarin in Beijing, Spanish in Barcelona · AI conversation partners at every corner.  dialogue field.",
+          desc: "Learn Mandarin in Beijing, Spanish in Barcelona — AI conversation partners at every corner.  dialogue field.",
           shortDesc: "AI tutors in photorealistic city VR. .",
           panelAngle: 40,
           gridNode: 28,
@@ -1269,7 +1269,7 @@
         },
         {
           name: "generative-theatre",
-          display: "Generative Theatre · AI Plays",
+          display: "Generative Theatre — AI Plays",
           sem: "DIALOGUE",
           cat: "art",
           desc: "AI-written plays performed by spatial avatars in real time. Every show unique.  dialogue field.",
@@ -1280,7 +1280,7 @@
         // -- NEW: SOCIAL --------------------------------------------------
         {
           name: "live-events",
-          display: "AIOS Live Events · VR Broadcasts",
+          display: "AIOS Live Events — VR Broadcasts",
           sem: "ACTION",
           cat: "social",
           desc: "VR concerts, keynotes, launches. Real-time spatial audio, 6DoF movement,  action field.",
@@ -1290,7 +1290,7 @@
         },
         {
           name: "creator-studio",
-          display: "Creator Studio · Build VR Scenes",
+          display: "Creator Studio — Build VR Scenes",
           sem: "NARRATIVE",
           cat: "creator",
           desc: "Build, remix, share VR scenes with AIOS coordinate assignment. Collaborative A-Frame editing.",
@@ -1300,7 +1300,7 @@
         },
         {
           name: "aios-academy",
-          display: "AIOS Academy · Spatial Learning",
+          display: "AIOS Academy — Spatial Learning",
           sem: "LOCATION",
           cat: "education",
           desc: "Cohort-based spatial learning. Live instructor in VR, spatial whiteboards, group exploration.",
@@ -1311,7 +1311,7 @@
         // -- NEW: WELLNESS -----------------------------------------------
         {
           name: "ocean-presence",
-          display: "Ocean Presence · Infinite Horizon",
+          display: "Ocean Presence — Infinite Horizon",
           sem: "EMOTION",
           cat: "wellness",
           desc: "Infinite ocean horizon with dynamic waves. ambient tone. Pure stillness and presence.",
@@ -1321,7 +1321,7 @@
         },
         {
           name: "cosmos-963",
-          display: " Cosmos · Crown Field",
+          display: " Cosmos — Crown Field",
           sem: "NARRATIVE",
           cat: "wellness",
           desc: "Cosmic void with ambient audio, galactic particle field, and silent expansion.",
@@ -1331,7 +1331,7 @@
         },
         {
           name: "mountain-silence",
-          display: "Mountain Silence ·  Clarity",
+          display: "Mountain Silence —  Clarity",
           sem: "EMOTION",
           cat: "wellness",
           desc: "Alpine panorama at golden hour with  expression frequency. Silence, elevation, and clarity.",
@@ -1342,7 +1342,7 @@
         // -- NEW: ARCADE ---------------------------------------------------
         {
           name: "grid-dodge",
-          display: "Lattice Dodge · PHI Reflexes",
+          display: "Lattice Dodge — PHI Reflexes",
           sem: "ACTION",
           cat: "arcade",
           desc: "Dodge entropy disruptors flying through the 3D grid ring. Speed ramps by each wave.",
@@ -1352,7 +1352,7 @@
         },
         {
           name: "phi-architect",
-          display: "PHI Architect · Build or Dissolve",
+          display: "PHI Architect — Build or Dissolve",
           sem: "PHYSICS",
           cat: "arcade",
           desc: "Build perfect structures in zero gravity before the tide dissolves them. Geometry as survival.",
@@ -1362,7 +1362,7 @@
         },
         {
           name: "swarm-defender",
-          display: "Swarm Defender · 8 Drones",
+          display: "Swarm Defender — 8 Drones",
           sem: "ACTION",
           cat: "arcade",
           desc: "Command an 8-drone swarm in PHI formation to repel entropy invasions. spatial control.",
@@ -1482,11 +1482,11 @@
           document.body.removeChild(ta);
         }
         const c = document.getElementById("share-confirm");
-        c.textContent = `? Copied: realaios.com/vr?prog=${progName}`;
+        c.textContent = `\u2713 Copied: realaios.com/vr?prog=${progName}`;
         c.style.display = "block";
         setTimeout(() => {
           c.style.display = "none";
-          c.textContent = "? Link copied to clipboard!";
+          c.textContent = "\u2713 Link copied to clipboard!";
         }, 2500);
       }
 
@@ -1495,7 +1495,7 @@
       const noSupportEl = document.getElementById("vr-not-supported");
       let webXRSupported = false;
 
-      // Always show the enter button · Cinema Mode works on any device.
+      // Always show the enter button — Cinema Mode works on any device.
       // Upgrade label to " Enter VR Mode" if Quest WebXR is detected.
       enterBtn.style.display = "flex";
 
@@ -1560,7 +1560,7 @@
               </a-text>
               <!-- Frequency badge -->
               <a-text
-                value="${sem.hz} · Node ${prog.gridNode}"
+                value="${sem.hz} — Node ${prog.gridNode}"
                 position="0 0.28 0.01"
                 align="center"
                 color="#6b84b8"
@@ -1793,7 +1793,7 @@
         const bgColor = "#050a14";
         container.innerHTML =
           `<button id="vr-exit-btn" onclick="exitVRScene()">&#x2715; Exit</button>` +
-          `<div id="vr-loading" style="position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:${bgColor};color:#00d4ff;font-family:'Courier New',monospace;font-size:1.5rem;z-index:9998;">Loading scene·</div>`;
+          `<div id="vr-loading" style="position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:${bgColor};color:#00d4ff;font-family:'Courier New',monospace;font-size:1.5rem;z-index:9998;">Loading scene—</div>`;
 
         // Determine ambient for this programme
         const semHz = currentProg
@@ -1805,7 +1805,7 @@
           : BASE_FREQ;
 
         // Load MAL scene async, fall back to legacy builder on error
-        // Note: getMALLoader / MAL_SCENE_MAP may not be defined yet · always
+        // Note: getMALLoader / MAL_SCENE_MAP may not be defined yet — always
         // fall through to the legacy builder which is fully self-contained.
         const _malPromise = (function () {
           try {
@@ -1879,7 +1879,7 @@
       function launchProgVR(progName, e) {
         e && e.preventDefault();
         currentProg = progName;
-        // Always enter · Cinema Mode works on desktop too
+        // Always enter — Cinema Mode works on desktop too
         enterVRScene(progName);
       }
 
@@ -1908,5 +1908,12 @@
         enterVRScene(preselect);
       }
     </script>
+    <footer>
+      <p>
+        <a href="/">AIOS</a> &middot; <a href="/vr-hub">VR Hub</a> &middot;
+        <a href="/games">&#x1F3AE; Games</a> &middot; <a href="/plaistore">PLAIstore</a> &middot; <a href="/pricing">Pricing</a>
+        &nbsp;|&nbsp; realaios.com &copy; 2026
+      </p>
+    </footer>
   </body>
 </html>

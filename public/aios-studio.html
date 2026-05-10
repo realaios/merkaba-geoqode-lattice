@@ -24,6 +24,7 @@
       content="https://realaios.com/public/og-image.svg"
     />
     <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" type="image/svg+xml" href="/public/favicon.svg" />
     <style>
       *,
       *::before,
@@ -61,7 +62,7 @@
           padding-top: 50px;
         }
       }
-      /* ── Canonical site-nav ── */
+      /* -- Canonical site-nav -- */
       nav.site-nav {
         position: fixed;
         top: 0;
@@ -175,7 +176,7 @@
           font-size: 16px;
         }
       }
-      /* ── TOP BAR ── */
+      /* -- TOP BAR -- */
       #topbar {
         display: flex;
         align-items: center;
@@ -199,7 +200,7 @@
         font-weight: 700;
       }
       .logo-mark::before {
-        content: "⬡";
+        content: "?";
         font-size: 18px;
         animation: hex-pulse 2.4s ease-in-out infinite;
       }
@@ -251,7 +252,7 @@
           opacity: 0.2;
         }
       }
-      /* ── HERO ── */
+      /* -- HERO -- */
       #hero {
         padding: 36px 32px 20px;
         border-bottom: 1px solid var(--border);
@@ -285,7 +286,7 @@
         margin-right: 6px;
       }
 
-      /* ── MAIN GRID ── */
+      /* -- MAIN GRID -- */
       #main {
         display: grid;
         grid-template-columns: 280px 1fr 280px;
@@ -310,7 +311,7 @@
         margin-bottom: 4px;
       }
 
-      /* ── AGENT CARDS ── */
+      /* -- AGENT CARDS -- */
       .agent-card {
         background: var(--card);
         border: 1px solid var(--border);
@@ -400,7 +401,7 @@
         background: linear-gradient(90deg, #10b981, var(--green));
       }
 
-      /* ── LIVE PREVIEW (centre panel) ── */
+      /* -- LIVE PREVIEW (centre panel) -- */
       #centre-panel {
         grid-row: 1 / 3;
       }
@@ -489,7 +490,7 @@
         color: var(--dim);
       }
 
-      /* ── PRODUCTION QUEUE ── */
+      /* -- PRODUCTION QUEUE -- */
       .queue-item {
         background: var(--card);
         border: 1px solid var(--border);
@@ -529,7 +530,7 @@
         color: var(--gold);
       }
 
-      /* ── RELEASED GEO LIST ── */
+      /* -- RELEASED GEO LIST -- */
       .geo-item {
         background: var(--card);
         border: 1px solid var(--border);
@@ -570,7 +571,7 @@
         border-color: var(--cyan);
       }
 
-      /* ── GEO FORMAT VIEWER ── */
+      /* -- GEO FORMAT VIEWER -- */
       .geo-code {
         background: #060810;
         border: 1px solid var(--border);
@@ -596,7 +597,7 @@
         color: #334155;
       }
 
-      /* ── ACTIVITY LOG ── */
+      /* -- ACTIVITY LOG -- */
       #log-panel {
         grid-column: 1 / 4;
         background: var(--bg);
@@ -641,7 +642,7 @@
         color: #94a3b8;
       }
 
-      /* ── TICKER ── */
+      /* -- TICKER -- */
       #ticker {
         overflow: hidden;
         height: 28px;
@@ -670,7 +671,7 @@
         color: var(--cyan);
       }
 
-      /* ── RESPONSIVE ── */
+      /* -- RESPONSIVE -- */
       @media (max-width: 900px) {
         #main {
           grid-template-columns: 1fr 1fr;
@@ -689,7 +690,7 @@
         }
       }
 
-      /* ── READABILITY PASS — legible sizes throughout ──────────────── */
+      /* -- READABILITY PASS — legible sizes throughout ---------------- */
       .logo-mark {
         font-size: 14px !important;
       }
@@ -759,7 +760,7 @@
       .log-entry {
         font-size: 11px !important;
       }
-      /* compose modal – JS-injected buttons by container ID */
+      /* compose modal — JS-injected buttons by container ID */
       #cmp-hz-btns button {
         font-size: 12px !important;
         padding: 5px 11px !important;
@@ -788,7 +789,7 @@
       #cmp-output {
         font-size: 11px !important;
       }
-      /* compose modal – override static HTML inline font sizes */
+      /* compose modal — override static HTML inline font sizes */
       #cmp-modal [style*="font-size: 6px"] {
         font-size: 10px !important;
       }
@@ -816,13 +817,9 @@
   <body>
     <!-- Canonical AIOS site-nav -->
     <nav class="site-nav">
-      <a href="/" class="site-nav-logo"> AIOS</a>
+      <a href="/" class="site-nav-logo">&#x2B21; AIOS</a>
       <div class="site-nav-links">
-        <a href="/experiences"> Experiences</a><a href="/vr-hub">VR Hub</a
-        ><a href="/vr"> VR</a><a href="/games"> Games</a
-        ><a href="/aiosdream">2D Preview</a><a href="/plaistore">PLAIstore</a
-        ><a href="/geo-library"> Library</a><a href="/geo-codec">.geo</a
-        ><a href="/aios-studio" class="active">Studio</a>
+        <a href="/experiences">Experiences</a><a href="/vr-hub">VR Hub</a><a href="/vr">&#x1F97D; VR</a><a href="/games">&#x1F3AE; Games</a><a href="/plaistore">PLAIstore</a><a href="/geo-library">&#x1F4DA; Library</a><a href="/geo-codec">.geo</a><a href="/aios-studio" class="active">Studio</a><a href="/pricing">Pricing</a>
       </div>
       <div class="site-nav-right">
         <a href="/login" class="site-nav-cta">Sign In</a>
@@ -860,7 +857,7 @@
     <section id="hero">
       <div class="hero-title">AIOS PRODUCER STUDIO</div>
       <div class="hero-subtitle">
-        PRODUCTION FLOOR · CLICK COMPOSE TO BUILD .GEO FILES
+        PRODUCTION FLOOR — CLICK COMPOSE TO BUILD .GEO FILES
       </div>
       <div class="hero-stats">
         <div class="hstat">
@@ -901,7 +898,7 @@
           <canvas id="preview-canvas"></canvas>
           <div class="preview-hud">
             <div>
-              <div class="preview-title" id="preview-title">Initialising…</div>
+              <div class="preview-title" id="preview-title">Initialising—</div>
               <div class="preview-meta" id="preview-meta">
                 RENDERER — SCENE 1
               </div>
@@ -921,7 +918,7 @@
             </div>
             <div class="prog-pct" id="prod-pct">0%</div>
           </div>
-          <div class="prog-eta" id="prod-eta">Calculating ETA…</div>
+          <div class="prog-eta" id="prod-eta">Calculating ETA—</div>
         </div>
 
         <!-- Queue -->
@@ -955,7 +952,7 @@
           play. Zero storage overhead. Infinite resolution. Every playback is
           unique and procedurally generated.
         </div>
-        <div class="geo-code" id="geo-viewer">Loading…</div>
+        <div class="geo-code" id="geo-viewer">Loading—</div>
 
         <div class="panel-title" style="margin-top: 12px">SWARM ATTRIBUTES</div>
         <div style="font-size: 9px; color: var(--dim); line-height: 1.8">
@@ -998,34 +995,34 @@
     <!-- TICKER -->
     <div id="ticker">
       <div id="ticker-inner">
-        <span class="tk">⬡ AIOS PRODUCER STUDIO</span>&nbsp;&nbsp;&nbsp;
-        Autonomous generative content factory &nbsp;·&nbsp;
+        <span class="tk">? AIOS PRODUCER STUDIO</span>&nbsp;&nbsp;&nbsp;
+        Autonomous generative content factory &nbsp;—&nbsp;
         <span class="tk">Zero video files — everything is procedural</span>
-        &nbsp;·&nbsp; .geo format plays on any AIOS Theatre &nbsp;·&nbsp;
-        <span class="tk"> · AIOS</span>
-        &nbsp;·&nbsp; Each production is a unique living algorithm &nbsp;·&nbsp;
-        <span class="tk">7 swarm agents active 24/7</span> &nbsp;·&nbsp;
-        Infinite resolution · Zero storage overhead &nbsp;·&nbsp;
-        <span class="tk">⬡ AIOS PRODUCER STUDIO</span>&nbsp;&nbsp;&nbsp;
-        Autonomous generative content factory &nbsp;·&nbsp;
+        &nbsp;—&nbsp; .geo format plays on any AIOS Theatre &nbsp;—&nbsp;
+        <span class="tk"> — AIOS</span>
+        &nbsp;—&nbsp; Each production is a unique living algorithm &nbsp;—&nbsp;
+        <span class="tk">7 swarm agents active 24/7</span> &nbsp;—&nbsp;
+        Infinite resolution — Zero storage overhead &nbsp;—&nbsp;
+        <span class="tk">? AIOS PRODUCER STUDIO</span>&nbsp;&nbsp;&nbsp;
+        Autonomous generative content factory &nbsp;—&nbsp;
         <span class="tk">Zero video files — everything is procedural</span>
-        &nbsp;·&nbsp; .geo format plays on any AIOS Theatre &nbsp;·&nbsp;
-        <span class="tk"> · AIOS</span>
-        &nbsp;·&nbsp; Each production is a unique living algorithm &nbsp;·&nbsp;
-        <span class="tk">7 swarm agents active 24/7</span> &nbsp;·&nbsp;
-        Infinite resolution · Zero storage overhead
+        &nbsp;—&nbsp; .geo format plays on any AIOS Theatre &nbsp;—&nbsp;
+        <span class="tk"> — AIOS</span>
+        &nbsp;—&nbsp; Each production is a unique living algorithm &nbsp;—&nbsp;
+        <span class="tk">7 swarm agents active 24/7</span> &nbsp;—&nbsp;
+        Infinite resolution — Zero storage overhead
       </div>
     </div>
 
     <script>
-      // ═══════════════════════════════════════════════════════════════════════════════
+      // -------------------------------------------------------------------------------
       // AIOS PRODUCER STUDIO — Client JS
-      // ═══════════════════════════════════════════════════════════════════════════════
+      // -------------------------------------------------------------------------------
 
       const PHI = 1.618;
       const PSI = 1.414;
 
-      // ── Programme catalogue ──────────────────────────────────────────────────────
+      // -- Programme catalogue ------------------------------------------------------
       const RENDERERS_LIST = [
         "matrix",
         "inception",
@@ -1224,7 +1221,7 @@
         };
       }
 
-      // ── Agent definitions ────────────────────────────────────────────────────────
+      // -- Agent definitions --------------------------------------------------------
       const AGENTS = [
         {
           id: "director",
@@ -1252,13 +1249,13 @@
         },
         {
           id: "colorist",
-          icon: "️",
+          icon: "?",
           name: "LatticeColorist",
           role: "Colour Grading & Mood Overlays",
         },
         {
           id: "editor",
-          icon: "️",
+          icon: "?",
           name: "TemporalEditor",
           role: "Scene Pacing & Timing",
         },
@@ -1324,7 +1321,7 @@
         "idle",
       ];
 
-      // ── State ────────────────────────────────────────────────────────────────────
+      // -- State --------------------------------------------------------------------
       let agentStates = {};
       let currentGeo = null;
       let productionPct = 0;
@@ -1343,7 +1340,7 @@
         };
       });
 
-      // ── Render agent floor ───────────────────────────────────────────────────────
+      // -- Render agent floor -------------------------------------------------------
       function renderAgentFloor() {
         const el = document.getElementById("agent-floor");
         el.innerHTML = '<div class="panel-title">PRODUCTION FLOOR</div>';
@@ -1369,7 +1366,7 @@
         });
       }
 
-      // ── Render pipeline steps ────────────────────────────────────────────────────
+      // -- Render pipeline steps ----------------------------------------------------
       const PIPELINE = [
         "CONCEPT",
         "DIRECTION",
@@ -1389,7 +1386,7 @@
       border-radius:4px;background:${active ? "rgba(0,229,255,0.08)" : "transparent"}`;
           div.innerHTML = `
       <span style="color:${done ? "var(--green)" : active ? "var(--cyan)" : "var(--dim)"}">
-        ${done ? "✓" : active ? "" : "○"}
+        ${done ? "?" : active ? "" : "?"}
       </span>
       <span style="color:${done ? "var(--green)" : active ? "var(--cyan)" : "var(--dim)"};
                   letter-spacing:2px;font-size:9px">
@@ -1399,7 +1396,7 @@
         });
       }
 
-      // ── Geo code viewer ──────────────────────────────────────────────────────────
+      // -- Geo code viewer ----------------------------------------------------------
       function renderGeoViewer(geo) {
         const el = document.getElementById("geo-viewer");
         if (!geo) return;
@@ -1413,24 +1410,24 @@
         el.innerHTML = highlighted;
       }
 
-      // ── Production queue ─────────────────────────────────────────────────────────
+      // -- Production queue ---------------------------------------------------------
       function renderQueue() {
         const el = document.getElementById("queue-list");
         el.innerHTML = "";
         queuedGeos.slice(0, 3).forEach((g, i) => {
           const div = document.createElement("div");
           div.className = "queue-item";
-          div.innerHTML = `<span class="qi-icon">⬡</span>
+          div.innerHTML = `<span class="qi-icon">?</span>
       <div class="qi-info">
         <div class="qi-title">${g.title}</div>
-        <div class="qi-meta">${g.renderer.type.toUpperCase()} · ${g.audio.hz}Hz</div>
+        <div class="qi-meta">${g.renderer.type.toUpperCase()} — ${g.audio.hz}Hz</div>
       </div>
       <span class="qi-badge ${i === 0 ? "next" : "queued"}">${i === 0 ? "NEXT" : "QUEUED"}</span>`;
           el.appendChild(div);
         });
       }
 
-      // ── Released geo list ────────────────────────────────────────────────────────
+      // -- Released geo list --------------------------------------------------------
       function renderReleased() {
         const el = document.getElementById("released-list");
         el.innerHTML = "";
@@ -1439,14 +1436,14 @@
           div.className = "geo-item";
           div.innerHTML = `<div class="geo-info">
         <div class="geo-title">${g.title}</div>
-        <div class="geo-meta">${g.renderer.type.toUpperCase()} · ${g.audio.hz}Hz · ${Math.round(g.runtime / 60)}m</div>
+        <div class="geo-meta">${g.renderer.type.toUpperCase()} — ${g.audio.hz}Hz — ${Math.round(g.runtime / 60)}m</div>
       </div>
       <button class="geo-dl" onclick="downloadGeo('${g.id}')"> .geo</button>`;
           el.appendChild(div);
         });
       }
 
-      // ── Download .geo file ───────────────────────────────────────────────────────
+      // -- Download .geo file -------------------------------------------------------
       function downloadGeo(id) {
         const g = releasedGeos.find((x) => x.id === id) || currentGeo;
         if (!g) return;
@@ -1462,7 +1459,7 @@
       }
       window.downloadGeo = downloadGeo;
 
-      // ── Activity log ─────────────────────────────────────────────────────────────
+      // -- Activity log -------------------------------------------------------------
       const LOG_MAX = 8;
       function addLog(agentName, msg) {
         const el = document.getElementById("log-list");
@@ -1475,7 +1472,7 @@
         while (el.children.length > LOG_MAX) el.removeChild(el.lastChild);
       }
 
-      // ── Hero stats ───────────────────────────────────────────────────────────────
+      // -- Hero stats ---------------------------------------------------------------
       function updateStats() {
         document.getElementById("stat-produced").textContent = producedCount;
         const hrs = (Date.now() - sessionStart) / 3600000 || 0.001;
@@ -1487,7 +1484,7 @@
           : "—";
       }
 
-      // ── Production cycle ─────────────────────────────────────────────────────────
+      // -- Production cycle ---------------------------------------------------------
       const PROD_DURATION_MS = 45000; // 45s per production
       let prodStartTime = 0;
       let productionPhase = 0; // 0-5 matching pipeline steps
@@ -1502,9 +1499,9 @@
         document.getElementById("preview-title").textContent = geo.title;
         document.getElementById("preview-meta").textContent =
           geo.renderer.type.toUpperCase() +
-          " · " +
+          " — " +
           geo.audio.hz +
-          "Hz · " +
+          "Hz — " +
           GENRES.slice(0, 2).join(" / ");
         renderGeoViewer(geo);
         renderPipeline(0);
@@ -1533,7 +1530,7 @@
         document.getElementById("prod-eta").textContent =
           etaSec > 0
             ? `ETA: ${Math.floor(etaSec / 60)}m ${etaSec % 60}s remaining`
-            : "Finalising…";
+            : "Finalising—";
 
         renderPipeline(productionPhase);
 
@@ -1576,7 +1573,7 @@
           producedCount++;
           addLog(
             "GeoDistributor",
-            `Released "${currentGeo.title}" → catalogue [${currentGeo.id}]`,
+            `Released "${currentGeo.title}" ? catalogue [${currentGeo.id}]`,
           );
           renderReleased();
           updateStats();
@@ -1589,7 +1586,7 @@
         }
       }
 
-      // ── Mini preview renderer (Hyperspace) ───────────────────────────────────────
+      // -- Mini preview renderer (Hyperspace) ---------------------------------------
       let _previewRaf = null;
       let _previewRenderer = "hyperspace";
 
@@ -1805,12 +1802,12 @@
         }
       }
 
-      // ── Bootstrap ────────────────────────────────────────────────────────────────
+      // -- Bootstrap ----------------------------------------------------------------
       function init() {
         // Pre-fill queue
         queuedGeos = [makeGeo(), makeGeo(), makeGeo()];
         const firstGeo = makeGeo();
-        startProduction(firstGeo); // startProduction → updatePreviewRenderer → startPreviewRenderer (one RAF loop only)
+        startProduction(firstGeo); // startProduction ? updatePreviewRenderer ? startPreviewRenderer (one RAF loop only)
 
         // Pre-seed released list with some placeholder entries for instant content
         const seeds = [
@@ -1855,7 +1852,7 @@
         startPreviewRenderer();
       });
 
-      // ── COMPOSE MODAL ────────────────────────────────────────────────────────────
+      // -- COMPOSE MODAL ------------------------------------------------------------
       const CMP_ALL = [
         "matrix",
         "inception",
@@ -2081,7 +2078,7 @@
               ? ((sc.dur / total) * 100).toFixed(2)
               : (100 / cmpState.scenes.length).toFixed(2);
           const seg = document.createElement("div");
-          seg.title = sc.name + " · " + sc.dur + "s";
+          seg.title = sc.name + " — " + sc.dur + "s";
           seg.style.cssText =
             "flex:0 0 " +
             pct +
@@ -2192,7 +2189,7 @@
             "font-size:7px;color:var(--dim);white-space:nowrap";
           // col 6: remove
           var rmBtn = document.createElement("button");
-          rmBtn.textContent = "✕";
+          rmBtn.textContent = "?";
           rmBtn.style.cssText =
             "background:none;border:none;color:rgba(255,255,255,0.2);cursor:pointer;font-size:11px;line-height:1;padding:0;transition:color 0.15s";
           rmBtn.onmouseenter = function () {
@@ -2445,7 +2442,7 @@
         window.open("/aiosdream", "_blank");
       };
 
-      // ── Publish to Library — POST .geo to /api/geo/produce (auth-gated) ─
+      // -- Publish to Library — POST .geo to /api/geo/produce (auth-gated) -
       window.cmpSaveToLibrary = function () {
         cmpBuild();
         const geo = cmpState.lastGeo;
@@ -2491,7 +2488,7 @@
         // Signed in — publish to live catalogue
         var btn = document.getElementById("cmp-publish-btn");
         if (btn) {
-          btn.textContent = "PUBLISHING…";
+          btn.textContent = "PUBLISHING—";
           btn.disabled = true;
         }
         fetch("/api/geo/produce", {
@@ -2507,7 +2504,7 @@
           })
           .then(function (data) {
             if (btn) {
-              btn.textContent = "✓ PUBLISHED";
+              btn.textContent = "? PUBLISHED";
               btn.style.color = "#4ade80";
             }
             cmpState.publishedId = data.programme?.id;
@@ -2516,14 +2513,14 @@
             sg.style.cssText =
               "position:fixed;bottom:32px;left:50%;transform:translateX(-50%);background:#061208;border:1px solid rgba(74,222,128,0.4);border-radius:10px;padding:18px 28px;z-index:9999;text-align:center;max-width:380px;";
             sg.innerHTML =
-              '<div style="font-size:14px;color:#4ade80;font-weight:700;margin-bottom:8px;">✓ Published to AIOS Library</div>' +
+              '<div style="font-size:14px;color:#4ade80;font-weight:700;margin-bottom:8px;">? Published to AIOS Library</div>' +
               '<div style="font-size:12px;color:var(--dim);margin-bottom:12px;">Your programme is now live in the geo-library and PLAIstore.</div>' +
               '<div style="display:flex;gap:8px;justify-content:center;">' +
               '<a href="/aiosdream?prog=' +
               (cmpState.publishedId || "") +
               '" target="_blank" style="background:rgba(74,222,128,0.15);border:1px solid rgba(74,222,128,0.4);color:#4ade80;text-decoration:none;font-size:11px;font-weight:700;letter-spacing:2px;padding:8px 14px;border-radius:5px;"> WATCH NOW</a>' +
               '<a href="/geo-library" target="_blank" style="background:rgba(0,229,255,0.08);border:1px solid rgba(0,229,255,0.2);color:var(--cyan);text-decoration:none;font-size:11px;font-weight:700;letter-spacing:2px;padding:8px 14px;border-radius:5px;">LIBRARY</a>' +
-              '<button onclick="this.parentNode.parentNode.remove()" style="background:none;border:1px solid rgba(255,255,255,0.1);color:var(--dim);font-family:inherit;font-size:11px;padding:8px 12px;border-radius:5px;cursor:pointer;">✕</button>' +
+              '<button onclick="this.parentNode.parentNode.remove()" style="background:none;border:1px solid rgba(255,255,255,0.1);color:var(--dim);font-family:inherit;font-size:11px;padding:8px 12px;border-radius:5px;cursor:pointer;">?</button>' +
               "</div>";
             document.body.appendChild(sg);
             setTimeout(function () {
@@ -2540,7 +2537,7 @@
       };
     </script>
 
-    <!-- ── COMPOSE MODAL ─────────────────────────────────────────────────────── -->
+    <!-- -- COMPOSE MODAL ------------------------------------------------------- -->
     <div
       id="cmp-modal"
       style="
@@ -2574,7 +2571,7 @@
                 font-weight: 700;
               "
             >
-              ⬡ COMPOSE
+              ? COMPOSE
             </div>
             <div
               style="
@@ -2612,7 +2609,7 @@
                 font-family: inherit;
               "
             >
-              ✕ CLOSE
+              ? CLOSE
             </button>
           </div>
         </div>
@@ -2922,7 +2919,7 @@
               white-space: pre-wrap;
             "
           >
-Building programme…</pre
+Building programme—</pre
           >
         </div>
 

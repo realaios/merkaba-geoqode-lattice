@@ -20,6 +20,7 @@
     />
     <meta property="og:type" content="website" />
     <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" type="image/svg+xml" href="/public/favicon.svg" />
     <meta name="twitter:title" content="PLAIstore — AIOS App Marketplace" />
     <meta
       name="twitter:description"
@@ -62,7 +63,7 @@
       }
       @media (max-width: 640px) { body { padding-top: 50px; } }
 
-      /* ── Canonical site-nav ── */
+      /* -- Canonical site-nav -- */
       nav.site-nav{position:fixed;top:0;left:0;right:0;z-index:200;height:54px;padding:0 24px;display:flex;align-items:center;gap:8px;background:rgba(5,10,20,0.92);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid rgba(0,212,255,0.1)}
       .site-nav-logo{font-size:18px;font-weight:800;color:#00d4ff;text-decoration:none;letter-spacing:-0.5px;white-space:nowrap;margin-right:4px;flex-shrink:0}
       .site-nav-links{display:flex;align-items:center;gap:2px;overflow-x:auto;scrollbar-width:none;flex:1;min-width:0}
@@ -77,7 +78,7 @@
       .site-nav-cta:hover{opacity:.85}
       @media(max-width:640px){nav.site-nav{padding:0 12px;height:50px}.site-nav-live{display:none}.site-nav-logo{font-size:16px}}
 
-      /* ── Header ── */
+      /* -- Header -- */
       .header {
         background: var(--surface);
         border-bottom: 1px solid var(--border);
@@ -170,7 +171,7 @@
         border-color: var(--accent2);
       }
 
-      /* ── Hero ── */
+      /* -- Hero -- */
       .hero {
         background: linear-gradient(
           135deg,
@@ -220,14 +221,14 @@
         letter-spacing: 0.05em;
       }
 
-      /* ── Main layout ── */
+      /* -- Main layout -- */
       .main {
         max-width: 1200px;
         margin: 0 auto;
         padding: 32px 24px;
       }
 
-      /* ── Section headings ── */
+      /* -- Section headings -- */
       .section-header {
         display: flex;
         align-items: center;
@@ -247,7 +248,7 @@
         text-decoration: underline;
       }
 
-      /* ── Categories ── */
+      /* -- Categories -- */
       .categories {
         display: flex;
         gap: 8px;
@@ -276,7 +277,7 @@
         font-weight: 600;
       }
 
-      /* ── App grid ── */
+      /* -- App grid -- */
       .app-grid {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -335,7 +336,7 @@
         gap: 3px;
       }
       .app-verified::after {
-        content: "✓";
+        content: "?";
         color: var(--green);
         font-size: 10px;
       }
@@ -392,7 +393,7 @@
         color: #a5b4fc;
         border: 1px solid rgba(99, 102, 241, 0.35);
       }
-      /* ── Upgrade modal ── */
+      /* -- Upgrade modal -- */
       #upgrade-modal {
         display: none; position: fixed; inset: 0; z-index: 9999;
         background: rgba(7,8,15,0.85); backdrop-filter: blur(8px);
@@ -410,7 +411,7 @@
         border: 1px solid rgba(168, 85, 247, 0.3);
       }
 
-      /* ── Category count chips in category section ── */
+      /* -- Category count chips in category section -- */
       .cat-grid {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
@@ -444,7 +445,7 @@
         color: var(--muted);
       }
 
-      /* ── Install CTA ── */
+      /* -- Install CTA -- */
       .btn {
         display: inline-flex;
         align-items: center;
@@ -475,7 +476,7 @@
         color: var(--accent2);
       }
 
-      /* ── Loading state ── */
+      /* -- Loading state -- */
       .loading {
         text-align: center;
         padding: 48px;
@@ -496,7 +497,7 @@
         }
       }
 
-      /* ── Empty state ── */
+      /* -- Empty state -- */
       .empty {
         text-align: center;
         padding: 48px;
@@ -507,7 +508,7 @@
         margin-bottom: 12px;
       }
 
-      /* ── Modal overlay ── */
+      /* -- Modal overlay -- */
       .modal-overlay {
         display: none;
         position: fixed;
@@ -585,7 +586,7 @@
         flex-wrap: wrap;
       }
 
-      /* ── How to install ── */
+      /* -- How to install -- */
       .install-steps {
         background: var(--card);
         border: 1px solid var(--border);
@@ -625,7 +626,7 @@
         color: var(--muted);
       }
 
-      /* ── Footer ── */
+      /* -- Footer -- */
       footer {
         border-top: 1px solid var(--border);
         padding: 24px;
@@ -642,7 +643,7 @@
         text-decoration: underline;
       }
 
-      /* ── Toast ── */
+      /* -- Toast -- */
       .toast {
         position: fixed;
         bottom: 24px;
@@ -669,7 +670,7 @@
         border-color: #ef4444;
       }
 
-      /* ── Auth modal ── */
+      /* -- Auth modal -- */
       .auth-tabs {
         display: flex;
         border-bottom: 1px solid var(--border);
@@ -768,12 +769,14 @@
   </head>
   <body>
     <!-- Canonical AIOS site-nav -->
-    <nav class="site-nav"><a href="/" class="site-nav-logo"> AIOS</a><div class="site-nav-links"><a href="/experiences"> Experiences</a><a href="/vr-hub">VR Hub</a><a href="/vr"> VR</a><a href="/games"> Games</a><a href="/aiosdream">2D Preview</a><a href="/plaistore" class="active">PLAIstore</a><a href="/geo-library"> Library</a><a href="/geo-codec">.geo</a><a href="/aios-studio">Studio</a></div><div class="site-nav-right"><a href="/login" class="site-nav-cta">Sign In</a></div></nav>
+    <nav class="site-nav"><a href="/" class="site-nav-logo">&#x2B21; AIOS</a><div class="site-nav-links">
+        <a href="/experiences">Experiences</a><a href="/vr-hub">VR Hub</a><a href="/vr">&#x1F97D; VR</a><a href="/games">&#x1F3AE; Games</a><a href="/plaistore" class="active">PLAIstore</a><a href="/geo-library">&#x1F4DA; Library</a><a href="/geo-codec">.geo</a><a href="/aios-studio">Studio</a><a href="/pricing">Pricing</a>
+      </div><div class="site-nav-right"><a href="/login" class="site-nav-cta">Sign In</a></div></nav>
     <!-- Header -->
     <header class="header">
       <div class="header-inner">
         <a href="/" class="logo">
-          <div class="logo-icon">️</div>
+          <div class="logo-icon">?</div>
           <span class="logo-text">PLAIstore</span>
           <span class="logo-badge">AIOS</span>
         </a>
@@ -833,19 +836,19 @@
         <div class="cat-chip" data-cat="Analytics">Analytics</div>
         <div class="cat-chip" data-cat="Integrations">Integrations</div>
         <div class="cat-chip" data-cat="Utilities">Utilities</div>
-        <div class="cat-chip" data-cat="Games"> Games</div>
-        <div class="cat-chip" data-cat="VR"> VR</div>
-        <div class="cat-chip" data-cat="Design"> Design</div>
-        <div class="cat-chip" data-cat="Writing">️ Writing</div>
-        <div class="cat-chip" data-cat="Developer">️ Developer</div>
-        <div class="cat-chip" data-cat="Finance"> Finance</div>
-        <div class="cat-chip" data-cat="Productivity"> Productivity</div>
+        <div class="cat-chip" data-cat="Games">&#x1F3AE; Games</div>
+        <div class="cat-chip" data-cat="VR">&#x1F97D; VR</div>
+        <div class="cat-chip" data-cat="Design">Design</div>
+        <div class="cat-chip" data-cat="Writing">Writing</div>
+        <div class="cat-chip" data-cat="Developer">Developer</div>
+        <div class="cat-chip" data-cat="Finance">Finance</div>
+        <div class="cat-chip" data-cat="Productivity">Productivity</div>
       </div>
 
       <!-- Featured -->
       <div class="section-header">
-        <h2 class="section-title"> Featured</h2>
-        <a href="#all-apps" class="section-link">See all →</a>
+        <h2 class="section-title">Featured</h2>
+        <a href="#all-apps" class="section-link">See all &#x2192;</a>
       </div>
       <div class="app-grid" id="featured-grid">
         <div class="loading">
@@ -856,8 +859,8 @@
 
       <!-- LIVE .GEO PROGRAMMES from AIOSProducerSwarm -->
       <div class="section-header" style="margin-top: 2.5rem">
-        <h2 class="section-title"> Live .geo Programmes</h2>
-        <a href="/geo-library" class="section-link">Full Library →</a>
+        <h2 class="section-title">Live .geo Programmes</h2>
+        <a href="/geo-library" class="section-link">Full Library &#x2192;</a>
       </div>
       <p style="font-size: 0.8rem; color: #64748b; margin-bottom: 1rem">
         AIOSProducerSwarm produces new .geo programmes every 2 minutes. All
@@ -866,14 +869,14 @@
       <div class="app-grid" id="geo-live-grid" style="margin-bottom: 2rem">
         <div class="loading">
           <div class="spinner"></div>
-          <p>Loading live catalogue…</p>
+          <p>Loading live catalogue—</p>
         </div>
       </div>
 
       <!-- VR Experiences -->
       <div class="section-header" style="margin-top: 2.5rem">
-        <h2 class="section-title"> VR Experiences</h2>
-        <a href="/vr-hub" class="section-link">Browse VR Hub →</a>
+        <h2 class="section-title">VR Experiences</h2>
+        <a href="/vr-hub" class="section-link">Browse VR Hub &#x2192;</a>
       </div>
       <div
         style="
@@ -1072,7 +1075,7 @@
           "
           onmouseover="this.style.background = 'rgba(132,204,22,0.12)'"
           onmouseout="this.style.background = 'rgba(132,204,22,0.05)'"
-          >️ Creator</a
+          >? Creator</a
         >
       </div>
       <div class="app-grid" id="vr-grid">
@@ -1102,7 +1105,7 @@
       <!-- My Library (shown when signed in) -->
       <div id="library-section" style="display: none">
         <div class="section-header">
-          <h2 class="section-title"> My Library</h2>
+          <h2 class="section-title">My Library</h2>
           <button
             class="btn btn-outline"
             onclick="signOut()"
@@ -1149,7 +1152,7 @@
     <!-- App detail modal -->
     <div class="modal-overlay" id="modal">
       <div class="modal" id="modal-content">
-        <button class="modal-close" id="modal-close">✕</button>
+        <button class="modal-close" id="modal-close">?</button>
         <div id="modal-body"></div>
       </div>
     </div>
@@ -1159,15 +1162,15 @@
       <div class="upgrade-modal-card">
         <div style="font-size:2.5rem;margin-bottom:0.75rem"></div>
         <h2 style="font-size:1.25rem;font-weight:800;margin-bottom:0.5rem">AIOS Pro Required</h2>
-        <p style="color:rgba(248,250,252,0.55);font-size:0.88rem;line-height:1.6;margin-bottom:1.5rem">This app is exclusive to AIOS Pro members.<br>Unlock all premium apps for $9.99/month.</p>
-        <a href="/pricing" style="display:block;background:linear-gradient(135deg,#00d4ff,#6366f1);color:#07080f;font-weight:700;padding:0.75rem;border-radius:8px;text-decoration:none;margin-bottom:0.75rem;font-size:0.95rem">View AIOS Pro Plans →</a>
+        <p style="color:rgba(248,250,252,0.55);font-size:0.88rem;line-height:1.6;margin-bottom:1.5rem">This app is exclusive to AIOS Pro members.<br>Unlock all premium apps for $12/month.</p>
+        <a href="/pricing" style="display:block;background:linear-gradient(135deg,#00d4ff,#6366f1);color:#07080f;font-weight:700;padding:0.75rem;border-radius:8px;text-decoration:none;margin-bottom:0.75rem;font-size:0.95rem">View AIOS Pro Plans ?</a>
         <button onclick="closeUpgradeModal()" style="background:none;border:none;color:rgba(248,250,252,0.4);cursor:pointer;font-size:0.85rem;padding:0.25rem">Cancel</button>
       </div>
     </div>
 
     <div class="modal-overlay" id="auth-modal">
       <div class="modal" style="max-width: 420px">
-        <button class="modal-close" id="auth-modal-close">✕</button>
+        <button class="modal-close" id="auth-modal-close">?</button>
         <h2 style="margin-bottom: 20px; font-size: 20px; font-weight: 700">
           Your AIOS Account
         </h2>
@@ -1291,8 +1294,8 @@
         Games: "",
         VR: "",
         Design: "",
-        Writing: "️",
-        Developer: "️",
+        Writing: "?",
+        Developer: "?",
         Finance: "",
         Productivity: "",
       };
@@ -1325,7 +1328,7 @@
         } catch (_) { /* silently fail */ }
       }
 
-      // ── Data fetch ─────────────────────────────────────────────────────────────
+      // -- Data fetch -------------------------------------------------------------
       async function fetchJSON(path) {
         const headers = {};
         if (jwt) headers["Authorization"] = "Bearer " + jwt;
@@ -1341,7 +1344,7 @@
           renderGrid("featured-grid", apps.slice(0, 4));
         } catch {
           document.getElementById("featured-grid").innerHTML =
-            '<div class="empty"><div class="empty-icon">️</div><p>No featured apps yet</p></div>';
+            '<div class="empty"><div class="empty-icon">?</div><p>No featured apps yet</p></div>';
         }
       }
 
@@ -1392,11 +1395,11 @@
                     <span style="font-size:1.5rem;">${x.icon}</span>
                     <div>
                       <div style="font-weight:700;font-size:0.95rem;color:#edf4ff;">${x.name}</div>
-                      <div style="font-size:0.72rem;color:${x.accent};font-weight:600;">${x.category} · ${x.sem} · ${x.freq}</div>
+                      <div style="font-size:0.72rem;color:${x.accent};font-weight:600;">${x.category} — ${x.sem} — ${x.freq}</div>
                     </div>
                     <span style="margin-left:auto;font-size:0.65rem;background:#22c55e;color:#000;padding:0.15rem 0.45rem;border-radius:3px;font-weight:700;">LIVE</span>
                   </div>
-                  <p style="font-size:0.8rem;color:#6b84b8;margin:0 0 0.9rem;line-height:1.55;">${x.description.slice(0, 110)}${x.description.length > 110 ? "…" : ""}</p>
+                  <p style="font-size:0.8rem;color:#6b84b8;margin:0 0 0.9rem;line-height:1.55;">${x.description.slice(0, 110)}${x.description.length > 110 ? "—" : ""}</p>
                   <div style="display:flex;gap:0.5rem;">
                     <a href="${x.vrUrl}" style="flex:1;text-align:center;padding:0.45rem;background:${x.accent}18;border:1px solid ${x.accent}44;border-radius:7px;color:${x.accent};font-size:0.78rem;font-weight:700;text-decoration:none;"> VR</a>
                     <a href="${x.flatUrl}" style="flex:1;text-align:center;padding:0.45rem;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:7px;color:#aaa;font-size:0.78rem;font-weight:700;text-decoration:none;"> Flat</a>
@@ -1408,14 +1411,14 @@
               grid.innerHTML =
                 '<div class="empty" style="grid-column:1/-1;text-align:center;padding:2rem;"><div class="empty-icon"></div>' +
                 '<p style="margin-bottom:0.75rem;">VR experiences launching soon!</p>' +
-                '<a href="/vr-hub" style="color:#00d4ff;font-weight:600;text-decoration:none;">Browse VR Hub →</a></div>';
+                '<a href="/vr-hub" style="color:#00d4ff;font-weight:600;text-decoration:none;">Browse VR Hub ?</a></div>';
             }
           }
         } catch (_) {
           document.getElementById("vr-grid").innerHTML =
             '<div class="empty" style="grid-column:1/-1;text-align:center;padding:2rem;"><div class="empty-icon"></div>' +
             '<p style="margin-bottom:0.75rem;">Explore VR experiences</p>' +
-            '<a href="/vr-hub" style="color:#00d4ff;font-weight:600;text-decoration:none;">Browse VR Hub →</a></div>';
+            '<a href="/vr-hub" style="color:#00d4ff;font-weight:600;text-decoration:none;">Browse VR Hub ?</a></div>';
         }
       }
 
@@ -1477,7 +1480,7 @@
         }
       }
 
-      // ── Render ─────────────────────────────────────────────────────────────────
+      // -- Render -----------------------------------------------------------------
       function renderGrid(id, apps) {
         const grid = document.getElementById(id);
         if (!apps.length) {
@@ -1492,7 +1495,7 @@
         const icon = CATEGORY_ICONS[app.category] || "";
         const rating =
           app.rating_avg > 0
-            ? `<span class="app-rating"><span class="app-rating-star">★</span> ${parseFloat(app.rating_avg).toFixed(1)}</span>`
+            ? `<span class="app-rating"><span class="app-rating-star">?</span> ${parseFloat(app.rating_avg).toFixed(1)}</span>`
             : "";
         const dls =
           app.downloads > 0
@@ -1530,7 +1533,7 @@
       </div>`;
       }
 
-      // ── App detail modal ───────────────────────────────────────────────────────
+      // -- App detail modal -------------------------------------------------------
       async function openApp(id, priceCents = 0) {
         document.getElementById("modal-body").innerHTML =
           '<div class="loading"><div class="spinner"></div></div>';
@@ -1557,14 +1560,14 @@
           <div class="modal-icon">${icon}</div>
           <div>
             <div class="modal-app-name">${esc(app.name)}</div>
-            <div class="modal-app-dev">${esc(app.developer_name || "AIOS")} · ${esc(app.category)}</div>
+            <div class="modal-app-dev">${esc(app.developer_name || "AIOS")} — ${esc(app.category)}</div>
           </div>
         </div>
         <p class="modal-desc">${esc(app.description || "")}</p>
         <div class="modal-actions">
           <button class="btn btn-primary" onclick="installApp(${app.id}, '${esc(app.name)}', ${appPriceCents})">${installLabel}</button>
           ${dreamBtn}
-          ${app.type !== "cinema-vr" ? `<a href="${esc(launchUrl)}" target="_blank" rel="noopener" class="btn btn-outline">Open in AIOS →</a>` : ""}
+          ${app.type !== "cinema-vr" ? `<a href="${esc(launchUrl)}" target="_blank" rel="noopener" class="btn btn-outline">Open in AIOS ?</a>` : ""}
         </div>
       `;
         } catch {
@@ -1596,7 +1599,7 @@
             openAuthModal();
             return;
           }
-          showToast(`✓ ${name} installed — check My Library`, "success");
+          showToast(`? ${name} installed — check My Library`, "success");
           loadLibrary();
           refreshStats(); // update install counter immediately
         } catch {
@@ -1621,7 +1624,7 @@
       // Auto-refresh counters every 90 seconds so they stay live
       setInterval(refreshStats, 90000);
 
-      // ── Search ─────────────────────────────────────────────────────────────────
+      // -- Search -----------------------------------------------------------------
       let searchTimer;
       document.getElementById("search-input").addEventListener("input", (e) => {
         clearTimeout(searchTimer);
@@ -1645,7 +1648,7 @@
         }, 350);
       });
 
-      // ── Category filter ────────────────────────────────────────────────────────
+      // -- Category filter --------------------------------------------------------
       function filterCategory(cat) {
         currentCategory = cat;
         document
@@ -1663,7 +1666,7 @@
           if (chip) filterCategory(chip.dataset.cat);
         });
 
-      // ── Modal close ────────────────────────────────────────────────────────────
+      // -- Modal close ------------------------------------------------------------
       document
         .getElementById("modal-close")
         .addEventListener("click", () =>
@@ -1692,7 +1695,7 @@
         }),
       );
 
-      // ── Auth ──────────────────────────────────────────────────────────────────
+      // -- Auth ------------------------------------------------------------------
       let _pendingInstall = null;
 
       function openAuthModal() {
@@ -1853,7 +1856,7 @@
         }
       }
 
-      // ── Toast ──────────────────────────────────────────────────────────────────
+      // -- Toast ------------------------------------------------------------------
       function showToast(msg, type = "") {
         const t = document.getElementById("toast");
         t.textContent = msg;
@@ -1861,7 +1864,7 @@
         setTimeout(() => (t.className = "toast"), 3000);
       }
 
-      // ── Utils ──────────────────────────────────────────────────────────────────
+      // -- Utils ------------------------------------------------------------------
       function esc(str) {
         return String(str || "")
           .replace(/&/g, "&amp;")
@@ -1888,7 +1891,7 @@
         el.style.border = `1px solid currentColor`;
       }
 
-      // ── Boot ───────────────────────────────────────────────────────────────────
+      // -- Boot -------------------------------------------------------------------
       // Check URL token (post-auth redirect)
       const _urlToken = new URLSearchParams(location.search).get("token");
       if (_urlToken) {
@@ -1926,7 +1929,7 @@
       loadAllApps();
       loadCategories();
 
-      // ── Live .geo Catalogue from AIOSProducerSwarm ─────────────────────────────
+      // -- Live .geo Catalogue from AIOSProducerSwarm -----------------------------
       (function loadGeoCatalogue() {
         const ACCS = [
           "#00d4ff",
@@ -1940,43 +1943,43 @@
         ];
         const ICONS = {
           AI: "",
-          cosmic: "✦",
+          cosmic: "?",
           cinematic: "",
           neural: "",
           "sci-fi": "",
           mystical: "",
           cosmos: "",
-          mind: "∞",
-          immersive: "◎",
-          psychedelic: "〜",
+          mind: "8",
+          immersive: "?",
+          psychedelic: "?",
           temporal: "",
-          aurora: "⌇",
+          aurora: "?",
           meditation: "",
           nature: "",
           physics: "",
-          abstract: "∿",
+          abstract: "?",
         };
         function geoCard(p) {
           const genres = (p.genres || []).slice(0, 2);
           const acc =
             ACCS[Math.abs((p.id || "").charCodeAt(0) || 0) % ACCS.length];
           const iconKey = (genres[0] || "").toLowerCase();
-          const icon = ICONS[iconKey] || "●";
+          const icon = ICONS[iconKey] || "?";
           const minDur = p.duration ? Math.round(p.duration / 60) : "?";
           const renderer = (p.renderer || "").replace(/_/g, " ");
           return `<div class="app-card" style="border-color:${acc}22;cursor:pointer;position:relative" onclick="window.location='/geo-library'">
-            <span style="position:absolute;top:10px;right:10px;font-size:0.6rem;font-weight:700;background:rgba(255,0,100,0.12);color:#f472b6;border-radius:6px;padding:2px 7px;letter-spacing:0.08em">● .GEO</span>
+            <span style="position:absolute;top:10px;right:10px;font-size:0.6rem;font-weight:700;background:rgba(255,0,100,0.12);color:#f472b6;border-radius:6px;padding:2px 7px;letter-spacing:0.08em">? .GEO</span>
             <div style="display:flex;gap:0.7rem;align-items:flex-start;margin-bottom:0.7rem">
               <div style="width:48px;height:48px;border-radius:12px;background:${acc}18;display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0">${icon}</div>
               <div style="flex:1;min-width:0">
                 <div style="font-weight:800;font-size:0.88rem;line-height:1.2;margin-bottom:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${p.title || "Untitled Programme"}</div>
-                <div style="font-size:0.7rem;color:#64748b">AIOSProducerSwarm · ${renderer}</div>
-                <div style="font-size:0.68rem;color:#94a3b8;margin-top:2px">${genres.join(" · ")} · ${minDur}min</div>
+                <div style="font-size:0.7rem;color:#64748b">AIOSProducerSwarm — ${renderer}</div>
+                <div style="font-size:0.68rem;color:#94a3b8;margin-top:2px">${genres.join(" — ")} — ${minDur}min</div>
               </div>
             </div>
             <div style="font-size:0.78rem;color:#64748b;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-bottom:0.7rem">${p.logline || p.description || "An AI-generated .geo programme."}</div>
             <div style="display:flex;align-items:center;justify-content:space-between">
-              <span style="font-size:0.65rem;font-weight:600;color:${acc};background:${acc}12;padding:2px 8px;border-radius:8px">${p.hz || 528} · ${(p.spatialProfile || "Stereo").toUpperCase()}</span>
+              <span style="font-size:0.65rem;font-weight:600;color:${acc};background:${acc}12;padding:2px 8px;border-radius:8px">${p.hz || 528} — ${(p.spatialProfile || "Stereo").toUpperCase()}</span>
               <a href="/aiosdream?renderer=${p.renderer || "matrix"}" onclick="event.stopPropagation()" style="font-size:0.78rem;font-weight:700;background:${acc};color:#000;padding:0.3rem 0.8rem;border-radius:16px;text-decoration:none"> Watch</a>
             </div>
           </div>`;
@@ -2002,7 +2005,7 @@
             const grid = document.getElementById("geo-live-grid");
             if (grid)
               grid.innerHTML =
-                '<div style="text-align:center;padding:2rem"><a href="/geo-library" style="color:#00d4ff;font-weight:600;text-decoration:none">Browse .geo Library →</a></div>';
+                '<div style="text-align:center;padding:2rem"><a href="/geo-library" style="color:#00d4ff;font-weight:600;text-decoration:none">Browse .geo Library ?</a></div>';
           });
       })();
     </script>

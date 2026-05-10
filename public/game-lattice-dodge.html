@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Grid Dodge · PHI Reflexes · AIOS Arcade</title>
+    <title>Grid Dodge — PHI Reflexes — AIOS Arcade</title>
     <meta
       name="description"
       content="Dodge entropy disruptors flying through the 48-node lattice ring. Speed ramps by PHI each wave. AIOS Arcade."
@@ -11,7 +11,7 @@
     <link rel="canonical" href="https://realaios.com/games/grid-dodge" />
     <meta
       property="og:title"
-      content="Grid Dodge · PHI Reflexes · AIOS Arcade"
+      content="Grid Dodge — PHI Reflexes — AIOS Arcade"
     />
     <meta
       property="og:description"
@@ -24,6 +24,7 @@
       content="https://realaios.com/public/og-image.svg"
     />
     <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" type="image/svg+xml" href="/public/favicon.svg" />
     <script src="/public/vendor/aframe-1.4.0.min.js"></script>
     <style>
       *,
@@ -451,30 +452,19 @@
   <body>
     <!-- NAV -->
     <nav class="site-nav" id="site-nav">
-      <a href="/" class="site-nav-logo">⬡ AIOS</a>
+      <a href="/" class="site-nav-logo">&#x2B21; AIOS</a>
       <div class="site-nav-links">
-        <a href="/games"> Games</a>
-        <a href="/aiosdream">Theatre</a>
-        <a href="/vr"> VR</a>
-        <a href="/vr-hub">VR Hub</a>
-        <a href="/plaistore">PLAIstore</a>
-        <a href="/geo-library"> Library</a>
-        <a href="/geo-codec">.geo</a>
-        <a href="/aios-studio">Studio</a>
-        <a href="/lab">Lab</a>
-        <a href="/news"> News</a>
-        <a href="/products"> Products</a>
-        <a href="/experiences"> Experiences</a>
+        <a href="/experiences">Experiences</a><a href="/vr-hub">VR Hub</a><a href="/vr">&#x1F97D; VR</a><a href="/games" class="active">&#x1F3AE; Games</a><a href="/plaistore">PLAIstore</a><a href="/geo-library">&#x1F4DA; Library</a><a href="/geo-codec">.geo</a><a href="/aios-studio">Studio</a><a href="/pricing">Pricing</a>
       </div>
       <div class="site-nav-right">
-        <a href="/live" class="site-nav-live">● LIVE</a>
-        <a href="/start" class="site-nav-cta">Start Free →</a>
+        <a href="/live" class="site-nav-live">&#x25CF; LIVE</a>
+        <a href="/start" class="site-nav-cta">Start Free &#x2192;</a>
       </div>
     </nav>
 
     <!-- LOBBY -->
     <div id="lobby">
-      <div class="lobby-badge">⬡ AIOS Arcade · Grid Dodge</div>
+      <div class="lobby-badge">? AIOS Arcade — Grid Dodge</div>
       <div class="lobby-title">Grid Dodge</div>
       <div class="lobby-sub">
         Entropy disruptors flood the lattice ring. Move to survive. Each wave is
@@ -486,7 +476,7 @@
           <div class="lobby-stat-l">Lives</div>
         </div>
         <div>
-          <div class="lobby-stat-n">·PHI</div>
+          <div class="lobby-stat-n">—PHI</div>
           <div class="lobby-stat-l">Speed Scale</div>
         </div>
         <div>
@@ -528,7 +518,7 @@
       <div class="lobby-hint">
         WASD or arrow keys to move — Dodge the red cubes
       </div>
-      <a href="/vr-hub" class="lobby-back">← Back to VR Hub</a>
+      <a href="/vr-hub" class="lobby-back">? Back to VR Hub</a>
     </div>
 
     <!-- GAME CONTAINER -->
@@ -563,7 +553,7 @@
     <div id="danger-flash"></div>
 
     <!-- EXIT BTN -->
-    <button id="exit-btn" onclick="exitGame()">✕ Exit</button>
+    <button id="exit-btn" onclick="exitGame()">? Exit</button>
 
     <!-- GAME OVER -->
     <div id="gameover">
@@ -673,7 +663,7 @@
         const sy = +(0.5 + Math.random() * 3).toFixed(2);
         const sz = +(Math.cos(angle) * startRadius).toFixed(2);
 
-        // Target: random offset near center (not exact center · avoids spam)
+        // Target: random offset near center (not exact center — avoids spam)
         const tx = +((Math.random() - 0.5) * 4).toFixed(2);
         const ty = sy;
         const tz = +((Math.random() - 0.5) * 4).toFixed(2);
@@ -805,7 +795,7 @@
             <!-- Floor -->
             <a-plane position="0 0 0" rotation="-90 0 0" width="40" height="40" color="#030918" material="shader: flat" opacity="0.8"></a-plane>
 
-            <!-- Lattice corridor rings · visual effect of coming at you -->
+            <!-- Lattice corridor rings — visual effect of coming at you -->
             <a-torus position="0 1.8 -8" rotation="90 0 0" radius="5" radius-tubular="0.04" color="#00d4ff" opacity="0.3" material="shader: flat"
               animation="property: position; from: 0 1.8 -20; to: 0 1.8 8; dur: 3000; loop: true; easing: easeInQuad"></a-torus>
             <a-torus position="0 1.8 -8" rotation="90 0 0" radius="5" radius-tubular="0.04" color="#9b5cff" opacity="0.25" material="shader: flat"
@@ -889,7 +879,7 @@
         document.getElementById("exit-btn").style.display = "none";
         document.getElementById("go-score-n").textContent = surviveTime;
         document.getElementById("go-wave").textContent =
-          `Wave ${wave} · Score: ${score}`;
+          `Wave ${wave} — Score: ${score}`;
         document.getElementById("gameover").style.display = "flex";
         // Submit to leaderboard
         const pn = localStorage.getItem("aios_player_name") || "Anonymous";

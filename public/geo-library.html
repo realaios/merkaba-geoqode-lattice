@@ -3,20 +3,20 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>AIOS GEO Library · Live .geo Catalogue | realaios.com</title>
+    <title>AIOS GEO Library — Live .geo Catalogue | realaios.com</title>
     <meta
       name="description"
-      content="The world's first AI-native video library. Every programme is a living .geo file · infinite resolution, zero waste, produced 24/7 by AIOSProducerSwarm."
+      content="The world's first AI-native video library. Every programme is a living .geo file — infinite resolution, zero waste, produced 24/7 by AIOSProducerSwarm."
     />
     <meta name="robots" content="index,follow" />
     <link rel="canonical" href="https://realaios.com/geo-library" />
     <meta
       property="og:title"
-      content="AIOS GEO Library · Live .geo Catalogue"
+      content="AIOS GEO Library — Live .geo Catalogue"
     />
     <meta
       property="og:description"
-      content="The world's first AI-native video library. Every programme is a living .geo file · infinite resolution, zero waste, produced 24/7 by AIOSProducerSwarm."
+      content="The world's first AI-native video library. Every programme is a living .geo file — infinite resolution, zero waste, produced 24/7 by AIOSProducerSwarm."
     />
     <meta property="og:url" content="https://realaios.com/geo-library" />
     <meta property="og:type" content="website" />
@@ -25,6 +25,7 @@
       content="https://realaios.com/public/og-image.svg"
     />
     <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" type="image/svg+xml" href="/public/favicon.svg" />
     <style>
       :root {
         --bg: #070710;
@@ -47,54 +48,12 @@
         color: var(--text);
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
         min-height: 100vh;
-        overflow-x: hidden;
-      }
-
-      /* NAV */
-      nav {
-        position: sticky;
-        top: 0;
-        z-index: 100;
-        background: rgba(7, 7, 16, 0.96);
-        backdrop-filter: blur(12px);
-        border-bottom: 1px solid var(--border);
-        padding: 0 2rem;
-        display: flex;
-        align-items: center;
-        gap: 1.5rem;
-        height: 54px;
-      }
-      .nav-brand {
-        font-size: 1.1rem;
-        font-weight: 700;
-        letter-spacing: 0.06em;
-        color: var(--cyan);
-        text-decoration: none;
-        margin-right: auto;
-      }
-      .nav-link {
-        color: var(--muted);
-        font-size: 0.82rem;
-        font-weight: 500;
-        text-decoration: none;
-        transition: color 0.2s;
-      }
-      .nav-link:hover,
+        overflow-x: hidden;}
+.nav-link:hover,
       .nav-link.active {
         color: var(--text);
       }
-      .nav-cta {
-        background: linear-gradient(135deg, #00d4ff, #9b4dff);
-        color: #fff;
-        font-size: 0.78rem;
-        font-weight: 700;
-        padding: 0.4rem 1rem;
-        border-radius: 20px;
-        text-decoration: none;
-        letter-spacing: 0.04em;
-      }
-
-      /* HEADER */
+/* HEADER */
       .lib-header {
         padding: 3rem 2rem 1.5rem;
         max-width: 1400px;
@@ -225,7 +184,7 @@
         border-color: var(--cyan);
         color: var(--text);
       }
-      /* Renderer engine chips · indigo accent */
+      /* Renderer engine chips — indigo accent */
       .renderer-chip {
         background: rgba(91, 33, 182, 0.12);
         border: 1px solid rgba(139, 92, 246, 0.22);
@@ -250,7 +209,7 @@
         border-color: #8b5cf6;
         color: #e9d5ff;
       }
-      /* Sort buttons · amber/gold accent */
+      /* Sort buttons — amber/gold accent */
       .sort-btn {
         background: rgba(251, 191, 36, 0.07);
         border: 1px solid rgba(251, 191, 36, 0.18);
@@ -583,11 +542,7 @@
         .lib-title {
           font-size: 1.7rem;
         }
-        nav {
-          padding: 0 1rem;
-          gap: 1rem;
-        }
-        .lib-header,
+  .lib-header,
         .filter-bar,
         .library {
           padding-left: 1rem;
@@ -600,23 +555,7 @@
       }
 
       /* -- SITE-NAV (canonical) -------------------------------------------- */
-      nav.site-nav {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        z-index: 200;
-        height: 54px;
-        padding: 0 24px;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        background: rgba(5, 10, 20, 0.92);
-        backdrop-filter: blur(14px);
-        -webkit-backdrop-filter: blur(14px);
-        border-bottom: 1px solid rgba(0, 212, 255, 0.1);
-      }
-      .site-nav-logo {
+      nav.site-.site-nav-logo {
         font-size: 18px;
         font-weight: 800;
         color: #00d4ff;
@@ -702,11 +641,7 @@
         opacity: 0.85;
       }
       @media (max-width: 640px) {
-        nav.site-nav {
-          padding: 0 12px;
-          height: 50px;
-        }
-        .site-nav-live {
+        nav.site-.site-nav-live {
           display: none;
         }
         .site-nav-logo {
@@ -721,21 +656,23 @@
           padding-top: 50px;
         }
       }
+      /* FOOTER */
+      footer {
+        padding: 2.5rem 1.5rem;
+        text-align: center;
+        border-top: 1px solid var(--border);
+        color: var(--muted);
+        font-size: 0.8rem;
+      }
+      footer a { color: var(--cyan); text-decoration: none; }
+      footer a:hover { opacity: 0.8; }
     </style>
   </head>
   <body>
     <nav class="site-nav">
-      <a href="/" class="site-nav-logo">⬡ AIOS</a>
+      <a href="/" class="site-nav-logo">&#x2B21; AIOS</a>
       <div class="site-nav-links">
-        <a href="/experiences"> Experiences</a>
-        <a href="/vr-hub">VR Hub</a>
-        <a href="/vr"> VR</a>
-        <a href="/games"> Games</a>
-        <a href="/aiosdream">2D Preview</a>
-        <a href="/plaistore">PLAIstore</a>
-        <a href="/geo-library" class="active"> Library</a>
-        <a href="/geo-codec">.geo</a>
-        <a href="/aios-studio">Studio</a>
+        <a href="/experiences">Experiences</a><a href="/vr-hub">VR Hub</a><a href="/vr">&#x1F97D; VR</a><a href="/games">&#x1F3AE; Games</a><a href="/plaistore">PLAIstore</a><a href="/geo-library" class="active">&#x1F4DA; Library</a><a href="/geo-codec">.geo</a><a href="/aios-studio">Studio</a><a href="/pricing">Pricing</a>
       </div>
       <div class="site-nav-right">
         <a href="/login" class="site-nav-cta">Sign In</a>
@@ -745,12 +682,12 @@
     <div class="lib-header">
       <div class="lib-eyebrow">
         <div class="live-dot"></div>
-        AIOSProducerSwarm · 24/7 Production · Live Catalogue
+        AIOSProducerSwarm — 24/7 Production — Live Catalogue
       </div>
       <h1 class="lib-title">The .geo Library</h1>
       <p class="lib-sub">
         Every programme is a living
-        <code style="color: var(--cyan)">.geo</code> file · AI-rendered,
+        <code style="color: var(--cyan)">.geo</code> file — AI-rendered,
         infinite resolution, zero wasted bytes. New titles produced every 2
         minutes by the swarm, 24 hours a day.
       </p>
@@ -758,24 +695,24 @@
 
     <div class="stats-bar" style="padding: 1rem 2rem">
       <div class="stat">
-        <div class="stat-val" id="stat-count">·</div>
+        <div class="stat-val" id="stat-count">—</div>
         <div class="stat-lbl">Programmes in Library</div>
       </div>
       <div class="stat">
-        <div class="stat-val" id="stat-produced">·</div>
+        <div class="stat-val" id="stat-produced">—</div>
         <div class="stat-lbl">Total Produced</div>
       </div>
       <div class="stat">
-        <div class="stat-val" id="stat-hours">·</div>
+        <div class="stat-val" id="stat-hours">—</div>
         <div class="stat-lbl">Hours of Content</div>
       </div>
       <div class="stat">
-        <div class="stat-val" id="stat-kb">·</div>
+        <div class="stat-val" id="stat-kb">—</div>
         <div class="stat-lbl">Total Library Size</div>
       </div>
       <div class="stat">
         <div class="stat-val" id="stat-vs">
-          <span style="font-size: 1rem; color: var(--muted)">vs mp4:</span> ·
+          <span style="font-size: 1rem; color: var(--muted)">vs mp4:</span> —
         </div>
         <div class="stat-lbl">Compression Ratio</div>
       </div>
@@ -789,7 +726,7 @@
           <input
             class="filter-search"
             type="text"
-            placeholder="Search titles, renderers· (press /)"
+            placeholder="Search titles, renderers— (press /)"
             id="search-input"
             autocomplete="off"
           />
@@ -806,7 +743,7 @@
           <button class="sort-btn" data-sort="hz-hi">Hz ?</button>
           <button class="sort-btn" data-sort="size-lo">Smallest</button>
         </div>
-        <span class="result-count" id="result-count">· programmes</span>
+        <span class="result-count" id="result-count">— programmes</span>
         <button class="refresh-btn" id="refresh-btn">?</button>
       </div>
       <!-- Row 2: Genre filter chips -->
@@ -833,8 +770,8 @@
 
     <div class="toast" id="toast"></div>
     <div class="status-line">
-      <span class="status-green">● LIVE</span>
-      <span id="status-text">Loading AIOSProducerSwarm catalogue·</span>
+      <span class="status-green">? LIVE</span>
+      <span id="status-text">Loading AIOSProducerSwarm catalogue—</span>
       <span style="margin-left: auto" id="status-refresh"
         >Auto-refreshes every 30s</span
       >
@@ -1164,7 +1101,7 @@
             `<span style="font-size:1rem;color:var(--muted)">vs mp4:</span> ${ratio > 0 ? ratio.toLocaleString() + "x" : "n/a"}`;
 
           document.getElementById("status-text").textContent =
-            `${stats.catalogue} programmes · ${stats.productionCount} produced · live API`;
+            `${stats.catalogue} programmes — ${stats.productionCount} produced — live API`;
 
           applyFilter();
           populateRendererChips();
@@ -1173,7 +1110,7 @@
             showToast(` New programme produced: "${allProgrammes[0]?.title}"`);
         } catch (e) {
           document.getElementById("status-text").textContent =
-            "Connection error · retrying·";
+            "Connection error — retrying—";
         }
       }
 
@@ -1301,7 +1238,7 @@
         var rc = document.getElementById("result-count");
         if (rc) {
           if (allProgrammes.length === 0) {
-            rc.textContent = "· programmes";
+            rc.textContent = "— programmes";
           } else if (filteredProgrammes.length === allProgrammes.length) {
             rc.innerHTML =
               "<em>" + filteredProgrammes.length + "</em> programmes";
@@ -1332,14 +1269,14 @@
             const genres = (p.genre || [])
               .map((g) => `<span class="genre-pill">${g}</span>`)
               .join("");
-            const dur = p.duration ? fmtDur(p.duration) : "·";
+            const dur = p.duration ? fmtDur(p.duration) : "—";
             const rendKey = RENDERER_MAP[p.renderer?.type] || "default";
             const isCanonical = p.canonical || /^s2_/.test(p.id);
             return `<div class="card" onclick="watchProgramme('${p.id}')" data-id="${p.id}">
       <div class="card-canvas-wrap">
         <canvas class="card-canvas" data-renderer="${rendKey}" data-idx="${i}" width="280" height="158"></canvas>
-        ${isCanonical ? '<div class="card-fresh" style="background:rgba(0,229,255,0.85);color:#06040e;letter-spacing:0.12em">● S2 CANONICAL</div>' : isFresh ? '<div class="card-fresh">✦ FRESH</div>' : ""}
-        <div class="card-geo-badge">● .GEO v2</div>
+        ${isCanonical ? '<div class="card-fresh" style="background:rgba(0,229,255,0.85);color:#06040e;letter-spacing:0.12em">? S2 CANONICAL</div>' : isFresh ? '<div class="card-fresh">? FRESH</div>' : ""}
+        <div class="card-geo-badge">? .GEO v2</div>
         <div class="card-play"></div>
       </div>
       <div class="card-body">
@@ -1349,9 +1286,9 @@
         <div class="card-meta">
           <span>${dur}</span>
           <span class="card-hz">${p.audio?.hz || 528} Hz</span>
-          <span class="card-kb">${p.fileSizeKB || "·"} KB</span>
+          <span class="card-kb">${p.fileSizeKB || "—"} KB</span>
         </div>
-        <div class="card-renderer"> ${(p.renderer?.type || "quantum").toUpperCase()} · ${p.swarm?.agents?.director || "QuantumDirector"}</div>
+        <div class="card-renderer"> ${(p.renderer?.type || "quantum").toUpperCase()} — ${p.swarm?.agents?.director || "QuantumDirector"}</div>
       </div>
     </div>`;
           })
@@ -1410,13 +1347,13 @@
         document.getElementById("geo-player-sub").textContent =
           prog.subtitle || "";
         const hz = prog.audio?.hz || prog.geoqode?.frequency || 528;
-        const dur = prog.duration ? fmtDur(prog.duration) : "·";
+        const dur = prog.duration ? fmtDur(prog.duration) : "—";
         const kb =
           prog.fileSizeKB ||
           ((prog.fileSizeBytes || 0) / 1024).toFixed(1) ||
-          "·";
+          "—";
         document.getElementById("geo-player-meta").textContent =
-          `${hz} Hz · ${dur} · ${kb} KB · ${(prog.renderer?.type || "quantum").toUpperCase()}`;
+          `${hz} Hz — ${dur} — ${kb} KB — ${(prog.renderer?.type || "quantum").toUpperCase()}`;
         const tags = (prog.genre || [])
           .map(
             (g) =>
@@ -1548,7 +1485,7 @@
         .getElementById("refresh-btn")
         .addEventListener("click", function () {
           fetchCatalogue();
-          showToast("↻ Refreshing catalogue·");
+          showToast("? Refreshing catalogue—");
         });
 
       // -- Init ----------------------------------------------------------------------
@@ -1591,7 +1528,7 @@
             font-weight: 600;
           "
         >
-          ✕ Close
+          ? Close
         </button>
         <div
           style="
@@ -1657,7 +1594,7 @@
               font-weight: 700;
               font-size: 0.9rem;
             "
-            >⬡ Open in Theatre</a
+            >? Open in Theatre</a
           >
           <button
             onclick="closeGeoPlayer()"
@@ -1671,7 +1608,7 @@
               font-size: 0.9rem;
             "
           >
-            ← Back to Library
+            ? Back to Library
           </button>
           <a
             href="/aios-studio"
@@ -1684,10 +1621,17 @@
               text-decoration: none;
               font-size: 0.9rem;
             "
-            >Studio →</a
+            >Studio ?</a
           >
         </div>
       </div>
     </div>
+    <footer>
+      <p>
+        <a href="/">AIOS</a> &middot; <a href="/vr-hub">VR Hub</a> &middot;
+        <a href="/games">&#x1F3AE; Games</a> &middot; <a href="/plaistore">PLAIstore</a> &middot; <a href="/pricing">Pricing</a>
+        &nbsp;|&nbsp; realaios.com &copy; 2026
+      </p>
+    </footer>
   </body>
 </html>
