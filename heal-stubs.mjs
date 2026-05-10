@@ -10,6 +10,7 @@ import { fileURLToPath } from "url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PUB = path.join(__dirname, "public");
+const ALLOW_VR_HTML_PATCH = process.env.ALLOW_VR_HTML_PATCH === "1";
 
 function patch(file, label, find, replace) {
   const idx = file.indexOf(find);
@@ -548,8 +549,16 @@ hub = patch(
   `🎨 Art & Music <span class="live-pill">4 live</span>`,
 );
 
-fs.writeFileSync(path.join(PUB, "vr-hub.html"), hub, "utf8");
-console.log(`  → vr-hub.html written: ${Buffer.byteLength(hub, "utf8")} bytes`);
+if (!ALLOW_VR_HTML_PATCH) {
+  console.warn(
+    "  ⚠ Skipped vr-hub.html write (set ALLOW_VR_HTML_PATCH=1 to enable)",
+  );
+} else {
+  fs.writeFileSync(path.join(PUB, "vr-hub.html"), hub, "utf8");
+  console.log(
+    `  → vr-hub.html written: ${Buffer.byteLength(hub, "utf8")} bytes`,
+  );
+}
 
 // ═══════════════════════════════════════════════════════════════
 // 3. VR.HTML — add 16 new PROGRAMMES
@@ -733,6 +742,12 @@ vr = patch(
   `          latticeNode: 4,\n        },` + NEW_PROGRAMMES + `      ];`,
 );
 
-fs.writeFileSync(path.join(PUB, "vr.html"), vr, "utf8");
-console.log(`  → vr.html written: ${Buffer.byteLength(vr, "utf8")} bytes`);
+if (!ALLOW_VR_HTML_PATCH) {
+  console.warn(
+    "  ⚠ Skipped vr.html write (set ALLOW_VR_HTML_PATCH=1 to enable)",
+  );
+} else {
+  fs.writeFileSync(path.join(PUB, "vr.html"), vr, "utf8");
+  console.log(`  → vr.html written: ${Buffer.byteLength(vr, "utf8")} bytes`);
+}
 console.log(`\n✅ All stub patches applied.`);

@@ -706,14 +706,14 @@
         <p>
           Autonomous AI-generated spatial experiences · fully navigable in
           immersive VR.
-          <span id="vr-prog-count">25</span> live programmes across 9
+          <span id="vr-prog-count">__VR_LIVE__</span> live programmes across 9
           categories. Works on Meta Quest 2 &amp; 3 via browser. Zero install ·
           no app required.
         </p>
 
         <!-- Enter button · always shown; label updates based on device -->
         <button id="enter-vr-btn" onclick="enterVRScene()">
-           Enter Cinema Mode
+          Enter Cinema Mode
         </button>
 
         <!-- Quest VR mode note -->
@@ -727,10 +727,6 @@
           <code>realaios.com/vr</code>
         </div>
 
-        <p class="vr-quest-hint">
-          On Meta Quest? Open Browser · navigate to
-          <a href="https://realaios.com/vr" target="_blank">realaios.com/vr</a>tap Enter VR Mode
-        </p>
         <button id="share-btn" onclick="copyVRLink()">
           &#128279; Copy VR Link
         </button>
@@ -740,19 +736,19 @@
       <!-- Stats bar -->
       <div class="vr-stats">
         <div class="vr-stat">
-          <span class="vr-stat-n" id="vr-stat-live">25</span
+          <span class="vr-stat-n" id="vr-stat-live">__VR_LIVE__</span
           ><span class="vr-stat-l">Live Experiences</span>
         </div>
         <div class="vr-stat">
-          <span class="vr-stat-n">0</span
-          ><span class="vr-stat-l">Downloads Required</span>
+          <span class="vr-stat-n" id="vr-stat-downloads">0</span
+          ><span class="vr-stat-l">App Downloads (Browser Mode)</span>
         </div>
         <div class="vr-stat">
-          <span class="vr-stat-n" id="vr-stat-cats">9</span
+          <span class="vr-stat-n" id="vr-stat-cats">__VR_CATS__</span
           ><span class="vr-stat-l">Categories</span>
         </div>
         <div class="vr-stat">
-          <span class="vr-stat-n" id="vr-stat-total">50</span
+          <span class="vr-stat-n" id="vr-stat-total">__VR_TOTAL__</span
           ><span class="vr-stat-l">In Catalogue</span>
         </div>
       </div>
@@ -869,28 +865,24 @@
           All
         </button>
         <button class="cat-tab" onclick="filterProgs('cinema', this)">
-           Cinema
+          Cinema
         </button>
         <button class="cat-tab" onclick="filterProgs('enterprise', this)">
-           Enterprise
+          Enterprise
         </button>
-        <button class="cat-tab" onclick="filterProgs('lab', this)">
-           Lab
-        </button>
+        <button class="cat-tab" onclick="filterProgs('lab', this)">Lab</button>
         <button class="cat-tab" onclick="filterProgs('arcade', this)">
-           Arcade
+          Arcade
         </button>
         <button class="cat-tab" onclick="filterProgs('wellness', this)">
-           Wellness
+          Wellness
         </button>
         <button class="cat-tab" onclick="filterProgs('education', this)">
-           Education
+          Education
         </button>
-        <button class="cat-tab" onclick="filterProgs('art', this)">
-           Art
-        </button>
+        <button class="cat-tab" onclick="filterProgs('art', this)">Art</button>
         <button class="cat-tab" onclick="filterProgs('social', this)">
-           Social
+          Social
         </button>
         <button class="cat-tab" onclick="filterProgs('creator', this)">
           ️ Creator
@@ -899,7 +891,8 @@
           href="/vr-hub"
           class="cat-tab"
           style="border-color: rgba(0, 212, 255, 0.3); color: var(--cyan)"
-          > Full Hub →</a
+        >
+          Full Hub →</a
         >
       </div>
 
@@ -1386,7 +1379,11 @@
       // -- Build programme cards --------------------------------------------
       const grid = document.getElementById("prog-grid");
       const progCountEl = document.getElementById("vr-prog-count");
-      if (progCountEl) progCountEl.textContent = PROGRAMMES.length;
+
+      // Browser-native delivery mode: always zero required app downloads.
+      const DOWNLOADS_REQUIRED = 0;
+      const downloadsEl = document.getElementById("vr-stat-downloads");
+      if (downloadsEl) downloadsEl.textContent = String(DOWNLOADS_REQUIRED);
 
       // -- Sync stats bar from live taxonomy -------------------------------
       fetch("/api/aios/vr/taxonomy")
@@ -1403,19 +1400,13 @@
             live += liveN;
             if (liveN > 0) cats++;
           });
-          if (total) {
-            const el = document.getElementById("vr-stat-total");
-            if (el) el.textContent = total;
-          }
-          if (live) {
-            const el = document.getElementById("vr-stat-live");
-            if (el) el.textContent = live;
-            if (progCountEl) progCountEl.textContent = live;
-          }
-          if (cats) {
-            const el = document.getElementById("vr-stat-cats");
-            if (el) el.textContent = cats;
-          }
+          const totalEl = document.getElementById("vr-stat-total");
+          const liveEl = document.getElementById("vr-stat-live");
+          const catsEl = document.getElementById("vr-stat-cats");
+          if (totalEl) totalEl.textContent = String(total);
+          if (liveEl) liveEl.textContent = String(live);
+          if (catsEl) catsEl.textContent = String(cats);
+          if (progCountEl) progCountEl.textContent = String(live);
         })
         .catch(() => {});
 

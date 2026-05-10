@@ -7,6 +7,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PUB = path.join(__dirname, "public");
+const ALLOW_VR_HTML_PATCH = process.env.ALLOW_VR_HTML_PATCH === "1";
 
 let ok = 0,
   fail = 0;
@@ -415,8 +416,14 @@ h = patch(
   `\uD83C\uDFA8 Art & Music <span class="live-pill">4 live</span>`,
 );
 
-fs.writeFileSync(path.join(PUB, "vr-hub.html"), h, "utf8");
-console.log(`  \u2192 vr-hub.html: ${Buffer.byteLength(h, "utf8")} bytes`);
+if (!ALLOW_VR_HTML_PATCH) {
+  console.warn(
+    "  ⚠ Skip vr-hub.html write (set ALLOW_VR_HTML_PATCH=1 to enable)",
+  );
+} else {
+  fs.writeFileSync(path.join(PUB, "vr-hub.html"), h, "utf8");
+  console.log(`  \u2192 vr-hub.html: ${Buffer.byteLength(h, "utf8")} bytes`);
+}
 
 // ═══════════════════════════════════════════════════════════════════
 // 3. VR.HTML — add 16 new PROGRAMMES
@@ -432,10 +439,14 @@ const NEW_PROGS = `          panelAngle: 255,${vNL}          latticeNode: 4,${vN
 
 vr = patch(vr, "16 new PROGRAMMES before array close", PLAI_CLOSE, NEW_PROGS);
 
-fs.writeFileSync(path.join(PUB, "vr.html"), vr, "utf8");
-console.log(
-  `  \u2192 vr.html: ${Buffer.byteLength(vr, "utf8")} bytes (${vr.match(/name:/g).length} programmes)`,
-);
+if (!ALLOW_VR_HTML_PATCH) {
+  console.warn("  ⚠ Skip vr.html write (set ALLOW_VR_HTML_PATCH=1 to enable)");
+} else {
+  fs.writeFileSync(path.join(PUB, "vr.html"), vr, "utf8");
+  console.log(
+    `  \u2192 vr.html: ${Buffer.byteLength(vr, "utf8")} bytes (${vr.match(/name:/g).length} programmes)`,
+  );
+}
 
 // ═══════════════════════════════════════════════════════════════════
 // SUMMARY
