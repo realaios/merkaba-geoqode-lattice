@@ -160,6 +160,16 @@ const START_HTML = existsSync(START_HTML_PATH)
   ? withMeta(readFileSync(START_HTML_PATH, "utf-8"))
   : null;
 
+const SIGNUP_HTML_PATH = join(PUBLIC_DIR, "signup.html");
+const SIGNUP_HTML = existsSync(SIGNUP_HTML_PATH)
+  ? withMeta(readFileSync(SIGNUP_HTML_PATH, "utf-8"))
+  : null;
+
+const LOGIN_HTML_PATH = join(PUBLIC_DIR, "login.html");
+const LOGIN_HTML = existsSync(LOGIN_HTML_PATH)
+  ? withMeta(readFileSync(LOGIN_HTML_PATH, "utf-8"))
+  : null;
+
 const VR_HTML_PATH = join(PUBLIC_DIR, "vr.html");
 const VR_HTML = existsSync(VR_HTML_PATH)
   ? withMeta(readFileSync(VR_HTML_PATH, "utf-8"))
@@ -4705,14 +4715,70 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
       return json(res, 404, { ok: false, error: "Static file not found" });
     }
 
-    // ── GET /waitlist — redirect to homepage waitlist section ─────────────
+    // ── GET /waitlist — redirect to signup ──────────────────────────────
     if (
       req.method === "GET" &&
       (pathname === "/waitlist" || pathname === "/waitlist/")
     ) {
-      res.writeHead(301, { Location: "/#waitlist" });
+      res.writeHead(301, { Location: "/signup" });
       res.end();
       return;
+    }
+
+    // ── POST /api/auth/register — proxy to Storm API ──────────────────────
+    if (req.method === "POST" && pathname === "/api/auth/register") {
+      const body = await readBody(req);
+      const { name, email, password } = body;
+      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(email).trim())) {
+        return json(res, 400, { ok: false, error: "Valid email address required" });
+      }
+      if (!password || String(password).length < 8) {
+        return json(res, 400, { ok: false, error: "Password must be at least 8 characters" });
+      }
+      const STORM_API = process.env.STORM_API_URL || "https://api.getbrains4ai.com";
+      try {
+        const upstream = await fetch(`${STORM_API}/api/auth/register`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            name: String(name || "AIOS User").trim().slice(0, 120),
+            email: String(email).trim().slice(0, 254),
+            password: String(password),
+          }),
+          signal: AbortSignal.timeout(10000),
+        });
+        const data = await upstream.json().catch(() => ({}));
+        return json(res, upstream.status, data);
+      } catch (err) {
+        console.error("[AIOS] Auth register proxy error:", err.message);
+        return json(res, 500, { ok: false, error: "Registration service unavailable. Please try again." });
+      }
+    }
+
+    // ── POST /api/auth/login — proxy to Storm API ─────────────────────────
+    if (req.method === "POST" && pathname === "/api/auth/login") {
+      const body = await readBody(req);
+      const { email, password } = body;
+      if (!email || !password) {
+        return json(res, 400, { ok: false, error: "Email and password are required" });
+      }
+      const STORM_API = process.env.STORM_API_URL || "https://api.getbrains4ai.com";
+      try {
+        const upstream = await fetch(`${STORM_API}/api/auth/login`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            email: String(email).trim().slice(0, 254),
+            password: String(password),
+          }),
+          signal: AbortSignal.timeout(10000),
+        });
+        const data = await upstream.json().catch(() => ({}));
+        return json(res, upstream.status, data);
+      } catch (err) {
+        console.error("[AIOS] Auth login proxy error:", err.message);
+        return json(res, 500, { ok: false, error: "Login service unavailable. Please try again." });
+      }
     }
 
     // ── POST /waitlist — proxy to Storm API waitlist ──────────────────────
@@ -6277,6 +6343,22 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
         "Cache-Control": "no-store",
       });
       res.end(GAME_MERKABA_GHOSTS_HTML);
+      return;
+    }
+
+    // ── GET /signup — Create AIOS account ───────────────────────────────
+    if (req.method === "GET" && (pathname === "/signup" || pathname === "/signup/")) {
+      if (!SIGNUP_HTML) return json(res, 404, { ok: false, error: "Signup page not found" });
+      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+      res.end(SIGNUP_HTML);
+      return;
+    }
+
+    // ── GET /login — Sign in to AIOS ─────────────────────────────────────
+    if (req.method === "GET" && (pathname === "/login" || pathname === "/login/")) {
+      if (!LOGIN_HTML) return json(res, 404, { ok: false, error: "Login page not found" });
+      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+      res.end(LOGIN_HTML);
       return;
     }
 

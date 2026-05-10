@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Create Account — AIOS</title>
+  <meta name="description" content="Create your free AIOS account. Access PLAIStore, VR Hub, AI tools and more."/>
+  <meta name="robots" content="noindex"/>
+  <link rel="canonical" href="https://realaios.com/signup"/>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--cyan:#00d4ff;--indigo:#6366f1;--bg:#07080f;--surface:rgba(255,255,255,0.04);--border:rgba(0,212,255,0.18);--text:#f8fafc;--muted:rgba(248,250,252,0.55)}
+    body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:1.5rem}
+    .card{width:100%;max-width:420px;background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:2.5rem 2rem}
+    .logo{display:flex;align-items:center;gap:0.6rem;margin-bottom:2rem;justify-content:center;text-decoration:none}
+    .logo-mark{width:36px;height:36px;background:linear-gradient(135deg,var(--cyan),var(--indigo));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;font-weight:900;color:#07080f}
+    .logo-text{font-size:1.15rem;font-weight:800;letter-spacing:0.04em;color:var(--text)}
+    h1{font-size:1.45rem;font-weight:800;text-align:center;margin-bottom:0.35rem}
+    .subtitle{text-align:center;color:var(--muted);font-size:0.9rem;margin-bottom:2rem}
+    .field{margin-bottom:1.1rem}
+    .field label{display:block;font-size:0.8rem;font-weight:600;color:var(--muted);margin-bottom:0.45rem;letter-spacing:0.04em;text-transform:uppercase}
+    .field input{width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:0.7rem 1rem;color:var(--text);font-size:0.95rem;outline:none;transition:border-color .2s}
+    .field input:focus{border-color:var(--cyan)}
+    .field input::placeholder{color:rgba(248,250,252,0.3)}
+    .btn{width:100%;background:linear-gradient(135deg,var(--cyan),var(--indigo));color:#07080f;border:none;border-radius:8px;padding:0.8rem;font-size:1rem;font-weight:700;cursor:pointer;margin-top:0.5rem;transition:opacity .2s}
+    .btn:hover{opacity:0.9}
+    .btn:disabled{opacity:0.5;cursor:not-allowed}
+    .error{background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.3);border-radius:8px;padding:0.7rem 1rem;font-size:0.87rem;color:#fca5a5;margin-bottom:1rem;display:none}
+    .error.show{display:block}
+    .divider{text-align:center;font-size:0.83rem;color:var(--muted);margin:1.5rem 0 0}
+    .divider a{color:var(--cyan);text-decoration:none;font-weight:600}
+    .divider a:hover{text-decoration:underline}
+    .back{display:block;text-align:center;font-size:0.82rem;color:var(--muted);margin-top:1.5rem;text-decoration:none}
+    .back:hover{color:var(--cyan)}
+    .success-view{display:none;text-align:center;padding:1rem 0}
+    .success-view.show{display:block}
+    .success-icon{font-size:2.5rem;margin-bottom:1rem}
+    .success-view h2{font-size:1.3rem;font-weight:800;margin-bottom:0.5rem}
+    .success-view p{color:var(--muted);font-size:0.9rem;margin-bottom:1.5rem}
+  </style>
+</head>
+<body>
+  <div class="card">
+    <a class="logo" href="/">
+      <div class="logo-mark">A</div>
+      <span class="logo-text">AIOS</span>
+    </a>
+
+    <div id="form-view">
+      <h1>Create free account</h1>
+      <p class="subtitle">No credit card required</p>
+
+      <div class="error" id="err"></div>
+
+      <div class="field">
+        <label for="name">Name</label>
+        <input type="text" id="name" name="name" placeholder="Your name" autocomplete="name"/>
+      </div>
+      <div class="field">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" placeholder="you@example.com" autocomplete="email" required/>
+      </div>
+      <div class="field">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" placeholder="At least 8 characters" autocomplete="new-password" required/>
+      </div>
+
+      <button class="btn" id="submit-btn" type="button">Create Account →</button>
+
+      <p class="divider">Already have an account? <a href="/login">Sign in</a></p>
+    </div>
+
+    <div class="success-view" id="success-view">
+      <div class="success-icon">✓</div>
+      <h2>Account created!</h2>
+      <p>Welcome to AIOS. Taking you to PLAIStore…</p>
+    </div>
+  </div>
+
+  <a class="back" href="/">← Back to realaios.com</a>
+
+  <script>
+    (function () {
+      var btn = document.getElementById("submit-btn");
+      var errEl = document.getElementById("err");
+
+      function showError(msg) {
+        errEl.textContent = msg;
+        errEl.classList.add("show");
+      }
+      function hideError() { errEl.classList.remove("show"); }
+
+      // If already logged in, go straight to PLAIStore
+      if (localStorage.getItem("plai_jwt")) {
+        window.location.replace("/plaistore");
+        return;
+      }
+
+      // Check for redirect param
+      var redirectTo = new URLSearchParams(window.location.search).get("redirect") || "/plaistore";
+
+      btn.addEventListener("click", async function () {
+        hideError();
+        var name = document.getElementById("name").value.trim();
+        var email = document.getElementById("email").value.trim();
+        var password = document.getElementById("password").value;
+
+        if (!email) return showError("Email address is required.");
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return showError("Please enter a valid email address.");
+        if (!password || password.length < 8) return showError("Password must be at least 8 characters.");
+
+        btn.disabled = true;
+        btn.textContent = "Creating account…";
+
+        try {
+          var r = await fetch("/api/auth/register", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ name: name || "AIOS User", email: email, password: password })
+          });
+          var data = await r.json().catch(function () { return {}; });
+
+          if (r.ok && (data.token || data.jwt)) {
+            var token = data.token || data.jwt;
+            localStorage.setItem("plai_jwt", token);
+            document.getElementById("form-view").style.display = "none";
+            document.getElementById("success-view").classList.add("show");
+            setTimeout(function () { window.location.replace(redirectTo); }, 1200);
+          } else {
+            showError(data.error || data.message || "Registration failed. Please try again.");
+            btn.disabled = false;
+            btn.textContent = "Create Account →";
+          }
+        } catch (e) {
+          showError("Connection error. Please try again.");
+          btn.disabled = false;
+          btn.textContent = "Create Account →";
+        }
+      });
+
+      // Enter key
+      document.querySelectorAll("input").forEach(function (inp) {
+        inp.addEventListener("keydown", function (e) { if (e.key === "Enter") btn.click(); });
+      });
+    })();
+  </script>
+</body>
+</html>
