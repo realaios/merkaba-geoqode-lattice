@@ -727,10 +727,11 @@
     <nav class="site-nav">
       <a href="/" class="site-nav-logo">⬡ AIOS</a>
       <div class="site-nav-links">
-        <a href="/games"> Games</a>
-        <a href="/aiosdream">Theatre</a>
-        <a href="/vr"> VR</a>
+        <a href="/experiences"> Experiences</a>
         <a href="/vr-hub">VR Hub</a>
+        <a href="/vr"> VR</a>
+        <a href="/games"> Games</a>
+        <a href="/aiosdream">2D Preview</a>
         <a href="/plaistore">PLAIstore</a>
         <a href="/geo-library" class="active"> Library</a>
         <a href="/geo-codec">.geo</a>
@@ -738,7 +739,6 @@
         <a href="/lab">Lab</a>
         <a href="/news"> News</a>
         <a href="/products"> Products</a>
-        <a href="/experiences"> Experiences</a>
       </div>
       <div class="site-nav-right">
         <a href="/live" class="site-nav-live">● LIVE</a>
@@ -797,7 +797,11 @@
             id="search-input"
             autocomplete="off"
           />
-          <button class="search-clear" id="search-clear" title="Clear search"></button>
+          <button
+            class="search-clear"
+            id="search-clear"
+            title="Clear search"
+          ></button>
         </div>
         <div style="display: flex; gap: 4px; flex-wrap: wrap" id="sort-btns">
           <button class="sort-btn active" data-sort="newest">Newest</button>
@@ -1128,50 +1132,49 @@
       // -- Catalogue Fetch ------------------------------------------------------------
       async function fetchCatalogue() {
         try {
-          const r = await fetch("/api/geo/catalogue?limit=100");
-          const data = await r.json();
-          if (!data.ok) throw new Error("API error");
+          const [catalogueResp, statsResp] = await Promise.all([
+            fetch("/api/geo/catalogue?limit=100"),
+            fetch("/api/geo/stats"),
+          ]);
+
+          const data = await catalogueResp.json();
+          const stats = await statsResp.json();
+          if (!data.ok || !stats.ok) throw new Error("API error");
 
           const isNew =
             allProgrammes.length > 0 &&
             data.programmes[0]?.id !== allProgrammes[0]?.id;
           allProgrammes = data.programmes || [];
 
-          // stats
+          // Strictly real, current counters from live API
           document.getElementById("stat-count").textContent =
-            data.count ?? allProgrammes.length;
-          // Historical production since genesis — gives a growing all-time total
-          const genesisMs =
-            data.genesisMs || new Date("2026-03-01T00:00:00Z").getTime();
-          const genesisInterval = data.intervalMs || 120000;
-          const historicalTotal = Math.floor(
-            (Date.now() - genesisMs) / genesisInterval,
-          );
-          document.getElementById("stat-produced").textContent =
-            historicalTotal.toLocaleString();
-          const hours =
-            allProgrammes.reduce((a, p) => a + (p.duration || 0), 0) / 3600;
+            stats.catalogue.toLocaleString();
+          document.getElementById("stat-produced").textContent = Number(
+            stats.productionCount || 0,
+          ).toLocaleString();
+
+          const hours = Number(stats.totalDurationHours || 0);
           document.getElementById("stat-hours").textContent =
             hours.toFixed(1) + "h";
-          const kb =
-            allProgrammes.reduce((a, p) => a + (p.fileSizeBytes || 0), 0) /
-            1024;
+
+          const kb = Number(stats.totalCatalogueKB || 0);
           document.getElementById("stat-kb").textContent =
             kb.toFixed(0) + " KB";
+
+          const mp4BytesAt50Mbps = hours * 3600 * (50_000_000 / 8);
+          const mp4KB = mp4BytesAt50Mbps / 1024;
+          const ratio = kb > 0 ? Math.round(mp4KB / kb) : 0;
           document.getElementById("stat-vs").innerHTML =
-            `<span style="font-size:1rem;color:var(--muted)">vs mp4:</span> ${kb < 1 ? "8" : Math.round((data.count * 5000) / kb).toLocaleString() + "x"}`;
+            `<span style="font-size:1rem;color:var(--muted)">vs mp4:</span> ${ratio > 0 ? ratio.toLocaleString() + "x" : "n/a"}`;
 
           document.getElementById("status-text").textContent =
-            `${allProgrammes.length} programmes · ${data.productionCount ?? 0} produced · ` +
-            `New programme every ${Math.round((data.intervalMs || 120000) / 60000)} min`;
+            `${stats.catalogue} programmes · ${stats.productionCount} produced · live API`;
 
           applyFilter();
           populateRendererChips();
 
           if (isNew)
-            showToast(
-              ` New programme produced: "${allProgrammes[0]?.title}"`,
-            );
+            showToast(` New programme produced: "${allProgrammes[0]?.title}"`);
         } catch (e) {
           document.getElementById("status-text").textContent =
             "Connection error · retrying·";

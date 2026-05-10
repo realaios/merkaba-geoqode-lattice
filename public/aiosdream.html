@@ -3867,33 +3867,20 @@
             href="/aiosdream?section=origins"
             data-row="season1"
             onclick="openGuide('origins', event)"
-            >S1: Origins</a
+            >Origins</a
           >
           <a
             href="/aiosdream?section=emergence"
             data-row="season2"
             onclick="openGuide('emergence', event)"
             style="color: #00e5ff"
-            >S2: Emergence
-            <span
-              style="
-                font-size: 8px;
-                font-weight: 900;
-                background: rgba(0, 229, 255, 0.15);
-                border: 1px solid rgba(0, 229, 255, 0.4);
-                border-radius: 8px;
-                padding: 1px 5px;
-                letter-spacing: 0.1em;
-                vertical-align: middle;
-              "
-              >NEW</span
-            ></a
+            >Emergence</a
           >
           <a
             href="/aiosdream?scroll=cinematic"
             data-row="cinematic"
             onclick="scrollToRow('cinematic', event)"
-            >Cinematic</a
+            >Featured</a
           >
           <a
             href="/aiosdream?scroll=cosmos"
@@ -3907,13 +3894,16 @@
             onclick="scrollToRow('mind', event)"
             >Mind &amp; Reality</a
           >
+          <a href="/experiences">VR Experiences</a>
         </div>
       </div>
       <div class="nav-right">
         <!-- Site navigation links — hidden on mobile (≤900px) -->
         <div class="nav-site-links">
-          <a href="/games"> Games</a>
+          <a href="/experiences"> Experiences</a>
+          <a href="/vr"> VR</a>
           <a href="/vr-hub"> VR Hub</a>
+          <a href="/games"> Games</a>
           <a href="/aios-studio"> Studio</a>
           <a href="/geo-codec">● .geo</a>
           <a href="/geo-library"> Library</a>
@@ -3969,9 +3959,7 @@
             title="Notifications"
             onclick="_openNotif()"
             style="font-size: 21px; opacity: 0.7"
-          >
-            
-          </button>
+          ></button>
           <span
             class="q-badge"
             id="notif-badge"
@@ -3985,9 +3973,7 @@
             title="Ambient Mixer"
             onclick="_openAmb(event)"
             style="font-size: 21px; opacity: 0.55"
-          >
-            
-          </button>
+          ></button>
           <span
             class="q-badge"
             id="amb-badge"
@@ -4013,9 +3999,7 @@
           title="Color Theme"
           onclick="_toggleThemePanel()"
           style="font-size: 20px; opacity: 0.55"
-        >
-          
-        </button>
+        ></button>
         <div style="position: relative">
           <div
             class="nav-avatar signed-out"
@@ -4040,7 +4024,7 @@
                   .scrollIntoView({ behavior: 'smooth' });
               "
             >
-               My List <span class="pdrop-stat" id="pdrop-list-count">0</span>
+              My List <span class="pdrop-stat" id="pdrop-list-count">0</span>
             </button>
             <button
               class="pdrop-row"
@@ -4049,7 +4033,7 @@
                 showWatchStats();
               "
             >
-               Watch Stats <span class="pdrop-stat" id="pdrop-hrs">0h</span>
+              Watch Stats <span class="pdrop-stat" id="pdrop-hrs">0h</span>
             </button>
             <button
               class="pdrop-row"
@@ -4059,7 +4043,7 @@
               "
               style="color: rgba(248, 113, 113, 0.75)"
             >
-               Sign Out
+              Sign Out
             </button>
           </div>
         </div>
@@ -4253,7 +4237,7 @@
                   openPlayer(currentProg.id, 0);
               "
             >
-               Play Now
+              Play Now
             </button>
             <button
               class="btn-info"
@@ -4319,8 +4303,8 @@
         <!-- Trending Now -->
         <div class="row" id="row-trending">
           <div class="row-header">
-            <span class="row-title"
-              > Trending Now
+            <span class="row-title">
+              Trending Now
               <span
                 style="
                   display: inline-block;
@@ -4470,41 +4454,31 @@
               class="ctrl-btn xl"
               id="ctrl-play"
               title="Play / Pause (Space)"
-            >
-              
-            </button>
+            ></button>
             <button
               class="ctrl-btn"
               id="ctrl-skip-back"
               style="font-size: 18px"
               title="-10s (J)"
-            >
-              
-            </button>
+            ></button>
             <button
               class="ctrl-btn"
               id="ctrl-skip-fwd"
               style="font-size: 18px"
               title="+10s (L)"
-            >
-              
-            </button>
+            ></button>
             <button
               class="ctrl-btn"
               id="ctrl-prev"
               style="font-size: 16px"
               title="Prev Scene (↑)"
-            >
-              
-            </button>
+            ></button>
             <button
               class="ctrl-btn"
               id="ctrl-next"
               style="font-size: 16px"
               title="Next Scene (↓)"
-            >
-              
-            </button>
+            ></button>
             <div class="ctrl-sp"></div>
             <span class="scene-badge" id="ctrl-badge">Scene 1</span>
             <div class="vol-wrap">
@@ -4513,9 +4487,7 @@
                 id="ctrl-vol-btn"
                 style="font-size: 18px"
                 title="Mute (M)"
-              >
-                
-              </button>
+              ></button>
               <input
                 type="range"
                 class="vol-slider"
@@ -4635,9 +4607,7 @@
               id="ctrl-share"
               style="font-size: 16px"
               title="Share"
-            >
-              
-            </button>
+            ></button>
             <div class="react-wrap" id="react-wrap">
               <button
                 class="ctrl-btn"
@@ -4657,30 +4627,23 @@
                 <button
                   class="react-btn"
                   onclick="_sendReaction('\ud83e\udd2f')"
-                >
-                  
-                </button>
+                ></button>
                 <button
                   class="react-btn"
                   onclick="_sendReaction('\ud83d\ude4c')"
-                >
-                  
-                </button>
-                <button class="react-btn" onclick="_sendReaction('\u2728')">
-                  
-                </button>
+                ></button>
+                <button
+                  class="react-btn"
+                  onclick="_sendReaction('\u2728')"
+                ></button>
                 <button
                   class="react-btn"
                   onclick="_sendReaction('\ud83d\udd25')"
-                >
-                  
-                </button>
+                ></button>
                 <button
                   class="react-btn"
                   onclick="_sendReaction('\ud83d\udc7e')"
-                >
-                  
-                </button>
+                ></button>
               </div>
             </div>
             <button
@@ -4750,7 +4713,7 @@
         </div>
         <div class="ne-bar"><div class="ne-fill" id="ne-fill"></div></div>
         <div class="ne-row" style="margin-top: 4px">
-          <button class="ne-btn ne-btn-play" id="ne-play"> Play Now</button>
+          <button class="ne-btn ne-btn-play" id="ne-play">Play Now</button>
           <button
             class="ne-btn ne-btn-skip"
             onclick="
@@ -4773,7 +4736,7 @@
     </div>
 
     <!-- ── SHARE TOAST ── -->
-    <div id="share-toast"> Link copied!</div>
+    <div id="share-toast">Link copied!</div>
 
     <!-- ── SCENE BURN-IN ── -->
     <div id="scene-burn">
@@ -4793,18 +4756,14 @@
         id="np-btn-play"
         title="Play/Pause"
         onclick="_npTogglePlay()"
-      >
-        
-      </button>
+      ></button>
       <button
         class="np-btn"
         id="np-btn-next"
         title="Next Scene"
         onclick="_npNextScene()"
         style="font-size: 14px"
-      >
-        
-      </button>
+      ></button>
       <button
         class="np-btn"
         title="Expand"
@@ -4918,7 +4877,7 @@
           </div>
           <div id="wn-grid"></div>
           <div id="wn-actions">
-            <button id="wn-play-btn"> Start Watching</button>
+            <button id="wn-play-btn">Start Watching</button>
             <button id="wn-dismiss-btn" onclick="_wnDismiss()">
               Maybe Later
             </button>
@@ -4944,7 +4903,7 @@
               id="modal-play"
               style="font-size: 14px; padding: 12px 26px"
             >
-               Play
+              Play
             </button>
             <button
               class="btn-info"
@@ -4959,43 +4918,23 @@
               style="font-size: 14px; padding: 12px 18px"
               title="Share"
             >
-               Share
+              Share
             </button>
           </div>
           <div class="reaction-strip" id="reaction-strip">
-            <button
-              class="rxn-btn"
-              data-rxn=""
-              onclick="toggleReaction(this)"
-            >
+            <button class="rxn-btn" data-rxn="" onclick="toggleReaction(this)">
               <span></span><span class="rxn-count">0</span>
             </button>
-            <button
-              class="rxn-btn"
-              data-rxn=""
-              onclick="toggleReaction(this)"
-            >
+            <button class="rxn-btn" data-rxn="" onclick="toggleReaction(this)">
               <span></span><span class="rxn-count">0</span>
             </button>
-            <button
-              class="rxn-btn"
-              data-rxn=""
-              onclick="toggleReaction(this)"
-            >
+            <button class="rxn-btn" data-rxn="" onclick="toggleReaction(this)">
               <span></span><span class="rxn-count">0</span>
             </button>
-            <button
-              class="rxn-btn"
-              data-rxn=""
-              onclick="toggleReaction(this)"
-            >
+            <button class="rxn-btn" data-rxn="" onclick="toggleReaction(this)">
               <span></span><span class="rxn-count">0</span>
             </button>
-            <button
-              class="rxn-btn"
-              data-rxn=""
-              onclick="toggleReaction(this)"
-            >
+            <button class="rxn-btn" data-rxn="" onclick="toggleReaction(this)">
               <span></span><span class="rxn-count">0</span>
             </button>
           </div>
@@ -5237,7 +5176,7 @@
             _ssPlay();
           "
         >
-           Watch Now
+          Watch Now
         </button>
       </div>
       <div id="ss-logo">⬡ AIOS</div>
