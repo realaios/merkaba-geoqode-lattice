@@ -1914,52 +1914,12 @@
         })();
       </script>
 
-      <!-- EMAIL CAPTURE: always visible -->
-      <div id="hero-waitlist-wrap">
-        <div class="waitlist-form" id="hero-form">
-          <div class="form-row">
-            <input
-              class="form-input"
-              type="text"
-              id="w-name"
-              name="name"
-              placeholder="Your name"
-              autocomplete="name"
-            />
-            <input
-              class="form-input"
-              type="email"
-              id="w-email"
-              name="email"
-              placeholder="Email address"
-              required
-              autocomplete="email"
-            />
-          </div>
-          <input
-            class="form-input"
-            type="text"
-            id="w-msg"
-            name="message"
-            placeholder="What do you want to build? (optional)"
-          />
-          <button class="form-submit" id="w-submit" type="button">
-            Join the Free Waitlist &rarr;
-          </button>
-          <p class="form-note">
-            No spam. No noise. Early access notifications only.
-          </p>
-        </div>
+      <!-- ACCOUNT CTA -->
+      <div style="display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;margin-top:0.5rem">
+        <a href="/plaistore" style="display:inline-block;background:linear-gradient(135deg,#00d4ff,#6366f1);color:#fff;font-weight:700;font-size:1rem;padding:0.75rem 2rem;border-radius:8px;text-decoration:none">Create Free Account &rarr;</a>
+        <a href="/plaistore" style="display:inline-block;background:transparent;color:#00d4ff;font-weight:700;font-size:1rem;padding:0.75rem 2rem;border-radius:8px;text-decoration:none;border:1.5px solid rgba(0,212,255,0.4)">Sign In</a>
       </div>
-
-      <div class="form-success" id="hero-success">
-        <div class="success-icon">?</div>
-        <h3>You're on the list.</h3>
-        <p>
-          We'll reach out when early access opens. <br />Thank you for believing
-          in a smarter OS.
-        </p>
-      </div>
+      <p style="text-align:center;margin-top:0.75rem;font-size:0.82rem;color:rgba(248,250,252,0.45)">Free to join &middot; no credit card required</p>
     </section>
 
     <!-- -- STATS -- -->
@@ -2793,82 +2753,19 @@
     </section>
 
     <!-- -- CTA -- -->
-    <section class="cta-section" id="waitlist">
+    <section class="cta-section" id="signup">
       <div class="container">
-        <p class="section-label">Early Access</p>
-        <h2 class="section-title">Be part of what's next.</h2>
+        <p class="section-label">Free to Join</p>
+        <h2 class="section-title">Your AIOS account is waiting.</h2>
         <p class="section-body">
-          AIOS is in active development. Early access partners will shape the
-          platform · from runtime primitives to the agent ecosystem. Spots are
-          limited.
+          Create a free account to save your progress, unlock your AI tools, and
+          be ready when premium features launch.
         </p>
-        <div style="margin-bottom: 1.5rem">
-          <a
-            href="/waitlist"
-            style="
-              display: inline-block;
-              background: linear-gradient(135deg, #00d4ff, #6366f1);
-              color: #fff;
-              font-weight: 700;
-              font-size: 1rem;
-              padding: 0.75rem 1.75rem;
-              border-radius: 8px;
-              text-decoration: none;
-              margin-bottom: 0.6rem;
-            "
-            >Join the Waitlist ?</a
-          >
-          <p
-            style="
-              color: #64748b;
-              font-size: 0.82rem;
-              margin: 0.25rem 0 0.75rem;
-            "
-          >
-            or join the free waitlist below
-          </p>
+        <div style="display:flex;gap:1rem;flex-wrap:wrap;justify-content:center">
+          <a href="/plaistore" style="display:inline-block;background:linear-gradient(135deg,#00d4ff,#6366f1);color:#fff;font-weight:700;font-size:1.05rem;padding:0.85rem 2.25rem;border-radius:8px;text-decoration:none">Create Free Account &rarr;</a>
+          <a href="/plaistore" style="display:inline-block;background:transparent;color:#00d4ff;font-weight:700;font-size:1.05rem;padding:0.85rem 2.25rem;border-radius:8px;text-decoration:none;border:1.5px solid rgba(0,212,255,0.4)">Sign In</a>
         </div>
-
-        <div class="waitlist-form" id="cta-form">
-          <div class="form-row">
-            <input
-              class="form-input"
-              type="text"
-              id="c-name"
-              name="name"
-              placeholder="Your name"
-              autocomplete="name"
-            />
-            <input
-              class="form-input"
-              type="email"
-              id="c-email"
-              name="email"
-              placeholder="Email address"
-              required
-              autocomplete="email"
-            />
-          </div>
-          <input
-            class="form-input"
-            type="text"
-            id="c-msg"
-            name="message"
-            placeholder="What do you want to build with AIOS?"
-          />
-          <button class="form-submit" id="c-submit" type="button">
-            Request Early Access ?
-          </button>
-          <p class="form-note">
-            No spam. No noise. Early access notifications only.
-          </p>
-        </div>
-
-        <div class="form-success" id="cta-success">
-          <div class="success-icon">?</div>
-          <h3>You're on the list.</h3>
-          <p>We'll be in touch when your access window opens.</p>
-        </div>
+        <p style="margin-top:1rem;font-size:0.82rem;color:rgba(248,250,252,0.4)">No credit card &middot; Free forever at this tier</p>
       </div>
     </section>
 
@@ -3508,9 +3405,6 @@
       (function () {
         "use strict";
 
-        const API_BASE = ""; // same origin · POST to /waitlist
-        var _waitlistProduct = "";
-
         function showToast(msg, type) {
           var t = document.getElementById("toast");
           t.textContent = msg;
@@ -3519,10 +3413,6 @@
           t._timer = setTimeout(function () {
             t.className = "";
           }, 4000);
-        }
-
-        function isValidEmail(email) {
-          return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
         }
 
         // -- Live VR stats on homepage -------------------------------------
@@ -3552,128 +3442,6 @@
             })
             .catch(function () {});
         })();
-
-        function submitWaitlist(
-          nameEl,
-          emailEl,
-          msgEl,
-          submitBtn,
-          formEl,
-          successEl,
-        ) {
-          var name = nameEl ? nameEl.value.trim() : "";
-          var email = emailEl ? emailEl.value.trim() : "";
-          var msg = msgEl ? msgEl.value.trim() : "";
-
-          if (!email) {
-            showToast("Please enter your email address.", "error");
-            return;
-          }
-          if (!isValidEmail(email)) {
-            showToast("Please enter a valid email address.", "error");
-            return;
-          }
-
-          submitBtn.disabled = true;
-          submitBtn.textContent = "Joining·";
-
-          fetch(API_BASE + "/waitlist", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              name: name || "AIOS Subscriber",
-              email: email,
-              message: msg,
-              product: _waitlistProduct || "AIOS",
-            }),
-          })
-            .then(function (r) {
-              return r.json().then(function (d) {
-                return { ok: r.ok, data: d };
-              });
-            })
-            .then(function (result) {
-              if (result.ok || result.data.ok) {
-                formEl.style.display = "none";
-                successEl.classList.add("visible");
-                showToast("? You're on the AIOS waitlist!", "success");
-              } else {
-                showToast(
-                  result.data.error ||
-                    "Something went wrong. Please try again.",
-                  "error",
-                );
-                submitBtn.disabled = false;
-                submitBtn.textContent = submitBtn.dataset.label;
-              }
-            })
-            .catch(function () {
-              showToast("Connection error. Please try again.", "error");
-              submitBtn.disabled = false;
-              submitBtn.textContent = submitBtn.dataset.label;
-            });
-        }
-
-        // Product card waitlist links · capture product name before scrolling to form
-        document
-          .querySelectorAll(".product-cta[data-product]")
-          .forEach(function (link) {
-            link.addEventListener("click", function () {
-              _waitlistProduct = link.dataset.product;
-              var msgEl = document.getElementById("w-msg");
-              if (msgEl && !msgEl.value) {
-                msgEl.placeholder =
-                  "Interested in " +
-                  _waitlistProduct +
-                  " · tell us more (optional)";
-              }
-            });
-          });
-
-        // Hero form
-        var wSubmit = document.getElementById("w-submit");
-        if (wSubmit) {
-          wSubmit.dataset.label = wSubmit.textContent;
-          wSubmit.addEventListener("click", function () {
-            submitWaitlist(
-              document.getElementById("w-name"),
-              document.getElementById("w-email"),
-              document.getElementById("w-msg"),
-              wSubmit,
-              document.getElementById("hero-form"),
-              document.getElementById("hero-success"),
-            );
-          });
-        }
-
-        // CTA form
-        var cSubmit = document.getElementById("c-submit");
-        if (cSubmit) {
-          cSubmit.dataset.label = cSubmit.textContent;
-          cSubmit.addEventListener("click", function () {
-            submitWaitlist(
-              document.getElementById("c-name"),
-              document.getElementById("c-email"),
-              document.getElementById("c-msg"),
-              cSubmit,
-              document.getElementById("cta-form"),
-              document.getElementById("cta-success"),
-            );
-          });
-        }
-
-        // Enter key support
-        document.querySelectorAll(".form-input").forEach(function (input) {
-          input.addEventListener("keydown", function (e) {
-            if (e.key === "Enter") {
-              var form = input.closest(".waitlist-form");
-              if (form) {
-                var btn = form.querySelector(".form-submit");
-                if (btn && !btn.disabled) btn.click();
-              }
-            }
-          });
-        });
 
         // Reveal-on-scroll (optional, graceful degradation)
         if ("IntersectionObserver" in window) {
