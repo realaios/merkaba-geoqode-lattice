@@ -3,16 +3,16 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>AIOS VR · Live Worlds · Meta Quest · realaios.com</title>
+    <title>AIOS VR · Live Worlds · Meta Quest · Pico 4 · WebXR · realaios.com</title>
     <meta
       name="description"
-      content="Live WebXR experiences for Meta Quest 2/3 · Cinema, Enterprise, Lab, Arcade, Wellness, Social, Creator, Education, Art. Zero install, browser only."
+      content="Live WebXR experiences for Meta Quest 2/3, Pico 4, HTC Vive XR Elite, HP Reverb G2 &amp; all WebXR browsers · 47 programmes · 16 categories. Zero install, browser only."
     />
     <meta name="theme-color" content="#050a14" />
-    <meta property="og:title" content="AIOS VR · Live Worlds for Meta Quest" />
+    <meta property="og:title" content="AIOS VR · Live Worlds · WebXR Universal" />
     <meta
       property="og:description"
-      content="Live WebXR experiences across 9 categories. Zero install · open realaios.com/vr in your Meta Quest Browser and dive in."
+      content="Live WebXR experiences across 16 categories. Zero install · open realaios.com/vr in your headset browser and dive in."
     />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://realaios.com/vr" />
@@ -35,8 +35,8 @@
       content="https://realaios.com/public/og-image.png"
     />
     <link rel="canonical" href="https://realaios.com/vr" />
-    <!-- A-Frame 1.5.0 · WebXR foundation -->
-    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <!-- A-Frame 1.4.0 self-hosted · WebXR foundation -->
+    <script src="/public/vendor/aframe-1.4.0.min.js"></script>
     <style>
       * {
         box-sizing: border-box;
@@ -510,11 +510,15 @@
         background: rgba(5, 10, 20, 0.9);
         border: 1px solid rgba(0, 212, 255, 0.4);
         color: var(--text);
-        padding: 0.5rem 1rem;
+        padding: 0.75rem 1.5rem;
+        min-height: 44px;
         border-radius: 8px;
         cursor: pointer;
         font-size: 0.85rem;
         font-family: inherit;
+        touch-action: manipulation;
+        -webkit-tap-highlight-color: transparent;
+        backdrop-filter: blur(8px);
       }
 
       @media (max-width: 600px) {
@@ -714,9 +718,8 @@
         <p>
           Autonomous AI-generated spatial experiences · fully navigable in
           immersive VR.
-          <span id="vr-prog-count">·</span> live programmes across 9 categories.
-          Works on Meta Quest 2 &amp; 3 via browser. Zero install · no app
-          required.
+          <span id="vr-prog-count">·</span> live programmes across <span id="vr-cat-count">16</span> categories.
+          Works on Meta Quest &bull; Pico 4 &bull; HTC Vive XR Elite &bull; any WebXR browser. Zero install &middot; no app required.
         </p>
 
         <!-- Enter button · always shown; label updates based on device -->
@@ -856,8 +859,7 @@
           </div>
         </div>
         <p style="margin: 0.9rem 0 0; font-size: 0.72rem; color: #4a6080">
-          No app install · No account required · Works on Quest 2, Quest 3 &amp;
-          Quest Pro · Also works on any WebXR browser
+          No app install &bull; No account required &bull; Quest 2 / Quest 3 / Quest Pro &bull; Pico 4 &amp; Ultra &bull; HTC Vive XR Elite &bull; HP Reverb G2 &bull; Any WebXR browser
         </p>
       </div>
 
@@ -889,6 +891,27 @@
         <button class="cat-tab" onclick="filterProgs('creator', this)">
           Creator
         </button>
+        <button class="cat-tab" onclick="filterProgs('rollercoasters', this)">
+          &#x1F3A2; Coasters
+        </button>
+        <button class="cat-tab" onclick="filterProgs('combat_worlds', this)">
+          &#x2694; Combat
+        </button>
+        <button class="cat-tab" onclick="filterProgs('open_worlds', this)">
+          &#x1F30D; Open Worlds
+        </button>
+        <button class="cat-tab" onclick="filterProgs('real_earth', this)">
+          &#x1F6F0; Real Earth
+        </button>
+        <button class="cat-tab" onclick="filterProgs('space_missions', this)">
+          &#x1F680; Space
+        </button>
+        <button class="cat-tab" onclick="filterProgs('medical_vr', this)">
+          &#x1FA7A; Medical
+        </button>
+        <button class="cat-tab" onclick="filterProgs('design_engineering', this)">
+          &#x1F4D0; Design
+        </button>
         <a
           href="/vr-hub"
           class="cat-tab"
@@ -911,7 +934,7 @@
           </div>
           <div class="info-cell">
             <div class="ic-label">Rendering</div>
-            <div class="ic-val">A-Frame 1.4</div>
+            <div class="ic-val">A-Frame 1.4.0</div>
           </div>
           <div class="info-cell">
             <div class="ic-label">AI Engine</div>
@@ -919,11 +942,11 @@
           </div>
           <div class="info-cell">
             <div class="ic-label">Device</div>
-            <div class="ic-val"></div>
+            <div class="ic-val" id="ic-device">Detecting&hellip;</div>
           </div>
           <div class="info-cell">
             <div class="ic-label">VR Platform</div>
-            <div class="ic-val">Meta Quest 2/3</div>
+            <div class="ic-val">Quest &bull; Pico &bull; WMR &bull; WebXR</div>
           </div>
         </div>
       </div>
@@ -939,12 +962,87 @@
             margin-top: 0.4rem;
           "
         >
-          6 programmes · 3D geometry · Spatial audio at 396·963 Hz
+          <span id="prog-subtitle">47 programmes &middot; 16 categories &middot; Spatial audio 396&ndash;963&thinsp;Hz</span>
         </div>
       </div>
       <div class="programme-grid" id="prog-grid">
         <!-- populated by JS -->
       </div>
+
+      <!-- -- VR Headset Compatibility Matrix -- -->
+      <div style="max-width:920px;margin:2.5rem auto 3rem;padding:0 2rem;">
+        <div class="section-title" style="margin-top:0;margin-bottom:1.2rem;">Headset <span>Compatibility</span></div>
+        <div style="overflow-x:auto;-webkit-overflow-scrolling:touch;">
+          <table style="width:100%;border-collapse:collapse;font-size:.82rem;text-align:left;min-width:560px;">
+            <thead><tr style="border-bottom:1px solid rgba(0,212,255,.15);">
+              <th style="padding:.6rem 1rem;color:var(--muted);font-weight:600;">Headset</th>
+              <th style="padding:.6rem 1rem;color:var(--muted);font-weight:600;">Status</th>
+              <th style="padding:.6rem 1rem;color:var(--muted);font-weight:600;white-space:nowrap;">Per-Eye Res</th>
+              <th style="padding:.6rem 1rem;color:var(--muted);font-weight:600;">Notes</th>
+            </tr></thead>
+            <tbody>
+              <tr style="border-bottom:1px solid rgba(255,255,255,.04);">
+                <td style="padding:.65rem 1rem;font-weight:700;color:var(--text);white-space:nowrap;">Meta Quest 2</td>
+                <td style="padding:.65rem 1rem;"><span style="color:#22c55e;font-weight:700;">&#x2714; Full WebXR</span></td>
+                <td style="padding:.65rem 1rem;color:var(--muted);font-family:monospace;white-space:nowrap;">1832&#xD7;1920</td>
+                <td style="padding:.65rem 1rem;color:var(--muted);font-size:.78rem;">Quest Browser &bull; hand tracking &bull; Touch controllers</td>
+              </tr>
+              <tr style="border-bottom:1px solid rgba(255,255,255,.04);">
+                <td style="padding:.65rem 1rem;font-weight:700;color:var(--text);white-space:nowrap;">Meta Quest 3</td>
+                <td style="padding:.65rem 1rem;"><span style="color:#22c55e;font-weight:700;">&#x2714; Full WebXR</span></td>
+                <td style="padding:.65rem 1rem;color:var(--muted);font-family:monospace;white-space:nowrap;">2064&#xD7;2208</td>
+                <td style="padding:.65rem 1rem;color:var(--muted);font-size:.78rem;">110&deg; FoV &bull; mixed reality passthrough &bull; highest resolution</td>
+              </tr>
+              <tr style="border-bottom:1px solid rgba(255,255,255,.04);">
+                <td style="padding:.65rem 1rem;font-weight:700;color:var(--text);white-space:nowrap;">Meta Quest Pro</td>
+                <td style="padding:.65rem 1rem;"><span style="color:#22c55e;font-weight:700;">&#x2714; Full WebXR</span></td>
+                <td style="padding:.65rem 1rem;color:var(--muted);font-family:monospace;white-space:nowrap;">1800&#xD7;1920</td>
+                <td style="padding:.65rem 1rem;color:var(--muted);font-size:.78rem;">Eye tracking &bull; face tracking &bull; enterprise grade</td>
+              </tr>
+              <tr style="border-bottom:1px solid rgba(255,255,255,.04);">
+                <td style="padding:.65rem 1rem;font-weight:700;color:var(--text);white-space:nowrap;">Pico 4 &amp; Ultra</td>
+                <td style="padding:.65rem 1rem;"><span style="color:#22c55e;font-weight:700;">&#x2714; Full WebXR</span></td>
+                <td style="padding:.65rem 1rem;color:var(--muted);font-family:monospace;white-space:nowrap;">2160&#xD7;2160</td>
+                <td style="padding:.65rem 1rem;color:var(--muted);font-size:.78rem;">Pico Browser (Chromium) &bull; 105&deg; FoV &bull; standalone</td>
+              </tr>
+              <tr style="border-bottom:1px solid rgba(255,255,255,.04);">
+                <td style="padding:.65rem 1rem;font-weight:700;color:var(--text);white-space:nowrap;">HTC Vive XR Elite</td>
+                <td style="padding:.65rem 1rem;"><span style="color:#22c55e;font-weight:700;">&#x2714; Full WebXR</span></td>
+                <td style="padding:.65rem 1rem;color:var(--muted);font-family:monospace;white-space:nowrap;">1920&#xD7;1920</td>
+                <td style="padding:.65rem 1rem;color:var(--muted);font-size:.78rem;">Chromium browser &bull; 105&deg; FoV &bull; standalone + PC tethered</td>
+              </tr>
+              <tr style="border-bottom:1px solid rgba(255,255,255,.04);">
+                <td style="padding:.65rem 1rem;font-weight:700;color:var(--text);white-space:nowrap;">HP Reverb G2</td>
+                <td style="padding:.65rem 1rem;"><span style="color:#22c55e;font-weight:700;">&#x2714; Full WebXR</span></td>
+                <td style="padding:.65rem 1rem;color:var(--muted);font-family:monospace;white-space:nowrap;">2160&#xD7;2160</td>
+                <td style="padding:.65rem 1rem;color:var(--muted);font-size:.78rem;">Edge / Chrome + Windows Mixed Reality runtime</td>
+              </tr>
+              <tr style="border-bottom:1px solid rgba(255,255,255,.04);">
+                <td style="padding:.65rem 1rem;font-weight:700;color:var(--text);white-space:nowrap;">Valve Index</td>
+                <td style="padding:.65rem 1rem;"><span style="color:#f59e0b;font-weight:700;">&#x26A0; Partial</span></td>
+                <td style="padding:.65rem 1rem;color:var(--muted);font-family:monospace;white-space:nowrap;">1440&#xD7;1600</td>
+                <td style="padding:.65rem 1rem;color:var(--muted);font-size:.78rem;">Chrome + SteamVR OpenXR required &bull; 130&deg; FoV</td>
+              </tr>
+              <tr style="border-bottom:1px solid rgba(255,255,255,.04);">
+                <td style="padding:.65rem 1rem;font-weight:700;color:var(--text);white-space:nowrap;">Apple Vision Pro</td>
+                <td style="padding:.65rem 1rem;"><span style="color:#f59e0b;font-weight:700;">&#x26A0; Cinema only</span></td>
+                <td style="padding:.65rem 1rem;color:var(--muted);font-family:monospace;white-space:nowrap;">3660&#xD7;3142</td>
+                <td style="padding:.65rem 1rem;color:var(--muted);font-size:.78rem;">Safari &bull; immersive-vr limited in visionOS &bull; flat cinema works</td>
+              </tr>
+              <tr>
+                <td style="padding:.65rem 1rem;font-weight:700;color:var(--text);white-space:nowrap;">PlayStation VR2</td>
+                <td style="padding:.65rem 1rem;"><span style="color:#ef4444;font-weight:700;">&#x2715; No WebXR</span></td>
+                <td style="padding:.65rem 1rem;color:var(--muted);font-family:monospace;white-space:nowrap;">2000&#xD7;2040</td>
+                <td style="padding:.65rem 1rem;color:var(--muted);font-size:.78rem;">No web browser &bull; requires native PS5 app</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p style="margin-top:.65rem;font-size:.72rem;color:var(--muted);text-align:center;">
+          All supported headsets: open <code style="color:var(--cyan);background:rgba(0,212,255,.08);padding:.1rem .35rem;border-radius:4px;">realaios.com/vr</code> in your headset browser &bull; Zero install &bull; No account required
+        </p>
+      </div>
+
     </div>
 
     <!-- -- VR Scene Container (injected when Enter VR clicked) -- -->
@@ -1717,14 +1815,14 @@
         "formula1-pit": "the_simulation",
         "bridge-analysis": "the_simulation",
         // Rollercoasters — VRuX Production Directive
-        "cosmic-coaster":    "deep_space",
-        "mountain-fury":     "forest_528",
-        "ocean-plunge":      "ocean_presence",
-        "neon-grid-rush":    "the_simulation",
-        "merkaba-spiral":    "merkaba_space",
-        "volcano-fury":      "forest_528",
-        "pharaoh-speed-rail":"pyramids_giza",
-        "zero-g-express":    "iss_zero_gravity",
+        "cosmic-coaster": "deep_space",
+        "mountain-fury": "forest_528",
+        "ocean-plunge": "ocean_presence",
+        "neon-grid-rush": "the_simulation",
+        "merkaba-spiral": "merkaba_space",
+        "volcano-fury": "forest_528",
+        "pharaoh-speed-rail": "pyramids_giza",
+        "zero-g-express": "iss_zero_gravity",
       };
 
       // -- MAL Loader: dynamic import of the scene builder module ----------
@@ -1763,7 +1861,16 @@
           if (catsEl) catsEl.textContent = String(cats);
           if (progCountEl) progCountEl.textContent = String(live);
         })
-        .catch(() => {});
+        .catch(() => {
+          const _lv = PROGRAMMES.filter((p) => p.status !== "coming").length;
+          const sT = document.getElementById("vr-stat-total");
+          const sL = document.getElementById("vr-stat-live");
+          const sC = document.getElementById("vr-stat-cats");
+          if (sT) sT.textContent = String(PROGRAMMES.length);
+          if (sL) sL.textContent = String(_lv);
+          if (sC) sC.textContent = String(Object.keys(CAT_META).length);
+          if (progCountEl) progCountEl.textContent = String(_lv);
+        });
 
       for (const prog of PROGRAMMES) {
         const sem = SEMANTIC[prog.sem] || SEMANTIC.HOLOGRAPHIC;
@@ -2108,7 +2215,7 @@
           <a-scene
             vr-mode-ui="enabled: true"
             loading-screen="dotsColor: #00d4ff; backgroundColor: #050a14"
-            renderer="antialias: true; physicallyCorrectLights: true"
+            renderer="antialias: true; physicallyCorrectLights: false"
             background="color: #050a14">
 
             <!-- Camera rig with cursor -->
@@ -2170,6 +2277,77 @@
       let oscillator = null;
       let xrSession = null;
 
+      // -- VRuX Category Metadata (Queen-Bee S3 NARRATIVE@963Hz) ------------
+      // Supplies icon + accent color for each category.
+      // Used by buildVRuXGateway to create an instant immersive pre-launch portal.
+      const CAT_META = {
+        cinema: { icon: "\u{1F3AC}", accent: "#f59e0b" },
+        enterprise: { icon: "\u{1F4C8}", accent: "#3b82f6" },
+        lab: { icon: "\u2697", accent: "#22c55e" },
+        arcade: { icon: "\u{1F3AE}", accent: "#a855f7" },
+        wellness: { icon: "\u{1F9D8}", accent: "#10b981" },
+        education: { icon: "\u{1F4DA}", accent: "#6366f1" },
+        art: { icon: "\u{1F3A8}", accent: "#ec4899" },
+        social: { icon: "\u{1F91D}", accent: "#06b6d4" },
+        creator: { icon: "\u2728", accent: "#f97316" },
+        combat_worlds: { icon: "\u2694", accent: "#ef4444" },
+        rollercoasters: { icon: "\u{1F3A2}", accent: "#f97316" },
+        open_worlds: { icon: "\u{1F30D}", accent: "#22c55e" },
+        real_earth: { icon: "\u{1F6F0}", accent: "#3b82f6" },
+        space_missions: { icon: "\u{1F680}", accent: "#8b5cf6" },
+        medical_vr: { icon: "\u{1FA7A}", accent: "#ef4444" },
+        design_engineering: { icon: "\u{1F4D0}", accent: "#06b6d4" },
+      };
+
+      // -- VRuX Immersive Gateway -------------------------------------------
+      // Queen-Bee S3 NARRATIVE@963Hz enhancement.
+      // Fires INSTANTLY on launch click — eliminates the cold start.
+      // Ambient tone + VRNarrator speak immediately while scene loads.
+      // Shows: cinematic pulsing rings, semantic frequency, category + title.
+      function buildVRuXGateway(prog) {
+        const semType = (prog && prog.sem) || "HOLOGRAPHIC";
+        const semData = SEMANTIC[semType] || SEMANTIC.HOLOGRAPHIC;
+        const hz = semData.hz;
+        const semColor = semData.color;
+        const catId = (prog && prog.cat) || "cinema";
+        const catMeta = CAT_META[catId] || {
+          icon: "\u{1F30C}",
+          accent: "#00d4ff",
+        };
+        const title = (prog && prog.display) || "AIOS VR Experience";
+        const shortDesc =
+          (prog && prog.shortDesc) ||
+          (prog && prog.desc) ||
+          "Entering the lattice.";
+        const catDisplay = catId
+          .replace(/_/g, " ")
+          .replace(/\b\w/g, (c) => c.toUpperCase());
+
+        return (
+          `<style>` +
+          `@keyframes _vrux-ring{0%{transform:scale(1);opacity:.7}50%{transform:scale(1.14);opacity:1}100%{transform:scale(1);opacity:.7}}` +
+          `@keyframes _vrux-in{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}` +
+          `@keyframes _vrux-freq{0%{letter-spacing:.06em}100%{letter-spacing:.22em}}` +
+          `</style>` +
+          `<div id="vrux-gateway" style="position:fixed;inset:0;z-index:9990;display:flex;flex-direction:column;align-items:center;justify-content:center;background:radial-gradient(ellipse at center,#060d1a 0%,#010508 80%);font-family:'Courier New',Courier,monospace;overflow:hidden;transition:opacity .55s ease;">` +
+          `<div style="position:absolute;width:340px;height:340px;border-radius:50%;border:2px solid ${semColor};box-shadow:0 0 40px 6px ${semColor}44,inset 0 0 60px 4px ${semColor}22;animation:_vrux-ring 2s ease-in-out infinite;pointer-events:none;"></div>` +
+          `<div style="position:absolute;width:420px;height:420px;border-radius:50%;border:1px solid ${semColor}55;box-shadow:0 0 20px 2px ${semColor}22;animation:_vrux-ring 3.2s ease-in-out infinite;animation-delay:.6s;pointer-events:none;"></div>` +
+          `<div style="position:relative;text-align:center;padding:0 24px;animation:_vrux-in .45s ease both;">` +
+          `<div style="font-size:2.8rem;margin-bottom:12px;filter:drop-shadow(0 0 12px ${catMeta.accent});">${catMeta.icon}</div>` +
+          `<div style="font-size:.65rem;letter-spacing:.3em;text-transform:uppercase;color:${catMeta.accent};margin-bottom:8px;opacity:.9;">${catDisplay} &bull; VRuX</div>` +
+          `<h1 style="margin:0 0 14px;font-size:clamp(1.4rem,4vw,2.1rem);font-weight:700;color:#f8fafc;letter-spacing:.03em;text-shadow:0 0 24px ${semColor}88;line-height:1.2;">${title}</h1>` +
+          `<p style="margin:0 0 22px;font-size:clamp(.85rem,2vw,1.05rem);color:#94a3b8;max-width:520px;line-height:1.6;animation:_vrux-in .45s ease .2s both;">${shortDesc}</p>` +
+          `<div style="display:inline-flex;align-items:center;gap:12px;padding:8px 20px;border:1px solid ${semColor}44;border-radius:100px;background:${semColor}11;animation:_vrux-freq 2.2s ease infinite alternate;">` +
+          `<span style="color:${semColor};font-size:1.1rem;font-weight:700;">${hz}&thinsp;Hz</span>` +
+          `<span style="color:#475569;font-size:.7rem;">|</span>` +
+          `<span style="color:#94a3b8;font-size:.7rem;letter-spacing:.15em;">${semType}</span>` +
+          `</div>` +
+          `<div style="margin-top:28px;color:#334155;font-size:.7rem;letter-spacing:.25em;animation:_vrux-in .45s ease .4s both;">ENTERING &nbsp;&#xB7;&#xB7;&#xB7;</div>` +
+          `</div>` +
+          `</div>`
+        );
+      }
+
       function startAmbientTone(hz) {
         try {
           audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -2193,29 +2371,46 @@
         audioCtx = null;
       }
 
+      // -- Reusable VR exit button (44px touch target, backdrop-blur) -------
+      const _VR_EXIT_BTN =
+        '<button id="vr-exit-btn" onclick="exitVRScene()" style="position:fixed;top:16px;right:16px;z-index:9999;background:rgba(5,10,20,.9);color:#fff;border:1px solid rgba(0,212,255,.4);border-radius:8px;padding:12px 22px;font-size:14px;cursor:pointer;min-height:44px;font-family:inherit;touch-action:manipulation;backdrop-filter:blur(8px);">&#x2715; Exit</button>';
+
       function enterVRScene(prog) {
         currentProg = prog || currentProg || null;
         const container = document.getElementById("vr-scene-container");
         container.style.display = "block";
         document.getElementById("flat-ui").style.display = "none";
 
-        const bgColor = "#050a14";
-        container.innerHTML =
-          `<button id="vr-exit-btn" onclick="exitVRScene()">&#x2715; Exit</button>` +
-          `<div id="vr-loading" style="position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:${bgColor};color:#00d4ff;font-family:'Courier New',monospace;font-size:1.5rem;z-index:9998;">Loading scene·</div>`;
-
-        // Determine ambient for this programme
-        const semHz = currentProg
-          ? (
-              SEMANTIC[
-                (PROGRAMMES.find((p) => p.name === currentProg) || {}).sem
-              ] || SEMANTIC.HOLOGRAPHIC
-            ).hz
+        // Find programme data + determine semantic frequency
+        const progData = PROGRAMMES.find((p) => p.name === currentProg) || null;
+        const semHz = progData
+          ? (SEMANTIC[progData.sem] || SEMANTIC.HOLOGRAPHIC).hz
           : BASE_FREQ;
 
-        // Load MAL scene async, fall back to legacy builder on error
-        // Note: getMALLoader / MAL_SCENE_MAP may not be defined yet · always
-        // fall through to the legacy builder which is fully self-contained.
+        // === VRuX Immersive Gateway — Queen-Bee S3 NARRATIVE@963Hz ===
+        // Show gateway IMMEDIATELY (no cold start). Ambient tone + VRNarrator
+        // fire NOW — the human is immersed from the instant they click.
+        container.innerHTML = _VR_EXIT_BTN + buildVRuXGateway(progData);
+
+        startAmbientTone(semHz); // IMMEDIATE — no more silent loading screen
+        VRNarrator.narrateScene(progData); // IMMEDIATE — voice plays during gateway
+
+        // Helper: fade gateway out then swap content
+        function _swapIn(html, onReady) {
+          const gw = document.getElementById("vrux-gateway");
+          if (gw) {
+            gw.style.opacity = "0";
+            setTimeout(() => {
+              container.innerHTML = html;
+              if (onReady) onReady();
+            }, 520);
+          } else {
+            container.innerHTML = html;
+            if (onReady) onReady();
+          }
+        }
+
+        // Load MAL scene async in the background while gateway is visible
         const _malPromise = (function () {
           try {
             const malSceneId =
@@ -2227,22 +2422,22 @@
             return Promise.reject(new Error("MAL loader unavailable"));
           }
         })();
+
         _malPromise
           .then(({ sceneHTML, narrativeHTML, fogAttr, palette }) => {
-            const exitBtn = container.querySelector("#vr-exit-btn");
             const isVR = webXRSupported;
-            container.innerHTML =
-              `<button id="vr-exit-btn" onclick="exitVRScene()" style="position:fixed;top:16px;right:16px;z-index:9999;background:rgba(0,0,0,0.7);color:#fff;border:1px solid #444;border-radius:8px;padding:8px 18px;font-size:14px;cursor:pointer;">&#x2715; Exit</button>` +
-              `<a-scene
+            _swapIn(
+              _VR_EXIT_BTN +
+                `<a-scene
                 vr-mode-ui="enabled: ${isVR ? "true" : "false"}"
                 loading-screen="dotsColor: #00d4ff; backgroundColor: ${palette.bg}"
                 fog="${fogAttr}"
-                renderer="antialias: true; physicallyCorrectLights: true"
+                renderer="antialias: true; physicallyCorrectLights: ${!isVR}"
                 background="color: ${palette.bg}">
                 <a-entity id="rig" position="0 1.6 4">
                   <a-camera
                     look-controls="reverseMouseDrag: false; touchEnabled: true; pointerLockEnabled: false"
-                    wasd-controls="enabled: true; acceleration: 20"
+                    wasd-controls="enabled: ${!isVR}; acceleration: 20"
                     fov="80">
                     <a-cursor
                       id="gaze-cursor"
@@ -2258,30 +2453,29 @@
                 </a-entity>
                 <a-entity hand-tracking-controls="hand: left"></a-entity>
                 <a-entity hand-tracking-controls="hand: right"></a-entity>
+                ${isVR ? '<a-entity laser-controls="hand: left" raycaster="objects: [data-prog]" line="color: #00d4ff; opacity: 0.5"></a-entity><a-entity laser-controls="hand: right" raycaster="objects: [data-prog]" line="color: #00d4ff; opacity: 0.5"></a-entity>' : ""}
                 ${sceneHTML}
               </a-scene>` +
-              narrativeHTML;
-            startAmbientTone(semHz);
-            VRNarrator.narrateScene(
-              PROGRAMMES.find((p) => p.name === currentProg),
+                narrativeHTML,
             );
           })
           .catch(() => {
             // Fallback: legacy sphere/panel scene
-            const loading = container.querySelector("#vr-loading");
-            if (loading) loading.remove();
-            container.innerHTML =
-              `<button id="vr-exit-btn" onclick="exitVRScene()" style="position:fixed;top:16px;right:16px;z-index:9999;background:rgba(0,0,0,0.7);color:#fff;border:1px solid #444;border-radius:8px;padding:8px 18px;font-size:14px;cursor:pointer;">&#x2715; Exit</button>` +
-              buildAFrameScene(currentProg);
-            const scene = container.querySelector("a-scene");
-            if (scene)
-              scene.addEventListener("loaded", () => attachPanelListeners());
-            startAmbientTone(semHz);
+            _swapIn(
+              _VR_EXIT_BTN + buildAFrameScene(currentProg),
+              () => {
+                const scene = container.querySelector("a-scene");
+                if (scene)
+                  scene.addEventListener("loaded", () => attachPanelListeners());
+              }
+            );
           });
       }
 
       function exitVRScene() {
         stopAmbientTone();
+        VRNarrator.stop();
+        if (xrSession) { try { xrSession.end(); } catch (_) {} xrSession = null; }
         const container = document.getElementById("vr-scene-container");
         container.style.display = "none";
         container.innerHTML = "";
@@ -2314,6 +2508,35 @@
           });
         });
       }
+
+      // -- Boot: device detection + dynamic UI counts -----------------------
+      (function () {
+        const ua = navigator.userAgent;
+        const el = document.getElementById("ic-device");
+        if (el) {
+          el.textContent = /OculusBrowser|Quest/i.test(ua)
+            ? "Meta Quest"
+            : /Pico|PicoXR/i.test(ua)
+            ? "Pico"
+            : /Windows.+Mixed.+Reality/i.test(ua)
+            ? "WMR Headset"
+            : /HTC.+Vive|ViveBrowser/i.test(ua)
+            ? "HTC Vive"
+            : /Mobile|Android/i.test(ua)
+            ? "Mobile"
+            : "Desktop";
+        }
+        const subEl = document.getElementById("prog-subtitle");
+        if (subEl) {
+          subEl.textContent =
+            PROGRAMMES.length +
+            " programmes \u00b7 " +
+            Object.keys(CAT_META).length +
+            " categories \u00b7 Spatial audio 396\u2013963\u202fHz";
+        }
+        const catCntEl = document.getElementById("vr-cat-count");
+        if (catCntEl) catCntEl.textContent = String(Object.keys(CAT_META).length);
+      })();
 
       // -- Auto-enter if ?prog= param present -------------------------------
       if (preselect) {

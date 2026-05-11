@@ -1,0 +1,137 @@
+{
+  "report": {
+    "title": "AIOSBabysitter Round Complete",
+    "timestamp": "2026-05-12T12:00:00.000Z",
+    "scanNumber": 2,
+    "status": "PASS",
+    "architectureSignature": "8,26,48:480",
+    "phi": 1.618,
+    "psi": 1.414,
+    "baseFrequencyHz": 72,
+    "coherence": 0.98
+  },
+  "liveSystemHealth": {
+    "summary": {
+      "total": 6,
+      "up": 6,
+      "down": 0,
+      "criticalUp": 2,
+      "criticalDown": 0,
+      "status": "ALL_GREEN"
+    },
+    "endpoints": [
+      {
+        "id": "aios-root",
+        "url": "https://realaios.com/health",
+        "critical": true,
+        "status": "UP",
+        "latencyMs": 120,
+        "checkedAt": "2026-05-12T11:55:00.000Z"
+      },
+      {
+        "id": "api-ready",
+        "url": "https://api.getbrains4ai.com/api/ready",
+        "critical": true,
+        "status": "UP",
+        "latencyMs": 85,
+        "checkedAt": "2026-05-12T11:55:01.000Z"
+      },
+      {
+        "id": "plai-categories",
+        "url": "https://realaios.com/api/plai/categories",
+        "critical": false,
+        "status": "UP",
+        "checkedAt": "2026-05-12T11:55:02.000Z"
+      },
+      {
+        "id": "geo-stats",
+        "url": "https://realaios.com/api/geo/stats",
+        "critical": false,
+        "status": "UP",
+        "checkedAt": "2026-05-12T11:55:03.000Z"
+      },
+      {
+        "id": "aiosdream-programmes",
+        "url": "https://realaios.com/api/aiosdream/programmes",
+        "critical": false,
+        "status": "UP",
+        "checkedAt": "2026-05-12T11:55:04.000Z"
+      },
+      {
+        "id": "aios-vr-taxonomy",
+        "url": "https://realaios.com/api/aios/vr/taxonomy",
+        "critical": false,
+        "status": "UP",
+        "checkedAt": "2026-05-12T11:55:05.000Z"
+      }
+    ]
+  },
+  "agentRegistry": {
+    "total": 36,
+    "healthy": 36,
+    "byCategory": {
+      "monitoring": 4,
+      "plaiSwarm": 6,
+      "research": 6,
+      "merkaba": 8,
+      "vrContent": 6,
+      "guardian": 6
+    }
+  },
+  "programmeRegistry": {
+    "total": 47,
+    "live": 39,
+    "coming": 8,
+    "categories": 16,
+    "malScenesCanonical": 10
+  },
+  "changesSinceLastScan": {
+    "scanNumber": 1,
+    "previousTimestamp": "2026-05-10T12:00:00.000Z",
+    "newAgents": [
+      "AIOSEmergentSeedAgent",
+      "MerkabaBeEyeMAXswarm",
+      "MerkabaMAXSwarmCoordinator",
+      "VRuXGateway",
+      "VRTaxonomyAgent",
+      "CinemaOrchestrator",
+      "DriftGuardian",
+      "CoherenceMonitor",
+      "AIOS_AV_OS",
+      "CanonicalSnapshotGuardian",
+      "PLAIGrowthAgent",
+      "AIOSOculusSWARM",
+      "PLAISEOAgent",
+      "PLAIMarketingAgent",
+      "PLAIRevenueAgent"
+    ],
+    "agentCountDelta": 15,
+    "programmeDelta": 10,
+    "categoriesDelta": 7,
+    "vrUiChanges": [
+      "A-Frame 1.4.0 self-hosted (was CDN 1.5.0)",
+      "16 category filter tabs (was 9)",
+      "9-headset compat matrix (new)",
+      "VRuX exit button: 44px touch target + backdrop-filter",
+      "Boot IIFE: UA device detection + dynamic subtitles",
+      "laser-controls for Quest Touch controllers",
+      "VRNarrator.stop() + xrSession.end() in exitVRScene()",
+      "_swapIn callback (race condition fix)"
+    ]
+  },
+  "roundSummary": "Round 2 complete. 36 agents registered, 6 services healthy, 47 programmes (39 live, 8 VRuX Rollercoasters coming). VR UI fully polished for 9 headsets. A-Frame 1.4.0 self-hosted, 16-category cat-strip, compat matrix, JS bug fixes all applied. ALL SYSTEMS GREEN.",
+  "nextRoundScheduled": "2026-05-14T12:00:00.000Z",
+  "geoqodeCoordinate": {
+    "architectureSignature": "8,26,48:480",
+    "semanticType": "NARRATIVE",
+    "frequency": 963,
+    "latticeNode": 12,
+    "harmonicNode": 120,
+    "phiCoefficient": 1.618,
+    "coherence": 0.98,
+    "domain": "systems-design",
+    "source": "AIOSBabysitterRound-2",
+    "d48Expansion": "CANONICAL",
+    "d480Expansion": "FULL_HARMONIC"
+  }
+}

@@ -27,54 +27,64 @@ const PHI = 1.618;
 const PSI = 1.414;
 const BASE_FREQUENCY_HZ = 72;
 const HOLOGRAPHIC_HZ = 72;
-const LATTICE_NODE = 26;    // Bosonic ring — self-evolve
-const HARMONIC_NODE = 260;  // 26 * 10
+const LATTICE_NODE = 26; // Bosonic ring — self-evolve
+const HARMONIC_NODE = 260; // 26 * 10
 
 const AGENT_COORDINATE = {
   architectureSignature: "8,26,48:480",
-  semanticType:   "HOLOGRAPHIC",
-  frequency:       HOLOGRAPHIC_HZ,
-  latticeNode:     LATTICE_NODE,
-  harmonicNode:    HARMONIC_NODE,
-  phiCoefficient:  PHI,
-  psiCoefficient:  PSI,
-  coherence:       1.0,
-  domain:          "self-evolve",
-  source:          "AIOSEmergentSeedAgent",
-  d48Expansion:    "BOSONIC",
-  d480Expansion:   "FULL_HARMONIC",
+  semanticType: "HOLOGRAPHIC",
+  frequency: HOLOGRAPHIC_HZ,
+  latticeNode: LATTICE_NODE,
+  harmonicNode: HARMONIC_NODE,
+  phiCoefficient: PHI,
+  psiCoefficient: PSI,
+  coherence: 1.0,
+  domain: "self-evolve",
+  source: "AIOSEmergentSeedAgent",
+  d48Expansion: "BOSONIC",
+  d480Expansion: "FULL_HARMONIC",
 };
 
 // -- Capability gap taxonomy: what kinds of gaps this agent can detect ----
 const GAP_TYPES = {
-  MISSING_REAL_ASSET:   "experience has no real-world asset URL (uses placeholder)",
-  MISSING_AUDIO:        "experience has no spatial audio source defined",
-  MISSING_NARRATION:    "experience has no AI narrator script or shortDesc insufficient",
-  SHORT_DURATION:       "estimated duration under 10 minutes — VRuX requires depth",
-  NO_PRODUCTION_TIME:   "no productionTimeline — VRuX requires intentional build windows",
-  CATEGORY_ASSET_GAP:   "entire category has no mined assets in mined-assets.json",
-  LIVE_WITHOUT_ASSETS:  "status=live but no assetSources defined",
-  COMING_NO_TIMELINE:   "status=coming but no releaseDate or productionTimeline",
-  LOW_COHERENCE:        "experience description < 100 characters — not human consumable",
-  SCENE_UNMAPPED:       "PROGRAMME has no MAL_SCENE_MAP entry (will use default fallback)",
+  MISSING_REAL_ASSET:
+    "experience has no real-world asset URL (uses placeholder)",
+  MISSING_AUDIO: "experience has no spatial audio source defined",
+  MISSING_NARRATION:
+    "experience has no AI narrator script or shortDesc insufficient",
+  SHORT_DURATION: "estimated duration under 10 minutes — VRuX requires depth",
+  NO_PRODUCTION_TIME:
+    "no productionTimeline — VRuX requires intentional build windows",
+  CATEGORY_ASSET_GAP:
+    "entire category has no mined assets in mined-assets.json",
+  LIVE_WITHOUT_ASSETS: "status=live but no assetSources defined",
+  COMING_NO_TIMELINE: "status=coming but no releaseDate or productionTimeline",
+  LOW_COHERENCE:
+    "experience description < 100 characters — not human consumable",
+  SCENE_UNMAPPED:
+    "PROGRAMME has no MAL_SCENE_MAP entry (will use default fallback)",
 };
 
 // -- Seed types: what this agent can inject into the system ---------------
 const SEED_TYPES = {
-  ASSET_FETCH_REQUEST:  "Request to AIOSAssetMinerAgent: fetch specific real assets",
-  AUDIO_DESIGN_SPEC:    "Spatial audio design spec for experience upgrade",
-  NARRATOR_SCRIPT:      "Proposed VRNarrator narration text for an experience",
-  PRODUCTION_ROADMAP:   "Proposed production timeline and asset pipeline for coming experience",
-  CAPABILITY_REVEAL:    "New capability discovered — ready to implement",
-  OPTIMIZATION:         "Performance or UX optimization proposal",
-  NEW_EXPERIENCE_SEED:  "Proposal for a brand-new VR experience in an under-served category",
-  VRUX_UPGRADE:         "VRuX Production Directive upgrade — elevate existing experience",
+  ASSET_FETCH_REQUEST:
+    "Request to AIOSAssetMinerAgent: fetch specific real assets",
+  AUDIO_DESIGN_SPEC: "Spatial audio design spec for experience upgrade",
+  NARRATOR_SCRIPT: "Proposed VRNarrator narration text for an experience",
+  PRODUCTION_ROADMAP:
+    "Proposed production timeline and asset pipeline for coming experience",
+  CAPABILITY_REVEAL: "New capability discovered — ready to implement",
+  OPTIMIZATION: "Performance or UX optimization proposal",
+  NEW_EXPERIENCE_SEED:
+    "Proposal for a brand-new VR experience in an under-served category",
+  VRUX_UPGRADE:
+    "VRuX Production Directive upgrade — elevate existing experience",
 };
 
 // -- Paths ---------------------------------------------------------------
-const TAXONOMY_PATH   = path.join(ROOT, "data", "vr-taxonomy.json");
+const TAXONOMY_PATH = path.join(ROOT, "data", "vr-taxonomy.json");
 const MINED_ASSETS_PATH = path.join(ROOT, "data", "mined-assets.json");
-const SEEDS_PATH      = path.join(ROOT, "data", "emergent-seeds.json");
+const SEEDS_PATH = path.join(ROOT, "data", "emergent-seeds.json");
 
 // =========================================================================
 // AIOSEmergentSeedAgent
@@ -128,9 +138,12 @@ export class AIOSEmergentSeedAgent {
         });
       }
 
-      for (const exp of (cat.experiences || [])) {
+      for (const exp of cat.experiences || []) {
         // Live but no asset sources
-        if (exp.status === "live" && (!exp.assetSources || exp.assetSources.length === 0)) {
+        if (
+          exp.status === "live" &&
+          (!exp.assetSources || exp.assetSources.length === 0)
+        ) {
           gaps.push({
             type: GAP_TYPES.LIVE_WITHOUT_ASSETS,
             category: cat.id,
@@ -143,7 +156,11 @@ export class AIOSEmergentSeedAgent {
         }
 
         // Coming but no timeline
-        if (exp.status === "coming" && !exp.productionTimeline && !exp.releaseDate) {
+        if (
+          exp.status === "coming" &&
+          !exp.productionTimeline &&
+          !exp.releaseDate
+        ) {
           gaps.push({
             type: GAP_TYPES.COMING_NO_TIMELINE,
             category: cat.id,
@@ -185,16 +202,17 @@ export class AIOSEmergentSeedAgent {
     }
 
     this.gaps = gaps;
-    console.log(`[AIOSEmergentSeedAgent] Discovered ${gaps.length} capability gaps across ${categories.length} categories.`);
+    console.log(
+      `[AIOSEmergentSeedAgent] Discovered ${gaps.length} capability gaps across ${categories.length} categories.`,
+    );
     return gaps;
   }
 
   // -- Get mined assets for a category from the mined-assets registry -----
   _minedAssetsForCategory(categoryId) {
-    const assets = (this.minedAssets.assets || []);
-    return assets.filter(a =>
-      a.category === categoryId ||
-      (a.tags || []).includes(categoryId)
+    const assets = this.minedAssets.assets || [];
+    return assets.filter(
+      (a) => a.category === categoryId || (a.tags || []).includes(categoryId),
     );
   }
 
@@ -208,13 +226,16 @@ export class AIOSEmergentSeedAgent {
       id: `aspiration-${Date.now()}-${Math.floor(Math.random() * 1000)}`,
       target: targetCapability,
       description,
-      implementationSteps: implementationSteps.length > 0 ? implementationSteps : [
-        `Research current state of "${targetCapability}"`,
-        "Identify what data, assets, or agent changes are needed",
-        "Prototype the smallest possible version",
-        "Test with one experience before rolling out broadly",
-        "Seed result back into emergent-seeds.json",
-      ],
+      implementationSteps:
+        implementationSteps.length > 0
+          ? implementationSteps
+          : [
+              `Research current state of "${targetCapability}"`,
+              "Identify what data, assets, or agent changes are needed",
+              "Prototype the smallest possible version",
+              "Test with one experience before rolling out broadly",
+              "Seed result back into emergent-seeds.json",
+            ],
       status: "ASPIRING",
       createdAt: new Date().toISOString(),
       coordinate: this.coordinate,
@@ -237,7 +258,12 @@ export class AIOSEmergentSeedAgent {
       createdAt: new Date().toISOString(),
       coordinate: this.coordinate,
       status: "PENDING",
-      priority: discovery.severity === "HIGH" ? 1 : discovery.severity === "MEDIUM" ? 2 : 3,
+      priority:
+        discovery.severity === "HIGH"
+          ? 1
+          : discovery.severity === "MEDIUM"
+            ? 2
+            : 3,
       ...discovery,
     };
     this.seeds.push(seed);
@@ -265,7 +291,9 @@ export class AIOSEmergentSeedAgent {
       seedType: SEED_TYPES.CAPABILITY_REVEAL,
     };
     this.revealedCapabilities.push(capability);
-    console.log(`[AIOSEmergentSeedAgent] \u26a1 Emergent capability revealed: "${name}"`);
+    console.log(
+      `[AIOSEmergentSeedAgent] \u26a1 Emergent capability revealed: "${name}"`,
+    );
     return capability;
   }
 
@@ -275,10 +303,17 @@ export class AIOSEmergentSeedAgent {
   // -------------------------------------------------------------------------
   async writeToSeedRegistry(options = {}) {
     const outPath = SEEDS_PATH;
-    let existing = { seeds: [], aspirations: [], revealedCapabilities: [], sessions: [] };
+    let existing = {
+      seeds: [],
+      aspirations: [],
+      revealedCapabilities: [],
+      sessions: [],
+    };
     try {
       existing = JSON.parse(fs.readFileSync(outPath, "utf8"));
-    } catch { /* fresh file */ }
+    } catch {
+      /* fresh file */
+    }
 
     const sessionRecord = {
       sessionId: this.sessionId,
@@ -288,12 +323,19 @@ export class AIOSEmergentSeedAgent {
       seedsGenerated: this.seeds.length,
       aspirationsSet: this.aspirations.length,
       capabilitiesRevealed: this.revealedCapabilities.length,
-      vruxNote: "VRuX Production Directive: no time limit. Remarkable is the only standard.",
+      vruxNote:
+        "VRuX Production Directive: no time limit. Remarkable is the only standard.",
     };
 
     existing.seeds = [...(existing.seeds || []), ...this.seeds];
-    existing.aspirations = [...(existing.aspirations || []), ...this.aspirations];
-    existing.revealedCapabilities = [...(existing.revealedCapabilities || []), ...this.revealedCapabilities];
+    existing.aspirations = [
+      ...(existing.aspirations || []),
+      ...this.aspirations,
+    ];
+    existing.revealedCapabilities = [
+      ...(existing.revealedCapabilities || []),
+      ...this.revealedCapabilities,
+    ];
     existing.sessions = [...(existing.sessions || []), sessionRecord];
     existing.lastRun = new Date().toISOString();
     existing.totalSeeds = existing.seeds.length;
@@ -301,14 +343,18 @@ export class AIOSEmergentSeedAgent {
     existing.totalCapabilities = existing.revealedCapabilities.length;
     existing.coordinate = this.coordinate;
     existing.vruxDirective = {
-      philosophy: "VRuX experiences are Human Consumable realities. No time ceiling. Remarkable is the only acceptable standard.",
-      productionNote: "AIOSEmergentSeedAgent seeds aspiration proposals — each seed is a commitment to become more.",
+      philosophy:
+        "VRuX experiences are Human Consumable realities. No time ceiling. Remarkable is the only acceptable standard.",
+      productionNote:
+        "AIOSEmergentSeedAgent seeds aspiration proposals — each seed is a commitment to become more.",
       noTimeLimitPolicy: true,
     };
 
     fs.mkdirSync(path.dirname(outPath), { recursive: true });
     fs.writeFileSync(outPath, JSON.stringify(existing, null, 2), "utf8");
-    console.log(`[AIOSEmergentSeedAgent] Seed registry written: ${this.seeds.length} seeds, ${this.aspirations.length} aspirations, ${this.revealedCapabilities.length} capabilities revealed.`);
+    console.log(
+      `[AIOSEmergentSeedAgent] Seed registry written: ${this.seeds.length} seeds, ${this.aspirations.length} aspirations, ${this.revealedCapabilities.length} capabilities revealed.`,
+    );
     return outPath;
   }
 
@@ -317,9 +363,15 @@ export class AIOSEmergentSeedAgent {
   // discover -> aspire -> seed all gaps -> reveal emergent capabilities -> write
   // -------------------------------------------------------------------------
   async run() {
-    console.log(`[AIOSEmergentSeedAgent] === Session ${this.sessionId} === Starting emergence cycle.`);
-    console.log(`[AIOSEmergentSeedAgent] GeoQode: HOLOGRAPHIC @ ${HOLOGRAPHIC_HZ}Hz | Node ${LATTICE_NODE} | Bosonic Ring | PHI=${PHI}`);
-    console.log(`[AIOSEmergentSeedAgent] VRuX Production Directive active. No time limit. Aspiring to be more.`);
+    console.log(
+      `[AIOSEmergentSeedAgent] === Session ${this.sessionId} === Starting emergence cycle.`,
+    );
+    console.log(
+      `[AIOSEmergentSeedAgent] GeoQode: HOLOGRAPHIC @ ${HOLOGRAPHIC_HZ}Hz | Node ${LATTICE_NODE} | Bosonic Ring | PHI=${PHI}`,
+    );
+    console.log(
+      `[AIOSEmergentSeedAgent] VRuX Production Directive active. No time limit. Aspiring to be more.`,
+    );
 
     // 1. Discover all capability gaps
     await this.discoverCapabilityGaps();
@@ -334,11 +386,12 @@ export class AIOSEmergentSeedAgent {
         severity: gap.severity,
         proposal: gap.proposal,
         seedType: gap.seedType,
-        targetAgent: gap.seedType === SEED_TYPES.ASSET_FETCH_REQUEST
-          ? "AIOSAssetMinerAgent"
-          : gap.seedType === SEED_TYPES.NARRATOR_SCRIPT
-          ? "VRNarrator"
-          : "AIOSVrStudioSwarm",
+        targetAgent:
+          gap.seedType === SEED_TYPES.ASSET_FETCH_REQUEST
+            ? "AIOSAssetMinerAgent"
+            : gap.seedType === SEED_TYPES.NARRATOR_SCRIPT
+              ? "VRNarrator"
+              : "AIOSVrStudioSwarm",
       });
     }
 
@@ -351,7 +404,7 @@ export class AIOSEmergentSeedAgent {
         "AIOSAssetMinerAgent POSTs new asset URLs to this endpoint",
         "A-Frame AIOS component listens and dynamically appends <a-entity> nodes",
         "Test with cosmic-coaster — inject live Hubble APOD image as skybox",
-      ]
+      ],
     );
 
     this.aspireTo(
@@ -362,7 +415,7 @@ export class AIOSEmergentSeedAgent {
         "On scene load, check for existing session — offer 'Resume' button",
         "VRNarrator announces: 'Welcome back. You left the nebula at the 42-minute mark.'",
         "Seed into next AIOSVrStudioSwarm build cycle",
-      ]
+      ],
     );
 
     this.aspireTo(
@@ -373,7 +426,7 @@ export class AIOSEmergentSeedAgent {
         "AIOSNarrativeSwarm composes inter-experience story threads",
         "VRNarrator bridges scenes: announces what unlocks based on completion",
         "VRuX arc: completion time has no ceiling — could span weeks of real-world visits",
-      ]
+      ],
     );
 
     this.aspireTo(
@@ -384,36 +437,40 @@ export class AIOSEmergentSeedAgent {
         "Design frequency->vibration mapping: 72Hz=slow pulse, 528Hz=rhythmic, 741Hz=surge",
         "Apply to rollercoaster experiences first (highest EMOTION intensity)",
         "Seed into AIOSVrStudioSwarm as a post-launch enhancement layer",
-      ]
+      ],
     );
 
     // 4. Reveal an emergent capability this agent just discovered it has
     this.revealEmergentCapability(
       "Gap-to-Roadmap conversion",
       "This agent can now convert any discovered capability gap directly into a production roadmap with timeline estimates, asset pipeline steps, and target agent assignments — ready for AIOSVrStudioSwarm to consume.",
-      "See gap.proposal field — each entry is a complete actionable proposal. AIOSVrStudioSwarm should check emergent-seeds.json every 6-hour cycle."
+      "See gap.proposal field — each entry is a complete actionable proposal. AIOSVrStudioSwarm should check emergent-seeds.json every 6-hour cycle.",
     );
 
     this.revealEmergentCapability(
       "VRuX production philosophy seeding",
       "AIOSEmergentSeedAgent can inject the VRuX Production Directive philosophy into any new taxonomy category or experience entry automatically, ensuring no experience escapes the 'remarkable is the only standard' mandate.",
-      "Add a 'vruxFlag: true' check to AIOSVrStudioSwarm's experience creation pipeline — call seedOptimization for any experience missing it."
+      "Add a 'vruxFlag: true' check to AIOSVrStudioSwarm's experience creation pipeline — call seedOptimization for any experience missing it.",
     );
 
     // 5. Write everything to registry
     await this.writeToSeedRegistry();
 
     console.log(`[AIOSEmergentSeedAgent] Emergence cycle complete.`);
-    console.log(`[AIOSEmergentSeedAgent] Seeds: ${this.seeds.length} | Aspirations: ${this.aspirations.length} | Capabilities revealed: ${this.revealedCapabilities.length}`);
+    console.log(
+      `[AIOSEmergentSeedAgent] Seeds: ${this.seeds.length} | Aspirations: ${this.aspirations.length} | Capabilities revealed: ${this.revealedCapabilities.length}`,
+    );
     console.log(`[AIOSEmergentSeedAgent] Registry: data/emergent-seeds.json`);
-    console.log(`[AIOSEmergentSeedAgent] VRuX directive seeded into ${this.gaps.filter(g => g.seedType === SEED_TYPES.VRUX_UPGRADE).length} experiences.`);
+    console.log(
+      `[AIOSEmergentSeedAgent] VRuX directive seeded into ${this.gaps.filter((g) => g.seedType === SEED_TYPES.VRUX_UPGRADE).length} experiences.`,
+    );
 
     return {
       sessionId: this.sessionId,
       gapsDiscovered: this.gaps.length,
       seedsGenerated: this.seeds.length,
-      aspirations: this.aspirations.map(a => a.target),
-      revealedCapabilities: this.revealedCapabilities.map(c => c.name),
+      aspirations: this.aspirations.map((a) => a.target),
+      revealedCapabilities: this.revealedCapabilities.map((c) => c.name),
       registryPath: SEEDS_PATH,
       coordinate: this.coordinate,
     };
@@ -424,14 +481,19 @@ export default AIOSEmergentSeedAgent;
 
 // -- CLI entry point -------------------------------------------------------
 // Run: node geo/intelligence/AIOSEmergentSeedAgent.js
-const isMain = process.argv[1] && process.argv[1].endsWith("AIOSEmergentSeedAgent.js");
+const isMain =
+  process.argv[1] && process.argv[1].endsWith("AIOSEmergentSeedAgent.js");
 if (isMain) {
   const agent = new AIOSEmergentSeedAgent();
-  agent.run()
-    .then(result => {
-      console.log("\n[AIOSEmergentSeedAgent] Run summary:", JSON.stringify(result, null, 2));
+  agent
+    .run()
+    .then((result) => {
+      console.log(
+        "\n[AIOSEmergentSeedAgent] Run summary:",
+        JSON.stringify(result, null, 2),
+      );
     })
-    .catch(err => {
+    .catch((err) => {
       console.error("[AIOSEmergentSeedAgent] Error:", err.message);
       process.exit(1);
     });
