@@ -2830,13 +2830,13 @@
                 </div>
                 <div class="event-title">${ev.title}</div>
                 <div class="event-desc">${ev.description}</div>
-                <div class="event-countdown" id="cd-${ev.id}">${ev.isLive ? " LIVE NOW" : "·"}</div>
+                <div class="event-countdown" id="cd-${ev.id}">${ev.isLive ? "\u25CF LIVE NOW" : "\u23F3"}</div>
                 <div class="event-meta">
-                  <span> ${dateStr}</span>
-                  <span>${ev.durationMinutes || 60}min</span>
-                  <span> ${ev.maxAttendees || "8"} max</span>
+                  <span>&#x1F4C5; ${dateStr}</span>
+                  <span>&#x23F1; ${ev.durationMinutes || 60}min</span>
+                  <span>&#x1F465; ${ev.maxAttendees || "8"} max</span>
                 </div>
-                ${ev.vrUrl ? `<a href="${ev.vrUrl}" class="event-enter-btn"> ${ev.isLive ? "Join Now" : "View"}</a>` : ""}
+                ${ev.vrUrl ? `<a href="${ev.vrUrl}" class="event-enter-btn">&#x2192; ${ev.isLive ? "Join Now" : "View"}</a>` : ""}
               `;
               scroll.appendChild(card);
             });
@@ -2849,14 +2849,14 @@
                 const start = new Date(ev.startISO).getTime();
                 const end = start + (ev.durationMinutes || 60) * 60000;
                 if (now >= start && now < end) {
-                  el.textContent = " LIVE NOW";
+                  el.textContent = "\u25CF LIVE NOW";
                 } else if (now < start) {
                   const diff = start - now;
                   const d2 = Math.floor(diff / 86400000);
                   const h = Math.floor((diff % 86400000) / 3600000);
                   const m = Math.floor((diff % 3600000) / 60000);
                   el.textContent =
-                    d2 > 0 ? `? ${d2}d ${h}h ${m}m` : `? ${h}h ${m}m`;
+                    d2 > 0 ? `\u23F3 ${d2}d ${h}h ${m}m` : `\u23F3 ${h}h ${m}m`;
                 } else {
                   el.textContent = "Complete";
                 }
