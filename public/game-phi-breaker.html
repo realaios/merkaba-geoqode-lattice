@@ -1010,7 +1010,7 @@
                 .slice(0, 10)
                 .map(
                   (e, i) =>
-                    `<span style="color:${colors[i] || "rgba(255,255,255,0.6)"}">${i + 1}. ${e.name}</span> <span style="float:right;color:#00f5d4;">${e.score.toLocaleString()}</span><br>`
+                    `<span style="color:${colors[i] || "rgba(255,255,255,0.6)"}">${i + 1}. ${e.name}</span> <span style="float:right;color:#00f5d4;">${e.score.toLocaleString()}</span><br>`,
                 )
                 .join("") ||
               '<span style="color:rgba(255,255,255,0.3)">No scores yet \u2014 be the first!</span>';
