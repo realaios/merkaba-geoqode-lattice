@@ -569,7 +569,7 @@
     </div>
 
     <!-- EXIT BTN -->
-    <button id="exit-btn" onclick="exitGame()">? Exit</button>
+    <button id="exit-btn" onclick="exitGame()">&#x2190; Exit</button>
 
     <!-- CROSSHAIR -->
     <div id="crosshair"><div class="crosshair-ring"></div></div>
@@ -970,7 +970,7 @@
               m.style.cssText =
                 "margin-top:0.6rem;font-size:0.8rem;color:#00f5d4;font-weight:700;";
               m.textContent =
-                "\uD83C\uDFC6 You're #" + d.rank + " on the leaderboard!";
+                "\u2605 You're #" + d.rank + " on the leaderboard!";
               document.getElementById("gameover")?.appendChild(m);
             }
           })

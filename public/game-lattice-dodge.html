@@ -557,7 +557,7 @@
     <div id="danger-flash"></div>
 
     <!-- EXIT BTN -->
-    <button id="exit-btn" onclick="exitGame()">? Exit</button>
+    <button id="exit-btn" onclick="exitGame()">&#x2190; Exit</button>
 
     <!-- GAME OVER -->
     <div id="gameover">
@@ -899,7 +899,7 @@
               m.style.cssText =
                 "margin-top:0.6rem;font-size:0.8rem;color:#00f5d4;font-weight:700;text-align:center;";
               m.textContent =
-                "\uD83C\uDFC6 You're #" + d.rank + " on the leaderboard!";
+                "\u2605 You're #" + d.rank + " on the leaderboard!";
               document.getElementById("gameover")?.appendChild(m);
             }
           })

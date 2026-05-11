@@ -3698,7 +3698,7 @@
       /* -- GEO codec badge -- */
       #geo-badge {
         position: absolute;
-        bottom: 120px;
+        bottom: 162px;
         left: 18px;
         z-index: 14;
         background: rgba(0, 0, 0, 0.65);
@@ -3932,7 +3932,7 @@
             title="Notifications"
             onclick="_openNotif()"
             style="font-size: 21px; opacity: 0.7"
-          ></button>
+          >&#x2733;</button>
           <span
             class="q-badge"
             id="notif-badge"
@@ -3946,7 +3946,7 @@
             title="Ambient Mixer"
             onclick="_openAmb(event)"
             style="font-size: 21px; opacity: 0.55"
-          ></button>
+          >&#x229A;</button>
           <span
             class="q-badge"
             id="amb-badge"
@@ -3966,22 +3966,20 @@
             font-family: &quot;SF Mono&quot;, monospace;
             opacity: 0.55;
           "
-        ></button>
+        >&#x229E;</button>
         <button
           class="nav-icon-btn"
           title="Color Theme"
           onclick="_toggleThemePanel()"
           style="font-size: 20px; opacity: 0.55"
-        ></button>
+        >&#x2726;</button>
         <div style="position: relative">
           <div
             class="nav-avatar signed-out"
             id="nav-avatar"
             title="Profile"
             onclick="onAvatarClick()"
-          >
-            ?
-          </div>
+          >&#x25CB;</div>
           <!-- Profile dropdown -->
           <div id="profile-drop">
             <div class="pdrop-header">
@@ -4083,9 +4081,7 @@
               document.getElementById('kbd-panel').classList.remove('open')
             "
             title="Close"
-          >
-            ?
-          </button>
+          >&#x2715;</button>
         </div>
         <div class="kbd-grid">
           <div class="kbd-row">
@@ -4330,9 +4326,7 @@
           autocomplete="off"
           spellcheck="false"
         />
-        <button class="sb-close" id="search-close" title="Close (Esc)">
-          ?
-        </button>
+        <button class="sb-close" id="search-close" title="Close (Esc)">&#x2715;</button>
       </div>
       <div class="search-label" id="search-label">All Programmes</div>
       <div class="search-genre-row" id="search-genre-row"></div>
@@ -4427,31 +4421,31 @@
               class="ctrl-btn xl"
               id="ctrl-play"
               title="Play / Pause (Space)"
-            ></button>
+            >&#x25B7;</button>
             <button
               class="ctrl-btn"
               id="ctrl-skip-back"
               style="font-size: 18px"
               title="-10s (J)"
-            ></button>
+            >&#x21BA;</button>
             <button
               class="ctrl-btn"
               id="ctrl-skip-fwd"
               style="font-size: 18px"
               title="+10s (L)"
-            ></button>
+            >&#x21BB;</button>
             <button
               class="ctrl-btn"
               id="ctrl-prev"
               style="font-size: 16px"
               title="Prev Scene (?)"
-            ></button>
+            >&#x23EE;</button>
             <button
               class="ctrl-btn"
               id="ctrl-next"
               style="font-size: 16px"
               title="Next Scene (?)"
-            ></button>
+            >&#x23ED;</button>
             <div class="ctrl-sp"></div>
             <span class="scene-badge" id="ctrl-badge">Scene 1</span>
             <div class="vol-wrap">
@@ -4460,7 +4454,7 @@
                 id="ctrl-vol-btn"
                 style="font-size: 18px"
                 title="Mute (M)"
-              ></button>
+              >&#x2295;</button>
               <input
                 type="range"
                 class="vol-slider"
@@ -4564,59 +4558,51 @@
               id="ctrl-pip"
               style="font-size: 16px"
               title="Picture in Picture (P)"
-            >
-              ?
-            </button>
+            >&#x29C9;</button>
             <button
               class="ctrl-btn"
               id="ctrl-mini"
               style="font-size: 16px"
               title="Mini Player (B)"
-            >
-              ?
-            </button>
+            >&#x2913;</button>
             <button
               class="ctrl-btn"
               id="ctrl-share"
               style="font-size: 16px"
               title="Share"
-            ></button>
+            >&#x2731;</button>
             <div class="react-wrap" id="react-wrap">
               <button
                 class="ctrl-btn"
                 onclick="_toggleReactPicker(event)"
                 title="React (R)"
                 style="font-size: 16px"
-              >
-                ?
-              </button>
+              >&#x229B;</button>
               <div class="react-popup" id="react-popup">
                 <button
                   class="react-btn"
-                  onclick="_sendReaction('\u2764\ufe0f')"
-                >
-                  ?
-                </button>
+                  onclick="_sendReaction('\u2661')"
+                >&#x2661;</button>
                 <button
                   class="react-btn"
-                  onclick="_sendReaction('\ud83e\udd2f')"
-                ></button>
+                  onclick="_sendReaction('\u25C8')"
+                >&#x25C8;</button>
                 <button
                   class="react-btn"
-                  onclick="_sendReaction('\ud83d\ude4c')"
-                ></button>
+                  onclick="_sendReaction('\u2295')"
+                >&#x2295;</button>
                 <button
                   class="react-btn"
-                  onclick="_sendReaction('\u2728')"
-                ></button>
+                  onclick="_sendReaction('\u2727')"
+                >&#x2727;</button>
                 <button
                   class="react-btn"
-                  onclick="_sendReaction('\ud83d\udd25')"
-                ></button>
+                  onclick="_sendReaction('\u229B')"
+                >&#x229B;</button>
                 <button
                   class="react-btn"
-                  onclick="_sendReaction('\ud83d\udc7e')"
-                ></button>
+                  onclick="_sendReaction('\u2B21')"
+                >&#x2B21;</button>
               </div>
             </div>
             <button
@@ -4624,9 +4610,7 @@
               id="ctrl-fs"
               style="font-size: 18px"
               title="Fullscreen (F)"
-            >
-              ?
-            </button>
+            >&#x26F6;</button>
           </div>
         </div>
       </div>
@@ -4674,7 +4658,7 @@
       <div id="next-ep-card">
         <div class="ne-kicker">Next Episode</div>
         <div class="ne-row">
-          <div class="ne-thumb" id="ne-icon">?</div>
+          <div class="ne-thumb" id="ne-icon">&#x25B7;</div>
           <div class="ne-body">
             <div class="ne-title" id="ne-title">—</div>
             <div class="ne-ep" id="ne-ep"></div>
@@ -4705,7 +4689,7 @@
       <!-- Mini-player FABs -->
       <button class="mini-fab" id="mini-expand" title="Expand">+</button>
       <button class="mini-fab" id="mini-close" title="Close">×</button>
-      <button class="mini-fab" id="mini-toggle" title="Play/Pause"></button>
+      <button class="mini-fab" id="mini-toggle" title="Play/Pause">&#x25B7;</button>
     </div>
 
     <!-- -- SHARE TOAST -- -->
@@ -4729,30 +4713,26 @@
         id="np-btn-play"
         title="Play/Pause"
         onclick="_npTogglePlay()"
-      ></button>
+      >&#x25B7;</button>
       <button
         class="np-btn"
         id="np-btn-next"
         title="Next Scene"
         onclick="_npNextScene()"
         style="font-size: 14px"
-      ></button>
+      >&#x23ED;</button>
       <button
         class="np-btn"
         title="Expand"
         onclick="_npExpand()"
         style="font-size: 14px"
-      >
-        ?
-      </button>
+      >&#x2B06;</button>
       <button
         class="np-btn"
         title="Close"
         onclick="closePlayer()"
         style="font-size: 13px; opacity: 0.4"
-      >
-        ?
-      </button>
+      >&#x2715;</button>
       <div id="np-progress"></div>
     </div>
 
@@ -4808,9 +4788,7 @@
           "
           onmouseover="this.style.color = '#fff'"
           onmouseout="this.style.color = 'rgba(232,232,240,0.5)'"
-        >
-          ?
-        </button>
+        >&#x2715;</button>
       </div>
       <div id="geo-panel-content">
         <div
@@ -5038,9 +5016,7 @@
             font-size: 14px;
             cursor: pointer;
           "
-        >
-          ?
-        </button>
+        >&#x2715;</button>
       </div>
       <div id="amb-channels"></div>
       <div
@@ -8302,7 +8278,7 @@
           if (nm) nm.textContent = _user.name;
           if (em) em.textContent = _user.email;
         } else {
-          av.textContent = "";
+          av.textContent = "\u25CB";
           av.classList.add("signed-out");
           av.title = "Sign in";
           if (nm) nm.textContent = "Guest";
@@ -8775,7 +8751,7 @@
             if (!p) return "";
             const isCurrent = currentProg && currentProg.id === id;
             return `<div class="q-item${isCurrent ? " q-current" : ""}" onclick="_queuePlayAt(${idx})">
-            <div class="q-thumb" style="background:${p.thumb || p.accent || "#1a0a3e"}">${p.icon || "?"}</div>
+            <div class="q-thumb" style="background:${p.thumb || p.accent || "#1a0a3e"}">${p.icon || "\u25B7"}</div>
             <div class="q-info">
               <div class="q-title">${p.title}</div>
               <div class="q-sub">${p.ep ? "E" + p.ep + " — " : ""}${fmtRuntime(p.runtime)} — ${(p.genre || [])[0] || ""}</div>
@@ -9062,7 +9038,7 @@
               <button class="card-btn-play" onclick="openPlayer('${prog.id}',${hasProgress && !watched ? _pSc : 0},event)"> Play</button>
               <button class="card-btn-info" onclick="openInfo('${prog.id}',event)" title="More Info">i</button>
               <button class="card-btn-list${myList.includes(prog.id) ? " active" : ""}" id="list-btn-${prog.id}" onclick="cardToggleList('${prog.id}',event)" title="${myList.includes(prog.id) ? "Remove from My List" : "Add to My List"}">${myList.includes(prog.id) ? "" : "+"}</button>
-              <button class="card-btn-list" onclick="_queueAdd('${prog.id}',event)" title="Add to Queue" style="font-size:15px;letter-spacing:0"></button>
+              <button class="card-btn-list" onclick="_queueAdd('${prog.id}',event)" title="Add to Queue" style="font-size:15px;letter-spacing:0">&#x2295;</button>
             </div>
           </div>`;
         card.addEventListener("click", (e) => {
@@ -9605,9 +9581,9 @@
 
       function startPlayback() {
         playerPlaying = true;
-        document.getElementById("ctrl-play").textContent = "";
+        document.getElementById("ctrl-play").textContent = "\u25C8";
         const mt = document.getElementById("mini-toggle");
-        if (mt) mt.textContent = "";
+        if (mt) mt.textContent = "\u25C8";
         if (playerTimer) clearInterval(playerTimer);
         playerTimer = setInterval(() => {
           if (!playerPlaying || !currentProg) return;
@@ -9662,9 +9638,9 @@
 
       function pausePlayback() {
         playerPlaying = false;
-        document.getElementById("ctrl-play").textContent = "";
+        document.getElementById("ctrl-play").textContent = "\u25B7";
         const mt = document.getElementById("mini-toggle");
-        if (mt) mt.textContent = "";
+        if (mt) mt.textContent = "\u25B7";
         if (playerTimer) {
           clearInterval(playerTimer);
           playerTimer = null;
@@ -9889,7 +9865,7 @@
                 var next = Math.max(0, Math.min(1, cur + delta));
                 slider.value = next;
                 slider.dispatchEvent(new Event("input"));
-                _swipeFlash(dy > 0 ? "\uD83D\uDD09 Vol" : "\uD83D\uDD0A Vol");
+                _swipeFlash(dy > 0 ? "\u229F Vol" : "\u2295 Vol");
               }
             } else if (dt < 200 && adx < 14 && ady < 14) {
               // Short tap — double-tap left/right edge to skip 10s, center = pause
@@ -10160,7 +10136,7 @@
             .map(
               (p) =>
                 `<div class="more-card" onclick="openInfo('${p.id}')">
-              <div class="more-thumb" style="background:${p.thumb || p.accent || "#0a0a1e"}">${p.icon || "?"}</div>
+              <div class="more-thumb" style="background:${p.thumb || p.accent || "#0a0a1e"}">${p.icon || "\u25B7"}</div>
               <div class="more-info">
                 <div class="more-title">${p.title}</div>
                 <div class="more-sub">${(p.genre || [])[0] || ""} — ${fmtRuntime(p.runtime)}</div>
@@ -10950,7 +10926,7 @@
             );
           }
           var btn = document.getElementById("ctrl-vol-btn");
-          if (btn) btn.textContent = v === 0 ? "" : v < 0.45 ? "" : "";
+          if (btn) btn.textContent = v === 0 ? "\u22A0" : v < 0.45 ? "\u229F" : "\u2295";
         });
 
       // Mute button — dispatches input event so audio follows
@@ -12890,7 +12866,7 @@
             );
         const specJson = JSON.stringify(spec, null, 2);
         panel.innerHTML = `
-          <div style="background:${prog.thumb || "linear-gradient(135deg,#001020,#002040)"};border-radius:10px;height:100px;display:flex;align-items:center;justify-content:center;margin-bottom:1rem;font-size:2.2rem">${prog.icon || "?"}</div>
+          <div style="background:${prog.thumb || "linear-gradient(135deg,#001020,#002040)"};border-radius:10px;height:100px;display:flex;align-items:center;justify-content:center;margin-bottom:1rem;font-size:2.2rem">${prog.icon || "\u25B7"}</div>
           <h3 style="font-size:1.05rem;font-weight:800;margin:0 0 0.3rem;color:#e8e8f0;line-height:1.25">${prog.title}</h3>
           <p style="font-size:0.78rem;color:rgba(232,232,240,0.55);margin:0 0 0.7rem;font-style:italic">${prog.tagline || ""}</p>
           <div style="margin-bottom:0.7rem">${genreHtml}</div>
