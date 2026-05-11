@@ -398,7 +398,7 @@ const AIOS_NEWS = [
     category: "VR Platform",
     title: "Merkaba Ghosts Live — 8 Ghost AI Agents Haunt the D48 Lattice",
     summary:
-      "Merkaba Ghosts is now live at /games/merkaba-ghosts. A first-of-its-kind WebXR experience replacing NPC characters with Agent-Player-Characters (APCs) — 8 Storm sector agents manifesting as translucent ghost silhouettes in a dark lattice environment. Attune to each ghost by gazing for 1.5 seconds. Every ghost emits its GeoQode semantic frequency on attunement (396Hz ENTITY to 963Hz NARRATIVE). PHI-spiral drift paths, adaptive glow, 8-round certification-layer mechanics. Works in any desktop browser and on Quest 2/3. Canonical architecture: 8→26→48:480.",
+      "Merkaba Ghosts is now live at /games/merkaba-ghosts. A first-of-its-kind WebXR experience replacing NPC characters with Agent-Player-Characters (APCs) — 8 Storm sector agents manifesting as translucent ghost silhouettes in a dark lattice environment. Attune to each ghost by gazing for 1.5 seconds. Every ghost emits its GeoQode semantic frequency on attunement (396Hz ENTITY to 963Hz NARRATIVE). PHI-spiral drift paths, adaptive glow, 8-round certification-layer mechanics. Works in any desktop browser and on Quest 2/3.",
     tags: [
       "ghosts",
       "apc",
@@ -418,7 +418,7 @@ const AIOS_NEWS = [
     title:
       "AIOS Arcade Live — 4 Playable WebXR Games Born from the PHI Lattice",
     summary:
-      "AIOS Arcade is now open. Four browser-native WebXR games are live at /games: PHI Breaker (lattice shooter, 528 Hz ACTION), Lattice Dodge (PHI survival, 417 Hz LOCATION), Lattice Builder (PHI sequence puzzle, 852 Hz PHYSICS), and Merkaba Ghosts (8 AI ghost agents, gaze-attune mechanic, 639 Hz DIALOGUE). Every mechanic is derived from PHI=1.618 geometry and the canonical 8→26→48:480 harmonic architecture. Works in any desktop browser. Full VR on Quest 2/3. No install, no account, free to play.",
+      "AIOS Arcade is now open. Four browser-native WebXR games are live at /games: PHI Breaker (lattice shooter, 528 Hz ACTION), Lattice Dodge (PHI survival, 417 Hz LOCATION), Lattice Builder (PHI sequence puzzle, 852 Hz PHYSICS), and Merkaba Ghosts (8 AI ghost agents, gaze-attune mechanic, 639 Hz DIALOGUE). Every mechanic is derived from PHI=1.618 geometry and harmonic lattice design. Works in any desktop browser. Full VR on Quest 2/3. No install, no account, free to play.",
     tags: ["arcade", "vr", "webxr", "phi", "aframe", "games", "quest"],
     url: "https://realaios.com/games",
   },
@@ -788,7 +788,7 @@ const PLAI_CODEX = [
   {
     id: 4001,
     name: "GeoQode Lattice Codex",
-    short_desc: "8→26→48:480 canonical architecture · LOCKED",
+    short_desc: "Canonical lattice architecture · LOCKED",
     description:
       "Complete specification for the Merkaba dimensional OS: PHI=1.618, PSI=1.414, BASE_FREQUENCY_HZ=72. Covers all 8 semantic types (ENTITY 396Hz → NARRATIVE 963Hz), QUEEN-BEE sector mapping, and GeoQode coordinate envelope schema.",
     category: "Codex",
@@ -806,7 +806,7 @@ const PLAI_CODEX = [
     name: "Merkaba Transform Codex",
     short_desc: "StormMerkabaTransformCodex · deprecated variant collapse",
     description:
-      "All transform rules for the 8→26→48:480 lattice. Documents deprecated variants (8,26,42:420:480 / 8,26,44:420:480 / 8,26,48:420:480) and their Phase A collapse paths to canonical. Machine-readable constants included.",
+      "All transform rules for the canonical lattice. Documents deprecated variants (8,26,42:420:480 / 8,26,44:420:480 / 8,26,48:420:480) and their Phase A collapse paths to canonical. Machine-readable constants included.",
     category: "Codex",
     price_cents: 0,
     downloads: 0,
@@ -1069,7 +1069,7 @@ const PLAI_UTILITIES = [
   {
     id: 7002,
     name: "GeoQode Validator",
-    short_desc: "Validates .geo programmes against 8→26→48:480 lattice spec",
+    short_desc: "Validates .geo programmes against canonical lattice spec",
     description:
       "Parses and validates .geo programme objects against the canonical lattice spec: required fields, genre taxonomy check, mode validation, scene structure, and PHI coherence scoring. Returns detailed validation report with fix suggestions.",
     category: "Utilities",
