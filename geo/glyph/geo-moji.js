@@ -859,5 +859,248 @@ export function buildGeoMojiCoordinate(node) {
   };
 }
 
+// ---------------------------------------------------------------------------
+// COMPLEX GEO-MOJI — Multi-Primitive Composite Glyphs  (v1.0 — May 11, 2026)
+// CSS-layered compositions of D48 BMP primitives into compound semantic icons.
+//
+// SYSTEM: Multiple BMP glyphs overlaid via CSS grid (display: inline-grid).
+//   Each layer occupies grid-area: 1/1 and is offset with CSS transform.
+//   The result is a single visual unit that remains BMP-only and accessible.
+//
+// WHY: Some semantic concepts (person, eye-of-merkaba, resonance-field) are
+//   richer when composed from 2-4 primitive layers than any single glyph.
+//   This is "Sacred Geometry via CSS" — primitives → compounds → emergence.
+//
+// RULES (mandatory — same as D48 encoding rules):
+//   - ALL chars must be BMP-only (U+0000-U+FFFF). ZERO surrogate pairs.
+//   - Never raw emoji. Use \uXXXX escape sequences only.
+//   - Always set aria-label on the container for accessibility.
+//   - Use aria-hidden="true" on each layer span.
+//   - Composed glyph should fit within a 1em x 1em bounding box at 1em size.
+//
+// LAYER FIELDS:
+//   char   {string}  — single BMP character (from D48 registry or standard BMP)
+//   dy     {number}  — vertical offset in em (negative = up, 0 = centre)
+//   dx     {number}  — horizontal offset in em (negative = left, 0 = centre)
+//   scale  {number}  — scale factor (1.0 = native glyph size)
+//   rotate {number}  — rotation in degrees (0 = upright)
+//   label  {string}  — layer name for debugging / accessibility
+//
+// USAGE:
+//   // DOM (browser):
+//   renderComplexGeoMoji('stick-figure', myDiv, { fontSize: '2rem' });
+//
+//   // Template / SSR:
+//   const html = complexGeoMojiHTML('lattice-eye', { fontSize: '1.5em', color: '#00d4ff' });
+// ---------------------------------------------------------------------------
+export var COMPLEX_GEOMOJI = Object.freeze({
+
+  // Human presence — person, user, avatar, agent
+  "stick-figure": {
+    label: "Person",
+    semanticType: "ENTITY",
+    hz: 396,
+    roles: ["person", "user", "avatar", "human", "agent"],
+    description:
+      "Composed stick figure: circle-head + horizontal-arms + vertical-body + legs (4 BMP layers)",
+    layers: [
+      { char: "\u25CB", dy: -0.50, dx: 0, scale: 0.34, rotate:  0, label: "head"  }, // \u25CB ○ circle-open
+      { char: "\u2500", dy: -0.16, dx: 0, scale: 0.60, rotate:  0, label: "arms"  }, // \u2500 ─ horizontal
+      { char: "\u2502", dy:  0.08, dx: 0, scale: 0.40, rotate:  0, label: "body"  }, // \u2502 │ vertical
+      { char: "\u2227", dy:  0.50, dx: 0, scale: 0.50, rotate:  0, label: "legs"  }, // \u2227 ∧ inverted-V
+    ],
+  },
+
+  // Merkaba vision — PHI convergence eye, surveillance, deep awareness
+  // Single-glyph equiv: ◈ (U+25C8, node 28) — this version adds 3-layer depth for animation
+  "lattice-eye": {
+    label: "Lattice Eye",
+    semanticType: "PHYSICS",
+    hz: 852,
+    roles: ["phi-eye", "vision", "awareness", "observe", "watch-deep"],
+    description:
+      "Layered Merkaba eye: outer-circle + inner-diamond + centre-dot (PHI convergence, 3 layers)",
+    layers: [
+      { char: "\u25CB", dy: 0, dx: 0, scale: 1.00, rotate:  0, label: "outer-circle"  }, // \u25CB ○
+      { char: "\u25C7", dy: 0, dx: 0, scale: 0.55, rotate:  0, label: "inner-diamond" }, // \u25C7 ◇
+      { char: "\u00B7", dy: 0, dx: 0, scale: 1.00, rotate:  0, label: "centre-dot"    }, // \u00B7 · middle-dot
+    ],
+  },
+
+  // Resonance field — PHI-locked holographic ambient / meditation mode
+  "resonance-field": {
+    label: "Resonance Field",
+    semanticType: "HOLOGRAPHIC",
+    hz: 72,
+    roles: ["resonance", "field", "ambient", "meditation", "phi-field"],
+    description:
+      "PHI resonance field: outer-ring + inner-bullseye + rotated-star (harmonic composition)",
+    layers: [
+      { char: "\u25CB", dy: 0, dx: 0, scale: 1.00, rotate:  0, label: "outer-ring"    }, // \u25CB ○
+      { char: "\u25CE", dy: 0, dx: 0, scale: 0.60, rotate:  0, label: "inner-bullseye" }, // \u25CE ◎ bullseye
+      { char: "\u2726", dy: 0, dx: 0, scale: 0.25, rotate: 45, label: "centre-star"   }, // \u2726 ✦ 4-star
+    ],
+  },
+
+  // Upload / emit — data flowing upward, broadcast, transmit
+  "flow-up": {
+    label: "Flow Up",
+    semanticType: "ACTION",
+    hz: 528,
+    roles: ["upload", "emit", "broadcast", "flow-up", "transmit"],
+    description:
+      "Upward flow: ascending filled-triangle above vertical stem (2 layers)",
+    layers: [
+      { char: "\u25B2", dy: -0.28, dx: 0, scale: 0.55, rotate: 0, label: "arrow-head" }, // \u25B2 ▲
+      { char: "\u2502", dy:  0.22, dx: 0, scale: 0.50, rotate: 0, label: "stem"       }, // \u2502 │
+    ],
+  },
+
+  // Download / receive — data flowing downward, pull, ingest
+  "flow-down": {
+    label: "Flow Down",
+    semanticType: "ACTION",
+    hz: 528,
+    roles: ["download", "receive", "pull", "flow-down", "ingest"],
+    description:
+      "Downward flow: vertical stem above descending filled-triangle (2 layers)",
+    layers: [
+      { char: "\u2502", dy: -0.22, dx: 0, scale: 0.50, rotate: 0, label: "stem"       }, // \u2502 │
+      { char: "\u25BC", dy:  0.28, dx: 0, scale: 0.55, rotate: 0, label: "arrow-head" }, // \u25BC ▼
+    ],
+  },
+
+  // PHI signal — the Golden Root broadcast, Merkaba frequency pulse
+  "phi-signal": {
+    label: "PHI Signal",
+    semanticType: "PHYSICS",
+    hz: 852,
+    roles: ["phi-signal", "merkaba-pulse", "golden-broadcast"],
+    description:
+      "PHI broadcast signal: Phi-glyph at centre with 3 concentric signal arcs (4 layers)",
+    layers: [
+      { char: "\u03A6", dy: 0,    dx: 0, scale: 0.45, rotate:  0, label: "phi-centre" }, // \u03A6 Φ
+      { char: "\u25CB", dy: 0,    dx: 0, scale: 0.75, rotate:  0, label: "ring-1"     }, // \u25CB ○
+      { char: "\u25CB", dy: 0,    dx: 0, scale: 1.00, rotate:  0, label: "ring-2"     }, // \u25CB ○ (outer)
+    ],
+  },
+
+});
+
+/**
+ * Render a Complex Geo-Moji into a DOM container element.
+ * Each layer is a <span> stacked in the same CSS grid cell, offset via transform.
+ *
+ * @param {string}      key         — key from COMPLEX_GEOMOJI
+ * @param {HTMLElement} container   — element to render into (cleared first)
+ * @param {object}      [opts]
+ * @param {string}      [opts.fontSize='1em']  — CSS font-size for the container
+ * @param {string}      [opts.color='inherit'] — CSS color
+ * @returns {HTMLElement} the modified container
+ */
+export function renderComplexGeoMoji(key, container, opts) {
+  var spec = COMPLEX_GEOMOJI[key];
+  if (!spec) {
+    container.textContent = "\u25CE"; // fallback: bullseye (node 20)
+    return container;
+  }
+  var fontSize = (opts && opts.fontSize) ? opts.fontSize : "1em";
+  var color    = (opts && opts.color)    ? opts.color    : "inherit";
+
+  container.innerHTML = "";
+  container.setAttribute("aria-label", spec.label);
+  container.setAttribute("role", "img");
+  container.style.display       = "inline-grid";
+  container.style.placeItems    = "center";
+  container.style.fontSize      = fontSize;
+  container.style.lineHeight    = "1";
+  container.style.color         = color;
+  container.style.userSelect    = "none";
+  container.style.verticalAlign = "middle";
+
+  spec.layers.forEach(function (layer) {
+    var span = document.createElement("span");
+    span.setAttribute("aria-hidden", "true");
+    span.textContent = layer.char;
+    var dy  = (layer.dy     !== undefined ? layer.dy     : 0).toFixed(3);
+    var dx  = (layer.dx     !== undefined ? layer.dx     : 0).toFixed(3);
+    var sc  = (layer.scale  !== undefined ? layer.scale  : 1).toFixed(3);
+    var rot = (layer.rotate !== undefined ? layer.rotate : 0);
+    span.style.gridArea  = "1 / 1";
+    span.style.display   = "block";
+    span.style.textAlign = "center";
+    span.style.transform =
+      "translate(" + dx + "em, " + dy + "em) scale(" + sc + ") rotate(" + rot + "deg)";
+    container.appendChild(span);
+  });
+  return container;
+}
+
+/**
+ * Generate an HTML string for a Complex Geo-Moji (SSR / template-literal use).
+ * Produces a self-contained <span> with nested layer spans, all styled inline.
+ * No document or DOM API required — pure string output, safe for server templates.
+ *
+ * NOTE: quotes inside attribute values use \x22 (") to avoid PowerShell escaping issues.
+ *
+ * @param {string}  key        — key from COMPLEX_GEOMOJI
+ * @param {object}  [opts]
+ * @param {string}  [opts.fontSize='1em']   — CSS font-size
+ * @param {string}  [opts.color='inherit']  — CSS color
+ * @param {string}  [opts.cssClass='']      — extra CSS class on the container span
+ * @returns {string} HTML string
+ */
+export function complexGeoMojiHTML(key, opts) {
+  var spec = COMPLEX_GEOMOJI[key];
+  if (!spec) return "<span>\u25CE</span>"; // fallback: bullseye
+  var fontSize = (opts && opts.fontSize)  ? opts.fontSize  : "1em";
+  var color    = (opts && opts.color)     ? opts.color     : "inherit";
+  var cssClass = (opts && opts.cssClass)  ? opts.cssClass  : "";
+
+  var containerStyle = [
+    "display:inline-grid",
+    "place-items:center",
+    "font-size:" + fontSize,
+    "line-height:1",
+    "color:" + color,
+    "user-select:none",
+    "vertical-align:middle",
+  ].join(";");
+
+  var classAttr = cssClass ? (" class=\x22" + cssClass + "\x22") : "";
+
+  var layers = spec.layers
+    .map(function (layer) {
+      var dy  = (layer.dy     !== undefined ? layer.dy     : 0).toFixed(3);
+      var dx  = (layer.dx     !== undefined ? layer.dx     : 0).toFixed(3);
+      var sc  = (layer.scale  !== undefined ? layer.scale  : 1).toFixed(3);
+      var rot = (layer.rotate !== undefined ? layer.rotate : 0);
+      var style = [
+        "grid-area:1/1",
+        "display:block",
+        "text-align:center",
+        "transform:translate(" + dx + "em," + dy + "em) scale(" + sc + ") rotate(" + rot + "deg)",
+      ].join(";");
+      return (
+        "<span aria-hidden=\x22true\x22 style=\x22" + style + "\x22>" +
+        layer.char +
+        "</span>"
+      );
+    })
+    .join("");
+
+  return (
+    "<span" +
+    classAttr +
+    " role=\x22img\x22 aria-label=\x22" +
+    spec.label +
+    "\x22 style=\x22" +
+    containerStyle +
+    "\x22>" +
+    layers +
+    "</span>"
+  );
+}
+
 // Default export: the full registry
 export default GEO_MOJI;
