@@ -8242,6 +8242,30 @@ function generateGeoProgram() {
   console.log(
     `[AIOSProducerSwarm] 🎬 Produced #${GEO_PRODUCTION_COUNT}: "${title}" [${renderer}·${hz}Hz·${(fileBytes / 1024).toFixed(1)}KB]`,
   );
+
+  // ── Publish each new .geo programme into the PLAIStore Theatre catalogue ──
+  // This is what makes the PLAIStore app count grow autonomously over time.
+  const plaiBundle = `com.aios.geo.${programme.id}`;
+  if (!_plaiRuntimeApps.has(plaiBundle)) {
+    _plaiRuntimeApps.set(plaiBundle, {
+      id: ++_plaiRuntimeIdSeq,
+      name: title,
+      short_desc: `${programme.genre} · ${programme.mode} mode · AIOSProducerSwarm`,
+      description: `An AI-generated .geo programme produced by AIOSProducerSwarm. Genre: ${programme.genre}. Renderer: ${renderer}. Frequency: ${hz}Hz.`,
+      category: "Theatre",
+      price_cents: 0,
+      downloads: 0,
+      rating_avg: 4.8,
+      developer_name: "AIOSProducerSwarm",
+      developer_verified: true,
+      type: "theatre-programme",
+      bundle_id: plaiBundle,
+      entry_point: `https://realaios.com/aiosdream?prog=${programme.id}`,
+      published_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    });
+  }
+
   return programme;
 }
 
