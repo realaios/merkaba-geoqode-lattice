@@ -1,9 +1,9 @@
-ï»¿<!doctype html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Grid Dodge â€” PHI Reflexes â€” AIOS Arcade</title>
+    <title>Grid Dodge — PHI Reflexes — AIOS Arcade</title>
     <meta
       name="description"
       content="Dodge entropy disruptors flying through the 48-node lattice ring. Speed ramps by PHI each wave. AIOS Arcade."
@@ -11,7 +11,7 @@
     <link rel="canonical" href="https://realaios.com/games/grid-dodge" />
     <meta
       property="og:title"
-      content="Grid Dodge â€” PHI Reflexes â€” AIOS Arcade"
+      content="Grid Dodge — PHI Reflexes — AIOS Arcade"
     />
     <meta
       property="og:description"
@@ -457,7 +457,7 @@
         <a href="/experiences">Experiences</a><a href="/vr-hub">VR Hub</a
         ><a href="/vr">&#x1F97D; VR</a
         ><a href="/games" class="active">&#x1F3AE; Games</a
-        ><a href="/plaistore">PLAIstore</a><a href="/geo-codec">.geo</a
+        ><a href="/geo-codec">.geo</a
         ><a href="/pricing">Pricing</a>
       </div>
       <div class="site-nav-right">
@@ -468,7 +468,7 @@
 
     <!-- LOBBY -->
     <div id="lobby">
-      <div class="lobby-badge">? AIOS Arcade â€” Grid Dodge</div>
+      <div class="lobby-badge">? AIOS Arcade — Grid Dodge</div>
       <div class="lobby-title">Grid Dodge</div>
       <div class="lobby-sub">
         Entropy disruptors flood the lattice ring. Move to survive. Each wave is
@@ -480,7 +480,7 @@
           <div class="lobby-stat-l">Lives</div>
         </div>
         <div>
-          <div class="lobby-stat-n">â€”PHI</div>
+          <div class="lobby-stat-n">—PHI</div>
           <div class="lobby-stat-l">Speed Scale</div>
         </div>
         <div>
@@ -520,7 +520,7 @@
       </div>
       <button class="btn-play" onclick="startGame()">LAUNCH GAME</button>
       <div class="lobby-hint">
-        WASD or arrow keys to move â€” Dodge the red cubes
+        WASD or arrow keys to move — Dodge the red cubes
       </div>
       <a href="/vr-hub" class="lobby-back">? Back to VR Hub</a>
     </div>
@@ -667,7 +667,7 @@
         const sy = +(0.5 + Math.random() * 3).toFixed(2);
         const sz = +(Math.cos(angle) * startRadius).toFixed(2);
 
-        // Target: random offset near center (not exact center â€” avoids spam)
+        // Target: random offset near center (not exact center — avoids spam)
         const tx = +((Math.random() - 0.5) * 4).toFixed(2);
         const ty = sy;
         const tz = +((Math.random() - 0.5) * 4).toFixed(2);
@@ -799,7 +799,7 @@
             <!-- Floor -->
             <a-plane position="0 0 0" rotation="-90 0 0" width="40" height="40" color="#030918" material="shader: flat" opacity="0.8"></a-plane>
 
-            <!-- Lattice corridor rings â€” visual effect of coming at you -->
+            <!-- Lattice corridor rings — visual effect of coming at you -->
             <a-torus position="0 1.8 -8" rotation="90 0 0" radius="5" radius-tubular="0.04" color="#00d4ff" opacity="0.3" material="shader: flat"
               animation="property: position; from: 0 1.8 -20; to: 0 1.8 8; dur: 3000; loop: true; easing: easeInQuad"></a-torus>
             <a-torus position="0 1.8 -8" rotation="90 0 0" radius="5" radius-tubular="0.04" color="#9b5cff" opacity="0.25" material="shader: flat"
@@ -883,7 +883,7 @@
         document.getElementById("exit-btn").style.display = "none";
         document.getElementById("go-score-n").textContent = surviveTime;
         document.getElementById("go-wave").textContent =
-          `Wave ${wave} â€” Score: ${score}`;
+          `Wave ${wave} — Score: ${score}`;
         document.getElementById("gameover").style.display = "flex";
         // Submit to leaderboard
         const pn = localStorage.getItem("aios_player_name") || "Anonymous";
@@ -960,7 +960,7 @@
                     `<span style="color:${colors[i] || "rgba(255,255,255,0.6)"}">${i + 1}. ${e.name}</span> <span style="float:right;color:#00f5d4;">${e.score.toLocaleString()}</span><br>`,
                 )
                 .join("") ||
-              '<span style="color:rgba(255,255,255,0.3)">No scores yet â€” be the first!</span>';
+              '<span style="color:rgba(255,255,255,0.3)">No scores yet — be the first!</span>';
           })
           .catch(() => {
             const el = document.getElementById("lobby-lb-rows");

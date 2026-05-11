@@ -4223,12 +4223,14 @@ const server = createServer(async (req, res) => {
     if (req.method === "GET" && pathname === "/") {
       const accept = req.headers["accept"] || "";
       if (
-        AIOS_HTML &&
         (accept.includes("text/html") || accept.includes("*/*"))
       ) {
-        res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
-        res.end(AIOS_HTML);
-        return;
+        const homeHtml = PLAISTORE_HTML || AIOS_HTML;
+        if (homeHtml) {
+          res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+          res.end(homeHtml);
+          return;
+        }
       }
       // Fallback JSON for programmatic consumers
       return json(res, 200, {
@@ -6550,15 +6552,13 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
       return;
     }
 
-    // ── GET /plaistore — PLAIstore app marketplace ────────────────────────
+    // ── GET /plaistore — redirect to / (PLAIstore is now the homepage) ──
     if (
       req.method === "GET" &&
       (pathname === "/plaistore" || pathname === "/plaistore/")
     ) {
-      if (!PLAISTORE_HTML)
-        return json(res, 404, { ok: false, error: "PLAIstore not found" });
-      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
-      res.end(PLAISTORE_HTML);
+      res.writeHead(301, { Location: "/" });
+      res.end();
       return;
     }
 

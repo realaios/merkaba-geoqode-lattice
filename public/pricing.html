@@ -1,12 +1,12 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Pricing — AIOS</title>
+    <title>Pricing � AIOS</title>
     <meta
       name="description"
-      content="AIOS Pro — unlimited PLAIStore access, VR Hub premium, AI tools and more. Free to join."
+      content="AIOS Pro � unlimited PLAIStore access, VR Hub premium, AI tools and more. Free to join."
     />
     <link rel="canonical" href="https://realaios.com/pricing" />
     <style>
@@ -51,7 +51,7 @@
           padding-top: 54px;
         }
 
-        /* ── Canonical site-nav ── */
+        /* -- Canonical site-nav -- */
         nav.site-nav {
           position: fixed;
           top: 0;
@@ -331,7 +331,7 @@
     </div>
 
     <div class="banner" id="banner-success">
-      ✓ Welcome to AIOS Pro! Your subscription is now active. Enjoy unlimited
+      ? Welcome to AIOS Pro! Your subscription is now active. Enjoy unlimited
       access.
     </div>
     <div class="banner" id="banner-cancel">
@@ -343,24 +343,24 @@
       <nav class="site-nav">
         <a href="/" class="site-nav-logo">&#x2B21; AIOS</a>
         <div class="site-nav-links">
-        <a href="/experiences">Experiences</a><a href="/vr-hub">VR Hub</a><a href="/vr">&#x1F97D; VR</a><a href="/aiosdream">Cinema</a><a href="/plaistore">PLAIstore</a><a href="/geo-codec">.geo</a><a href="/pricing" class="active">Pricing</a>
+        <a href="/experiences">Experiences</a><a href="/vr-hub">VR Hub</a><a href="/vr">&#x1F97D; VR</a><a href="/aiosdream">Cinema</a><a href="/geo-codec">.geo</a><a href="/pricing" class="active">Pricing</a>
       </div>
         <div class="site-nav-right">
           <a href="/live" class="site-nav-live">&#x25CF; LIVE</a>
-          <a href="/start" class="site-nav-cta" id="nav-auth-btn">Start Free →</a>
+          <a href="/start" class="site-nav-cta" id="nav-auth-btn">Start Free ?</a>
         </div>
       </nav>
-          <li><span class="icon">✓</span>GeoQode explorer</li>
+          <li><span class="icon">?</span>GeoQode explorer</li>
           <li>
-            <span class="icon no">—</span
+            <span class="icon no">�</span
             ><span style="opacity: 0.4">Premium PLAIStore apps</span>
           </li>
           <li>
-            <span class="icon no">—</span
+            <span class="icon no">�</span
             ><span style="opacity: 0.4">VR Hub premium content</span>
           </li>
           <li>
-            <span class="icon no">—</span
+            <span class="icon no">�</span
             ><span style="opacity: 0.4">AIOS Studio (advanced)</span>
           </li>
         </ul>
@@ -378,19 +378,19 @@
           Everything in Free, plus unlimited access to all PLAIStore apps and
           premium AIOS features.
         </p>
-        <button class="plan-btn pro" id="btn-pro">Upgrade to Pro →</button>
+        <button class="plan-btn pro" id="btn-pro">Upgrade to Pro ?</button>
         <ul class="features">
-          <li><span class="icon">✓</span>Everything in Free</li>
-          <li><span class="icon">✓</span>All premium PLAIStore apps</li>
-          <li><span class="icon">✓</span>VR Hub premium content</li>
-          <li><span class="icon">✓</span>AIOS Studio — full access</li>
-          <li><span class="icon">✓</span>Priority AI tools</li>
-          <li><span class="icon">✓</span>No ads</li>
+          <li><span class="icon">?</span>Everything in Free</li>
+          <li><span class="icon">?</span>All premium PLAIStore apps</li>
+          <li><span class="icon">?</span>VR Hub premium content</li>
+          <li><span class="icon">?</span>AIOS Studio � full access</li>
+          <li><span class="icon">?</span>Priority AI tools</li>
+          <li><span class="icon">?</span>No ads</li>
           <li>
-            <span class="icon">✓</span><strong>Coming soon:</strong> publish
+            <span class="icon">?</span><strong>Coming soon:</strong> publish
             apps to PLAIStore
           </li>
-          <li><span class="icon">✓</span>Priority support</li>
+          <li><span class="icon">?</span>Priority support</li>
         </ul>
       </div>
     </div>
@@ -403,7 +403,7 @@
           <dt>Can I use AIOS for free?</dt>
           <dd>
             Yes. AIOS Free gives you a full account, all 486+ free PLAIStore
-            apps, games, VR basics and GeoQode — forever. No credit card
+            apps, games, VR basics and GeoQode � forever. No credit card
             required.
           </dd>
         </div>
@@ -425,7 +425,7 @@
         <div class="faq-item">
           <dt>Is this the same account as getbrains4ai.com?</dt>
           <dd>
-            Yes — AIOS and Brains4Ai share the same account system. One login,
+            Yes � AIOS and Brains4Ai share the same account system. One login,
             one subscription.
           </dd>
         </div>
@@ -457,7 +457,7 @@
         var btnPro = document.getElementById("btn-pro");
         var navBtn = document.getElementById("nav-auth-btn");
 
-        // Decode JWT claims (display only — no signature check)
+        // Decode JWT claims (display only � no signature check)
         function decodeJwt(token) {
           try {
             var parts = token.split(".");
@@ -477,7 +477,7 @@
             btnFree.onclick = function () {
               window.location.href = "/signup";
             };
-            btnPro.textContent = "Upgrade to Pro →";
+            btnPro.textContent = "Upgrade to Pro ?";
             btnPro.onclick = handleCheckout;
             return;
           }
@@ -505,7 +505,7 @@
               data.tier ||
               "free";
             if (tier === "pro" || tier === "enterprise") {
-              btnPro.textContent = "✓ Active Plan";
+              btnPro.textContent = "? Active Plan";
               btnPro.classList.remove("pro");
               btnPro.classList.add("active-plan");
               btnPro.disabled = true;
@@ -530,7 +530,7 @@
             return;
           }
           btnPro.disabled = true;
-          btnPro.innerHTML = '<span class="spinner"></span>Preparing checkout…';
+          btnPro.innerHTML = '<span class="spinner"></span>Preparing checkout�';
 
           try {
             var r = await fetch("/api/aios/checkout", {
@@ -549,12 +549,12 @@
             } else {
               alert(data.error || "Checkout unavailable. Please try again.");
               btnPro.disabled = false;
-              btnPro.innerHTML = "Upgrade to Pro →";
+              btnPro.innerHTML = "Upgrade to Pro ?";
             }
           } catch (e) {
             alert("Connection error. Please try again.");
             btnPro.disabled = false;
-            btnPro.innerHTML = "Upgrade to Pro →";
+            btnPro.innerHTML = "Upgrade to Pro ?";
           }
         }
 
@@ -564,7 +564,7 @@
     <footer>
       <p>
         <a href="/">AIOS</a> &middot; <a href="/vr-hub">VR Hub</a> &middot;
-        <a href="/aiosdream">Cinema</a> &middot; <a href="/plaistore">PLAIstore</a> &middot; <a href="/pricing">Pricing</a>
+        <a href="/aiosdream">Cinema</a> &middot;  &middot; <a href="/pricing">Pricing</a>
         &nbsp;|&nbsp; realaios.com &copy; 2026
       </p>
     </footer>

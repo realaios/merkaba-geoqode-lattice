@@ -1,16 +1,16 @@
-ï»¿<!doctype html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-    <title>Theatre Viewer â€” AIOS Resonance OS</title>
+    <title>Theatre Viewer — AIOS Resonance OS</title>
     <meta
       name="description"
-      content="AIOS Theatre Viewer â€” project narrative into the 48D Merkaba lattice. Dimensional storytelling for Meta Quest. Geometry-native, zero install."
+      content="AIOS Theatre Viewer — project narrative into the 48D Merkaba lattice. Dimensional storytelling for Meta Quest. Geometry-native, zero install."
     />
     <meta
       property="og:title"
-      content="AIOS Theatre Viewer â€” Merkaba Resonance OS"
+      content="AIOS Theatre Viewer — Merkaba Resonance OS"
     />
     <meta
       property="og:description"
@@ -493,7 +493,7 @@
       <div class="site-nav-links">
         <a href="/experiences">Experiences</a><a href="/vr-hub">VR Hub</a
         ><a href="/vr">&#x1F97D; VR</a><a href="/aiosdream">Cinema</a
-        ><a href="/plaistore">PLAIstore</a><a href="/geo-codec">.geo</a
+        ><a href="/geo-codec">.geo</a
         ><a href="/pricing">Pricing</a>
       </div>
       <div class="site-nav-right">
@@ -566,17 +566,17 @@ Write a narrative, screenplay, or .geo playbook. The Theatre Engine will parse s
                   "
                 >
                   <option value="HOLOGRAPHIC">
-                    HOLOGRAPHIC â€” full immersion
+                    HOLOGRAPHIC — full immersion
                   </option>
                   <option value="INTERACTIVE">
-                    INTERACTIVE â€” adaptive flow
+                    INTERACTIVE — adaptive flow
                   </option>
-                  <option value="ADAPTIVE">ADAPTIVE â€” real-time adjust</option>
+                  <option value="ADAPTIVE">ADAPTIVE — real-time adjust</option>
                   <option value="DOCUMENTARY">
-                    DOCUMENTARY â€” linear record
+                    DOCUMENTARY — linear record
                   </option>
                   <option value="GOVERNANCE">
-                    GOVERNANCE â€” decision audit
+                    GOVERNANCE — decision audit
                   </option>
                 </select>
                 <button
@@ -714,7 +714,7 @@ Write a narrative, screenplay, or .geo playbook. The Theatre Engine will parse s
           b.innerHTML = '<span class="spinner"></span> Projecting';
         });
 
-        showPlaceholder("Projecting through 48D latticeâ€”");
+        showPlaceholder("Projecting through 48D lattice—");
 
         try {
           let data;
@@ -769,9 +769,9 @@ Write a narrative, screenplay, or .geo playbook. The Theatre Engine will parse s
           0;
         const status = s.status || s.projection?.status || "unknown";
         const pct = Math.round(coherence * 100);
-        const mode = s.options?.mode || s.mode || s.realityMode || "â€”";
-        const title = s.options?.title || s.title || "â€”";
-        const elapsed = s.elapsedMs ? `${s.elapsedMs}ms` : "â€”";
+        const mode = s.options?.mode || s.mode || s.realityMode || "—";
+        const title = s.options?.title || s.title || "—";
+        const elapsed = s.elapsedMs ? `${s.elapsedMs}ms` : "—";
 
         const statusColor =
           {
@@ -796,7 +796,7 @@ Write a narrative, screenplay, or .geo playbook. The Theatre Engine will parse s
         document.getElementById("placeholder").style.display = "none";
         document.getElementById("results").style.display = "";
         document.getElementById("results").innerHTML = `
-    <div class="stat-row"><span class="stat-key">Session ID</span><span class="stat-val" style="font-size:11px;color:var(--muted)">${s.sessionId || "â€”"}</span></div>
+    <div class="stat-row"><span class="stat-key">Session ID</span><span class="stat-val" style="font-size:11px;color:var(--muted)">${s.sessionId || "—"}</span></div>
     <div class="stat-row"><span class="stat-key">Status</span><span class="status-pill pill-${statusColor}">${status.toUpperCase()}</span></div>
     <div class="stat-row"><span class="stat-key">Mode</span><span class="stat-val">${mode}</span></div>
     <div class="stat-row"><span class="stat-key">Title</span><span class="stat-val">${title}</span></div>
@@ -811,7 +811,7 @@ Write a narrative, screenplay, or .geo playbook. The Theatre Engine will parse s
         <div class="coherence-fill" style="width:${pct}%;background:${fillColor}"></div>
       </div>
       <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-top:2px">
-        <span>0 â€” DORMANT</span><span>40 â€” CRITICAL</span><span>80 â€” NOMINAL</span><span>99 â€” SINGULARITY</span>
+        <span>0 — DORMANT</span><span>40 — CRITICAL</span><span>80 — NOMINAL</span><span>99 — SINGULARITY</span>
       </div>
     </div>
 
@@ -838,9 +838,9 @@ Write a narrative, screenplay, or .geo playbook. The Theatre Engine will parse s
               .slice(0, 20)
               .map(
                 (u) => `
-              <tr><td>${u.type || u.semanticType || "â€”"}</td>
+              <tr><td>${u.type || u.semanticType || "—"}</td>
               <td style="color:var(--muted)">${(u.content || u.text || "").slice(0, 60)}</td>
-              <td><span class="freq-chip">${u.resonanceFrequency || "â€”"} Hz</span></td>
+              <td><span class="freq-chip">${u.resonanceFrequency || "—"} Hz</span></td>
             </tr>`,
               )
               .join("")}</tbody>
@@ -852,10 +852,10 @@ Write a narrative, screenplay, or .geo playbook. The Theatre Engine will parse s
           audio
             ? `<div class="card">
           <div class="card-title">Audio Profile (MerkabaALM)</div>
-          <div class="stat-row"><span class="stat-key">Primary Frequency</span><span class="stat-val" style="color:var(--purple)">${audio.primaryFrequency || "â€”"} Hz</span></div>
-          <div class="stat-row"><span class="stat-key">Harmonic Coherence</span><span class="stat-val">${audio.harmonicCoherence || "â€”"}</span></div>
-          <div class="stat-row"><span class="stat-key">PHI Score</span><span class="stat-val">${audio.phiScore || "â€”"}</span></div>
-          <div class="stat-row"><span class="stat-key">Genre</span><span class="stat-val">${audio.genre || "â€”"}</span></div>
+          <div class="stat-row"><span class="stat-key">Primary Frequency</span><span class="stat-val" style="color:var(--purple)">${audio.primaryFrequency || "—"} Hz</span></div>
+          <div class="stat-row"><span class="stat-key">Harmonic Coherence</span><span class="stat-val">${audio.harmonicCoherence || "—"}</span></div>
+          <div class="stat-row"><span class="stat-key">PHI Score</span><span class="stat-val">${audio.phiScore || "—"}</span></div>
+          <div class="stat-row"><span class="stat-key">Genre</span><span class="stat-val">${audio.genre || "—"}</span></div>
         </div>`
             : ""
         }

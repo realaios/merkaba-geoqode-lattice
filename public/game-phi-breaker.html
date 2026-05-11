@@ -1,9 +1,9 @@
-ï»¿<!doctype html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>PHI Breaker â€” Lattice Shooter â€” AIOS Arcade</title>
+    <title>PHI Breaker — Lattice Shooter — AIOS Arcade</title>
     <meta
       name="description"
       content="Defend the AIOS grid from entropy disruptors. Gaze to shoot. WebXR arcade game."
@@ -11,7 +11,7 @@
     <link rel="canonical" href="https://realaios.com/games/phi-breaker" />
     <meta
       property="og:title"
-      content="PHI Breaker â€” Lattice Shooter â€” AIOS Arcade"
+      content="PHI Breaker — Lattice Shooter — AIOS Arcade"
     />
     <meta
       property="og:description"
@@ -53,7 +53,7 @@
         overflow: hidden;
       }
 
-      /* NAV â€” collapsed in game, shown on lobby/gameover */
+      /* NAV — collapsed in game, shown on lobby/gameover */
       nav.site-nav {
         position: fixed;
         top: 0;
@@ -472,7 +472,7 @@
         <a href="/experiences">Experiences</a><a href="/vr-hub">VR Hub</a
         ><a href="/vr">&#x1F97D; VR</a
         ><a href="/games" class="active">&#x1F3AE; Games</a
-        ><a href="/plaistore">PLAIstore</a><a href="/geo-codec">.geo</a
+        ><a href="/geo-codec">.geo</a
         ><a href="/pricing">Pricing</a>
       </div>
       <div class="site-nav-right">
@@ -483,7 +483,7 @@
 
     <!-- LOBBY -->
     <div id="lobby">
-      <div class="lobby-badge">? AIOS Arcade â€” PHI Breaker</div>
+      <div class="lobby-badge">? AIOS Arcade — PHI Breaker</div>
       <div class="lobby-title">PHI Breaker</div>
       <div class="lobby-sub">
         Entropy disruptors are attacking the AIOS grid. Gaze to lock. Click to
@@ -495,7 +495,7 @@
           <div class="lobby-stat-l">Per Round</div>
         </div>
         <div>
-          <div class="lobby-stat-n">â€”PHI</div>
+          <div class="lobby-stat-n">—PHI</div>
           <div class="lobby-stat-l">Wave Scaling</div>
         </div>
         <div>
@@ -535,7 +535,7 @@
       </div>
       <button class="btn-play" onclick="startGame()">LAUNCH GAME</button>
       <div class="lobby-hint">
-        Gaze to aim â€” Click or tap to shoot â€” WASD on desktop
+        Gaze to aim — Click or tap to shoot — WASD on desktop
       </div>
       <a href="/vr-hub" class="lobby-back">? Back to VR Hub</a>
     </div>
@@ -613,9 +613,9 @@
           const text =
             "I scored " +
             s +
-            " PHI Points in PHI Breaker ? â€” " +
+            " PHI Points in PHI Breaker ? — " +
             w +
-            " â€” free game at realaios.com";
+            " — free game at realaios.com";
           if (navigator.share) {
             navigator
               .share({
@@ -865,7 +865,7 @@
                 look-controls="reverseMouseDrag: false; touchEnabled: true; pointerLockEnabled: false"
                 wasd-controls="enabled: false"
                 fov="80">
-                <!-- Gaze cursor â€” 1.2s fuse for VR headset -->
+                <!-- Gaze cursor — 1.2s fuse for VR headset -->
                 <a-cursor
                   id="game-cursor"
                   fuse="true"
@@ -909,7 +909,7 @@
             <a-sphere position="-2.12 0.3 -2.12" radius="0.08" color="#9b5cff" opacity="0.4" material="shader: flat" animation="property: position; to: -2.12 0.6 -2.12; dur: 1800; dir: alternate; loop: true; easing: easeInOutSine"></a-sphere>
 
             <!-- Lattice label -->
-            <a-text value="PHI BREAKER â€” AIOS ARCADE â€” DEFEND" position="0 4.5 -6" align="center" color="#6b84b8" width="5" font="roboto" material="shader: flat"></a-text>
+            <a-text value="PHI BREAKER — AIOS ARCADE — DEFEND" position="0 4.5 -6" align="center" color="#6b84b8" width="5" font="roboto" material="shader: flat"></a-text>
 
             <!-- Enemy container -->
             <a-entity id="enemy-root"></a-entity>
@@ -954,7 +954,7 @@
 
         document.getElementById("go-score-n").textContent = score;
         document.getElementById("go-wave").textContent =
-          `Wave ${wave} reached â€” ${kills} kills`;
+          `Wave ${wave} reached — ${kills} kills`;
         document.getElementById("gameover").style.display = "flex";
         // Submit to leaderboard
         const pn = localStorage.getItem("aios_player_name") || "Anonymous";
