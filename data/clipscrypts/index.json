@@ -7,62 +7,160 @@
   "total_scripts": 24,
   "total_episodes_planned": 480,
   "departments": {
-    "ancient_history":  { "label": "Ancient History",     "semanticType": "ENTITY",    "hz": 396, "lead_agent": "ScriptOracleAgent"       },
-    "renaissance":      { "label": "Renaissance",          "semanticType": "NARRATIVE",  "hz": 963, "lead_agent": "RenaissanceQuillAgent"   },
-    "war_chronicles":   { "label": "War Chronicles",       "semanticType": "ACTION",    "hz": 528, "lead_agent": "BattlefieldNarratorAgent" },
-    "science_pioneers": { "label": "Science Pioneers",     "semanticType": "PHYSICS",   "hz": 852, "lead_agent": "ScienceForgeAgent"       },
-    "cosmic_futures":   { "label": "Cosmic Futures",       "semanticType": "LOCATION",  "hz": 417, "lead_agent": "CosmicSceneAgent"        },
-    "philosophy":       { "label": "Philosophy",           "semanticType": "DIALOGUE",  "hz": 639, "lead_agent": "SocraticDialogueAgent"   },
-    "quantum_realms":   { "label": "Quantum Realms",       "semanticType": "HOLOGRAPHIC","hz": 72,  "lead_agent": "QuantumWeaverAgent"      },
-    "mythology":        { "label": "Mythology",            "semanticType": "NARRATIVE",  "hz": 963, "lead_agent": "MythweaverAgent"         }
+    "ancient_history": {
+      "label": "Ancient History",
+      "semanticType": "ENTITY",
+      "hz": 396,
+      "lead_agent": "ScriptOracleAgent"
+    },
+    "renaissance": {
+      "label": "Renaissance",
+      "semanticType": "NARRATIVE",
+      "hz": 963,
+      "lead_agent": "RenaissanceQuillAgent"
+    },
+    "war_chronicles": {
+      "label": "War Chronicles",
+      "semanticType": "ACTION",
+      "hz": 528,
+      "lead_agent": "BattlefieldNarratorAgent"
+    },
+    "science_pioneers": {
+      "label": "Science Pioneers",
+      "semanticType": "PHYSICS",
+      "hz": 852,
+      "lead_agent": "ScienceForgeAgent"
+    },
+    "cosmic_futures": {
+      "label": "Cosmic Futures",
+      "semanticType": "LOCATION",
+      "hz": 417,
+      "lead_agent": "CosmicSceneAgent"
+    },
+    "philosophy": {
+      "label": "Philosophy",
+      "semanticType": "DIALOGUE",
+      "hz": 639,
+      "lead_agent": "SocraticDialogueAgent"
+    },
+    "quantum_realms": {
+      "label": "Quantum Realms",
+      "semanticType": "HOLOGRAPHIC",
+      "hz": 72,
+      "lead_agent": "QuantumWeaverAgent"
+    },
+    "mythology": {
+      "label": "Mythology",
+      "semanticType": "NARRATIVE",
+      "hz": 963,
+      "lead_agent": "MythweaverAgent"
+    }
   },
   "scripts": [
     {
-      "script_id": "CS-001", "version": "1.0.0",
+      "script_id": "CS-001",
+      "version": "1.0.0",
       "title": "Roman Forum Debate",
       "slug": "roman-forum-debate",
       "department": "ancient_history",
-      "era": "roman", "period_ce": "63 BCE",
+      "era": "roman",
+      "period_ce": "63 BCE",
       "runtime_seconds": 240,
       "status": "LIVE",
       "scene_ref": "roman-forum-debate",
-      "episode": 1, "season": 1,
+      "episode": 1,
+      "season": 1,
       "synopsis": "Cicero delivers his First Catilinarian Oration in the Roman Senate. Witness the political intrigue, the crowd's reaction, and Catiline's escape.",
       "cast": [
-        { "role": "Marcus Tullius Cicero", "asset_id": "human-001", "costume_id": "costume-001" },
-        { "role": "Lucius Sergius Catilina", "asset_id": "human-001", "costume_id": "costume-001" }
+        {
+          "role": "Marcus Tullius Cicero",
+          "asset_id": "human-001",
+          "costume_id": "costume-001"
+        },
+        {
+          "role": "Lucius Sergius Catilina",
+          "asset_id": "human-001",
+          "costume_id": "costume-001"
+        }
       ],
-      "props": ["weapon-001", "furniture-001", "lighting-001", "decoration-001"],
-      "environment": { "scene": "roman-forum-debate", "hdri": "atmospheric-001", "audio": "audio-001" },
-      "mal_asset_ids": ["arch-002", "lighting-001", "furniture-001", "atmospheric-001", "audio-001"],
+      "props": [
+        "weapon-001",
+        "furniture-001",
+        "lighting-001",
+        "decoration-001"
+      ],
+      "environment": {
+        "scene": "roman-forum-debate",
+        "hdri": "atmospheric-001",
+        "audio": "audio-001"
+      },
+      "mal_asset_ids": [
+        "arch-002",
+        "lighting-001",
+        "furniture-001",
+        "atmospheric-001",
+        "audio-001"
+      ],
       "tags": ["roman", "politics", "senate", "cicero", "catiline"],
-      "education_links": ["https://en.wikipedia.org/wiki/Catilinarian_orations"],
+      "education_links": [
+        "https://en.wikipedia.org/wiki/Catilinarian_orations"
+      ],
       "clipscrypt": {
         "opening_hook": "ROME. 63 BCE. The fate of the Republic hangs on one man\u2019s words.",
         "act_1": "Senators file into the Curia. Catiline sits defiantly. Cicero rises.",
         "act_2": "Cicero\u2019s accusation builds to a thundering indictment. The crowd gasps.",
         "act_3": "Catiline storms out. Rome is saved\u2014for now. The conspiracy has only begun.",
-        "knowledge_nodes": ["OWASP rhetoric", "Roman Senate rules", "Latin language basics"]
+        "knowledge_nodes": [
+          "OWASP rhetoric",
+          "Roman Senate rules",
+          "Latin language basics"
+        ]
       },
-      "geoqode": { "architectureSignature": "8,26,48:480", "semanticType": "ENTITY", "frequency": 396, "phiCoefficient": 1.618, "coherence": 0.94, "domain": "systems-design", "source": "ClipScryptIndex", "d48Expansion": "CANONICAL", "d480Expansion": "FULL_HARMONIC" }
+      "geoqode": {
+        "architectureSignature": "8,26,48:480",
+        "semanticType": "ENTITY",
+        "frequency": 396,
+        "phiCoefficient": 1.618,
+        "coherence": 0.94,
+        "domain": "systems-design",
+        "source": "ClipScryptIndex",
+        "d48Expansion": "CANONICAL",
+        "d480Expansion": "FULL_HARMONIC"
+      }
     },
     {
-      "script_id": "CS-002", "version": "1.0.0",
+      "script_id": "CS-002",
+      "version": "1.0.0",
       "title": "Da Vinci Workshop",
       "slug": "da-vinci-workshop",
       "department": "renaissance",
-      "era": "renaissance", "period_ce": "1490 CE",
+      "era": "renaissance",
+      "period_ce": "1490 CE",
       "runtime_seconds": 210,
       "status": "LIVE",
       "scene_ref": "da-vinci-workshop",
-      "episode": 1, "season": 1,
+      "episode": 1,
+      "season": 1,
       "synopsis": "Inside Leonardo\u2019s Florentine bottega: the flying machine, anatomy notebooks, and the Mona Lisa taking shape.",
       "cast": [
-        { "role": "Leonardo da Vinci", "asset_id": "human-001", "costume_id": null }
+        {
+          "role": "Leonardo da Vinci",
+          "asset_id": "human-001",
+          "costume_id": null
+        }
       ],
       "props": ["tool-001", "scientific-001", "decoration-002"],
-      "environment": { "scene": "da-vinci-workshop", "hdri": null, "audio": null },
-      "mal_asset_ids": ["arch-006", "scientific-001", "tool-001", "decoration-002"],
+      "environment": {
+        "scene": "da-vinci-workshop",
+        "hdri": null,
+        "audio": null
+      },
+      "mal_asset_ids": [
+        "arch-006",
+        "scientific-001",
+        "tool-001",
+        "decoration-002"
+      ],
       "tags": ["leonardo", "renaissance", "invention", "art", "workshop"],
       "education_links": ["https://en.wikipedia.org/wiki/Leonardo_da_Vinci"],
       "clipscrypt": {
@@ -70,26 +168,51 @@
         "act_1": "Leonardo sketches anatomical dissections by candlelight. The bones talk.",
         "act_2": "The aerial screw spins on a wooden test jig. He scribbles: \u2018it will fly\u2019.",
         "act_3": "He turns to the Mona Lisa panel. A smile forms. History is watching.",
-        "knowledge_nodes": ["anatomy of the human body", "fluid dynamics basics", "perspective in art"]
+        "knowledge_nodes": [
+          "anatomy of the human body",
+          "fluid dynamics basics",
+          "perspective in art"
+        ]
       },
-      "geoqode": { "architectureSignature": "8,26,48:480", "semanticType": "NARRATIVE", "frequency": 963, "phiCoefficient": 1.618, "coherence": 0.95, "domain": "systems-design", "source": "ClipScryptIndex", "d48Expansion": "CANONICAL", "d480Expansion": "FULL_HARMONIC" }
+      "geoqode": {
+        "architectureSignature": "8,26,48:480",
+        "semanticType": "NARRATIVE",
+        "frequency": 963,
+        "phiCoefficient": 1.618,
+        "coherence": 0.95,
+        "domain": "systems-design",
+        "source": "ClipScryptIndex",
+        "d48Expansion": "CANONICAL",
+        "d480Expansion": "FULL_HARMONIC"
+      }
     },
     {
-      "script_id": "CS-003", "version": "1.0.0",
+      "script_id": "CS-003",
+      "version": "1.0.0",
       "title": "Battle of Britain",
       "slug": "battle-of-britain",
       "department": "war_chronicles",
-      "era": "wwii", "period_ce": "August 1940 CE",
+      "era": "wwii",
+      "period_ce": "August 1940 CE",
       "runtime_seconds": 300,
       "status": "LIVE",
       "scene_ref": "battle-of-britain",
-      "episode": 1, "season": 1,
+      "episode": 1,
+      "season": 1,
       "synopsis": "Spitfires scramble to intercept the Luftwaffe. Inside the cockpit and the radar room \u2014 Britain holds the line.",
       "cast": [
-        { "role": "Pilot Officer James", "asset_id": "human-001", "costume_id": "costume-003" }
+        {
+          "role": "Pilot Officer James",
+          "asset_id": "human-001",
+          "costume_id": "costume-003"
+        }
       ],
       "props": ["vehicle-002", "costume-003"],
-      "environment": { "scene": "battle-of-britain", "hdri": null, "audio": null },
+      "environment": {
+        "scene": "battle-of-britain",
+        "hdri": null,
+        "audio": null
+      },
       "mal_asset_ids": ["vehicle-002", "costume-003"],
       "tags": ["wwii", "RAF", "spitfire", "battle", "britain"],
       "education_links": ["https://en.wikipedia.org/wiki/Battle_of_Britain"],
@@ -98,27 +221,53 @@
         "act_1": "Squadrons scramble. Merlin engines roar across the airfield.",
         "act_2": "Dogfights fill the sky over the Channel. Tracers and contrails.",
         "act_3": "The last Spitfire lands with bullet holes. Britain survives another day.",
-        "knowledge_nodes": ["RADAR technology", "Supermarine Spitfire specs", "Chain Home radar system"]
+        "knowledge_nodes": [
+          "RADAR technology",
+          "Supermarine Spitfire specs",
+          "Chain Home radar system"
+        ]
       },
-      "geoqode": { "architectureSignature": "8,26,48:480", "semanticType": "ACTION", "frequency": 528, "phiCoefficient": 1.618, "coherence": 0.93, "domain": "systems-design", "source": "ClipScryptIndex", "d48Expansion": "CANONICAL", "d480Expansion": "FULL_HARMONIC" }
+      "geoqode": {
+        "architectureSignature": "8,26,48:480",
+        "semanticType": "ACTION",
+        "frequency": 528,
+        "phiCoefficient": 1.618,
+        "coherence": 0.93,
+        "domain": "systems-design",
+        "source": "ClipScryptIndex",
+        "d48Expansion": "CANONICAL",
+        "d480Expansion": "FULL_HARMONIC"
+      }
     },
     {
-      "script_id": "CS-004", "version": "1.0.0",
+      "script_id": "CS-004",
+      "version": "1.0.0",
       "title": "Quantum Computing Breakthrough",
       "slug": "quantum-computing-breakthrough",
       "department": "quantum_realms",
-      "era": "quantum", "period_ce": "2031 CE",
+      "era": "quantum",
+      "period_ce": "2031 CE",
       "runtime_seconds": 180,
       "status": "LIVE",
       "scene_ref": "quantum-computing-breakthrough",
-      "episode": 1, "season": 1,
+      "episode": 1,
+      "season": 1,
       "synopsis": "Inside a holographic quantum lab, a research team achieves 1000-qubit coherence\u2014 and the Merkaba lattice appears.",
       "cast": [
         { "role": "Dr. Maya Chen", "asset_id": "human-001", "costume_id": null }
       ],
       "props": ["lighting-003", "symbolic-001"],
-      "environment": { "scene": "quantum-computing-breakthrough", "hdri": null, "audio": null },
-      "mal_asset_ids": ["arch-008", "lighting-003", "symbolic-001", "scientific-002"],
+      "environment": {
+        "scene": "quantum-computing-breakthrough",
+        "hdri": null,
+        "audio": null
+      },
+      "mal_asset_ids": [
+        "arch-008",
+        "lighting-003",
+        "symbolic-001",
+        "scientific-002"
+      ],
       "tags": ["quantum", "computing", "merkaba", "future", "science"],
       "education_links": ["https://en.wikipedia.org/wiki/Quantum_computing"],
       "clipscrypt": {
@@ -126,27 +275,48 @@
         "act_1": "1000 qubits held in superposition. The error rate drops to zero.",
         "act_2": "The lattice display shows an 8\u219226\u219248 node pattern. PHI = 1.618.",
         "act_3": "The Merkaba spins. A new physics is born. The universe is listening.",
-        "knowledge_nodes": ["quantum superposition", "qubit error correction", "PHI in nature"]
+        "knowledge_nodes": [
+          "quantum superposition",
+          "qubit error correction",
+          "PHI in nature"
+        ]
       },
-      "geoqode": { "architectureSignature": "8,26,48:480", "semanticType": "HOLOGRAPHIC", "frequency": 72, "phiCoefficient": 1.618, "coherence": 1.0, "domain": "systems-design", "source": "ClipScryptIndex", "d48Expansion": "CANONICAL", "d480Expansion": "FULL_HARMONIC" }
+      "geoqode": {
+        "architectureSignature": "8,26,48:480",
+        "semanticType": "HOLOGRAPHIC",
+        "frequency": 72,
+        "phiCoefficient": 1.618,
+        "coherence": 1.0,
+        "domain": "systems-design",
+        "source": "ClipScryptIndex",
+        "d48Expansion": "CANONICAL",
+        "d480Expansion": "FULL_HARMONIC"
+      }
     },
     {
-      "script_id": "CS-005", "version": "1.0.0",
+      "script_id": "CS-005",
+      "version": "1.0.0",
       "title": "Socrates at the Agora",
       "slug": "agora-of-knowledge",
       "department": "philosophy",
-      "era": "ancient_greece", "period_ce": "399 BCE",
+      "era": "ancient_greece",
+      "period_ce": "399 BCE",
       "runtime_seconds": 270,
       "status": "LIVE",
       "scene_ref": "agora-of-knowledge",
-      "episode": 1, "season": 1,
+      "episode": 1,
+      "season": 1,
       "synopsis": "Socrates holds court at the Agora, questioning a young Athenian about the nature of virtue. The method unfolds.",
       "cast": [
         { "role": "Socrates", "asset_id": "human-001", "costume_id": null },
         { "role": "Meno", "asset_id": "human-001", "costume_id": null }
       ],
       "props": ["decoration-001", "nature-001"],
-      "environment": { "scene": "agora-of-knowledge", "hdri": null, "audio": null },
+      "environment": {
+        "scene": "agora-of-knowledge",
+        "hdri": null,
+        "audio": null
+      },
       "mal_asset_ids": ["arch-001", "nature-001", "decoration-001"],
       "tags": ["socrates", "greece", "philosophy", "dialogue", "virtue"],
       "education_links": ["https://en.wikipedia.org/wiki/Meno"],
@@ -155,27 +325,57 @@
         "act_1": "Meno claims to know what virtue is. Socrates smiles. \u2018Tell me, then.\u2019",
         "act_2": "Definition after definition crumbles. The crowd leans in.",
         "act_3": "Meno admits he knows nothing. Socrates nods. \u2018Now we can begin.\u2019",
-        "knowledge_nodes": ["Socratic method", "epistemology basics", "Platonic forms"]
+        "knowledge_nodes": [
+          "Socratic method",
+          "epistemology basics",
+          "Platonic forms"
+        ]
       },
-      "geoqode": { "architectureSignature": "8,26,48:480", "semanticType": "DIALOGUE", "frequency": 639, "phiCoefficient": 1.618, "coherence": 0.96, "domain": "systems-design", "source": "ClipScryptIndex", "d48Expansion": "CANONICAL", "d480Expansion": "FULL_HARMONIC" }
+      "geoqode": {
+        "architectureSignature": "8,26,48:480",
+        "semanticType": "DIALOGUE",
+        "frequency": 639,
+        "phiCoefficient": 1.618,
+        "coherence": 0.96,
+        "domain": "systems-design",
+        "source": "ClipScryptIndex",
+        "d48Expansion": "CANONICAL",
+        "d480Expansion": "FULL_HARMONIC"
+      }
     },
     {
-      "script_id": "CS-006", "version": "1.0.0",
+      "script_id": "CS-006",
+      "version": "1.0.0",
       "title": "Orbital Crisis 2089",
       "slug": "orbital-crisis-2089",
       "department": "cosmic_futures",
-      "era": "near_future_2050", "period_ce": "2089 CE",
+      "era": "near_future_2050",
+      "period_ce": "2089 CE",
       "runtime_seconds": 320,
       "status": "LIVE",
       "scene_ref": "orbital-crisis-2089",
-      "episode": 1, "season": 1,
+      "episode": 1,
+      "season": 1,
       "synopsis": "A cascading debris storm threatens the last space station. Commander Liu must choose: jettison the lab or lose the crew.",
       "cast": [
-        { "role": "Commander Liu Xin", "asset_id": "human-001", "costume_id": null }
+        {
+          "role": "Commander Liu Xin",
+          "asset_id": "human-001",
+          "costume_id": null
+        }
       ],
       "props": ["nature-003"],
-      "environment": { "scene": "orbital-crisis-2089", "hdri": "atmospheric-002", "audio": "audio-002" },
-      "mal_asset_ids": ["arch-005", "nature-003", "atmospheric-002", "audio-002"],
+      "environment": {
+        "scene": "orbital-crisis-2089",
+        "hdri": "atmospheric-002",
+        "audio": "audio-002"
+      },
+      "mal_asset_ids": [
+        "arch-005",
+        "nature-003",
+        "atmospheric-002",
+        "audio-002"
+      ],
       "tags": ["space", "future", "crisis", "orbital", "commander"],
       "education_links": ["https://en.wikipedia.org/wiki/Kessler_syndrome"],
       "clipscrypt": {
@@ -183,26 +383,47 @@
         "act_1": "The collision alarm screams. The crew scrambles to pressure suits.",
         "act_2": "Liu calculates: jettison the lab, save 6 lives. Don\u2019t, lose all 6.",
         "act_3": "The lab separates. Debris rips through empty space. Silence. They made it.",
-        "knowledge_nodes": ["Kessler syndrome", "orbital mechanics", "space debris tracking"]
+        "knowledge_nodes": [
+          "Kessler syndrome",
+          "orbital mechanics",
+          "space debris tracking"
+        ]
       },
-      "geoqode": { "architectureSignature": "8,26,48:480", "semanticType": "LOCATION", "frequency": 417, "phiCoefficient": 1.618, "coherence": 0.92, "domain": "systems-design", "source": "ClipScryptIndex", "d48Expansion": "CANONICAL", "d480Expansion": "FULL_HARMONIC" }
+      "geoqode": {
+        "architectureSignature": "8,26,48:480",
+        "semanticType": "LOCATION",
+        "frequency": 417,
+        "phiCoefficient": 1.618,
+        "coherence": 0.92,
+        "domain": "systems-design",
+        "source": "ClipScryptIndex",
+        "d48Expansion": "CANONICAL",
+        "d480Expansion": "FULL_HARMONIC"
+      }
     },
     {
-      "script_id": "CS-007", "version": "0.9.0",
+      "script_id": "CS-007",
+      "version": "0.9.0",
       "title": "Nile Delta Genesis",
       "slug": "nile-delta-genesis",
       "department": "ancient_history",
-      "era": "ancient_egypt", "period_ce": "1279 BCE",
+      "era": "ancient_egypt",
+      "period_ce": "1279 BCE",
       "runtime_seconds": 260,
       "status": "DRAFT",
       "scene_ref": "nile-delta-genesis",
-      "episode": 2, "season": 1,
+      "episode": 2,
+      "season": 1,
       "synopsis": "Ramesses II leads a river procession to inaugurate the new temple at Abu Simbel.",
       "cast": [
         { "role": "Ramesses II", "asset_id": "human-001", "costume_id": null }
       ],
       "props": ["symbolic-002"],
-      "environment": { "scene": "nile-delta-genesis", "hdri": null, "audio": null },
+      "environment": {
+        "scene": "nile-delta-genesis",
+        "hdri": null,
+        "audio": null
+      },
       "mal_asset_ids": ["arch-003", "nature-002", "symbolic-002"],
       "tags": ["egypt", "pharaoh", "ramesses", "nile", "temple"],
       "education_links": ["https://en.wikipedia.org/wiki/Abu_Simbel_temples"],
@@ -211,26 +432,47 @@
         "act_1": "Barques glide past papyrus marshes. Priests chant the opening prayers.",
         "act_2": "Ramesses enters the hypostyle hall. His shadow merges with Ra.",
         "act_3": "The first sunrise aligns with the inner sanctuary. The crowd roars.",
-        "knowledge_nodes": ["ancient Egyptian religion", "solar alignment architecture", "hieroglyphics"]
+        "knowledge_nodes": [
+          "ancient Egyptian religion",
+          "solar alignment architecture",
+          "hieroglyphics"
+        ]
       },
-      "geoqode": { "architectureSignature": "8,26,48:480", "semanticType": "ENTITY", "frequency": 396, "phiCoefficient": 1.618, "coherence": 0.88, "domain": "systems-design", "source": "ClipScryptIndex", "d48Expansion": "CANONICAL", "d480Expansion": "FULL_HARMONIC" }
+      "geoqode": {
+        "architectureSignature": "8,26,48:480",
+        "semanticType": "ENTITY",
+        "frequency": 396,
+        "phiCoefficient": 1.618,
+        "coherence": 0.88,
+        "domain": "systems-design",
+        "source": "ClipScryptIndex",
+        "d48Expansion": "CANONICAL",
+        "d480Expansion": "FULL_HARMONIC"
+      }
     },
     {
-      "script_id": "CS-008", "version": "0.8.0",
+      "script_id": "CS-008",
+      "version": "0.8.0",
       "title": "Tesla Nikola Workshop",
       "slug": "tesla-nikola-workshop",
       "department": "science_pioneers",
-      "era": "industrial_revolution", "period_ce": "1893 CE",
+      "era": "industrial_revolution",
+      "period_ce": "1893 CE",
       "runtime_seconds": 230,
       "status": "DRAFT",
       "scene_ref": "tesla-nikola-workshop",
-      "episode": 2, "season": 1,
+      "episode": 2,
+      "season": 1,
       "synopsis": "Tesla demonstrates alternating current to skeptical industrialists. The coil fires. AC wins.",
       "cast": [
         { "role": "Nikola Tesla", "asset_id": "human-001", "costume_id": null }
       ],
       "props": ["scientific-002"],
-      "environment": { "scene": "tesla-nikola-workshop", "hdri": null, "audio": null },
+      "environment": {
+        "scene": "tesla-nikola-workshop",
+        "hdri": null,
+        "audio": null
+      },
       "mal_asset_ids": ["arch-007", "scientific-002"],
       "tags": ["tesla", "electricity", "ac", "invention", "industrial"],
       "education_links": ["https://en.wikipedia.org/wiki/Nikola_Tesla"],
@@ -239,9 +481,23 @@
         "act_1": "Tesla throws the switch. The coil crackles. The room lights up on AC.",
         "act_2": "Edison\u2019s man objects. Tesla hands him a live wire. \u2018Fear is the real darkness.\u2019",
         "act_3": "The hall erupts. AC will light the Chicago World\u2019s Fair. The future is here.",
-        "knowledge_nodes": ["AC vs DC electricity", "Tesla coil physics", "War of Currents"]
+        "knowledge_nodes": [
+          "AC vs DC electricity",
+          "Tesla coil physics",
+          "War of Currents"
+        ]
       },
-      "geoqode": { "architectureSignature": "8,26,48:480", "semanticType": "PHYSICS", "frequency": 852, "phiCoefficient": 1.618, "coherence": 0.87, "domain": "systems-design", "source": "ClipScryptIndex", "d48Expansion": "CANONICAL", "d480Expansion": "FULL_HARMONIC" }
+      "geoqode": {
+        "architectureSignature": "8,26,48:480",
+        "semanticType": "PHYSICS",
+        "frequency": 852,
+        "phiCoefficient": 1.618,
+        "coherence": 0.87,
+        "domain": "systems-design",
+        "source": "ClipScryptIndex",
+        "d48Expansion": "CANONICAL",
+        "d480Expansion": "FULL_HARMONIC"
+      }
     }
   ]
 }
