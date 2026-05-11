@@ -957,19 +957,19 @@
         <div id="agent-roster"></div>
 
         <button class="btn btn-start" onclick="showScreen('playground')">
-           START
+          START
         </button>
         <button class="btn btn-blue" onclick="showMiniGames()">
-           Mini-Games
+          Mini-Games
         </button>
         <button class="btn btn-orange" onclick="showScreen('music')">
-           Music Mode
+          Music Mode
         </button>
         <button class="btn btn-purple" onclick="showScreen('data')">
-           Data Adventure
+          Data Adventure
         </button>
         <button class="btn btn-settings" onclick="openSettings()">
-           Settings
+          Settings
         </button>
       </div>
     </div>
@@ -1065,7 +1065,7 @@
       <div class="mg-body" id="body-chaos" style="display: none">
         <div class="chaos-info">
           <button class="btn-chaos" id="chaos-btn" onclick="startChaos()">
-             SHATTER
+            SHATTER
           </button>
           <div>
             <span style="color: var(--muted); font-size: 13px"
@@ -1118,23 +1118,23 @@
           id="btn-record"
           onclick="toggleRecord()"
           title="Record"
-        >
-          
-        </button>
+        ></button>
         <button
           class="music-btn"
           id="btn-play-loop"
           onclick="toggleLoop()"
           title="Loop"
-        >
-          
-        </button>
-        <button class="music-btn" onclick="changeScale()" title="Scale">
-          
-        </button>
-        <button class="music-btn" onclick="changeOctave()" title="Octave">
-          
-        </button>
+        ></button>
+        <button
+          class="music-btn"
+          onclick="changeScale()"
+          title="Scale"
+        ></button>
+        <button
+          class="music-btn"
+          onclick="changeOctave()"
+          title="Octave"
+        ></button>
       </div>
     </div>
 
@@ -1182,7 +1182,7 @@
 
     <div id="settings-panel">
       <div class="settings-box">
-        <div class="settings-title"> Settings</div>
+        <div class="settings-title">Settings</div>
         <div class="settings-row">
           <span class="settings-label">Sound</span>
           <button
@@ -1872,7 +1872,8 @@
         const byRing = [0, 0, 0];
         _pgAgents.forEach((a) => byRing[a.ring]++);
         document.getElementById("hud-d8").textContent = `D8 ? ${byRing[0]}`;
-        document.getElementById("hud-d26").textContent = `Integration ? ${byRing[1]}`;
+        document.getElementById("hud-d26").textContent =
+          `Integration ? ${byRing[1]}`;
         document.getElementById("hud-d48").textContent = `Grid ? ${byRing[2]}`;
       }
 
