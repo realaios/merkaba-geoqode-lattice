@@ -304,7 +304,7 @@
       .wrap {
         max-width: 1200px;
         margin: 0 auto;
-        padding: 100px 40px;
+        padding: 72px 40px;
       }
       .eyebrow {
         font-size: 0.7rem;
@@ -318,7 +318,7 @@
         font-size: clamp(1.9rem, 4.5vw, 3.2rem);
         font-weight: 800;
         line-height: 1.1;
-        margin-bottom: 64px;
+        margin-bottom: 44px;
         letter-spacing: -0.02em;
       }
       .sec-h2 span {
@@ -437,11 +437,14 @@
       /* ----------------------------------------------- TABLE */
       .tbl-wrap {
         overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        border-radius: 4px;
       }
       table.cmp {
         width: 100%;
         border-collapse: collapse;
         font-size: 0.88rem;
+        min-width: 580px;
       }
       .cmp th {
         padding: 15px 18px;
@@ -1361,6 +1364,189 @@
           </tbody>
         </table>
       </div>
+    </div>
+
+    <!-- -- AIOS vs TRADITIONAL OS ----------------------------------------- -->
+    <div class="wrap" style="padding-top: 0">
+      <div class="eyebrow">Platform Architecture</div>
+      <h2 class="sec-h2">AIOS vs <span>Traditional OS</span></h2>
+
+      <!-- Callout: AIOS does NOT replace your OS -->
+      <div style="
+        background: linear-gradient(135deg, rgba(0,212,255,0.04) 0%, rgba(168,85,247,0.04) 100%);
+        border: 1px solid rgba(0,212,255,0.2);
+        border-radius: 18px;
+        padding: 36px 40px;
+        margin-bottom: 44px;
+        position: relative;
+        overflow: hidden;
+      ">
+        <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(to right,rgba(0,212,255,0.6),rgba(168,85,247,0.4),transparent);"></div>
+        <div style="
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          background: rgba(0,212,255,0.1);
+          border: 1px solid rgba(0,212,255,0.28);
+          border-radius: 20px;
+          padding: 4px 14px;
+          font-size: 0.65rem;
+          letter-spacing: 0.18em;
+          color: #00d4ff;
+          font-weight: 700;
+          text-transform: uppercase;
+          margin-bottom: 18px;
+        ">&#x26A1; IMPORTANT &#x2014; Read This First</div>
+        <h3 style="font-size:1.4rem;font-weight:800;margin:0 0 12px;color:#fff;letter-spacing:-0.02em;">
+          AIOS Does <span style="color:#00d4ff">Not</span> Replace Your OS
+        </h3>
+        <p style="color:rgba(232,232,240,0.65);line-height:1.85;max-width:680px;margin:0 0 32px;font-size:0.93rem;">
+          Windows, macOS, iOS, Linux, and Android manage your hardware, file system, drivers, and apps.
+          AIOS is an <strong style="color:#e8e8f0;">intelligence layer that sits above them</strong> &#x2014; adding
+          AI-native rendering, geometric compression, dimensional content, and consciousness-layer
+          processing that no traditional OS provides. Your OS stays. AIOS adds what it cannot.
+        </p>
+
+        <!-- Layer stack diagram -->
+        <div style="display:flex;flex-direction:column;gap:5px;max-width:540px;">
+          <div style="
+            background:linear-gradient(135deg,rgba(0,212,255,0.13),rgba(168,85,247,0.08));
+            border:1px solid rgba(0,212,255,0.38);
+            border-radius:10px;padding:13px 20px;text-align:center;
+          ">
+            <div style="font-size:0.73rem;font-weight:800;color:#00d4ff;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:3px;">AIOS Intelligence Layer</div>
+            <div style="font-size:0.67rem;color:rgba(232,232,240,0.4);">AI rendering &bull; .geo &bull; GeoQode &bull; D48 lattice &bull; PHI geometry (1.618)</div>
+          </div>
+          <div style="text-align:center;font-size:0.65rem;color:rgba(232,232,240,0.3);font-weight:700;letter-spacing:0.1em;padding:2px 0;">SITS ON TOP OF</div>
+          <div style="
+            background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.1);
+            border-radius:10px;padding:13px 20px;text-align:center;
+          ">
+            <div style="font-size:0.73rem;font-weight:800;color:rgba(232,232,240,0.75);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:3px;">Windows / macOS / iOS / Linux / Android</div>
+            <div style="font-size:0.67rem;color:rgba(232,232,240,0.4);">Hardware drivers &bull; file system &bull; native apps &bull; security</div>
+          </div>
+          <div style="text-align:center;font-size:0.65rem;color:rgba(232,232,240,0.3);font-weight:700;letter-spacing:0.1em;padding:2px 0;">RUNS ON</div>
+          <div style="
+            background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);
+            border-radius:10px;padding:13px 20px;text-align:center;
+          ">
+            <div style="font-size:0.73rem;font-weight:800;color:rgba(232,232,240,0.35);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:3px;">Your Hardware</div>
+            <div style="font-size:0.67rem;color:rgba(232,232,240,0.25);">CPU &bull; GPU &bull; RAM &bull; storage &bull; sensors</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Capability comparison table: Traditional OS vs AIOS -->
+      <div class="tbl-wrap">
+        <table class="cmp" style="min-width: 700px">
+          <thead>
+            <tr>
+              <th>Capability</th>
+              <th class="leg">Windows</th>
+              <th class="leg">macOS / iOS</th>
+              <th class="leg">Linux</th>
+              <th class="geo">.geo / AIOS Layer</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>AI-native rendering</td>
+              <td class="xx">No</td>
+              <td class="xx">No</td>
+              <td class="xx">No</td>
+              <td class="geo"><span class="ck">Yes</span> &mdash; fully adaptive</td>
+            </tr>
+            <tr>
+              <td>.geo format support</td>
+              <td class="xx">No</td>
+              <td class="xx">No</td>
+              <td class="xx">No</td>
+              <td class="geo"><span class="ck">Yes</span> &mdash; native standard</td>
+            </tr>
+            <tr>
+              <td>Infinite resolution media</td>
+              <td class="xx">No (fixed pixel)</td>
+              <td class="xx">No (fixed pixel)</td>
+              <td class="xx">No (fixed pixel)</td>
+              <td class="geo"><span class="ck">Yes</span> &mdash; 8&#x221E; device-native</td>
+            </tr>
+            <tr>
+              <td>1,600,000:1 compression</td>
+              <td class="xx">No</td>
+              <td class="xx">No</td>
+              <td class="xx">No</td>
+              <td class="geo"><span class="ck">Yes</span> &mdash; .geo built-in</td>
+            </tr>
+            <tr>
+              <td>PHI-coherent geometry</td>
+              <td class="xx">No</td>
+              <td class="xx">No</td>
+              <td class="xx">No</td>
+              <td class="geo"><span class="ck">Yes</span> &mdash; 1.618 always</td>
+            </tr>
+            <tr>
+              <td>Living content (post-release updates)</td>
+              <td class="xx">No</td>
+              <td class="xx">No</td>
+              <td class="xx">No</td>
+              <td class="geo"><span class="ck">Yes</span> &mdash; every render is live</td>
+            </tr>
+            <tr>
+              <td>GeoQode semantic layer</td>
+              <td class="xx">No</td>
+              <td class="xx">No</td>
+              <td class="xx">No</td>
+              <td class="geo"><span class="ck">Yes</span> &mdash; embedded in format</td>
+            </tr>
+            <tr>
+              <td>VR / AR dimensional native</td>
+              <td>Partial (DirectX / OpenXR)</td>
+              <td>Partial (ARKit / visionOS)</td>
+              <td class="xx">No</td>
+              <td class="geo"><span class="ck">Yes</span> &mdash; D48 native</td>
+            </tr>
+            <tr>
+              <td>Swarm-authored media</td>
+              <td class="xx">No</td>
+              <td class="xx">No</td>
+              <td class="xx">No</td>
+              <td class="geo"><span class="ck">Yes</span> &mdash; AIOSProducerSwarm</td>
+            </tr>
+            <tr>
+              <td>Open AI media standard</td>
+              <td class="xx">No</td>
+              <td class="xx">No</td>
+              <td class="xx">No</td>
+              <td class="geo"><span class="ck">Yes</span> &mdash; AIOS-OC-1.0</td>
+            </tr>
+            <tr>
+              <td>Hardware drivers &amp; file system</td>
+              <td><span class="ck">Yes</span></td>
+              <td><span class="ck">Yes</span></td>
+              <td><span class="ck">Yes</span></td>
+              <td class="geo" style="color:rgba(232,232,240,0.55);">Uses your OS</td>
+            </tr>
+            <tr>
+              <td>App ecosystem</td>
+              <td><span class="ck">Yes</span></td>
+              <td><span class="ck">Yes</span></td>
+              <td><span class="ck">Yes</span></td>
+              <td class="geo"><span class="ck">Yes</span> &mdash; PLAIStore (on top)</td>
+            </tr>
+            <tr>
+              <td>Works without internet</td>
+              <td><span class="ck">Yes</span></td>
+              <td><span class="ck">Yes</span></td>
+              <td><span class="ck">Yes</span></td>
+              <td class="geo"><span class="ck">Yes</span> &mdash; offline .geo render</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="color:rgba(232,232,240,0.32);font-size:0.77rem;margin-top:14px;text-align:center;line-height:1.7;">
+        AIOS adds new capabilities to your existing setup &#x2014; it does not remove, compete with, or require replacing your OS.<br>
+        Keep Windows. Keep macOS. Keep Linux. Add the intelligence layer.
+      </p>
     </div>
 
     <!-- -- THE MANIFESTO -------------------------------------------------- -->
@@ -2440,8 +2626,6 @@
         <a href="/experiences">Experiences</a>
         <a href="/vr-hub">VR Hub</a>
         <a href="/aiosdream">Cinema</a>
-        
-        <a href="/experiences">Experiences</a>
         <a href="/geo-codec">.geo</a>
         <a href="/login">Sign In</a>
       </div>
