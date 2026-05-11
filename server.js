@@ -4577,7 +4577,7 @@ nav.site-nav{position:fixed;top:0;left:0;right:0;z-index:200;height:54px;padding
     <a href="/vr-hub">VR Hub</a>
     <a href="/vr">🥽 VR</a>
     <a href="/aiosdream">Cinema</a>
-    
+
     <a href="/geo-library">📚 Library</a>
     <a href="/geo-codec">.geo</a>
     <a href="/aios-studio">Studio</a>
