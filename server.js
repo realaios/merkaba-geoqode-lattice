@@ -4,7 +4,7 @@
 
 import { createServer } from "http";
 import { readFileSync, existsSync, readdirSync } from "fs";
-import { extname, join, dirname } from "path";
+import { extname, join, dirname, resolve, relative, sep } from "path";
 import { fileURLToPath } from "url";
 import { StormAdapter } from "./geo/bridge/storm-adapter.js";
 import { MerkabaBridge } from "./geo/bridge/merkaba-bridge.js";
@@ -4032,7 +4032,7 @@ const server = createServer(async (req, res) => {
   );
   res.setHeader(
     "Content-Security-Policy",
-    "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://www.googleadservices.com https://googleads.g.doubleclick.net https://aframe.io https://pagead2.googlesyndication.com; img-src 'self' data: https://www.google-analytics.com https://www.googletagmanager.com https://googleads.g.doubleclick.net https://www.google.com https://www.google.co.za https://www.google.co.uk https://www.google.com.au https://www.googleadservices.com https://pagead2.googlesyndication.com; connect-src 'self' https://www.googletagmanager.com https://www.google-analytics.com https://analytics.google.com https://www.google.com https://stats.g.doubleclick.net https://googleads.g.doubleclick.net https://www.googleadservices.com https://api.getbrains4ai.com https://aframe.io https://cdn.aframe.io; style-src 'self' 'unsafe-inline'; frame-src 'none'; object-src 'none'; base-uri 'self'; worker-src 'self' blob:",
+    "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://www.googleadservices.com https://googleads.g.doubleclick.net https://aframe.io https://pagead2.googlesyndication.com; img-src 'self' data: https://www.google-analytics.com https://www.googletagmanager.com https://googleads.g.doubleclick.net https://www.google.com https://www.google.co.za https://www.google.co.uk https://www.google.com.au https://www.googleadservices.com https://pagead2.googlesyndication.com https://cdn.aframe.io; connect-src 'self' https://www.googletagmanager.com https://www.google-analytics.com https://analytics.google.com https://www.google.com https://stats.g.doubleclick.net https://googleads.g.doubleclick.net https://www.googleadservices.com https://api.getbrains4ai.com https://aframe.io https://cdn.aframe.io; style-src 'self' 'unsafe-inline'; frame-src 'none'; object-src 'none'; base-uri 'self'; worker-src 'self' blob:",
   );
 
   if (req.method === "OPTIONS") {
@@ -4685,15 +4685,35 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
 
     // ── GET /public/* — static files ──────────────────────────────────────
     if (req.method === "GET" && pathname.startsWith("/public/")) {
-      const safeSuffix = pathname.slice("/public/".length).replace(/\.\./g, "");
-      const filePath = join(PUBLIC_DIR, safeSuffix);
-      // Bounds check: resolved path must remain inside PUBLIC_DIR
-      if (!filePath.startsWith(PUBLIC_DIR + "/") && filePath !== PUBLIC_DIR) {
+      const safeSuffix = pathname
+        .slice("/public/".length)
+        .replace(/\\/g, "/")
+        .replace(/^\/+/, "");
+
+      if (!safeSuffix || safeSuffix.includes("..")) {
+        return json(res, 400, { ok: false, error: "Invalid path" });
+      }
+
+      const filePath = resolve(PUBLIC_DIR, safeSuffix);
+      const relPath = relative(PUBLIC_DIR, filePath);
+
+      // Bounds check: resolved path must remain inside PUBLIC_DIR (cross-platform)
+      if (
+        !relPath ||
+        relPath.startsWith("..") ||
+        relPath.includes(`..${sep}`)
+      ) {
         return json(res, 400, { ok: false, error: "Invalid path" });
       }
       if (existsSync(filePath)) {
         const ext = extname(filePath);
-        const mime = MIME_TYPES[ext] || "application/octet-stream";
+        const mime = MIME_TYPES[ext];
+        if (!mime) {
+          return json(res, 400, {
+            ok: false,
+            error: "Invalid path: extension not allowed",
+          });
+        }
         // Cache immutable assets long; text assets shorter
         const isImmutable =
           /\.(png|jpg|jpeg|gif|webp|ico|woff2?|ttf|eot)$/i.test(ext);

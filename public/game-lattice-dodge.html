@@ -897,13 +897,10 @@
             if (d.ok && d.rank <= 10) {
               const m = document.createElement("div");
               m.style.cssText =
-                "margin-top:0.6rem;font-size:0.8rem;color:#00f5d4;font-weight:700;";
+                "margin-top:0.6rem;font-size:0.8rem;color:#00f5d4;font-weight:700;text-align:center;";
               m.textContent =
                 "\uD83C\uDFC6 You're #" + d.rank + " on the leaderboard!";
-              document
-                .getElementById("gameover")
-                .querySelector(".gameover-card")
-                ?.appendChild(m);
+              document.getElementById("gameover")?.appendChild(m);
             }
           })
           .catch(() => {});
@@ -947,6 +944,34 @@
           window.open(tw, "_blank", "noopener,noreferrer,width=600,height=400");
         }
       }
+
+      function loadLeaderboard() {
+        fetch("/api/game/grid-dodge/leaderboard")
+          .then((r) => r.json())
+          .then((d) => {
+            const el = document.getElementById("lobby-lb-rows");
+            if (!el || !d.leaderboard) return;
+            const colors = ["#ffd700", "#c0c0c0", "#cd7f32"];
+            el.innerHTML =
+              d.leaderboard
+                .slice(0, 10)
+                .map(
+                  (e, i) =>
+                    `<span style="color:${colors[i] || "rgba(255,255,255,0.6)"}">${i + 1}. ${e.name}</span> <span style="float:right;color:#00f5d4;">${e.score.toLocaleString()}</span><br>`,
+                )
+                .join("") ||
+              '<span style="color:rgba(255,255,255,0.3)">No scores yet — be the first!</span>';
+          })
+          .catch(() => {
+            const el = document.getElementById("lobby-lb-rows");
+            if (el) {
+              el.innerHTML =
+                '<span style="color:rgba(255,255,255,0.3)">Leaderboard unavailable</span>';
+            }
+          });
+      }
+
+      loadLeaderboard();
     </script>
   </body>
 </html>
