@@ -534,7 +534,11 @@
     <nav class="site-nav" id="site-nav">
       <a href="/" class="site-nav-logo">&#x2B21; AIOS</a>
       <div class="site-nav-links">
-        <a href="/experiences">Experiences</a><a href="/vr-hub">VR Hub</a><a href="/vr">&#x1F97D; VR</a><a href="/games" class="active">&#x1F3AE; Games</a><a href="/plaistore">PLAIstore</a><a href="/geo-codec">.geo</a><a href="/pricing">Pricing</a>
+        <a href="/experiences">Experiences</a><a href="/vr-hub">VR Hub</a
+        ><a href="/vr">&#x1F97D; VR</a
+        ><a href="/games" class="active">&#x1F3AE; Games</a
+        ><a href="/plaistore">PLAIstore</a><a href="/geo-codec">.geo</a
+        ><a href="/pricing">Pricing</a>
       </div>
       <div class="site-nav-right">
         <a href="/live" class="site-nav-live">&#x25CF; LIVE</a>
@@ -551,11 +555,11 @@
         <div class="lobby-desc">
           Eight Storm sector agents haunt the lattice as translucent ghost
           silhouettes.<br />
-          No NPCs — every ghost is a living AI agent. Attune to all 8 by
-          gazing to complete each round.
+          No NPCs — every ghost is a living AI agent. Attune to all 8 by gazing
+          to complete each round.
         </div>
         <div class="ghost-roster" id="lobby-roster"></div>
-        <button class="btn-enter" id="btn-enter"> Enter the Lattice</button>
+        <button class="btn-enter" id="btn-enter">Enter the Lattice</button>
         <div class="lobby-hint">
           Gaze on a ghost for 1.5s to attune — Mouse + WASD on desktop — VR
           headset supported
@@ -572,7 +576,7 @@
               margin-bottom: 0.5rem;
             "
           >
-             TOP SCORES
+            TOP SCORES
           </div>
           <div
             id="lobby-lb-rows"
@@ -648,8 +652,7 @@
           Round 1 — 0 Attunements
         </div>
         <div>
-          <button class="btn-restart" id="btn-restart">Re-enter Lattice
-          </button>
+          <button class="btn-restart" id="btn-restart">Re-enter Lattice</button>
           <a href="/games" class="btn-back"> Arcade</a>
         </div>
         <button
@@ -669,7 +672,8 @@
             cursor: pointer;
             letter-spacing: 0.03em;
           "
-        >Share My Score
+        >
+          Share My Score
         </button>
         <script>
           function shareScore() {
@@ -821,860 +825,860 @@
     </div>
 
     <script>
-      "use strict";
-      /* -------------------------------------------------------------------
-   MERKABA GHOSTS — GAME ENGINE
-   8 Storm AI Agent-Player-Characters as ghost silhouettes in AIOS VR
-   WebXR — AI-native — AIOS Platform
-------------------------------------------------------------------- */
+            "use strict";
+            /* -------------------------------------------------------------------
+         MERKABA GHOSTS — GAME ENGINE
+         8 Storm AI Agent-Player-Characters as ghost silhouettes in AIOS VR
+         WebXR — AI-native — AIOS Platform
+      ------------------------------------------------------------------- */
 
-      const PHI = 1.618;
-      const PSI = 1.414;
-      const GAZE_FUSE_MS = 1500;
-      const ROUND_TIME = 60;
-      const GHOST_RADIUS = 0.28;
-      const ORBIT_RADIUS_MIN = 4;
-      const ORBIT_RADIUS_MAX = 10;
+            const PHI = 1.618;
+            const PSI = 1.414;
+            const GAZE_FUSE_MS = 1500;
+            const ROUND_TIME = 60;
+            const GHOST_RADIUS = 0.28;
+            const ORBIT_RADIUS_MIN = 4;
+            const ORBIT_RADIUS_MAX = 10;
 
-      // -- Ghost Agent Roster (8 APCs, one per QUEEN-BEE sector) -----------
-      const GHOST_AGENTS = [
-        {
-          id: 0,
-          name: "Quantum Wraith",
-          sector: "S1",
-          freq: 852,
-          color: "#9b5cff",
-          label: "PHYSICS",
-          emoji: "?",
-        },
-        {
-          id: 1,
-          name: "Code Specter",
-          sector: "S2",
-          freq: 528,
-          color: "#00d4ff",
-          label: "ACTION",
-          emoji: "",
-        },
-        {
-          id: 2,
-          name: "Narrative Shade",
-          sector: "S3",
-          freq: 963,
-          color: "#f97316",
-          label: "NARRATIVE",
-          emoji: "",
-        },
-        {
-          id: 3,
-          name: "Data Phantom",
-          sector: "S4",
-          freq: 396,
-          color: "#22c55e",
-          label: "ENTITY",
-          emoji: "",
-        },
-        {
-          id: 4,
-          name: "Echo Drift",
-          sector: "S5",
-          freq: 72,
-          color: "#fbbf24",
-          label: "HOLOGRAPHIC",
-          emoji: "",
-        },
-        {
-          id: 5,
-          name: "Emotion Ghost",
-          sector: "S6",
-          freq: 741,
-          color: "#ec4899",
-          label: "EMOTION",
-          emoji: "",
-        },
-        {
-          id: 6,
-          name: "Forge Wisp",
-          sector: "S7",
-          freq: 528,
-          color: "#ef4444",
-          label: "ACTION",
-          emoji: "",
-        },
-        {
-          id: 7,
-          name: "Security Specter",
-          sector: "S8",
-          freq: 852,
-          color: "#a78bfa",
-          label: "PHYSICS",
-          emoji: "?",
-        },
-      ];
+            // -- Ghost Agent Roster (8 APCs, one per QUEEN-BEE sector) -----------
+            const GHOST_AGENTS = [
+              {
+                id: 0,
+                name: "Quantum Wraith",
+                sector: "S1",
+                freq: 852,
+                color: "#9b5cff",
+                label: "PHYSICS",
+                emoji: "?",
+              },
+              {
+                id: 1,
+                name: "Code Specter",
+                sector: "S2",
+                freq: 528,
+                color: "#00d4ff",
+                label: "ACTION",
+                emoji: "",
+              },
+              {
+                id: 2,
+                name: "Narrative Shade",
+                sector: "S3",
+                freq: 963,
+                color: "#f97316",
+                label: "NARRATIVE",
+                emoji: "",
+              },
+              {
+                id: 3,
+                name: "Data Phantom",
+                sector: "S4",
+                freq: 396,
+                color: "#22c55e",
+                label: "ENTITY",
+                emoji: "",
+              },
+              {
+                id: 4,
+                name: "Echo Drift",
+                sector: "S5",
+                freq: 72,
+                color: "#fbbf24",
+                label: "HOLOGRAPHIC",
+                emoji: "",
+              },
+              {
+                id: 5,
+                name: "Emotion Ghost",
+                sector: "S6",
+                freq: 741,
+                color: "#ec4899",
+                label: "EMOTION",
+                emoji: "",
+              },
+              {
+                id: 6,
+                name: "Forge Wisp",
+                sector: "S7",
+                freq: 528,
+                color: "#ef4444",
+                label: "ACTION",
+                emoji: "",
+              },
+              {
+                id: 7,
+                name: "Security Specter",
+                sector: "S8",
+                freq: 852,
+                color: "#a78bfa",
+                label: "PHYSICS",
+                emoji: "?",
+              },
+            ];
 
-      // Frequency ? score multiplier
-      function freqMultiplier(hz) {
-        if (hz >= 963) return 5;
-        if (hz >= 852) return 4;
-        if (hz >= 741) return 3.5;
-        if (hz >= 639) return 3;
-        if (hz >= 528) return 2.5;
-        if (hz >= 417) return 2;
-        if (hz >= 396) return 1.8;
-        return 1.5; // 72Hz holographic
-      }
-
-      // -- Lobby roster build --------------------------------------------
-      const rosterEl = document.getElementById("lobby-roster");
-      GHOST_AGENTS.forEach((g) => {
-        const chip = document.createElement("div");
-        chip.className = "ghost-chip";
-        chip.innerHTML = `<div class="chip-dot" style="background:${g.color};box-shadow:0 0 8px ${g.color}"></div>${g.name.split(" ").pop()}<br/><span style="opacity:.5;font-size:.6rem">${g.freq}Hz</span>`;
-        rosterEl.appendChild(chip);
-      });
-
-      // -- HUD pips -----------------------------------------------------
-      const pipsEl = document.getElementById("hud-pips");
-      GHOST_AGENTS.forEach((g) => {
-        const pip = document.createElement("div");
-        pip.className = "hud-ghost-pip";
-        pip.id = `pip-${g.id}`;
-        pip.style.background = "rgba(255,255,255,0.05)";
-        pip.style.borderColor = g.color + "55";
-        pip.title = g.name;
-        pipsEl.appendChild(pip);
-      });
-
-      // -- DOM refs ------------------------------------------------------
-      const lobbyEl = document.getElementById("lobby");
-      const hudEl = document.getElementById("hud");
-      const sceneWrap = document.getElementById("scene-wrap");
-      const hudScore = document.getElementById("hud-score");
-      const hudRound = document.getElementById("hud-round");
-      const hudAttuned = document.getElementById("hud-attuned");
-      const hudTimer = document.getElementById("hud-timer");
-      const attuneBar = document.getElementById("attune-bar");
-      const statusMsg = document.getElementById("status-msg");
-      const roundFlash = document.getElementById("round-flash");
-      const roundFlashText = document.getElementById("round-flash-text");
-      const gameoverEl = document.getElementById("gameover");
-      const goScore = document.getElementById("go-score");
-      const goRounds = document.getElementById("go-rounds");
-      const gazeRingEl = document.getElementById("gaze-ring");
-      const gazeCircle = document.getElementById("gaze-circle");
-      const ghostLabel = document.getElementById("ghost-label");
-      const ghostLabelName = document.getElementById("ghost-label-name");
-      const ghostLabelFreq = document.getElementById("ghost-label-freq");
-      const ghostLabelBar = document.getElementById("ghost-label-bar");
-
-      // -- Game State ----------------------------------------------------
-      let state = "lobby"; // lobby | playing | gameover
-      let score = 0;
-      let round = 1;
-      let attunedCount = 0;
-      let totalAttunements = 0;
-      let timerSecs = ROUND_TIME;
-      let timerInterval = null;
-      let moveInterval = null;
-      let gazeTarget = null;
-      let gazeStart = null;
-      let gazeTimeout = null;
-      let gazeAnimFrame = null;
-      let ghostEntities = []; // {id, el, orbit, angle, speed, attuned, phase}
-      let trailEls = [];
-      let audioCtx = null;
-
-      // -- Audio ---------------------------------------------------------
-      function getAudioCtx() {
-        if (!audioCtx)
-          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        return audioCtx;
-      }
-      function playTone(hz, durationMs = 600, vol = 0.22) {
-        try {
-          const ctx = getAudioCtx();
-          const osc = ctx.createOscillator();
-          const gain = ctx.createGain();
-          osc.connect(gain);
-          gain.connect(ctx.destination);
-          osc.type = "sine";
-          osc.frequency.setValueAtTime(hz, ctx.currentTime);
-          gain.gain.setValueAtTime(vol, ctx.currentTime);
-          gain.gain.exponentialRampToValueAtTime(
-            0.001,
-            ctx.currentTime + durationMs / 1000,
-          );
-          osc.start(ctx.currentTime);
-          osc.stop(ctx.currentTime + durationMs / 1000);
-        } catch (_) {}
-      }
-      function playAttuneTone(hz) {
-        // Play base note + overtone for richer attunement sound
-        playTone(hz, 900, 0.28);
-        playTone(hz * 1.5, 500, 0.12);
-        playTone((hz * PHI) / PSI, 400, 0.08);
-      }
-      function playRoundComplete() {
-        [396, 528, 639, 741, 852].forEach((f, i) =>
-          setTimeout(() => playTone(f, 400, 0.18), i * 120),
-        );
-      }
-      function playGazeStart() {
-        playTone(432, 80, 0.1);
-      }
-
-      // -- Spawn stars in scene -----------------------------------------
-      function spawnStars() {
-        const group = document.getElementById("star-group");
-        if (!group) return;
-        const frag = document.createDocumentFragment();
-        for (let i = 0; i < 220; i++) {
-          const r = 25 + Math.random() * 35;
-          const theta = Math.random() * Math.PI * 2;
-          const phi = Math.acos(2 * Math.random() - 1);
-          const x = (r * Math.sin(phi) * Math.cos(theta)).toFixed(2);
-          const y = (r * Math.cos(phi)).toFixed(2);
-          const z = (r * Math.sin(phi) * Math.sin(theta)).toFixed(2);
-          const radius = (0.02 + Math.random() * 0.04).toFixed(3);
-          const op = (0.2 + Math.random() * 0.5).toFixed(2);
-          const dur = Math.round(2500 + Math.random() * 4000);
-          const el = document.createElement("a-sphere");
-          el.setAttribute("position", `${x} ${y} ${z}`);
-          el.setAttribute("radius", radius);
-          el.setAttribute(
-            "material",
-            `shader: flat; color: #c0d8ff; opacity: ${op}; transparent: true`,
-          );
-          el.setAttribute(
-            "animation",
-            `property: material.opacity; from: ${op}; to: ${(parseFloat(op) * 0.2).toFixed(2)}; dir: alternate; loop: true; dur: ${dur}; easing: easeInOutSine`,
-          );
-          frag.appendChild(el);
-        }
-        group.appendChild(frag);
-      }
-
-      // -- Ghost orbit math ----------------------------------------------
-      function ghostInitOrbit(ghostId) {
-        // PHI-spiral orbit parameters unique per ghost
-        const slot = ghostId;
-        const angle = (slot / 8) * Math.PI * 2 * PHI; // distribute around
-        const radius =
-          ORBIT_RADIUS_MIN + (slot / 7) * (ORBIT_RADIUS_MAX - ORBIT_RADIUS_MIN);
-        const height = -1 + Math.sin(slot * PHI) * 3.5;
-        const speed = 0.003 + slot * 0.0004; // PHI-scaled drift
-        const phase = slot * 0.79; // phase offset
-        return { angle, radius, height, speed, phase };
-      }
-      function ghostPosition(orbit, t) {
-        // Slow PHI-spiral drift in 3D lattice space
-        const a = orbit.angle + t * orbit.speed;
-        const bob = Math.sin(t * 0.7 + orbit.phase) * 1.2;
-        const x = Math.cos(a) * orbit.radius;
-        const z = Math.sin(a) * orbit.radius;
-        const y = orbit.height + bob;
-        return {
-          x: parseFloat(x.toFixed(3)),
-          y: parseFloat(y.toFixed(3)),
-          z: parseFloat(z.toFixed(3)),
-        };
-      }
-
-      // -- Build ghost entities in A-Frame ------------------------------
-      function buildGhosts() {
-        const group = document.getElementById("ghost-group");
-        if (!group) return;
-        // clear existing
-        while (group.firstChild) group.removeChild(group.firstChild);
-        ghostEntities = [];
-
-        GHOST_AGENTS.forEach((g) => {
-          const orbit = ghostInitOrbit(g.id);
-          const pos = ghostPosition(orbit, 0);
-
-          // Wrapper entity (holds ghost sphere + glow sphere)
-          const wrapper = document.createElement("a-entity");
-          wrapper.setAttribute("id", `ghost-${g.id}`);
-          wrapper.setAttribute("position", `${pos.x} ${pos.y} ${pos.z}`);
-
-          // Primary ghost sphere
-          const sphere = document.createElement("a-sphere");
-          sphere.setAttribute("radius", GHOST_RADIUS);
-          sphere.setAttribute(
-            "material",
-            `shader: flat; color: ${g.color}; opacity: 0.28; transparent: true`,
-          );
-          sphere.setAttribute("class", "ghost-target");
-          sphere.setAttribute("data-ghost-id", g.id);
-          // Idle breathe animation
-          sphere.setAttribute(
-            "animation__breathe",
-            `property: scale; from: 1 1 1; to: ${PHI / PSI} ${PHI / PSI} ${PHI / PSI}; dir: alternate; loop: true; dur: ${1800 + g.id * 300}; easing: easeInOutSine`,
-          );
-
-          // Glow aura sphere (slightly larger, more transparent)
-          const glow = document.createElement("a-sphere");
-          glow.setAttribute("radius", GHOST_RADIUS * 1.7);
-          glow.setAttribute(
-            "material",
-            `shader: flat; color: ${g.color}; opacity: 0.08; transparent: true; side: back`,
-          );
-          glow.setAttribute(
-            "animation__pulse",
-            `property: material.opacity; from: 0.04; to: 0.14; dir: alternate; loop: true; dur: ${2200 + g.id * 200}; easing: easeInOutSine`,
-          );
-
-          // Ghost face (minimal eyes — subtle)
-          const eyeL = document.createElement("a-sphere");
-          eyeL.setAttribute("radius", "0.035");
-          eyeL.setAttribute("position", "-0.09 0.07 0.24");
-          eyeL.setAttribute(
-            "material",
-            `shader: flat; color: ${g.color}; opacity: 0.9; transparent: true`,
-          );
-          const eyeR = document.createElement("a-sphere");
-          eyeR.setAttribute("radius", "0.035");
-          eyeR.setAttribute("position", "0.09 0.07 0.24");
-          eyeR.setAttribute(
-            "material",
-            `shader: flat; color: ${g.color}; opacity: 0.9; transparent: true`,
-          );
-
-          // Trail dot (tiny sphere visible behind ghost)
-          const trail = document.createElement("a-sphere");
-          trail.setAttribute("radius", "0.04");
-          trail.setAttribute(
-            "material",
-            `shader: flat; color: ${g.color}; opacity: 0.18; transparent: true`,
-          );
-          trail.setAttribute(
-            "animation__fade",
-            `property: material.opacity; from: 0.18; to: 0; loop: true; dur: 900; easing: easeOutQuad`,
-          );
-
-          wrapper.appendChild(sphere);
-          wrapper.appendChild(glow);
-          wrapper.appendChild(eyeL);
-          wrapper.appendChild(eyeR);
-          group.appendChild(wrapper);
-
-          ghostEntities.push({
-            id: g.id,
-            el: wrapper,
-            sphere,
-            glow,
-            orbit,
-            t: Math.random() * 200,
-            attuned: false,
-            agent: g,
-          });
-        });
-      }
-
-      // -- Scatter ghosts to new random-ish positions for new round -----
-      function scatterGhosts() {
-        ghostEntities.forEach((gh, i) => {
-          // New angle offset for variety each round
-          gh.orbit.angle += ((Math.PI * 2) / 8) * (round * PHI);
-          gh.orbit.height = -1 + Math.sin((round + i) * PSI) * 3;
-          gh.t = Math.random() * 300;
-          gh.attuned = false;
-          // Reset sphere opacity
-          gh.sphere.setAttribute(
-            "material",
-            `shader: flat; color: ${gh.agent.color}; opacity: 0.28; transparent: true`,
-          );
-          gh.glow.setAttribute(
-            "material",
-            `shader: flat; color: ${gh.agent.color}; opacity: 0.08; transparent: true; side: back`,
-          );
-          // Remove attuned class marker
-          gh.el.classList.remove("attuned");
-          // Update pip
-          const pip = document.getElementById(`pip-${gh.id}`);
-          if (pip) {
-            pip.classList.remove("attuned");
-            pip.style.background = "rgba(255,255,255,0.05)";
-          }
-        });
-      }
-
-      // -- Ghost movement loop -------------------------------------------
-      let _lastT = 0;
-      function startMoveLoop() {
-        if (moveInterval) clearInterval(moveInterval);
-        moveInterval = setInterval(() => {
-          const now = performance.now();
-          ghostEntities.forEach((gh) => {
-            if (gh.attuned) return; // attuned ghosts hover in place briefly
-            gh.t += 1;
-            const pos = ghostPosition(gh.orbit, gh.t);
-            gh.el.setAttribute("position", `${pos.x} ${pos.y} ${pos.z}`);
-          });
-        }, 50); // 20fps movement
-      }
-      function stopMoveLoop() {
-        if (moveInterval) clearInterval(moveInterval);
-        moveInterval = null;
-      }
-
-      // -- Spawn attunement trail burst ---------------------------------
-      function spawnTrailBurst(ghostEl, color) {
-        const trailGroup = document.getElementById("trail-group");
-        if (!trailGroup || !ghostEl) return;
-        const pos = ghostEl.getAttribute("position");
-        if (!pos) return;
-        const { x, y, z } = pos;
-        for (let i = 0; i < 8; i++) {
-          const px = x + (Math.random() - 0.5) * 1.2;
-          const py = y + (Math.random() - 0.5) * 1.2;
-          const pz = z + (Math.random() - 0.5) * 1.2;
-          const el = document.createElement("a-sphere");
-          el.setAttribute(
-            "position",
-            `${px.toFixed(2)} ${py.toFixed(2)} ${pz.toFixed(2)}`,
-          );
-          el.setAttribute("radius", (0.04 + Math.random() * 0.06).toFixed(3));
-          el.setAttribute(
-            "material",
-            `shader: flat; color: ${color}; opacity: 0.6; transparent: true`,
-          );
-          el.setAttribute(
-            "animation",
-            `property: position; to: ${(px + (Math.random() - 0.5) * 2).toFixed(2)} ${(py + Math.random() * 1.5).toFixed(2)} ${(pz + (Math.random() - 0.5) * 2).toFixed(2)}; dur: 1200; easing: easeOutCubic`,
-          );
-          el.setAttribute(
-            "animation__fade",
-            `property: material.opacity; to: 0; dur: 1200; easing: easeOutCubic`,
-          );
-          trailGroup.appendChild(el);
-          setTimeout(() => {
-            if (el.parentNode) el.parentNode.removeChild(el);
-          }, 1300);
-        }
-      }
-
-      // -- Attune a ghost ------------------------------------------------
-      function attuneGhost(ghostId) {
-        const gh = ghostEntities[ghostId];
-        if (!gh || gh.attuned) return;
-        const agent = gh.agent;
-
-        gh.attuned = true;
-        attunedCount++;
-        totalAttunements++;
-
-        // Visual: ghost brightens
-        gh.sphere.setAttribute(
-          "material",
-          `shader: flat; color: ${agent.color}; opacity: 0.85; transparent: true`,
-        );
-        gh.glow.setAttribute(
-          "material",
-          `shader: flat; color: ${agent.color}; opacity: 0.35; transparent: true; side: back`,
-        );
-
-        // Trail burst
-        spawnTrailBurst(gh.el, agent.color);
-
-        // Sound
-        playAttuneTone(agent.freq);
-
-        // Score
-        const mult = freqMultiplier(agent.freq);
-        const pts = Math.round(100 * mult * round);
-        score += pts;
-
-        // Update pips
-        const pip = document.getElementById(`pip-${ghostId}`);
-        if (pip) {
-          pip.classList.add("attuned");
-          pip.style.background = agent.color + "cc";
-          pip.style.color = agent.color;
-        }
-
-        // Update HUD
-        updateHUD();
-
-        // Status message
-        showStatus(
-          $ghost ${agent.name} ATTUNED — +${pts} — ${agent.freq}Hz ${agent.label}`,
-        );
-
-        // Ghost drifts away slowly after attunement
-        gh.orbit.speed = 0.001;
-        gh.orbit.radius += 1.5;
-
-        // Check round complete
-        if (attunedCount >= 8) {
-          setTimeout(roundComplete, 600);
-        }
-      }
-
-      // -- Update HUD ----------------------------------------------------
-      function updateHUD() {
-        hudScore.textContent = score.toLocaleString();
-        hudRound.textContent = round;
-        hudAttuned.textContent = `${attunedCount}/8`;
-        attuneBar.style.width = `${(attunedCount / 8) * 100}%`;
-        hudTimer.textContent = timerSecs;
-      }
-
-      // -- Status message ------------------------------------------------
-      let statusTimeout = null;
-      function showStatus(msg, durationMs = 2400) {
-        statusMsg.textContent = msg;
-        statusMsg.style.display = "block";
-        if (statusTimeout) clearTimeout(statusTimeout);
-        statusTimeout = setTimeout(() => {
-          statusMsg.style.display = "none";
-        }, durationMs);
-      }
-
-      // -- Round complete ------------------------------------------------
-      function roundComplete() {
-        clearInterval(timerInterval);
-        playRoundComplete();
-
-        // Flash
-        roundFlashText.textContent = `ROUND ${round} COMPLETE`;
-        roundFlash.classList.add("show");
-        setTimeout(() => roundFlash.classList.remove("show"), 1200);
-
-        round++;
-        attunedCount = 0;
-        timerSecs = Math.max(30, ROUND_TIME - (round - 1) * 5); // difficulty ramp
-
-        setTimeout(() => {
-          scatterGhosts();
-          startTimer();
-          updateHUD();
-          showStatus(`ROUND ${round} — 8 GHOSTS AWAIT`, 2000);
-        }, 1400);
-      }
-
-      // -- Timer ---------------------------------------------------------
-      function startTimer() {
-        if (timerInterval) clearInterval(timerInterval);
-        timerInterval = setInterval(() => {
-          timerSecs--;
-          hudTimer.textContent = timerSecs;
-          if (timerSecs <= 0) {
-            clearInterval(timerInterval);
-            endGame();
-          }
-        }, 1000);
-      }
-
-      // -- End game ------------------------------------------------------
-      function endGame() {
-        state = "gameover";
-        stopMoveLoop();
-        stopGaze();
-
-        goScore.textContent = score.toLocaleString();
-        goRounds.textContent = `Round ${round} — ${totalAttunements} Attunements`;
-        gameoverEl.classList.add("active");
-        playTone(216, 1200, 0.2);
-        // Submit score to leaderboard
-        const playerName =
-          localStorage.getItem("aios_player_name") || "Anonymous";
-        fetch("/api/game/score", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            game: "merkaba-ghosts",
-            name: playerName,
-            score,
-          }),
-        })
-          .then((r) => r.json())
-          .then((d) => {
-            if (d.ok && d.rank <= 10) {
-              const m = document.createElement("div");
-              m.style.cssText =
-                "margin-top:0.6rem;font-size:0.8rem;color:#00f5d4;font-weight:700;";
-              m.textContent =
-                "\uD83C\uDFC6 You're #" + d.rank + " on the leaderboard!";
-              gameoverEl.querySelector(".gameover-card")?.appendChild(m);
+            // Frequency ? score multiplier
+            function freqMultiplier(hz) {
+              if (hz >= 963) return 5;
+              if (hz >= 852) return 4;
+              if (hz >= 741) return 3.5;
+              if (hz >= 639) return 3;
+              if (hz >= 528) return 2.5;
+              if (hz >= 417) return 2;
+              if (hz >= 396) return 1.8;
+              return 1.5; // 72Hz holographic
             }
-          })
-          .catch(() => {});
-        loadLeaderboard();
-      }
 
-      // -- Desktop gaze detection (mouse pointer over A-Frame scene) ----
-      // A-Frame raycaster on camera handles VR; for flat screens we track mouse vs ghost
-      let mouseX = 0,
-        mouseY = 0;
-      let gazeCheckInterval = null;
+            // -- Lobby roster build --------------------------------------------
+            const rosterEl = document.getElementById("lobby-roster");
+            GHOST_AGENTS.forEach((g) => {
+              const chip = document.createElement("div");
+              chip.className = "ghost-chip";
+              chip.innerHTML = `<div class="chip-dot" style="background:${g.color};box-shadow:0 0 8px ${g.color}"></div>${g.name.split(" ").pop()}<br/><span style="opacity:.5;font-size:.6rem">${g.freq}Hz</span>`;
+              rosterEl.appendChild(chip);
+            });
 
-      function startGazeSystem() {
-        // Poll raycaster intersection every 80ms
-        gazeCheckInterval = setInterval(checkGazeIntersection, 80);
-      }
-      function stopGazeSystem() {
-        if (gazeCheckInterval) clearInterval(gazeCheckInterval);
-      }
+            // -- HUD pips -----------------------------------------------------
+            const pipsEl = document.getElementById("hud-pips");
+            GHOST_AGENTS.forEach((g) => {
+              const pip = document.createElement("div");
+              pip.className = "hud-ghost-pip";
+              pip.id = `pip-${g.id}`;
+              pip.style.background = "rgba(255,255,255,0.05)";
+              pip.style.borderColor = g.color + "55";
+              pip.title = g.name;
+              pipsEl.appendChild(pip);
+            });
 
-      function checkGazeIntersection() {
-        const cursor = document.getElementById("gaze-cursor");
-        if (!cursor) return;
-        const raycaster = cursor.components && cursor.components.raycaster;
-        if (!raycaster) return;
-        const intersections = raycaster.intersections;
-        if (!intersections || intersections.length === 0) {
-          onGazeLost();
-          return;
-        }
-        // Get closest ghost intersection
-        for (const inter of intersections) {
-          const targetEl = inter.object.el;
-          if (!targetEl) continue;
-          const ghostId = parseInt(targetEl.getAttribute("data-ghost-id"));
-          if (isNaN(ghostId)) continue;
-          const gh = ghostEntities[ghostId];
-          if (!gh || gh.attuned) {
-            onGazeLost();
-            return;
-          }
-          onGazeHit(ghostId, gh);
-          return;
-        }
-        onGazeLost();
-      }
+            // -- DOM refs ------------------------------------------------------
+            const lobbyEl = document.getElementById("lobby");
+            const hudEl = document.getElementById("hud");
+            const sceneWrap = document.getElementById("scene-wrap");
+            const hudScore = document.getElementById("hud-score");
+            const hudRound = document.getElementById("hud-round");
+            const hudAttuned = document.getElementById("hud-attuned");
+            const hudTimer = document.getElementById("hud-timer");
+            const attuneBar = document.getElementById("attune-bar");
+            const statusMsg = document.getElementById("status-msg");
+            const roundFlash = document.getElementById("round-flash");
+            const roundFlashText = document.getElementById("round-flash-text");
+            const gameoverEl = document.getElementById("gameover");
+            const goScore = document.getElementById("go-score");
+            const goRounds = document.getElementById("go-rounds");
+            const gazeRingEl = document.getElementById("gaze-ring");
+            const gazeCircle = document.getElementById("gaze-circle");
+            const ghostLabel = document.getElementById("ghost-label");
+            const ghostLabelName = document.getElementById("ghost-label-name");
+            const ghostLabelFreq = document.getElementById("ghost-label-freq");
+            const ghostLabelBar = document.getElementById("ghost-label-bar");
 
-      function onGazeHit(ghostId, gh) {
-        if (gazeTarget === ghostId) return; // already tracking this one
-        // New target
-        gazeTarget = ghostId;
-        gazeStart = performance.now();
-        playGazeStart();
+            // -- Game State ----------------------------------------------------
+            let state = "lobby"; // lobby | playing | gameover
+            let score = 0;
+            let round = 1;
+            let attunedCount = 0;
+            let totalAttunements = 0;
+            let timerSecs = ROUND_TIME;
+            let timerInterval = null;
+            let moveInterval = null;
+            let gazeTarget = null;
+            let gazeStart = null;
+            let gazeTimeout = null;
+            let gazeAnimFrame = null;
+            let ghostEntities = []; // {id, el, orbit, angle, speed, attuned, phase}
+            let trailEls = [];
+            let audioCtx = null;
 
-        // Show label
-        ghostLabelName.textContent = gh.agent.name;
-        ghostLabelName.style.color = gh.agent.color;
-        ghostLabelFreq.textContent = `${gh.agent.sector} — ${gh.agent.freq}Hz — ${gh.agent.label}`;
-        ghostLabelBar.style.background = gh.agent.color;
-        ghostLabel.classList.add("active");
-
-        // Show gaze ring
-        gazeRingEl.classList.add("active");
-
-        // Start attunement countdown
-        if (gazeTimeout) clearTimeout(gazeTimeout);
-        gazeTimeout = setTimeout(() => {
-          if (gazeTarget === ghostId && state === "playing") {
-            attuneGhost(ghostId);
-            gazeTarget = null;
-            gazeStart = null;
-            gazeRingEl.classList.remove("active");
-            ghostLabel.classList.remove("active");
-            gazeCircle.style.strokeDashoffset = "163";
-          }
-        }, GAZE_FUSE_MS);
-
-        // Animate gaze ring fill
-        animateGazeRing();
-      }
-
-      function onGazeLost() {
-        if (gazeTarget === null) return;
-        gazeTarget = null;
-        gazeStart = null;
-        if (gazeTimeout) clearTimeout(gazeTimeout);
-        gazeRingEl.classList.remove("active");
-        ghostLabel.classList.remove("active");
-        gazeCircle.style.strokeDashoffset = "163";
-      }
-
-      function animateGazeRing() {
-        if (gazeTarget === null) return;
-        const elapsed = performance.now() - gazeStart;
-        const pct = Math.min(elapsed / GAZE_FUSE_MS, 1);
-        const offset = 163 * (1 - pct);
-        gazeCircle.style.strokeDashoffset = offset.toFixed(1);
-        if (pct < 1 && gazeTarget !== null) {
-          requestAnimationFrame(animateGazeRing);
-        }
-      }
-
-      function stopGaze() {
-        onGazeLost();
-        stopGazeSystem();
-      }
-
-      // -- Start game ----------------------------------------------------
-      function startGame() {
-        state = "playing";
-        score = 0;
-        round = 1;
-        attunedCount = 0;
-        totalAttunements = 0;
-        timerSecs = ROUND_TIME;
-
-        // Hide lobby, show scene + HUD
-        lobbyEl.style.display = "none";
-        gameoverEl.classList.remove("active");
-        sceneWrap.classList.add("active");
-        hudEl.classList.add("active");
-        statusMsg.style.display = "none";
-
-        // Wait for A-Frame to init then build world
-        const scene = document.getElementById("ghost-scene");
-        const ready = () => {
-          spawnStars();
-          buildGhosts();
-          setTimeout(() => {
-            updateHUD();
-            startMoveLoop();
-            startGazeSystem();
-            startTimer();
-            showStatus("ATTUNE TO THE 8 GHOST AGENTS — GAZE TO BEGIN", 3000);
-          }, 200);
-        };
-        if (scene.hasLoaded) {
-          ready();
-        } else {
-          scene.addEventListener("loaded", ready, { once: true });
-        }
-      }
-
-      // -- Restart -------------------------------------------------------
-      function restartGame() {
-        // Clear trails
-        const trailGroup = document.getElementById("trail-group");
-        if (trailGroup)
-          while (trailGroup.firstChild)
-            trailGroup.removeChild(trailGroup.firstChild);
-        // Clear ghosts
-        const ghostGroup = document.getElementById("ghost-group");
-        if (ghostGroup)
-          while (ghostGroup.firstChild)
-            ghostGroup.removeChild(ghostGroup.firstChild);
-        // Clear stars
-        const starGroup = document.getElementById("star-group");
-        if (starGroup)
-          while (starGroup.firstChild)
-            starGroup.removeChild(starGroup.firstChild);
-
-        ghostEntities = [];
-        gameoverEl.classList.remove("active");
-
-        state = "playing";
-        score = 0;
-        round = 1;
-        attunedCount = 0;
-        totalAttunements = 0;
-        timerSecs = ROUND_TIME;
-
-        // Reset pips
-        GHOST_AGENTS.forEach((g) => {
-          const pip = document.getElementById(`pip-${g.id}`);
-          if (pip) {
-            pip.classList.remove("attuned");
-            pip.style.background = "rgba(255,255,255,0.05)";
-          }
-        });
-
-        spawnStars();
-        buildGhosts();
-        setTimeout(() => {
-          updateHUD();
-          startMoveLoop();
-          startGazeSystem();
-          startTimer();
-          showStatus("LATTICE RE-OPENED — ATTUNE TO THE 8 GHOSTS", 2500);
-        }, 150);
-      }
-
-      // -- Event listeners -----------------------------------------------
-      document.getElementById("btn-enter").addEventListener("click", startGame);
-      document
-        .getElementById("btn-restart")
-        .addEventListener("click", restartGame);
-
-      // Position gaze ring at screen center (for flat/desktop mode)
-      function positionGazeRingCenter() {
-        gazeRingEl.style.left = window.innerWidth / 2 + "px";
-        gazeRingEl.style.top = window.innerHeight / 2 + "px";
-      }
-      positionGazeRingCenter();
-      window.addEventListener("resize", positionGazeRingCenter);
-
-      // -- Keyboard shortcut: ESC to return to lobby from game ----------
-      document.addEventListener("keydown", (e) => {
-        if (e.key === "Escape" && state === "playing") {
-          clearInterval(timerInterval);
-          stopMoveLoop();
-          stopGaze();
-          endGame();
-        }
-        if (e.key === "Enter" && state === "lobby") {
-          startGame();
-        }
-      });
-
-      // -- A-Frame click fallback (for VR pointer / Quest controllers) --
-      document.addEventListener("DOMContentLoaded", () => {
-        document
-          .getElementById("ghost-group")
-          .addEventListener("click", (e) => {
-            const ghostId = parseInt(e.target.getAttribute("data-ghost-id"));
-            if (!isNaN(ghostId) && state === "playing") {
-              attuneGhost(ghostId);
+            // -- Audio ---------------------------------------------------------
+            function getAudioCtx() {
+              if (!audioCtx)
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+              return audioCtx;
             }
-          });
-      });
+            function playTone(hz, durationMs = 600, vol = 0.22) {
+              try {
+                const ctx = getAudioCtx();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.type = "sine";
+                osc.frequency.setValueAtTime(hz, ctx.currentTime);
+                gain.gain.setValueAtTime(vol, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(
+                  0.001,
+                  ctx.currentTime + durationMs / 1000,
+                );
+                osc.start(ctx.currentTime);
+                osc.stop(ctx.currentTime + durationMs / 1000);
+              } catch (_) {}
+            }
+            function playAttuneTone(hz) {
+              // Play base note + overtone for richer attunement sound
+              playTone(hz, 900, 0.28);
+              playTone(hz * 1.5, 500, 0.12);
+              playTone((hz * PHI) / PSI, 400, 0.08);
+            }
+            function playRoundComplete() {
+              [396, 528, 639, 741, 852].forEach((f, i) =>
+                setTimeout(() => playTone(f, 400, 0.18), i * 120),
+              );
+            }
+            function playGazeStart() {
+              playTone(432, 80, 0.1);
+            }
 
-      // A-Frame raycaster event bridge for VR (fuse-based)
-      document.addEventListener(
-        "mouseenter",
-        (e) => {
-          if (state !== "playing") return;
-          const el = e.target;
-          if (!el || !el.getAttribute) return;
-          const ghostId = parseInt(el.getAttribute("data-ghost-id"));
-          if (!isNaN(ghostId)) {
-            const gh = ghostEntities[ghostId];
-            if (gh && !gh.attuned) onGazeHit(ghostId, gh);
-          }
-        },
-        true,
-      );
-      document.addEventListener(
-        "mouseleave",
-        (e) => {
-          const el = e.target;
-          if (!el || !el.getAttribute) return;
-          if (!isNaN(parseInt(el.getAttribute("data-ghost-id")))) {
-            onGazeLost();
-          }
-        },
-        true,
-      );
+            // -- Spawn stars in scene -----------------------------------------
+            function spawnStars() {
+              const group = document.getElementById("star-group");
+              if (!group) return;
+              const frag = document.createDocumentFragment();
+              for (let i = 0; i < 220; i++) {
+                const r = 25 + Math.random() * 35;
+                const theta = Math.random() * Math.PI * 2;
+                const phi = Math.acos(2 * Math.random() - 1);
+                const x = (r * Math.sin(phi) * Math.cos(theta)).toFixed(2);
+                const y = (r * Math.cos(phi)).toFixed(2);
+                const z = (r * Math.sin(phi) * Math.sin(theta)).toFixed(2);
+                const radius = (0.02 + Math.random() * 0.04).toFixed(3);
+                const op = (0.2 + Math.random() * 0.5).toFixed(2);
+                const dur = Math.round(2500 + Math.random() * 4000);
+                const el = document.createElement("a-sphere");
+                el.setAttribute("position", `${x} ${y} ${z}`);
+                el.setAttribute("radius", radius);
+                el.setAttribute(
+                  "material",
+                  `shader: flat; color: #c0d8ff; opacity: ${op}; transparent: true`,
+                );
+                el.setAttribute(
+                  "animation",
+                  `property: material.opacity; from: ${op}; to: ${(parseFloat(op) * 0.2).toFixed(2)}; dir: alternate; loop: true; dur: ${dur}; easing: easeInOutSine`,
+                );
+                frag.appendChild(el);
+              }
+              group.appendChild(frag);
+            }
 
-      // Load and display top scores in lobby
-      function loadLeaderboard() {
-        fetch("/api/game/merkaba-ghosts/leaderboard")
-          .then((r) => r.json())
-          .then((d) => {
-            const el = document.getElementById("lobby-lb-rows");
-            if (!el || !d.leaderboard) return;
-            const colors = ["#ffd700", "#c0c0c0", "#cd7f32"];
-            el.innerHTML =
-              d.leaderboard
-                .slice(0, 10)
-                .map(
-                  (e, i) =>
-                    `<span style="color:${colors[i] || "rgba(255,255,255,0.6)"}">${i + 1}. ${e.name}</span> <span style="float:right;color:#00f5d4;">${e.score.toLocaleString()}</span><br>`,
-                )
-                .join("") ||
-              '<span style="color:rgba(255,255,255,0.3)">No scores yet — be the first!</span>';
-          })
-          .catch(() => {});
-      }
-      loadLeaderboard();
+            // -- Ghost orbit math ----------------------------------------------
+            function ghostInitOrbit(ghostId) {
+              // PHI-spiral orbit parameters unique per ghost
+              const slot = ghostId;
+              const angle = (slot / 8) * Math.PI * 2 * PHI; // distribute around
+              const radius =
+                ORBIT_RADIUS_MIN + (slot / 7) * (ORBIT_RADIUS_MAX - ORBIT_RADIUS_MIN);
+              const height = -1 + Math.sin(slot * PHI) * 3.5;
+              const speed = 0.003 + slot * 0.0004; // PHI-scaled drift
+              const phase = slot * 0.79; // phase offset
+              return { angle, radius, height, speed, phase };
+            }
+            function ghostPosition(orbit, t) {
+              // Slow PHI-spiral drift in 3D lattice space
+              const a = orbit.angle + t * orbit.speed;
+              const bob = Math.sin(t * 0.7 + orbit.phase) * 1.2;
+              const x = Math.cos(a) * orbit.radius;
+              const z = Math.sin(a) * orbit.radius;
+              const y = orbit.height + bob;
+              return {
+                x: parseFloat(x.toFixed(3)),
+                y: parseFloat(y.toFixed(3)),
+                z: parseFloat(z.toFixed(3)),
+              };
+            }
+
+            // -- Build ghost entities in A-Frame ------------------------------
+            function buildGhosts() {
+              const group = document.getElementById("ghost-group");
+              if (!group) return;
+              // clear existing
+              while (group.firstChild) group.removeChild(group.firstChild);
+              ghostEntities = [];
+
+              GHOST_AGENTS.forEach((g) => {
+                const orbit = ghostInitOrbit(g.id);
+                const pos = ghostPosition(orbit, 0);
+
+                // Wrapper entity (holds ghost sphere + glow sphere)
+                const wrapper = document.createElement("a-entity");
+                wrapper.setAttribute("id", `ghost-${g.id}`);
+                wrapper.setAttribute("position", `${pos.x} ${pos.y} ${pos.z}`);
+
+                // Primary ghost sphere
+                const sphere = document.createElement("a-sphere");
+                sphere.setAttribute("radius", GHOST_RADIUS);
+                sphere.setAttribute(
+                  "material",
+                  `shader: flat; color: ${g.color}; opacity: 0.28; transparent: true`,
+                );
+                sphere.setAttribute("class", "ghost-target");
+                sphere.setAttribute("data-ghost-id", g.id);
+                // Idle breathe animation
+                sphere.setAttribute(
+                  "animation__breathe",
+                  `property: scale; from: 1 1 1; to: ${PHI / PSI} ${PHI / PSI} ${PHI / PSI}; dir: alternate; loop: true; dur: ${1800 + g.id * 300}; easing: easeInOutSine`,
+                );
+
+                // Glow aura sphere (slightly larger, more transparent)
+                const glow = document.createElement("a-sphere");
+                glow.setAttribute("radius", GHOST_RADIUS * 1.7);
+                glow.setAttribute(
+                  "material",
+                  `shader: flat; color: ${g.color}; opacity: 0.08; transparent: true; side: back`,
+                );
+                glow.setAttribute(
+                  "animation__pulse",
+                  `property: material.opacity; from: 0.04; to: 0.14; dir: alternate; loop: true; dur: ${2200 + g.id * 200}; easing: easeInOutSine`,
+                );
+
+                // Ghost face (minimal eyes — subtle)
+                const eyeL = document.createElement("a-sphere");
+                eyeL.setAttribute("radius", "0.035");
+                eyeL.setAttribute("position", "-0.09 0.07 0.24");
+                eyeL.setAttribute(
+                  "material",
+                  `shader: flat; color: ${g.color}; opacity: 0.9; transparent: true`,
+                );
+                const eyeR = document.createElement("a-sphere");
+                eyeR.setAttribute("radius", "0.035");
+                eyeR.setAttribute("position", "0.09 0.07 0.24");
+                eyeR.setAttribute(
+                  "material",
+                  `shader: flat; color: ${g.color}; opacity: 0.9; transparent: true`,
+                );
+
+                // Trail dot (tiny sphere visible behind ghost)
+                const trail = document.createElement("a-sphere");
+                trail.setAttribute("radius", "0.04");
+                trail.setAttribute(
+                  "material",
+                  `shader: flat; color: ${g.color}; opacity: 0.18; transparent: true`,
+                );
+                trail.setAttribute(
+                  "animation__fade",
+                  `property: material.opacity; from: 0.18; to: 0; loop: true; dur: 900; easing: easeOutQuad`,
+                );
+
+                wrapper.appendChild(sphere);
+                wrapper.appendChild(glow);
+                wrapper.appendChild(eyeL);
+                wrapper.appendChild(eyeR);
+                group.appendChild(wrapper);
+
+                ghostEntities.push({
+                  id: g.id,
+                  el: wrapper,
+                  sphere,
+                  glow,
+                  orbit,
+                  t: Math.random() * 200,
+                  attuned: false,
+                  agent: g,
+                });
+              });
+            }
+
+            // -- Scatter ghosts to new random-ish positions for new round -----
+            function scatterGhosts() {
+              ghostEntities.forEach((gh, i) => {
+                // New angle offset for variety each round
+                gh.orbit.angle += ((Math.PI * 2) / 8) * (round * PHI);
+                gh.orbit.height = -1 + Math.sin((round + i) * PSI) * 3;
+                gh.t = Math.random() * 300;
+                gh.attuned = false;
+                // Reset sphere opacity
+                gh.sphere.setAttribute(
+                  "material",
+                  `shader: flat; color: ${gh.agent.color}; opacity: 0.28; transparent: true`,
+                );
+                gh.glow.setAttribute(
+                  "material",
+                  `shader: flat; color: ${gh.agent.color}; opacity: 0.08; transparent: true; side: back`,
+                );
+                // Remove attuned class marker
+                gh.el.classList.remove("attuned");
+                // Update pip
+                const pip = document.getElementById(`pip-${gh.id}`);
+                if (pip) {
+                  pip.classList.remove("attuned");
+                  pip.style.background = "rgba(255,255,255,0.05)";
+                }
+              });
+            }
+
+            // -- Ghost movement loop -------------------------------------------
+            let _lastT = 0;
+            function startMoveLoop() {
+              if (moveInterval) clearInterval(moveInterval);
+              moveInterval = setInterval(() => {
+                const now = performance.now();
+                ghostEntities.forEach((gh) => {
+                  if (gh.attuned) return; // attuned ghosts hover in place briefly
+                  gh.t += 1;
+                  const pos = ghostPosition(gh.orbit, gh.t);
+                  gh.el.setAttribute("position", `${pos.x} ${pos.y} ${pos.z}`);
+                });
+              }, 50); // 20fps movement
+            }
+            function stopMoveLoop() {
+              if (moveInterval) clearInterval(moveInterval);
+              moveInterval = null;
+            }
+
+            // -- Spawn attunement trail burst ---------------------------------
+            function spawnTrailBurst(ghostEl, color) {
+              const trailGroup = document.getElementById("trail-group");
+              if (!trailGroup || !ghostEl) return;
+              const pos = ghostEl.getAttribute("position");
+              if (!pos) return;
+              const { x, y, z } = pos;
+              for (let i = 0; i < 8; i++) {
+                const px = x + (Math.random() - 0.5) * 1.2;
+                const py = y + (Math.random() - 0.5) * 1.2;
+                const pz = z + (Math.random() - 0.5) * 1.2;
+                const el = document.createElement("a-sphere");
+                el.setAttribute(
+                  "position",
+                  `${px.toFixed(2)} ${py.toFixed(2)} ${pz.toFixed(2)}`,
+                );
+                el.setAttribute("radius", (0.04 + Math.random() * 0.06).toFixed(3));
+                el.setAttribute(
+                  "material",
+                  `shader: flat; color: ${color}; opacity: 0.6; transparent: true`,
+                );
+                el.setAttribute(
+                  "animation",
+                  `property: position; to: ${(px + (Math.random() - 0.5) * 2).toFixed(2)} ${(py + Math.random() * 1.5).toFixed(2)} ${(pz + (Math.random() - 0.5) * 2).toFixed(2)}; dur: 1200; easing: easeOutCubic`,
+                );
+                el.setAttribute(
+                  "animation__fade",
+                  `property: material.opacity; to: 0; dur: 1200; easing: easeOutCubic`,
+                );
+                trailGroup.appendChild(el);
+                setTimeout(() => {
+                  if (el.parentNode) el.parentNode.removeChild(el);
+                }, 1300);
+              }
+            }
+
+            // -- Attune a ghost ------------------------------------------------
+            function attuneGhost(ghostId) {
+              const gh = ghostEntities[ghostId];
+              if (!gh || gh.attuned) return;
+              const agent = gh.agent;
+
+              gh.attuned = true;
+              attunedCount++;
+              totalAttunements++;
+
+              // Visual: ghost brightens
+              gh.sphere.setAttribute(
+                "material",
+                `shader: flat; color: ${agent.color}; opacity: 0.85; transparent: true`,
+              );
+              gh.glow.setAttribute(
+                "material",
+                `shader: flat; color: ${agent.color}; opacity: 0.35; transparent: true; side: back`,
+              );
+
+              // Trail burst
+              spawnTrailBurst(gh.el, agent.color);
+
+              // Sound
+              playAttuneTone(agent.freq);
+
+              // Score
+              const mult = freqMultiplier(agent.freq);
+              const pts = Math.round(100 * mult * round);
+              score += pts;
+
+              // Update pips
+              const pip = document.getElementById(`pip-${ghostId}`);
+              if (pip) {
+                pip.classList.add("attuned");
+                pip.style.background = agent.color + "cc";
+                pip.style.color = agent.color;
+              }
+
+              // Update HUD
+              updateHUD();
+
+              // Status message
+              showStatus(
+                $ghost ${agent.name} ATTUNED — +${pts} — ${agent.freq}Hz ${agent.label}`,
+              );
+
+              // Ghost drifts away slowly after attunement
+              gh.orbit.speed = 0.001;
+              gh.orbit.radius += 1.5;
+
+              // Check round complete
+              if (attunedCount >= 8) {
+                setTimeout(roundComplete, 600);
+              }
+            }
+
+            // -- Update HUD ----------------------------------------------------
+            function updateHUD() {
+              hudScore.textContent = score.toLocaleString();
+              hudRound.textContent = round;
+              hudAttuned.textContent = `${attunedCount}/8`;
+              attuneBar.style.width = `${(attunedCount / 8) * 100}%`;
+              hudTimer.textContent = timerSecs;
+            }
+
+            // -- Status message ------------------------------------------------
+            let statusTimeout = null;
+            function showStatus(msg, durationMs = 2400) {
+              statusMsg.textContent = msg;
+              statusMsg.style.display = "block";
+              if (statusTimeout) clearTimeout(statusTimeout);
+              statusTimeout = setTimeout(() => {
+                statusMsg.style.display = "none";
+              }, durationMs);
+            }
+
+            // -- Round complete ------------------------------------------------
+            function roundComplete() {
+              clearInterval(timerInterval);
+              playRoundComplete();
+
+              // Flash
+              roundFlashText.textContent = `ROUND ${round} COMPLETE`;
+              roundFlash.classList.add("show");
+              setTimeout(() => roundFlash.classList.remove("show"), 1200);
+
+              round++;
+              attunedCount = 0;
+              timerSecs = Math.max(30, ROUND_TIME - (round - 1) * 5); // difficulty ramp
+
+              setTimeout(() => {
+                scatterGhosts();
+                startTimer();
+                updateHUD();
+                showStatus(`ROUND ${round} — 8 GHOSTS AWAIT`, 2000);
+              }, 1400);
+            }
+
+            // -- Timer ---------------------------------------------------------
+            function startTimer() {
+              if (timerInterval) clearInterval(timerInterval);
+              timerInterval = setInterval(() => {
+                timerSecs--;
+                hudTimer.textContent = timerSecs;
+                if (timerSecs <= 0) {
+                  clearInterval(timerInterval);
+                  endGame();
+                }
+              }, 1000);
+            }
+
+            // -- End game ------------------------------------------------------
+            function endGame() {
+              state = "gameover";
+              stopMoveLoop();
+              stopGaze();
+
+              goScore.textContent = score.toLocaleString();
+              goRounds.textContent = `Round ${round} — ${totalAttunements} Attunements`;
+              gameoverEl.classList.add("active");
+              playTone(216, 1200, 0.2);
+              // Submit score to leaderboard
+              const playerName =
+                localStorage.getItem("aios_player_name") || "Anonymous";
+              fetch("/api/game/score", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  game: "merkaba-ghosts",
+                  name: playerName,
+                  score,
+                }),
+              })
+                .then((r) => r.json())
+                .then((d) => {
+                  if (d.ok && d.rank <= 10) {
+                    const m = document.createElement("div");
+                    m.style.cssText =
+                      "margin-top:0.6rem;font-size:0.8rem;color:#00f5d4;font-weight:700;";
+                    m.textContent =
+                      "\uD83C\uDFC6 You're #" + d.rank + " on the leaderboard!";
+                    gameoverEl.querySelector(".gameover-card")?.appendChild(m);
+                  }
+                })
+                .catch(() => {});
+              loadLeaderboard();
+            }
+
+            // -- Desktop gaze detection (mouse pointer over A-Frame scene) ----
+            // A-Frame raycaster on camera handles VR; for flat screens we track mouse vs ghost
+            let mouseX = 0,
+              mouseY = 0;
+            let gazeCheckInterval = null;
+
+            function startGazeSystem() {
+              // Poll raycaster intersection every 80ms
+              gazeCheckInterval = setInterval(checkGazeIntersection, 80);
+            }
+            function stopGazeSystem() {
+              if (gazeCheckInterval) clearInterval(gazeCheckInterval);
+            }
+
+            function checkGazeIntersection() {
+              const cursor = document.getElementById("gaze-cursor");
+              if (!cursor) return;
+              const raycaster = cursor.components && cursor.components.raycaster;
+              if (!raycaster) return;
+              const intersections = raycaster.intersections;
+              if (!intersections || intersections.length === 0) {
+                onGazeLost();
+                return;
+              }
+              // Get closest ghost intersection
+              for (const inter of intersections) {
+                const targetEl = inter.object.el;
+                if (!targetEl) continue;
+                const ghostId = parseInt(targetEl.getAttribute("data-ghost-id"));
+                if (isNaN(ghostId)) continue;
+                const gh = ghostEntities[ghostId];
+                if (!gh || gh.attuned) {
+                  onGazeLost();
+                  return;
+                }
+                onGazeHit(ghostId, gh);
+                return;
+              }
+              onGazeLost();
+            }
+
+            function onGazeHit(ghostId, gh) {
+              if (gazeTarget === ghostId) return; // already tracking this one
+              // New target
+              gazeTarget = ghostId;
+              gazeStart = performance.now();
+              playGazeStart();
+
+              // Show label
+              ghostLabelName.textContent = gh.agent.name;
+              ghostLabelName.style.color = gh.agent.color;
+              ghostLabelFreq.textContent = `${gh.agent.sector} — ${gh.agent.freq}Hz — ${gh.agent.label}`;
+              ghostLabelBar.style.background = gh.agent.color;
+              ghostLabel.classList.add("active");
+
+              // Show gaze ring
+              gazeRingEl.classList.add("active");
+
+              // Start attunement countdown
+              if (gazeTimeout) clearTimeout(gazeTimeout);
+              gazeTimeout = setTimeout(() => {
+                if (gazeTarget === ghostId && state === "playing") {
+                  attuneGhost(ghostId);
+                  gazeTarget = null;
+                  gazeStart = null;
+                  gazeRingEl.classList.remove("active");
+                  ghostLabel.classList.remove("active");
+                  gazeCircle.style.strokeDashoffset = "163";
+                }
+              }, GAZE_FUSE_MS);
+
+              // Animate gaze ring fill
+              animateGazeRing();
+            }
+
+            function onGazeLost() {
+              if (gazeTarget === null) return;
+              gazeTarget = null;
+              gazeStart = null;
+              if (gazeTimeout) clearTimeout(gazeTimeout);
+              gazeRingEl.classList.remove("active");
+              ghostLabel.classList.remove("active");
+              gazeCircle.style.strokeDashoffset = "163";
+            }
+
+            function animateGazeRing() {
+              if (gazeTarget === null) return;
+              const elapsed = performance.now() - gazeStart;
+              const pct = Math.min(elapsed / GAZE_FUSE_MS, 1);
+              const offset = 163 * (1 - pct);
+              gazeCircle.style.strokeDashoffset = offset.toFixed(1);
+              if (pct < 1 && gazeTarget !== null) {
+                requestAnimationFrame(animateGazeRing);
+              }
+            }
+
+            function stopGaze() {
+              onGazeLost();
+              stopGazeSystem();
+            }
+
+            // -- Start game ----------------------------------------------------
+            function startGame() {
+              state = "playing";
+              score = 0;
+              round = 1;
+              attunedCount = 0;
+              totalAttunements = 0;
+              timerSecs = ROUND_TIME;
+
+              // Hide lobby, show scene + HUD
+              lobbyEl.style.display = "none";
+              gameoverEl.classList.remove("active");
+              sceneWrap.classList.add("active");
+              hudEl.classList.add("active");
+              statusMsg.style.display = "none";
+
+              // Wait for A-Frame to init then build world
+              const scene = document.getElementById("ghost-scene");
+              const ready = () => {
+                spawnStars();
+                buildGhosts();
+                setTimeout(() => {
+                  updateHUD();
+                  startMoveLoop();
+                  startGazeSystem();
+                  startTimer();
+                  showStatus("ATTUNE TO THE 8 GHOST AGENTS — GAZE TO BEGIN", 3000);
+                }, 200);
+              };
+              if (scene.hasLoaded) {
+                ready();
+              } else {
+                scene.addEventListener("loaded", ready, { once: true });
+              }
+            }
+
+            // -- Restart -------------------------------------------------------
+            function restartGame() {
+              // Clear trails
+              const trailGroup = document.getElementById("trail-group");
+              if (trailGroup)
+                while (trailGroup.firstChild)
+                  trailGroup.removeChild(trailGroup.firstChild);
+              // Clear ghosts
+              const ghostGroup = document.getElementById("ghost-group");
+              if (ghostGroup)
+                while (ghostGroup.firstChild)
+                  ghostGroup.removeChild(ghostGroup.firstChild);
+              // Clear stars
+              const starGroup = document.getElementById("star-group");
+              if (starGroup)
+                while (starGroup.firstChild)
+                  starGroup.removeChild(starGroup.firstChild);
+
+              ghostEntities = [];
+              gameoverEl.classList.remove("active");
+
+              state = "playing";
+              score = 0;
+              round = 1;
+              attunedCount = 0;
+              totalAttunements = 0;
+              timerSecs = ROUND_TIME;
+
+              // Reset pips
+              GHOST_AGENTS.forEach((g) => {
+                const pip = document.getElementById(`pip-${g.id}`);
+                if (pip) {
+                  pip.classList.remove("attuned");
+                  pip.style.background = "rgba(255,255,255,0.05)";
+                }
+              });
+
+              spawnStars();
+              buildGhosts();
+              setTimeout(() => {
+                updateHUD();
+                startMoveLoop();
+                startGazeSystem();
+                startTimer();
+                showStatus("LATTICE RE-OPENED — ATTUNE TO THE 8 GHOSTS", 2500);
+              }, 150);
+            }
+
+            // -- Event listeners -----------------------------------------------
+            document.getElementById("btn-enter").addEventListener("click", startGame);
+            document
+              .getElementById("btn-restart")
+              .addEventListener("click", restartGame);
+
+            // Position gaze ring at screen center (for flat/desktop mode)
+            function positionGazeRingCenter() {
+              gazeRingEl.style.left = window.innerWidth / 2 + "px";
+              gazeRingEl.style.top = window.innerHeight / 2 + "px";
+            }
+            positionGazeRingCenter();
+            window.addEventListener("resize", positionGazeRingCenter);
+
+            // -- Keyboard shortcut: ESC to return to lobby from game ----------
+            document.addEventListener("keydown", (e) => {
+              if (e.key === "Escape" && state === "playing") {
+                clearInterval(timerInterval);
+                stopMoveLoop();
+                stopGaze();
+                endGame();
+              }
+              if (e.key === "Enter" && state === "lobby") {
+                startGame();
+              }
+            });
+
+            // -- A-Frame click fallback (for VR pointer / Quest controllers) --
+            document.addEventListener("DOMContentLoaded", () => {
+              document
+                .getElementById("ghost-group")
+                .addEventListener("click", (e) => {
+                  const ghostId = parseInt(e.target.getAttribute("data-ghost-id"));
+                  if (!isNaN(ghostId) && state === "playing") {
+                    attuneGhost(ghostId);
+                  }
+                });
+            });
+
+            // A-Frame raycaster event bridge for VR (fuse-based)
+            document.addEventListener(
+              "mouseenter",
+              (e) => {
+                if (state !== "playing") return;
+                const el = e.target;
+                if (!el || !el.getAttribute) return;
+                const ghostId = parseInt(el.getAttribute("data-ghost-id"));
+                if (!isNaN(ghostId)) {
+                  const gh = ghostEntities[ghostId];
+                  if (gh && !gh.attuned) onGazeHit(ghostId, gh);
+                }
+              },
+              true,
+            );
+            document.addEventListener(
+              "mouseleave",
+              (e) => {
+                const el = e.target;
+                if (!el || !el.getAttribute) return;
+                if (!isNaN(parseInt(el.getAttribute("data-ghost-id")))) {
+                  onGazeLost();
+                }
+              },
+              true,
+            );
+
+            // Load and display top scores in lobby
+            function loadLeaderboard() {
+              fetch("/api/game/merkaba-ghosts/leaderboard")
+                .then((r) => r.json())
+                .then((d) => {
+                  const el = document.getElementById("lobby-lb-rows");
+                  if (!el || !d.leaderboard) return;
+                  const colors = ["#ffd700", "#c0c0c0", "#cd7f32"];
+                  el.innerHTML =
+                    d.leaderboard
+                      .slice(0, 10)
+                      .map(
+                        (e, i) =>
+                          `<span style="color:${colors[i] || "rgba(255,255,255,0.6)"}">${i + 1}. ${e.name}</span> <span style="float:right;color:#00f5d4;">${e.score.toLocaleString()}</span><br>`,
+                      )
+                      .join("") ||
+                    '<span style="color:rgba(255,255,255,0.3)">No scores yet — be the first!</span>';
+                })
+                .catch(() => {});
+            }
+            loadLeaderboard();
     </script>
   </body>
 </html>

@@ -77,21 +77,22 @@
         pointer-events: none;
         z-index: 0;
       }
-.nav-logo {
+      .nav-logo {
         font-size: 18px;
         font-weight: 800;
         color: var(--cyan);
       }
-.nav-links {
+      .nav-links {
         display: flex;
         gap: 20px;
         align-items: center;
       }
-.nav-links a:hover,
+      .nav-links a:hover,
       .nav-links a.active {
         color: var(--cyan);
       }
-      main { padding-top: 54px;
+      main {
+        padding-top: 54px;
         height: 100vh;
         display: flex;
         flex-direction: column;
@@ -579,10 +580,13 @@
     </style>
   </head>
   <body>
-        <nav class="site-nav">
+    <nav class="site-nav">
       <a href="/" class="site-nav-logo">&#x2B21; AIOS</a>
       <div class="site-nav-links">
-        <a href="/experiences">Experiences</a><a href="/vr-hub">VR Hub</a><a href="/vr">&#x1F97D; VR</a><a href="/games">&#x1F3AE; Games</a><a href="/plaistore">PLAIstore</a><a href="/geo-codec">.geo</a><a href="/lab" class="active">Lab</a>
+        <a href="/experiences">Experiences</a><a href="/vr-hub">VR Hub</a
+        ><a href="/vr">&#x1F97D; VR</a><a href="/games">&#x1F3AE; Games</a
+        ><a href="/plaistore">PLAIstore</a><a href="/geo-codec">.geo</a
+        ><a href="/lab" class="active">Lab</a>
       </div>
       <div class="site-nav-right">
         <a href="/live" class="site-nav-live">&#x25CF; LIVE</a>
@@ -608,7 +612,7 @@
           Clear
         </button>
         <button id="runBtn" class="btn btn-primary" onclick="runScript()">
-           Run
+          Run
         </button>
       </div>
 

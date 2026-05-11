@@ -10260,9 +10260,7 @@
       function updateMyListBtn(progId) {
         const btn = document.getElementById("modal-list");
         if (!btn) return;
-        btn.textContent = myList.includes(progId)
-          ? "In My List"
-          : "+ My List";
+        btn.textContent = myList.includes(progId) ? "In My List" : "+ My List";
       }
 
       document
