@@ -926,13 +926,25 @@
         .spec-layout {
           grid-template-columns: 1fr;
         }
-        .demo-grid {
-          grid-template-columns: 1fr;
-        }
+        /* --- demo hero mobile --- */
+        .geo-hero-demo { padding-top: 68px !important; }
+        .demo-header { margin-bottom: 20px; }
+        .demo-header h2 { font-size: 1.55rem; }
+        .demo-header p { font-size: 0.85rem; }
+        .demo-grid { grid-template-columns: 1fr; }
+        #demo-cv { height: 300px; }
         .demo-panel {
           border-left: none;
           border-top: 1px solid rgba(0, 212, 255, 0.18);
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 0;
         }
+        .dp-title, .dp-status { grid-column: 1 / -1; }
+        .dp-status { padding-top: 10px; }
+        .dp-key { font-size: 0.7rem; }
+        .dp-val { font-size: 0.78rem; }
+        .geo-file-card { display: none; }
         .decl-box {
           padding: 44px 24px;
         }
@@ -1073,7 +1085,6 @@
       <div class="site-nav-links">
         <a href="/experiences">Experiences</a><a href="/vr-hub">VR Hub</a
         ><a href="/vr">VR</a><a href="/aiosdream">Cinema</a
-        ><a href="/plaistore">PLAIstore</a
         ><a href="/geo-codec" class="active">.geo</a
         ><a href="/pricing">Pricing</a>
       </div>
@@ -1081,6 +1092,118 @@
         <a href="/login" class="site-nav-cta">Sign In</a>
       </div>
     </nav>
+
+    <!-- -- LIVE CODEC HERO ------------------------------------------------- -->
+    <div class="wrap geo-hero-demo" style="padding-top: 86px">
+      <div class="demo-header">
+        <div class="eyebrow">Live Codec Demonstration</div>
+        <h2>The Renderer IS the Codec</h2>
+        <p>
+          What you see below is a .geo programme decoding in real-time.<br />Not
+          one pixel was stored. This entire experience is 14 KB.
+        </p>
+        <div
+          style="
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            margin-top: 1.2rem;
+            flex-wrap: wrap;
+          "
+          id="renderer-switcher"
+        >
+          <!-- pills injected by JS -->
+        </div>
+      </div>
+      <div class="demo-grid">
+        <canvas id="demo-cv"></canvas>
+        <div class="demo-panel">
+          <div class="dp-title">Codec Stats � Live</div>
+          <div class="dp-row">
+            <span class="dp-key">Format</span
+            ><span class="dp-val c">AIOS-GEO-V2</span>
+          </div>
+          <div class="dp-row">
+            <span class="dp-key">Codec</span
+            ><span class="dp-val" id="dp-codec">QUANTUM-3D</span>
+          </div>
+          <div class="dp-row">
+            <span class="dp-key">File size</span
+            ><span class="dp-val c">14.2 KB</span>
+          </div>
+          <div class="dp-row">
+            <span class="dp-key">Equiv. mp4</span
+            ><span class="dp-val r">22.4 GB</span>
+          </div>
+          <div class="dp-row">
+            <span class="dp-key">Resolution</span
+            ><span class="dp-val g">8 Native</span>
+          </div>
+          <div class="dp-row">
+            <span class="dp-key">Frame rate</span
+            ><span class="dp-val g">8 rAF</span>
+          </div>
+          <div class="dp-row">
+            <span class="dp-key">PHI</span><span class="dp-val o">f 1.618</span>
+          </div>
+          <div class="dp-row">
+            <span class="dp-key">Audio Hz</span
+            ><span class="dp-val o" id="dp-hz">528 Hz</span>
+          </div>
+          <div class="dp-row">
+            <span class="dp-key">GeoQode</span
+            ><span class="dp-val p">PHYSICS � 852</span>
+          </div>
+          <div class="dp-row">
+            <span class="dp-key">Lattice</span
+            ><span class="dp-val p">AIOS</span>
+          </div>
+          <div class="dp-row">
+            <span class="dp-key">Swarm</span
+            ><span class="dp-val">7 agents</span>
+          </div>
+          <div class="dp-row">
+            <span class="dp-key">Studio</span
+            ><span class="dp-val">AIOSProducerSwarm</span>
+          </div>
+          <div class="dp-status">
+            <div class="dp-dot"></div>
+            <span class="dp-status-txt">LIVE RENDER</span>
+          </div>
+        </div>
+      </div>
+      <div class="geo-file-card">
+        <div class="gfc-header">
+          <div class="gfc-name" id="gfc-name">quantum-emergence.geo</div>
+          <div style="display: flex; align-items: center; gap: 0.75rem">
+            <div class="gfc-size" id="gfc-size">14.2 KB � Decoding above</div>
+            <button
+              id="download-geo-btn"
+              onclick="downloadGeo()"
+              style="
+                background: rgba(0, 212, 255, 0.12);
+                border: 1px solid rgba(0, 212, 255, 0.3);
+                color: #00d4ff;
+                font-size: 0.72rem;
+                font-weight: 700;
+                padding: 0.25rem 0.75rem;
+                border-radius: 8px;
+                cursor: pointer;
+                letter-spacing: 0.06em;
+                transition: all 0.2s;
+              "
+              onmouseover="this.style.background = 'rgba(0,212,255,0.22)'"
+              onmouseout="this.style.background = 'rgba(0,212,255,0.12)'"
+            >
+              Download .geo
+            </button>
+          </div>
+        </div>
+        <div class="gfc-body" id="geo-file-display">Loading�</div>
+      </div>
+    </div>
+
 
     <!-- -- KEY PILLARS --------------------------------------------------- -->
     <div class="wrap" style="padding-top: 2.5rem; padding-bottom: 0">
@@ -1747,116 +1870,6 @@
       </div>
     </div>
 
-    <!-- -- LIVE CODEC DEMO ------------------------------------------------- -->
-    <div class="wrap" style="padding-top: 0">
-      <div class="demo-header">
-        <div class="eyebrow">Live Codec Demonstration</div>
-        <h2>The Renderer IS the Codec</h2>
-        <p>
-          What you see below is a .geo programme decoding in real-time.<br />Not
-          one pixel was stored. This entire experience is 14 KB.
-        </p>
-        <div
-          style="
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.75rem;
-            margin-top: 1.2rem;
-            flex-wrap: wrap;
-          "
-          id="renderer-switcher"
-        >
-          <!-- pills injected by JS -->
-        </div>
-      </div>
-      <div class="demo-grid">
-        <canvas id="demo-cv"></canvas>
-        <div class="demo-panel">
-          <div class="dp-title">Codec Stats � Live</div>
-          <div class="dp-row">
-            <span class="dp-key">Format</span
-            ><span class="dp-val c">AIOS-GEO-V2</span>
-          </div>
-          <div class="dp-row">
-            <span class="dp-key">Codec</span
-            ><span class="dp-val" id="dp-codec">QUANTUM-3D</span>
-          </div>
-          <div class="dp-row">
-            <span class="dp-key">File size</span
-            ><span class="dp-val c">14.2 KB</span>
-          </div>
-          <div class="dp-row">
-            <span class="dp-key">Equiv. mp4</span
-            ><span class="dp-val r">22.4 GB</span>
-          </div>
-          <div class="dp-row">
-            <span class="dp-key">Resolution</span
-            ><span class="dp-val g">8 Native</span>
-          </div>
-          <div class="dp-row">
-            <span class="dp-key">Frame rate</span
-            ><span class="dp-val g">8 rAF</span>
-          </div>
-          <div class="dp-row">
-            <span class="dp-key">PHI</span><span class="dp-val o">f 1.618</span>
-          </div>
-          <div class="dp-row">
-            <span class="dp-key">Audio Hz</span
-            ><span class="dp-val o" id="dp-hz">528 Hz</span>
-          </div>
-          <div class="dp-row">
-            <span class="dp-key">GeoQode</span
-            ><span class="dp-val p">PHYSICS � 852</span>
-          </div>
-          <div class="dp-row">
-            <span class="dp-key">Lattice</span
-            ><span class="dp-val p">AIOS</span>
-          </div>
-          <div class="dp-row">
-            <span class="dp-key">Swarm</span
-            ><span class="dp-val">7 agents</span>
-          </div>
-          <div class="dp-row">
-            <span class="dp-key">Studio</span
-            ><span class="dp-val">AIOSProducerSwarm</span>
-          </div>
-          <div class="dp-status">
-            <div class="dp-dot"></div>
-            <span class="dp-status-txt">LIVE RENDER</span>
-          </div>
-        </div>
-      </div>
-      <div class="geo-file-card">
-        <div class="gfc-header">
-          <div class="gfc-name" id="gfc-name">quantum-emergence.geo</div>
-          <div style="display: flex; align-items: center; gap: 0.75rem">
-            <div class="gfc-size" id="gfc-size">14.2 KB � Decoding above</div>
-            <button
-              id="download-geo-btn"
-              onclick="downloadGeo()"
-              style="
-                background: rgba(0, 212, 255, 0.12);
-                border: 1px solid rgba(0, 212, 255, 0.3);
-                color: #00d4ff;
-                font-size: 0.72rem;
-                font-weight: 700;
-                padding: 0.25rem 0.75rem;
-                border-radius: 8px;
-                cursor: pointer;
-                letter-spacing: 0.06em;
-                transition: all 0.2s;
-              "
-              onmouseover="this.style.background = 'rgba(0,212,255,0.22)'"
-              onmouseout="this.style.background = 'rgba(0,212,255,0.12)'"
-            >
-              Download .geo
-            </button>
-          </div>
-        </div>
-        <div class="gfc-body" id="geo-file-display">Loading�</div>
-      </div>
-    </div>
 
     <!-- -- DECLARATION ----------------------------------------------------- -->
     <div class="wrap" style="padding-top: 0">
