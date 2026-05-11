@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>AIOS LIVE � 24/7 .geo Broadcast Channel</title>
+    <title>AIOS LIVE — 24/7 .geo Broadcast Channel</title>
     <meta
       name="description"
       content="AIOS LIVE: The world's first AI-native 24/7 broadcast channel. AIOSProducerSwarm generates a new .geo programme every 2 minutes. No pre-recorded media."
@@ -11,7 +11,7 @@
     <link rel="canonical" href="https://realaios.com/live" />
     <meta
       property="og:title"
-      content="AIOS LIVE � 24/7 AI-Native Broadcast Channel"
+      content="AIOS LIVE · 24/7 AI-Native Broadcast Channel"
     />
     <meta
       property="og:description"
@@ -604,20 +604,20 @@
     <!-- STATS STRIP -->
     <div class="stats-strip">
       <div class="strip-stat">
-        <span class="strip-num" id="ss-total" style="color: var(--cyan)">�</span
+        <span class="strip-num" id="ss-total" style="color: var(--cyan)">·</span
         ><span class="strip-label">In Library</span>
       </div>
       <div class="strip-stat">
         <span class="strip-num" id="ss-produced" style="color: var(--teal)"
-          >�</span
+          >·</span
         ><span class="strip-label">Produced Today</span>
       </div>
       <div class="strip-stat">
-        <span class="strip-num" id="ss-hrs" style="color: var(--purple)">�</span
+        <span class="strip-num" id="ss-hrs" style="color: var(--purple)">·</span
         ><span class="strip-label">Hours of Content</span>
       </div>
       <div class="strip-stat">
-        <span class="strip-num" id="ss-next" style="color: var(--gold)">�</span
+        <span class="strip-num" id="ss-next" style="color: var(--gold)">·</span
         ><span class="strip-label">Next .geo in</span>
       </div>
       <div class="strip-stat">
@@ -634,7 +634,7 @@
           <div class="player-aspect">
             <canvas id="live-canvas"></canvas>
             <div class="player-overlay"></div>
-            <!-- AIOS overlay � Hebrew letter + frequency label -->
+            <!-- AIOS overlay · Hebrew letter + frequency label -->
             <div
               id="hz-overlay"
               style="
@@ -687,15 +687,15 @@
                 ></span
                 >LIVE
               </div>
-              <div class="ch-num">CH 01 � AIOS</div>
+              <div class="ch-num">CH 01 · AIOS</div>
             </div>
             <canvas id="audio-viz" width="80" height="30"></canvas>
             <div class="now-playing">
               <div class="np-meta">
                 <div>
-                  <div class="np-title" id="np-title">Loading�</div>
+                  <div class="np-title" id="np-title">Loading·</div>
                   <div class="np-sub" id="np-sub">
-                    AIOSProducerSwarm � .geo v2
+                    AIOSProducerSwarm · .geo v2
                   </div>
                   <div class="np-tags" id="np-tags"></div>
                 </div>
@@ -728,7 +728,7 @@
           <p class="section-head" style="margin-top: 0.5rem">Choose Renderer</p>
           <div class="renderer-pills" id="renderer-pills"></div>
           <p class="section-head" style="margin-top: 1rem">
-            Coming Up � Next in Queue
+            Coming Up · Next in Queue
           </p>
           <div id="upcoming-list"></div>
         </div>
@@ -742,7 +742,7 @@
     </div>
 
     <script>
-      // -- RENDERERS (subset � fast-starting, good standalone) --------------------
+      // -- RENDERERS (subset · fast-starting, good standalone) --------------------
       const RENDERERS = {
         matrix: {
           label: "Matrix",
@@ -1298,12 +1298,12 @@
         list.innerHTML = progs
           .map((p, i) => {
             const isActive = i === 0;
-            const genres = (p.genre || p.genres || []).join(" � ");
+            const genres = (p.genre || p.genres || []).join(" · ");
             return `<div class="sched-item ${isActive ? "sched-active" : ""}" onclick="jumpToSlot(${i})">
       <div class="sched-time">${formatTime(i * 120)}</div>
       <div>
         <div class="sched-title">${p.title || "Live Programme"}</div>
-        <div class="sched-genres">${genres} � ${p.hz || p.audio?.hz || "528"}</div>
+        <div class="sched-genres">${genres} · ${p.hz || p.audio?.hz || "528"}</div>
       </div>
     </div>`;
           })
@@ -1316,16 +1316,16 @@
         const next = progs.slice(1, 5);
         if (!next.length) {
           el.innerHTML =
-            '<p style="color:var(--muted);font-size:0.8rem">Loading queue�</p>';
+            '<p style="color:var(--muted);font-size:0.8rem">Loading queue·</p>';
           return;
         }
         el.innerHTML = next
           .map((p, i) => {
-            const genres = (p.genre || p.genres || []).slice(0, 2).join(" � ");
+            const genres = (p.genre || p.genres || []).slice(0, 2).join(" · ");
             return `<div class="np-card" style="cursor:pointer" onclick="jumpToSlot(${scheduleIndex + 1 + i})">
       <div class="np-card-badge" style="background:rgba(0,212,255,0.1);color:var(--cyan)">NEXT ${i + 1}</div>
       <div class="np-card-title">${p.title || "Programme"}</div>
-      <div class="np-card-meta">${genres} � ${p.hz || p.audio?.hz || "528"} � in ${(i + 1) * 2}min</div>
+      <div class="np-card-meta">${genres} · ${p.hz || p.audio?.hz || "528"} · in ${(i + 1) * 2}min</div>
     </div>`;
           })
           .join("");
@@ -1336,7 +1336,7 @@
         document.getElementById("np-title").textContent =
           p.title || "Live .geo Programme";
         document.getElementById("np-sub").textContent =
-          `AIOSProducerSwarm � ${p.renderer?.type || p.renderer || ""} � ${(p.genre || p.genres || []).slice(0, 2).join(", ")} � ${p.hz || p.audio?.hz || "528"}`;
+          `AIOSProducerSwarm · ${p.renderer?.type || p.renderer || ""} · ${(p.genre || p.genres || []).slice(0, 2).join(", ")} · ${p.hz || p.audio?.hz || "528"}`;
         const tagsEl = document.getElementById("np-tags");
         tagsEl.innerHTML =
           (p.genre || p.genres || [])
@@ -1406,12 +1406,12 @@
         try {
           const d = await (await fetch("/api/geo/stats")).json();
           const el = (id) => document.getElementById(id);
-          if (el("ss-total")) el("ss-total").textContent = d.catalogue || "�";
+          if (el("ss-total")) el("ss-total").textContent = d.catalogue || "·";
           if (el("ss-produced"))
-            el("ss-produced").textContent = d.productionCount || "�";
+            el("ss-produced").textContent = d.productionCount || "·";
           if (el("ss-hrs"))
             el("ss-hrs").textContent =
-              d.totalDurationHours != null ? d.totalDurationHours : "�";
+              d.totalDurationHours != null ? d.totalDurationHours : "·";
         } catch (e) {}
       }
 
