@@ -1311,7 +1311,12 @@
       "ring": "Foundation",
       "latticeBase": 12,
       "accent": "#10b981",
-      "assetSources": ["google_maps", "esa_copernicus", "usgs_terrain", "nasa.earth_imagery"],
+      "assetSources": [
+        "google_maps",
+        "esa_copernicus",
+        "usgs_terrain",
+        "nasa.earth_imagery"
+      ],
       "experiences": [
         {
           "id": "google-earth-vr",
@@ -1326,7 +1331,13 @@
           "estimatedDuration": "10-90 min",
           "releaseDate": "2026-Q2",
           "assetSources": ["google_maps.satellite", "google_maps.elevation"],
-          "tags": ["real-world", "satellite", "google", "geography", "any-location"]
+          "tags": [
+            "real-world",
+            "satellite",
+            "google",
+            "geography",
+            "any-location"
+          ]
         },
         {
           "id": "everest-summit",
@@ -1504,7 +1515,11 @@
       "ring": "Bosonic",
       "latticeBase": 26,
       "accent": "#ec4899",
-      "assetSources": ["medical.nih_3d_print", "medical.openanatomy", "medical.freesound_medical"],
+      "assetSources": [
+        "medical.nih_3d_print",
+        "medical.openanatomy",
+        "medical.freesound_medical"
+      ],
       "experiences": [
         {
           "id": "anatomy-atlas",
@@ -1576,7 +1591,11 @@
       "ring": "Canonical",
       "latticeBase": 44,
       "accent": "#f59e0b",
-      "assetSources": ["engineering_architecture.sketchfab_free", "engineering_architecture.grabcad", "engineering_architecture.nasa_cad"],
+      "assetSources": [
+        "engineering_architecture.sketchfab_free",
+        "engineering_architecture.grabcad",
+        "engineering_architecture.nasa_cad"
+      ],
       "experiences": [
         {
           "id": "mars-habitat",

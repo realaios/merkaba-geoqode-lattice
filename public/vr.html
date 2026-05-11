@@ -1776,10 +1776,10 @@
         },
         _pickVoice() {
           const prefer = [
-            v => v.lang === 'en-US' && /google/i.test(v.name),
-            v => v.lang === 'en-GB' && /google/i.test(v.name),
-            v => v.lang.startsWith('en') && /google/i.test(v.name),
-            v => v.lang.startsWith('en'),
+            (v) => v.lang === "en-US" && /google/i.test(v.name),
+            (v) => v.lang === "en-GB" && /google/i.test(v.name),
+            (v) => v.lang.startsWith("en") && /google/i.test(v.name),
+            (v) => v.lang.startsWith("en"),
           ];
           for (const fn of prefer) {
             const hit = this._voices.find(fn);
@@ -1791,8 +1791,8 @@
           if (!this.enabled || !window.speechSynthesis || !text) return;
           window.speechSynthesis.cancel();
           const u = new SpeechSynthesisUtterance(text);
-          u.rate  = (rate  != null) ? rate  : 0.9;
-          u.pitch = (pitch != null) ? pitch : 0.95;
+          u.rate = rate != null ? rate : 0.9;
+          u.pitch = pitch != null ? pitch : 0.95;
           u.volume = 0.8;
           const v = this._pickVoice();
           if (v) u.voice = v;
@@ -1800,7 +1800,7 @@
         },
         narrateScene(prog) {
           if (!prog) return;
-          const text = prog.shortDesc || prog.desc || prog.display || '';
+          const text = prog.shortDesc || prog.desc || prog.display || "";
           this.speak(text);
         },
         stop() {
@@ -1810,7 +1810,7 @@
           this.enabled = !this.enabled;
           if (!this.enabled) this.stop();
           return this.enabled;
-        }
+        },
       };
       VRNarrator.init();
 
@@ -2156,7 +2156,9 @@
               </a-scene>` +
               narrativeHTML;
             startAmbientTone(semHz);
-            VRNarrator.narrateScene(PROGRAMMES.find(p => p.name === currentProg));
+            VRNarrator.narrateScene(
+              PROGRAMMES.find((p) => p.name === currentProg),
+            );
           })
           .catch(() => {
             // Fallback: legacy sphere/panel scene

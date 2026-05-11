@@ -7,7 +7,6 @@
   "_miningSchedule": "cycle % 720 === 0",
 
   "sources": {
-
     "nasa": {
       "id": "nasa",
       "display": "NASA Public Domain Library",
@@ -15,7 +14,14 @@
       "licenseUrl": "https://www.nasa.gov/nasa-brand-center/images-and-media/",
       "semanticTypes": ["PHYSICS", "LOCATION", "NARRATIVE"],
       "frequencyHz": [852, 417, 963],
-      "assetTypes": ["image", "video", "audio", "3d-model", "panorama", "dataset"],
+      "assetTypes": [
+        "image",
+        "video",
+        "audio",
+        "3d-model",
+        "panorama",
+        "dataset"
+      ],
       "apis": {
         "images": {
           "endpoint": "https://images-api.nasa.gov/search",
@@ -40,14 +46,22 @@
         },
         "earth_imagery": {
           "endpoint": "https://api.nasa.gov/planetary/earth/imagery",
-          "params": { "lat": "{lat}", "lon": "{lon}", "dim": 0.025, "api_key": "DEMO_KEY" },
+          "params": {
+            "lat": "{lat}",
+            "lon": "{lon}",
+            "dim": 0.025,
+            "api_key": "DEMO_KEY"
+          },
           "rateLimit": "30/hr (DEMO)",
           "auth": "api-key"
         },
         "worldview": {
           "endpoint": "https://worldview.earthdata.nasa.gov",
           "type": "interactive-map",
-          "layers": ["MODIS_Terra_CorrectedReflectance_TrueColor", "VIIRS_SNPP_CorrectedReflectance_TrueColor"],
+          "layers": [
+            "MODIS_Terra_CorrectedReflectance_TrueColor",
+            "VIIRS_SNPP_CorrectedReflectance_TrueColor"
+          ],
           "auth": "none"
         },
         "exoplanet": {
@@ -140,7 +154,12 @@
       "licenseNote": "Free tier: $200 credit/mo (~28k map loads). Requires API key.",
       "semanticTypes": ["LOCATION"],
       "frequencyHz": [417],
-      "assetTypes": ["map-tile", "satellite-image", "street-view-panorama", "elevation-data"],
+      "assetTypes": [
+        "map-tile",
+        "satellite-image",
+        "street-view-panorama",
+        "elevation-data"
+      ],
       "apis": {
         "maps_static": {
           "endpoint": "https://maps.googleapis.com/maps/api/staticmap",
@@ -155,7 +174,12 @@
         },
         "street_view_static": {
           "endpoint": "https://maps.googleapis.com/maps/api/streetview",
-          "params": { "location": "{lat},{lon}", "size": "640x480", "heading": "{0-360}", "pitch": "{-90-90}" },
+          "params": {
+            "location": "{lat},{lon}",
+            "size": "640x480",
+            "heading": "{0-360}",
+            "pitch": "{-90-90}"
+          },
           "freeMonthlyLimit": "28000 requests",
           "auth": "GOOGLE_MAPS_API_KEY"
         },
@@ -184,13 +208,13 @@
       },
       "highValueCoordinates": {
         "grand_canyon": { "lat": 36.1069, "lon": -112.1129, "zoom": 14 },
-        "everest": { "lat": 27.9881, "lon": 86.9250, "zoom": 14 },
+        "everest": { "lat": 27.9881, "lon": 86.925, "zoom": 14 },
         "amazon": { "lat": -3.4653, "lon": -62.2159, "zoom": 12 },
         "sahara": { "lat": 23.4162, "lon": 25.6628, "zoom": 11 },
         "great_barrier_reef": { "lat": -18.2861, "lon": 147.6992, "zoom": 12 },
         "iceland_volcano": { "lat": 63.6301, "lon": -19.0531, "zoom": 13 },
         "dubai_city": { "lat": 25.2048, "lon": 55.2708, "zoom": 15 },
-        "times_square": { "lat": 40.7580, "lon": -73.9855, "zoom": 17 },
+        "times_square": { "lat": 40.758, "lon": -73.9855, "zoom": 17 },
         "tokyo_shibuya": { "lat": 35.6595, "lon": 139.7004, "zoom": 17 }
       },
       "geoqode": {
@@ -276,7 +300,12 @@
           "endpoint": "https://freesound.org/apiv2/search/text/?query=heartbeat+stethoscope&format=json",
           "license": "CC0 / CC BY",
           "auth": "FREESOUND_API_KEY",
-          "types": ["heartbeat", "breathing", "surgical-instruments", "hospital-ambience"]
+          "types": [
+            "heartbeat",
+            "breathing",
+            "surgical-instruments",
+            "hospital-ambience"
+          ]
         }
       },
       "geoqode": {
@@ -294,7 +323,13 @@
       "license": "mixed",
       "semanticTypes": ["ACTION", "NARRATIVE"],
       "frequencyHz": [528, 963],
-      "assetTypes": ["3d-model", "cad-file", "bim-model", "blueprint", "photogrammetry"],
+      "assetTypes": [
+        "3d-model",
+        "cad-file",
+        "bim-model",
+        "blueprint",
+        "photogrammetry"
+      ],
       "sources": {
         "grabcad": {
           "display": "GrabCAD Community Library",
@@ -302,7 +337,13 @@
           "license": "Community license (free download, no redistribution)",
           "format": "STEP / IGES / STL / OBJ",
           "count": "3M+ models",
-          "categories": ["automotive", "aerospace", "architecture", "electronics", "machinery"]
+          "categories": [
+            "automotive",
+            "aerospace",
+            "architecture",
+            "electronics",
+            "machinery"
+          ]
         },
         "sketchfab_free": {
           "display": "Sketchfab — Free 3D Models",
@@ -331,7 +372,15 @@
           "url": "https://nasa3d.arc.nasa.gov/models",
           "license": "Public Domain",
           "format": "OBJ / GLTF / STL / Blend",
-          "models": ["ISS", "Hubble", "Mars rovers", "Apollo LM", "Saturn V", "Orion capsule", "Artemis SLS"]
+          "models": [
+            "ISS",
+            "Hubble",
+            "Mars rovers",
+            "Apollo LM",
+            "Saturn V",
+            "Orion capsule",
+            "Artemis SLS"
+          ]
         },
         "thingiverse": {
           "display": "Thingiverse Engineering Models",
@@ -364,13 +413,27 @@
           "license": "CC0 / CC BY / CC BY-NC",
           "auth": "FREESOUND_API_KEY",
           "rateLimit": "60/min",
-          "categories": ["ambient", "nature", "urban", "space", "sci-fi", "medical", "combat", "weather"]
+          "categories": [
+            "ambient",
+            "nature",
+            "urban",
+            "space",
+            "sci-fi",
+            "medical",
+            "combat",
+            "weather"
+          ]
         },
         "nasa_sounds": {
           "display": "NASA Sound Clips",
           "url": "https://www.nasa.gov/connect/sounds/index.html",
           "license": "Public Domain",
-          "categories": ["rocket-launch", "space-ambience", "astronaut-comms", "planetary-sonification"]
+          "categories": [
+            "rocket-launch",
+            "space-ambience",
+            "astronaut-comms",
+            "planetary-sonification"
+          ]
         },
         "bbc_sound_effects": {
           "display": "BBC Sound Effects Archive",
@@ -466,7 +529,13 @@
       "display": "Open-World Game Map Assets",
       "semanticTypes": ["ACTION", "NARRATIVE"],
       "frequencyHz": [528, 963],
-      "assetTypes": ["3d-model", "map-data", "texture", "heightmap", "city-mesh"],
+      "assetTypes": [
+        "3d-model",
+        "map-data",
+        "texture",
+        "heightmap",
+        "city-mesh"
+      ],
       "sources": {
         "openstreetmap_3d": {
           "display": "OSMBuildings — 3D City from OpenStreetMap",
@@ -528,7 +597,12 @@
           "endpoint": "https://vision.googleapis.com/v1/images:annotate",
           "auth": "GOOGLE_CLOUD_API_KEY",
           "freeTier": "1000 images/month free",
-          "features": ["LABEL_DETECTION", "LANDMARK_DETECTION", "OBJECT_LOCALIZATION", "SAFE_SEARCH"],
+          "features": [
+            "LABEL_DETECTION",
+            "LANDMARK_DETECTION",
+            "OBJECT_LOCALIZATION",
+            "SAFE_SEARCH"
+          ],
           "vrNote": "Auto-tag ingested assets by content. Feed tags into MAL-PROPS-WAREHOUSE GeoQode envelopes."
         },
         "earth_engine": {
@@ -607,24 +681,66 @@
 
   "priorityMatrix": {
     "immediateValue": [
-      { "source": "nasa.images", "reason": "Zero cost, public domain, instant API access, huge 3D model library" },
-      { "source": "spacex.flickr", "reason": "Public domain, heroic visuals, massive VR impact" },
-      { "source": "polyhaven", "reason": "CC0 HDRI + textures — instant scene quality upgrade, no auth needed" },
-      { "source": "freesound", "reason": "CC0 audio — spatial ambient for every scene category" },
-      { "source": "web_speech_api", "reason": "Zero cost AI narration — browser-native, deploy today" },
-      { "source": "nasa3d.models", "reason": "ISS, Mars rover, Saturn V GLTF — drop into A-Frame immediately" },
-      { "source": "openstreetmap_3d", "reason": "Any real city as 3D geometry — ODbL open license" }
+      {
+        "source": "nasa.images",
+        "reason": "Zero cost, public domain, instant API access, huge 3D model library"
+      },
+      {
+        "source": "spacex.flickr",
+        "reason": "Public domain, heroic visuals, massive VR impact"
+      },
+      {
+        "source": "polyhaven",
+        "reason": "CC0 HDRI + textures — instant scene quality upgrade, no auth needed"
+      },
+      {
+        "source": "freesound",
+        "reason": "CC0 audio — spatial ambient for every scene category"
+      },
+      {
+        "source": "web_speech_api",
+        "reason": "Zero cost AI narration — browser-native, deploy today"
+      },
+      {
+        "source": "nasa3d.models",
+        "reason": "ISS, Mars rover, Saturn V GLTF — drop into A-Frame immediately"
+      },
+      {
+        "source": "openstreetmap_3d",
+        "reason": "Any real city as 3D geometry — ODbL open license"
+      }
     ],
     "highImpactMediumCost": [
-      { "source": "elevenlabs", "reason": "Ultra-quality AI narrator voice — free 10k chars/mo tier" },
-      { "source": "google_maps.satellite", "reason": "$200/mo free credit covers extensive VR use" },
-      { "source": "cesium_ion", "reason": "20k free requests — photorealistic 3D cities instantly" },
-      { "source": "openai_tts", "reason": "Best voice quality + dynamic storytelling via GPT-4o" }
+      {
+        "source": "elevenlabs",
+        "reason": "Ultra-quality AI narrator voice — free 10k chars/mo tier"
+      },
+      {
+        "source": "google_maps.satellite",
+        "reason": "$200/mo free credit covers extensive VR use"
+      },
+      {
+        "source": "cesium_ion",
+        "reason": "20k free requests — photorealistic 3D cities instantly"
+      },
+      {
+        "source": "openai_tts",
+        "reason": "Best voice quality + dynamic storytelling via GPT-4o"
+      }
     ],
     "strategicLongTerm": [
-      { "source": "esa_copernicus", "reason": "Real-time satellite data streams — dynamic real-world VR" },
-      { "source": "google_earth_engine", "reason": "Planet-scale imagery — time-lapse VR experiences" },
-      { "source": "visible_human", "reason": "Complete human anatomy dataset — medical VR category killer" }
+      {
+        "source": "esa_copernicus",
+        "reason": "Real-time satellite data streams — dynamic real-world VR"
+      },
+      {
+        "source": "google_earth_engine",
+        "reason": "Planet-scale imagery — time-lapse VR experiences"
+      },
+      {
+        "source": "visible_human",
+        "reason": "Complete human anatomy dataset — medical VR category killer"
+      }
     ]
   }
 }

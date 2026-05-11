@@ -42,23 +42,35 @@ const ASSET_SOURCES_PATH = path.resolve(
 // ── Free / public-domain API endpoints ─────────────────────────────────────
 const ENDPOINTS = {
   nasa_apod: "https://api.nasa.gov/planetary/apod?count=10&api_key=DEMO_KEY",
-  nasa_mars: "https://api.nasa.gov/mars-photos/api/v1/rovers/perseverance/latest_photos?api_key=DEMO_KEY",
-  nasa_images: "https://images-api.nasa.gov/search?q={query}&media_type=image&page_size=20",
-  nasa_sounds: "https://images-api.nasa.gov/search?q={query}&media_type=audio&page_size=20",
-  nasa_3d: "https://images-api.nasa.gov/search?q={query}&media_type=video&page_size=10",
+  nasa_mars:
+    "https://api.nasa.gov/mars-photos/api/v1/rovers/perseverance/latest_photos?api_key=DEMO_KEY",
+  nasa_images:
+    "https://images-api.nasa.gov/search?q={query}&media_type=image&page_size=20",
+  nasa_sounds:
+    "https://images-api.nasa.gov/search?q={query}&media_type=audio&page_size=20",
+  nasa_3d:
+    "https://images-api.nasa.gov/search?q={query}&media_type=video&page_size=10",
   spacex_launches: "https://api.spacexdata.com/v4/launches/latest",
-  freesound_search: "https://freesound.org/apiv2/search/text/?query={query}&fields=id,name,url,license,previews,duration&token={token}",
+  freesound_search:
+    "https://freesound.org/apiv2/search/text/?query={query}&fields=id,name,url,license,previews,duration&token={token}",
 };
 
 export class AIOSAssetMinerAgent {
   constructor(options = {}) {
     this.name = "AIOSAssetMinerAgent";
     this.geoCoordinate = { ...GEO_COORDINATE };
-    this.freesoundToken = options.freesoundToken || process.env.FREESOUND_TOKEN || null;
-    this.nasaApiKey = options.nasaApiKey || process.env.NASA_API_KEY || "DEMO_KEY";
+    this.freesoundToken =
+      options.freesoundToken || process.env.FREESOUND_TOKEN || null;
+    this.nasaApiKey =
+      options.nasaApiKey || process.env.NASA_API_KEY || "DEMO_KEY";
     this.verbose = options.verbose !== false;
-    this._registry = { assets: [], meta: { lastMined: null, count: 0, geoCoordinate: GEO_COORDINATE } };
-    this._log = this.verbose ? (...a) => console.log("[AssetMiner]", ...a) : () => {};
+    this._registry = {
+      assets: [],
+      meta: { lastMined: null, count: 0, geoCoordinate: GEO_COORDINATE },
+    };
+    this._log = this.verbose
+      ? (...a) => console.log("[AssetMiner]", ...a)
+      : () => {};
   }
 
   // ── Load existing registry or start fresh ────────────────────────────────
@@ -79,7 +91,11 @@ export class AIOSAssetMinerAgent {
     this._registry.meta.geoCoordinate = GEO_COORDINATE;
     const dir = path.dirname(REGISTRY_PATH);
     if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
-    fs.writeFileSync(REGISTRY_PATH, JSON.stringify(this._registry, null, 2), "utf8");
+    fs.writeFileSync(
+      REGISTRY_PATH,
+      JSON.stringify(this._registry, null, 2),
+      "utf8",
+    );
     this._log(`Registry saved — ${this._registry.assets.length} assets`);
   }
 
@@ -94,19 +110,26 @@ export class AIOSAssetMinerAgent {
     const { default: http } = await import("http");
     return new Promise((resolve, reject) => {
       const lib = url.startsWith("https") ? https : http;
-      const req = lib.get(url, { headers: { "User-Agent": "AIOSAssetMiner/1.0 (realaios.com)" } }, (res) => {
-        const chunks = [];
-        res.on("data", (c) => chunks.push(c));
-        res.on("end", () => {
-          try {
-            resolve(JSON.parse(Buffer.concat(chunks).toString()));
-          } catch (_) {
-            resolve(null);
-          }
-        });
-      });
+      const req = lib.get(
+        url,
+        { headers: { "User-Agent": "AIOSAssetMiner/1.0 (realaios.com)" } },
+        (res) => {
+          const chunks = [];
+          res.on("data", (c) => chunks.push(c));
+          res.on("end", () => {
+            try {
+              resolve(JSON.parse(Buffer.concat(chunks).toString()));
+            } catch (_) {
+              resolve(null);
+            }
+          });
+        },
+      );
       req.on("error", reject);
-      req.setTimeout(12000, () => { req.destroy(); reject(new Error("timeout")); });
+      req.setTimeout(12000, () => {
+        req.destroy();
+        reject(new Error("timeout"));
+      });
     });
   }
 
@@ -115,13 +138,21 @@ export class AIOSAssetMinerAgent {
     let score = 0.5;
     const license = (asset.license || "").toLowerCase();
     const isCC0 = license.includes("cc0") || license.includes("public domain");
-    const isCCBy = license.includes("cc by") && !license.includes("nc") && !license.includes("nd");
+    const isCCBy =
+      license.includes("cc by") &&
+      !license.includes("nc") &&
+      !license.includes("nd");
     if (isCC0) score += 0.3;
     else if (isCCBy) score += 0.15;
 
     if (asset.type === "3d_model") score += 0.2;
     if (asset.type === "audio") score += 0.1;
-    if (asset.type === "image" && asset.resolution && parseInt(asset.resolution) >= 2048) score += 0.1;
+    if (
+      asset.type === "image" &&
+      asset.resolution &&
+      parseInt(asset.resolution) >= 2048
+    )
+      score += 0.1;
     if (asset.source === "nasa") score += 0.15;
 
     return Math.min(1.0, parseFloat(score.toFixed(3)));
@@ -130,8 +161,13 @@ export class AIOSAssetMinerAgent {
   // ── Mine NASA APOD ────────────────────────────────────────────────────────
   async mineNASA(query = "space") {
     this._log(`Mining NASA images — query="${query}"`);
-    const url = ENDPOINTS.nasa_images.replace("{query}", encodeURIComponent(query));
-    const data = await this._fetch(`${url}&api_key=${this.nasaApiKey}`).catch(() => null);
+    const url = ENDPOINTS.nasa_images.replace(
+      "{query}",
+      encodeURIComponent(query),
+    );
+    const data = await this._fetch(`${url}&api_key=${this.nasaApiKey}`).catch(
+      () => null,
+    );
     if (!data?.collection?.items) return [];
 
     const results = [];
@@ -192,7 +228,9 @@ export class AIOSAssetMinerAgent {
   // ── Mine SpaceX Flickr public domain media ───────────────────────────────
   async mineSpaceX() {
     this._log("Mining SpaceX launch data");
-    const launch = await this._fetch(ENDPOINTS.spacex_launches).catch(() => null);
+    const launch = await this._fetch(ENDPOINTS.spacex_launches).catch(
+      () => null,
+    );
     if (!launch) return [];
 
     const results = [];
@@ -214,7 +252,13 @@ export class AIOSAssetMinerAgent {
         source: "spacex",
         type: url.endsWith(".png") || url.endsWith(".jpg") ? "image" : "link",
         license: "public_domain",
-        tags: ["spacex", "rocket", "launch", launch.name?.toLowerCase(), "mission"].filter(Boolean),
+        tags: [
+          "spacex",
+          "rocket",
+          "launch",
+          launch.name?.toLowerCase(),
+          "mission",
+        ].filter(Boolean),
         dateCreated: launch.date_utc || null,
         suitability: 0,
         geoCoordinate: { ...GEO_COORDINATE },
@@ -233,16 +277,20 @@ export class AIOSAssetMinerAgent {
       return [];
     }
     this._log(`Mining Freesound — query="${query}"`);
-    const url = ENDPOINTS.freesound_search
-      .replace("{query}", encodeURIComponent(query))
-      .replace("{token}", this.freesoundToken)
-      + "&license=Creative Commons 0";
+    const url =
+      ENDPOINTS.freesound_search
+        .replace("{query}", encodeURIComponent(query))
+        .replace("{token}", this.freesoundToken) +
+      "&license=Creative Commons 0";
     const data = await this._fetch(url).catch(() => null);
     if (!data?.results) return [];
 
     const results = [];
     for (const sound of data.results.slice(0, 15)) {
-      const previewUrl = sound.previews?.["preview-hq-mp3"] || sound.previews?.["preview-lq-mp3"] || sound.url;
+      const previewUrl =
+        sound.previews?.["preview-hq-mp3"] ||
+        sound.previews?.["preview-lq-mp3"] ||
+        sound.url;
       if (this._isDuplicate(previewUrl)) continue;
       const asset = {
         id: `freesound_${sound.id}`,
@@ -284,7 +332,9 @@ export class AIOSAssetMinerAgent {
         source: "nasa3d.models",
         type: "3d_model_preview",
         license: "public_domain",
-        tags: [category, "3d", "nasa", "model"].concat(meta.keywords?.slice(0, 4) || []),
+        tags: [category, "3d", "nasa", "model"].concat(
+          meta.keywords?.slice(0, 4) || [],
+        ),
         dateCreated: meta.date_created || null,
         suitability: 0,
         geoCoordinate: { ...GEO_COORDINATE },
@@ -305,20 +355,38 @@ export class AIOSAssetMinerAgent {
       }
     }
     const added = this._registry.assets.length - before;
-    this._log(`Registry: added ${added} new assets (${this._registry.assets.length} total)`);
+    this._log(
+      `Registry: added ${added} new assets (${this._registry.assets.length} total)`,
+    );
     return added;
   }
 
   // ── Full mine run ─────────────────────────────────────────────────────────
   async run(queries = {}) {
     const startedAt = Date.now();
-    this._log(`Agent starting — GeoQode ENTITY@396Hz node ${GEO_COORDINATE.latticeNode}`);
+    this._log(
+      `Agent starting — GeoQode ENTITY@396Hz node ${GEO_COORDINATE.latticeNode}`,
+    );
 
     this._loadRegistry();
 
-    const nasaQueries  = queries.nasa  || ["nebula", "earth from space", "rocket launch", "ISS"];
-    const soundQueries = queries.sound || ["space ambient", "rocket engine", "wind mountain", "ocean waves"];
-    const modelCategories = queries.models || ["spacecraft", "mars", "satellite"];
+    const nasaQueries = queries.nasa || [
+      "nebula",
+      "earth from space",
+      "rocket launch",
+      "ISS",
+    ];
+    const soundQueries = queries.sound || [
+      "space ambient",
+      "rocket engine",
+      "wind mountain",
+      "ocean waves",
+    ];
+    const modelCategories = queries.models || [
+      "spacecraft",
+      "mars",
+      "satellite",
+    ];
 
     const batches = await Promise.allSettled([
       ...nasaQueries.map((q) => this.mineNASA(q)),
