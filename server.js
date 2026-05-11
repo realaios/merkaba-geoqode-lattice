@@ -4141,6 +4141,8 @@ const server = createServer(async (req, res) => {
         `  <url><loc>https://realaios.com/lab</loc><lastmod>${now}</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>`,
         `  <url><loc>https://realaios.com/attest</loc><lastmod>${now}</lastmod><changefreq>monthly</changefreq><priority>0.78</priority></url>`,
         `  <url><loc>https://realaios.com/viewer</loc><lastmod>${now}</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>`,
+        `  <url><loc>https://realaios.com/handshake</loc><lastmod>${now}</lastmod><changefreq>monthly</changefreq><priority>0.76</priority></url>`,
+        `  <url><loc>https://realaios.com/aios-geo-demo</loc><lastmod>${now}</lastmod><changefreq>monthly</changefreq><priority>0.80</priority></url>`,
         `  <url><loc>https://realaios.com/dashboard</loc><lastmod>${now}</lastmod><changefreq>daily</changefreq><priority>0.72</priority></url>`,
         `  <url><loc>https://realaios.com/products</loc><lastmod>${now}</lastmod><changefreq>weekly</changefreq><priority>0.75</priority></url>`,
         `  <url><loc>https://realaios.com/pricing</loc><lastmod>${now}</lastmod><changefreq>monthly</changefreq><priority>0.82</priority></url>`,
