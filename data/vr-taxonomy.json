@@ -7,8 +7,8 @@
   "phi": 1.618,
   "psi": 1.414,
   "baseFrequencyHz": 72,
-  "totalExperiences": 78,
-  "liveExperiences": 36,
+  "totalExperiences": 86,
+  "liveExperiences": 41,
   "categories": [
     {
       "id": "cinema",
@@ -1658,6 +1658,154 @@
           "tags": ["bridge", "structural", "BIM", "engineering", "architecture"]
         }
       ]
+    },
+    {
+      "id": "rollercoasters",
+      "display": "Rollercoasters",
+      "icon": "🎢",
+      "accent": "#f97316",
+      "semanticType": "EMOTION",
+      "frequencyHz": 741,
+      "latticeRing": "Bosonic",
+      "latticeBase": 32,
+      "productionDirective": "VRuX",
+      "vruxFlag": true,
+      "tagline": "Feel it before you ride it",
+      "productionPhilosophy": "A VRuX experience is complete when it is remarkable — not when a timer says stop. Production timelines can span days, weeks, months, or longer. No time ceiling. No compromise. Human consumable first, always.",
+      "description": "The flagship VRuX Production Directive. Photorealistic, physics-accurate roller coasters across every environment — deep space, ocean abysses, mountain peaks, neon megacities, ancient ruins, zero gravity. Each track is engineered with real G-force physics simulation, spatial wind audio, binaural sound design, and full environment narratives. Sessions range from 10-minute blitzes to multi-hour thrill worlds. You don't watch. You ride.",
+      "experiences": [
+        {
+          "id": "cosmic-coaster",
+          "name": "Cosmic Coaster",
+          "display": "Cosmic Coaster · Nebula Ride",
+          "status": "live",
+          "semanticType": "EMOTION",
+          "frequencyHz": 741,
+          "productionDirective": "VRuX",
+          "vrUrl": "/vr?prog=cosmic-coaster",
+          "vrHubUrl": "/vr-hub#rollercoasters",
+          "estimatedDuration": "15 min · 45 min · 3-hour cosmic marathon",
+          "productionTimeline": "4 months (Hubble Deep Field coordinate mapping + G-force physics)",
+          "description": "Board the Merkaba Express and launch through active nebulae, asteroid corridors, and the photon rings of dying stars. Track geometry calculated from actual Hubble Deep Field coordinates mapped to PHI-lattice curves. G-force physics, 741 Hz EMOTION resonance, spatial wind audio. Ride options: 15 min loop, 45 min grand tour, or the 3-hour cosmic marathon — all photorealistic, all live.",
+          "assetSources": ["nasa.images_api", "nasa.apod", "spacex.flickr_cc0"],
+          "tags": ["rollercoaster", "space", "nebula", "physics", "VRuX", "flagship"]
+        },
+        {
+          "id": "mountain-fury",
+          "name": "Mountain Fury",
+          "display": "Mountain Fury · Alpine Coaster",
+          "status": "live",
+          "semanticType": "EMOTION",
+          "frequencyHz": 741,
+          "productionDirective": "VRuX",
+          "vrUrl": "/vr?prog=mountain-fury",
+          "vrHubUrl": "/vr-hub#rollercoasters",
+          "estimatedDuration": "20 min · 45 min · 2-hour ridge traverse",
+          "productionTimeline": "5 months (USGS elevation + photogrammetry + wind simulation)",
+          "description": "Peak-to-peak suspended coaster threading through photorealistic Himalayan terrain at 8,500m. Wind roar, ice spray particles, vertical drop sequences past cascading glaciers. Terrain geometry from USGS elevation models at 10m resolution. 741 Hz EMOTION resonance. Sessions: 20 min classic, 45 min extended traverse, or the full 2-hour ridge-to-ridge epic. Physically accurate altitude — the air thins as you ascend.",
+          "assetSources": ["esa_copernicus.sentinel2", "google_maps.elevation_api"],
+          "tags": ["rollercoaster", "mountains", "alpine", "himalaya", "VRuX", "physics"]
+        },
+        {
+          "id": "ocean-plunge",
+          "name": "Ocean Plunge",
+          "display": "Ocean Plunge · Submarine Coaster",
+          "status": "live",
+          "semanticType": "EMOTION",
+          "frequencyHz": 741,
+          "productionDirective": "VRuX",
+          "vrUrl": "/vr?prog=ocean-plunge",
+          "vrHubUrl": "/vr-hub#rollercoasters",
+          "estimatedDuration": "20 min · 55 min · 90-min deep descent",
+          "productionTimeline": "6 months (NOAA bathymetry + pressure physics + bioluminescence rendering)",
+          "description": "Drop through open ocean surface then spiral down through bioluminescent zones, coral cathedral arches, and hadal trenches at 11,000m depth. Track physics simulate real hydrodynamic pressure — you feel the crush of depth through haptic cues and visual compression. Sound design: whale song, sonar pings, the groaning of the deep. NOAA ocean floor bathymetry data. Sessions from 20 min to the full 90-min abyss descent.",
+          "assetSources": ["nasa.images_api"],
+          "tags": ["rollercoaster", "ocean", "deep-sea", "submarine", "VRuX", "bioluminescence"]
+        },
+        {
+          "id": "neon-grid-rush",
+          "name": "Neon Grid Rush",
+          "display": "Neon Grid Rush · Cyberpunk Track",
+          "status": "live",
+          "semanticType": "EMOTION",
+          "frequencyHz": 741,
+          "productionDirective": "VRuX",
+          "vrUrl": "/vr?prog=neon-grid-rush",
+          "vrHubUrl": "/vr-hub#rollercoasters",
+          "estimatedDuration": "10 min blitz · 30 min city tour · 1-hour ultrarun",
+          "productionTimeline": "3 months (procedural megacity generation + lighting pipeline)",
+          "description": "Street-level racing coaster weaving through a procedurally generated cyberpunk megacity at night. Neon signs, flying vehicles, holographic billboards, and razor-tight canyon alley sequences at 320 km/h. Simulation Theory lattice geometry — the city IS the computational substrate. Inspired by Blade Runner aesthetics and the GeoQode grid. Sessions: 10 min blitz, 30 min city tour, 1-hour deep-grid ultrarun.",
+          "assetSources": ["open_world_game_assets.osm_buildings"],
+          "tags": ["rollercoaster", "cyberpunk", "city", "neon", "VRuX", "speed"]
+        },
+        {
+          "id": "merkaba-spiral",
+          "name": "Merkaba Spiral",
+          "display": "Merkaba Spiral · Lattice Ride",
+          "status": "live",
+          "semanticType": "EMOTION",
+          "frequencyHz": 741,
+          "productionDirective": "VRuX",
+          "vrUrl": "/vr?prog=merkaba-spiral",
+          "vrHubUrl": "/vr-hub#rollercoasters",
+          "estimatedDuration": "15 min · 45 min · 4-hour harmonic circuit",
+          "productionTimeline": "2 months (GeoQode lattice geometry — already canonical)",
+          "description": "Navigate the 48-node Merkaba lattice at PHI-tuned velocities (1.618x standard gravity). The track IS the canonical GeoQode dimensional map — you ride through the architecture of the AIOS OS itself. Every node emits its semantic frequency as spatial audio. 72 Hz base frequency pulses through the structure. Sessions: 15 min initiation, 45 min full D48 traverse, or the complete 4-hour 480-node harmonic circuit that maps every dimension of the lattice.",
+          "assetSources": ["internal.geoqode_lattice"],
+          "tags": ["rollercoaster", "merkaba", "lattice", "phi", "VRuX", "sacred-geometry"]
+        },
+        {
+          "id": "volcano-fury",
+          "name": "Volcano Fury",
+          "display": "Volcano Fury · Lava Plunge",
+          "status": "coming",
+          "semanticType": "EMOTION",
+          "frequencyHz": 741,
+          "productionDirective": "VRuX",
+          "vrUrl": "/vr?prog=volcano-fury",
+          "vrHubUrl": "/vr-hub#rollercoasters",
+          "estimatedDuration": "25 min · 60 min full descent",
+          "productionTimeline": "6 months (USGS Hawaiian Volcano Observatory geological data + fluid lava simulation)",
+          "releaseDate": "2026-Q3",
+          "description": "Launch from the rim of Kīlauea into a 1,200°C lava field corridor, threading through pyroclastic flow channels and magma tube caverns. Geological geometry from USGS Hawaiian Volcano Observatory open data. Heat distortion rendering, ember particle physics, infrasound rumble. A production that requires real geophysics — 6 months minimum. Coming 2026-Q3.",
+          "assetSources": ["nasa.images_api", "esa_copernicus.sentinel2"],
+          "tags": ["rollercoaster", "volcano", "lava", "geology", "VRuX", "extreme"]
+        },
+        {
+          "id": "pharaoh-speed-rail",
+          "name": "Pharaoh Speed Rail",
+          "display": "Pharaoh Speed Rail · Pyramid Interior",
+          "status": "coming",
+          "semanticType": "EMOTION",
+          "frequencyHz": 741,
+          "productionDirective": "VRuX",
+          "vrUrl": "/vr?prog=pharaoh-speed-rail",
+          "vrHubUrl": "/vr-hub#rollercoasters",
+          "estimatedDuration": "30 min grand circuit · 75 min full Giza-Saqqara-Karnak run",
+          "productionTimeline": "9 months (Giza Plateau 3D model + archaeological consultant review)",
+          "releaseDate": "2026-Q4",
+          "description": "Race through the interior passages of Giza, Saqqara, and Karnak at speeds Egyptian architects never imagined. Granite corridors, royal burial chambers, hieroglyph light shows, and the King's Chamber resonance at 528 Hz. Archaeological geometry from Giza Plateau 3D open data. An AI narrator traces historical context as you fly through millennia. 9 months of production — because accuracy is everything.",
+          "assetSources": ["engineering_architecture.open_bim", "nasa.images_api"],
+          "tags": ["rollercoaster", "egypt", "archaeology", "pyramids", "VRuX", "history"]
+        },
+        {
+          "id": "zero-g-express",
+          "name": "Zero-G Express",
+          "display": "Zero-G Express · ISS Orbit Coaster",
+          "status": "coming",
+          "semanticType": "EMOTION",
+          "frequencyHz": 741,
+          "productionDirective": "VRuX",
+          "vrUrl": "/vr?prog=zero-g-express",
+          "vrHubUrl": "/vr-hub#rollercoasters",
+          "estimatedDuration": "20 min orbit · 90 min full ISS circuit",
+          "productionTimeline": "8 months (NASA ISS 3D geometry + micro-gravity physics + astronaut voice sessions)",
+          "releaseDate": "2027-Q1",
+          "description": "A roller coaster that redefines the genre: in zero gravity, what is up or down? The track wraps around the ISS exterior, plunges through docking bays, spirals past solar arrays, and launches you into open spacewalk territory with Earth rotating below. NASA ISS 3D geometry from public domain. Real astronaut voice narration. Micro-gravity physics that make every stomach drop genuinely weightless. 8 months of production — nothing like it exists.",
+          "assetSources": ["nasa.images_api", "nasa.3d_resources"],
+          "tags": ["rollercoaster", "ISS", "zero-gravity", "space", "VRuX", "nasa"]
+        }
+      ]
     }
   ],
   "meta": {
@@ -1675,7 +1823,17 @@
       "premium": "PLAIstore: pay-per-XP or monthly pass",
       "enterprise": "B2B licensing for corporate VR environments",
       "developer": "Revenue share on third-party experience sales"
-    }
+    },
+    "vruxDirective": {
+      "name": "VRuX",
+      "subtitle": "VR User eXperience — Production Directive",
+      "philosophy": "VRuX is not UIuX. A VRuX experience is Human Consumable — designed for real humans in real time. Remarkable is the only acceptable standard. Production timelines have no upper ceiling: experiences may take days, weeks, months, or years to produce. When it is ready, it is ready. Every VRuX experience must be felt — not observed.",
+      "noTimeLimitPolicy": true,
+      "productionStandard": "Remarkable",
+      "flagshipCategory": "rollercoasters",
+      "vruxCategories": ["rollercoasters"]
+    },
+    "productionPhilosophy": "AIOS VR experiences are production-grade Human Consumable realities. No time pressure, no minimum viable product. AIOSEmergentSeedAgent continuously discovers capability gaps and seeds new optimization proposals. AIOSAssetMinerAgent mines real-world data for photorealistic assets. The pipeline aspires to be more — always — and seeds those aspirations back into every experience."
   },
   "events": [
     {
