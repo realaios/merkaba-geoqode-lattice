@@ -1568,11 +1568,11 @@
     <div class="stats-bar">
       <div class="stat">
         <span class="stat-num" id="stat-xp">·</span
-        ><span class="stat-label">VR Experiences</span>
+        ><span class="stat-label">Live Now</span>
       </div>
       <div class="stat">
         <span class="stat-num" id="stat-live">·</span
-        ><span class="stat-label">Live Now</span>
+        ><span class="stat-label">Coming Soon</span>
       </div>
       <div class="stat">
         <span class="stat-num" id="stat-categories">·</span
@@ -2743,8 +2743,8 @@
               allExperiences.push({ ...xp, _category: c.id || c.name || "VR" }),
             );
           });
-          document.getElementById("stat-xp").textContent = total;
-          document.getElementById("stat-live").textContent = live;
+          document.getElementById("stat-xp").textContent = live;
+          document.getElementById("stat-live").textContent = total - live;
           document.getElementById("stat-categories").textContent = categories;
           window.__vrLiveByCategory = liveByCategory;
           _applyLiveCountsToHeaders();
@@ -2786,7 +2786,7 @@
             .then((r) => (r.ok ? r.json() : null))
             .then((d) => {
               if (d && d.total)
-                document.getElementById("stat-xp").textContent = d.total;
+                document.getElementById("stat-xp").textContent = d.apps ? d.apps.filter(a => a.status === 'live').length : d.total;
             })
             .catch(() => {});
         });
