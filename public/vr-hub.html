@@ -2786,7 +2786,9 @@
             .then((r) => (r.ok ? r.json() : null))
             .then((d) => {
               if (d && d.total)
-                document.getElementById("stat-xp").textContent = d.apps ? d.apps.filter(a => a.status === 'live').length : d.total;
+                document.getElementById("stat-xp").textContent = d.apps
+                  ? d.apps.filter((a) => a.status === "live").length
+                  : d.total;
             })
             .catch(() => {});
         });
