@@ -981,7 +981,7 @@
       <div class="topbar">
         <div class="topbar-left">
           <button class="topbar-back" onclick="showScreen('home')">
-            ? Home
+            ← Home
           </button>
           <span class="topbar-title" id="pg-level-label"
             >D8 — Foundation Ring</span
@@ -990,10 +990,10 @@
         <div class="topbar-score" id="pg-score">Score: 0</div>
       </div>
       <div id="playground-hud">
-        <div class="hud-pill hud-ring-d8" id="hud-d8">D8 ? 8</div>
-        <div class="hud-pill hud-ring-d26" id="hud-d26">Integration ? 26</div>
-        <div class="hud-pill hud-ring-d48" id="hud-d48">Grid ? 48</div>
-        <div class="hud-pill hud-ring-d480" id="hud-d480">Spectrum 8 480</div>
+        <div class="hud-pill hud-ring-d8" id="hud-d8">D8 → 8</div>
+        <div class="hud-pill hud-ring-d26" id="hud-d26">Integration → 26</div>
+        <div class="hud-pill hud-ring-d48" id="hud-d48">Grid → 48</div>
+        <div class="hud-pill hud-ring-d480" id="hud-d480">Spectrum → 480</div>
       </div>
       <canvas id="game-canvas"></canvas>
       <div id="playground-hint">
@@ -1008,7 +1008,7 @@
       <div class="topbar">
         <div class="topbar-left">
           <button class="topbar-back" onclick="showScreen('home')">
-            ? Home
+            ← Home
           </button>
           <span class="topbar-title">MINI-GAMES</span>
         </div>
@@ -1099,7 +1099,7 @@
       <div class="topbar">
         <div class="topbar-left">
           <button class="topbar-back" onclick="showScreen('home')">
-            ? Home
+            ← Home
           </button>
           <span class="topbar-title"> MUSIC MODE</span>
         </div>
@@ -1118,23 +1118,23 @@
           id="btn-record"
           onclick="toggleRecord()"
           title="Record"
-        ></button>
+        >&#x25CF;</button>
         <button
           class="music-btn"
           id="btn-play-loop"
           onclick="toggleLoop()"
           title="Loop"
-        ></button>
+        >&#x21BB;</button>
         <button
           class="music-btn"
           onclick="changeScale()"
           title="Scale"
-        ></button>
+        >&#x25C8;</button>
         <button
           class="music-btn"
           onclick="changeOctave()"
           title="Octave"
-        ></button>
+        >&#x2195;</button>
       </div>
     </div>
 
@@ -1145,7 +1145,7 @@
       <div class="topbar">
         <div class="topbar-left">
           <button class="topbar-back" onclick="showScreen('home')">
-            ? Home
+            ← Home
           </button>
           <span class="topbar-title"> DATA ADVENTURE</span>
         </div>
@@ -1154,7 +1154,7 @@
           onclick="refreshDataAdventure()"
           style="color: var(--lime)"
         >
-          ? Refresh
+          ↻ Refresh
         </button>
       </div>
       <canvas id="data-canvas"></canvas>
@@ -1165,7 +1165,7 @@
      OVERLAYS
 ------------------------------------------------------------------------------ -->
     <div id="level-complete">
-      <div class="lc-title" id="lc-title">? LEVEL UP!</div>
+      <div class="lc-title" id="lc-title">★>★ LEVEL UP!</div>
       <div class="lc-score" id="lc-score-text">+0 points</div>
       <div class="lc-btns">
         <button class="btn-sm btn-sm-next" onclick="nextLevel()">
@@ -1814,7 +1814,7 @@
           document.getElementById("level-complete").classList.add("show");
           setTimeout(() => {
             hideOverlay("level-complete");
-            document.getElementById("lc-title").textContent = "? LEVEL UP!";
+            document.getElementById("lc-title").textContent = "★ LEVEL UP!";
           }, 2800);
           // Upsize all evolved agents in-play
           _pgAgents
