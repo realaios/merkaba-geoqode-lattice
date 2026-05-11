@@ -1433,6 +1433,101 @@
           panelAngle: 224,
           gridNode: 21,
         },
+        // -- Open Worlds (GTA-style city exploration) ----------------------
+        {
+          name: "liberty-city-vr",
+          display: "Liberty City \u00b7 Open World Tour",
+          sem: "ACTION",
+          cat: "open_worlds",
+          desc: "GTA-inspired Liberty City from real New York OSM geometry. 6 boroughs, 400 city blocks, procedural traffic and pedestrian AI. Free-roam in full 6DoF VR.",
+          shortDesc: "400 city blocks. Free-roam. Your rules.",
+          panelAngle: 230,
+          gridNode: 5,
+        },
+        {
+          name: "los-santos-cruise",
+          display: "Los Santos \u00b7 Aerial + Ground",
+          sem: "ACTION",
+          cat: "open_worlds",
+          desc: "Los Angeles mapped to GTA proportions. Helicopter aerial view transitions to street-level across Vinewood and the Port. Real USGS terrain heightmap for the surrounding hills.",
+          shortDesc: "From the sky to the streets. Explore Los Santos.",
+          panelAngle: 232,
+          gridNode: 7,
+        },
+        // -- Real Earth (Satellite + GPS) ----------------------------------
+        {
+          name: "google-earth-vr",
+          display: "Google Earth \u00b7 Any Coordinate",
+          sem: "LOCATION",
+          cat: "real_earth",
+          desc: "Enter any latitude/longitude and drop into 360\u00b0 satellite view. Zoom from low-Earth orbit to ground level. Google Maps satellite imagery + elevation API for realistic perspective. 417\u00a0Hz LOCATION anchor.",
+          shortDesc: "Any GPS coordinate. Orbit to ground. Your world.",
+          panelAngle: 240,
+          gridNode: 9,
+        },
+        {
+          name: "everest-summit",
+          display: "Everest Summit \u00b7 8848m",
+          sem: "LOCATION",
+          cat: "real_earth",
+          desc: "Stand on top of the world. Photorealistic Everest summit from satellite photogrammetry and USGS 30m DEM terrain. NASA Landsat true-colour drape. Freesound high-altitude wind audio.",
+          shortDesc: "8848 metres. The thin edge of sky and rock.",
+          panelAngle: 242,
+          gridNode: 15,
+        },
+        // -- Space Missions (NASA / SpaceX public domain) ------------------
+        {
+          name: "spacex-falcon9",
+          display: "Falcon 9 \u00b7 Launch + Landing",
+          sem: "PHYSICS",
+          cat: "space_missions",
+          desc: "Full Falcon 9 mission: launch pad T-5 through MECO, payload deploy, and autonomous booster landing on drone ship. SpaceX Flickr CC0 imagery. NASA rocket audio archive.",
+          shortDesc: "T-minus 5. Ignition. Booster recovery. History.",
+          panelAngle: 250,
+          gridNode: 17,
+        },
+        {
+          name: "iss-spacewalk",
+          display: "ISS Spacewalk \u00b7 NASA EVA",
+          sem: "PHYSICS",
+          cat: "space_missions",
+          desc: "Outside the ISS at 408\u00a0km altitude. EVA in full 6DoF \u2014 handrails, solar arrays, Earth below. NASA 3D ISS model. 852\u00a0Hz PHYSICS resonance. The only view that makes you feel it.",
+          shortDesc: "408 km up. No floor. Earth fills your visor.",
+          panelAngle: 252,
+          gridNode: 23,
+        },
+        {
+          name: "mars-perseverance",
+          display: "Mars Surface \u00b7 Perseverance",
+          sem: "PHYSICS",
+          cat: "space_missions",
+          desc: "Walk the Martian surface with Perseverance. Real NASA Mars mission imagery (public domain) draped on USGS Mars DEM terrain of Jezero Crater. Perseverance rover 3D model from NASA public resources.",
+          shortDesc: "Real Mars. Real dust. Real exploration.",
+          panelAngle: 254,
+          gridNode: 25,
+        },
+        // -- Medical VR (NIH + Open Anatomy) -------------------------------
+        {
+          name: "anatomy-atlas",
+          display: "Human Anatomy \u00b7 Full Body Atlas",
+          sem: "ENTITY",
+          cat: "medical_vr",
+          desc: "Complete human body explorer \u2014 11 organ systems from skeletal to nervous to cardiovascular. NIH 3D Print Exchange CC0 models + Harvard Open Anatomy GLTF atlas. Select any structure for AI-narrated explanation.",
+          shortDesc: "Every system. Every structure. Navigate the body.",
+          panelAngle: 260,
+          gridNode: 27,
+        },
+        // -- Design & Engineering (Sketchfab CC0 / NASA models) ------------
+        {
+          name: "mars-habitat",
+          display: "Mars Habitat \u00b7 SpaceX Architecture",
+          sem: "PHYSICS",
+          cat: "design_engineering",
+          desc: "Walk through proposed Mars habitat architecture \u2014 inflatable modules, regolith shielding, hydroponic bays, life support corridors. SpaceX/NASA concept geometry from public domain. 852\u00a0Hz PHYSICS structural resonance.",
+          shortDesc: "Where humanity will live. First look at the plan.",
+          panelAngle: 270,
+          gridNode: 29,
+        },
       ];
 
       // -- MAL Scene Map: programme name -> .geoassets scene ID -------------
@@ -1495,6 +1590,35 @@
         "backlot-siege": "the_simulation",
         "tilted-zone": "quantum_field",
         "battle-royale-100": "deep_space",
+        // Open Worlds — GTA-style city exploration
+        "liberty-city-vr": "the_simulation",
+        "los-santos-cruise": "the_simulation",
+        "cyberpunk-night": "the_simulation",
+        "countryside-road": "forest_528",
+        "city-generator": "the_simulation",
+        // Real Earth — Satellite + GPS
+        "google-earth-vr": "deep_space",
+        "everest-summit": "forest_528",
+        "amazon-canopy": "forest_528",
+        "great-barrier-reef": "ocean_presence",
+        "iceland-volcano": "forest_528",
+        // Space Missions — NASA / SpaceX public domain
+        "spacex-falcon9": "deep_space",
+        "iss-spacewalk": "iss_zero_gravity",
+        "mars-perseverance": "deep_space",
+        "hubble-deep-field": "deep_space",
+        "artemis-moonwalk": "iss_zero_gravity",
+        "jwst-nebula": "merkaba_space",
+        // Medical VR — NIH CC0 anatomy models
+        "anatomy-atlas": "quantum_field",
+        "brain-tour": "quantum_field",
+        "cardiac-surgery-vr": "quantum_field",
+        "dna-double-helix": "quantum_field",
+        // Design & Engineering
+        "mars-habitat": "the_simulation",
+        "sagrada-familia": "colosseum_time_gate",
+        "formula1-pit": "the_simulation",
+        "bridge-analysis": "the_simulation",
       };
 
       // -- MAL Loader: dynamic import of the scene builder module ----------
@@ -1635,6 +1759,60 @@
           })
           .catch(() => {});
       }
+
+      // -- AI Narrator (Web Speech API + ElevenLabs upgrade path) ----------
+      const VRNarrator = {
+        enabled: true,
+        _voices: [],
+        _ready: false,
+        init() {
+          if (!window.speechSynthesis) return;
+          const load = () => {
+            this._voices = window.speechSynthesis.getVoices();
+            this._ready = this._voices.length > 0;
+          };
+          load();
+          window.speechSynthesis.onvoiceschanged = load;
+        },
+        _pickVoice() {
+          const prefer = [
+            v => v.lang === 'en-US' && /google/i.test(v.name),
+            v => v.lang === 'en-GB' && /google/i.test(v.name),
+            v => v.lang.startsWith('en') && /google/i.test(v.name),
+            v => v.lang.startsWith('en'),
+          ];
+          for (const fn of prefer) {
+            const hit = this._voices.find(fn);
+            if (hit) return hit;
+          }
+          return this._voices[0] || null;
+        },
+        speak(text, rate, pitch) {
+          if (!this.enabled || !window.speechSynthesis || !text) return;
+          window.speechSynthesis.cancel();
+          const u = new SpeechSynthesisUtterance(text);
+          u.rate  = (rate  != null) ? rate  : 0.9;
+          u.pitch = (pitch != null) ? pitch : 0.95;
+          u.volume = 0.8;
+          const v = this._pickVoice();
+          if (v) u.voice = v;
+          window.speechSynthesis.speak(u);
+        },
+        narrateScene(prog) {
+          if (!prog) return;
+          const text = prog.shortDesc || prog.desc || prog.display || '';
+          this.speak(text);
+        },
+        stop() {
+          window.speechSynthesis && window.speechSynthesis.cancel();
+        },
+        toggle() {
+          this.enabled = !this.enabled;
+          if (!this.enabled) this.stop();
+          return this.enabled;
+        }
+      };
+      VRNarrator.init();
 
       // -- A-Frame Scene Builder --------------------------------------------
       function buildAFrameScene(startProg) {
@@ -1978,6 +2156,7 @@
               </a-scene>` +
               narrativeHTML;
             startAmbientTone(semHz);
+            VRNarrator.narrateScene(PROGRAMMES.find(p => p.name === currentProg));
           })
           .catch(() => {
             // Fallback: legacy sphere/panel scene
