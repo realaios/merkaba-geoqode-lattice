@@ -1,29 +1,29 @@
-<!doctype html>
+ï»¿<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-    <title>PHI/PSI Dual Attestation — AIOS Swarm</title>
+    <title>PHI/PSI Dual Attestation ï¿½ AIOS Swarm</title>
     <meta
       name="description"
-      content="Every critical AIOS decision verified by two opposing AI poles before execution. PHI/PSI dual attestation — coherence score 1.0, zero echo-chamber by design."
+      content="Every critical AIOS decision verified by two opposing AI poles before execution. PHI/PSI dual attestation ï¿½ coherence score 1.0, zero echo-chamber by design."
     />
-    <meta property="og:title" content="PHI/PSI Dual Attestation — AIOS" />
+    <meta property="og:title" content="PHI/PSI Dual Attestation ï¿½ AIOS" />
     <meta
       property="og:description"
-      content="Two independent AI verification agents cross-validate every decision from opposite poles. Coherence 1.0 — not a feature, a law."
+      content="Two independent AI verification agents cross-validate every decision from opposite poles. Coherence 1.0 ï¿½ not a feature, a law."
     />
     <meta property="og:url" content="https://realaios.com/attest" />
     <meta
       property="og:image"
-      content="https://realaios.com/public/og-image.svg"
+      content="https://realaios.com/public/og-image.png"
     />
     <meta property="og:type" content="website" />
     <meta name="twitter:card" content="summary_large_image" />
     <link rel="icon" type="image/svg+xml" href="/public/favicon.svg" />
     <meta
       name="twitter:title"
-      content="PHI/PSI Dual Attestation — AIOS Swarm"
+      content="PHI/PSI Dual Attestation ï¿½ AIOS Swarm"
     />
     <meta
       name="twitter:description"
@@ -31,7 +31,7 @@
     />
     <meta
       name="twitter:image"
-      content="https://realaios.com/public/og-image.svg"
+      content="https://realaios.com/public/og-image.png"
     />
     <link rel="canonical" href="https://realaios.com/attest" />
     <style>
@@ -533,7 +533,7 @@
       <h1>PHI/PSI Dual Attestation</h1>
       <p class="subtitle">
         Run any content through the BESX Alpha (f=1.618) and Witness Omega
-        (?=1.414) scanner pair. Genuinely distinct geometric poles — cannot
+        (?=1.414) scanner pair. Genuinely distinct geometric poles ï¿½ cannot
         echo-chamber.
       </p>
 
@@ -599,7 +599,7 @@ Try: a research hypothesis, a system design decision, or a code review snippet."
                   id="phiScore"
                   style="color: var(--muted)"
                 >
-                  —
+                  ï¿½
                 </div>
                 <div class="pole-sub">S1 ? S8</div>
               </div>
@@ -612,7 +612,7 @@ Try: a research hypothesis, a system design decision, or a code review snippet."
                   id="psiScore"
                   style="color: var(--muted)"
                 >
-                  —
+                  ï¿½
                 </div>
                 <div class="pole-sub">S8 ? S1</div>
               </div>
@@ -632,11 +632,11 @@ Try: a research hypothesis, a system design decision, or a code review snippet."
 
             <div class="stat-row">
               <span class="stat-key">Attested Score</span
-              ><span class="stat-val" id="attestedScore">—</span>
+              ><span class="stat-val" id="attestedScore">ï¿½</span>
             </div>
             <div class="stat-row">
               <span class="stat-key">Coherence</span
-              ><span class="stat-val" id="coherenceVal">—</span>
+              ><span class="stat-val" id="coherenceVal">ï¿½</span>
             </div>
             <div class="stat-row">
               <span class="stat-key">Platform</span
@@ -653,7 +653,7 @@ Try: a research hypothesis, a system design decision, or a code review snippet."
       const EXAMPLES = [
         "Hypothesis: Deploying a zero-trust authentication layer with biometric second factor and hardware key backup achieves the optimal balance between security strength and user friction for an enterprise context.",
         "Decision: We should deploy the new authentication system to production. It uses JWT tokens with 256-bit secrets, parameterized SQL queries, and rate limiting at 100 req/15min. The system has been tested against OWASP Top 10 vulnerabilities.",
-        "INT. THE CONSTRUCT. Neo stands in a white room. MORPHEUS offers two pills. ACTION: Neo reaches for the red pill. PHYSICS: The simulation begins to dissolve. LOCATION: Machine fields — 852Hz structural order. NARRATIVE: The awakening begins.",
+        "INT. THE CONSTRUCT. Neo stands in a white room. MORPHEUS offers two pills. ACTION: Neo reaches for the red pill. PHYSICS: The simulation begins to dissolve. LOCATION: Machine fields ï¿½ 852Hz structural order. NARRATIVE: The awakening begins.",
       ];
       let exIdx = 0;
 
@@ -665,13 +665,13 @@ Try: a research hypothesis, a system design decision, or a code review snippet."
 
       function setScore(id, score) {
         const el = document.getElementById(id);
-        if (score === null || score === undefined || score === "—") {
-          el.textContent = "—";
+        if (score === null || score === undefined || score === "ï¿½") {
+          el.textContent = "ï¿½";
           el.style.color = "var(--muted)";
           return;
         }
         const val = typeof score === "number" ? score : parseFloat(score);
-        el.textContent = isNaN(val) ? "—" : val.toFixed(3);
+        el.textContent = isNaN(val) ? "ï¿½" : val.toFixed(3);
         el.style.color =
           val >= 0.9
             ? "var(--green)"
@@ -693,23 +693,23 @@ Try: a research hypothesis, a system design decision, or a code review snippet."
         if (coherence >= 0.99) {
           box.classList.add("verdict-attested");
           icon.textContent = "?";
-          text.textContent = "SCANNER_ATTESTED — ABSOLUTE";
-          sub.textContent = `Coherence ${(coherence * 100).toFixed(1)}% — attestation complete`;
+          text.textContent = "SCANNER_ATTESTED ï¿½ ABSOLUTE";
+          sub.textContent = `Coherence ${(coherence * 100).toFixed(1)}% ï¿½ attestation complete`;
         } else if (coherence >= 0.8) {
           box.classList.add("verdict-attested");
           icon.textContent = "?";
-          text.textContent = "ATTESTED — NOMINAL";
-          sub.textContent = `Score ${attested?.toFixed(3) || "—"} — coherence ${(coherence * 100).toFixed(1)}%`;
+          text.textContent = "ATTESTED ï¿½ NOMINAL";
+          sub.textContent = `Score ${attested?.toFixed(3) || "ï¿½"} ï¿½ coherence ${(coherence * 100).toFixed(1)}%`;
         } else if (coherence >= 0.5) {
           box.classList.add("verdict-warning");
           icon.textContent = "?";
           text.textContent = "PARTIAL ATTESTATION";
-          sub.textContent = `Coherence ${(coherence * 100).toFixed(1)}% — PHI/PSI poles diverge`;
+          sub.textContent = `Coherence ${(coherence * 100).toFixed(1)}% ï¿½ PHI/PSI poles diverge`;
         } else {
           box.classList.add("verdict-fail");
           icon.textContent = "?";
           text.textContent = "ATTESTATION FAILED";
-          sub.textContent = `Coherence ${(coherence * 100).toFixed(1)}% — below critical threshold`;
+          sub.textContent = `Coherence ${(coherence * 100).toFixed(1)}% ï¿½ below critical threshold`;
         }
       }
 
@@ -726,8 +726,8 @@ Try: a research hypothesis, a system design decision, or a code review snippet."
         document.getElementById("verdictBox").style.display = "none";
         setScore("phiScore", null);
         setScore("psiScore", null);
-        document.getElementById("attestedScore").textContent = "—";
-        document.getElementById("coherenceVal").textContent = "—";
+        document.getElementById("attestedScore").textContent = "ï¿½";
+        document.getElementById("coherenceVal").textContent = "ï¿½";
 
         try {
           // Get system attestation score
@@ -788,7 +788,7 @@ Try: a research hypothesis, a system design decision, or a code review snippet."
 
       async function runSystemSweep() {
         document.getElementById("sweepResult").innerHTML =
-          '<div class="placeholder">Sweeping 7 lattice source files—</div>';
+          '<div class="placeholder">Sweeping 7 lattice source filesï¿½</div>';
         try {
           const r = await fetch(BASE + "/swarm/sweep?attest=1");
           const d = await r.json();
@@ -802,7 +802,7 @@ Try: a research hypothesis, a system design decision, or a code review snippet."
         <div class="finding-cell"><div class="finding-count count-medium">${f.medium || 0}</div><div class="finding-label">Medium</div></div>
         <div class="finding-cell"><div class="finding-count count-low">${f.low || 0}</div><div class="finding-label">Low</div></div>
       </div>
-      <div class="stat-row" style="margin-bottom:12px"><span class="stat-key">Ecosystem Status</span><span style="color:var(--green);font-weight:700">${d.ecosystemStatus || "—"}</span></div>
+      <div class="stat-row" style="margin-bottom:12px"><span class="stat-key">Ecosystem Status</span><span style="color:var(--green);font-weight:700">${d.ecosystemStatus || "ï¿½"}</span></div>
       <div class="stat-row" style="margin-bottom:12px"><span class="stat-key">Swarm Coherence</span><span style="color:var(--cyan);font-weight:700">${((d.swarmCoherence || 0) * 100).toFixed(1)}%</span></div>
       <div class="file-list">
         ${files

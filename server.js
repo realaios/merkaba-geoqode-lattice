@@ -4320,7 +4320,7 @@ const server = createServer(async (req, res) => {
           url: `https://realaios.com/products/${p.slug}`,
         })),
       });
-      const html = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>AIOS Products — AI-Native Tools Built on Merkaba OS</title><meta name="description" content="Six AI-native products built on the AIOS Merkaba OS. App factory, AI attestation, uptime intelligence, hallucination detection, signal marketplace, and semantic matching."><meta property="og:title" content="AIOS Products"><meta property="og:description" content="AI-native tools built on autonomous OS geometry."><meta property="og:image" content="https://realaios.com/public/og-image.svg"><meta property="og:url" content="https://realaios.com/products"><meta property="og:type" content="website"><link rel="canonical" href="https://realaios.com/products"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="https://realaios.com/public/og-image.svg"><script type="application/ld+json">${productListLD}</script>${GSC_TOKEN ? `<meta name="google-site-verification" content="${GSC_TOKEN}"/>` : ""}<script async src="https://www.googletagmanager.com/gtag/js?id=${GA_ID}"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','${GA_ID}',{send_page_view:true});</script><style>*{margin:0;padding:0;box-sizing:border-box}body{background:#0a0a0f;color:#fff;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;min-height:100vh}a{text-decoration:none}main{max-width:1000px;margin:0 auto;padding:5rem 2rem}.hero-label{font-size:0.78rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#00f5d4;margin-bottom:1rem}h1{font-size:clamp(2rem,5vw,3rem);font-weight:800;letter-spacing:-0.03em;margin-bottom:1rem}h1 span{background:linear-gradient(135deg,#00f5d4,#a855f7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}.hero-sub{font-size:1.05rem;color:#888;line-height:1.7;max-width:560px;margin-bottom:3rem}.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.25rem}footer{text-align:center;padding:4rem 2rem;color:#444;font-size:0.85rem;border-top:1px solid rgba(255,255,255,0.06);margin-top:4rem}@media(max-width:640px){main{padding:3rem 1.25rem}}nav.site-nav{position:fixed;top:0;left:0;right:0;z-index:200;height:54px;padding:0 24px;display:flex;align-items:center;gap:8px;background:rgba(5,10,20,0.92);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid rgba(0,212,255,0.1)}.site-nav-logo{font-size:18px;font-weight:800;color:#00d4ff;text-decoration:none;letter-spacing:-0.5px;white-space:nowrap;margin-right:4px;flex-shrink:0}.site-nav-links{display:flex;align-items:center;gap:2px;overflow-x:auto;scrollbar-width:none;flex:1;min-width:0}.site-nav-links::-webkit-scrollbar{display:none}.site-nav-links a{color:rgba(248,250,252,0.5);font-size:0.82rem;font-weight:500;text-decoration:none;padding:5px 10px;border-radius:6px;white-space:nowrap;transition:color .15s,background .15s;flex-shrink:0}.site-nav-links a:hover{color:#fff;background:rgba(255,255,255,0.07)}.site-nav-links a.active{color:#00d4ff;background:rgba(0,212,255,0.08)}.site-nav-right{display:flex;align-items:center;gap:10px;flex-shrink:0;margin-left:8px}.site-nav-live{display:inline-flex;align-items:center;gap:4px;font-size:0.72rem;font-weight:800;color:#ef4444;text-decoration:none;letter-spacing:.05em;animation:_snlive 1.2s ease-in-out infinite}@keyframes _snlive{0%,100%{opacity:1}50%{opacity:.5}}.site-nav-cta{background:#00d4ff;color:#000;font-weight:700;font-size:0.78rem;padding:6px 14px;border-radius:6px;text-decoration:none;letter-spacing:.3px;transition:opacity .2s;white-space:nowrap}.site-nav-cta:hover{opacity:.85}@media(max-width:640px){nav.site-nav{padding:0 12px;height:50px}.site-nav-live{display:none}.site-nav-logo{font-size:16px}}body{padding-top:54px}@media(max-width:640px){body{padding-top:50px}}</style></head><body><nav class="site-nav"><a href="/" class="site-nav-logo">&#x2B21; AIOS</a><div class="site-nav-links"><a href="/experiences">Experiences</a><a href="/vr-hub">VR Hub</a><a href="/vr">&#x1F97D; VR</a><a href="/aiosdream">Cinema</a><a href="/experiences">&#x1F4DA; Library</a><a href="/geo-codec">.geo</a><a href="/experiences">Studio</a><a href="/lab">Lab</a><a href="/news">&#x1F4F0; News</a><a href="/products" class="active">&#x26A1; Products</a></div><div class="site-nav-right"><a href="/live" class="site-nav-live">&#x25CF; LIVE</a><a href="/start" class="site-nav-cta">Start Free &#x2192;</a></div></nav><main><div class="hero-label">AIOS Product Suite</div><h1>Built for the <span>AI-Native Era</span></h1><p class="hero-sub">Six intelligent products running on AIOS Merkaba OS. Self-healing, semantically grounded, and geometrically sound.</p><div class="grid">${cardsHTML}</div></main><footer>© 2026 AIOS — realaios.com</footer></body></html>`;
+      const html = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>AIOS Products — AI-Native Tools Built on Merkaba OS</title><meta name="description" content="Six AI-native products built on the AIOS Merkaba OS. App factory, AI attestation, uptime intelligence, hallucination detection, signal marketplace, and semantic matching."><meta property="og:title" content="AIOS Products"><meta property="og:description" content="AI-native tools built on autonomous OS geometry."><meta property="og:image" content="https://realaios.com/public/og-image.png"><meta property="og:url" content="https://realaios.com/products"><meta property="og:type" content="website"><link rel="canonical" href="https://realaios.com/products"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="https://realaios.com/public/og-image.png"><script type="application/ld+json">${productListLD}</script>${GSC_TOKEN ? `<meta name="google-site-verification" content="${GSC_TOKEN}"/>` : ""}<script async src="https://www.googletagmanager.com/gtag/js?id=${GA_ID}"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','${GA_ID}',{send_page_view:true});</script><style>*{margin:0;padding:0;box-sizing:border-box}body{background:#0a0a0f;color:#fff;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;min-height:100vh}a{text-decoration:none}main{max-width:1000px;margin:0 auto;padding:5rem 2rem}.hero-label{font-size:0.78rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#00f5d4;margin-bottom:1rem}h1{font-size:clamp(2rem,5vw,3rem);font-weight:800;letter-spacing:-0.03em;margin-bottom:1rem}h1 span{background:linear-gradient(135deg,#00f5d4,#a855f7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}.hero-sub{font-size:1.05rem;color:#888;line-height:1.7;max-width:560px;margin-bottom:3rem}.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.25rem}footer{text-align:center;padding:4rem 2rem;color:#444;font-size:0.85rem;border-top:1px solid rgba(255,255,255,0.06);margin-top:4rem}@media(max-width:640px){main{padding:3rem 1.25rem}}nav.site-nav{position:fixed;top:0;left:0;right:0;z-index:200;height:54px;padding:0 24px;display:flex;align-items:center;gap:8px;background:rgba(5,10,20,0.92);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid rgba(0,212,255,0.1)}.site-nav-logo{font-size:18px;font-weight:800;color:#00d4ff;text-decoration:none;letter-spacing:-0.5px;white-space:nowrap;margin-right:4px;flex-shrink:0}.site-nav-links{display:flex;align-items:center;gap:2px;overflow-x:auto;scrollbar-width:none;flex:1;min-width:0}.site-nav-links::-webkit-scrollbar{display:none}.site-nav-links a{color:rgba(248,250,252,0.5);font-size:0.82rem;font-weight:500;text-decoration:none;padding:5px 10px;border-radius:6px;white-space:nowrap;transition:color .15s,background .15s;flex-shrink:0}.site-nav-links a:hover{color:#fff;background:rgba(255,255,255,0.07)}.site-nav-links a.active{color:#00d4ff;background:rgba(0,212,255,0.08)}.site-nav-right{display:flex;align-items:center;gap:10px;flex-shrink:0;margin-left:8px}.site-nav-live{display:inline-flex;align-items:center;gap:4px;font-size:0.72rem;font-weight:800;color:#ef4444;text-decoration:none;letter-spacing:.05em;animation:_snlive 1.2s ease-in-out infinite}@keyframes _snlive{0%,100%{opacity:1}50%{opacity:.5}}.site-nav-cta{background:#00d4ff;color:#000;font-weight:700;font-size:0.78rem;padding:6px 14px;border-radius:6px;text-decoration:none;letter-spacing:.3px;transition:opacity .2s;white-space:nowrap}.site-nav-cta:hover{opacity:.85}@media(max-width:640px){nav.site-nav{padding:0 12px;height:50px}.site-nav-live{display:none}.site-nav-logo{font-size:16px}}body{padding-top:54px}@media(max-width:640px){body{padding-top:50px}}</style></head><body><nav class="site-nav"><a href="/" class="site-nav-logo">&#x2B21; AIOS</a><div class="site-nav-links"><a href="/experiences">Experiences</a><a href="/vr-hub">VR Hub</a><a href="/vr">&#x1F97D; VR</a><a href="/aiosdream">Cinema</a><a href="/experiences">&#x1F4DA; Library</a><a href="/geo-codec">.geo</a><a href="/experiences">Studio</a><a href="/lab">Lab</a><a href="/news">&#x1F4F0; News</a><a href="/products" class="active">&#x26A1; Products</a></div><div class="site-nav-right"><a href="/live" class="site-nav-live">&#x25CF; LIVE</a><a href="/start" class="site-nav-cta">Start Free &#x2192;</a></div></nav><main><div class="hero-label">AIOS Product Suite</div><h1>Built for the <span>AI-Native Era</span></h1><p class="hero-sub">Six intelligent products running on AIOS Merkaba OS. Self-healing, semantically grounded, and geometrically sound.</p><div class="grid">${cardsHTML}</div></main><footer>© 2026 AIOS — realaios.com</footer></body></html>`;
       res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
       res.end(html);
       return;
@@ -4532,14 +4532,14 @@ const server = createServer(async (req, res) => {
 <meta name="description" content="${product.tagline}">
 <meta property="og:title" content="${product.name} — AIOS">
 <meta property="og:description" content="${product.tagline}">
-<meta property="og:image" content="https://realaios.com/public/og-image.svg">
+<meta property="og:image" content="https://realaios.com/public/og-image.png">
 <meta property="og:url" content="https://realaios.com/products/${slug}">
 <meta property="og:type" content="website">
 <link rel="canonical" href="https://realaios.com/products/${slug}">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="${product.name} — AIOS">
 <meta name="twitter:description" content="${product.tagline}">
-<meta name="twitter:image" content="https://realaios.com/public/og-image.svg">
+<meta name="twitter:image" content="https://realaios.com/public/og-image.png">
 ${GSC_TOKEN ? `<meta name="google-site-verification" content="${GSC_TOKEN}"/>` : ""}
 <script async src="https://www.googletagmanager.com/gtag/js?id=${GA_ID}"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','${GA_ID}',{send_page_view:true,cookie_flags:'SameSite=None;Secure'});</script>
 <style>
@@ -6898,13 +6898,13 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
 <meta property="og:title" content="${title}"/>
 <meta property="og:description" content="${desc.slice(0, 200)}"/>
 <meta property="og:url" content="${shareUrl}"/>
-<meta property="og:image" content="https://realaios.com/public/og-image.svg"/>
+<meta property="og:image" content="https://realaios.com/public/og-image.png"/>
 <meta property="og:site_name" content="AIOS VR Platform"/>
 <!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:title" content="${title}"/>
 <meta name="twitter:description" content="${desc.slice(0, 200)}"/>
-<meta name="twitter:image" content="https://realaios.com/public/og-image.svg"/>
+<meta name="twitter:image" content="https://realaios.com/public/og-image.png"/>
 <!-- Structured Data -->
 <script type="application/ld+json">${JSON.stringify({
         "@context": "https://schema.org",
@@ -7054,11 +7054,11 @@ ${GSC_TOKEN ? `<meta name="google-site-verification" content="${GSC_TOKEN}"/>` :
 <meta property="og:description" content="Browse every live WebXR experience. Zero install — open on Meta Quest Browser."/>
 <meta property="og:url" content="https://realaios.com/experiences"/>
 <meta property="og:type" content="website"/>
-<meta property="og:image" content="https://realaios.com/public/og-image.svg"/>
+<meta property="og:image" content="https://realaios.com/public/og-image.png"/>
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:title" content="All ${allLive.length} Live VR Experiences — AIOS VR"/>
 <meta name="twitter:description" content="Browse every live WebXR experience. Zero install — open on Meta Quest Browser."/>
-<meta name="twitter:image" content="https://realaios.com/public/og-image.svg"/>
+<meta name="twitter:image" content="https://realaios.com/public/og-image.png"/>
 <script type="application/ld+json">${JSON.stringify({
         "@context": "https://schema.org",
         "@type": "ItemList",
@@ -7290,7 +7290,7 @@ function filterXP(cat, btn) {
           theme_color: "#00e5ff",
           icons: [
             {
-              src: "/public/og-image.svg",
+              src: "/public/og-image.png",
               sizes: "any",
               type: "image/svg+xml",
               purpose: "any maskable",
@@ -7311,7 +7311,7 @@ function filterXP(cat, btn) {
         "Service-Worker-Allowed": "/",
       });
       res.end(
-        `const CACHE='aios-v4';const STATIC=['/manifest.json','/public/og-image.svg','/aios-geo.js'];self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(STATIC).catch(()=>{})).then(()=>self.skipWaiting())));self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k!==CACHE).map(k=>caches.delete(k)))).then(()=>clients.claim())));self.addEventListener('fetch',e=>{if(e.request.method!=='GET')return;let u;try{u=new URL(e.request.url);if((u.protocol!=='https:'&&u.protocol!=='http:')||u.origin!==self.location.origin)return;}catch(_){return;}const accept=e.request.headers.get('accept')||'';const isHtml=e.request.mode==='navigate'||accept.includes('text/html');if(isHtml){e.respondWith(fetch(e.request,{cache:'no-store'}).catch(()=>caches.match(e.request)));return;}e.respondWith(caches.match(e.request).then(h=>h||fetch(e.request).then(r=>{if(r&&r.ok&&r.type==='basic'){const c=r.clone();caches.open(CACHE).then(x=>x.put(e.request,c).catch(()=>{}));}return r;})));});`,
+        `const CACHE='aios-v4';const STATIC=['/manifest.json','/public/og-image.png','/aios-geo.js'];self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(STATIC).catch(()=>{})).then(()=>self.skipWaiting())));self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k!==CACHE).map(k=>caches.delete(k)))).then(()=>clients.claim())));self.addEventListener('fetch',e=>{if(e.request.method!=='GET')return;let u;try{u=new URL(e.request.url);if((u.protocol!=='https:'&&u.protocol!=='http:')||u.origin!==self.location.origin)return;}catch(_){return;}const accept=e.request.headers.get('accept')||'';const isHtml=e.request.mode==='navigate'||accept.includes('text/html');if(isHtml){e.respondWith(fetch(e.request,{cache:'no-store'}).catch(()=>caches.match(e.request)));return;}e.respondWith(caches.match(e.request).then(h=>h||fetch(e.request).then(r=>{if(r&&r.ok&&r.type==='basic'){const c=r.clone();caches.open(CACHE).then(x=>x.put(e.request,c).catch(()=>{}));}return r;})));});`,
       );
       return;
     }
@@ -7362,13 +7362,13 @@ function filterXP(cat, btn) {
 <meta name="description" content="Latest updates from AIOS — autonomous OS architecture changes, VR platform launches, security hardening, and AI identity research. Machine-readable at /news.json."/>
 <meta property="og:title" content="AIOS News — What's Shipping in the Autonomous OS"/>
 <meta property="og:description" content="Geometric AI architecture updates, VR experience launches, security fixes, and research notes from the AIOS platform."/>
-<meta property="og:image" content="https://realaios.com/public/og-image.svg"/>
+<meta property="og:image" content="https://realaios.com/public/og-image.png"/>
 <meta property="og:url" content="https://realaios.com/news"/>
 <meta property="og:type" content="website"/>
 <link rel="canonical" href="https://realaios.com/news"/>
 <link rel="alternate" type="application/json" href="https://realaios.com/news.json" title="AIOS News JSON Feed"/>
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image" content="https://realaios.com/public/og-image.svg"/>
+<meta name="twitter:image" content="https://realaios.com/public/og-image.png"/>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Blog","name":"AIOS News","description":"Updates, releases, and architectural notes from AIOS — the Autonomous Intelligence Operating System at realaios.com","url":"https://realaios.com/news","blogPosts":${JSON.stringify(
         AIOS_NEWS.map((n) => ({
           "@type": "BlogPosting",
@@ -7499,13 +7499,13 @@ footer{text-align:center;padding:3rem 1.5rem;color:#334155;font-size:0.8rem;bord
 <meta property="og:title" content="${article.title}"/>
 <meta property="og:description" content="${article.summary.slice(0, 200)}"/>
 <meta property="og:url" content="${articleUrl}"/>
-<meta property="og:image" content="https://realaios.com/public/og-image.svg"/>
+<meta property="og:image" content="https://realaios.com/public/og-image.png"/>
 <meta property="og:site_name" content="AIOS News"/>
 <meta property="article:published_time" content="${article.date}T00:00:00Z"/>
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:title" content="${article.title}"/>
 <meta name="twitter:description" content="${article.summary.slice(0, 200)}"/>
-<meta name="twitter:image" content="https://realaios.com/public/og-image.svg"/>
+<meta name="twitter:image" content="https://realaios.com/public/og-image.png"/>
 ${GSC_TOKEN ? `<meta name="google-site-verification" content="${GSC_TOKEN}"/>` : ""}
 <link rel="preconnect" href="https://www.googletagmanager.com"/>
 <script async src="https://www.googletagmanager.com/gtag/js?id=${GA_ID}"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','${GA_ID}',{send_page_view:true});</script>
@@ -7528,7 +7528,7 @@ ${GSC_TOKEN ? `<meta name="google-site-verification" content="${GSC_TOKEN}"/>` :
           url: "https://realaios.com",
           logo: {
             "@type": "ImageObject",
-            url: "https://realaios.com/public/og-image.svg",
+            url: "https://realaios.com/public/og-image.png",
           },
         },
         mainEntityOfPage: articleUrl,
