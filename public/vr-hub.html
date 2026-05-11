@@ -9,7 +9,7 @@
     <title>AIOS VR Hub — Live Worlds, Zero Install</title>
     <meta
       name="description"
-      content="Live WebXR experiences for Meta Quest 2/3. Cinema, Enterprise, Lab, Arcade, Wellness, Social, Creator, Education, Art — browser only, no download."
+      content="Live WebXR experiences for Meta Quest 2/3. Cinema, Enterprise, Lab, PLAIstore VR, Wellness, Social, Creator, Education, Art — browser only, no download."
     />
     <meta
       property="og:title"
@@ -17,7 +17,7 @@
     />
     <meta
       property="og:description"
-      content="Live WebXR experiences across 9 categories: Cinema, Enterprise, Education, Arcade, Wellness, Social, Creator, Art & Music, Lab. Zero-install — open in Meta Quest Browser and dive in."
+      content="Live WebXR experiences across 9 categories: Cinema, Enterprise, Education, PLAIstore VR, Wellness, Social, Creator, Art & Music, Lab. Zero-install — open in Meta Quest Browser and dive in."
     />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://realaios.com/vr-hub" />
@@ -70,7 +70,7 @@
           {
             "@type": "ListItem",
             "position": 4,
-            "name": "Arcade",
+            "name": "PLAIstore VR",
             "url": "https://realaios.com/vr-hub#arcade"
           },
           {
@@ -1532,7 +1532,7 @@
       <h1 class="hero-title">Enter Any World.<br />Zero Install.</h1>
       <p class="hero-sub">
         Live WebXR experiences for Meta Quest 2/3. Cinema, Enterprise,
-        Education, Arcade, Wellness, Social, Art &amp; Music — all delivered
+        Education, PLAIstore VR, Wellness, Social, Art &amp; Music — all delivered
         through your Quest Browser. Open URL. Dive in.
       </p>
       <div class="hero-ctas">
@@ -1635,7 +1635,7 @@
         Enterprise</a
       >
       <a href="#lab" class="cat-pill" data-cat="lab"> Lab</a>
-      <a href="#arcade" class="cat-pill" data-cat="arcade"> Arcade</a>
+      <a href="#arcade" class="cat-pill" data-cat="arcade"> PLAIstore VR</a>
       <a href="#wellness" class="cat-pill" data-cat="wellness"> Wellness</a>
       <a href="#social" class="cat-pill" data-cat="social"> Social</a>
       <a href="#creator" class="cat-pill" data-cat="creator">Creator</a>
@@ -1860,27 +1860,61 @@
       <div class="xp-grid" id="social-grid"></div>
       <!-- The Lounge waitlist -->
       <div
-        const ARCADE_LIVE = [];
-        const ARCADE_TEASER = [
-          {
-            emoji: "🛍️",
-            title: "PLAIstore VR",
-            cat: "Catalog",
-            eta: "Live now",
-          },
-          {
-            emoji: "🥽",
-            title: "VR Hub",
-            cat: "Immersive",
-            eta: "Live now",
-          },
-          {
-            emoji: "🎬",
-            title: "AIOSdream",
-            cat: "Cinema",
-            eta: "Live now",
-          },
-        ];
+        style="
+          margin-top: 1.25rem;
+          background: rgba(0, 212, 255, 0.04);
+          border: 1px solid rgba(0, 212, 255, 0.12);
+          border-radius: 14px;
+          padding: 1rem 1.1rem;
+        "
+      >
+        <div
+          style="
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: #00d4ff;
+            margin-bottom: 0.35rem;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+          "
+        >
+          The Lounge waitlist
+        </div>
+        <div
+          style="
+            font-size: 0.84rem;
+            color: var(--muted);
+            line-height: 1.55;
+            margin-bottom: 0.9rem;
+          "
+        >
+          Join the queue for shared dimensional gatherings, live AI events, and
+          the next wave of AIOS social spaces.
+        </div>
+        <div
+          id="waitlist-form"
+          style="display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: center"
+        >
+          <input
+            id="waitlist-email"
+            type="email"
+            placeholder="Enter your email"
+            style="
+              flex: 1;
+              min-width: 220px;
+              background: rgba(255, 255, 255, 0.04);
+              border: 1px solid rgba(255, 255, 255, 0.12);
+              color: var(--text);
+              border-radius: 8px;
+              padding: 0.7rem 0.9rem;
+              font-size: 0.9rem;
+              outline: none;
+            "
+          />
+          <button
+            onclick="joinWaitlist()"
+            style="
+              background: #00d4ff;
               color: #000;
               border: none;
               border-radius: 7px;
@@ -2075,7 +2109,7 @@
         <div class="footer-col">
           <h4>Explore</h4>
           <a href="#lab">Lab</a>
-          <a href="#arcade">Arcade</a>
+          <a href="#arcade">PLAIstore VR</a>
           <a href="#wellness">Wellness</a>
           <a href="#social">Social</a>
           <a href="#creator">Creator</a>
