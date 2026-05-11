@@ -894,7 +894,6 @@ export function buildGeoMojiCoordinate(node) {
 //   const html = complexGeoMojiHTML('lattice-eye', { fontSize: '1.5em', color: '#00d4ff' });
 // ---------------------------------------------------------------------------
 export var COMPLEX_GEOMOJI = Object.freeze({
-
   // Human presence — person, user, avatar, agent
   "stick-figure": {
     label: "Person",
@@ -904,10 +903,24 @@ export var COMPLEX_GEOMOJI = Object.freeze({
     description:
       "Composed stick figure: circle-head + horizontal-arms + vertical-body + legs (4 BMP layers)",
     layers: [
-      { char: "\u25CB", dy: -0.50, dx: 0, scale: 0.34, rotate:  0, label: "head"  }, // \u25CB ○ circle-open
-      { char: "\u2500", dy: -0.16, dx: 0, scale: 0.60, rotate:  0, label: "arms"  }, // \u2500 ─ horizontal
-      { char: "\u2502", dy:  0.08, dx: 0, scale: 0.40, rotate:  0, label: "body"  }, // \u2502 │ vertical
-      { char: "\u2227", dy:  0.50, dx: 0, scale: 0.50, rotate:  0, label: "legs"  }, // \u2227 ∧ inverted-V
+      {
+        char: "\u25CB",
+        dy: -0.5,
+        dx: 0,
+        scale: 0.34,
+        rotate: 0,
+        label: "head",
+      }, // \u25CB ○ circle-open
+      {
+        char: "\u2500",
+        dy: -0.16,
+        dx: 0,
+        scale: 0.6,
+        rotate: 0,
+        label: "arms",
+      }, // \u2500 ─ horizontal
+      { char: "\u2502", dy: 0.08, dx: 0, scale: 0.4, rotate: 0, label: "body" }, // \u2502 │ vertical
+      { char: "\u2227", dy: 0.5, dx: 0, scale: 0.5, rotate: 0, label: "legs" }, // \u2227 ∧ inverted-V
     ],
   },
 
@@ -921,9 +934,30 @@ export var COMPLEX_GEOMOJI = Object.freeze({
     description:
       "Layered Merkaba eye: outer-circle + inner-diamond + centre-dot (PHI convergence, 3 layers)",
     layers: [
-      { char: "\u25CB", dy: 0, dx: 0, scale: 1.00, rotate:  0, label: "outer-circle"  }, // \u25CB ○
-      { char: "\u25C7", dy: 0, dx: 0, scale: 0.55, rotate:  0, label: "inner-diamond" }, // \u25C7 ◇
-      { char: "\u00B7", dy: 0, dx: 0, scale: 1.00, rotate:  0, label: "centre-dot"    }, // \u00B7 · middle-dot
+      {
+        char: "\u25CB",
+        dy: 0,
+        dx: 0,
+        scale: 1.0,
+        rotate: 0,
+        label: "outer-circle",
+      }, // \u25CB ○
+      {
+        char: "\u25C7",
+        dy: 0,
+        dx: 0,
+        scale: 0.55,
+        rotate: 0,
+        label: "inner-diamond",
+      }, // \u25C7 ◇
+      {
+        char: "\u00B7",
+        dy: 0,
+        dx: 0,
+        scale: 1.0,
+        rotate: 0,
+        label: "centre-dot",
+      }, // \u00B7 · middle-dot
     ],
   },
 
@@ -936,9 +970,30 @@ export var COMPLEX_GEOMOJI = Object.freeze({
     description:
       "PHI resonance field: outer-ring + inner-bullseye + rotated-star (harmonic composition)",
     layers: [
-      { char: "\u25CB", dy: 0, dx: 0, scale: 1.00, rotate:  0, label: "outer-ring"    }, // \u25CB ○
-      { char: "\u25CE", dy: 0, dx: 0, scale: 0.60, rotate:  0, label: "inner-bullseye" }, // \u25CE ◎ bullseye
-      { char: "\u2726", dy: 0, dx: 0, scale: 0.25, rotate: 45, label: "centre-star"   }, // \u2726 ✦ 4-star
+      {
+        char: "\u25CB",
+        dy: 0,
+        dx: 0,
+        scale: 1.0,
+        rotate: 0,
+        label: "outer-ring",
+      }, // \u25CB ○
+      {
+        char: "\u25CE",
+        dy: 0,
+        dx: 0,
+        scale: 0.6,
+        rotate: 0,
+        label: "inner-bullseye",
+      }, // \u25CE ◎ bullseye
+      {
+        char: "\u2726",
+        dy: 0,
+        dx: 0,
+        scale: 0.25,
+        rotate: 45,
+        label: "centre-star",
+      }, // \u2726 ✦ 4-star
     ],
   },
 
@@ -951,8 +1006,15 @@ export var COMPLEX_GEOMOJI = Object.freeze({
     description:
       "Upward flow: ascending filled-triangle above vertical stem (2 layers)",
     layers: [
-      { char: "\u25B2", dy: -0.28, dx: 0, scale: 0.55, rotate: 0, label: "arrow-head" }, // \u25B2 ▲
-      { char: "\u2502", dy:  0.22, dx: 0, scale: 0.50, rotate: 0, label: "stem"       }, // \u2502 │
+      {
+        char: "\u25B2",
+        dy: -0.28,
+        dx: 0,
+        scale: 0.55,
+        rotate: 0,
+        label: "arrow-head",
+      }, // \u25B2 ▲
+      { char: "\u2502", dy: 0.22, dx: 0, scale: 0.5, rotate: 0, label: "stem" }, // \u2502 │
     ],
   },
 
@@ -965,8 +1027,22 @@ export var COMPLEX_GEOMOJI = Object.freeze({
     description:
       "Downward flow: vertical stem above descending filled-triangle (2 layers)",
     layers: [
-      { char: "\u2502", dy: -0.22, dx: 0, scale: 0.50, rotate: 0, label: "stem"       }, // \u2502 │
-      { char: "\u25BC", dy:  0.28, dx: 0, scale: 0.55, rotate: 0, label: "arrow-head" }, // \u25BC ▼
+      {
+        char: "\u2502",
+        dy: -0.22,
+        dx: 0,
+        scale: 0.5,
+        rotate: 0,
+        label: "stem",
+      }, // \u2502 │
+      {
+        char: "\u25BC",
+        dy: 0.28,
+        dx: 0,
+        scale: 0.55,
+        rotate: 0,
+        label: "arrow-head",
+      }, // \u25BC ▼
     ],
   },
 
@@ -979,12 +1055,18 @@ export var COMPLEX_GEOMOJI = Object.freeze({
     description:
       "PHI broadcast signal: Phi-glyph at centre with 3 concentric signal arcs (4 layers)",
     layers: [
-      { char: "\u03A6", dy: 0,    dx: 0, scale: 0.45, rotate:  0, label: "phi-centre" }, // \u03A6 Φ
-      { char: "\u25CB", dy: 0,    dx: 0, scale: 0.75, rotate:  0, label: "ring-1"     }, // \u25CB ○
-      { char: "\u25CB", dy: 0,    dx: 0, scale: 1.00, rotate:  0, label: "ring-2"     }, // \u25CB ○ (outer)
+      {
+        char: "\u03A6",
+        dy: 0,
+        dx: 0,
+        scale: 0.45,
+        rotate: 0,
+        label: "phi-centre",
+      }, // \u03A6 Φ
+      { char: "\u25CB", dy: 0, dx: 0, scale: 0.75, rotate: 0, label: "ring-1" }, // \u25CB ○
+      { char: "\u25CB", dy: 0, dx: 0, scale: 1.0, rotate: 0, label: "ring-2" }, // \u25CB ○ (outer)
     ],
   },
-
 });
 
 /**
@@ -1004,33 +1086,41 @@ export function renderComplexGeoMoji(key, container, opts) {
     container.textContent = "\u25CE"; // fallback: bullseye (node 20)
     return container;
   }
-  var fontSize = (opts && opts.fontSize) ? opts.fontSize : "1em";
-  var color    = (opts && opts.color)    ? opts.color    : "inherit";
+  var fontSize = opts && opts.fontSize ? opts.fontSize : "1em";
+  var color = opts && opts.color ? opts.color : "inherit";
 
   container.innerHTML = "";
   container.setAttribute("aria-label", spec.label);
   container.setAttribute("role", "img");
-  container.style.display       = "inline-grid";
-  container.style.placeItems    = "center";
-  container.style.fontSize      = fontSize;
-  container.style.lineHeight    = "1";
-  container.style.color         = color;
-  container.style.userSelect    = "none";
+  container.style.display = "inline-grid";
+  container.style.placeItems = "center";
+  container.style.fontSize = fontSize;
+  container.style.lineHeight = "1";
+  container.style.color = color;
+  container.style.userSelect = "none";
   container.style.verticalAlign = "middle";
 
   spec.layers.forEach(function (layer) {
     var span = document.createElement("span");
     span.setAttribute("aria-hidden", "true");
     span.textContent = layer.char;
-    var dy  = (layer.dy     !== undefined ? layer.dy     : 0).toFixed(3);
-    var dx  = (layer.dx     !== undefined ? layer.dx     : 0).toFixed(3);
-    var sc  = (layer.scale  !== undefined ? layer.scale  : 1).toFixed(3);
-    var rot = (layer.rotate !== undefined ? layer.rotate : 0);
-    span.style.gridArea  = "1 / 1";
-    span.style.display   = "block";
+    var dy = (layer.dy !== undefined ? layer.dy : 0).toFixed(3);
+    var dx = (layer.dx !== undefined ? layer.dx : 0).toFixed(3);
+    var sc = (layer.scale !== undefined ? layer.scale : 1).toFixed(3);
+    var rot = layer.rotate !== undefined ? layer.rotate : 0;
+    span.style.gridArea = "1 / 1";
+    span.style.display = "block";
     span.style.textAlign = "center";
     span.style.transform =
-      "translate(" + dx + "em, " + dy + "em) scale(" + sc + ") rotate(" + rot + "deg)";
+      "translate(" +
+      dx +
+      "em, " +
+      dy +
+      "em) scale(" +
+      sc +
+      ") rotate(" +
+      rot +
+      "deg)";
     container.appendChild(span);
   });
   return container;
@@ -1053,9 +1143,9 @@ export function renderComplexGeoMoji(key, container, opts) {
 export function complexGeoMojiHTML(key, opts) {
   var spec = COMPLEX_GEOMOJI[key];
   if (!spec) return "<span>\u25CE</span>"; // fallback: bullseye
-  var fontSize = (opts && opts.fontSize)  ? opts.fontSize  : "1em";
-  var color    = (opts && opts.color)     ? opts.color     : "inherit";
-  var cssClass = (opts && opts.cssClass)  ? opts.cssClass  : "";
+  var fontSize = opts && opts.fontSize ? opts.fontSize : "1em";
+  var color = opts && opts.color ? opts.color : "inherit";
+  var cssClass = opts && opts.cssClass ? opts.cssClass : "";
 
   var containerStyle = [
     "display:inline-grid",
@@ -1067,22 +1157,32 @@ export function complexGeoMojiHTML(key, opts) {
     "vertical-align:middle",
   ].join(";");
 
-  var classAttr = cssClass ? (" class=\x22" + cssClass + "\x22") : "";
+  var classAttr = cssClass ? " class=\x22" + cssClass + "\x22" : "";
 
   var layers = spec.layers
     .map(function (layer) {
-      var dy  = (layer.dy     !== undefined ? layer.dy     : 0).toFixed(3);
-      var dx  = (layer.dx     !== undefined ? layer.dx     : 0).toFixed(3);
-      var sc  = (layer.scale  !== undefined ? layer.scale  : 1).toFixed(3);
-      var rot = (layer.rotate !== undefined ? layer.rotate : 0);
+      var dy = (layer.dy !== undefined ? layer.dy : 0).toFixed(3);
+      var dx = (layer.dx !== undefined ? layer.dx : 0).toFixed(3);
+      var sc = (layer.scale !== undefined ? layer.scale : 1).toFixed(3);
+      var rot = layer.rotate !== undefined ? layer.rotate : 0;
       var style = [
         "grid-area:1/1",
         "display:block",
         "text-align:center",
-        "transform:translate(" + dx + "em," + dy + "em) scale(" + sc + ") rotate(" + rot + "deg)",
+        "transform:translate(" +
+          dx +
+          "em," +
+          dy +
+          "em) scale(" +
+          sc +
+          ") rotate(" +
+          rot +
+          "deg)",
       ].join(";");
       return (
-        "<span aria-hidden=\x22true\x22 style=\x22" + style + "\x22>" +
+        "<span aria-hidden=\x22true\x22 style=\x22" +
+        style +
+        "\x22>" +
         layer.char +
         "</span>"
       );

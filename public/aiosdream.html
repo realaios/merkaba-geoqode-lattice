@@ -3904,9 +3904,8 @@
           <a href="/experiences"> Experiences</a>
           <a href="/vr"> VR</a>
           <a href="/vr-hub"> VR Hub</a>
-          
+
           <a href="/geo-codec"> .geo</a>
-          
         </div>
         <button
           class="nav-icon-btn"
@@ -3932,7 +3931,9 @@
             title="Notifications"
             onclick="_openNotif()"
             style="font-size: 21px; opacity: 0.7"
-          >&#x2733;</button>
+          >
+            &#x2733;
+          </button>
           <span
             class="q-badge"
             id="notif-badge"
@@ -3946,7 +3947,9 @@
             title="Ambient Mixer"
             onclick="_openAmb(event)"
             style="font-size: 21px; opacity: 0.55"
-          >&#x229A;</button>
+          >
+            &#x229A;
+          </button>
           <span
             class="q-badge"
             id="amb-badge"
@@ -3966,20 +3969,26 @@
             font-family: &quot;SF Mono&quot;, monospace;
             opacity: 0.55;
           "
-        >&#x229E;</button>
+        >
+          &#x229E;
+        </button>
         <button
           class="nav-icon-btn"
           title="Color Theme"
           onclick="_toggleThemePanel()"
           style="font-size: 20px; opacity: 0.55"
-        >&#x2726;</button>
+        >
+          &#x2726;
+        </button>
         <div style="position: relative">
           <div
             class="nav-avatar signed-out"
             id="nav-avatar"
             title="Profile"
             onclick="onAvatarClick()"
-          >&#x25CB;</div>
+          >
+            &#x25CB;
+          </div>
           <!-- Profile dropdown -->
           <div id="profile-drop">
             <div class="pdrop-header">
@@ -4081,7 +4090,9 @@
               document.getElementById('kbd-panel').classList.remove('open')
             "
             title="Close"
-          >&#x2715;</button>
+          >
+            &#x2715;
+          </button>
         </div>
         <div class="kbd-grid">
           <div class="kbd-row">
@@ -4326,7 +4337,9 @@
           autocomplete="off"
           spellcheck="false"
         />
-        <button class="sb-close" id="search-close" title="Close (Esc)">&#x2715;</button>
+        <button class="sb-close" id="search-close" title="Close (Esc)">
+          &#x2715;
+        </button>
       </div>
       <div class="search-label" id="search-label">All Programmes</div>
       <div class="search-genre-row" id="search-genre-row"></div>
@@ -4421,31 +4434,41 @@
               class="ctrl-btn xl"
               id="ctrl-play"
               title="Play / Pause (Space)"
-            >&#x25B7;</button>
+            >
+              &#x25B7;
+            </button>
             <button
               class="ctrl-btn"
               id="ctrl-skip-back"
               style="font-size: 18px"
               title="-10s (J)"
-            >&#x21BA;</button>
+            >
+              &#x21BA;
+            </button>
             <button
               class="ctrl-btn"
               id="ctrl-skip-fwd"
               style="font-size: 18px"
               title="+10s (L)"
-            >&#x21BB;</button>
+            >
+              &#x21BB;
+            </button>
             <button
               class="ctrl-btn"
               id="ctrl-prev"
               style="font-size: 16px"
               title="Prev Scene (?)"
-            >&#x23EE;</button>
+            >
+              &#x23EE;
+            </button>
             <button
               class="ctrl-btn"
               id="ctrl-next"
               style="font-size: 16px"
               title="Next Scene (?)"
-            >&#x23ED;</button>
+            >
+              &#x23ED;
+            </button>
             <div class="ctrl-sp"></div>
             <span class="scene-badge" id="ctrl-badge">Scene 1</span>
             <div class="vol-wrap">
@@ -4454,7 +4477,9 @@
                 id="ctrl-vol-btn"
                 style="font-size: 18px"
                 title="Mute (M)"
-              >&#x2295;</button>
+              >
+                &#x2295;
+              </button>
               <input
                 type="range"
                 class="vol-slider"
@@ -4558,51 +4583,53 @@
               id="ctrl-pip"
               style="font-size: 16px"
               title="Picture in Picture (P)"
-            >&#x29C9;</button>
+            >
+              &#x29C9;
+            </button>
             <button
               class="ctrl-btn"
               id="ctrl-mini"
               style="font-size: 16px"
               title="Mini Player (B)"
-            >&#x2913;</button>
+            >
+              &#x2913;
+            </button>
             <button
               class="ctrl-btn"
               id="ctrl-share"
               style="font-size: 16px"
               title="Share"
-            >&#x2731;</button>
+            >
+              &#x2731;
+            </button>
             <div class="react-wrap" id="react-wrap">
               <button
                 class="ctrl-btn"
                 onclick="_toggleReactPicker(event)"
                 title="React (R)"
                 style="font-size: 16px"
-              >&#x229B;</button>
+              >
+                &#x229B;
+              </button>
               <div class="react-popup" id="react-popup">
-                <button
-                  class="react-btn"
-                  onclick="_sendReaction('\u2661')"
-                >&#x2661;</button>
-                <button
-                  class="react-btn"
-                  onclick="_sendReaction('\u25C8')"
-                >&#x25C8;</button>
-                <button
-                  class="react-btn"
-                  onclick="_sendReaction('\u2295')"
-                >&#x2295;</button>
-                <button
-                  class="react-btn"
-                  onclick="_sendReaction('\u2727')"
-                >&#x2727;</button>
-                <button
-                  class="react-btn"
-                  onclick="_sendReaction('\u229B')"
-                >&#x229B;</button>
-                <button
-                  class="react-btn"
-                  onclick="_sendReaction('\u2B21')"
-                >&#x2B21;</button>
+                <button class="react-btn" onclick="_sendReaction('\u2661')">
+                  &#x2661;
+                </button>
+                <button class="react-btn" onclick="_sendReaction('\u25C8')">
+                  &#x25C8;
+                </button>
+                <button class="react-btn" onclick="_sendReaction('\u2295')">
+                  &#x2295;
+                </button>
+                <button class="react-btn" onclick="_sendReaction('\u2727')">
+                  &#x2727;
+                </button>
+                <button class="react-btn" onclick="_sendReaction('\u229B')">
+                  &#x229B;
+                </button>
+                <button class="react-btn" onclick="_sendReaction('\u2B21')">
+                  &#x2B21;
+                </button>
               </div>
             </div>
             <button
@@ -4610,7 +4637,9 @@
               id="ctrl-fs"
               style="font-size: 18px"
               title="Fullscreen (F)"
-            >&#x26F6;</button>
+            >
+              &#x26F6;
+            </button>
           </div>
         </div>
       </div>
@@ -4689,7 +4718,9 @@
       <!-- Mini-player FABs -->
       <button class="mini-fab" id="mini-expand" title="Expand">+</button>
       <button class="mini-fab" id="mini-close" title="Close">×</button>
-      <button class="mini-fab" id="mini-toggle" title="Play/Pause">&#x25B7;</button>
+      <button class="mini-fab" id="mini-toggle" title="Play/Pause">
+        &#x25B7;
+      </button>
     </div>
 
     <!-- -- SHARE TOAST -- -->
@@ -4713,26 +4744,34 @@
         id="np-btn-play"
         title="Play/Pause"
         onclick="_npTogglePlay()"
-      >&#x25B7;</button>
+      >
+        &#x25B7;
+      </button>
       <button
         class="np-btn"
         id="np-btn-next"
         title="Next Scene"
         onclick="_npNextScene()"
         style="font-size: 14px"
-      >&#x23ED;</button>
+      >
+        &#x23ED;
+      </button>
       <button
         class="np-btn"
         title="Expand"
         onclick="_npExpand()"
         style="font-size: 14px"
-      >&#x2B06;</button>
+      >
+        &#x2B06;
+      </button>
       <button
         class="np-btn"
         title="Close"
         onclick="closePlayer()"
         style="font-size: 13px; opacity: 0.4"
-      >&#x2715;</button>
+      >
+        &#x2715;
+      </button>
       <div id="np-progress"></div>
     </div>
 
@@ -4788,7 +4827,9 @@
           "
           onmouseover="this.style.color = '#fff'"
           onmouseout="this.style.color = 'rgba(232,232,240,0.5)'"
-        >&#x2715;</button>
+        >
+          &#x2715;
+        </button>
       </div>
       <div id="geo-panel-content">
         <div
@@ -5016,7 +5057,9 @@
             font-size: 14px;
             cursor: pointer;
           "
-        >&#x2715;</button>
+        >
+          &#x2715;
+        </button>
       </div>
       <div id="amb-channels"></div>
       <div
@@ -10926,7 +10969,9 @@
             );
           }
           var btn = document.getElementById("ctrl-vol-btn");
-          if (btn) btn.textContent = v === 0 ? "\u22A0" : v < 0.45 ? "\u229F" : "\u2295";
+          if (btn)
+            btn.textContent =
+              v === 0 ? "\u22A0" : v < 0.45 ? "\u229F" : "\u2295";
         });
 
       // Mute button — dispatches input event so audio follows
