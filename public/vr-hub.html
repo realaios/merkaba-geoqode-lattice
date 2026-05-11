@@ -1518,7 +1518,7 @@
       <div class="site-nav-links">
         <a href="/experiences">Experiences</a
         ><a href="/vr-hub" class="active">VR Hub</a><a href="/vr">VR</a
-        ><a href="/games">Games</a><a href="/plaistore">PLAIstore</a
+        ><a href="/plaistore">PLAIstore</a
         ><a href="/geo-codec">.geo</a><a href="/pricing">Pricing</a>
       </div>
       <div class="site-nav-right">
@@ -1812,10 +1812,10 @@
       <div class="cat-section-header">
         <div>
           <div class="cat-section-title" style="color: var(--arcade)">
-            Arcade <span class="live-pill" data-live-pill="arcade">5 live</span>
+            PLAIstore VR <span class="live-pill" data-live-pill="arcade">catalog only</span>
           </div>
           <div class="cat-section-desc">
-            Instant-play XR games. Open URL. Score. Zero friction.
+            The arcade pages are retired. Browse current VR-ready releases through PLAIstore instead.
           </div>
         </div>
       </div>
@@ -1860,61 +1860,27 @@
       <div class="xp-grid" id="social-grid"></div>
       <!-- The Lounge waitlist -->
       <div
-        style="
-          margin-top: 2rem;
-          padding: 1.75rem 2rem;
-          background: linear-gradient(
-            135deg,
-            rgba(0, 212, 255, 0.05),
-            rgba(168, 85, 247, 0.05)
-          );
-          border: 1px solid rgba(0, 212, 255, 0.15);
-          border-radius: 14px;
-          max-width: 680px;
-        "
-      >
-        <div
-          style="font-size: 1.05rem; font-weight: 800; margin-bottom: 0.4rem"
-        >
-          The Lounge — Grand Opening
-        </div>
-        <div
-          style="
-            font-size: 0.85rem;
-            color: rgba(248, 250, 252, 0.55);
-            margin-bottom: 1.1rem;
-            line-height: 1.5;
-          "
-        >
-          The first persistent social VR space on realaios.com. Real-time
-          presence, spatial voice and open layout. Opening June 1, 2026 —
-          limited to 26 simultaneous visitors on launch night.
-        </div>
-        <div
-          id="waitlist-form"
-          style="display: flex; gap: 0.75rem; flex-wrap: wrap"
-        >
-          <input
-            id="waitlist-email"
-            type="email"
-            placeholder="your@email.com"
-            style="
-              flex: 1;
-              min-width: 200px;
-              background: rgba(0, 0, 0, 0.3);
-              border: 1px solid rgba(0, 212, 255, 0.25);
-              border-radius: 7px;
-              padding: 0.6rem 0.9rem;
-              color: #f8fafc;
-              font-size: 0.88rem;
-              font-family: inherit;
-              outline: none;
-            "
-          />
-          <button
-            onclick="joinWaitlist()"
-            style="
-              background: #00d4ff;
+        const ARCADE_LIVE = [];
+        const ARCADE_TEASER = [
+          {
+            emoji: "🛍️",
+            title: "PLAIstore VR",
+            cat: "Catalog",
+            eta: "Live now",
+          },
+          {
+            emoji: "🥽",
+            title: "VR Hub",
+            cat: "Immersive",
+            eta: "Live now",
+          },
+          {
+            emoji: "🎬",
+            title: "AIOSdream",
+            cat: "Cinema",
+            eta: "Live now",
+          },
+        ];
               color: #000;
               border: none;
               border-radius: 7px;
@@ -2279,66 +2245,19 @@
 
       const ARCADE_LIVE = [
         {
-          emoji: "",
-          title: "PHI Breaker",
-          desc: "Defend against entropy waves. Shoot disruptors across 3D space.",
-          freq: "Action",
+          emoji: "🛍️",
+          title: "PLAIstore VR",
+          desc: "Browse the current VR-ready catalog through PLAIstore instead of retired standalone arcade pages.",
+          freq: "Catalog",
           color: "#ef4444",
-          badge: "live",
-          entry: "/games/phi-breaker",
-        },
-        {
-          emoji: "",
-          title: "Lattice Dodge",
-          desc: "Dodge entropy cubes from all directions. Speed ramps each wave. 3 lives.",
-          freq: "World",
-          color: "#9b5cff",
-          badge: "live",
-          entry: "/games/grid-dodge",
-        },
-        {
-          emoji: "",
-          title: "Lattice Builder",
-          desc: "Gaze and select nodes in the correct sequence to reconstruct the grid. Memory puzzle. Rounds grow.",
-          freq: "Structural",
-          color: "#22c55e",
-          badge: "live",
-          entry: "/games/grid-builder",
-        },
-        {
-          emoji: "",
-          title: "Merkaba Ghosts",
-          desc: "8 AI sector agents haunt the space as ghost silhouettes. Attune to each ghost by gazing. No NPCs — all ghosts are real AI agents.",
-          freq: "Ambient",
-          color: "#a5f3fc",
-          badge: "live",
-          entry: "/games/merkaba-ghosts",
-        },
-        {
-          emoji: "",
-          title: "PHI Architect",
-          desc: "Build perfect structures in zero gravity before the tide erases them. Geometry as survival.",
-          freq: "Structural",
-          color: "#f59e0b",
-          badge: "live",
-          entry: "/vr?prog=phi-architect",
-        },
-        {
-          emoji: "",
-          title: "Swarm Defender",
-          desc: "Command an 8-drone formation to repel entropy invasions.",
-          freq: "Social",
-          color: "#a855f7",
-          badge: "live",
-          entry: "/vr?prog=swarm-defender",
+          badge: "catalog",
+          entry: "/plaistore",
         },
       ];
       const ARCADE_TEASER = [
-        { emoji: "", title: "AIOS Puzzle", cat: "Arcade", eta: "Q4 2026" },
-        { emoji: "", title: "Zero Gravity", cat: "Arcade", eta: "Q4 2026" },
-        { emoji: "", title: "Drone Wars", cat: "Arcade", eta: "Q4 2026" },
-        { emoji: "", title: "AIOS Build", cat: "Arcade", eta: "Q1 2027" },
-        { emoji: "", title: "PHI Runner", cat: "Arcade", eta: "Q1 2027" },
+        { emoji: "🥽", title: "VR Hub", cat: "Immersive", eta: "Live now" },
+        { emoji: "🛍️", title: "PLAIstore", cat: "Catalog", eta: "Live now" },
+        { emoji: "🎬", title: "AIOSdream", cat: "Cinema", eta: "Live now" },
       ];
 
       const WELLNESS_XP = [
@@ -2634,7 +2553,7 @@
       } else {
         document.getElementById("arcade-grid").innerHTML =
           `<div style="padding:1.5rem;color:var(--muted);font-size:0.9rem;grid-column:1/-1;">
-             Arcade games are in development — launching Q3 2026. Join PLAIstore waitlist to get early access.
+             The standalone arcade has been retired. Use PLAIstore for current VR titles and VR Hub for live immersive experiences.
           </div>`;
       }
 

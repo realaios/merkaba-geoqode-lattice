@@ -283,6 +283,7 @@ const MIME_TYPES = {
 const PORT = parseInt(process.env.PORT || "3030", 10);
 const ADMIN_JWT = process.env.ADMIN_JWT || null;
 const BACKEND_URL = process.env.BACKEND_URL || null;
+const GAMES_RETIRE_REDIRECT = "/plaistore";
 
 const MERKABA_ACTIVATION_UPDATE = {
   subject: "MERKABA Activation update.",
@@ -4166,12 +4167,6 @@ const server = createServer(async (req, res) => {
           (s) =>
             `  <url><loc>https://realaios.com/products/${s}</loc><lastmod>${now}</lastmod><changefreq>monthly</changefreq><priority>0.80</priority></url>`,
         ),
-        // Games hub and individual games
-        `  <url><loc>https://realaios.com/games</loc><lastmod>${now}</lastmod><changefreq>weekly</changefreq><priority>0.88</priority></url>`,
-        `  <url><loc>https://realaios.com/games/merkaba-ghosts</loc><lastmod>${now}</lastmod><changefreq>monthly</changefreq><priority>0.82</priority></url>`,
-        `  <url><loc>https://realaios.com/games/phi-breaker</loc><lastmod>${now}</lastmod><changefreq>monthly</changefreq><priority>0.82</priority></url>`,
-        `  <url><loc>https://realaios.com/games/grid-dodge</loc><lastmod>${now}</lastmod><changefreq>monthly</changefreq><priority>0.82</priority></url>`,
-        `  <url><loc>https://realaios.com/games/grid-builder</loc><lastmod>${now}</lastmod><changefreq>monthly</changefreq><priority>0.82</priority></url>`,
         `  <url><loc>https://realaios.com/geo-codec</loc><lastmod>${now}</lastmod><changefreq>weekly</changefreq><priority>0.88</priority></url>`,
         `  <url><loc>https://realaios.com/vr-developer</loc><lastmod>${now}</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>`,
         // AIOSdream programme deep-links — 37 SEO-indexable cinema URLs
@@ -6494,66 +6489,29 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
       return;
     }
 
-    // ── GET /aios-playground — redirect to /games (superseded) ─────────────
+    // ── Retired arcade routes — redirect legacy game URLs to PLAIstore ─────
     if (
       req.method === "GET" &&
       (pathname === "/aios-playground" || pathname === "/aios-playground/")
     ) {
-      res.writeHead(301, { Location: "/games" });
+      res.writeHead(301, { Location: GAMES_RETIRE_REDIRECT });
       res.end();
       return;
     }
 
-    // ── Games routes ──────────────────────────────────────────────────────
     if (
       req.method === "GET" &&
-      (pathname === "/games" || pathname === "/games/")
+      [
+        "/games",
+        "/games/",
+        "/games/phi-breaker",
+        "/games/grid-dodge",
+        "/games/grid-builder",
+        "/games/merkaba-ghosts",
+      ].includes(pathname)
     ) {
-      if (!GAMES_HUB_HTML) return json(res, 404, { error: "not found" });
-      res.writeHead(200, {
-        "Content-Type": "text/html; charset=utf-8",
-        "Cache-Control": "no-store",
-      });
-      res.end(GAMES_HUB_HTML);
-      return;
-    }
-    if (req.method === "GET" && pathname === "/games/phi-breaker") {
-      if (!GAME_PHI_BREAKER_HTML) return json(res, 404, { error: "not found" });
-      res.writeHead(200, {
-        "Content-Type": "text/html; charset=utf-8",
-        "Cache-Control": "no-store",
-      });
-      res.end(GAME_PHI_BREAKER_HTML);
-      return;
-    }
-    if (req.method === "GET" && pathname === "/games/grid-dodge") {
-      if (!GAME_LATTICE_DODGE_HTML)
-        return json(res, 404, { error: "not found" });
-      res.writeHead(200, {
-        "Content-Type": "text/html; charset=utf-8",
-        "Cache-Control": "no-store",
-      });
-      res.end(GAME_LATTICE_DODGE_HTML);
-      return;
-    }
-    if (req.method === "GET" && pathname === "/games/grid-builder") {
-      if (!GAME_LATTICE_BUILDER_HTML)
-        return json(res, 404, { error: "not found" });
-      res.writeHead(200, {
-        "Content-Type": "text/html; charset=utf-8",
-        "Cache-Control": "no-store",
-      });
-      res.end(GAME_LATTICE_BUILDER_HTML);
-      return;
-    }
-    if (req.method === "GET" && pathname === "/games/merkaba-ghosts") {
-      if (!GAME_MERKABA_GHOSTS_HTML)
-        return json(res, 404, { error: "not found" });
-      res.writeHead(200, {
-        "Content-Type": "text/html; charset=utf-8",
-        "Cache-Control": "no-store",
-      });
-      res.end(GAME_MERKABA_GHOSTS_HTML);
+      res.writeHead(301, { Location: GAMES_RETIRE_REDIRECT });
+      res.end();
       return;
     }
 
