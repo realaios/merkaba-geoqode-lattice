@@ -4134,7 +4134,7 @@ const server = createServer(async (req, res) => {
         `  <url><loc>https://realaios.com/vr-hub</loc><lastmod>${now}</lastmod><changefreq>daily</changefreq><priority>0.95</priority></url>`,
         `  <url><loc>https://realaios.com/vr</loc><lastmod>${now}</lastmod><changefreq>daily</changefreq><priority>0.92</priority></url>`,
         `  <url><loc>https://realaios.com/aiosdream</loc><lastmod>${now}</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>`,
-        `  <url><loc>https://realaios.com/plaistore</loc><lastmod>${now}</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>`,
+        // /plaistore 301 → / — excluded; / is already listed above
         `  <url><loc>https://realaios.com/experiences</loc><lastmod>${now}</lastmod><changefreq>daily</changefreq><priority>0.9</priority></url>`,
         `  <url><loc>https://realaios.com/ai</loc><lastmod>${now}</lastmod><changefreq>weekly</changefreq><priority>0.95</priority></url>`,
         `  <url><loc>https://realaios.com/start</loc><lastmod>${now}</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>`,
@@ -4167,7 +4167,7 @@ const server = createServer(async (req, res) => {
             `  <url><loc>https://realaios.com/products/${s}</loc><lastmod>${now}</lastmod><changefreq>monthly</changefreq><priority>0.80</priority></url>`,
         ),
         `  <url><loc>https://realaios.com/geo-codec</loc><lastmod>${now}</lastmod><changefreq>weekly</changefreq><priority>0.88</priority></url>`,
-        `  <url><loc>https://realaios.com/vr-developer</loc><lastmod>${now}</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>`,
+        // /vr-developer has noindex — excluded from sitemap
         // AIOSdream programme deep-links — 37 SEO-indexable cinema URLs
         ...[
           "matrix",
@@ -4570,23 +4570,23 @@ nav.site-nav{position:fixed;top:0;left:0;right:0;z-index:200;height:54px;padding
 </head>
 <body>
 <nav class="site-nav">
-  <a href="/" class="site-nav-logo">⬡ AIOS</a>
+  <a href="/" class="site-nav-logo">&#x2B21; AIOS</a>
   <div class="site-nav-links">
     <a href="/experiences">Experiences</a>
     <a href="/vr-hub">VR Hub</a>
-    <a href="/vr">🥽 VR</a>
+    <a href="/vr">&#x1F97D; VR</a>
     <a href="/aiosdream">Cinema</a>
 
-    <a href="/geo-library">📚 Library</a>
+    <a href="/experiences">&#x1F4DA; Library</a>
     <a href="/geo-codec">.geo</a>
-    <a href="/aios-studio">Studio</a>
+    <a href="/experiences">Studio</a>
     <a href="/lab">Lab</a>
-    <a href="/news">📰 News</a>
-    <a href="/products" class="active">⚡ Products</a>
+    <a href="/news">&#x1F4F0; News</a>
+    <a href="/products" class="active">&#x26A1; Products</a>
   </div>
   <div class="site-nav-right">
-    <a href="/live" class="site-nav-live">● LIVE</a>
-    <a href="/start" class="site-nav-cta">Start Free →</a>
+    <a href="/live" class="site-nav-live">&#x25CF; LIVE</a>
+    <a href="/start" class="site-nav-cta">Start Free &#x2192;</a>
   </div>
 </nav>
 <div class="hero">
@@ -7422,7 +7422,7 @@ footer{text-align:center;padding:3rem 1.5rem;color:#334155;font-size:0.8rem;bord
 </style>
 </head>
 <body>
-<nav class="site-nav"><a href="/" class="site-nav-logo">⬡ AIOS</a><div class="site-nav-links"><a href="/experiences">Experiences</a><a href="/vr-hub">VR Hub</a><a href="/vr">🥽 VR</a><a href="/aiosdream">Cinema</a><a href="/geo-library">📚 Library</a><a href="/geo-codec">.geo</a><a href="/aios-studio">Studio</a><a href="/lab">Lab</a><a href="/news">📰 News</a><a href="/products">⚡ Products</a></div><div class="site-nav-right"><a href="/live" class="site-nav-live">● LIVE</a><a href="/start" class="site-nav-cta">Start Free →</a></div></nav>
+<nav class="site-nav"><a href="/" class="site-nav-logo">&#x2B21; AIOS</a><div class="site-nav-links"><a href="/experiences">Experiences</a><a href="/vr-hub">VR Hub</a><a href="/vr">&#x1F97D; VR</a><a href="/aiosdream">Cinema</a><a href="/experiences">&#x1F4DA; Library</a><a href="/geo-codec">.geo</a><a href="/experiences">Studio</a><a href="/lab">Lab</a><a href="/news">&#x1F4F0; News</a><a href="/products">&#x26A1; Products</a></div><div class="site-nav-right"><a href="/live" class="site-nav-live">&#x25CF; LIVE</a><a href="/start" class="site-nav-cta">Start Free &#x2192;</a></div></nav>
 <div class="hero">
   <div class="eyebrow">AIOS Updates</div>
   <h1>What's Shipping in the <span>Autonomous OS</span></h1>
