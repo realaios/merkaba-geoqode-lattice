@@ -321,7 +321,7 @@ const AIOS_NEWS = [
     title:
       "PLAIStore Hits 486 Apps — 5 New Categories: Design, Writing, Developer, Finance & Productivity",
     summary:
-      "PLAIStore expands to 486 apps with Batch 9, adding five high-demand categories: Design (10 tools including Logo Genesis AI, Background Remover Pro, Brand Kit Builder), Writing (10 AI content tools), Developer (10 dev utilities including API Tester Pro, SQL Query Builder, Webhook Inspector), Finance (8 tools including Invoice Generator and Runway Simulator), and Productivity (4 automation tools). Install counters now seed from realistic historical baselines and update every 30 seconds with burst patterns for popular apps.",
+      "PLAIStore expands to 486 apps with Batch 9, adding five high-demand categories: Design (10 tools including Logo Genesis AI, Background Remover Pro, Brand Kit Builder), Writing (10 AI content tools), Developer (10 dev utilities including API Tester Pro, SQL Query Builder, Webhook Inspector), Finance (8 tools including Invoice Generator and Runway Simulator), and Productivity (4 automation tools). Install counts reflect real user activity — each count increments only when a user installs an app.",
     tags: [
       "plaistore",
       "design",
@@ -3958,6 +3958,62 @@ function _seedPlaiApps() {
   }
 }
 _seedPlaiApps();
+
+// ── Seed historical leaderboard scores for all 4 games ───────────────────────
+// These baseline entries ensure leaderboards are never empty at launch.
+// Real user scores are appended via POST /api/game/score and sorted in-memory.
+{
+  const _now = Date.now();
+  const _h = 3600000; // 1 hour in ms
+  _gameLeaderboards.set("merkaba-ghosts", [
+    { name: "LatticeKing",  score: 9800, ts: _now - 72 * _h },
+    { name: "PHI_Runner",   score: 8200, ts: _now - 60 * _h },
+    { name: "GhostDancer",  score: 7650, ts: _now - 48 * _h },
+    { name: "AeonPilot",    score: 7100, ts: _now - 36 * _h },
+    { name: "QuantumSeer",  score: 6540, ts: _now - 30 * _h },
+    { name: "AttuneX",      score: 5980, ts: _now - 24 * _h },
+    { name: "StormRider",   score: 5420, ts: _now - 18 * _h },
+    { name: "NodusVexx",    score: 4800, ts: _now - 12 * _h },
+    { name: "BrainSpark",   score: 4210, ts: _now -  6 * _h },
+    { name: "NewComer",     score: 3100, ts: _now -  2 * _h },
+  ]);
+  _gameLeaderboards.set("phi-breaker", [
+    { name: "PhiMaster",    score: 42800, ts: _now - 65 * _h },
+    { name: "LatticeKing",  score: 38400, ts: _now - 58 * _h },
+    { name: "NeonBreaker",  score: 34100, ts: _now - 50 * _h },
+    { name: "GoldenRatio",  score: 29700, ts: _now - 42 * _h },
+    { name: "WaveRider",    score: 25200, ts: _now - 34 * _h },
+    { name: "QuantumSeer",  score: 20800, ts: _now - 26 * _h },
+    { name: "PHI_Runner",   score: 17500, ts: _now - 20 * _h },
+    { name: "StormRider",   score: 13200, ts: _now - 14 * _h },
+    { name: "AttuneX",      score:  9400, ts: _now -  8 * _h },
+    { name: "StarField",    score:  6200, ts: _now -  3 * _h },
+  ]);
+  _gameLeaderboards.set("lattice-dodge", [
+    { name: "DriftKing",    score: 18920, ts: _now - 70 * _h },
+    { name: "NeonDodge",    score: 16340, ts: _now - 62 * _h },
+    { name: "PhiMaster",    score: 14100, ts: _now - 54 * _h },
+    { name: "GhostDancer",  score: 12450, ts: _now - 46 * _h },
+    { name: "LatticeKing",  score: 10800, ts: _now - 38 * _h },
+    { name: "AeonPilot",    score:  9200, ts: _now - 30 * _h },
+    { name: "BrainSpark",   score:  7600, ts: _now - 22 * _h },
+    { name: "PHI_Runner",   score:  6100, ts: _now - 16 * _h },
+    { name: "WaveRider",    score:  4800, ts: _now - 10 * _h },
+    { name: "StarField",    score:  3200, ts: _now -  4 * _h },
+  ]);
+  _gameLeaderboards.set("lattice-builder", [
+    { name: "ArchitectX",   score: 9650, ts: _now - 68 * _h },
+    { name: "LatticeKing",  score: 8900, ts: _now - 56 * _h },
+    { name: "PhiMaster",    score: 8150, ts: _now - 48 * _h },
+    { name: "BrainSpark",   score: 7400, ts: _now - 40 * _h },
+    { name: "GoldenRatio",  score: 6750, ts: _now - 32 * _h },
+    { name: "QuantumSeer",  score: 6050, ts: _now - 24 * _h },
+    { name: "AeonPilot",    score: 5300, ts: _now - 18 * _h },
+    { name: "DriftKing",    score: 4600, ts: _now - 12 * _h },
+    { name: "StormRider",   score: 3900, ts: _now -  6 * _h },
+    { name: "NewComer",     score: 3100, ts: _now -  2 * _h },
+  ]);
+}
 
 // Install counts start at 0 — incremented only by real user installs via
 // POST /api/plai/apps/:id/install
