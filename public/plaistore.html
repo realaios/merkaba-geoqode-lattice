@@ -346,6 +346,7 @@
         line-height: 1.5;
         margin-bottom: 14px;
         display: -webkit-box;
+        line-clamp: 2;
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
         overflow: hidden;
@@ -369,8 +370,6 @@
       }
       .app-rating-star {
         color: var(--gold);
-      }
-      .app-downloads {
       }
       .app-badge {
         font-size: 11px;
@@ -770,7 +769,7 @@
   <body>
     <!-- Canonical AIOS site-nav -->
     <nav class="site-nav"><a href="/" class="site-nav-logo">&#x2B21; AIOS</a><div class="site-nav-links">
-        <a href="/experiences">Experiences</a><a href="/vr-hub">VR Hub</a><a href="/vr">&#x1F97D; VR</a><a href="/games">&#x1F3AE; Games</a><a href="/plaistore" class="active">PLAIstore</a><a href="/geo-codec">.geo</a><a href="/pricing">Pricing</a>
+        <a href="/experiences">Experiences</a><a href="/vr-hub">VR Hub</a><a href="/vr">&#x1F97D; VR</a><a href="/aiosdream">Cinema</a><a href="/plaistore" class="active">PLAIstore</a><a href="/geo-codec">.geo</a><a href="/pricing">Pricing</a>
       </div><div class="site-nav-right"><a href="/login" class="site-nav-cta">Sign In</a></div></nav>
     <!-- Header -->
     <header class="header">
@@ -808,7 +807,7 @@
     <section class="hero">
       <h1>The AIOS App <span>Marketplace</span></h1>
       <p>
-        Discover VR, 2D preview programmes, AI agents, and tools
+        Discover VR, cinema programmes, AI agents, and tools
         built natively for the AIOS platform.
       </p>
       <div class="hero-stats">
@@ -828,7 +827,7 @@
       <!-- Category filter chips -->
       <div class="categories" id="category-chips">
         <div class="cat-chip active" data-cat="all">All</div>
-        <div class="cat-chip" data-cat="Theatre">2D Preview</div>
+        <div class="cat-chip" data-cat="Theatre">Theatre</div>
         <div class="cat-chip" data-cat="Cinema">Cinema</div>
         <div class="cat-chip" data-cat="Playbooks">Playbooks</div>
         <div class="cat-chip" data-cat="Agents">Agents</div>
