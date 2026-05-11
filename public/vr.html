@@ -1402,6 +1402,37 @@
           panelAngle: 215,
           gridNode: 19,
         },
+        // -- Combat Worlds (CoD / Fortnite inspired VR maps) ---------------
+        {
+          name: "warzone-urban",
+          display: "Urban Warzone \u00b7 CoD Zone",
+          sem: "ACTION",
+          cat: "combat",
+          desc: "Decimated metropolitan combat zone. BSP-compiled cityscape geometry across 6 urban districts. Tactical spawn navigation and rooftop engagement lanes. 528\u00a0Hz ACTION field.",
+          shortDesc: "Urban warfare in full 6DoF VR. Spawn. Navigate. Survive.",
+          panelAngle: 220,
+          gridNode: 11,
+        },
+        {
+          name: "battle-island",
+          display: "Battle Island \u00b7 Open World VR",
+          sem: "ACTION",
+          cat: "combat",
+          desc: "2\u202fkm\u00b2 open-world battle island. 20 named POIs across desert, forest, arctic and urban biomes. Fortnite-inspired. Storm circle contracts at 72\u00a0Hz lattice pulse.",
+          shortDesc: "100-zone open world. Land anywhere. Fight everywhere.",
+          panelAngle: 222,
+          gridNode: 13,
+        },
+        {
+          name: "cod-shipment",
+          display: "Shipment \u00b7 Classic 24/7 VR",
+          sem: "ACTION",
+          cat: "combat",
+          desc: "Iconic compact map. Shipping containers, catwalks, 360\u00b0 engagement. BSP geometry from Radiant. 6 spawn nodes, 5-second max engagement range.",
+          shortDesc: "24/7 classic. 5-second engagement range. Always intense.",
+          panelAngle: 224,
+          gridNode: 21,
+        },
       ];
 
       // -- MAL Scene Map: programme name -> .geoassets scene ID -------------
@@ -1457,6 +1488,13 @@
         "iss-lab": "iss_zero_gravity",
         pyramids: "pyramids_giza",
         "ocean-trench": "deep_ocean_trench",
+        // Combat Worlds — CoD / Fortnite inspired (mapped to existing MAL scenes)
+        "warzone-urban": "the_simulation",
+        "battle-island": "deep_space",
+        "cod-shipment": "the_simulation",
+        "backlot-siege": "the_simulation",
+        "tilted-zone": "quantum_field",
+        "battle-royale-100": "deep_space",
       };
 
       // -- MAL Loader: dynamic import of the scene builder module ----------
