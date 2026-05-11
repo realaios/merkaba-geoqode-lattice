@@ -392,6 +392,11 @@
         color: #a5b4fc;
         border: 1px solid rgba(99, 102, 241, 0.35);
       }
+      .badge-new {
+        background: rgba(6, 182, 212, 0.15);
+        color: #67e8f9;
+        border: 1px solid rgba(6, 182, 212, 0.3);
+      }
       /* -- Upgrade modal -- */
       #upgrade-modal {
         display: none; position: fixed; inset: 0; z-index: 9999;
@@ -1435,7 +1440,7 @@
             data.total || allApps.length;
           if (category === "all" && data.total_installs != null) {
             document.getElementById("stat-installs").textContent =
-              data.total_installs.toLocaleString();
+              data.total_installs > 0 ? data.total_installs.toLocaleString() : "New";
           }
           document.getElementById("apps-count").textContent =
             allApps.length + " apps";
@@ -1499,7 +1504,7 @@
         const dls =
           app.downloads > 0
             ? `<span>${app.downloads.toLocaleString()} installs</span>`
-            : "";
+            : `<span class="app-badge badge-new">New</span>`;
         const price =
           app.price_cents === 0
             ? '<span class="app-badge badge-free">Free</span>'
@@ -1614,7 +1619,7 @@
             document.getElementById("stat-apps").textContent = data.total;
           if (data.total_installs != null)
             document.getElementById("stat-installs").textContent =
-              data.total_installs.toLocaleString();
+              data.total_installs > 0 ? data.total_installs.toLocaleString() : "New";
         } catch {
           /* silently ignore */
         }
