@@ -7,7 +7,7 @@
   "phi": 1.618,
   "psi": 1.414,
   "baseFrequencyHz": 72,
-  "totalExperiences": 50,
+  "totalExperiences": 46,
   "liveExperiences": 21,
   "categories": [
     {
@@ -34,7 +34,12 @@
           "harmonicNode": 0,
           "description": "Digital rain, code cascades, reality deconstruction in pure cyberpunk geometry.",
           "shortDesc": "Enter the simulation. See the code behind reality.",
-          "tags": ["cyberpunk", "philosophy", "ai", "reality"],
+          "tags": [
+            "cyberpunk",
+            "philosophy",
+            "ai",
+            "reality"
+          ],
           "questCompatible": true,
           "flatCompatible": true,
           "estimatedDuration": "8-12 min",
@@ -53,7 +58,12 @@
           "harmonicNode": 80,
           "description": "Folding cities, layered dream states, time dilation across dimensional planes.",
           "shortDesc": "Navigate layered dream architectures in spatial VR.",
-          "tags": ["dreams", "architecture", "time", "layers"],
+          "tags": [
+            "dreams",
+            "architecture",
+            "time",
+            "layers"
+          ],
           "questCompatible": true,
           "flatCompatible": true,
           "estimatedDuration": "10-15 min",
@@ -72,7 +82,12 @@
           "harmonicNode": 160,
           "description": "Hyperspace jumps, orbital battles, Force resonance across the galactic lattice.",
           "shortDesc": "Immersive galactic storytelling across the stars.",
-          "tags": ["space", "epic", "action", "force"],
+          "tags": [
+            "space",
+            "epic",
+            "action",
+            "force"
+          ],
           "questCompatible": true,
           "flatCompatible": true,
           "estimatedDuration": "12-18 min",
@@ -91,7 +106,12 @@
           "harmonicNode": 240,
           "description": "Lunar descent telemetry, mission control simulation, historical immersion.",
           "shortDesc": "One small step — in full immersive VR.",
-          "tags": ["history", "space", "nasa", "lunar"],
+          "tags": [
+            "history",
+            "space",
+            "nasa",
+            "lunar"
+          ],
           "questCompatible": true,
           "flatCompatible": true,
           "estimatedDuration": "15-20 min",
@@ -110,7 +130,12 @@
           "harmonicNode": 280,
           "description": "Gravitational lensing, tesseract navigation, relativistic time dilation in immersive VR.",
           "shortDesc": "Fall into Gargantua. Navigate the tesseract.",
-          "tags": ["physics", "gravity", "space", "time"],
+          "tags": [
+            "physics",
+            "gravity",
+            "space",
+            "time"
+          ],
           "questCompatible": true,
           "flatCompatible": true,
           "estimatedDuration": "20+ min",
@@ -129,7 +154,12 @@
           "harmonicNode": 300,
           "description": "Desert planet immersion, sandworm frequency resonance, Bene Gesserit spatial computing.",
           "shortDesc": "The spice must flow. Walk Arrakis in VR.",
-          "tags": ["scifi", "desert", "epic", "narrative"],
+          "tags": [
+            "scifi",
+            "desert",
+            "epic",
+            "narrative"
+          ],
           "questCompatible": true,
           "flatCompatible": true,
           "estimatedDuration": "15+ min",
@@ -161,7 +191,12 @@
           "harmonicNode": 400,
           "description": "Market signals, funding landscape, spatial revenue intelligence visualisation.",
           "shortDesc": "Pitch decks and market intelligence in 3D.",
-          "tags": ["investment", "revenue", "pitch", "finance"],
+          "tags": [
+            "investment",
+            "revenue",
+            "pitch",
+            "finance"
+          ],
           "questCompatible": true,
           "flatCompatible": true,
           "estimatedDuration": "10-20 min",
@@ -180,7 +215,12 @@
           "harmonicNode": 320,
           "description": "Policy chambers, global AI debate, collaborative decision architecture.",
           "shortDesc": "Shape the future of AI policy in a virtual summit.",
-          "tags": ["governance", "ai", "policy", "collaboration"],
+          "tags": [
+            "governance",
+            "ai",
+            "policy",
+            "collaboration"
+          ],
           "questCompatible": true,
           "flatCompatible": true,
           "estimatedDuration": "30-60 min",
@@ -199,7 +239,12 @@
           "harmonicNode": 350,
           "description": "Immersive onboarding, compliance training, and skills assessment in navigable 3D environments.",
           "shortDesc": "Train your team in virtual space. Zero travel.",
-          "tags": ["training", "hr", "corporate", "skills"],
+          "tags": [
+            "training",
+            "hr",
+            "corporate",
+            "skills"
+          ],
           "questCompatible": true,
           "flatCompatible": true,
           "estimatedDuration": "20-45 min",
@@ -218,7 +263,12 @@
           "harmonicNode": 370,
           "description": "Persistent virtual headquarters. Teams meet, present, and collaborate in spatial rooms anchored to the lattice.",
           "shortDesc": "Your office. In the lattice. Always on.",
-          "tags": ["remote", "office", "collaboration", "spatial"],
+          "tags": [
+            "remote",
+            "office",
+            "collaboration",
+            "spatial"
+          ],
           "questCompatible": true,
           "flatCompatible": true,
           "estimatedDuration": "persistent",
@@ -237,7 +287,12 @@
           "harmonicNode": 130,
           "description": "Virtual M&A deal room with shared document review, financial model navigation, and negotiation staging for up to 20 participants.",
           "shortDesc": "M&A due diligence in shared VR. Close deals faster.",
-          "tags": ["deals", "finance", "mna", "collaboration"],
+          "tags": [
+            "deals",
+            "finance",
+            "mna",
+            "collaboration"
+          ],
           "questCompatible": true,
           "flatCompatible": true,
           "estimatedDuration": "30-120 min",
@@ -256,7 +311,12 @@
           "harmonicNode": 150,
           "description": "Fully branded 3D pitch stage. Deliver product demos to 100 prospects simultaneously in immersive spatial VR with analytics.",
           "shortDesc": "Pitch to 100 prospects at once. In spatial VR.",
-          "tags": ["sales", "pitch", "demo", "revenue"],
+          "tags": [
+            "sales",
+            "pitch",
+            "demo",
+            "revenue"
+          ],
           "questCompatible": true,
           "flatCompatible": true,
           "estimatedDuration": "20-60 min",
@@ -288,7 +348,12 @@
           "harmonicNode": 0,
           "description": "Live Merkaba 8→26→48:480 lattice navigation. PHI=1.618, PSI=1.414. Full GeoQode semantic frequency explorer.",
           "shortDesc": "Navigate the living 48-node lattice in full VR.",
-          "tags": ["merkaba", "lattice", "phi", "geometry"],
+          "tags": [
+            "merkaba",
+            "lattice",
+            "phi",
+            "geometry"
+          ],
           "questCompatible": true,
           "flatCompatible": true,
           "estimatedDuration": "open-ended",
@@ -307,7 +372,12 @@
           "harmonicNode": 120,
           "description": "Walk through quantum field fluctuations, observe wave function collapse, navigate probability clouds in 3D space.",
           "shortDesc": "Quantum mechanics as a spatial experience.",
-          "tags": ["quantum", "physics", "science", "visualization"],
+          "tags": [
+            "quantum",
+            "physics",
+            "science",
+            "visualization"
+          ],
           "questCompatible": true,
           "flatCompatible": true,
           "estimatedDuration": "10-25 min",
@@ -326,7 +396,12 @@
           "harmonicNode": 180,
           "description": "Build molecules at atomic scale, observe chemical bonds, run reaction simulations in hand-tracked VR space.",
           "shortDesc": "Handle molecules with your own hands in VR.",
-          "tags": ["chemistry", "molecular", "science", "interactive"],
+          "tags": [
+            "chemistry",
+            "molecular",
+            "science",
+            "interactive"
+          ],
           "questCompatible": true,
           "flatCompatible": false,
           "estimatedDuration": "15-30 min",
@@ -345,7 +420,12 @@
           "harmonicNode": 220,
           "description": "Navigate the solar system at true astronomical scale. Orbital mechanics, gravity wells, and planetary surfaces.",
           "shortDesc": "Fly through the solar system at real scale.",
-          "tags": ["space", "astronomy", "planets", "scale"],
+          "tags": [
+            "space",
+            "astronomy",
+            "planets",
+            "scale"
+          ],
           "questCompatible": true,
           "flatCompatible": true,
           "estimatedDuration": "20+ min",
@@ -364,7 +444,12 @@
           "harmonicNode": 260,
           "description": "Zoom into Mandelbrot/Julia sets, Sierpinski volumes, and infinite PHI-recursive fractal geometries rendered at 90fps.",
           "shortDesc": "Infinite fractal depth. PHI-recursive geometry.",
-          "tags": ["fractals", "math", "infinite", "geometry"],
+          "tags": [
+            "fractals",
+            "math",
+            "infinite",
+            "geometry"
+          ],
           "questCompatible": true,
           "flatCompatible": true,
           "estimatedDuration": "open-ended",
@@ -383,7 +468,12 @@
           "harmonicNode": 280,
           "description": "Visualise dark matter halos, gravitational lensing, and cosmic filaments at galactic scale. Data sourced from CMB surveys.",
           "shortDesc": "See the invisible mass holding the universe together.",
-          "tags": ["astrophysics", "dark-matter", "cosmology", "science"],
+          "tags": [
+            "astrophysics",
+            "dark-matter",
+            "cosmology",
+            "science"
+          ],
           "questCompatible": true,
           "flatCompatible": true,
           "estimatedDuration": "15-30 min",
@@ -403,63 +493,6 @@
       "description": "Fast-paced, multiplayer-ready, lattice-native VR games. Every mechanic anchored to PHI geometry. Built by the AIOS swarm, expanded by the community.",
       "experiences": [
         {
-          "id": "phi-breaker",
-          "display": "PHI Breaker — Lattice Shooter",
-          "status": "retired",
-          "version": "1.0.0",
-          "vrUrl": "/plaistore",
-          "flatUrl": "/plaistore",
-          "semanticType": "ACTION",
-          "frequencyHz": 528,
-          "latticeNode": 2,
-          "harmonicNode": 20,
-          "description": "Defend the 48-node lattice from entropy. Shoot frequency disruptors across D480 harmonic space. Solo and co-op.",
-          "shortDesc": "Defend the lattice. Shoot across D480 space.",
-          "tags": ["shooter", "action", "multiplayer", "phi"],
-          "questCompatible": true,
-          "flatCompatible": true,
-          "estimatedDuration": "5-20 min",
-          "releaseDate": "2026-Q2"
-        },
-        {
-          "id": "lattice-dodge",
-          "display": "Lattice Dodge — PHI Survival",
-          "status": "retired",
-          "version": "1.0.0",
-          "vrUrl": "/plaistore",
-          "flatUrl": "/plaistore",
-          "semanticType": "ACTION",
-          "frequencyHz": 417,
-          "latticeNode": 4,
-          "harmonicNode": 40,
-          "description": "Entropy cubes flood the lattice ring from all directions. Move to survive. Speed ramps by PHI every wave. 3 lives.",
-          "shortDesc": "Survive the entropy flood. 3 lives. PHI ramp.",
-          "tags": ["survival", "action", "wasd", "phi"],
-          "questCompatible": true,
-          "flatCompatible": true,
-          "estimatedDuration": "5-15 min",
-          "releaseDate": "2026-Q2"
-        },
-        {
-          "id": "merkaba-ghosts",
-          "display": "Merkaba Ghosts — Agent VR",
-          "status": "retired",
-          "version": "1.0.0",
-          "vrUrl": "/plaistore",
-          "flatUrl": "/plaistore",
-          "semanticType": "HOLOGRAPHIC",
-          "frequencyHz": 72,
-          "latticeNode": 1,
-          "harmonicNode": 8,
-          "description": "8 ghost AI agents haunt the D48 lattice. Attune to each Agent-Player-Character by gazing. No NPCs — every ghost is a Storm sector agent manifesting in VR.",
-          "shortDesc": "Attune to 8 ghost AI agents in the lattice.",
-          "tags": ["ghost", "agents", "apc", "gaze", "holographic"],
-          "questCompatible": true,
-          "flatCompatible": true,
-          "estimatedDuration": "5-20 min",
-          "releaseDate": "2026-Q2"
-        },
-        {
           "id": "merkaba-racer",
           "display": "Merkaba Racer",
           "status": "coming",
@@ -472,29 +505,15 @@
           "harmonicNode": 60,
           "description": "Race PHI-spiral tracks through the 26-node bosonic ring. Time-dilation power-ups. 8-player multiplayer.",
           "shortDesc": "Race the PHI spiral. 8 players. Zero gravity.",
-          "tags": ["racing", "multiplayer", "phi", "speed"],
+          "tags": [
+            "racing",
+            "multiplayer",
+            "phi",
+            "speed"
+          ],
           "questCompatible": true,
           "flatCompatible": false,
           "estimatedDuration": "5-15 min per race",
-          "releaseDate": "2026-Q3"
-        },
-        {
-          "id": "lattice-builder",
-          "display": "Lattice Builder — Puzzle VR",
-          "status": "retired",
-          "version": "1.0.0",
-          "vrUrl": "/plaistore",
-          "flatUrl": "/plaistore",
-          "semanticType": "PHYSICS",
-          "frequencyHz": 852,
-          "latticeNode": 10,
-          "harmonicNode": 100,
-          "description": "Reconstruct damaged lattice nodes. Align PHI harmonics. Physics-based puzzle solving in full hand tracking.",
-          "shortDesc": "Rebuild the lattice. Physics puzzles in your hands.",
-          "tags": ["puzzle", "physics", "handtracking", "logical"],
-          "questCompatible": true,
-          "flatCompatible": false,
-          "estimatedDuration": "10-30 min",
           "releaseDate": "2026-Q3"
         },
         {
@@ -510,7 +529,12 @@
           "harmonicNode": 140,
           "description": "Deploy GeoQode frequency towers across the D48 lattice grid. Protect your foundation nodes from entropy waves.",
           "shortDesc": "Frequency tower defence at lattice scale.",
-          "tags": ["strategy", "towerdefence", "frequency", "lattice"],
+          "tags": [
+            "strategy",
+            "towerdefence",
+            "frequency",
+            "lattice"
+          ],
           "questCompatible": true,
           "flatCompatible": false,
           "estimatedDuration": "15-45 min",
@@ -529,7 +553,12 @@
           "harmonicNode": 200,
           "description": "Chess where pieces exist in quantum superposition. Wave function collapses on observation. Multiplayer or vs AI.",
           "shortDesc": "Chess in quantum superposition. Mind-bending.",
-          "tags": ["chess", "quantum", "strategy", "multiplayer"],
+          "tags": [
+            "chess",
+            "quantum",
+            "strategy",
+            "multiplayer"
+          ],
           "questCompatible": true,
           "flatCompatible": true,
           "estimatedDuration": "20-60 min",
@@ -548,7 +577,12 @@
           "harmonicNode": 270,
           "description": "Infinite runner through PHI-recursive geometric corridors. Procedurally generated. Global leaderboard. Hand-tracked controls.",
           "shortDesc": "Sprint through infinite PHI geometry. Leaderboard.",
-          "tags": ["runner", "infinite", "phi", "arcade"],
+          "tags": [
+            "runner",
+            "infinite",
+            "phi",
+            "arcade"
+          ],
           "questCompatible": true,
           "flatCompatible": false,
           "estimatedDuration": "5-20 min",
@@ -580,7 +614,12 @@
           "harmonicNode": 30,
           "description": "Float at the centre of the 48-node Merkaba lattice. PHI geometry rotates at 72 Hz base resonance. Guided meditation overlays.",
           "shortDesc": "Float inside the living Merkaba. Pure resonance.",
-          "tags": ["meditation", "phi", "resonance", "mindfulness"],
+          "tags": [
+            "meditation",
+            "phi",
+            "resonance",
+            "mindfulness"
+          ],
           "questCompatible": true,
           "flatCompatible": true,
           "estimatedDuration": "5-60 min",
@@ -599,7 +638,12 @@
           "harmonicNode": 90,
           "description": "Ancient forest at 528 Hz transformation frequency. Binaural audio, spatial wind, bioluminescent flora. Clinical-grade stress reduction.",
           "shortDesc": "528 Hz forest sanctuary. Stress gone in 5 min.",
-          "tags": ["nature", "528hz", "forest", "binaural"],
+          "tags": [
+            "nature",
+            "528hz",
+            "forest",
+            "binaural"
+          ],
           "questCompatible": true,
           "flatCompatible": true,
           "estimatedDuration": "5-30 min",
@@ -618,7 +662,12 @@
           "harmonicNode": 150,
           "description": "Guided breathwork sessions with visual breath-tracking orbs. Wim Hof, box breathing, 4-7-8 protocols in full VR.",
           "shortDesc": "Breathe with visual guides. Parasympathetic reset.",
-          "tags": ["breathwork", "wellness", "mindfulness", "guided"],
+          "tags": [
+            "breathwork",
+            "wellness",
+            "mindfulness",
+            "guided"
+          ],
           "questCompatible": true,
           "flatCompatible": true,
           "estimatedDuration": "5-30 min",
@@ -637,7 +686,12 @@
           "harmonicNode": 210,
           "description": "Float in deep space at 963 Hz divine frequency. Stars, nebulae, and galaxy clusters at true scale. Pure cosmic perspective.",
           "shortDesc": "963 Hz. Deep space. Cosmic perspective shift.",
-          "tags": ["cosmos", "963hz", "space", "perspective"],
+          "tags": [
+            "cosmos",
+            "963hz",
+            "space",
+            "perspective"
+          ],
           "questCompatible": true,
           "flatCompatible": true,
           "estimatedDuration": "10-45 min",
@@ -656,7 +710,13 @@
           "harmonicNode": 290,
           "description": "396 Hz → 432 Hz → 72 Hz entrainment progression. Immersive soundscape and visual geometry designed for sleep onset and deep rest.",
           "shortDesc": "Frequency-guided sleep onset. Delta wave resonance.",
-          "tags": ["sleep", "delta", "432hz", "resonance", "wellness"],
+          "tags": [
+            "sleep",
+            "delta",
+            "432hz",
+            "resonance",
+            "wellness"
+          ],
           "questCompatible": true,
           "flatCompatible": true,
           "estimatedDuration": "20-90 min",
@@ -688,7 +748,13 @@
           "harmonicNode": 40,
           "description": "Ambient social lounge anchored to the PHI lattice. Shared presence, spatial voice, 639 Hz DIALOGUE field. The gathering place of realaios.com.",
           "shortDesc": "Meet anyone in the lattice. 639 Hz social field.",
-          "tags": ["social", "multiplayer", "voice", "persistent", "ambient"],
+          "tags": [
+            "social",
+            "multiplayer",
+            "voice",
+            "persistent",
+            "ambient"
+          ],
           "questCompatible": true,
           "flatCompatible": true,
           "estimatedDuration": "persistent",
@@ -707,7 +773,12 @@
           "harmonicNode": 110,
           "description": "Attend live AIOS system events in VR. Watch Storm autonomous decisions unfold on giant lattice displays. Community Q&A.",
           "shortDesc": "Watch AIOS think in real-time. Live events.",
-          "tags": ["live", "events", "community", "aios"],
+          "tags": [
+            "live",
+            "events",
+            "community",
+            "aios"
+          ],
           "questCompatible": true,
           "flatCompatible": true,
           "estimatedDuration": "varies",
@@ -726,7 +797,12 @@
           "harmonicNode": 170,
           "description": "Co-create VR experiences with other developers. Shared GeoQode canvas, spatial version control, real-time code preview.",
           "shortDesc": "Build VR together. Spatial co-creation.",
-          "tags": ["creator", "collaboration", "developer", "build"],
+          "tags": [
+            "creator",
+            "collaboration",
+            "developer",
+            "build"
+          ],
           "questCompatible": true,
           "flatCompatible": false,
           "estimatedDuration": "open-ended",
@@ -745,7 +821,12 @@
           "harmonicNode": 440,
           "description": "Host or attend live multi-room VR conferences. Keynote stages, breakout rooms, and lattice-anchored networking halls with up to 500 attendees.",
           "shortDesc": "Run a full conference in VR. 500 attendees. No travel.",
-          "tags": ["conference", "events", "networking", "enterprise"],
+          "tags": [
+            "conference",
+            "events",
+            "networking",
+            "enterprise"
+          ],
           "questCompatible": true,
           "flatCompatible": true,
           "estimatedDuration": "varies",
@@ -777,7 +858,12 @@
           "harmonicNode": 0,
           "description": "Live GeoQode coordinate explorer and lattice node builder. Test your semantic frequency mappings in real-time.",
           "shortDesc": "Build with GeoQode. Test in the live lattice.",
-          "tags": ["developer", "tools", "geoqode", "lattice"],
+          "tags": [
+            "developer",
+            "tools",
+            "geoqode",
+            "lattice"
+          ],
           "questCompatible": false,
           "flatCompatible": true,
           "estimatedDuration": "open-ended",
@@ -796,7 +882,12 @@
           "harmonicNode": 40,
           "description": "Submit and distribute your VR experiences. API keys, analytics, revenue split, and promotion on realaios.com.",
           "shortDesc": "Publish your VR XP. Get paid. Grow.",
-          "tags": ["developer", "marketplace", "publish", "revenue"],
+          "tags": [
+            "developer",
+            "marketplace",
+            "publish",
+            "revenue"
+          ],
           "questCompatible": false,
           "flatCompatible": true,
           "estimatedDuration": "open-ended",
@@ -815,7 +906,12 @@
           "harmonicNode": 80,
           "description": "Drag-and-drop VR scene construction in the browser. Auto-generates A-Frame + lattice-native GeoQode markup. No coding needed.",
           "shortDesc": "Drag. Drop. Ship VR. No code required.",
-          "tags": ["nocode", "builder", "visual", "aframe"],
+          "tags": [
+            "nocode",
+            "builder",
+            "visual",
+            "aframe"
+          ],
           "questCompatible": false,
           "flatCompatible": true,
           "estimatedDuration": "open-ended",
@@ -834,7 +930,12 @@
           "harmonicNode": 120,
           "description": "Browse and drop 3D assets, shaders, audio packs, and GeoQode templates directly into your VR scenes. Community + AI generated.",
           "shortDesc": "3D assets, shaders, audio. Drop into any scene.",
-          "tags": ["assets", "3d", "library", "community"],
+          "tags": [
+            "assets",
+            "3d",
+            "library",
+            "community"
+          ],
           "questCompatible": false,
           "flatCompatible": true,
           "estimatedDuration": "open-ended",
@@ -853,7 +954,12 @@
           "harmonicNode": 160,
           "description": "Visualise user heatmaps, dwell time, interaction zones, and revenue attribution in your published VR experiences.",
           "shortDesc": "See where users look, click, and convert in VR.",
-          "tags": ["analytics", "revenue", "heatmap", "developer"],
+          "tags": [
+            "analytics",
+            "revenue",
+            "heatmap",
+            "developer"
+          ],
           "questCompatible": false,
           "flatCompatible": true,
           "estimatedDuration": "open-ended",
@@ -872,7 +978,13 @@
           "harmonicNode": 420,
           "description": "Compose music with 3D positional audio. Place instruments anywhere in VR space. AI-generated harmonics at Solfeggio frequencies. Export as .wav or PLAIstore package.",
           "shortDesc": "Compose in 3D. Place sounds anywhere in VR space.",
-          "tags": ["music", "audio", "spatial", "solfeggio", "composer"],
+          "tags": [
+            "music",
+            "audio",
+            "spatial",
+            "solfeggio",
+            "composer"
+          ],
           "questCompatible": true,
           "flatCompatible": false,
           "estimatedDuration": "open-ended",
@@ -904,7 +1016,12 @@
           "harmonicNode": 330,
           "description": "Walk the Roman Forum, enter the Colosseum, and witness the height of the Empire — reconstructed at historical accuracy.",
           "shortDesc": "Time-travel to Rome. Walk among senators.",
-          "tags": ["history", "rome", "education", "architecture"],
+          "tags": [
+            "history",
+            "rome",
+            "education",
+            "architecture"
+          ],
           "questCompatible": true,
           "flatCompatible": true,
           "estimatedDuration": "15-30 min",
@@ -923,7 +1040,12 @@
           "harmonicNode": 360,
           "description": "Shrink to cellular scale and navigate the human bloodstream, organs, neural pathways, and DNA double helix.",
           "shortDesc": "Fly through your own bloodstream at cell scale.",
-          "tags": ["biology", "anatomy", "science", "education"],
+          "tags": [
+            "biology",
+            "anatomy",
+            "science",
+            "education"
+          ],
           "questCompatible": true,
           "flatCompatible": true,
           "estimatedDuration": "15-25 min",
@@ -942,7 +1064,12 @@
           "harmonicNode": 380,
           "description": "Walk through 4D hypercubes, Klein bottles, Möbius strips, and PHI spirals. Maths as a physical place you inhabit.",
           "shortDesc": "Live inside the 4th dimension. Literally.",
-          "tags": ["math", "4d", "geometry", "phi"],
+          "tags": [
+            "math",
+            "4d",
+            "geometry",
+            "phi"
+          ],
           "questCompatible": true,
           "flatCompatible": true,
           "estimatedDuration": "10-20 min",
@@ -961,7 +1088,12 @@
           "harmonicNode": 410,
           "description": "Learn Mandarin in Beijing, Spanish in Barcelona, Japanese in Tokyo — all in VR. AI conversation partners at every turn.",
           "shortDesc": "Learn any language by living in the country.",
-          "tags": ["language", "ai", "immersion", "learning"],
+          "tags": [
+            "language",
+            "ai",
+            "immersion",
+            "learning"
+          ],
           "questCompatible": true,
           "flatCompatible": false,
           "estimatedDuration": "20-60 min",
@@ -980,7 +1112,13 @@
           "harmonicNode": 430,
           "description": "Walk through a human genome at molecular scale. Visualise gene expression, protein folding, and CRISPR edit sites in navigable 3D.",
           "shortDesc": "Walk through your DNA. Gene editing at arm's reach.",
-          "tags": ["dna", "biology", "genome", "crispr", "science"],
+          "tags": [
+            "dna",
+            "biology",
+            "genome",
+            "crispr",
+            "science"
+          ],
           "questCompatible": true,
           "flatCompatible": true,
           "estimatedDuration": "15-30 min",
@@ -1012,7 +1150,12 @@
           "harmonicNode": 430,
           "description": "Paint in full 3D space with hand tracking. PHI-golden spiral brush guides. Export as A-Frame scene or GLB. Share to PLAIstore.",
           "shortDesc": "Paint in mid-air. Export as a VR scene.",
-          "tags": ["art", "painting", "handtracking", "3d"],
+          "tags": [
+            "art",
+            "painting",
+            "handtracking",
+            "3d"
+          ],
           "questCompatible": true,
           "flatCompatible": false,
           "estimatedDuration": "open-ended",
@@ -1031,7 +1174,12 @@
           "harmonicNode": 450,
           "description": "Compose music by positioning sound orbs in 3D space at Solfeggio frequencies. 396 → 741 → 963 Hz harmonic layers.",
           "shortDesc": "Compose by placing sounds in space. Solfeggio.",
-          "tags": ["music", "audio", "solfeggio", "spatial"],
+          "tags": [
+            "music",
+            "audio",
+            "solfeggio",
+            "spatial"
+          ],
           "questCompatible": true,
           "flatCompatible": false,
           "estimatedDuration": "open-ended",
@@ -1050,7 +1198,12 @@
           "harmonicNode": 470,
           "description": "An infinitely expanding AI-generated art museum. Each wing procedurally built from PHI spirals. New exhibits daily.",
           "shortDesc": "AI art museum that grows forever. Daily drops.",
-          "tags": ["art", "ai", "gallery", "infinite"],
+          "tags": [
+            "art",
+            "ai",
+            "gallery",
+            "infinite"
+          ],
           "questCompatible": true,
           "flatCompatible": true,
           "estimatedDuration": "open-ended",
@@ -1069,7 +1222,13 @@
           "harmonicNode": 450,
           "description": "Draw, sculpt, and animate on a shared 3D canvas with up to 20 creators simultaneously. AI-assisted colour palette keyed to Solfeggio frequencies.",
           "shortDesc": "Paint the void with 20 people. AI-assisted palette.",
-          "tags": ["art", "collaborative", "canvas", "3d", "multiplayer"],
+          "tags": [
+            "art",
+            "collaborative",
+            "canvas",
+            "3d",
+            "multiplayer"
+          ],
           "questCompatible": true,
           "flatCompatible": false,
           "estimatedDuration": "open-ended",
@@ -1111,7 +1270,12 @@
       "hostName": "AIOS Cinema",
       "maxAttendees": 480,
       "accent": "#f59e0b",
-      "tags": ["cinema", "matrix", "premiere", "social"]
+      "tags": [
+        "cinema",
+        "matrix",
+        "premiere",
+        "social"
+      ]
     },
     {
       "id": "investor-vr-live",
@@ -1128,7 +1292,12 @@
       "hostName": "AIOS Enterprise",
       "maxAttendees": 48,
       "accent": "#3b82f6",
-      "tags": ["enterprise", "investor", "live", "business"]
+      "tags": [
+        "enterprise",
+        "investor",
+        "live",
+        "business"
+      ]
     },
     {
       "id": "merkaba-lab-open",
@@ -1146,7 +1315,12 @@
       "maxAttendees": 26,
       "accent": "#22c55e",
       "recurring": "weekly",
-      "tags": ["lab", "merkaba", "geometry", "education"]
+      "tags": [
+        "lab",
+        "merkaba",
+        "geometry",
+        "education"
+      ]
     },
     {
       "id": "lattice-lounge-opening",
@@ -1163,7 +1337,12 @@
       "hostName": "AIOS Social",
       "maxAttendees": 26,
       "accent": "#00d4ff",
-      "tags": ["social", "lounge", "presence", "launch"]
+      "tags": [
+        "social",
+        "lounge",
+        "presence",
+        "launch"
+      ]
     },
     {
       "id": "phi-breaker-tournament-1",
@@ -1180,7 +1359,12 @@
       "hostName": "AIOS Arcade",
       "maxAttendees": 480,
       "accent": "#ef4444",
-      "tags": ["arcade", "tournament", "competitive", "phiBreaker"]
+      "tags": [
+        "arcade",
+        "tournament",
+        "competitive",
+        "phiBreaker"
+      ]
     },
     {
       "id": "geoqode-summit-2026",
@@ -1197,7 +1381,12 @@
       "hostName": "AIOS Platform",
       "maxAttendees": 480,
       "accent": "#f8fafc",
-      "tags": ["developer", "summit", "conference", "sdk"]
+      "tags": [
+        "developer",
+        "summit",
+        "conference",
+        "sdk"
+      ]
     }
   ]
 }

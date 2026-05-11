@@ -57,7 +57,7 @@ const GSC_TOKEN =
 /** Inject GA4 + optional GSC meta tag + preconnect hints immediately after <head> (Google's required position) */
 // Compute VR counts from taxonomy (called lazily inside withMeta, after VR_TAXONOMY is populated)
 function getVRCounts() {
-  if (!VR_TAXONOMY) return { live: 25, total: 50, cats: 9 };
+  if (!VR_TAXONOMY) return { live: 21, total: 46, cats: 9 };
   let live = 0,
     total = 0,
     cats = 0;
@@ -7738,10 +7738,14 @@ footer{text-align:center;padding:2.5rem;color:#2a3a50;font-size:0.8rem;border-to
           genres[g] = (genres[g] || 0) + 1;
         }),
       );
+      const totalEverProduced = Math.floor(
+        (Date.now() - GEO_GENESIS_MS) / GEO_PRODUCTION_INTERVAL_MS,
+      );
       return json(res, 200, {
         ok: true,
         catalogue: GEO_CATALOGUE.length,
         productionCount: GEO_PRODUCTION_COUNT,
+        totalEverProduced,
         totalDurationHours: Math.round((totalDuration / 3600) * 10) / 10,
         totalCatalogueKB: Math.round(totalKB * 10) / 10,
         intervalMs: GEO_PRODUCTION_INTERVAL_MS,

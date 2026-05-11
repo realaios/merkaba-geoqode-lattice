@@ -1488,7 +1488,7 @@
               margin-top: 2px;
             "
           >
-            Produced Today
+            Produced Total
           </div>
         </div>
         <div style="text-align: center">
@@ -1585,9 +1585,12 @@
                 if (el("gs-lib"))
                   el("gs-lib").textContent =
                     d.catalogue != null ? d.catalogue : "·";
-                if (el("gs-prod"))
-                  el("gs-prod").textContent =
-                    d.productionCount != null ? d.productionCount : "·";
+                if (el("gs-prod")) {
+                  const tot = d.totalEverProduced != null ? d.totalEverProduced : d.productionCount;
+                  el("gs-prod").textContent = tot != null
+                    ? (tot >= 1000 ? (tot / 1000).toFixed(1) + "k" : tot)
+                    : "·";
+                }
                 if (el("gs-hrs"))
                   el("gs-hrs").textContent =
                     d.totalDurationHours != null ? d.totalDurationHours : "·";
