@@ -336,7 +336,7 @@
         gap: 3px;
       }
       .app-verified::after {
-        content: "?";
+        content: "\2713";
         color: var(--green);
         font-size: 10px;
       }
@@ -812,11 +812,11 @@
       </p>
       <div class="hero-stats">
         <div class="hero-stat">
-          <div class="hero-stat-num" id="stat-apps">�</div>
+          <div class="hero-stat-num" id="stat-apps">&#x2022;</div>
           <div class="hero-stat-label">Apps</div>
         </div>
         <div class="hero-stat">
-          <div class="hero-stat-num" id="stat-categories">�</div>
+          <div class="hero-stat-num" id="stat-categories">&#x2022;</div>
           <div class="hero-stat-label">Categories</div>
         </div>
 
@@ -863,12 +863,12 @@
       </div>
       <p style="font-size: 0.8rem; color: #64748b; margin-bottom: 1rem">
         AIOSProducerSwarm produces new .geo programmes every 2 minutes. All
-        titles are unique � AI-directed, AI-scored, zero pre-recorded media.
+        titles are unique &#x2022; AI-directed, AI-scored, zero pre-recorded media.
       </p>
       <div class="app-grid" id="geo-live-grid" style="margin-bottom: 2rem">
         <div class="loading">
           <div class="spinner"></div>
-          <p>Loading live catalogue�</p>
+          <p>Loading live catalogue&#x2026;</p>
         </div>
       </div>
 
@@ -1074,7 +1074,7 @@
           "
           onmouseover="this.style.background = 'rgba(132,204,22,0.12)'"
           onmouseout="this.style.background = 'rgba(132,204,22,0.05)'"
-          >? Creator</a
+          >+ Creator</a
         >
       </div>
       <div class="app-grid" id="vr-grid">
@@ -1135,14 +1135,14 @@
           <div class="step">
             <div class="step-num">3</div>
             <div class="step-text">
-              Tap <strong>Install</strong> � the app is added to your library
+              Tap <strong>Install</strong> &#x2022; the app is added to your library
               instantly
             </div>
           </div>
           <div class="step">
             <div class="step-num">4</div>
             <div class="step-text">
-              Launch it directly inside AIOS � no downloads, no waiting
+              Launch it directly inside AIOS &#x2022; no downloads, no waiting
             </div>
           </div>
         </div>
@@ -1151,7 +1151,7 @@
     <!-- App detail modal -->
     <div class="modal-overlay" id="modal">
       <div class="modal" id="modal-content">
-        <button class="modal-close" id="modal-close">?</button>
+        <button class="modal-close" id="modal-close">&times;</button>
         <div id="modal-body"></div>
       </div>
     </div>
@@ -1162,14 +1162,14 @@
         <div style="font-size:2.5rem;margin-bottom:0.75rem"></div>
         <h2 style="font-size:1.25rem;font-weight:800;margin-bottom:0.5rem">AIOS Pro Required</h2>
         <p style="color:rgba(248,250,252,0.55);font-size:0.88rem;line-height:1.6;margin-bottom:1.5rem">This app is exclusive to AIOS Pro members.<br>Unlock all premium apps for $12/month.</p>
-        <a href="/pricing" style="display:block;background:linear-gradient(135deg,#00d4ff,#6366f1);color:#07080f;font-weight:700;padding:0.75rem;border-radius:8px;text-decoration:none;margin-bottom:0.75rem;font-size:0.95rem">View AIOS Pro Plans ?</a>
+        <a href="/pricing" style="display:block;background:linear-gradient(135deg,#00d4ff,#6366f1);color:#07080f;font-weight:700;padding:0.75rem;border-radius:8px;text-decoration:none;margin-bottom:0.75rem;font-size:0.95rem">View AIOS Pro Plans &#8594;</a>
         <button onclick="closeUpgradeModal()" style="background:none;border:none;color:rgba(248,250,252,0.4);cursor:pointer;font-size:0.85rem;padding:0.25rem">Cancel</button>
       </div>
     </div>
 
     <div class="modal-overlay" id="auth-modal">
       <div class="modal" style="max-width: 420px">
-        <button class="modal-close" id="auth-modal-close">?</button>
+        <button class="modal-close" id="auth-modal-close">&times;</button>
         <h2 style="margin-bottom: 20px; font-size: 20px; font-weight: 700">
           Your AIOS Account
         </h2>
@@ -1264,7 +1264,7 @@
             margin-top: 16px;
           "
         >
-          Free account � no credit card required
+          Free account &#x2022; no credit card required
         </p>
       </div>
     </div>
@@ -1282,21 +1282,21 @@
     <script>
       const API = ""; // same-origin: realaios.com
       const CATEGORY_ICONS = {
-        Theatre: "",
-        Cinema: "",
-        Playbooks: "",
-        Agents: "",
-        Codex: "",
-        Analytics: "",
-        Integrations: "",
-        Utilities: "",
-        Games: "",
-        VR: "",
-        Design: "??",
-        Writing: "??",
-        Developer: "??",
-        Finance: "",
-        Productivity: "??",
+        Theatre: "\u{1F3AD}",
+        Cinema: "\u{1F3AC}",
+        Playbooks: "\u{1F4D6}",
+        Agents: "\u{1F916}",
+        Codex: "\u{1F4DA}",
+        Analytics: "\u{1F4CA}",
+        Integrations: "\u{1F50C}",
+        Utilities: "\u{1F527}",
+        Games: "\u{1F3AE}",
+        VR: "\u{1F97D}",
+        Design: "\u{1F3A8}",
+        Writing: "\u270D\uFE0F",
+        Developer: "\u{1F4BB}",
+        Finance: "\u{1F4B0}",
+        Productivity: "\u{1F680}",
       };
 
       let allApps = [];
@@ -1343,7 +1343,7 @@
           renderGrid("featured-grid", apps.slice(0, 4));
         } catch {
           document.getElementById("featured-grid").innerHTML =
-            '<div class="empty"><div class="empty-icon">?</div><p>No featured apps yet</p></div>';
+            '<div class="empty"><div class="empty-icon">&#x1F9E9;</div><p>No featured apps yet</p></div>';
         }
       }
 
@@ -1394,14 +1394,14 @@
                     <span style="font-size:1.5rem;">${x.icon}</span>
                     <div>
                       <div style="font-weight:700;font-size:0.95rem;color:#edf4ff;">${x.name}</div>
-                      <div style="font-size:0.72rem;color:${x.accent};font-weight:600;">${x.category} � ${x.sem} � ${x.freq}</div>
+                      <div style="font-size:0.72rem;color:${x.accent};font-weight:600;">${x.category} \u2022 ${x.sem} \u2022 ${x.freq}</div>
                     </div>
                     <span style="margin-left:auto;font-size:0.65rem;background:#22c55e;color:#000;padding:0.15rem 0.45rem;border-radius:3px;font-weight:700;">LIVE</span>
                   </div>
-                  <p style="font-size:0.8rem;color:#6b84b8;margin:0 0 0.9rem;line-height:1.55;">${x.description.slice(0, 110)}${x.description.length > 110 ? "�" : ""}</p>
+                  <p style="font-size:0.8rem;color:#6b84b8;margin:0 0 0.9rem;line-height:1.55;">${x.description.slice(0, 110)}${x.description.length > 110 ? "\u2026" : ""}</p>
                   <div style="display:flex;gap:0.5rem;">
-                    <a href="${x.vrUrl}" style="flex:1;text-align:center;padding:0.45rem;background:${x.accent}18;border:1px solid ${x.accent}44;border-radius:7px;color:${x.accent};font-size:0.78rem;font-weight:700;text-decoration:none;"> VR</a>
-                    <a href="${x.flatUrl}" style="flex:1;text-align:center;padding:0.45rem;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:7px;color:#aaa;font-size:0.78rem;font-weight:700;text-decoration:none;"> Flat</a>
+                    <a href="${x.vrUrl}" style="flex:1;text-align:center;padding:0.45rem;background:${x.accent}18;border:1px solid ${x.accent}44;border-radius:7px;color:${x.accent};font-size:0.78rem;font-weight:700;text-decoration:none;">\u{1F97D} VR</a>
+                    <a href="${x.flatUrl}" style="flex:1;text-align:center;padding:0.45rem;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:7px;color:#aaa;font-size:0.78rem;font-weight:700;text-decoration:none;">\u{1F4FA} Flat</a>
                   </div>
                 </div>`,
                 )
@@ -1410,14 +1410,14 @@
               grid.innerHTML =
                 '<div class="empty" style="grid-column:1/-1;text-align:center;padding:2rem;"><div class="empty-icon"></div>' +
                 '<p style="margin-bottom:0.75rem;">VR experiences launching soon!</p>' +
-                '<a href="/vr-hub" style="color:#00d4ff;font-weight:600;text-decoration:none;">Browse VR Hub ?</a></div>';
+                '<a href="/vr-hub" style="color:#00d4ff;font-weight:600;text-decoration:none;">Browse VR Hub \u2192</a></div>';
             }
           }
         } catch (_) {
           document.getElementById("vr-grid").innerHTML =
             '<div class="empty" style="grid-column:1/-1;text-align:center;padding:2rem;"><div class="empty-icon"></div>' +
             '<p style="margin-bottom:0.75rem;">Explore VR experiences</p>' +
-            '<a href="/vr-hub" style="color:#00d4ff;font-weight:600;text-decoration:none;">Browse VR Hub ?</a></div>';
+            '<a href="/vr-hub" style="color:#00d4ff;font-weight:600;text-decoration:none;">Browse VR Hub \u2192</a></div>';
         }
       }
 
@@ -1494,7 +1494,7 @@
         const icon = CATEGORY_ICONS[app.category] || "";
         const rating =
           app.rating_avg > 0
-            ? `<span class="app-rating"><span class="app-rating-star">?</span> ${parseFloat(app.rating_avg).toFixed(1)}</span>`
+            ? `<span class="app-rating"><span class="app-rating-star">\u2B50</span> ${parseFloat(app.rating_avg).toFixed(1)}</span>`
             : "";
         const dls =
           app.downloads > 0
@@ -1559,14 +1559,14 @@
           <div class="modal-icon">${icon}</div>
           <div>
             <div class="modal-app-name">${esc(app.name)}</div>
-            <div class="modal-app-dev">${esc(app.developer_name || "AIOS")} � ${esc(app.category)}</div>
+            <div class="modal-app-dev">${esc(app.developer_name || "AIOS")} \u2022 ${esc(app.category)}</div>
           </div>
         </div>
         <p class="modal-desc">${esc(app.description || "")}</p>
         <div class="modal-actions">
           <button class="btn btn-primary" onclick="installApp(${app.id}, '${esc(app.name)}', ${appPriceCents})">${installLabel}</button>
           ${dreamBtn}
-          ${app.type !== "cinema-vr" ? `<a href="${esc(launchUrl)}" target="_blank" rel="noopener" class="btn btn-outline">Open in AIOS ?</a>` : ""}
+          ${app.type !== "cinema-vr" ? `<a href="${esc(launchUrl)}" target="_blank" rel="noopener" class="btn btn-outline">Open in AIOS \u2192</a>` : ""}
         </div>
       `;
         } catch {
@@ -1581,7 +1581,7 @@
           openAuthModal();
           return;
         }
-        // Pro gate � require Pro for paid apps
+        // Pro gate \u2022 require Pro for paid apps
         if (priceCents > 0 && userTier === "free") {
           openUpgradeModal();
           return;
@@ -1598,11 +1598,11 @@
             openAuthModal();
             return;
           }
-          showToast(`? ${name} installed � check My Library`, "success");
+          showToast(`\u2713 ${name} installed \u2022 check My Library`, "success");
           loadLibrary();
           refreshStats(); // update install counter immediately
         } catch {
-          showToast("Install failed � please try again", "error");
+          showToast("Install failed \u2022 please try again", "error");
         }
       }
 
@@ -1756,7 +1756,7 @@
           }
           onAuthSuccess(data.token, data.user);
         } catch {
-          errEl.textContent = "Network error � please try again";
+          errEl.textContent = "Network error \u2022 please try again";
           errEl.className = "auth-error show";
           btn.disabled = false;
           btn.textContent = "Sign In";
@@ -1793,7 +1793,7 @@
           }
           onAuthSuccess(data.token, data.user);
         } catch {
-          errEl.textContent = "Network error � please try again";
+          errEl.textContent = "Network error \u2022 please try again";
           errEl.className = "auth-error show";
           btn.disabled = false;
           btn.textContent = "Create Free Account";
@@ -1845,7 +1845,7 @@
           const apps = data.apps || [];
           if (!apps.length) {
             document.getElementById("library-grid").innerHTML =
-              '<div class="empty"><div class="empty-icon"></div><p>No installed apps yet � browse and click Install!</p></div>';
+              '<div class="empty"><div class="empty-icon"></div><p>No installed apps yet \u2022 browse and click Install!</p></div>';
           } else {
             renderGrid("library-grid", apps);
           }
@@ -1982,13 +1982,13 @@
               <div style="width:48px;height:48px;border-radius:12px;background:${acc}18;display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0">${icon}</div>
               <div style="flex:1;min-width:0">
                 <div style="font-weight:800;font-size:0.88rem;line-height:1.2;margin-bottom:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${p.title || "Untitled Programme"}</div>
-                <div style="font-size:0.7rem;color:#64748b">AIOSProducerSwarm � ${renderer}</div>
-                <div style="font-size:0.68rem;color:#94a3b8;margin-top:2px">${genres.join(" � ")} � ${minDur}min</div>
+                <div style="font-size:0.7rem;color:#64748b">AIOSProducerSwarm \u2022 ${renderer}</div>
+                <div style="font-size:0.68rem;color:#94a3b8;margin-top:2px">${genres.join(" \u2022 ")} \u2022 ${minDur}min</div>
               </div>
             </div>
             <div style="font-size:0.78rem;color:#64748b;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-bottom:0.7rem">${p.logline || p.description || "An AI-generated .geo programme."}</div>
             <div style="display:flex;align-items:center;justify-content:space-between">
-              <span style="font-size:0.65rem;font-weight:600;color:${acc};background:${acc}12;padding:2px 8px;border-radius:8px">${p.hz || 528} � ${(p.spatialProfile || "Stereo").toUpperCase()}</span>
+              <span style="font-size:0.65rem;font-weight:600;color:${acc};background:${acc}12;padding:2px 8px;border-radius:8px">${p.hz || 528} \u2022 ${(p.spatialProfile || "Stereo").toUpperCase()}</span>
               <a href="/aiosdream?renderer=${p.renderer || "matrix"}" onclick="event.stopPropagation()" style="font-size:0.78rem;font-weight:700;background:${acc};color:#000;padding:0.3rem 0.8rem;border-radius:16px;text-decoration:none"> Watch</a>
             </div>
           </div>`;
@@ -2001,7 +2001,7 @@
             if (!grid) return;
             if (!progs.length) {
               grid.innerHTML =
-                '<div style="text-align:center;padding:2rem;color:#64748b">Swarm is warming up � check back shortly!</div>';
+                '<div style="text-align:center;padding:2rem;color:#64748b">Swarm is warming up \u2022 check back shortly!</div>';
               return;
             }
             grid.innerHTML = progs.map(geoCard).join("");
