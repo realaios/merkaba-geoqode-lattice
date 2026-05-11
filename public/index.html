@@ -1586,10 +1586,16 @@
                   el("gs-lib").textContent =
                     d.catalogue != null ? d.catalogue : "·";
                 if (el("gs-prod")) {
-                  const tot = d.totalEverProduced != null ? d.totalEverProduced : d.productionCount;
-                  el("gs-prod").textContent = tot != null
-                    ? (tot >= 1000 ? (tot / 1000).toFixed(1) + "k" : tot)
-                    : "·";
+                  const tot =
+                    d.totalEverProduced != null
+                      ? d.totalEverProduced
+                      : d.productionCount;
+                  el("gs-prod").textContent =
+                    tot != null
+                      ? tot >= 1000
+                        ? (tot / 1000).toFixed(1) + "k"
+                        : tot
+                      : "·";
                 }
                 if (el("gs-hrs"))
                   el("gs-hrs").textContent =
