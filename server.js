@@ -7097,8 +7097,7 @@ body{background:#04080f;color:#edf4ff;font-family:system-ui,sans-serif;padding:0
 .btn-info{padding:0.45rem 0.8rem;color:#8aa0c8;font-size:0.78rem;text-decoration:none;border:1px solid rgba(255,255,255,0.1);border-radius:8px;}
 .btn-info:hover{color:#edf4ff;}
 .none-msg{display:none;text-align:center;color:#8aa0c8;padding:3rem;grid-column:1/-1;}
-.back{display:block;text-align:center;margin-top:2.5rem;color:#00d4ff;font-size:0.85rem;text-decoration:none;opacity:0.7;}
-.back:hover{opacity:1;}
+.back-footer{text-align:center;margin-top:2.5rem;padding-bottom:2rem;font-size:0.85rem;}.back-footer a{color:#00d4ff;text-decoration:none;opacity:0.7;white-space:nowrap;}.back-footer a:hover{opacity:1;}
 nav.site-nav{position:fixed;top:0;left:0;right:0;z-index:200;height:54px;padding:0 24px;display:flex;align-items:center;gap:8px;background:rgba(5,10,20,0.92);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid rgba(0,212,255,0.1)}.site-nav-logo{font-size:18px;font-weight:800;color:#00d4ff;text-decoration:none;letter-spacing:-0.5px;white-space:nowrap;margin-right:4px;flex-shrink:0}.site-nav-links{display:flex;align-items:center;gap:2px;overflow-x:auto;scrollbar-width:none;flex:1;min-width:0}.site-nav-links::-webkit-scrollbar{display:none}.site-nav-links a{color:rgba(248,250,252,0.5);font-size:0.82rem;font-weight:500;text-decoration:none;padding:5px 10px;border-radius:6px;white-space:nowrap;transition:color .15s,background .15s;flex-shrink:0}.site-nav-links a:hover{color:#fff;background:rgba(255,255,255,0.07)}.site-nav-links a.active{color:#00d4ff;background:rgba(0,212,255,0.08)}.site-nav-right{display:flex;align-items:center;gap:10px;flex-shrink:0;margin-left:8px}.site-nav-live{display:inline-flex;align-items:center;gap:4px;font-size:0.72rem;font-weight:800;color:#ef4444;text-decoration:none;letter-spacing:.05em;animation:_snlive 1.2s ease-in-out infinite}@keyframes _snlive{0%,100%{opacity:1}50%{opacity:.5}}.site-nav-cta{background:#00d4ff;color:#000;font-weight:700;font-size:0.78rem;padding:6px 14px;border-radius:6px;text-decoration:none;letter-spacing:.3px;transition:opacity .2s;white-space:nowrap}.site-nav-cta:hover{opacity:.85}@media(max-width:640px){nav.site-nav{padding:0 12px;height:50px}.site-nav-live{display:none}.site-nav-logo{font-size:16px}}body{padding-top:54px}@media(max-width:640px){body{padding-top:50px}}
 </style>
 ${GSC_TOKEN ? `<meta name="google-site-verification" content="${GSC_TOKEN}"/>` : ""}${`<script async src="https://www.googletagmanager.com/gtag/js?id=${GA_ID}"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','${GA_ID}',{send_page_view:true,cookie_flags:'SameSite=None;Secure'});</script>`}
@@ -7117,7 +7116,7 @@ ${filterBtns}
 ${xpCards}
 <p class="none-msg" id="none-msg">No experiences in this category yet.</p>
 </div>
-<a class="back" href="/vr-hub">← Full VR Hub</a> &nbsp;&middot;&nbsp; <a class="back" href="/">realaios.com</a> &nbsp;&middot;&nbsp; <a class="back" href="/products">⚡ Products</a> &nbsp;&middot;&nbsp; <a class="back" href="/news">News</a>
+<div class="back-footer"><a href="/vr-hub">&#x2190; Full VR Hub</a> &nbsp;&middot;&nbsp; <a href="/">realaios.com</a> &nbsp;&middot;&nbsp; <a href="/products">&#x26A1; Products</a> &nbsp;&middot;&nbsp; <a href="/news">&#x1F4F0; News</a></div>
 <script>
 function filterXP(cat, btn) {
   document.querySelectorAll('.ft').forEach(b => b.classList.remove('active'));
