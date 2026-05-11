@@ -2984,6 +2984,7 @@
           if (!badge) {
             badge = document.createElement("div");
             badge.className = "online-badge";
+            badge.style.display = "none"; // hidden until real users present
             badge.innerHTML =
               '<span class="online-dot"></span><span id="live-' +
               cat +
@@ -2993,7 +2994,13 @@
           const countEl = sec.querySelector("#live-" + cat);
           if (countEl) {
             const val = Number(window.__vrLiveByCategory[cat] || 0);
-            countEl.textContent = val.toLocaleString();
+            // Only show the badge when real users are present — no fake "0 online"
+            if (val > 0) {
+              countEl.textContent = val.toLocaleString();
+              badge.style.display = "";
+            } else {
+              badge.style.display = "none";
+            }
           }
         });
       }

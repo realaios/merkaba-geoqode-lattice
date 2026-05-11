@@ -1147,8 +1147,11 @@ const PLAI_ALL_EXTRAS = [
 // the live catalog without a redeploy. Keyed by bundle_id.
 const _plaiRuntimeApps = new Map();
 let _plaiRuntimeIdSeq = 9000; // IDs 9000+ for runtime-published apps
-// Install tracking — incremented per POST /api/plai/apps/:id/install
-const _plaiInstallCounts = new Map(); // app_id → total installs recorded this session
+// Install tracking — HARDENED SINGLE WRITE POINT
+// RULE: _plaiInstallCounts may ONLY be incremented inside the POST /api/plai/apps/:id/install handler.
+// NO setInterval, background job, swarm agent, or generator script may write to this Map.
+// Violation = fake data. The frontend displays "New" for 0 and the real count for > 0.
+const _plaiInstallCounts = new Map(); // app_id → total installs (real user actions only)
 const _gameLeaderboards = new Map(); // game → [{name, score, ts}]
 
 /** Count runtime apps per category name (case-insensitive match) */
@@ -8529,6 +8532,11 @@ for (let i = 0; i < 12; i++) generateGeoProgram();
   });
 })();
 
+// ── HARDENED TIMER BOUNDARY ───────────────────────────────────────────────────
+// ONLY two setIntervals below are permitted:
+//   1. generateGeoProgram  — grows the Theatre catalogue (real content)
+//   2. _runAwarePulse      — MerkabAware coherence telemetry
+// DO NOT add any timer here that increments _plaiInstallCounts or fakes any counter.
 setInterval(generateGeoProgram, GEO_PRODUCTION_INTERVAL_MS);
 
 // ── MerkabAware coherence pulse ───────────────────────────────────────────────
