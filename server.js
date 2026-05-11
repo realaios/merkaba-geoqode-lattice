@@ -283,7 +283,7 @@ const MIME_TYPES = {
 const PORT = parseInt(process.env.PORT || "3030", 10);
 const ADMIN_JWT = process.env.ADMIN_JWT || null;
 const BACKEND_URL = process.env.BACKEND_URL || null;
-const GAMES_RETIRE_REDIRECT = "/plaistore";
+const GAMES_RETIRE_REDIRECT = "/"; // Direct to home — avoids /plaistore → / redirect chain
 
 const MERKABA_ACTIVATION_UPDATE = {
   subject: "MERKABA Activation update.",
@@ -4144,8 +4144,7 @@ const server = createServer(async (req, res) => {
         `  <url><loc>https://realaios.com/dashboard</loc><lastmod>${now}</lastmod><changefreq>daily</changefreq><priority>0.72</priority></url>`,
         `  <url><loc>https://realaios.com/products</loc><lastmod>${now}</lastmod><changefreq>weekly</changefreq><priority>0.75</priority></url>`,
         `  <url><loc>https://realaios.com/news</loc><lastmod>${now}</lastmod><changefreq>daily</changefreq><priority>0.88</priority></url>`,
-        `  <url><loc>https://realaios.com/geo-library</loc><lastmod>${now}</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>`,
-        `  <url><loc>https://realaios.com/aios-studio</loc><lastmod>${now}</lastmod><changefreq>weekly</changefreq><priority>0.82</priority></url>`,
+        // /geo-library and /aios-studio both 301 → /experiences — excluded from sitemap
         `  <url><loc>https://realaios.com/live</loc><lastmod>${now}</lastmod><changefreq>daily</changefreq><priority>0.80</priority></url>`,
         // Individual news article pages
         ...AIOS_NEWS.map(
@@ -6584,15 +6583,13 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
       return;
     }
 
-    // ── GET /aios-studio — AIOSProducerSwarm Production Studio ────────────
+    // ── GET /aios-studio — 301 to /experiences (canonical page) ────────────
     if (
       req.method === "GET" &&
       (pathname === "/aios-studio" || pathname === "/aios-studio/")
     ) {
-      if (!AIOS_STUDIO_HTML)
-        return json(res, 404, { ok: false, error: "AIOS Studio not found" });
-      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
-      res.end(AIOS_STUDIO_HTML);
+      res.writeHead(301, { Location: "/experiences" });
+      res.end();
       return;
     }
 
@@ -7837,21 +7834,13 @@ footer{text-align:center;padding:2.5rem;color:#2a3a50;font-size:0.8rem;border-to
       }
     }
 
-    // ── GET /geo-library — AIOS .geo Netflix Catalogue ────────────────────────
+    // ── GET /geo-library — 301 to /experiences (canonical page) ────────────────────────
     if (
       req.method === "GET" &&
       (pathname === "/geo-library" || pathname === "/geo-library/")
     ) {
-      if (!GEO_LIBRARY_HTML)
-        return json(res, 404, {
-          ok: false,
-          error: "Geo library page not found",
-        });
-      res.writeHead(200, {
-        "Content-Type": "text/html; charset=utf-8",
-        "Cache-Control": "no-store",
-      });
-      res.end(GEO_LIBRARY_HTML);
+      res.writeHead(301, { Location: "/experiences" });
+      res.end();
       return;
     }
 
