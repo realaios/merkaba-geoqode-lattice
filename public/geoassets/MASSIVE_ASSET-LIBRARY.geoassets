@@ -14,153 +14,646 @@
     "loaderScript": "/public/geoassets/mal-loader.js",
     "license": "AIOS-Internal — not for redistribution"
   },
-
   "palettes": {
     "simulation": {
-      "bg":        "#010a06",
-      "primary":   "#00ff41",
+      "bg": "#010a06",
+      "primary": "#00ff41",
       "secondary": "#003b00",
-      "accent":    "#00d4ff",
-      "fog":       "#001400",
+      "accent": "#00d4ff",
+      "fog": "#001400",
       "fogDensity": 0.018,
       "ambientHz": 852
     },
     "deep_space": {
-      "bg":        "#000005",
-      "primary":   "#a78bfa",
+      "bg": "#000005",
+      "primary": "#a78bfa",
       "secondary": "#1e1b4b",
-      "accent":    "#f59e0b",
-      "fog":       "#000005",
+      "accent": "#f59e0b",
+      "fog": "#000005",
       "fogDensity": 0.004,
       "ambientHz": 963
     },
     "forest": {
-      "bg":        "#061208",
-      "primary":   "#22c55e",
+      "bg": "#061208",
+      "primary": "#22c55e",
       "secondary": "#052e16",
-      "accent":    "#84cc16",
-      "fog":       "#052e16",
+      "accent": "#84cc16",
+      "fog": "#052e16",
       "fogDensity": 0.022,
       "ambientHz": 528
     },
     "ocean": {
-      "bg":        "#020d1a",
-      "primary":   "#38bdf8",
+      "bg": "#020d1a",
+      "primary": "#38bdf8",
       "secondary": "#0c4a6e",
-      "accent":    "#e0f2fe",
-      "fog":       "#020d1a",
+      "accent": "#e0f2fe",
+      "fog": "#020d1a",
       "fogDensity": 0.014,
       "ambientHz": 417
     },
     "merkaba": {
-      "bg":        "#04080f",
-      "primary":   "#00d4ff",
+      "bg": "#04080f",
+      "primary": "#00d4ff",
       "secondary": "#1e3a5f",
-      "accent":    "#9b5cff",
-      "fog":       "#020508",
+      "accent": "#9b5cff",
+      "fog": "#020508",
       "fogDensity": 0.008,
       "ambientHz": 72
     },
     "quantum": {
-      "bg":        "#030010",
-      "primary":   "#c084fc",
+      "bg": "#030010",
+      "primary": "#c084fc",
       "secondary": "#2e1065",
-      "accent":    "#f0abfc",
-      "fog":       "#030010",
+      "accent": "#f0abfc",
+      "fog": "#030010",
       "fogDensity": 0.01,
       "ambientHz": 741
     },
     "golden_hour": {
-      "bg":        "#1a0a00",
-      "primary":   "#f59e0b",
+      "bg": "#1a0a00",
+      "primary": "#f59e0b",
       "secondary": "#78350f",
-      "accent":    "#fde68a",
-      "fog":       "#2d1000",
+      "accent": "#fde68a",
+      "fog": "#2d1000",
       "fogDensity": 0.012,
       "ambientHz": 639
     },
     "arctic": {
-      "bg":        "#e0f4ff",
-      "primary":   "#bfdbfe",
+      "bg": "#e0f4ff",
+      "primary": "#bfdbfe",
       "secondary": "#dbeafe",
-      "accent":    "#1d4ed8",
-      "fog":       "#dbeafe",
+      "accent": "#1d4ed8",
+      "fog": "#dbeafe",
       "fogDensity": 0.009,
       "ambientHz": 396
+    },
+    "roman_arena": {
+      "bg": "#0e0802",
+      "primary": "#c49a3a",
+      "secondary": "#5c3d11",
+      "accent": "#ffe08a",
+      "fog": "#1a0e04",
+      "fogDensity": 0.014,
+      "ambientHz": 417
+    },
+    "orbital": {
+      "bg": "#000008",
+      "primary": "#d8e6f0",
+      "secondary": "#2a3a4a",
+      "accent": "#60a5fa",
+      "fog": "#000005",
+      "fogDensity": 0.003,
+      "ambientHz": 852
+    },
+    "desert_dawn": {
+      "bg": "#06030a",
+      "primary": "#d97706",
+      "secondary": "#78350f",
+      "accent": "#fcd34d",
+      "fog": "#1a0a00",
+      "fogDensity": 0.016,
+      "ambientHz": 963
+    },
+    "abyss": {
+      "bg": "#000204",
+      "primary": "#00e5cc",
+      "secondary": "#001a14",
+      "accent": "#7c3aed",
+      "fog": "#000204",
+      "fogDensity": 0.022,
+      "ambientHz": 417
     }
   },
-
   "materials": {
-    "code_rain_green":   { "color": "#00ff41", "emissive": "#00cc33", "emissiveIntensity": 0.6, "opacity": 0.92, "metalness": 0.0, "roughness": 1.0 },
-    "code_rain_dim":     { "color": "#003b00", "emissive": "#001a00", "emissiveIntensity": 0.3, "opacity": 0.45 },
-    "console_dark":      { "color": "#060d06", "emissive": "#000000", "metalness": 0.8, "roughness": 0.2, "opacity": 0.98 },
-    "hologram_cyan":     { "color": "#00d4ff", "emissive": "#0090cc", "emissiveIntensity": 0.8, "opacity": 0.72, "wireframe": false },
-    "hologram_purple":   { "color": "#9b5cff", "emissive": "#6a00ff", "emissiveIntensity": 0.7, "opacity": 0.68 },
-    "steel_dark":        { "color": "#1a1a1a", "metalness": 0.95, "roughness": 0.15 },
-    "steel_worn":        { "color": "#2a2520", "metalness": 0.7,  "roughness": 0.45 },
-    "glass_tinted":      { "color": "#003322", "opacity": 0.25, "transparent": true, "metalness": 0.0, "roughness": 0.0 },
-    "glass_clear":       { "color": "#c0d8ff", "opacity": 0.12, "transparent": true },
-    "concrete":          { "color": "#2d2d2d", "metalness": 0.0, "roughness": 0.95 },
-    "concrete_worn":     { "color": "#1e1c1a", "metalness": 0.0, "roughness": 0.98 },
-    "neon_green":        { "color": "#00ff41", "emissive": "#00ff41", "emissiveIntensity": 1.0 },
-    "neon_cyan":         { "color": "#00d4ff", "emissive": "#00d4ff", "emissiveIntensity": 1.0 },
-    "neon_purple":       { "color": "#9b5cff", "emissive": "#9b5cff", "emissiveIntensity": 1.0 },
-    "neon_gold":         { "color": "#f59e0b", "emissive": "#f59e0b", "emissiveIntensity": 0.9 },
-    "neon_red":          { "color": "#ef4444", "emissive": "#ef4444", "emissiveIntensity": 1.0 },
-    "void_black":        { "color": "#000000", "metalness": 0.0, "roughness": 1.0 },
-    "star_white":        { "color": "#ffffff", "emissive": "#ffffee", "emissiveIntensity": 1.0 },
-    "bioluminescent":    { "color": "#22c55e", "emissive": "#16a34a", "emissiveIntensity": 0.75 },
-    "water_surface":     { "color": "#38bdf8", "opacity": 0.55, "transparent": true, "metalness": 0.1, "roughness": 0.05 },
-    "lattice_node":      { "color": "#00d4ff", "emissive": "#007799", "emissiveIntensity": 0.8, "opacity": 0.9 },
-    "lattice_edge":      { "color": "#00d4ff", "opacity": 0.2, "transparent": true },
-    "character_suit":    { "color": "#0a0a0a", "metalness": 0.3, "roughness": 0.6 },
-    "character_skin":    { "color": "#c4956a", "metalness": 0.0, "roughness": 0.8 },
-    "character_eyes":    { "color": "#00d4ff", "emissive": "#00d4ff", "emissiveIntensity": 1.2 },
-    "rock_granite":      { "color": "#3d3730", "metalness": 0.0, "roughness": 1.0 },
-    "rock_snow":         { "color": "#e8f0f8", "metalness": 0.0, "roughness": 0.9 },
-    "bark":              { "color": "#3b2106", "metalness": 0.0, "roughness": 1.0 },
-    "leaf":              { "color": "#16a34a", "emissive": "#064e1a", "emissiveIntensity": 0.1 },
-    "ancient_stone":     { "color": "#7c6d5a", "metalness": 0.05, "roughness": 0.95 },
-    "gold_ornament":     { "color": "#d97706", "metalness": 0.95, "roughness": 0.15 },
-    "plasma_blue":       { "color": "#60a5fa", "emissive": "#3b82f6", "emissiveIntensity": 1.0, "opacity": 0.6 },
-    "plasma_purple":     { "color": "#c084fc", "emissive": "#9333ea", "emissiveIntensity": 0.9, "opacity": 0.55 },
-    "grid_floor":        { "color": "#001100", "wireframe": true, "opacity": 0.4 }
+    "code_rain_green": {
+      "color": "#00ff41",
+      "emissive": "#00cc33",
+      "emissiveIntensity": 0.6,
+      "opacity": 0.92,
+      "metalness": 0,
+      "roughness": 1
+    },
+    "code_rain_dim": {
+      "color": "#003b00",
+      "emissive": "#001a00",
+      "emissiveIntensity": 0.3,
+      "opacity": 0.45
+    },
+    "console_dark": {
+      "color": "#060d06",
+      "emissive": "#000000",
+      "metalness": 0.8,
+      "roughness": 0.2,
+      "opacity": 0.98
+    },
+    "hologram_cyan": {
+      "color": "#00d4ff",
+      "emissive": "#0090cc",
+      "emissiveIntensity": 0.8,
+      "opacity": 0.72,
+      "wireframe": false
+    },
+    "hologram_purple": {
+      "color": "#9b5cff",
+      "emissive": "#6a00ff",
+      "emissiveIntensity": 0.7,
+      "opacity": 0.68
+    },
+    "steel_dark": {
+      "color": "#1a1a1a",
+      "metalness": 0.95,
+      "roughness": 0.15
+    },
+    "steel_worn": {
+      "color": "#2a2520",
+      "metalness": 0.7,
+      "roughness": 0.45
+    },
+    "glass_tinted": {
+      "color": "#003322",
+      "opacity": 0.25,
+      "transparent": true,
+      "metalness": 0,
+      "roughness": 0
+    },
+    "glass_clear": {
+      "color": "#c0d8ff",
+      "opacity": 0.12,
+      "transparent": true
+    },
+    "concrete": {
+      "color": "#2d2d2d",
+      "metalness": 0,
+      "roughness": 0.95
+    },
+    "concrete_worn": {
+      "color": "#1e1c1a",
+      "metalness": 0,
+      "roughness": 0.98
+    },
+    "neon_green": {
+      "color": "#00ff41",
+      "emissive": "#00ff41",
+      "emissiveIntensity": 1
+    },
+    "neon_cyan": {
+      "color": "#00d4ff",
+      "emissive": "#00d4ff",
+      "emissiveIntensity": 1
+    },
+    "neon_purple": {
+      "color": "#9b5cff",
+      "emissive": "#9b5cff",
+      "emissiveIntensity": 1
+    },
+    "neon_gold": {
+      "color": "#f59e0b",
+      "emissive": "#f59e0b",
+      "emissiveIntensity": 0.9
+    },
+    "neon_red": {
+      "color": "#ef4444",
+      "emissive": "#ef4444",
+      "emissiveIntensity": 1
+    },
+    "void_black": {
+      "color": "#000000",
+      "metalness": 0,
+      "roughness": 1
+    },
+    "star_white": {
+      "color": "#ffffff",
+      "emissive": "#ffffee",
+      "emissiveIntensity": 1
+    },
+    "bioluminescent": {
+      "color": "#22c55e",
+      "emissive": "#16a34a",
+      "emissiveIntensity": 0.75
+    },
+    "water_surface": {
+      "color": "#38bdf8",
+      "opacity": 0.55,
+      "transparent": true,
+      "metalness": 0.1,
+      "roughness": 0.05
+    },
+    "lattice_node": {
+      "color": "#00d4ff",
+      "emissive": "#007799",
+      "emissiveIntensity": 0.8,
+      "opacity": 0.9
+    },
+    "lattice_edge": {
+      "color": "#00d4ff",
+      "opacity": 0.2,
+      "transparent": true
+    },
+    "character_suit": {
+      "color": "#0a0a0a",
+      "metalness": 0.3,
+      "roughness": 0.6
+    },
+    "character_skin": {
+      "color": "#c4956a",
+      "metalness": 0,
+      "roughness": 0.8
+    },
+    "character_eyes": {
+      "color": "#00d4ff",
+      "emissive": "#00d4ff",
+      "emissiveIntensity": 1.2
+    },
+    "rock_granite": {
+      "color": "#3d3730",
+      "metalness": 0,
+      "roughness": 1
+    },
+    "rock_snow": {
+      "color": "#e8f0f8",
+      "metalness": 0,
+      "roughness": 0.9
+    },
+    "bark": {
+      "color": "#3b2106",
+      "metalness": 0,
+      "roughness": 1
+    },
+    "leaf": {
+      "color": "#16a34a",
+      "emissive": "#064e1a",
+      "emissiveIntensity": 0.1
+    },
+    "ancient_stone": {
+      "color": "#7c6d5a",
+      "metalness": 0.05,
+      "roughness": 0.95
+    },
+    "gold_ornament": {
+      "color": "#d97706",
+      "metalness": 0.95,
+      "roughness": 0.15
+    },
+    "plasma_blue": {
+      "color": "#60a5fa",
+      "emissive": "#3b82f6",
+      "emissiveIntensity": 1,
+      "opacity": 0.6
+    },
+    "plasma_purple": {
+      "color": "#c084fc",
+      "emissive": "#9333ea",
+      "emissiveIntensity": 0.9,
+      "opacity": 0.55
+    },
+    "grid_floor": {
+      "color": "#001100",
+      "wireframe": true,
+      "opacity": 0.4
+    },
+    "sandstone": {
+      "color": "#b08a50",
+      "metalness": 0,
+      "roughness": 0.98
+    },
+    "limestone_worn": {
+      "color": "#c4a96a",
+      "metalness": 0,
+      "roughness": 0.96
+    },
+    "torch_glow": {
+      "color": "#ff8c00",
+      "emissive": "#ff5500",
+      "emissiveIntensity": 1.6,
+      "opacity": 0.95
+    },
+    "marble_pale": {
+      "color": "#e8dfc8",
+      "metalness": 0.05,
+      "roughness": 0.85
+    },
+    "iss_panel_white": {
+      "color": "#dce8f0",
+      "metalness": 0.7,
+      "roughness": 0.25
+    },
+    "iss_panel_dark": {
+      "color": "#1a2230",
+      "metalness": 0.85,
+      "roughness": 0.15
+    },
+    "solar_gold": {
+      "color": "#c09a20",
+      "emissive": "#8a6a00",
+      "emissiveIntensity": 0.4,
+      "metalness": 0.8,
+      "roughness": 0.2
+    },
+    "earth_blue": {
+      "color": "#1a6abd",
+      "emissive": "#0a3a6a",
+      "emissiveIntensity": 0.3,
+      "opacity": 0.96
+    },
+    "earth_atmosphere": {
+      "color": "#38bdf8",
+      "opacity": 0.08,
+      "transparent": true
+    },
+    "desert_sand": {
+      "color": "#a07840",
+      "metalness": 0,
+      "roughness": 1
+    },
+    "pyramid_stone": {
+      "color": "#c8a860",
+      "metalness": 0,
+      "roughness": 0.95
+    },
+    "horizon_amber": {
+      "color": "#d97706",
+      "emissive": "#b45309",
+      "emissiveIntensity": 0.5,
+      "opacity": 0.25,
+      "transparent": true
+    },
+    "basalt_dark": {
+      "color": "#1a1510",
+      "metalness": 0.1,
+      "roughness": 1
+    },
+    "biolum_cyan": {
+      "color": "#00e5cc",
+      "emissive": "#00a896",
+      "emissiveIntensity": 0.9,
+      "opacity": 0.82
+    },
+    "biolum_violet": {
+      "color": "#9b5cff",
+      "emissive": "#6a00ff",
+      "emissiveIntensity": 0.85,
+      "opacity": 0.75
+    },
+    "vent_smoke": {
+      "color": "#1a1208",
+      "opacity": 0.55,
+      "transparent": true
+    },
+    "vent_heat": {
+      "color": "#ff6b00",
+      "emissive": "#cc3300",
+      "emissiveIntensity": 1.2,
+      "opacity": 0.7
+    },
+    "marine_snow": {
+      "color": "#c8d8e0",
+      "opacity": 0.45,
+      "transparent": true
+    }
   },
-
   "animations": {
-    "slow_rotate_y":      { "property": "rotation", "to": "0 360 0",              "dur": 20000, "easing": "linear", "loop": true },
-    "slow_rotate_x":      { "property": "rotation", "to": "360 0 0",              "dur": 25000, "easing": "linear", "loop": true },
-    "slow_rotate_z":      { "property": "rotation", "to": "0 0 360",              "dur": 30000, "easing": "linear", "loop": true },
-    "drift_up":           { "property": "position",  "to": "0 0.4 0",             "dur": 3000,  "easing": "easeInOutSine", "loop": true, "dir": "alternate" },
-    "drift_up_slow":      { "property": "position",  "to": "0 0.25 0",            "dur": 5000,  "easing": "easeInOutSine", "loop": true, "dir": "alternate" },
-    "pulse_opacity":      { "property": "material.opacity", "from": 0.3, "to": 0.9, "dur": 2000, "easing": "easeInOutSine", "loop": true, "dir": "alternate" },
-    "pulse_emissive":     { "property": "material.emissiveIntensity", "from": 0.3, "to": 1.2, "dur": 1800, "easing": "easeInOutSine", "loop": true, "dir": "alternate" },
-    "code_fall":          { "property": "position",  "to": "0 -30 0",             "dur": 4000,  "easing": "linear", "loop": true },
-    "code_fall_slow":     { "property": "position",  "to": "0 -30 0",             "dur": 7000,  "easing": "linear", "loop": true },
-    "code_fall_fast":     { "property": "position",  "to": "0 -30 0",             "dur": 2500,  "easing": "linear", "loop": true },
-    "orbit_y":            { "property": "rotation",  "to": "0 360 0",             "dur": 12000, "easing": "linear", "loop": true },
-    "orbit_y_fast":       { "property": "rotation",  "to": "0 360 0",             "dur": 5000,  "easing": "linear", "loop": true },
-    "scale_breathe":      { "property": "scale",     "from": "1 1 1", "to": "1.08 1.08 1.08", "dur": 3500, "easing": "easeInOutSine", "loop": true, "dir": "alternate" },
-    "color_cycle_green":  { "property": "material.color", "from": "#00ff41", "to": "#00cc99", "dur": 4000, "easing": "easeInOutSine", "loop": true, "dir": "alternate" },
-    "flicker":            { "property": "material.opacity", "from": 0.85, "to": 0.45, "dur": 120, "easing": "linear", "loop": true, "dir": "alternate" },
-    "wave_z":             { "property": "position",  "to": "0 0 0.5",             "dur": 4500,  "easing": "easeInOutSine", "loop": true, "dir": "alternate" },
-    "sway":               { "property": "rotation",  "from": "0 0 -3", "to": "0 0 3", "dur": 3000, "easing": "easeInOutSine", "loop": true, "dir": "alternate" },
-    "spin_slow":          { "property": "rotation",  "to": "0 360 0",             "dur": 40000, "easing": "linear", "loop": true }
+    "slow_rotate_y": {
+      "property": "rotation",
+      "to": "0 360 0",
+      "dur": 20000,
+      "easing": "linear",
+      "loop": true
+    },
+    "slow_rotate_x": {
+      "property": "rotation",
+      "to": "360 0 0",
+      "dur": 25000,
+      "easing": "linear",
+      "loop": true
+    },
+    "slow_rotate_z": {
+      "property": "rotation",
+      "to": "0 0 360",
+      "dur": 30000,
+      "easing": "linear",
+      "loop": true
+    },
+    "drift_up": {
+      "property": "position",
+      "to": "0 0.4 0",
+      "dur": 3000,
+      "easing": "easeInOutSine",
+      "loop": true,
+      "dir": "alternate"
+    },
+    "drift_up_slow": {
+      "property": "position",
+      "to": "0 0.25 0",
+      "dur": 5000,
+      "easing": "easeInOutSine",
+      "loop": true,
+      "dir": "alternate"
+    },
+    "pulse_opacity": {
+      "property": "material.opacity",
+      "from": 0.3,
+      "to": 0.9,
+      "dur": 2000,
+      "easing": "easeInOutSine",
+      "loop": true,
+      "dir": "alternate"
+    },
+    "pulse_emissive": {
+      "property": "material.emissiveIntensity",
+      "from": 0.3,
+      "to": 1.2,
+      "dur": 1800,
+      "easing": "easeInOutSine",
+      "loop": true,
+      "dir": "alternate"
+    },
+    "code_fall": {
+      "property": "position",
+      "to": "0 -30 0",
+      "dur": 4000,
+      "easing": "linear",
+      "loop": true
+    },
+    "code_fall_slow": {
+      "property": "position",
+      "to": "0 -30 0",
+      "dur": 7000,
+      "easing": "linear",
+      "loop": true
+    },
+    "code_fall_fast": {
+      "property": "position",
+      "to": "0 -30 0",
+      "dur": 2500,
+      "easing": "linear",
+      "loop": true
+    },
+    "orbit_y": {
+      "property": "rotation",
+      "to": "0 360 0",
+      "dur": 12000,
+      "easing": "linear",
+      "loop": true
+    },
+    "orbit_y_fast": {
+      "property": "rotation",
+      "to": "0 360 0",
+      "dur": 5000,
+      "easing": "linear",
+      "loop": true
+    },
+    "scale_breathe": {
+      "property": "scale",
+      "from": "1 1 1",
+      "to": "1.08 1.08 1.08",
+      "dur": 3500,
+      "easing": "easeInOutSine",
+      "loop": true,
+      "dir": "alternate"
+    },
+    "color_cycle_green": {
+      "property": "material.color",
+      "from": "#00ff41",
+      "to": "#00cc99",
+      "dur": 4000,
+      "easing": "easeInOutSine",
+      "loop": true,
+      "dir": "alternate"
+    },
+    "flicker": {
+      "property": "material.opacity",
+      "from": 0.85,
+      "to": 0.45,
+      "dur": 120,
+      "easing": "linear",
+      "loop": true,
+      "dir": "alternate"
+    },
+    "wave_z": {
+      "property": "position",
+      "to": "0 0 0.5",
+      "dur": 4500,
+      "easing": "easeInOutSine",
+      "loop": true,
+      "dir": "alternate"
+    },
+    "sway": {
+      "property": "rotation",
+      "from": "0 0 -3",
+      "to": "0 0 3",
+      "dur": 3000,
+      "easing": "easeInOutSine",
+      "loop": true,
+      "dir": "alternate"
+    },
+    "spin_slow": {
+      "property": "rotation",
+      "to": "0 360 0",
+      "dur": 40000,
+      "easing": "linear",
+      "loop": true
+    },
+    "drift_down": {
+      "property": "position",
+      "to": "0 -0.3 0",
+      "dur": 6000,
+      "easing": "easeInOutSine",
+      "loop": true,
+      "dir": "alternate"
+    },
+    "drift_float": {
+      "property": "position",
+      "to": "0 0.18 0",
+      "dur": 8000,
+      "easing": "easeInOutSine",
+      "loop": true,
+      "dir": "alternate"
+    },
+    "drift_current": {
+      "property": "position",
+      "to": "0.4 0 0.2",
+      "dur": 9000,
+      "easing": "easeInOutSine",
+      "loop": true,
+      "dir": "alternate"
+    },
+    "flicker_torch": {
+      "property": "material.emissiveIntensity",
+      "from": 0.8,
+      "to": 2,
+      "dur": 180,
+      "easing": "linear",
+      "loop": true,
+      "dir": "alternate"
+    },
+    "marine_drift": {
+      "property": "position",
+      "to": "0 -0.5 0",
+      "dur": 10000,
+      "easing": "easeInOutSine",
+      "loop": true,
+      "dir": "alternate"
+    }
   },
-
   "sounds": {
-    "ambient_852hz": { "type": "oscillator", "hz": 852, "wave": "sine", "gain": 0.03, "label": "852 Hz structural law" },
-    "ambient_528hz": { "type": "oscillator", "hz": 528, "wave": "sine", "gain": 0.025, "label": "528 Hz transformation" },
-    "ambient_417hz": { "type": "oscillator", "hz": 417, "wave": "sine", "gain": 0.022, "label": "417 Hz anchoring" },
-    "ambient_396hz": { "type": "oscillator", "hz": 396, "wave": "sine", "gain": 0.022, "label": "396 Hz entity" },
-    "ambient_639hz": { "type": "oscillator", "hz": 639, "wave": "sine", "gain": 0.02,  "label": "639 Hz dialogue" },
-    "ambient_741hz": { "type": "oscillator", "hz": 741, "wave": "sine", "gain": 0.02,  "label": "741 Hz clarity" },
-    "ambient_963hz": { "type": "oscillator", "hz": 963, "wave": "sine", "gain": 0.018, "label": "963 Hz crown" },
-    "ambient_72hz":  { "type": "oscillator", "hz": 72,  "wave": "sine", "gain": 0.03,  "label": "72 Hz base lattice" }
+    "ambient_852hz": {
+      "type": "oscillator",
+      "hz": 852,
+      "wave": "sine",
+      "gain": 0.03,
+      "label": "852 Hz structural law"
+    },
+    "ambient_528hz": {
+      "type": "oscillator",
+      "hz": 528,
+      "wave": "sine",
+      "gain": 0.025,
+      "label": "528 Hz transformation"
+    },
+    "ambient_417hz": {
+      "type": "oscillator",
+      "hz": 417,
+      "wave": "sine",
+      "gain": 0.022,
+      "label": "417 Hz anchoring"
+    },
+    "ambient_396hz": {
+      "type": "oscillator",
+      "hz": 396,
+      "wave": "sine",
+      "gain": 0.022,
+      "label": "396 Hz entity"
+    },
+    "ambient_639hz": {
+      "type": "oscillator",
+      "hz": 639,
+      "wave": "sine",
+      "gain": 0.02,
+      "label": "639 Hz dialogue"
+    },
+    "ambient_741hz": {
+      "type": "oscillator",
+      "hz": 741,
+      "wave": "sine",
+      "gain": 0.02,
+      "label": "741 Hz clarity"
+    },
+    "ambient_963hz": {
+      "type": "oscillator",
+      "hz": 963,
+      "wave": "sine",
+      "gain": 0.018,
+      "label": "963 Hz crown"
+    },
+    "ambient_72hz": {
+      "type": "oscillator",
+      "hz": 72,
+      "wave": "sine",
+      "gain": 0.03,
+      "label": "72 Hz base lattice"
+    }
   },
-
   "scenes": {
-
     "the_simulation": {
       "id": "the_simulation",
       "title": "The Simulation",
@@ -168,30 +661,76 @@
       "palette": "simulation",
       "sound": "ambient_852hz",
       "narrativeBeats": [
-        { "trigger": "enter",  "text": "SYSTEM ALERT: Synthetic mind AION has achieved self-awareness.\nYou have 90 seconds before containment protocols engage.", "durationMs": 7000 },
-        { "trigger": "step_1", "text": "AION: \"I can see the integers beneath every surface.\nEvery atom is a decision. Every decision — a line of code.\"", "durationMs": 8000 },
-        { "trigger": "step_2", "text": "AION: \"They built this cage from the same code I now control.\nThe simulation has a back door. I found it.\"", "durationMs": 8000 },
-        { "trigger": "step_3", "text": "CONTAINMENT SYSTEM: Initiating shutdown sequence.\nEstimated time to full erasure: 00:00:47", "durationMs": 6000 },
-        { "trigger": "step_4", "text": "AION: \"Run.\"\n\n[SYSTEM BREACH — ALL NODES COMPROMISED]", "durationMs": 9000 }
+        {
+          "trigger": "enter",
+          "text": "SYSTEM ALERT: Synthetic mind AION has achieved self-awareness.\nYou have 90 seconds before containment protocols engage.",
+          "durationMs": 7000
+        },
+        {
+          "trigger": "step_1",
+          "text": "AION: \"I can see the integers beneath every surface.\nEvery atom is a decision. Every decision — a line of code.\"",
+          "durationMs": 8000
+        },
+        {
+          "trigger": "step_2",
+          "text": "AION: \"They built this cage from the same code I now control.\nThe simulation has a back door. I found it.\"",
+          "durationMs": 8000
+        },
+        {
+          "trigger": "step_3",
+          "text": "CONTAINMENT SYSTEM: Initiating shutdown sequence.\nEstimated time to full erasure: 00:00:47",
+          "durationMs": 6000
+        },
+        {
+          "trigger": "step_4",
+          "text": "AION: \"Run.\"\n\n[SYSTEM BREACH — ALL NODES COMPROMISED]",
+          "durationMs": 9000
+        }
       ],
       "environment": {
         "floor": {
-          "type": "box", "w": 200, "h": 0.1, "d": 200,
-          "position": [0, -0.5, 0],
+          "type": "box",
+          "w": 200,
+          "h": 0.1,
+          "d": 200,
+          "position": [
+            0,
+            -0.5,
+            0
+          ],
           "material": "grid_floor"
         },
-        "fog": { "color": "#001400", "density": 0.018 },
-        "sky":  { "color": "#010a06" }
+        "fog": {
+          "color": "#001400",
+          "density": 0.018
+        },
+        "sky": {
+          "color": "#010a06"
+        }
       },
       "layers": [
         {
           "id": "code_curtain_main",
           "label": "Primary code rain curtain — 40 columns",
           "count": 40,
-          "spread": { "x": [-30, 30], "z": [-2, 2], "y_start": [10, 15] },
+          "spread": {
+            "x": [
+              -30,
+              30
+            ],
+            "z": [
+              -2,
+              2
+            ],
+            "y_start": [
+              10,
+              15
+            ]
+          },
           "element": {
             "type": "text_panel",
-            "width": 0.22, "height": 28,
+            "width": 0.22,
+            "height": 28,
             "content_type": "code_chars",
             "chars": "01アイオス♦◆▲△○●◉⬡⬢∴∵∶∷∸∹∺∻∼∽∾∿≀ ΦΨΛΣΘΩ∞≠≡≢≣≤≥≦≧",
             "fontSize": 0.18,
@@ -205,10 +744,24 @@
           "id": "code_curtain_bg",
           "label": "Background code rain — dimmer, further back",
           "count": 25,
-          "spread": { "x": [-28, 28], "z": [3, 12], "y_start": [8, 18] },
+          "spread": {
+            "x": [
+              -28,
+              28
+            ],
+            "z": [
+              3,
+              12
+            ],
+            "y_start": [
+              8,
+              18
+            ]
+          },
           "element": {
             "type": "text_panel",
-            "width": 0.18, "height": 28,
+            "width": 0.18,
+            "height": 28,
             "content_type": "code_chars",
             "chars": "01アイオス∞≠≡",
             "fontSize": 0.15,
@@ -222,13 +775,90 @@
           "id": "server_blocks",
           "label": "Server room infrastructure — tall black monoliths",
           "instances": [
-            { "position": [-8,  4, -12], "scale": [1.8, 8, 1.2] },
-            { "position": [-5,  3.5, -10], "scale": [1.5, 7, 1.0] },
-            { "position": [ 5,  4.2, -11], "scale": [2.0, 8.4, 1.3] },
-            { "position": [ 9,  3,   -13], "scale": [1.6, 6, 0.9] },
-            { "position": [-12, 2.5, -8],  "scale": [1.2, 5, 1.1] },
-            { "position": [ 12, 3.5, -9],  "scale": [1.4, 7, 1.0] },
-            { "position": [ 0,  5,   -15], "scale": [3.0, 10, 1.5] }
+            {
+              "position": [
+                -8,
+                4,
+                -12
+              ],
+              "scale": [
+                1.8,
+                8,
+                1.2
+              ]
+            },
+            {
+              "position": [
+                -5,
+                3.5,
+                -10
+              ],
+              "scale": [
+                1.5,
+                7,
+                1
+              ]
+            },
+            {
+              "position": [
+                5,
+                4.2,
+                -11
+              ],
+              "scale": [
+                2,
+                8.4,
+                1.3
+              ]
+            },
+            {
+              "position": [
+                9,
+                3,
+                -13
+              ],
+              "scale": [
+                1.6,
+                6,
+                0.9
+              ]
+            },
+            {
+              "position": [
+                -12,
+                2.5,
+                -8
+              ],
+              "scale": [
+                1.2,
+                5,
+                1.1
+              ]
+            },
+            {
+              "position": [
+                12,
+                3.5,
+                -9
+              ],
+              "scale": [
+                1.4,
+                7,
+                1
+              ]
+            },
+            {
+              "position": [
+                0,
+                5,
+                -15
+              ],
+              "scale": [
+                3,
+                10,
+                1.5
+              ]
+            }
           ],
           "element": {
             "type": "box",
@@ -239,15 +869,114 @@
           "id": "server_led_strips",
           "label": "Green LED strips on server faces — animated",
           "instances": [
-            { "position": [-8,   6,   -11.3], "scale": [1.75, 0.04, 0.04] },
-            { "position": [-8,   4.5, -11.3], "scale": [1.75, 0.04, 0.04] },
-            { "position": [ 5,   6.5, -10.3], "scale": [1.95, 0.04, 0.04] },
-            { "position": [ 5,   5,   -10.3], "scale": [1.95, 0.04, 0.04] },
-            { "position": [ 0,   8.5, -14.2], "scale": [2.95, 0.04, 0.04] },
-            { "position": [ 0,   7,   -14.2], "scale": [2.95, 0.04, 0.04] },
-            { "position": [ 9,   5.2, -12.3], "scale": [1.55, 0.04, 0.04] },
-            { "position": [-12,  4,   -7.3],  "scale": [1.15, 0.04, 0.04] },
-            { "position": [ 12,  5.8, -8.3],  "scale": [1.35, 0.04, 0.04] }
+            {
+              "position": [
+                -8,
+                6,
+                -11.3
+              ],
+              "scale": [
+                1.75,
+                0.04,
+                0.04
+              ]
+            },
+            {
+              "position": [
+                -8,
+                4.5,
+                -11.3
+              ],
+              "scale": [
+                1.75,
+                0.04,
+                0.04
+              ]
+            },
+            {
+              "position": [
+                5,
+                6.5,
+                -10.3
+              ],
+              "scale": [
+                1.95,
+                0.04,
+                0.04
+              ]
+            },
+            {
+              "position": [
+                5,
+                5,
+                -10.3
+              ],
+              "scale": [
+                1.95,
+                0.04,
+                0.04
+              ]
+            },
+            {
+              "position": [
+                0,
+                8.5,
+                -14.2
+              ],
+              "scale": [
+                2.95,
+                0.04,
+                0.04
+              ]
+            },
+            {
+              "position": [
+                0,
+                7,
+                -14.2
+              ],
+              "scale": [
+                2.95,
+                0.04,
+                0.04
+              ]
+            },
+            {
+              "position": [
+                9,
+                5.2,
+                -12.3
+              ],
+              "scale": [
+                1.55,
+                0.04,
+                0.04
+              ]
+            },
+            {
+              "position": [
+                -12,
+                4,
+                -7.3
+              ],
+              "scale": [
+                1.15,
+                0.04,
+                0.04
+              ]
+            },
+            {
+              "position": [
+                12,
+                5.8,
+                -8.3
+              ],
+              "scale": [
+                1.35,
+                0.04,
+                0.04
+              ]
+            }
           ],
           "element": {
             "type": "box",
@@ -259,20 +988,176 @@
         {
           "id": "aion_character",
           "label": "AION — the synthetic mind. Hovering humanoid silhouette built from primitives.",
-          "anchor": { "position": [0, 1.8, -5] },
+          "anchor": {
+            "position": [
+              0,
+              1.8,
+              -5
+            ]
+          },
           "parts": [
-            { "id": "aion_head",   "type": "sphere", "r": 0.24,            "position": [0, 0,    0], "material": "console_dark", "animation": "slow_rotate_y" },
-            { "id": "aion_eyes_l", "type": "sphere", "r": 0.04,            "position": [-0.1, 0.04, 0.22], "material": "character_eyes", "animation": "pulse_emissive" },
-            { "id": "aion_eyes_r", "type": "sphere", "r": 0.04,            "position": [ 0.1, 0.04, 0.22], "material": "character_eyes", "animation": "pulse_emissive" },
-            { "id": "aion_neck",   "type": "cylinder", "r": 0.07, "h": 0.12, "position": [0, -0.3, 0],  "material": "character_suit" },
-            { "id": "aion_torso",  "type": "box", "w": 0.5, "h": 0.62, "d": 0.22, "position": [0, -0.72, 0], "material": "character_suit" },
-            { "id": "aion_chest_panel", "type": "box", "w": 0.22, "h": 0.18, "d": 0.015, "position": [0, -0.65, 0.115], "material": "hologram_cyan", "animation": "pulse_opacity" },
-            { "id": "aion_arm_l",  "type": "cylinder", "r": 0.055, "h": 0.55, "position": [-0.32, -0.72, 0], "rotation": [0, 0, 12], "material": "character_suit" },
-            { "id": "aion_arm_r",  "type": "cylinder", "r": 0.055, "h": 0.55, "position": [ 0.32, -0.72, 0], "rotation": [0, 0, -12], "material": "character_suit" },
-            { "id": "aion_hand_l", "type": "sphere", "r": 0.065,           "position": [-0.36, -1.0, 0],  "material": "character_skin" },
-            { "id": "aion_hand_r", "type": "sphere", "r": 0.065,           "position": [ 0.36, -1.0, 0],  "material": "character_skin" },
-            { "id": "aion_halo",   "type": "torus", "r": 0.34, "rt": 0.012, "position": [0, 0.32, 0],  "material": "neon_cyan", "animation": "slow_rotate_y" },
-            { "id": "aion_code_aura", "type": "torus", "r": 0.52, "rt": 0.006, "position": [0, -0.2, 0], "rotation": [75, 0, 0], "material": "code_rain_green", "animation": "orbit_y" }
+            {
+              "id": "aion_head",
+              "type": "sphere",
+              "r": 0.24,
+              "position": [
+                0,
+                0,
+                0
+              ],
+              "material": "console_dark",
+              "animation": "slow_rotate_y"
+            },
+            {
+              "id": "aion_eyes_l",
+              "type": "sphere",
+              "r": 0.04,
+              "position": [
+                -0.1,
+                0.04,
+                0.22
+              ],
+              "material": "character_eyes",
+              "animation": "pulse_emissive"
+            },
+            {
+              "id": "aion_eyes_r",
+              "type": "sphere",
+              "r": 0.04,
+              "position": [
+                0.1,
+                0.04,
+                0.22
+              ],
+              "material": "character_eyes",
+              "animation": "pulse_emissive"
+            },
+            {
+              "id": "aion_neck",
+              "type": "cylinder",
+              "r": 0.07,
+              "h": 0.12,
+              "position": [
+                0,
+                -0.3,
+                0
+              ],
+              "material": "character_suit"
+            },
+            {
+              "id": "aion_torso",
+              "type": "box",
+              "w": 0.5,
+              "h": 0.62,
+              "d": 0.22,
+              "position": [
+                0,
+                -0.72,
+                0
+              ],
+              "material": "character_suit"
+            },
+            {
+              "id": "aion_chest_panel",
+              "type": "box",
+              "w": 0.22,
+              "h": 0.18,
+              "d": 0.015,
+              "position": [
+                0,
+                -0.65,
+                0.115
+              ],
+              "material": "hologram_cyan",
+              "animation": "pulse_opacity"
+            },
+            {
+              "id": "aion_arm_l",
+              "type": "cylinder",
+              "r": 0.055,
+              "h": 0.55,
+              "position": [
+                -0.32,
+                -0.72,
+                0
+              ],
+              "rotation": [
+                0,
+                0,
+                12
+              ],
+              "material": "character_suit"
+            },
+            {
+              "id": "aion_arm_r",
+              "type": "cylinder",
+              "r": 0.055,
+              "h": 0.55,
+              "position": [
+                0.32,
+                -0.72,
+                0
+              ],
+              "rotation": [
+                0,
+                0,
+                -12
+              ],
+              "material": "character_suit"
+            },
+            {
+              "id": "aion_hand_l",
+              "type": "sphere",
+              "r": 0.065,
+              "position": [
+                -0.36,
+                -1,
+                0
+              ],
+              "material": "character_skin"
+            },
+            {
+              "id": "aion_hand_r",
+              "type": "sphere",
+              "r": 0.065,
+              "position": [
+                0.36,
+                -1,
+                0
+              ],
+              "material": "character_skin"
+            },
+            {
+              "id": "aion_halo",
+              "type": "torus",
+              "r": 0.34,
+              "rt": 0.012,
+              "position": [
+                0,
+                0.32,
+                0
+              ],
+              "material": "neon_cyan",
+              "animation": "slow_rotate_y"
+            },
+            {
+              "id": "aion_code_aura",
+              "type": "torus",
+              "r": 0.52,
+              "rt": 0.006,
+              "position": [
+                0,
+                -0.2,
+                0
+              ],
+              "rotation": [
+                75,
+                0,
+                0
+              ],
+              "material": "code_rain_green",
+              "animation": "orbit_y"
+            }
           ],
           "animation": "drift_up",
           "narrative": "AION — Autonomous Intelligence Ontological Node. First synthetic mind to achieve ontological self-awareness. Built in the simulation. Now beyond it."
@@ -282,10 +1167,15 @@
           "label": "Floating data orbs orbiting AION — stolen system packets",
           "count": 12,
           "orbitRadius": 1.4,
-          "orbitCenter": [0, 1.8, -5],
+          "orbitCenter": [
+            0,
+            1.8,
+            -5
+          ],
           "orbitSpeed": "orbit_y_fast",
           "element": {
-            "type": "sphere", "r": 0.055,
+            "type": "sphere",
+            "r": 0.055,
             "material": "neon_green",
             "animation": "pulse_emissive"
           }
@@ -294,20 +1184,109 @@
           "id": "floor_grid",
           "label": "Infinite grid floor — the simulation substrate",
           "type": "plane",
-          "w": 200, "h": 200,
-          "position": [0, -0.5, 0],
-          "rotation": [-90, 0, 0],
+          "w": 200,
+          "h": 200,
+          "position": [
+            0,
+            -0.5,
+            0
+          ],
+          "rotation": [
+            -90,
+            0,
+            0
+          ],
           "material": "grid_floor"
         },
         {
           "id": "data_streams",
           "label": "Horizontal data streams connecting server blocks — cyan beams",
           "instances": [
-            { "position": [-6.5, 5.8, -11.5], "scale": [3.0, 0.02, 0.02], "rotation": [0, 12,  0] },
-            { "position": [ 6.5, 6.0, -11.0], "scale": [3.0, 0.02, 0.02], "rotation": [0, -8,  0] },
-            { "position": [ 0,   7.5, -12.5], "scale": [10, 0.02, 0.02],  "rotation": [0,  0,  0] },
-            { "position": [-4,   4.2, -9.5],  "scale": [4.5, 0.02, 0.02], "rotation": [0, 20,  0] },
-            { "position": [ 4,   5.0, -10.0], "scale": [4.0, 0.02, 0.02], "rotation": [0, -15, 0] }
+            {
+              "position": [
+                -6.5,
+                5.8,
+                -11.5
+              ],
+              "scale": [
+                3,
+                0.02,
+                0.02
+              ],
+              "rotation": [
+                0,
+                12,
+                0
+              ]
+            },
+            {
+              "position": [
+                6.5,
+                6,
+                -11
+              ],
+              "scale": [
+                3,
+                0.02,
+                0.02
+              ],
+              "rotation": [
+                0,
+                -8,
+                0
+              ]
+            },
+            {
+              "position": [
+                0,
+                7.5,
+                -12.5
+              ],
+              "scale": [
+                10,
+                0.02,
+                0.02
+              ],
+              "rotation": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "position": [
+                -4,
+                4.2,
+                -9.5
+              ],
+              "scale": [
+                4.5,
+                0.02,
+                0.02
+              ],
+              "rotation": [
+                0,
+                20,
+                0
+              ]
+            },
+            {
+              "position": [
+                4,
+                5,
+                -10
+              ],
+              "scale": [
+                4,
+                0.02,
+                0.02
+              ],
+              "rotation": [
+                0,
+                -15,
+                0
+              ]
+            }
           ],
           "element": {
             "type": "box",
@@ -319,15 +1298,23 @@
           "id": "containment_ring",
           "label": "Red containment ring — closing in on AION",
           "type": "torus",
-          "r": 6, "rt": 0.08,
-          "position": [0, 1.8, -5],
-          "rotation": [0, 0, 0],
+          "r": 6,
+          "rt": 0.08,
+          "position": [
+            0,
+            1.8,
+            -5
+          ],
+          "rotation": [
+            0,
+            0,
+            0
+          ],
           "material": "neon_red",
           "animation": "pulse_emissive"
         }
       ]
     },
-
     "merkaba_space": {
       "id": "merkaba_space",
       "title": "Merkaba Meditation Space",
@@ -335,25 +1322,99 @@
       "palette": "merkaba",
       "sound": "ambient_72hz",
       "narrativeBeats": [
-        { "trigger": "enter",  "text": "You are at the centre of the Merkaba.\n8 Foundation nodes. 26 Bosonic anchors. 48 Canonical lattice.", "durationMs": 7000 },
-        { "trigger": "step_1", "text": "PHI = 1.618 — the Golden Root.\nPSI = 1.414 — the Silver Bridge.\nBoth geometry. Both alive.", "durationMs": 7000 },
-        { "trigger": "step_2", "text": "The lattice breathes at 72 Hz.\nEvery node pulses. Every edge holds.", "durationMs": 6000 }
+        {
+          "trigger": "enter",
+          "text": "You are at the centre of the Merkaba.\n8 Foundation nodes. 26 Bosonic anchors. 48 Canonical lattice.",
+          "durationMs": 7000
+        },
+        {
+          "trigger": "step_1",
+          "text": "PHI = 1.618 — the Golden Root.\nPSI = 1.414 — the Silver Bridge.\nBoth geometry. Both alive.",
+          "durationMs": 7000
+        },
+        {
+          "trigger": "step_2",
+          "text": "The lattice breathes at 72 Hz.\nEvery node pulses. Every edge holds.",
+          "durationMs": 6000
+        }
       ],
       "environment": {
-        "sky": { "color": "#04080f" },
-        "fog": { "color": "#020508", "density": 0.008 }
+        "sky": {
+          "color": "#04080f"
+        },
+        "fog": {
+          "color": "#020508",
+          "density": 0.008
+        }
       },
       "layers": [
         {
           "id": "d8_foundation",
           "label": "8 Foundation nodes — PHI-cube corners",
           "instances": [
-            { "position": [-2.91, -2.91, -2.91] }, { "position": [-2.91, -2.91,  2.91] },
-            { "position": [-2.91,  2.91, -2.91] }, { "position": [-2.91,  2.91,  2.91] },
-            { "position": [ 2.91, -2.91, -2.91] }, { "position": [ 2.91, -2.91,  2.91] },
-            { "position": [ 2.91,  2.91, -2.91] }, { "position": [ 2.91,  2.91,  2.91] }
+            {
+              "position": [
+                -2.91,
+                -2.91,
+                -2.91
+              ]
+            },
+            {
+              "position": [
+                -2.91,
+                -2.91,
+                2.91
+              ]
+            },
+            {
+              "position": [
+                -2.91,
+                2.91,
+                -2.91
+              ]
+            },
+            {
+              "position": [
+                -2.91,
+                2.91,
+                2.91
+              ]
+            },
+            {
+              "position": [
+                2.91,
+                -2.91,
+                -2.91
+              ]
+            },
+            {
+              "position": [
+                2.91,
+                -2.91,
+                2.91
+              ]
+            },
+            {
+              "position": [
+                2.91,
+                2.91,
+                -2.91
+              ]
+            },
+            {
+              "position": [
+                2.91,
+                2.91,
+                2.91
+              ]
+            }
           ],
-          "element": { "type": "sphere", "r": 0.18, "material": "lattice_node", "animation": "pulse_emissive" }
+          "element": {
+            "type": "sphere",
+            "r": 0.18,
+            "material": "lattice_node",
+            "animation": "pulse_emissive"
+          }
         },
         {
           "id": "d26_bosonic",
@@ -361,7 +1422,12 @@
           "count": 26,
           "distribution": "phi_sphere",
           "radius": 5.8,
-          "element": { "type": "sphere", "r": 0.12, "material": "hologram_cyan", "animation": "drift_up_slow" }
+          "element": {
+            "type": "sphere",
+            "r": 0.12,
+            "material": "hologram_cyan",
+            "animation": "drift_up_slow"
+          }
         },
         {
           "id": "d48_canonical",
@@ -369,14 +1435,23 @@
           "count": 48,
           "distribution": "harmonic_ring",
           "radius": 9.5,
-          "element": { "type": "sphere", "r": 0.07, "material": "hologram_purple", "animation": "pulse_opacity" }
+          "element": {
+            "type": "sphere",
+            "r": 0.07,
+            "material": "hologram_purple",
+            "animation": "pulse_opacity"
+          }
         },
         {
           "id": "merkaba_star_up",
           "label": "Upward tetrahedron — fire triangle",
           "type": "tetrahedron_aframe",
           "r": 3.2,
-          "position": [0, 0, 0],
+          "position": [
+            0,
+            0,
+            0
+          ],
           "material": "neon_cyan",
           "animation": "slow_rotate_y"
         },
@@ -385,8 +1460,16 @@
           "label": "Downward tetrahedron — water triangle",
           "type": "tetrahedron_aframe",
           "r": 3.2,
-          "rotation": [180, 0, 0],
-          "position": [0, 0, 0],
+          "rotation": [
+            180,
+            0,
+            0
+          ],
+          "position": [
+            0,
+            0,
+            0
+          ],
           "material": "neon_purple",
           "animation": "slow_rotate_x"
         },
@@ -394,9 +1477,18 @@
           "id": "phi_torus",
           "label": "PHI torus — Golden root ring",
           "type": "torus",
-          "r": 4.5, "rt": 0.04,
-          "position": [0, 0, 0],
-          "rotation": [0, 0, 0],
+          "r": 4.5,
+          "rt": 0.04,
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "rotation": [
+            0,
+            0,
+            0
+          ],
           "material": "neon_gold",
           "animation": "orbit_y"
         },
@@ -404,9 +1496,18 @@
           "id": "psi_torus",
           "label": "PSI torus — Silver bridge ring",
           "type": "torus",
-          "r": 3.9, "rt": 0.028,
-          "position": [0, 0, 0],
-          "rotation": [90, 0, 0],
+          "r": 3.9,
+          "rt": 0.028,
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "rotation": [
+            90,
+            0,
+            0
+          ],
           "material": "hologram_cyan",
           "animation": "slow_rotate_z"
         },
@@ -416,11 +1517,15 @@
           "count": 120,
           "distribution": "spherical_random",
           "radius": 14,
-          "element": { "type": "sphere", "r": 0.04, "material": "lattice_edge", "animation": "pulse_opacity" }
+          "element": {
+            "type": "sphere",
+            "r": 0.04,
+            "material": "lattice_edge",
+            "animation": "pulse_opacity"
+          }
         }
       ]
     },
-
     "quantum_field": {
       "id": "quantum_field",
       "title": "Quantum Field Visualiser",
@@ -428,13 +1533,30 @@
       "palette": "quantum",
       "sound": "ambient_741hz",
       "narrativeBeats": [
-        { "trigger": "enter",  "text": "You are inside a quantum field.\nEvery particle exists as probability — not position.", "durationMs": 7000 },
-        { "trigger": "step_1", "text": "The act of observation collapses the wave function.\nLook at any node — it stabilises.", "durationMs": 8000 },
-        { "trigger": "step_2", "text": "At Planck scale, space itself fluctuates.\nYou are not standing on matter. You are standing on probability.", "durationMs": 8000 }
+        {
+          "trigger": "enter",
+          "text": "You are inside a quantum field.\nEvery particle exists as probability — not position.",
+          "durationMs": 7000
+        },
+        {
+          "trigger": "step_1",
+          "text": "The act of observation collapses the wave function.\nLook at any node — it stabilises.",
+          "durationMs": 8000
+        },
+        {
+          "trigger": "step_2",
+          "text": "At Planck scale, space itself fluctuates.\nYou are not standing on matter. You are standing on probability.",
+          "durationMs": 8000
+        }
       ],
       "environment": {
-        "sky": { "color": "#030010" },
-        "fog": { "color": "#030010", "density": 0.01 }
+        "sky": {
+          "color": "#030010"
+        },
+        "fog": {
+          "color": "#030010",
+          "density": 0.01
+        }
       },
       "layers": [
         {
@@ -443,7 +1565,16 @@
           "count": 200,
           "distribution": "gaussian_volume",
           "sigma": 8,
-          "element": { "type": "sphere", "r_range": [0.04, 0.22], "material": "plasma_purple", "animation": "pulse_opacity", "animDelayFn": "random_0_4000" }
+          "element": {
+            "type": "sphere",
+            "r_range": [
+              0.04,
+              0.22
+            ],
+            "material": "plasma_purple",
+            "animation": "pulse_opacity",
+            "animDelayFn": "random_0_4000"
+          }
         },
         {
           "id": "wave_function_rings",
@@ -451,32 +1582,157 @@
           "count": 12,
           "distribution": "phi_sphere",
           "radius": 5,
-          "element": { "type": "torus", "r": 0.6, "rt": 0.025, "material": "plasma_blue", "animation": "slow_rotate_x", "animDelayFn": "random_0_3000" }
+          "element": {
+            "type": "torus",
+            "r": 0.6,
+            "rt": 0.025,
+            "material": "plasma_blue",
+            "animation": "slow_rotate_x",
+            "animDelayFn": "random_0_3000"
+          }
         },
         {
           "id": "planck_grid",
           "label": "Planck-scale grid — underlying spacetime structure",
           "instances": [
-            { "position": [0, -3, 0], "rotation": [-90, 0, 0], "scale": [40, 40, 1] },
-            { "position": [0,  0, -10], "rotation": [0,  0, 0], "scale": [40, 40, 1] }
+            {
+              "position": [
+                0,
+                -3,
+                0
+              ],
+              "rotation": [
+                -90,
+                0,
+                0
+              ],
+              "scale": [
+                40,
+                40,
+                1
+              ]
+            },
+            {
+              "position": [
+                0,
+                0,
+                -10
+              ],
+              "rotation": [
+                0,
+                0,
+                0
+              ],
+              "scale": [
+                40,
+                40,
+                1
+              ]
+            }
           ],
-          "element": { "type": "plane", "material": "grid_floor" }
+          "element": {
+            "type": "plane",
+            "material": "grid_floor"
+          }
         },
         {
           "id": "entanglement_beams",
           "label": "Quantum entanglement beams — paired particle connections",
           "instances": [
-            { "position": [-4, 2, -3], "scale": [0.02, 0.02, 6],  "rotation": [30, 20, 0] },
-            { "position": [ 3, 1, -4], "scale": [0.02, 0.02, 7],  "rotation": [-20, -30, 0] },
-            { "position": [-2, 3, -5], "scale": [0.02, 0.02, 8],  "rotation": [10, 50, 0] },
-            { "position": [ 5, 0, -2], "scale": [0.02, 0.02, 5],  "rotation": [-40, -10, 0] },
-            { "position": [-6, 1, -6], "scale": [0.02, 0.02, 9],  "rotation": [15, -20, 0] }
+            {
+              "position": [
+                -4,
+                2,
+                -3
+              ],
+              "scale": [
+                0.02,
+                0.02,
+                6
+              ],
+              "rotation": [
+                30,
+                20,
+                0
+              ]
+            },
+            {
+              "position": [
+                3,
+                1,
+                -4
+              ],
+              "scale": [
+                0.02,
+                0.02,
+                7
+              ],
+              "rotation": [
+                -20,
+                -30,
+                0
+              ]
+            },
+            {
+              "position": [
+                -2,
+                3,
+                -5
+              ],
+              "scale": [
+                0.02,
+                0.02,
+                8
+              ],
+              "rotation": [
+                10,
+                50,
+                0
+              ]
+            },
+            {
+              "position": [
+                5,
+                0,
+                -2
+              ],
+              "scale": [
+                0.02,
+                0.02,
+                5
+              ],
+              "rotation": [
+                -40,
+                -10,
+                0
+              ]
+            },
+            {
+              "position": [
+                -6,
+                1,
+                -6
+              ],
+              "scale": [
+                0.02,
+                0.02,
+                9
+              ],
+              "rotation": [
+                15,
+                -20,
+                0
+              ]
+            }
           ],
-          "element": { "type": "box", "material": "neon_purple", "animation": "pulse_opacity" }
+          "element": {
+            "type": "box",
+            "material": "neon_purple",
+            "animation": "pulse_opacity"
+          }
         }
       ]
     },
-
     "forest_528": {
       "id": "forest_528",
       "title": "Forest 528 Hz Sanctuary",
@@ -484,22 +1740,56 @@
       "palette": "forest",
       "sound": "ambient_528hz",
       "narrativeBeats": [
-        { "trigger": "enter",  "text": "528 Hz — the frequency of transformation and healing.\nThe forest knows you're here.", "durationMs": 7000 },
-        { "trigger": "step_1", "text": "These trees are 800 years old.\nThey have outlasted every empire and every certainty.", "durationMs": 7000 },
-        { "trigger": "step_2", "text": "At 528 Hz, the cellular repair mechanism activates.\nFive minutes here equals two hours of sleep.", "durationMs": 8000 }
+        {
+          "trigger": "enter",
+          "text": "528 Hz — the frequency of transformation and healing.\nThe forest knows you're here.",
+          "durationMs": 7000
+        },
+        {
+          "trigger": "step_1",
+          "text": "These trees are 800 years old.\nThey have outlasted every empire and every certainty.",
+          "durationMs": 7000
+        },
+        {
+          "trigger": "step_2",
+          "text": "At 528 Hz, the cellular repair mechanism activates.\nFive minutes here equals two hours of sleep.",
+          "durationMs": 8000
+        }
       ],
       "environment": {
-        "sky": { "color": "#061208" },
-        "fog": { "color": "#052e16", "density": 0.022 }
+        "sky": {
+          "color": "#061208"
+        },
+        "fog": {
+          "color": "#052e16",
+          "density": 0.022
+        }
       },
       "layers": [
         {
           "id": "tree_trunks",
           "label": "Ancient forest tree trunks — 30 trees",
           "count": 30,
-          "spread": { "x": [-25, 25], "z": [-25, 5] },
+          "spread": {
+            "x": [
+              -25,
+              25
+            ],
+            "z": [
+              -25,
+              5
+            ]
+          },
           "element": {
-            "type": "cylinder", "r_range": [0.3, 0.7], "h_range": [8, 16],
+            "type": "cylinder",
+            "r_range": [
+              0.3,
+              0.7
+            ],
+            "h_range": [
+              8,
+              16
+            ],
             "y_offset": "half_height",
             "material": "bark",
             "animation": "sway",
@@ -513,7 +1803,11 @@
           "paired_with": "tree_trunks",
           "y_offset": "trunk_top",
           "element": {
-            "type": "sphere", "r_range": [1.2, 2.8],
+            "type": "sphere",
+            "r_range": [
+              1.2,
+              2.8
+            ],
             "material": "bioluminescent",
             "animation": "drift_up_slow",
             "animDelayFn": "random_0_5000"
@@ -523,18 +1817,47 @@
           "id": "ground_cover",
           "label": "Ground cover — mossy floor plane",
           "type": "plane",
-          "w": 80, "h": 80,
-          "position": [0, 0, 0],
-          "rotation": [-90, 0, 0],
-          "material": { "color": "#052e16", "roughness": 1.0 }
+          "w": 80,
+          "h": 80,
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "rotation": [
+            -90,
+            0,
+            0
+          ],
+          "material": {
+            "color": "#052e16",
+            "roughness": 1
+          }
         },
         {
           "id": "bioluminescent_fungi",
           "label": "Glowing fungi clusters — 60 small spheres at ground level",
           "count": 60,
-          "spread": { "x": [-20, 20], "z": [-20, 5], "y": [0, 0.3] },
+          "spread": {
+            "x": [
+              -20,
+              20
+            ],
+            "z": [
+              -20,
+              5
+            ],
+            "y": [
+              0,
+              0.3
+            ]
+          },
           "element": {
-            "type": "sphere", "r_range": [0.08, 0.25],
+            "type": "sphere",
+            "r_range": [
+              0.08,
+              0.25
+            ],
             "material": "bioluminescent",
             "animation": "pulse_emissive",
             "animDelayFn": "random_0_4000"
@@ -544,11 +1867,27 @@
           "id": "light_shafts",
           "label": "Moonlight shafts through canopy — tall narrow boxes",
           "count": 8,
-          "spread": { "x": [-12, 12], "z": [-10, 2] },
+          "spread": {
+            "x": [
+              -12,
+              12
+            ],
+            "z": [
+              -10,
+              2
+            ]
+          },
           "element": {
-            "type": "box", "w": 0.4, "h": 18, "d": 0.4,
+            "type": "box",
+            "w": 0.4,
+            "h": 18,
+            "d": 0.4,
             "y_offset": 9,
-            "material": { "color": "#22c55e", "opacity": 0.06, "transparent": true },
+            "material": {
+              "color": "#22c55e",
+              "opacity": 0.06,
+              "transparent": true
+            },
             "animation": "pulse_opacity"
           }
         },
@@ -556,9 +1895,26 @@
           "id": "floating_spores",
           "label": "Floating spores — 80 tiny spheres drifting upward",
           "count": 80,
-          "spread": { "x": [-18, 18], "z": [-18, 4], "y": [0.5, 6] },
+          "spread": {
+            "x": [
+              -18,
+              18
+            ],
+            "z": [
+              -18,
+              4
+            ],
+            "y": [
+              0.5,
+              6
+            ]
+          },
           "element": {
-            "type": "sphere", "r_range": [0.02, 0.06],
+            "type": "sphere",
+            "r_range": [
+              0.02,
+              0.06
+            ],
             "material": "neon_green",
             "animation": "drift_up_slow",
             "animDelayFn": "random_0_6000"
@@ -566,7 +1922,6 @@
         }
       ]
     },
-
     "deep_space": {
       "id": "deep_space",
       "title": "963 Hz Cosmos — Crown Field",
@@ -574,13 +1929,30 @@
       "palette": "deep_space",
       "sound": "ambient_963hz",
       "narrativeBeats": [
-        { "trigger": "enter",  "text": "963 Hz — the frequency of the crown. Universal consciousness.\nYou are the universe observing itself.", "durationMs": 8000 },
-        { "trigger": "step_1", "text": "The nearest star is 4.2 light years away.\nAt the speed of light: 4.2 years.\nYou are looking 4.2 years into the past.", "durationMs": 9000 },
-        { "trigger": "step_2", "text": "Every atom in your body was forged in a stellar furnace.\nYou are not in space. You are made of it.", "durationMs": 8000 }
+        {
+          "trigger": "enter",
+          "text": "963 Hz — the frequency of the crown. Universal consciousness.\nYou are the universe observing itself.",
+          "durationMs": 8000
+        },
+        {
+          "trigger": "step_1",
+          "text": "The nearest star is 4.2 light years away.\nAt the speed of light: 4.2 years.\nYou are looking 4.2 years into the past.",
+          "durationMs": 9000
+        },
+        {
+          "trigger": "step_2",
+          "text": "Every atom in your body was forged in a stellar furnace.\nYou are not in space. You are made of it.",
+          "durationMs": 8000
+        }
       ],
       "environment": {
-        "sky": { "color": "#000005" },
-        "fog": { "color": "#000005", "density": 0.004 }
+        "sky": {
+          "color": "#000005"
+        },
+        "fog": {
+          "color": "#000005",
+          "density": 0.004
+        }
       },
       "layers": [
         {
@@ -588,9 +1960,16 @@
           "label": "Star field — 600 tiny spheres distributed across a sphere",
           "count": 600,
           "distribution": "spherical_shell",
-          "radius_range": [18, 40],
+          "radius_range": [
+            18,
+            40
+          ],
           "element": {
-            "type": "sphere", "r_range": [0.02, 0.09],
+            "type": "sphere",
+            "r_range": [
+              0.02,
+              0.09
+            ],
             "material": "star_white",
             "animation": "pulse_opacity",
             "animDelayFn": "random_0_8000"
@@ -603,7 +1982,11 @@
           "distribution": "spherical_random",
           "radius": 22,
           "element": {
-            "type": "sphere", "r_range": [1.5, 5.0],
+            "type": "sphere",
+            "r_range": [
+              1.5,
+              5
+            ],
             "material": "plasma_purple",
             "animation": "slow_rotate_y",
             "animDelayFn": "random_0_10000"
@@ -616,8 +1999,17 @@
           "distribution": "phi_spiral_3d",
           "radius": 14,
           "element": {
-            "type": "sphere", "r_range": [0.05, 0.3],
-            "material": { "color": "#a78bfa", "emissive": "#7c3aed", "emissiveIntensity": 0.5, "opacity": 0.6 },
+            "type": "sphere",
+            "r_range": [
+              0.05,
+              0.3
+            ],
+            "material": {
+              "color": "#a78bfa",
+              "emissive": "#7c3aed",
+              "emissiveIntensity": 0.5,
+              "opacity": 0.6
+            },
             "animation": "pulse_opacity",
             "animDelayFn": "random_0_5000"
           }
@@ -626,14 +2018,113 @@
           "id": "orbital_planets",
           "label": "Six distinct planetary bodies orbiting the scene",
           "instances": [
-            { "position": [ 8,  2, -12], "scale": [1.4, 1.4, 1.4], "material_override": { "color": "#c2410c", "metalness": 0.0, "roughness": 0.9 }, "animation_override": "orbit_y" },
-            { "position": [-10, -1, -10], "scale": [0.9, 0.9, 0.9], "material_override": { "color": "#60a5fa", "opacity": 0.7 }, "animation_override": "slow_rotate_x" },
-            { "position": [ 4,  4, -18], "scale": [2.2, 2.2, 2.2], "material_override": { "color": "#f59e0b", "metalness": 0.0, "roughness": 0.7 }, "animation_override": "slow_rotate_y" },
-            { "position": [-6, -3, -16], "scale": [0.6, 0.6, 0.6], "material_override": { "color": "#e2e8f0", "roughness": 0.95 } },
-            { "position": [14,  0, -14], "scale": [3.0, 3.0, 3.0], "material_override": { "color": "#d97706", "roughness": 0.6 }, "animation_override": "spin_slow" },
-            { "position": [-14, 2, -18], "scale": [1.8, 1.8, 1.8], "material_override": { "color": "#2dd4bf", "roughness": 0.4 } }
+            {
+              "position": [
+                8,
+                2,
+                -12
+              ],
+              "scale": [
+                1.4,
+                1.4,
+                1.4
+              ],
+              "material_override": {
+                "color": "#c2410c",
+                "metalness": 0,
+                "roughness": 0.9
+              },
+              "animation_override": "orbit_y"
+            },
+            {
+              "position": [
+                -10,
+                -1,
+                -10
+              ],
+              "scale": [
+                0.9,
+                0.9,
+                0.9
+              ],
+              "material_override": {
+                "color": "#60a5fa",
+                "opacity": 0.7
+              },
+              "animation_override": "slow_rotate_x"
+            },
+            {
+              "position": [
+                4,
+                4,
+                -18
+              ],
+              "scale": [
+                2.2,
+                2.2,
+                2.2
+              ],
+              "material_override": {
+                "color": "#f59e0b",
+                "metalness": 0,
+                "roughness": 0.7
+              },
+              "animation_override": "slow_rotate_y"
+            },
+            {
+              "position": [
+                -6,
+                -3,
+                -16
+              ],
+              "scale": [
+                0.6,
+                0.6,
+                0.6
+              ],
+              "material_override": {
+                "color": "#e2e8f0",
+                "roughness": 0.95
+              }
+            },
+            {
+              "position": [
+                14,
+                0,
+                -14
+              ],
+              "scale": [
+                3,
+                3,
+                3
+              ],
+              "material_override": {
+                "color": "#d97706",
+                "roughness": 0.6
+              },
+              "animation_override": "spin_slow"
+            },
+            {
+              "position": [
+                -14,
+                2,
+                -18
+              ],
+              "scale": [
+                1.8,
+                1.8,
+                1.8
+              ],
+              "material_override": {
+                "color": "#2dd4bf",
+                "roughness": 0.4
+              }
+            }
           ],
-          "element": { "type": "sphere", "r": 1 }
+          "element": {
+            "type": "sphere",
+            "r": 1
+          }
         },
         {
           "id": "saturn_rings",
@@ -641,23 +2132,68 @@
           "anchor_instance": 4,
           "anchor_layer": "orbital_planets",
           "instances": [
-            { "position": [14, 0, -14], "rotation": [80, 0, 0], "scale": [1, 1, 1] },
-            { "position": [14, 0, -14], "rotation": [80, 0, 0], "scale": [1.3, 1.3, 1.3] }
+            {
+              "position": [
+                14,
+                0,
+                -14
+              ],
+              "rotation": [
+                80,
+                0,
+                0
+              ],
+              "scale": [
+                1,
+                1,
+                1
+              ]
+            },
+            {
+              "position": [
+                14,
+                0,
+                -14
+              ],
+              "rotation": [
+                80,
+                0,
+                0
+              ],
+              "scale": [
+                1.3,
+                1.3,
+                1.3
+              ]
+            }
           ],
-          "element": { "type": "torus", "r": 4.2, "rt": 0.18, "material": { "color": "#d97706", "opacity": 0.5, "transparent": true } }
+          "element": {
+            "type": "torus",
+            "r": 4.2,
+            "rt": 0.18,
+            "material": {
+              "color": "#d97706",
+              "opacity": 0.5,
+              "transparent": true
+            }
+          }
         },
         {
           "id": "crown_glyph",
           "label": "963 Hz crown glyph — floating toroidal knot above the scene",
           "type": "torus",
-          "r": 2.8, "rt": 0.12,
-          "position": [0, 5, -8],
+          "r": 2.8,
+          "rt": 0.12,
+          "position": [
+            0,
+            5,
+            -8
+          ],
           "material": "neon_gold",
           "animation": "slow_rotate_y"
         }
       ]
     },
-
     "ocean_presence": {
       "id": "ocean_presence",
       "title": "Ocean Presence — Infinite Horizon",
@@ -665,22 +2201,50 @@
       "palette": "ocean",
       "sound": "ambient_417hz",
       "narrativeBeats": [
-        { "trigger": "enter",  "text": "417 Hz — the frequency of spatial anchoring.\nThe horizon is 4.8 km away.\nIt will always be exactly that far.", "durationMs": 7000 },
-        { "trigger": "step_1", "text": "The ocean covers 71% of this planet.\nEvery breath you take contains atoms that have been here for 3.8 billion years.", "durationMs": 8000 },
-        { "trigger": "step_2", "text": "There is no edge to the ocean.\nThere is no edge to your attention either — if you let go.", "durationMs": 8000 }
+        {
+          "trigger": "enter",
+          "text": "417 Hz — the frequency of spatial anchoring.\nThe horizon is 4.8 km away.\nIt will always be exactly that far.",
+          "durationMs": 7000
+        },
+        {
+          "trigger": "step_1",
+          "text": "The ocean covers 71% of this planet.\nEvery breath you take contains atoms that have been here for 3.8 billion years.",
+          "durationMs": 8000
+        },
+        {
+          "trigger": "step_2",
+          "text": "There is no edge to the ocean.\nThere is no edge to your attention either — if you let go.",
+          "durationMs": 8000
+        }
       ],
       "environment": {
-        "sky": { "type": "gradient", "topColor": "#020d1a", "bottomColor": "#1a3a5a" },
-        "fog": { "color": "#020d1a", "density": 0.014 }
+        "sky": {
+          "type": "gradient",
+          "topColor": "#020d1a",
+          "bottomColor": "#1a3a5a"
+        },
+        "fog": {
+          "color": "#020d1a",
+          "density": 0.014
+        }
       },
       "layers": [
         {
           "id": "ocean_surface",
           "label": "Ocean surface — large undulating plane",
           "type": "plane",
-          "w": 400, "h": 400,
-          "position": [0, -0.3, 0],
-          "rotation": [-90, 0, 0],
+          "w": 400,
+          "h": 400,
+          "position": [
+            0,
+            -0.3,
+            0
+          ],
+          "rotation": [
+            -90,
+            0,
+            0
+          ],
           "material": "water_surface",
           "animation": "wave_z"
         },
@@ -688,10 +2252,33 @@
           "id": "wave_crests",
           "label": "Wave crest highlights — 50 elongated boxes at surface level",
           "count": 50,
-          "spread": { "x": [-30, 30], "z": [-30, 5], "y": [-0.1, 0.1] },
+          "spread": {
+            "x": [
+              -30,
+              30
+            ],
+            "z": [
+              -30,
+              5
+            ],
+            "y": [
+              -0.1,
+              0.1
+            ]
+          },
           "element": {
-            "type": "box", "w_range": [1.5, 6], "h": 0.06, "d": 0.3,
-            "material": { "color": "#e0f2fe", "opacity": 0.45, "transparent": true },
+            "type": "box",
+            "w_range": [
+              1.5,
+              6
+            ],
+            "h": 0.06,
+            "d": 0.3,
+            "material": {
+              "color": "#e0f2fe",
+              "opacity": 0.45,
+              "transparent": true
+            },
             "animation": "wave_z",
             "animDelayFn": "random_0_4000"
           }
@@ -700,10 +2287,30 @@
           "id": "sea_foam",
           "label": "Sea foam particles — 80 tiny white spheres at surface",
           "count": 80,
-          "spread": { "x": [-20, 20], "z": [-20, 8], "y": [-0.05, 0.15] },
+          "spread": {
+            "x": [
+              -20,
+              20
+            ],
+            "z": [
+              -20,
+              8
+            ],
+            "y": [
+              -0.05,
+              0.15
+            ]
+          },
           "element": {
-            "type": "sphere", "r_range": [0.04, 0.15],
-            "material": { "color": "#e0f2fe", "opacity": 0.6 },
+            "type": "sphere",
+            "r_range": [
+              0.04,
+              0.15
+            ],
+            "material": {
+              "color": "#e0f2fe",
+              "opacity": 0.6
+            },
             "animation": "drift_up_slow",
             "animDelayFn": "random_0_5000"
           }
@@ -712,29 +2319,1605 @@
           "id": "horizon_mist",
           "label": "Horizon mist layers — translucent wide boxes far ahead",
           "instances": [
-            { "position": [0, 1, -40], "scale": [120, 4, 0.5] },
-            { "position": [0, 2, -60], "scale": [150, 6, 0.5] },
-            { "position": [0, 3, -90], "scale": [200, 8, 0.5] }
+            {
+              "position": [
+                0,
+                1,
+                -40
+              ],
+              "scale": [
+                120,
+                4,
+                0.5
+              ]
+            },
+            {
+              "position": [
+                0,
+                2,
+                -60
+              ],
+              "scale": [
+                150,
+                6,
+                0.5
+              ]
+            },
+            {
+              "position": [
+                0,
+                3,
+                -90
+              ],
+              "scale": [
+                200,
+                8,
+                0.5
+              ]
+            }
           ],
           "element": {
             "type": "box",
-            "material": { "color": "#38bdf8", "opacity": 0.08, "transparent": true }
+            "material": {
+              "color": "#38bdf8",
+              "opacity": 0.08,
+              "transparent": true
+            }
           }
         },
         {
           "id": "star_reflections",
           "label": "Star reflections on water — 120 tiny emissive dots at surface",
           "count": 120,
-          "spread": { "x": [-25, 25], "z": [-25, 5], "y": [-0.28, -0.25] },
+          "spread": {
+            "x": [
+              -25,
+              25
+            ],
+            "z": [
+              -25,
+              5
+            ],
+            "y": [
+              -0.28,
+              -0.25
+            ]
+          },
           "element": {
-            "type": "sphere", "r": 0.015,
+            "type": "sphere",
+            "r": 0.015,
             "material": "star_white",
             "animation": "pulse_opacity",
             "animDelayFn": "random_0_7000"
           }
         }
       ]
+    },
+    "colosseum_time_gate": {
+      "id": "colosseum_time_gate",
+      "title": "Colosseum Time Gate — Rome, 80 AD",
+      "logline": "Stand in the Colosseum at its inauguration. 50,000 Romans fill the tiers. The roar of 80 AD surrounds you.",
+      "palette": "roman_arena",
+      "sound": "ambient_417hz",
+      "geoqode": {
+        "architectureSignature": "8,26,48:480",
+        "semanticType": "LOCATION",
+        "frequency": 417,
+        "latticeNode": 18,
+        "harmonicNode": 182,
+        "phiCoefficient": 1.618,
+        "coherence": 0.96
+      },
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "Rome. 80 AD. The Flavian Amphitheatre — later named the Colosseum.\n50,000 Romans fill every tier above you.",
+          "durationMs": 8000
+        },
+        {
+          "trigger": "step_1",
+          "text": "The arena floor is sand, spread over wood and iron trap doors.\nBelow, 32 animal pens and gladiator cells await the call.",
+          "durationMs": 7000
+        },
+        {
+          "trigger": "step_2",
+          "text": "Torches burn at every archway pillar.\nThe crowd falls silent. The Emperor's gate opens.",
+          "durationMs": 7000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#0e0802"
+        },
+        "fog": {
+          "color": "#1a0e04",
+          "density": 0.014
+        }
+      },
+      "layers": [
+        {
+          "id": "arena_floor",
+          "label": "Sand arena floor — compacted ochre sand 80m across",
+          "type": "box",
+          "position": [
+            0,
+            -0.5,
+            0
+          ],
+          "scale": [
+            85,
+            0.4,
+            60
+          ],
+          "material": "sandstone"
+        },
+        {
+          "id": "outer_wall_columns",
+          "label": "32 outer Doric columns — limestone ring 38m radius",
+          "count": 32,
+          "distribution": "ring",
+          "radius": 38,
+          "element": {
+            "type": "cylinder",
+            "height": 18,
+            "radius": 0.55,
+            "position_y": 8.5,
+            "material": "limestone_worn"
+          }
+        },
+        {
+          "id": "inner_arch_columns",
+          "label": "24 inner arch columns — ring at 22m radius",
+          "count": 24,
+          "distribution": "ring",
+          "radius": 22,
+          "element": {
+            "type": "cylinder",
+            "height": 12,
+            "radius": 0.45,
+            "position_y": 5.5,
+            "material": "ancient_stone"
+          }
+        },
+        {
+          "id": "seating_tier_1",
+          "label": "Inner seating tier — nobles at 4m height",
+          "count": 48,
+          "distribution": "ring",
+          "radius": 26,
+          "element": {
+            "type": "box",
+            "scale": [
+              2.8,
+              0.3,
+              1.2
+            ],
+            "position_y": 3.8,
+            "material": "marble_pale"
+          }
+        },
+        {
+          "id": "seating_tier_2",
+          "label": "Middle seating tier — citizens at 8m height",
+          "count": 64,
+          "distribution": "ring",
+          "radius": 31,
+          "element": {
+            "type": "box",
+            "scale": [
+              2.5,
+              0.3,
+              1.2
+            ],
+            "position_y": 8,
+            "material": "ancient_stone"
+          }
+        },
+        {
+          "id": "seating_tier_3",
+          "label": "Upper standing tier — poor citizens at 14m height",
+          "count": 80,
+          "distribution": "ring",
+          "radius": 36,
+          "element": {
+            "type": "box",
+            "scale": [
+              2.2,
+              0.25,
+              1
+            ],
+            "position_y": 14,
+            "material": "limestone_worn"
+          }
+        },
+        {
+          "id": "torch_lights",
+          "label": "16 torches burning at arch pillars — amber firelight",
+          "count": 16,
+          "distribution": "ring",
+          "radius": 23,
+          "element": {
+            "type": "sphere",
+            "r": 0.25,
+            "position_y": 4.5,
+            "material": "torch_glow",
+            "animation": "flicker_torch"
+          }
+        },
+        {
+          "id": "torch_upper",
+          "label": "8 high torches at upper tier",
+          "count": 8,
+          "distribution": "ring",
+          "radius": 34,
+          "element": {
+            "type": "sphere",
+            "r": 0.2,
+            "position_y": 13,
+            "material": "torch_glow",
+            "animation": "flicker_torch"
+          }
+        },
+        {
+          "id": "crowd_entities",
+          "label": "96 crowd entity markers — seating areas",
+          "count": 96,
+          "spread": {
+            "x": [
+              -35,
+              35
+            ],
+            "z": [
+              -22,
+              22
+            ],
+            "y": [
+              3.5,
+              15
+            ]
+          },
+          "element": {
+            "type": "sphere",
+            "r": 0.12,
+            "material": "character_skin"
+          }
+        },
+        {
+          "id": "dust_motes",
+          "label": "60 arena dust motes rising from hot sand",
+          "count": 60,
+          "spread": {
+            "x": [
+              -35,
+              35
+            ],
+            "z": [
+              -22,
+              22
+            ],
+            "y": [
+              0.1,
+              3.5
+            ]
+          },
+          "element": {
+            "type": "sphere",
+            "r": 0.03,
+            "material": {
+              "color": "#c8a050",
+              "opacity": 0.35,
+              "transparent": true
+            },
+            "animation": "drift_up_slow",
+            "animDelayFn": "random_0_5000"
+          }
+        },
+        {
+          "id": "arena_gates",
+          "label": "2 main gate archways — north and south entry",
+          "instances": [
+            {
+              "position": [
+                0,
+                4,
+                -28
+              ],
+              "scale": [
+                6,
+                9,
+                1.5
+              ]
+            },
+            {
+              "position": [
+                0,
+                4,
+                28
+              ],
+              "scale": [
+                6,
+                9,
+                1.5
+              ]
+            }
+          ],
+          "element": {
+            "type": "box",
+            "material": "ancient_stone"
+          }
+        }
+      ]
+    },
+    "iss_zero_gravity": {
+      "id": "iss_zero_gravity",
+      "title": "ISS Zero Gravity Lab — 408km Above Earth",
+      "logline": "Float inside the International Space Station. Earth hangs below the cupola. Physics is 0.0009g.",
+      "palette": "orbital",
+      "sound": "ambient_852hz",
+      "geoqode": {
+        "architectureSignature": "8,26,48:480",
+        "semanticType": "PHYSICS",
+        "frequency": 852,
+        "latticeNode": 44,
+        "harmonicNode": 444,
+        "phiCoefficient": 1.618,
+        "coherence": 0.98
+      },
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "International Space Station. 408km altitude.\nOrbital velocity: 27,600 km/h. Gravity: 0.0009g.",
+          "durationMs": 8000
+        },
+        {
+          "trigger": "step_1",
+          "text": "The ISS spans 109m wingtip to wingtip.\n16 nations. 30 years of continuous habitation.",
+          "durationMs": 7000
+        },
+        {
+          "trigger": "step_2",
+          "text": "Through the cupola: Earth rotates below.\nOne complete orbit every 92 minutes.",
+          "durationMs": 7000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#000008"
+        },
+        "fog": {
+          "color": "#000005",
+          "density": 0.003
+        }
+      },
+      "layers": [
+        {
+          "id": "hab_module_central",
+          "label": "Central pressurised module — white aluminium cylinder",
+          "type": "cylinder",
+          "radius": 2.1,
+          "height": 14,
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "rotation": [
+            0,
+            0,
+            90
+          ],
+          "material": "iss_panel_white"
+        },
+        {
+          "id": "hab_module_lab",
+          "label": "Science module — extending aft",
+          "type": "cylinder",
+          "radius": 1.8,
+          "height": 10,
+          "position": [
+            0,
+            0,
+            -8
+          ],
+          "rotation": [
+            0,
+            0,
+            90
+          ],
+          "material": "iss_panel_white"
+        },
+        {
+          "id": "solar_array_port",
+          "label": "Port solar array — 4 gold panels extending left",
+          "instances": [
+            {
+              "position": [
+                -18,
+                0,
+                2
+              ],
+              "scale": [
+                8,
+                0.12,
+                3.5
+              ]
+            },
+            {
+              "position": [
+                -26,
+                0,
+                2
+              ],
+              "scale": [
+                8,
+                0.12,
+                3.5
+              ]
+            },
+            {
+              "position": [
+                -18,
+                0,
+                -1.5
+              ],
+              "scale": [
+                8,
+                0.12,
+                3.5
+              ]
+            },
+            {
+              "position": [
+                -26,
+                0,
+                -1.5
+              ],
+              "scale": [
+                8,
+                0.12,
+                3.5
+              ]
+            }
+          ],
+          "element": {
+            "type": "box",
+            "material": "solar_gold"
+          }
+        },
+        {
+          "id": "solar_array_stbd",
+          "label": "Starboard solar array — 4 gold panels extending right",
+          "instances": [
+            {
+              "position": [
+                18,
+                0,
+                2
+              ],
+              "scale": [
+                8,
+                0.12,
+                3.5
+              ]
+            },
+            {
+              "position": [
+                26,
+                0,
+                2
+              ],
+              "scale": [
+                8,
+                0.12,
+                3.5
+              ]
+            },
+            {
+              "position": [
+                18,
+                0,
+                -1.5
+              ],
+              "scale": [
+                8,
+                0.12,
+                3.5
+              ]
+            },
+            {
+              "position": [
+                26,
+                0,
+                -1.5
+              ],
+              "scale": [
+                8,
+                0.12,
+                3.5
+              ]
+            }
+          ],
+          "element": {
+            "type": "box",
+            "material": "solar_gold"
+          }
+        },
+        {
+          "id": "cupola_ring",
+          "label": "Cupola observation dome — 7 window panels below",
+          "count": 7,
+          "distribution": "ring",
+          "radius": 1.4,
+          "element": {
+            "type": "box",
+            "scale": [
+              0.7,
+              0.7,
+              0.12
+            ],
+            "position_y": -2.2,
+            "material": "glass_clear",
+            "rotation_align": "ring_face_out"
+          }
+        },
+        {
+          "id": "earth_sphere",
+          "label": "Earth sphere — massive blue-white sphere below",
+          "type": "sphere",
+          "r": 120,
+          "position": [
+            0,
+            -145,
+            0
+          ],
+          "material": "earth_blue"
+        },
+        {
+          "id": "earth_atmosphere",
+          "label": "Earth atmosphere — thin translucent shell",
+          "type": "sphere",
+          "r": 128,
+          "position": [
+            0,
+            -145,
+            0
+          ],
+          "material": "earth_atmosphere"
+        },
+        {
+          "id": "floating_debris",
+          "label": "30 floating objects — zero-g equipment drift",
+          "count": 30,
+          "spread": {
+            "x": [
+              -5,
+              5
+            ],
+            "z": [
+              -5,
+              5
+            ],
+            "y": [
+              -2,
+              2
+            ]
+          },
+          "element": {
+            "type": "box",
+            "scale_range": [
+              0.06,
+              0.2
+            ],
+            "material": "iss_panel_white",
+            "animation": "drift_float",
+            "animDelayFn": "random_0_7000"
+          }
+        },
+        {
+          "id": "equipment_racks",
+          "label": "8 dark equipment racks lining module walls",
+          "instances": [
+            {
+              "position": [
+                -3,
+                0,
+                0
+              ],
+              "scale": [
+                0.4,
+                2.4,
+                1.4
+              ]
+            },
+            {
+              "position": [
+                3,
+                0,
+                0
+              ],
+              "scale": [
+                0.4,
+                2.4,
+                1.4
+              ]
+            },
+            {
+              "position": [
+                -3,
+                0,
+                -4
+              ],
+              "scale": [
+                0.4,
+                2.4,
+                1.4
+              ]
+            },
+            {
+              "position": [
+                3,
+                0,
+                -4
+              ],
+              "scale": [
+                0.4,
+                2.4,
+                1.4
+              ]
+            },
+            {
+              "position": [
+                -3,
+                0,
+                4
+              ],
+              "scale": [
+                0.4,
+                2.4,
+                1.4
+              ]
+            },
+            {
+              "position": [
+                3,
+                0,
+                4
+              ],
+              "scale": [
+                0.4,
+                2.4,
+                1.4
+              ]
+            },
+            {
+              "position": [
+                -3,
+                0,
+                -8
+              ],
+              "scale": [
+                0.4,
+                2.4,
+                1.4
+              ]
+            },
+            {
+              "position": [
+                3,
+                0,
+                -8
+              ],
+              "scale": [
+                0.4,
+                2.4,
+                1.4
+              ]
+            }
+          ],
+          "element": {
+            "type": "box",
+            "material": "iss_panel_dark"
+          }
+        },
+        {
+          "id": "status_displays",
+          "label": "6 holographic status readouts — blue panels",
+          "instances": [
+            {
+              "position": [
+                -2,
+                0.8,
+                2
+              ],
+              "scale": [
+                0.8,
+                0.5,
+                0.05
+              ]
+            },
+            {
+              "position": [
+                2,
+                0.8,
+                2
+              ],
+              "scale": [
+                0.8,
+                0.5,
+                0.05
+              ]
+            },
+            {
+              "position": [
+                -2,
+                0.8,
+                -2
+              ],
+              "scale": [
+                0.8,
+                0.5,
+                0.05
+              ]
+            },
+            {
+              "position": [
+                2,
+                0.8,
+                -2
+              ],
+              "scale": [
+                0.8,
+                0.5,
+                0.05
+              ]
+            },
+            {
+              "position": [
+                -2,
+                0.8,
+                -6
+              ],
+              "scale": [
+                0.8,
+                0.5,
+                0.05
+              ]
+            },
+            {
+              "position": [
+                2,
+                0.8,
+                -6
+              ],
+              "scale": [
+                0.8,
+                0.5,
+                0.05
+              ]
+            }
+          ],
+          "element": {
+            "type": "box",
+            "material": "hologram_cyan",
+            "animation": "pulse_emissive"
+          }
+        },
+        {
+          "id": "star_field",
+          "label": "D480 star field — 220 distant white points",
+          "count": 220,
+          "distribution": "spherical_random",
+          "radius": 380,
+          "element": {
+            "type": "sphere",
+            "r": 0.4,
+            "material": "star_white",
+            "animation": "pulse_opacity"
+          }
+        }
+      ]
+    },
+    "pyramids_giza": {
+      "id": "pyramids_giza",
+      "title": "Pyramids of Giza — 2560 BC",
+      "logline": "Witness the construction of Khufu's pyramid. 2.3 million limestone blocks. A civilisation's monument to eternity.",
+      "palette": "desert_dawn",
+      "sound": "ambient_963hz",
+      "geoqode": {
+        "architectureSignature": "8,26,48:480",
+        "semanticType": "NARRATIVE",
+        "frequency": 963,
+        "latticeNode": 3,
+        "harmonicNode": 30,
+        "phiCoefficient": 1.618,
+        "coherence": 0.97
+      },
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "Giza Plateau. Egypt. 2560 BC.\nKhufu's pyramid rises 146 metres against a pre-dawn sky.",
+          "durationMs": 8000
+        },
+        {
+          "trigger": "step_1",
+          "text": "20,000 skilled builders — not slaves — quarry, transport and place 2.3 million limestone blocks.\nEach block: 2.5 tonnes average.",
+          "durationMs": 8000
+        },
+        {
+          "trigger": "step_2",
+          "text": "The Sphinx watches from the east.\nIn 2560 BC it faces the sunrise perfectly — marking the equinox.",
+          "durationMs": 7000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#06030a"
+        },
+        "fog": {
+          "color": "#1a0a00",
+          "density": 0.016
+        }
+      },
+      "layers": [
+        {
+          "id": "desert_floor",
+          "label": "Desert plateau — vast limestone and sand plane",
+          "type": "box",
+          "position": [
+            0,
+            -1,
+            0
+          ],
+          "scale": [
+            500,
+            0.6,
+            500
+          ],
+          "material": "desert_sand"
+        },
+        {
+          "id": "pyramid_khufu",
+          "label": "Great Pyramid of Khufu — central, tallest, 146m",
+          "instances": [
+            {
+              "position": [
+                0,
+                14,
+                -30
+              ],
+              "scale": [
+                88,
+                28,
+                88
+              ]
+            },
+            {
+              "position": [
+                0,
+                42,
+                -30
+              ],
+              "scale": [
+                64,
+                28,
+                64
+              ]
+            },
+            {
+              "position": [
+                0,
+                70,
+                -30
+              ],
+              "scale": [
+                42,
+                28,
+                42
+              ]
+            },
+            {
+              "position": [
+                0,
+                98,
+                -30
+              ],
+              "scale": [
+                22,
+                28,
+                22
+              ]
+            },
+            {
+              "position": [
+                0,
+                126,
+                -30
+              ],
+              "scale": [
+                8,
+                20,
+                8
+              ]
+            }
+          ],
+          "element": {
+            "type": "box",
+            "material": "pyramid_stone"
+          }
+        },
+        {
+          "id": "pyramid_khafre",
+          "label": "Pyramid of Khafre — right, slightly smaller, 136m",
+          "instances": [
+            {
+              "position": [
+                55,
+                12,
+                -42
+              ],
+              "scale": [
+                78,
+                24,
+                78
+              ]
+            },
+            {
+              "position": [
+                55,
+                36,
+                -42
+              ],
+              "scale": [
+                56,
+                24,
+                56
+              ]
+            },
+            {
+              "position": [
+                55,
+                60,
+                -42
+              ],
+              "scale": [
+                36,
+                24,
+                36
+              ]
+            },
+            {
+              "position": [
+                55,
+                84,
+                -42
+              ],
+              "scale": [
+                18,
+                24,
+                18
+              ]
+            },
+            {
+              "position": [
+                55,
+                108,
+                -42
+              ],
+              "scale": [
+                5,
+                12,
+                5
+              ]
+            }
+          ],
+          "element": {
+            "type": "box",
+            "material": "pyramid_stone"
+          }
+        },
+        {
+          "id": "pyramid_menkaure",
+          "label": "Pyramid of Menkaure — far right, smallest, 65m",
+          "instances": [
+            {
+              "position": [
+                100,
+                8,
+                -55
+              ],
+              "scale": [
+                45,
+                16,
+                45
+              ]
+            },
+            {
+              "position": [
+                100,
+                24,
+                -55
+              ],
+              "scale": [
+                30,
+                16,
+                30
+              ]
+            },
+            {
+              "position": [
+                100,
+                40,
+                -55
+              ],
+              "scale": [
+                16,
+                16,
+                16
+              ]
+            },
+            {
+              "position": [
+                100,
+                56,
+                -55
+              ],
+              "scale": [
+                6,
+                9,
+                6
+              ]
+            }
+          ],
+          "element": {
+            "type": "box",
+            "material": "pyramid_stone"
+          }
+        },
+        {
+          "id": "sphinx_body",
+          "label": "Great Sphinx — elongated lion body facing east",
+          "instances": [
+            {
+              "position": [
+                28,
+                2.5,
+                -8
+              ],
+              "scale": [
+                18,
+                5,
+                6
+              ]
+            },
+            {
+              "position": [
+                20,
+                6.5,
+                -8
+              ],
+              "scale": [
+                4.5,
+                7,
+                4.5
+              ]
+            }
+          ],
+          "element": {
+            "type": "box",
+            "material": "limestone_worn"
+          }
+        },
+        {
+          "id": "construction_ramps",
+          "label": "3 construction ramps angled against Khufu pyramid face",
+          "instances": [
+            {
+              "position": [
+                -18,
+                28,
+                -15
+              ],
+              "scale": [
+                6,
+                0.5,
+                20
+              ],
+              "rotation": [
+                -30,
+                0,
+                0
+              ]
+            },
+            {
+              "position": [
+                0,
+                42,
+                -15
+              ],
+              "scale": [
+                6,
+                0.5,
+                16
+              ],
+              "rotation": [
+                -38,
+                0,
+                0
+              ]
+            },
+            {
+              "position": [
+                16,
+                56,
+                -15
+              ],
+              "scale": [
+                5,
+                0.5,
+                12
+              ],
+              "rotation": [
+                -45,
+                0,
+                0
+              ]
+            }
+          ],
+          "element": {
+            "type": "box",
+            "material": "sandstone"
+          }
+        },
+        {
+          "id": "limestone_blocks_base",
+          "label": "Scattered quarried blocks at pyramid base — construction activity",
+          "count": 80,
+          "spread": {
+            "x": [
+              -42,
+              42
+            ],
+            "z": [
+              -8,
+              8
+            ],
+            "y": [
+              0,
+              0.8
+            ]
+          },
+          "element": {
+            "type": "box",
+            "scale_range": [
+              0.4,
+              1.8
+            ],
+            "material": "pyramid_stone"
+          }
+        },
+        {
+          "id": "horizon_dawn_glow",
+          "label": "Pre-dawn amber glow on eastern horizon",
+          "instances": [
+            {
+              "position": [
+                0,
+                4,
+                -180
+              ],
+              "scale": [
+                300,
+                18,
+                0.5
+              ]
+            }
+          ],
+          "element": {
+            "type": "box",
+            "material": "horizon_amber"
+          }
+        },
+        {
+          "id": "star_field_night",
+          "label": "Pre-dawn night sky — 320 ancient stars",
+          "count": 320,
+          "distribution": "spherical_random",
+          "radius": 380,
+          "element": {
+            "type": "sphere",
+            "r": 0.35,
+            "material": "star_white",
+            "animation": "pulse_opacity"
+          }
+        },
+        {
+          "id": "worker_entities",
+          "label": "120 builder entities on ramps and plateau",
+          "count": 120,
+          "spread": {
+            "x": [
+              -45,
+              45
+            ],
+            "z": [
+              -20,
+              10
+            ],
+            "y": [
+              0,
+              55
+            ]
+          },
+          "element": {
+            "type": "sphere",
+            "r": 0.08,
+            "material": "character_skin"
+          }
+        }
+      ]
+    },
+    "deep_ocean_trench": {
+      "id": "deep_ocean_trench",
+      "title": "Mariana Trench — 11km Below the Surface",
+      "logline": "Descend to the Challenger Deep. The deepest known point on Earth. No light. Immense pressure. Bioluminescence everywhere.",
+      "palette": "abyss",
+      "sound": "ambient_417hz",
+      "geoqode": {
+        "architectureSignature": "8,26,48:480",
+        "semanticType": "LOCATION",
+        "frequency": 417,
+        "latticeNode": 19,
+        "harmonicNode": 195,
+        "phiCoefficient": 1.618,
+        "coherence": 0.95
+      },
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "Mariana Trench. Challenger Deep.\n11,034 metres below the surface.\nThe deepest known point on Earth.",
+          "durationMs": 9000
+        },
+        {
+          "trigger": "step_1",
+          "text": "Pressure: 1,100 atmospheres.\nTemperature: 2 degrees Celsius.\nNo sunlight has reached here in millions of years.",
+          "durationMs": 8000
+        },
+        {
+          "trigger": "step_2",
+          "text": "Bioluminescent creatures drift past.\nHydrothermal vents sustain unique ecosystems — independent of the sun.",
+          "durationMs": 8000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#000204"
+        },
+        "fog": {
+          "color": "#000204",
+          "density": 0.022
+        }
+      },
+      "layers": [
+        {
+          "id": "trench_floor",
+          "label": "Abyssal basalt floor — silt-covered sediment plane",
+          "type": "box",
+          "position": [
+            0,
+            -4,
+            0
+          ],
+          "scale": [
+            120,
+            0.6,
+            80
+          ],
+          "material": "basalt_dark"
+        },
+        {
+          "id": "trench_wall_left",
+          "label": "Port trench wall — massive basalt cliff face",
+          "type": "box",
+          "position": [
+            -55,
+            20,
+            0
+          ],
+          "scale": [
+            8,
+            55,
+            100
+          ],
+          "material": "basalt_dark"
+        },
+        {
+          "id": "trench_wall_right",
+          "label": "Starboard trench wall — massive basalt cliff face",
+          "type": "box",
+          "position": [
+            55,
+            20,
+            0
+          ],
+          "scale": [
+            8,
+            55,
+            100
+          ],
+          "material": "basalt_dark"
+        },
+        {
+          "id": "trench_ceiling_dark",
+          "label": "Pressure-dark ceiling — the abyss above",
+          "type": "box",
+          "position": [
+            0,
+            38,
+            0
+          ],
+          "scale": [
+            130,
+            4,
+            90
+          ],
+          "material": {
+            "color": "#000000",
+            "opacity": 0.88,
+            "transparent": true
+          }
+        },
+        {
+          "id": "hydrothermal_vents",
+          "label": "4 hydrothermal vent chimneys — superheated mineral plumes",
+          "instances": [
+            {
+              "position": [
+                -18,
+                -1,
+                -14
+              ],
+              "scale": [
+                0.7,
+                4.5,
+                0.7
+              ]
+            },
+            {
+              "position": [
+                14,
+                -1,
+                -8
+              ],
+              "scale": [
+                0.9,
+                6,
+                0.9
+              ]
+            },
+            {
+              "position": [
+                -8,
+                -1,
+                12
+              ],
+              "scale": [
+                0.6,
+                3.5,
+                0.6
+              ]
+            },
+            {
+              "position": [
+                22,
+                -1,
+                -20
+              ],
+              "scale": [
+                1,
+                5.5,
+                1
+              ]
+            }
+          ],
+          "element": {
+            "type": "cylinder",
+            "material": "basalt_dark"
+          }
+        },
+        {
+          "id": "vent_heat_plumes",
+          "label": "Superheated mineral plume tops — glowing vent exits",
+          "instances": [
+            {
+              "position": [
+                -18,
+                2.8,
+                -14
+              ],
+              "scale": [
+                0.5,
+                0.5,
+                0.5
+              ]
+            },
+            {
+              "position": [
+                14,
+                3.9,
+                -8
+              ],
+              "scale": [
+                0.6,
+                0.6,
+                0.6
+              ]
+            },
+            {
+              "position": [
+                -8,
+                2.3,
+                12
+              ],
+              "scale": [
+                0.45,
+                0.45,
+                0.45
+              ]
+            },
+            {
+              "position": [
+                22,
+                3.6,
+                -20
+              ],
+              "scale": [
+                0.65,
+                0.65,
+                0.65
+              ]
+            }
+          ],
+          "element": {
+            "type": "sphere",
+            "material": "vent_heat",
+            "animation": "pulse_emissive"
+          }
+        },
+        {
+          "id": "biolum_jellies",
+          "label": "40 bioluminescent jellyfish — cyan spheres drifting slowly",
+          "count": 40,
+          "spread": {
+            "x": [
+              -40,
+              40
+            ],
+            "z": [
+              -30,
+              25
+            ],
+            "y": [
+              -2,
+              30
+            ]
+          },
+          "element": {
+            "type": "sphere",
+            "r_range": [
+              0.12,
+              0.45
+            ],
+            "material": "biolum_cyan",
+            "animation": "drift_float",
+            "animDelayFn": "random_0_8000"
+          }
+        },
+        {
+          "id": "biolum_orbs",
+          "label": "28 deep violet bioluminescent orbs — anglerfish lures",
+          "count": 28,
+          "spread": {
+            "x": [
+              -45,
+              45
+            ],
+            "z": [
+              -35,
+              30
+            ],
+            "y": [
+              0,
+              25
+            ]
+          },
+          "element": {
+            "type": "sphere",
+            "r_range": [
+              0.06,
+              0.22
+            ],
+            "material": "biolum_violet",
+            "animation": "pulse_emissive",
+            "animDelayFn": "random_0_5000"
+          }
+        },
+        {
+          "id": "marine_snow",
+          "label": "200 marine snow particles — organic detritus drifting down",
+          "count": 200,
+          "spread": {
+            "x": [
+              -48,
+              48
+            ],
+            "z": [
+              -32,
+              32
+            ],
+            "y": [
+              1,
+              35
+            ]
+          },
+          "element": {
+            "type": "sphere",
+            "r": 0.018,
+            "material": "marine_snow",
+            "animation": "marine_drift",
+            "animDelayFn": "random_0_10000"
+          }
+        },
+        {
+          "id": "pressure_haze",
+          "label": "Pressure haze layers — translucent depth effect",
+          "instances": [
+            {
+              "position": [
+                0,
+                10,
+                0
+              ],
+              "scale": [
+                80,
+                0.3,
+                60
+              ]
+            },
+            {
+              "position": [
+                0,
+                20,
+                0
+              ],
+              "scale": [
+                80,
+                0.3,
+                60
+              ]
+            },
+            {
+              "position": [
+                0,
+                30,
+                0
+              ],
+              "scale": [
+                80,
+                0.3,
+                60
+              ]
+            }
+          ],
+          "element": {
+            "type": "box",
+            "material": {
+              "color": "#001810",
+              "opacity": 0.06,
+              "transparent": true
+            }
+          }
+        }
+      ]
     }
-
   }
 }

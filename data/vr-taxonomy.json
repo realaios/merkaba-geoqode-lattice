@@ -478,6 +478,48 @@
           "flatCompatible": true,
           "estimatedDuration": "15-30 min",
           "releaseDate": "2026-Q4"
+        },
+        {
+          "id": "iss-lab",
+          "title": "ISS Zero Gravity Lab",
+          "description": "Float inside the International Space Station 408km above Earth. Zero gravity. The cupola reveals the planet rotating below at 27,600 km/h.",
+          "status": "live",
+          "vrUrl": "/vr?prog=iss-lab",
+          "malScene": "iss_zero_gravity",
+          "frequencyHz": 852,
+          "semanticType": "PHYSICS",
+          "latticeNode": 44,
+          "harmonicNode": 444,
+          "duration": "6-12 min",
+          "tags": [
+            "space",
+            "physics",
+            "iss",
+            "zero-gravity",
+            "earth",
+            "orbital"
+          ]
+        },
+        {
+          "id": "ocean-trench",
+          "title": "Mariana Trench — Challenger Deep",
+          "description": "Descend to 11,034 metres — the deepest known point on Earth. Bioluminescent creatures drift through total darkness. Hydrothermal vents sustain life independent of the sun.",
+          "status": "live",
+          "vrUrl": "/vr?prog=ocean-trench",
+          "malScene": "deep_ocean_trench",
+          "frequencyHz": 417,
+          "semanticType": "LOCATION",
+          "latticeNode": 19,
+          "harmonicNode": 195,
+          "duration": "6-12 min",
+          "tags": [
+            "ocean",
+            "deep-sea",
+            "biology",
+            "pressure",
+            "bioluminescence",
+            "exploration"
+          ]
         }
       ]
     },
@@ -1012,9 +1054,9 @@
           "flatUrl": "/aiosdream?prog=ancient-rome",
           "semanticType": "LOCATION",
           "frequencyHz": 417,
-          "latticeNode": 33,
+          "latticeNode": 18,
           "harmonicNode": 330,
-          "description": "Walk the Roman Forum, enter the Colosseum, and witness the height of the Empire — reconstructed at historical accuracy.",
+          "description": "Stand in the Colosseum at its inauguration. 50,000 Romans fill the tiers above you. Torches burn at every archway pillar. The crowd falls silent as the Emperor's gate opens.",
           "shortDesc": "Time-travel to Rome. Walk among senators.",
           "tags": [
             "history",
@@ -1025,7 +1067,9 @@
           "questCompatible": true,
           "flatCompatible": true,
           "estimatedDuration": "15-30 min",
-          "releaseDate": "2026-05-04"
+          "releaseDate": "2026-05-04",
+          "title": "Colosseum — Rome, 80 AD",
+          "malScene": "colosseum_time_gate"
         },
         {
           "id": "human-body",
@@ -1123,6 +1167,27 @@
           "flatCompatible": true,
           "estimatedDuration": "15-30 min",
           "releaseDate": "2026-Q4"
+        },
+        {
+          "id": "pyramids",
+          "title": "Pyramids of Giza — 2560 BC",
+          "description": "Witness construction of Khufu's pyramid. 2.3 million limestone blocks. 20,000 skilled builders working at pre-dawn on the Giza Plateau.",
+          "status": "live",
+          "vrUrl": "/vr?prog=pyramids",
+          "malScene": "pyramids_giza",
+          "frequencyHz": 963,
+          "semanticType": "NARRATIVE",
+          "latticeNode": 3,
+          "harmonicNode": 30,
+          "duration": "6-12 min",
+          "tags": [
+            "history",
+            "egypt",
+            "ancient",
+            "construction",
+            "pyramids",
+            "narrative"
+          ]
         }
       ]
     },
