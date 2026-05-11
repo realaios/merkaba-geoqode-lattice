@@ -4222,9 +4222,7 @@ const server = createServer(async (req, res) => {
     // ── GET / — serve AIOS landing page (HTML) or JSON for API consumers ──
     if (req.method === "GET" && pathname === "/") {
       const accept = req.headers["accept"] || "";
-      if (
-        (accept.includes("text/html") || accept.includes("*/*"))
-      ) {
+      if (accept.includes("text/html") || accept.includes("*/*")) {
         const homeHtml = PLAISTORE_HTML || AIOS_HTML;
         if (homeHtml) {
           res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
