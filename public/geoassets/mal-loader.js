@@ -525,9 +525,13 @@ function buildEnvironment(env, palette) {
   // Sky
   if (env.sky) {
     if (env.sky.type === "gradient") {
-      parts.push(`<a-sky color="${env.sky.topColor || palette.secondary || palette.bg}"></a-sky>`);
+      parts.push(
+        `<a-sky color="${env.sky.topColor || palette.secondary || palette.bg}"></a-sky>`,
+      );
     } else {
-      parts.push(`<a-sky color="${palette.secondary || env.sky.color || palette.bg}"></a-sky>`);
+      parts.push(
+        `<a-sky color="${palette.secondary || env.sky.color || palette.bg}"></a-sky>`,
+      );
     }
   }
   // Fog via scene fog attribute — returned as scene-level attr
