@@ -705,7 +705,10 @@
 
       // -- Audio (disabled — oscillator tones removed for UX) ---------------
       function startTone() {}
-      function stopTone() { oscillator = null; audioCtx = null; }
+      function stopTone() {
+        oscillator = null;
+        audioCtx = null;
+      }
       function playSuccess() {}
       function playWrong() {}
       function playComplete() {}
