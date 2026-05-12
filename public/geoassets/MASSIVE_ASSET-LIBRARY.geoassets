@@ -5795,6 +5795,2429 @@
           }
         }
       ]
+    },
+    "night_bridge_vr": {
+      "id": "night_bridge_vr",
+      "title": "Night Bridge — Crossing Dark Water",
+      "logline": "A wooden bridge spans black water at midnight. City glow on the horizon. Polyhaven night sky above.",
+      "palette": "deep_space",
+      "sound": "ambient_night",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "Bridges connect two worlds.\nEvery crossing is a decision made in the dark.",
+          "durationMs": 7000
+        },
+        {
+          "trigger": "step_1",
+          "text": "The Golden Gate Bridge was called a suicide magnet.\nNow it has a net — and crisis phones.\nSmall changes save lives.",
+          "durationMs": 8000
+        },
+        {
+          "trigger": "step_2",
+          "text": "Water reflects light that has already passed.\nYou are always crossing a moment that has already happened.",
+          "durationMs": 7000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#0a0e1a"
+        },
+        "fog": {
+          "color": "#0a0e1a",
+          "density": 0.015
+        }
+      },
+      "layers": [
+        {
+          "id": "bridge_planks",
+          "label": "Wooden bridge planks — 20 boxes",
+          "count": 20,
+          "spread": {
+            "x": "0 0",
+            "z": "-20 0"
+          },
+          "element": {
+            "type": "box",
+            "w": 3.5,
+            "h": 0.15,
+            "d": 0.9,
+            "y_offset": 0,
+            "material": {
+              "color": "#5c3d1e",
+              "roughness": 1
+            }
+          }
+        },
+        {
+          "id": "left_rail",
+          "label": "Left bridge railing — 12 cylinders",
+          "count": 12,
+          "spread": {
+            "x": "-1.8 -1.8",
+            "z": "-20 0"
+          },
+          "element": {
+            "type": "cylinder",
+            "r_range": "0.06 0.06",
+            "h_range": "1.2 1.2",
+            "y_offset": 0.6,
+            "material": {
+              "color": "#8B7355"
+            }
+          }
+        },
+        {
+          "id": "right_rail",
+          "label": "Right bridge railing — 12 cylinders",
+          "count": 12,
+          "spread": {
+            "x": "1.8 1.8",
+            "z": "-20 0"
+          },
+          "element": {
+            "type": "cylinder",
+            "r_range": "0.06 0.06",
+            "h_range": "1.2 1.2",
+            "y_offset": 0.6,
+            "material": {
+              "color": "#8B7355"
+            }
+          }
+        },
+        {
+          "id": "bridge_lamps",
+          "label": "Bridge lanterns — 6 glowing spheres",
+          "count": 6,
+          "spread": {
+            "x": "-1.8 1.8",
+            "z": "-18 -2"
+          },
+          "element": {
+            "type": "sphere",
+            "r_range": "0.12 0.14",
+            "y_offset": 1.5,
+            "material": {
+              "color": "#fffde0",
+              "emissive": "#fffde0",
+              "emissiveIntensity": 2.5
+            }
+          }
+        },
+        {
+          "id": "water_surface",
+          "label": "Dark water below the bridge",
+          "type": "plane",
+          "w": 120,
+          "h": 120,
+          "position": [
+            0,
+            -2,
+            -10
+          ],
+          "rotation": [
+            -90,
+            0,
+            0
+          ],
+          "material": {
+            "color": "#080c1a",
+            "roughness": 0.05,
+            "metalness": 0.9,
+            "opacity": 0.92,
+            "transparent": true
+          }
+        },
+        {
+          "id": "city_lights",
+          "label": "Distant city glow — 80 small lights",
+          "count": 80,
+          "spread": {
+            "x": "-40 40",
+            "z": "-60 -35"
+          },
+          "element": {
+            "type": "sphere",
+            "r_range": "0.05 0.25",
+            "y_offset": 1,
+            "material": {
+              "color": "#fbbf24",
+              "emissive": "#f59e0b",
+              "emissiveIntensity": 1.2
+            },
+            "animDelayFn": "random_0_7000",
+            "animation": "pulse_opacity"
+          }
+        }
+      ]
+    },
+    "venice_dawn_vr": {
+      "id": "venice_dawn_vr",
+      "title": "Venice at Dawn — Canals and Light",
+      "logline": "Morning light on Venetian water. Stone arches, gondola reflections, amber rising over the Adriatic.",
+      "palette": "golden_hour",
+      "sound": "ambient_water",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "Venice is sinking at 2mm per year.\nAnd yet, 400 years of masters painted nothing but light on water.",
+          "durationMs": 7000
+        },
+        {
+          "trigger": "step_1",
+          "text": "Venetian glass was so valuable, glassblowers were confined to Murano island.\nTo stop the secrets leaking out.\nBeauty has always been guarded.",
+          "durationMs": 8000
+        },
+        {
+          "trigger": "step_2",
+          "text": "'Canaletto painted Venice so precisely,\nscholars used his art to date floods in the historical record.\nArt as scientific data.",
+          "durationMs": 8000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#fed7aa"
+        },
+        "fog": {
+          "color": "#fde68a",
+          "density": 0.012
+        }
+      },
+      "layers": [
+        {
+          "id": "canal_water",
+          "label": "Venice canal water surface",
+          "type": "plane",
+          "w": 80,
+          "h": 120,
+          "position": [
+            0,
+            -1.5,
+            -15
+          ],
+          "rotation": [
+            -90,
+            0,
+            0
+          ],
+          "material": {
+            "color": "#1e3a5f",
+            "roughness": 0.05,
+            "metalness": 0.8,
+            "opacity": 0.85,
+            "transparent": true
+          }
+        },
+        {
+          "id": "stone_columns",
+          "label": "Venetian stone pillars — 14 cylinders",
+          "count": 14,
+          "spread": {
+            "x": "-18 18",
+            "z": "-25 -2"
+          },
+          "element": {
+            "type": "cylinder",
+            "r_range": "0.3 0.6",
+            "h_range": "4 7",
+            "y_offset": "half_height",
+            "material": {
+              "color": "#c4a882",
+              "roughness": 1
+            }
+          }
+        },
+        {
+          "id": "arched_walls",
+          "label": "Building facades — 8 boxes",
+          "count": 8,
+          "spread": {
+            "x": "-20 20",
+            "z": "-28 -8"
+          },
+          "element": {
+            "type": "box",
+            "w": 5,
+            "h": 8,
+            "d": 1,
+            "y_offset": 4,
+            "material": {
+              "color": "#d4a96a",
+              "roughness": 1
+            }
+          }
+        },
+        {
+          "id": "gondola_hull",
+          "label": "Gondola resting on water",
+          "type": "box",
+          "position": [
+            3,
+            -1.2,
+            -5
+          ],
+          "rotation": [
+            0,
+            15,
+            0
+          ],
+          "w": 0.8,
+          "h": 0.4,
+          "d": 4,
+          "material": {
+            "color": "#111111",
+            "roughness": 0.8
+          }
+        },
+        {
+          "id": "dawn_glow",
+          "label": "Morning light reflections — 30 shimmers",
+          "count": 30,
+          "spread": {
+            "x": "-12 12",
+            "z": "-20 -2"
+          },
+          "element": {
+            "type": "sphere",
+            "r_range": "0.08 0.2",
+            "y_offset": -1.4,
+            "material": {
+              "color": "#fbbf24",
+              "emissive": "#f59e0b",
+              "emissiveIntensity": 1.8,
+              "opacity": 0.6,
+              "transparent": true
+            }
+          }
+        },
+        {
+          "id": "mooring_poles",
+          "label": "Gondola mooring poles — 8 striped poles",
+          "count": 8,
+          "spread": {
+            "x": "-8 8",
+            "z": "-12 -1"
+          },
+          "element": {
+            "type": "cylinder",
+            "r_range": "0.08 0.1",
+            "h_range": "2.5 3.5",
+            "y_offset": 0.5,
+            "material": {
+              "color": "#cc0000",
+              "roughness": 0.8
+            }
+          }
+        }
+      ]
+    },
+    "urban_street_vr": {
+      "id": "urban_street_vr",
+      "title": "Urban Street — City Grid",
+      "logline": "Wet asphalt, steel and glass. The grid of modern civilization mapped in concrete and neon.",
+      "palette": "simulation",
+      "sound": "ambient_city",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "Every street is a decision made by someone a century ago.\nYou walk through other people's choices every day.",
+          "durationMs": 7000
+        },
+        {
+          "trigger": "step_1",
+          "text": "The Romans built straight roads because straight armies march faster.\nAnd we still drive the same roads, 2000 years later.",
+          "durationMs": 8000
+        },
+        {
+          "trigger": "step_2",
+          "text": "53 million surveillance cameras watch China's streets.\nIn a city of 10 million, that's 5 cameras per person.\nThe city always sees back.",
+          "durationMs": 8000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#1a1a2e"
+        },
+        "fog": {
+          "color": "#1a1a2e",
+          "density": 0.018
+        }
+      },
+      "layers": [
+        {
+          "id": "street_floor",
+          "label": "Wet asphalt street",
+          "type": "plane",
+          "w": 100,
+          "h": 80,
+          "position": [
+            0,
+            0,
+            -15
+          ],
+          "rotation": [
+            -90,
+            0,
+            0
+          ],
+          "material": {
+            "color": "#1a1a1a",
+            "roughness": 0.4,
+            "metalness": 0.3
+          }
+        },
+        {
+          "id": "left_buildings",
+          "label": "Left side building facades — 6 towers",
+          "count": 6,
+          "spread": {
+            "x": "-22 -18",
+            "z": "-40 -2"
+          },
+          "element": {
+            "type": "box",
+            "w": 6,
+            "h": 20,
+            "d": 8,
+            "y_offset": 10,
+            "material": {
+              "color": "#2d3748",
+              "roughness": 1
+            }
+          }
+        },
+        {
+          "id": "right_buildings",
+          "label": "Right side building facades — 6 towers",
+          "count": 6,
+          "spread": {
+            "x": "18 22",
+            "z": "-40 -2"
+          },
+          "element": {
+            "type": "box",
+            "w": 6,
+            "h": 20,
+            "d": 8,
+            "y_offset": 10,
+            "material": {
+              "color": "#2d3748",
+              "roughness": 1
+            }
+          }
+        },
+        {
+          "id": "street_lamps",
+          "label": "Street lamp poles — 8 lamps",
+          "count": 8,
+          "spread": {
+            "x": "-15 15",
+            "z": "-30 -5"
+          },
+          "element": {
+            "type": "cylinder",
+            "r_range": "0.06 0.06",
+            "h_range": "5 5",
+            "y_offset": 2.5,
+            "material": {
+              "color": "#4a5568"
+            }
+          }
+        },
+        {
+          "id": "lamp_heads",
+          "label": "Lamp heads — 8 glowing spheres",
+          "count": 8,
+          "spread": {
+            "x": "-15 15",
+            "z": "-30 -5"
+          },
+          "element": {
+            "type": "sphere",
+            "r_range": "0.15 0.18",
+            "y_offset": 5.1,
+            "material": {
+              "color": "#fffde0",
+              "emissive": "#fef9c3",
+              "emissiveIntensity": 2
+            }
+          }
+        },
+        {
+          "id": "neon_signs",
+          "label": "Neon sign boxes — 12 building signs",
+          "count": 12,
+          "spread": {
+            "x": "-20 20",
+            "z": "-35 -5",
+            "y": "4 12"
+          },
+          "element": {
+            "type": "box",
+            "w": 2,
+            "h": 0.5,
+            "d": 0.2,
+            "y_offset": 0,
+            "material": {
+              "color": "#7c3aed",
+              "emissive": "#6d28d9",
+              "emissiveIntensity": 2.5
+            },
+            "animation": "pulse_opacity",
+            "animDelayFn": "random_0_7000"
+          }
+        },
+        {
+          "id": "wet_reflections",
+          "label": "Wet street reflections — 40 puddle glow spots",
+          "count": 40,
+          "spread": {
+            "x": "-10 10",
+            "z": "-25 -1"
+          },
+          "element": {
+            "type": "sphere",
+            "r_range": "0.05 0.15",
+            "y_offset": 0.02,
+            "material": {
+              "color": "#7c3aed",
+              "emissive": "#4c1d95",
+              "emissiveIntensity": 1,
+              "opacity": 0.4,
+              "transparent": true
+            }
+          }
+        }
+      ]
+    },
+    "rooftop_cityscape": {
+      "id": "rooftop_cityscape",
+      "title": "Rooftop — City at Night",
+      "logline": "Standing above the city. Skyscrapers pierce cloud, a million windows lit below you.",
+      "palette": "deep_space",
+      "sound": "ambient_wind",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "Cities contain multitudes.\nEvery lit window is a life in progress.",
+          "durationMs": 6000
+        },
+        {
+          "trigger": "step_1",
+          "text": "The Empire State Building receives 3.5 million visitors a year.\nBut 11,000 people live within sight of it who have never been up.",
+          "durationMs": 8000
+        },
+        {
+          "trigger": "step_2",
+          "text": "From 400m up, you can see 50km of city.\nYou cannot see a single face.\nScale changes everything.",
+          "durationMs": 7000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#090914"
+        },
+        "fog": {
+          "color": "#0f0f1a",
+          "density": 0.008
+        }
+      },
+      "layers": [
+        {
+          "id": "rooftop_floor",
+          "label": "Rooftop concrete surface",
+          "type": "plane",
+          "w": 30,
+          "h": 30,
+          "position": [
+            0,
+            0,
+            -2
+          ],
+          "rotation": [
+            -90,
+            0,
+            0
+          ],
+          "material": {
+            "color": "#374151",
+            "roughness": 1
+          }
+        },
+        {
+          "id": "distant_towers",
+          "label": "City skyscrapers — 18 towers",
+          "count": 18,
+          "spread": {
+            "x": "-50 50",
+            "z": "-80 -30"
+          },
+          "element": {
+            "type": "box",
+            "w": 8,
+            "h": 40,
+            "d": 8,
+            "y_offset": 20,
+            "material": {
+              "color": "#1f2937",
+              "roughness": 1
+            }
+          }
+        },
+        {
+          "id": "tower_windows",
+          "label": "Lit office windows — 120 tiny squares",
+          "count": 120,
+          "spread": {
+            "x": "-45 45",
+            "z": "-75 -32",
+            "y": "2 38"
+          },
+          "element": {
+            "type": "box",
+            "w": 0.8,
+            "h": 0.5,
+            "d": 0.1,
+            "y_offset": 0,
+            "material": {
+              "color": "#fef3c7",
+              "emissive": "#fbbf24",
+              "emissiveIntensity": 1.5
+            },
+            "animDelayFn": "random_0_7000",
+            "animation": "pulse_opacity"
+          }
+        },
+        {
+          "id": "antenna_mast",
+          "label": "Rooftop antenna mast",
+          "type": "cylinder",
+          "position": [
+            5,
+            0,
+            -4
+          ],
+          "r": 0.1,
+          "h": 8,
+          "material": {
+            "color": "#9ca3af"
+          }
+        },
+        {
+          "id": "hvac_units",
+          "label": "HVAC units — 4 boxes",
+          "count": 4,
+          "spread": {
+            "x": "-6 6",
+            "z": "-8 -4"
+          },
+          "element": {
+            "type": "box",
+            "w": 2,
+            "h": 1.5,
+            "d": 1.5,
+            "y_offset": 0.75,
+            "material": {
+              "color": "#4b5563",
+              "roughness": 1
+            }
+          }
+        },
+        {
+          "id": "ground_glow",
+          "label": "City ambient glow from below — 60 micro lights",
+          "count": 60,
+          "spread": {
+            "x": "-40 40",
+            "z": "-60 -20",
+            "y": "0 15"
+          },
+          "element": {
+            "type": "sphere",
+            "r_range": "0.03 0.1",
+            "y_offset": 0,
+            "material": {
+              "color": "#f59e0b",
+              "emissive": "#d97706",
+              "emissiveIntensity": 0.8,
+              "opacity": 0.5,
+              "transparent": true
+            }
+          }
+        }
+      ]
+    },
+    "snowy_forest_vr": {
+      "id": "snowy_forest_vr",
+      "title": "Snowy Forest — Winter Silence",
+      "logline": "Snow-laden pine branches. The deep quiet of a forest after heavy snowfall. Every sound muffled.",
+      "palette": "arctic",
+      "sound": "ambient_wind",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "Fresh snow absorbs sound at 60%.\nThe silence you feel in a winter forest is physics, not mood.",
+          "durationMs": 7000
+        },
+        {
+          "trigger": "step_1",
+          "text": "A single mature pine tree drops 40kg of snow from its branches each winter.\nNature resets by letting things fall.",
+          "durationMs": 7000
+        },
+        {
+          "trigger": "step_2",
+          "text": "Trees communicate through mycorrhizal networks under the snow.\nA mother tree shares sugar with seedlings all winter.\nThe forest never abandons its young.",
+          "durationMs": 8000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#e2e8f0"
+        },
+        "fog": {
+          "color": "#cbd5e1",
+          "density": 0.02
+        }
+      },
+      "layers": [
+        {
+          "id": "snow_floor",
+          "label": "Snow-covered forest floor",
+          "type": "plane",
+          "w": 120,
+          "h": 120,
+          "position": [
+            0,
+            0,
+            -15
+          ],
+          "rotation": [
+            -90,
+            0,
+            0
+          ],
+          "material": {
+            "color": "#f1f5f9",
+            "roughness": 1
+          }
+        },
+        {
+          "id": "pine_trunks",
+          "label": "Pine tree trunks — 40 cylinders",
+          "count": 40,
+          "spread": {
+            "x": "-30 30",
+            "z": "-35 2"
+          },
+          "element": {
+            "type": "cylinder",
+            "r_range": "0.2 0.5",
+            "h_range": "8 18",
+            "y_offset": "half_height",
+            "material": {
+              "color": "#3d2b1f",
+              "roughness": 1
+            }
+          }
+        },
+        {
+          "id": "snow_canopy",
+          "label": "Snow-laden pine crowns — 40 spheres",
+          "count": 40,
+          "spread": {
+            "x": "-30 30",
+            "z": "-35 2",
+            "y": "8 16"
+          },
+          "element": {
+            "type": "sphere",
+            "r_range": "1.5 3.5",
+            "material": {
+              "color": "#e2e8f0",
+              "roughness": 1
+            }
+          }
+        },
+        {
+          "id": "snowflakes",
+          "label": "Falling snowflakes — 120 tiny spheres",
+          "count": 120,
+          "spread": {
+            "x": "-20 20",
+            "z": "-20 5",
+            "y": "2 10"
+          },
+          "element": {
+            "type": "sphere",
+            "r_range": "0.02 0.06",
+            "material": {
+              "color": "#ffffff",
+              "opacity": 0.85,
+              "transparent": true
+            },
+            "animation": "drift_down_slow",
+            "animDelayFn": "random_0_7000"
+          }
+        },
+        {
+          "id": "snow_mounds",
+          "label": "Snow mounds on ground — 20 small spheres",
+          "count": 20,
+          "spread": {
+            "x": "-15 15",
+            "z": "-18 2"
+          },
+          "element": {
+            "type": "sphere",
+            "r_range": "0.3 0.9",
+            "y_offset": -0.2,
+            "material": {
+              "color": "#f8fafc",
+              "roughness": 1
+            }
+          }
+        }
+      ]
+    },
+    "safari_sunset_vr": {
+      "id": "safari_sunset_vr",
+      "title": "Safari Sunset — African Savanna",
+      "logline": "Golden hour on the savanna. Acacia silhouettes against fire-orange sky. The Serengeti at dusk.",
+      "palette": "golden_hour",
+      "sound": "ambient_wind",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "The Serengeti hosts the largest land migration on Earth.\n1.5 million wildebeest crossing 800km driven by ancient instinct.",
+          "durationMs": 7000
+        },
+        {
+          "trigger": "step_1",
+          "text": "Acacia trees communicate via airborne chemicals.\nWhen one is grazed, it releases tannins — and signals neighbours to do the same.\nPlants invented chemical warfare first.",
+          "durationMs": 8000
+        },
+        {
+          "trigger": "step_2",
+          "text": "The Maasai measure wealth in cattle and children, not money.\nThey have lived on this land for 1000 years without diminishing it.",
+          "durationMs": 7000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#f97316"
+        },
+        "fog": {
+          "color": "#fbbf24",
+          "density": 0.008
+        }
+      },
+      "layers": [
+        {
+          "id": "savanna_floor",
+          "label": "Dry savanna grassland",
+          "type": "plane",
+          "w": 200,
+          "h": 200,
+          "position": [
+            0,
+            0,
+            -30
+          ],
+          "rotation": [
+            -90,
+            0,
+            0
+          ],
+          "material": {
+            "color": "#b45309",
+            "roughness": 1
+          }
+        },
+        {
+          "id": "grass_tufts",
+          "label": "Dry grass tufts — 80 cylinders",
+          "count": 80,
+          "spread": {
+            "x": "-30 30",
+            "z": "-30 5"
+          },
+          "element": {
+            "type": "cylinder",
+            "r_range": "0.08 0.2",
+            "h_range": "0.4 0.9",
+            "y_offset": "half_height",
+            "material": {
+              "color": "#ca8a04",
+              "roughness": 1
+            }
+          }
+        },
+        {
+          "id": "acacia_trunks",
+          "label": "Acacia tree trunks — 8 trunks",
+          "count": 8,
+          "spread": {
+            "x": "-35 35",
+            "z": "-40 -5"
+          },
+          "element": {
+            "type": "cylinder",
+            "r_range": "0.3 0.6",
+            "h_range": "5 10",
+            "y_offset": "half_height",
+            "material": {
+              "color": "#92400e",
+              "roughness": 1
+            }
+          }
+        },
+        {
+          "id": "acacia_canopy",
+          "label": "Acacia flat-top canopies — 8 flat spheres",
+          "count": 8,
+          "spread": {
+            "x": "-35 35",
+            "z": "-40 -5",
+            "y": "8 12"
+          },
+          "element": {
+            "type": "sphere",
+            "r_range": "3.5 6",
+            "material": {
+              "color": "#365314",
+              "opacity": 0.9,
+              "transparent": true
+            }
+          }
+        },
+        {
+          "id": "sunset_glow_spots",
+          "label": "Sunset ground glow — 20 warm light circles",
+          "count": 20,
+          "spread": {
+            "x": "-18 18",
+            "z": "-18 2"
+          },
+          "element": {
+            "type": "sphere",
+            "r_range": "0.1 0.3",
+            "y_offset": 0.05,
+            "material": {
+              "color": "#fbbf24",
+              "emissive": "#f59e0b",
+              "emissiveIntensity": 1.2,
+              "opacity": 0.5,
+              "transparent": true
+            }
+          }
+        }
+      ]
+    },
+    "stone_alley_vr": {
+      "id": "stone_alley_vr",
+      "title": "Stone Alley — Ancient Urban Passage",
+      "logline": "A narrow alley between old stone walls. Worn cobblestones, iron lanterns, centuries of footsteps.",
+      "palette": "merkaba",
+      "sound": "ambient_night",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "The narrowest alley in the world is in Vienna: 52cm wide.\nAll of history, compressed.",
+          "durationMs": 7000
+        },
+        {
+          "trigger": "step_1",
+          "text": "Medieval cities were built narrow on purpose.\nShade in summer. Shelter from wind. Fewer surfaces to heat.\nOld cities were climate-adapted before the word existed.",
+          "durationMs": 8000
+        },
+        {
+          "trigger": "step_2",
+          "text": "Every cobblestone was laid by hand.\nSome of these roads have been walked for 800 years.\nYou walk on the work of the forgotten.",
+          "durationMs": 7000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#1a0a2e"
+        },
+        "fog": {
+          "color": "#1a0a2e",
+          "density": 0.04
+        }
+      },
+      "layers": [
+        {
+          "id": "cobblestone_floor",
+          "label": "Cobblestone alley floor",
+          "type": "plane",
+          "w": 6,
+          "h": 50,
+          "position": [
+            0,
+            0,
+            -15
+          ],
+          "rotation": [
+            -90,
+            0,
+            0
+          ],
+          "material": {
+            "color": "#44403c",
+            "roughness": 1
+          }
+        },
+        {
+          "id": "left_wall",
+          "label": "Left stone wall",
+          "type": "box",
+          "position": [
+            -3.5,
+            4,
+            -15
+          ],
+          "w": 1,
+          "h": 8,
+          "d": 50,
+          "material": {
+            "color": "#57534e",
+            "roughness": 1
+          }
+        },
+        {
+          "id": "right_wall",
+          "label": "Right stone wall",
+          "type": "box",
+          "position": [
+            3.5,
+            4,
+            -15
+          ],
+          "w": 1,
+          "h": 8,
+          "d": 50,
+          "material": {
+            "color": "#57534e",
+            "roughness": 1
+          }
+        },
+        {
+          "id": "lanterns",
+          "label": "Iron wall lanterns — 8 glowing orbs",
+          "count": 8,
+          "spread": {
+            "x": "-3.2 3.2",
+            "z": "-25 -2"
+          },
+          "element": {
+            "type": "sphere",
+            "r_range": "0.12 0.15",
+            "y_offset": 3.5,
+            "material": {
+              "color": "#fef3c7",
+              "emissive": "#fbbf24",
+              "emissiveIntensity": 2.5
+            },
+            "animDelayFn": "random_0_5000",
+            "animation": "pulse_opacity"
+          }
+        },
+        {
+          "id": "stone_blocks",
+          "label": "Loose stone blocks — 15 boxes",
+          "count": 15,
+          "spread": {
+            "x": "-2.5 2.5",
+            "z": "-20 -1"
+          },
+          "element": {
+            "type": "box",
+            "w": 0.4,
+            "h": 0.3,
+            "d": 0.5,
+            "y_offset": 0.15,
+            "material": {
+              "color": "#78716c",
+              "roughness": 1
+            }
+          }
+        }
+      ]
+    },
+    "moon_laboratory": {
+      "id": "moon_laboratory",
+      "title": "Moon Laboratory — Lunar Research Station",
+      "logline": "A research habitat on the lunar surface. Science at the edge of everything. Earth hangs silent above.",
+      "palette": "orbital",
+      "sound": "ambient_night",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "The Moon has no atmosphere.\nEvery sunrise and sunset happens in complete silence.\nThe sky goes from black to black in seconds.",
+          "durationMs": 7000
+        },
+        {
+          "trigger": "step_1",
+          "text": "NASA's Artemis program will put humans back on the Moon by 2026.\nThis time to stay.\nThe first lunar base will be built from moon dust, using 3D printing.",
+          "durationMs": 8000
+        },
+        {
+          "trigger": "step_2",
+          "text": "Lunar regolith is razor-sharp.\nApollo astronauts found it cut through suit material in hours.\nThe Moon tries to kill you at the microscopic level.",
+          "durationMs": 8000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#030712"
+        },
+        "fog": {
+          "color": "#030712",
+          "density": 0.003
+        }
+      },
+      "layers": [
+        {
+          "id": "lunar_surface",
+          "label": "Grey lunar regolith floor",
+          "type": "plane",
+          "w": 200,
+          "h": 200,
+          "position": [
+            0,
+            0,
+            -20
+          ],
+          "rotation": [
+            -90,
+            0,
+            0
+          ],
+          "material": {
+            "color": "#9ca3af",
+            "roughness": 1
+          }
+        },
+        {
+          "id": "habitat_module",
+          "label": "Main habitat cylinder",
+          "type": "cylinder",
+          "position": [
+            0,
+            2.5,
+            -12
+          ],
+          "r": 3.5,
+          "h": 5,
+          "material": {
+            "color": "#e5e7eb",
+            "roughness": 0.3,
+            "metalness": 0.7
+          }
+        },
+        {
+          "id": "solar_panels",
+          "label": "Solar array panels — 6 flat boxes",
+          "count": 6,
+          "spread": {
+            "x": "-12 12",
+            "z": "-8 -6"
+          },
+          "element": {
+            "type": "box",
+            "w": 4,
+            "h": 0.08,
+            "d": 2,
+            "y_offset": 3,
+            "material": {
+              "color": "#1e3a8a",
+              "metalness": 0.6
+            }
+          }
+        },
+        {
+          "id": "equipment_racks",
+          "label": "Lab equipment racks — 8 boxes",
+          "count": 8,
+          "spread": {
+            "x": "-5 5",
+            "z": "-6 0"
+          },
+          "element": {
+            "type": "box",
+            "w": 0.8,
+            "h": 1.8,
+            "d": 0.5,
+            "y_offset": 0.9,
+            "material": {
+              "color": "#374151",
+              "roughness": 0.5,
+              "metalness": 0.5
+            }
+          }
+        },
+        {
+          "id": "moon_craters",
+          "label": "Small lunar craters — 12 hollow rings",
+          "count": 12,
+          "spread": {
+            "x": "-30 30",
+            "z": "-40 -15"
+          },
+          "element": {
+            "type": "sphere",
+            "r_range": "1 4",
+            "y_offset": -0.8,
+            "material": {
+              "color": "#6b7280",
+              "roughness": 1,
+              "opacity": 0.6,
+              "transparent": true
+            }
+          }
+        },
+        {
+          "id": "status_lights",
+          "label": "Module status indicator lights — 16 tiny glows",
+          "count": 16,
+          "spread": {
+            "x": "-3 3",
+            "z": "-9 0",
+            "y": "0.5 4"
+          },
+          "element": {
+            "type": "sphere",
+            "r_range": "0.06 0.08",
+            "y_offset": 0,
+            "material": {
+              "color": "#22c55e",
+              "emissive": "#16a34a",
+              "emissiveIntensity": 3
+            },
+            "animation": "pulse_opacity",
+            "animDelayFn": "random_0_5000"
+          }
+        }
+      ]
+    },
+    "autumn_meadow_vr": {
+      "id": "autumn_meadow_vr",
+      "title": "Autumn Meadow — Golden October",
+      "logline": "Amber grasses, rusted oaks, afternoon sun at low angle. The year's most beautiful ending.",
+      "palette": "golden_hour",
+      "sound": "ambient_wind",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "Leaves don't turn colour — they reveal it.\nGreen chlorophyll fades, uncovering the oranges and yellows that were always there.",
+          "durationMs": 7000
+        },
+        {
+          "trigger": "step_1",
+          "text": "A single oak can drop 700,000 acorns in a good mast year.\nOnly 1 in 10,000 becomes a tree.\nNature bets enormous to win small.",
+          "durationMs": 8000
+        },
+        {
+          "trigger": "step_2",
+          "text": "Autumn smells of decay — but decay is just transformation.\nWhat the meadow sheds becomes what the meadow feeds on next spring.",
+          "durationMs": 7000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#b45309"
+        },
+        "fog": {
+          "color": "#d97706",
+          "density": 0.01
+        }
+      },
+      "layers": [
+        {
+          "id": "meadow_floor",
+          "label": "Autumn meadow ground",
+          "type": "plane",
+          "w": 150,
+          "h": 150,
+          "position": [
+            0,
+            0,
+            -20
+          ],
+          "rotation": [
+            -90,
+            0,
+            0
+          ],
+          "material": {
+            "color": "#92400e",
+            "roughness": 1
+          }
+        },
+        {
+          "id": "golden_grass",
+          "label": "Amber grass tufts — 100 cylinders",
+          "count": 100,
+          "spread": {
+            "x": "-30 30",
+            "z": "-30 5"
+          },
+          "element": {
+            "type": "cylinder",
+            "r_range": "0.05 0.15",
+            "h_range": "0.5 1.2",
+            "y_offset": "half_height",
+            "material": {
+              "color": "#ca8a04",
+              "roughness": 1
+            }
+          }
+        },
+        {
+          "id": "oak_trunks",
+          "label": "Oak tree trunks — 10 cylinders",
+          "count": 10,
+          "spread": {
+            "x": "-28 28",
+            "z": "-35 -5"
+          },
+          "element": {
+            "type": "cylinder",
+            "r_range": "0.4 0.9",
+            "h_range": "6 12",
+            "y_offset": "half_height",
+            "material": {
+              "color": "#7c2d12",
+              "roughness": 1
+            }
+          }
+        },
+        {
+          "id": "autumn_canopy",
+          "label": "Autumn leaf crowns — 10 spheres",
+          "count": 10,
+          "spread": {
+            "x": "-28 28",
+            "z": "-35 -5",
+            "y": "7 13"
+          },
+          "element": {
+            "type": "sphere",
+            "r_range": "3 6",
+            "material": {
+              "color": "#d97706",
+              "opacity": 0.9,
+              "transparent": true
+            }
+          }
+        },
+        {
+          "id": "fallen_leaves",
+          "label": "Fallen leaves on ground — 60 tiny boxes",
+          "count": 60,
+          "spread": {
+            "x": "-15 15",
+            "z": "-18 3"
+          },
+          "element": {
+            "type": "box",
+            "w": 0.2,
+            "h": 0.02,
+            "d": 0.15,
+            "y_offset": 0.01,
+            "material": {
+              "color": "#b45309",
+              "roughness": 1
+            }
+          }
+        },
+        {
+          "id": "fence_posts",
+          "label": "Old wooden fence posts — 12 cylinders",
+          "count": 12,
+          "spread": {
+            "x": "-20 20",
+            "z": "-5 -3"
+          },
+          "element": {
+            "type": "cylinder",
+            "r_range": "0.08 0.12",
+            "h_range": "1.2 1.5",
+            "y_offset": "half_height",
+            "material": {
+              "color": "#5c3d1e",
+              "roughness": 1
+            }
+          }
+        }
+      ]
+    },
+    "waterfall_valley_vr": {
+      "id": "waterfall_valley_vr",
+      "title": "Waterfall Valley — Lauter Falls",
+      "logline": "A valley carved by water over millennia. The constant percussion of a 20-metre waterfall.",
+      "palette": "forest",
+      "sound": "ambient_water",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "Water dissolves rock at 1mm per thousand years.\nThis valley is the sum of a billion patient moments.",
+          "durationMs": 7000
+        },
+        {
+          "trigger": "step_1",
+          "text": "The roar of a large waterfall is caused by air, not water.\nMicrobubbles of air imploding in the plunge pool create the sound.\nNature makes noise by crushing the invisible.",
+          "durationMs": 8000
+        },
+        {
+          "trigger": "step_2",
+          "text": "Waterfalls produce negative ions.\nStudies show 20 minutes near one reduces cortisol by 12%.\nBeauty heals. This has been measurable for a century. We only just started studying it.",
+          "durationMs": 8000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#064e3b"
+        },
+        "fog": {
+          "color": "#065f46",
+          "density": 0.025
+        }
+      },
+      "layers": [
+        {
+          "id": "valley_floor",
+          "label": "Valley floor — wet rocks and soil",
+          "type": "plane",
+          "w": 100,
+          "h": 80,
+          "position": [
+            0,
+            0,
+            -15
+          ],
+          "rotation": [
+            -90,
+            0,
+            0
+          ],
+          "material": {
+            "color": "#1c1917",
+            "roughness": 1
+          }
+        },
+        {
+          "id": "waterfall_column",
+          "label": "Main waterfall cascade",
+          "type": "box",
+          "position": [
+            0,
+            10,
+            -25
+          ],
+          "w": 4,
+          "h": 20,
+          "d": 0.8,
+          "material": {
+            "color": "#bfdbfe",
+            "opacity": 0.75,
+            "transparent": true
+          }
+        },
+        {
+          "id": "plunge_pool",
+          "label": "Waterfall plunge pool surface",
+          "type": "plane",
+          "w": 10,
+          "h": 8,
+          "position": [
+            0,
+            0.1,
+            -22
+          ],
+          "rotation": [
+            -90,
+            0,
+            0
+          ],
+          "material": {
+            "color": "#1d4ed8",
+            "roughness": 0.1,
+            "metalness": 0.5,
+            "opacity": 0.9,
+            "transparent": true
+          }
+        },
+        {
+          "id": "cliff_walls",
+          "label": "Valley cliff walls — 6 large boxes",
+          "count": 6,
+          "spread": {
+            "x": "-30 30",
+            "z": "-35 -5"
+          },
+          "element": {
+            "type": "box",
+            "w": 10,
+            "h": 30,
+            "d": 5,
+            "y_offset": 15,
+            "material": {
+              "color": "#292524",
+              "roughness": 1
+            }
+          }
+        },
+        {
+          "id": "valley_trees",
+          "label": "Valley trees — 25 cylinders + canopies",
+          "count": 25,
+          "spread": {
+            "x": "-22 22",
+            "z": "-30 -3"
+          },
+          "element": {
+            "type": "cylinder",
+            "r_range": "0.3 0.7",
+            "h_range": "7 16",
+            "y_offset": "half_height",
+            "material": {
+              "color": "#431407",
+              "roughness": 1
+            }
+          }
+        },
+        {
+          "id": "mist_spray",
+          "label": "Waterfall mist — 60 translucent spheres",
+          "count": 60,
+          "spread": {
+            "x": "-5 5",
+            "z": "-25 -15",
+            "y": "0 8"
+          },
+          "element": {
+            "type": "sphere",
+            "r_range": "0.2 0.8",
+            "material": {
+              "color": "#e0f2fe",
+              "opacity": 0.15,
+              "transparent": true
+            },
+            "animation": "drift_up_slow",
+            "animDelayFn": "random_0_5000"
+          }
+        }
+      ]
+    },
+    "neon_tunnel_vr": {
+      "id": "neon_tunnel_vr",
+      "title": "Neon Mosaic Tunnel — Light Art Passage",
+      "logline": "A pedestrian tunnel tiled floor to ceiling in Byzantine mosaic. Every surface glows in coloured light.",
+      "palette": "simulation",
+      "sound": "ambient_city",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "Byzantine mosaic artists placed tiles at slight angles.\nTo catch light differently throughout the day.\nThey designed time into art in the 5th century.",
+          "durationMs": 7000
+        },
+        {
+          "trigger": "step_1",
+          "text": "The Leadenhall tunnel in London has mosaic from 1881.\nIt survived two world wars, the Blitz, and the financial crisis.\nBeauty outlasts everything.",
+          "durationMs": 7000
+        },
+        {
+          "trigger": "step_2",
+          "text": "Light art installations reduce anxiety in transit spaces by 34%.\nCommuters who pass through lit art tunnels report higher daily wellbeing.\nArt is infrastructure.",
+          "durationMs": 8000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#0f0a1e"
+        },
+        "fog": {
+          "color": "#1a0a2e",
+          "density": 0.04
+        }
+      },
+      "layers": [
+        {
+          "id": "tunnel_floor",
+          "label": "Mosaic tunnel floor",
+          "type": "plane",
+          "w": 5,
+          "h": 60,
+          "position": [
+            0,
+            0,
+            -20
+          ],
+          "rotation": [
+            -90,
+            0,
+            0
+          ],
+          "material": {
+            "color": "#312e81",
+            "roughness": 0.6
+          }
+        },
+        {
+          "id": "tunnel_left_wall",
+          "label": "Left tunnel wall",
+          "type": "box",
+          "position": [
+            -3,
+            3,
+            -20
+          ],
+          "w": 0.5,
+          "h": 6,
+          "d": 60,
+          "material": {
+            "color": "#4338ca",
+            "roughness": 0.8
+          }
+        },
+        {
+          "id": "tunnel_right_wall",
+          "label": "Right tunnel wall",
+          "type": "box",
+          "position": [
+            3,
+            3,
+            -20
+          ],
+          "w": 0.5,
+          "h": 6,
+          "d": 60,
+          "material": {
+            "color": "#4338ca",
+            "roughness": 0.8
+          }
+        },
+        {
+          "id": "tunnel_ceiling",
+          "label": "Tunnel ceiling",
+          "type": "box",
+          "position": [
+            0,
+            6.2,
+            -20
+          ],
+          "w": 6,
+          "h": 0.5,
+          "d": 60,
+          "material": {
+            "color": "#3730a3",
+            "roughness": 0.8
+          }
+        },
+        {
+          "id": "mosaic_tiles",
+          "label": "Glowing mosaic tiles — 200 tiny boxes",
+          "count": 200,
+          "spread": {
+            "x": "-2.7 2.7",
+            "z": "-38 -2",
+            "y": "0.2 5.8"
+          },
+          "element": {
+            "type": "box",
+            "w": 0.18,
+            "h": 0.18,
+            "d": 0.05,
+            "y_offset": 0,
+            "material": {
+              "color": "#818cf8",
+              "emissive": "#6366f1",
+              "emissiveIntensity": 1.8
+            },
+            "animDelayFn": "random_0_7000",
+            "animation": "pulse_opacity"
+          }
+        },
+        {
+          "id": "tunnel_lamps",
+          "label": "Overhead strip lights — 10 long boxes",
+          "count": 10,
+          "spread": {
+            "x": "0 0",
+            "z": "-36 -2"
+          },
+          "element": {
+            "type": "box",
+            "w": 0.2,
+            "h": 0.1,
+            "d": 2,
+            "y_offset": 5.8,
+            "material": {
+              "color": "#ede9fe",
+              "emissive": "#c4b5fd",
+              "emissiveIntensity": 3
+            }
+          }
+        }
+      ]
+    },
+    "victorian_market": {
+      "id": "victorian_market",
+      "title": "Leadenhall Market — Victorian Glass Hall",
+      "logline": "An ornate 1881 covered market in the City of London. Iron pillars, painted arches, cobblestones under a glass roof.",
+      "palette": "merkaba",
+      "sound": "ambient_city",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "Leadenhall Market was built in 1881 on the site of the Roman forum of Londinium.\nEvery market stall stands on 2000 years of commerce.",
+          "durationMs": 7000
+        },
+        {
+          "trigger": "step_1",
+          "text": "The market appeared in Harry Potter as Diagon Alley.\nMillions recognise it as magical.\nIt was always magical — it just needed a story.",
+          "durationMs": 7000
+        },
+        {
+          "trigger": "step_2",
+          "text": "Markets predate money by 3000 years.\nBarter was the original protocol.\nThe impulse to exchange is older than language.",
+          "durationMs": 7000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#1a1035"
+        },
+        "fog": {
+          "color": "#1a1035",
+          "density": 0.02
+        }
+      },
+      "layers": [
+        {
+          "id": "market_floor",
+          "label": "Victorian cobblestone market floor",
+          "type": "plane",
+          "w": 20,
+          "h": 60,
+          "position": [
+            0,
+            0,
+            -15
+          ],
+          "rotation": [
+            -90,
+            0,
+            0
+          ],
+          "material": {
+            "color": "#57534e",
+            "roughness": 1
+          }
+        },
+        {
+          "id": "iron_pillars",
+          "label": "Cast iron decorative pillars — 16 cylinders",
+          "count": 16,
+          "spread": {
+            "x": "-8 8",
+            "z": "-30 -1"
+          },
+          "element": {
+            "type": "cylinder",
+            "r_range": "0.3 0.4",
+            "h_range": "8 10",
+            "y_offset": "half_height",
+            "material": {
+              "color": "#7c2d12",
+              "metalness": 0.6,
+              "roughness": 0.5
+            }
+          }
+        },
+        {
+          "id": "market_stalls",
+          "label": "Market stall canopies — 10 coloured boxes",
+          "count": 10,
+          "spread": {
+            "x": "-6 6",
+            "z": "-25 -2"
+          },
+          "element": {
+            "type": "box",
+            "w": 3,
+            "h": 0.15,
+            "d": 2.5,
+            "y_offset": 2.5,
+            "material": {
+              "color": "#991b1b",
+              "roughness": 1
+            }
+          }
+        },
+        {
+          "id": "stall_structures",
+          "label": "Market stall frames — 10 boxes",
+          "count": 10,
+          "spread": {
+            "x": "-6 6",
+            "z": "-25 -2"
+          },
+          "element": {
+            "type": "box",
+            "w": 2.5,
+            "h": 2,
+            "d": 1.5,
+            "y_offset": 1,
+            "material": {
+              "color": "#78716c",
+              "roughness": 1
+            }
+          }
+        },
+        {
+          "id": "glass_roof",
+          "label": "Ornate glass roof panels — 8 translucent boxes",
+          "count": 8,
+          "spread": {
+            "x": "-5 5",
+            "z": "-28 -2"
+          },
+          "element": {
+            "type": "box",
+            "w": 18,
+            "h": 0.1,
+            "d": 4,
+            "y_offset": 9.5,
+            "material": {
+              "color": "#a5b4fc",
+              "opacity": 0.3,
+              "transparent": true
+            }
+          }
+        },
+        {
+          "id": "market_lanterns",
+          "label": "Victorian pendant lanterns — 12 spheres",
+          "count": 12,
+          "spread": {
+            "x": "-6 6",
+            "z": "-26 -2"
+          },
+          "element": {
+            "type": "sphere",
+            "r_range": "0.18 0.22",
+            "y_offset": 7,
+            "material": {
+              "color": "#fef9c3",
+              "emissive": "#fbbf24",
+              "emissiveIntensity": 2.5
+            }
+          }
+        }
+      ]
+    },
+    "red_hills_vr": {
+      "id": "red_hills_vr",
+      "title": "Red Hills — Karoo Landscape",
+      "logline": "Burning red hills of the South African Karoo. Ancient rock, sparse scrub, silence and scale.",
+      "palette": "desert_dawn",
+      "sound": "ambient_wind",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "The Karoo is 400 million years old.\nThe rocks beneath you contain fossils of the first reptiles that ever lived on land.",
+          "durationMs": 7000
+        },
+        {
+          "trigger": "step_1",
+          "text": "Karoo succulents can survive 18 months without rain.\nEvolution discovered immortality through patience.",
+          "durationMs": 7000
+        },
+        {
+          "trigger": "step_2",
+          "text": "At night, the Karoo has some of the darkest skies on Earth.\nThe Square Kilometre Array — humanity's largest telescope — was built here.\nWe come to the oldest places to look the farthest.",
+          "durationMs": 8000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#b45309"
+        },
+        "fog": {
+          "color": "#92400e",
+          "density": 0.006
+        }
+      },
+      "layers": [
+        {
+          "id": "red_earth",
+          "label": "Red Karoo earth floor",
+          "type": "plane",
+          "w": 250,
+          "h": 250,
+          "position": [
+            0,
+            0,
+            -30
+          ],
+          "rotation": [
+            -90,
+            0,
+            0
+          ],
+          "material": {
+            "color": "#b91c1c",
+            "roughness": 1
+          }
+        },
+        {
+          "id": "red_hills",
+          "label": "Red sandstone hills — 8 large half-spheres",
+          "count": 8,
+          "spread": {
+            "x": "-50 50",
+            "z": "-80 -25"
+          },
+          "element": {
+            "type": "sphere",
+            "r_range": "10 22",
+            "y_offset": -12,
+            "material": {
+              "color": "#991b1b",
+              "roughness": 1
+            }
+          }
+        },
+        {
+          "id": "foreground_rocks",
+          "label": "Foreground boulders — 12 spheres",
+          "count": 12,
+          "spread": {
+            "x": "-15 15",
+            "z": "-18 -2"
+          },
+          "element": {
+            "type": "sphere",
+            "r_range": "0.5 2",
+            "y_offset": -0.3,
+            "material": {
+              "color": "#7f1d1d",
+              "roughness": 1
+            }
+          }
+        },
+        {
+          "id": "scrub_bushes",
+          "label": "Karoo scrub bushes — 40 small spheres",
+          "count": 40,
+          "spread": {
+            "x": "-25 25",
+            "z": "-30 -2"
+          },
+          "element": {
+            "type": "sphere",
+            "r_range": "0.2 0.6",
+            "y_offset": 0.1,
+            "material": {
+              "color": "#65a30d",
+              "roughness": 1,
+              "opacity": 0.8,
+              "transparent": true
+            }
+          }
+        },
+        {
+          "id": "dust_haze",
+          "label": "Heat haze dust — 25 translucent spheres",
+          "count": 25,
+          "spread": {
+            "x": "-20 20",
+            "z": "-30 -5",
+            "y": "1 5"
+          },
+          "element": {
+            "type": "sphere",
+            "r_range": "1 3",
+            "material": {
+              "color": "#fbbf24",
+              "opacity": 0.06,
+              "transparent": true
+            }
+          }
+        }
+      ]
+    },
+    "ancient_ruins_vr": {
+      "id": "ancient_ruins_vr",
+      "title": "Ancient Ruins — Roofless Stone Hall",
+      "logline": "Roofless walls of a 2000-year-old stone hall. Open sky where the ceiling was. Time made visible.",
+      "palette": "roman_arena",
+      "sound": "ambient_wind",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "The Romans built structures that still stand 2000 years later.\nUsing no steel. No concrete additives. No power tools.\nThe secret: volcanic ash reacts with seawater to self-repair microcracks.",
+          "durationMs": 8000
+        },
+        {
+          "trigger": "step_1",
+          "text": "Every ruin was someone's new building once.\nSomeone unlocked the door on the first day and thought: this will last forever.",
+          "durationMs": 7000
+        },
+        {
+          "trigger": "step_2",
+          "text": "Archaeologists can map an entire buried city using radar.\nWithout digging a single hole.\nWe now see the past without touching it.",
+          "durationMs": 7000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#1c1710"
+        },
+        "fog": {
+          "color": "#292116",
+          "density": 0.012
+        }
+      },
+      "layers": [
+        {
+          "id": "ruin_floor",
+          "label": "Ancient stone floor — worn marble",
+          "type": "plane",
+          "w": 25,
+          "h": 35,
+          "position": [
+            0,
+            0,
+            -10
+          ],
+          "rotation": [
+            -90,
+            0,
+            0
+          ],
+          "material": {
+            "color": "#d6cfc3",
+            "roughness": 1
+          }
+        },
+        {
+          "id": "standing_walls",
+          "label": "Partial standing stone walls — 8 thick boxes",
+          "count": 8,
+          "spread": {
+            "x": "-14 14",
+            "z": "-20 2"
+          },
+          "element": {
+            "type": "box",
+            "w": 1.5,
+            "h": 6,
+            "d": 8,
+            "y_offset": 3,
+            "material": {
+              "color": "#a8a29e",
+              "roughness": 1
+            }
+          }
+        },
+        {
+          "id": "stone_columns",
+          "label": "Broken stone columns — 10 cylinders",
+          "count": 10,
+          "spread": {
+            "x": "-10 10",
+            "z": "-18 -1"
+          },
+          "element": {
+            "type": "cylinder",
+            "r_range": "0.4 0.8",
+            "h_range": "2 7",
+            "y_offset": "half_height",
+            "material": {
+              "color": "#c4b5a5",
+              "roughness": 1
+            }
+          }
+        },
+        {
+          "id": "column_capitals",
+          "label": "Column capitals — 10 small boxes on top",
+          "count": 10,
+          "spread": {
+            "x": "-10 10",
+            "z": "-18 -1",
+            "y": "2 7"
+          },
+          "element": {
+            "type": "box",
+            "w": 1.2,
+            "h": 0.4,
+            "d": 1.2,
+            "y_offset": 0,
+            "material": {
+              "color": "#d6cfc3",
+              "roughness": 1
+            }
+          }
+        },
+        {
+          "id": "rubble",
+          "label": "Fallen stone rubble — 30 scattered blocks",
+          "count": 30,
+          "spread": {
+            "x": "-12 12",
+            "z": "-16 0"
+          },
+          "element": {
+            "type": "box",
+            "w": 0.3,
+            "h": 0.25,
+            "d": 0.4,
+            "y_offset": 0.12,
+            "material": {
+              "color": "#a8a29e",
+              "roughness": 1
+            }
+          }
+        },
+        {
+          "id": "weeds",
+          "label": "Ruins vegetation — 20 small spheres",
+          "count": 20,
+          "spread": {
+            "x": "-8 8",
+            "z": "-14 0"
+          },
+          "element": {
+            "type": "sphere",
+            "r_range": "0.1 0.4",
+            "y_offset": 0.1,
+            "material": {
+              "color": "#4d7c0f",
+              "roughness": 1
+            }
+          }
+        }
+      ]
+    },
+    "lakeside_dawn_vr": {
+      "id": "lakeside_dawn_vr",
+      "title": "Lakeside at Dawn — Still Water",
+      "logline": "A lake at first light. Mist on the surface. The world holding its breath before the day begins.",
+      "palette": "forest",
+      "sound": "ambient_water",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "A lake at dawn is the world's largest mirror.\nEven mountains bow to their own reflection.",
+          "durationMs": 6000
+        },
+        {
+          "trigger": "step_1",
+          "text": "Morning mist forms when warm lake water meets cold dawn air.\nThe lake breathes out.\nWater has a respiratory system older than lungs.",
+          "durationMs": 7000
+        },
+        {
+          "trigger": "step_2",
+          "text": "Lake Baikal holds 20% of Earth's unfrozen fresh water.\nIt's older than the Himalayas.\nSome life forms in its depths exist nowhere else on the planet.",
+          "durationMs": 8000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#d4e4f7"
+        },
+        "fog": {
+          "color": "#e0ecf8",
+          "density": 0.018
+        }
+      },
+      "layers": [
+        {
+          "id": "lake_surface",
+          "label": "Still lake water surface",
+          "type": "plane",
+          "w": 200,
+          "h": 200,
+          "position": [
+            0,
+            -0.5,
+            -30
+          ],
+          "rotation": [
+            -90,
+            0,
+            0
+          ],
+          "material": {
+            "color": "#1e3a5f",
+            "roughness": 0.02,
+            "metalness": 0.95,
+            "opacity": 0.95,
+            "transparent": true
+          }
+        },
+        {
+          "id": "shoreline",
+          "label": "Lake shoreline — muddy bank",
+          "type": "plane",
+          "w": 20,
+          "h": 10,
+          "position": [
+            0,
+            0,
+            -5
+          ],
+          "rotation": [
+            -90,
+            0,
+            0
+          ],
+          "material": {
+            "color": "#44403c",
+            "roughness": 1
+          }
+        },
+        {
+          "id": "dock_planks",
+          "label": "Wooden dock extending over water — 8 planks",
+          "count": 8,
+          "spread": {
+            "x": "0 0",
+            "z": "-16 -6"
+          },
+          "element": {
+            "type": "box",
+            "w": 2.5,
+            "h": 0.12,
+            "d": 1.2,
+            "y_offset": 0.06,
+            "material": {
+              "color": "#5c3d1e",
+              "roughness": 1
+            }
+          }
+        },
+        {
+          "id": "reeds",
+          "label": "Lakeside reeds — 30 thin cylinders",
+          "count": 30,
+          "spread": {
+            "x": "-8 8",
+            "z": "-8 -1"
+          },
+          "element": {
+            "type": "cylinder",
+            "r_range": "0.04 0.08",
+            "h_range": "1.2 2.2",
+            "y_offset": "half_height",
+            "material": {
+              "color": "#65a30d",
+              "roughness": 1
+            }
+          }
+        },
+        {
+          "id": "lake_trees",
+          "label": "Lakeside trees — 15 cylinders",
+          "count": 15,
+          "spread": {
+            "x": "-25 25",
+            "z": "-18 -5"
+          },
+          "element": {
+            "type": "cylinder",
+            "r_range": "0.3 0.7",
+            "h_range": "8 15",
+            "y_offset": "half_height",
+            "material": {
+              "color": "#3b1f0e",
+              "roughness": 1
+            }
+          }
+        },
+        {
+          "id": "morning_mist",
+          "label": "Dawn lake mist — 50 translucent spheres",
+          "count": 50,
+          "spread": {
+            "x": "-20 20",
+            "z": "-30 -5",
+            "y": "0.2 2.5"
+          },
+          "element": {
+            "type": "sphere",
+            "r_range": "1.5 4",
+            "material": {
+              "color": "#e0ecf8",
+              "opacity": 0.12,
+              "transparent": true
+            },
+            "animation": "drift_up_slow",
+            "animDelayFn": "random_0_7000"
+          }
+        }
+      ]
+    },
+    "bamboo_forest_vr": {
+      "id": "bamboo_forest_vr",
+      "title": "Bamboo Forest — Cathedral Path",
+      "logline": "A bamboo tunnel path. Shafts of filtered light. The sound of hollow stalks in wind.",
+      "palette": "forest",
+      "sound": "ambient_jungle",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "Bamboo grows up to 91cm in a single day.\nA forest like this adds a metre of height while you sleep.",
+          "durationMs": 6000
+        },
+        {
+          "trigger": "step_1",
+          "text": "Arashiyama bamboo grove in Kyoto is so loud in wind\nit was designated one of Japan's 100 Soundscapes to Preserve.\nSound as cultural heritage.",
+          "durationMs": 8000
+        },
+        {
+          "trigger": "step_2",
+          "text": "Bamboo sequesters carbon 35% faster than an equivalent hardwood forest.\nAnd it regrows without replanting.\nThe climate solution was always here — we just called it a garden.",
+          "durationMs": 8000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#1a2e1a"
+        },
+        "fog": {
+          "color": "#14532d",
+          "density": 0.03
+        }
+      },
+      "layers": [
+        {
+          "id": "bamboo_path",
+          "label": "Bamboo forest floor path",
+          "type": "plane",
+          "w": 4,
+          "h": 60,
+          "position": [
+            0,
+            0,
+            -20
+          ],
+          "rotation": [
+            -90,
+            0,
+            0
+          ],
+          "material": {
+            "color": "#1c1917",
+            "roughness": 1
+          }
+        },
+        {
+          "id": "forest_floor",
+          "label": "Forest undergrowth floor",
+          "type": "plane",
+          "w": 60,
+          "h": 60,
+          "position": [
+            0,
+            -0.1,
+            -20
+          ],
+          "rotation": [
+            -90,
+            0,
+            0
+          ],
+          "material": {
+            "color": "#052e16",
+            "roughness": 1
+          }
+        },
+        {
+          "id": "bamboo_left",
+          "label": "Left bamboo stalks — 50 tall cylinders",
+          "count": 50,
+          "spread": {
+            "x": "-20 -3",
+            "z": "-38 2"
+          },
+          "element": {
+            "type": "cylinder",
+            "r_range": "0.08 0.18",
+            "h_range": "12 22",
+            "y_offset": "half_height",
+            "material": {
+              "color": "#4d7c0f",
+              "roughness": 1
+            }
+          }
+        },
+        {
+          "id": "bamboo_right",
+          "label": "Right bamboo stalks — 50 tall cylinders",
+          "count": 50,
+          "spread": {
+            "x": "3 20",
+            "z": "-38 2"
+          },
+          "element": {
+            "type": "cylinder",
+            "r_range": "0.08 0.18",
+            "h_range": "12 22",
+            "y_offset": "half_height",
+            "material": {
+              "color": "#4d7c0f",
+              "roughness": 1
+            }
+          }
+        },
+        {
+          "id": "bamboo_leaves",
+          "label": "Bamboo leaf clusters — 60 small spheres at height",
+          "count": 60,
+          "spread": {
+            "x": "-18 18",
+            "z": "-36 0",
+            "y": "10 20"
+          },
+          "element": {
+            "type": "sphere",
+            "r_range": "0.8 2.2",
+            "material": {
+              "color": "#365314",
+              "opacity": 0.85,
+              "transparent": true
+            }
+          }
+        },
+        {
+          "id": "light_shafts",
+          "label": "Filtered light shafts — 12 pale beams",
+          "count": 12,
+          "spread": {
+            "x": "-8 8",
+            "z": "-30 -2"
+          },
+          "element": {
+            "type": "box",
+            "w": 0.4,
+            "h": 20,
+            "d": 0.4,
+            "y_offset": 8,
+            "material": {
+              "color": "#dcfce7",
+              "opacity": 0.04,
+              "transparent": true
+            },
+            "animation": "pulse_opacity",
+            "animDelayFn": "random_0_7000"
+          }
+        }
+      ]
     }
   }
 }
