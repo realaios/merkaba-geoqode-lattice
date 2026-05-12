@@ -98,7 +98,8 @@ function nextHarmonicNode(existingCount) {
 function buildSceneHTML(asset, id) {
   const isHDRI = asset.type === "hdri_environment";
   const isGLTF =
-    asset.type === "3d_model" && ["gltf", "gltf_or_obj"].includes(asset.format || "");
+    asset.type === "3d_model" &&
+    ["gltf", "gltf_or_obj"].includes(asset.format || "");
   const title = asset.title || id;
 
   const skyElement = isHDRI
@@ -202,7 +203,9 @@ async function main() {
 
   // Load mined assets
   if (!fs.existsSync(MINED_ASSETS_PATH)) {
-    console.log("[VRSceneGen] No mined-assets.json found. Run AIOSAssetMinerAgent first.");
+    console.log(
+      "[VRSceneGen] No mined-assets.json found. Run AIOSAssetMinerAgent first.",
+    );
     return { generated: 0, skipped: 0 };
   }
 
@@ -217,7 +220,9 @@ async function main() {
       (a.type === "3d_model" || a.type === "hdri_environment") &&
       (a.downloadUrl || a.url),
   );
-  console.log(`[VRSceneGen] Eligible assets: ${eligible.length} (suitability >= ${MIN_SUITABILITY})`);
+  console.log(
+    `[VRSceneGen] Eligible assets: ${eligible.length} (suitability >= ${MIN_SUITABILITY})`,
+  );
 
   // Load taxonomy
   const taxonomy = JSON.parse(fs.readFileSync(TAXONOMY_PATH, "utf8"));
@@ -283,7 +288,11 @@ async function main() {
       license: asset.license || "unknown",
       source: asset.source || "mined",
       minedAssetId: asset.id,
-      geoCoordinate: { ...GEO_COORDINATE, semanticType: "ENTITY", frequency: 396 },
+      geoCoordinate: {
+        ...GEO_COORDINATE,
+        semanticType: "ENTITY",
+        frequency: 396,
+      },
     };
 
     newEntries.push({ categoryId, entry });
@@ -299,7 +308,9 @@ async function main() {
         // Create new category if it doesn't exist
         cat = {
           id: categoryId,
-          display: categoryId.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase()),
+          display: categoryId
+            .replace(/-/g, " ")
+            .replace(/\b\w/g, (c) => c.toUpperCase()),
           experiences: [],
         };
         taxonomy.categories.push(cat);
@@ -311,23 +322,30 @@ async function main() {
 
     // Update counts
     taxonomy.totalExperiences = (taxonomy.totalExperiences || 0) + generated;
-    taxonomy.liveCount = (taxonomy.liveCount || 0) +
+    taxonomy.liveCount =
+      (taxonomy.liveCount || 0) +
       newEntries.filter((e) => e.entry.status === "live").length;
     taxonomy.lastGeneratedAt = new Date().toISOString();
     taxonomy.geoCoordinate = GEO_COORDINATE;
 
     fs.writeFileSync(TAXONOMY_PATH, JSON.stringify(taxonomy, null, 2), "utf8");
-    console.log(`[VRSceneGen] Updated vr-taxonomy.json — total: ${taxonomy.totalExperiences}`);
+    console.log(
+      `[VRSceneGen] Updated vr-taxonomy.json — total: ${taxonomy.totalExperiences}`,
+    );
   }
 
-  console.log(`[VRSceneGen] Done — generated: ${generated}, skipped (exist): ${skipped}`);
+  console.log(
+    `[VRSceneGen] Done — generated: ${generated}, skipped (exist): ${skipped}`,
+  );
   return { generated, skipped, total: taxonomy.totalExperiences };
 }
 
-main().then((result) => {
-  console.log("[VRSceneGen] Result:", result);
-  process.exit(0);
-}).catch((err) => {
-  console.error("[VRSceneGen] Fatal:", err);
-  process.exit(1);
-});
+main()
+  .then((result) => {
+    console.log("[VRSceneGen] Result:", result);
+    process.exit(0);
+  })
+  .catch((err) => {
+    console.error("[VRSceneGen] Fatal:", err);
+    process.exit(1);
+  });

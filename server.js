@@ -4319,7 +4319,8 @@ footer{text-align:center;padding:2.5rem;color:#2a3a50;font-size:0.8rem;border-to
         const assets = minedData.assets || [];
         const sources = {};
         for (const a of assets) {
-          sources[a.source || "unknown"] = (sources[a.source || "unknown"] || 0) + 1;
+          sources[a.source || "unknown"] =
+            (sources[a.source || "unknown"] || 0) + 1;
         }
         const payload = {
           totalAssets: assets.length,
@@ -4335,7 +4336,9 @@ footer{text-align:center;padding:2.5rem;color:#2a3a50;font-size:0.8rem;border-to
             latticeNode: 12,
           },
         };
-        res.writeHead(200, { "Content-Type": "application/json; charset=utf-8" });
+        res.writeHead(200, {
+          "Content-Type": "application/json; charset=utf-8",
+        });
         return res.end(JSON.stringify(payload));
       } catch (err) {
         res.writeHead(500, { "Content-Type": "application/json" });
@@ -5062,9 +5065,8 @@ server.listen(PORT, () => {
 if (process.env.AIOS_VR_MINING === "true") {
   (async () => {
     try {
-      const { AIOSAssetMinerAgent } = await import(
-        "./geo/intelligence/AIOSAssetMinerAgent.js"
-      );
+      const { AIOSAssetMinerAgent } =
+        await import("./geo/intelligence/AIOSAssetMinerAgent.js");
       const { spawn } = await import("child_process");
       const { join: _join } = await import("path");
       const { fileURLToPath: _ftu } = await import("url");
@@ -5093,11 +5095,11 @@ if (process.env.AIOS_VR_MINING === "true") {
           "aios-mal-injector.mjs",
         ]) {
           await new Promise((resolve) => {
-            const child = spawn(
-              process.execPath,
-              [_join(_vrLoopDir, script)],
-              { cwd: dirname(fileURLToPath(import.meta.url)), stdio: "inherit", env: process.env },
-            );
+            const child = spawn(process.execPath, [_join(_vrLoopDir, script)], {
+              cwd: dirname(fileURLToPath(import.meta.url)),
+              stdio: "inherit",
+              env: process.env,
+            });
             child.on("close", resolve);
           });
         }
@@ -5110,13 +5112,17 @@ if (process.env.AIOS_VR_MINING === "true") {
         setInterval(_runVRCycle, CYCLE_MS);
       }, 60_000);
 
-      console.log("[VRLoop] AIOS VR autonomous mining ENABLED — first cycle in 60s");
+      console.log(
+        "[VRLoop] AIOS VR autonomous mining ENABLED — first cycle in 60s",
+      );
     } catch (err) {
       console.warn("[VRLoop] Failed to start VR mining loop:", err.message);
     }
   })();
 } else {
-  console.log("[VRLoop] AIOS_VR_MINING not set — mining loop disabled (set AIOS_VR_MINING=true to enable)");
+  console.log(
+    "[VRLoop] AIOS_VR_MINING not set — mining loop disabled (set AIOS_VR_MINING=true to enable)",
+  );
 }
 
 process.on("SIGINT", () => {

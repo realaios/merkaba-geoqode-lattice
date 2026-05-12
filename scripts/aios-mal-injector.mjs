@@ -94,7 +94,8 @@ async function main() {
     (a) =>
       a.suitability >= MIN_SUITABILITY &&
       a.type === "3d_model" &&
-      (a.downloadUrl || (a.url && (a.url.endsWith(".gltf") || a.url.endsWith(".glb")))),
+      (a.downloadUrl ||
+        (a.url && (a.url.endsWith(".gltf") || a.url.endsWith(".glb")))),
   );
   console.log(`[MALInjector] Eligible 3D models: ${eligible.length}`);
 
@@ -131,7 +132,11 @@ async function main() {
     }
 
     const category = inferMALCategory(asset.tags || []);
-    const malId = `mined_${asset.source || "asset"}_${(asset.id || "").replace(/\W+/g, "_")}`.slice(0, 72);
+    const malId =
+      `mined_${asset.source || "asset"}_${(asset.id || "").replace(/\W+/g, "_")}`.slice(
+        0,
+        72,
+      );
 
     const malEntry = {
       id: malId,
@@ -157,7 +162,9 @@ async function main() {
       mal.assets.push(malEntry);
       existingUrls.add(assetUrl);
     } else {
-      console.log(`[MALInjector] DRY-RUN would inject: ${malId} -> ${category}`);
+      console.log(
+        `[MALInjector] DRY-RUN would inject: ${malId} -> ${category}`,
+      );
     }
 
     injected++;
@@ -168,17 +175,23 @@ async function main() {
     mal.last_injected = new Date().toISOString();
     mal.geoCoordinate = GEO_COORDINATE;
     fs.writeFileSync(MAL_PATH, JSON.stringify(mal, null, 2), "utf8");
-    console.log(`[MALInjector] Updated props-warehouse.json — total: ${mal.total_assets}`);
+    console.log(
+      `[MALInjector] Updated props-warehouse.json — total: ${mal.total_assets}`,
+    );
   }
 
-  console.log(`[MALInjector] Done — injected: ${injected}, skipped (exist): ${skipped}`);
+  console.log(
+    `[MALInjector] Done — injected: ${injected}, skipped (exist): ${skipped}`,
+  );
   return { injected, skipped, total: (mal.assets || []).length };
 }
 
-main().then((result) => {
-  console.log("[MALInjector] Result:", result);
-  process.exit(0);
-}).catch((err) => {
-  console.error("[MALInjector] Fatal:", err);
-  process.exit(1);
-});
+main()
+  .then((result) => {
+    console.log("[MALInjector] Result:", result);
+    process.exit(0);
+  })
+  .catch((err) => {
+    console.error("[MALInjector] Fatal:", err);
+    process.exit(1);
+  });

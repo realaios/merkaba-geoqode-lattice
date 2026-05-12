@@ -68,8 +68,7 @@ const ENDPOINTS = {
   // Sketchfab REST API — requires SKETCHFAB_API_KEY env var
   sketchfab_search:
     "https://api.sketchfab.com/v3/models?downloadable=true&license=cc&type=models&sort_by=-likeCount&count=24&q={query}",
-  sketchfab_download:
-    "https://api.sketchfab.com/v3/models/{uid}/download",
+  sketchfab_download: "https://api.sketchfab.com/v3/models/{uid}/download",
   // PolyHaven — CC0, no auth required
   polyhaven_assets: "https://api.polyhaven.com/assets?t={type}",
   polyhaven_files: "https://api.polyhaven.com/files/{slug}",
@@ -384,9 +383,10 @@ export class AIOSAssetMinerAgent {
       "{query}",
       encodeURIComponent(query),
     );
-    const data = await this._fetchAuth(url, `Token ${this.sketchfabApiKey}`).catch(
-      () => null,
-    );
+    const data = await this._fetchAuth(
+      url,
+      `Token ${this.sketchfabApiKey}`,
+    ).catch(() => null);
     if (!data?.results) return [];
 
     const results = [];
@@ -450,7 +450,9 @@ export class AIOSAssetMinerAgent {
       const asset = {
         id: `polyhaven_${slug}`,
         title: meta.name || slug,
-        description: meta.name ? `PolyHaven ${type}: ${meta.name}` : `PolyHaven ${slug}`,
+        description: meta.name
+          ? `PolyHaven ${type}: ${meta.name}`
+          : `PolyHaven ${slug}`,
         url: assetUrl,
         downloadUrl,
         slug,
@@ -481,7 +483,8 @@ export class AIOSAssetMinerAgent {
     const url = `https://poly.pizza/api/search?q=${encodeURIComponent(query)}&format=gltf&limit=20`;
     const data = await this._fetch(url).catch(() => null);
     // Response varies — try both result shapes
-    const items = data?.results || data?.models || (Array.isArray(data) ? data : null);
+    const items =
+      data?.results || data?.models || (Array.isArray(data) ? data : null);
     if (!items) {
       this._log(`Poly Pizza: no results (API may require auth key, skipping)`);
       return [];
@@ -518,16 +521,66 @@ export class AIOSAssetMinerAgent {
     this._log("Mining NASA 3D known public-domain models");
     // These are stable, well-known NASA 3D asset URLs (public domain)
     const KNOWN_NASA_3D = [
-      { id: "nasa3d_iss", title: "International Space Station", url: "https://nasa3d.arc.nasa.gov/models/iss", tags: ["iss", "space_station", "nasa"] },
-      { id: "nasa3d_hubble", title: "Hubble Space Telescope", url: "https://nasa3d.arc.nasa.gov/models/hubble", tags: ["hubble", "telescope", "nasa"] },
-      { id: "nasa3d_perseverance", title: "Mars Perseverance Rover", url: "https://nasa3d.arc.nasa.gov/models/mars_perseverance_rover", tags: ["mars", "rover", "perseverance", "nasa"] },
-      { id: "nasa3d_artemis_sls", title: "Artemis SLS Rocket", url: "https://nasa3d.arc.nasa.gov/models/sls", tags: ["rocket", "artemis", "sls", "nasa"] },
-      { id: "nasa3d_orion", title: "Orion Capsule", url: "https://nasa3d.arc.nasa.gov/models/orion_capsule", tags: ["orion", "capsule", "nasa", "artemis"] },
-      { id: "nasa3d_apollo_lm", title: "Apollo Lunar Module", url: "https://nasa3d.arc.nasa.gov/models/apollo_lunar_module", tags: ["apollo", "moon", "lm", "nasa"] },
-      { id: "nasa3d_saturn_v", title: "Saturn V Rocket", url: "https://nasa3d.arc.nasa.gov/models/saturn_v", tags: ["saturn_v", "rocket", "apollo", "nasa"] },
-      { id: "nasa3d_webb", title: "James Webb Space Telescope", url: "https://nasa3d.arc.nasa.gov/models/webb", tags: ["webb", "telescope", "jwst", "nasa"] },
-      { id: "nasa3d_voyager", title: "Voyager Spacecraft", url: "https://nasa3d.arc.nasa.gov/models/voyager", tags: ["voyager", "spacecraft", "nasa"] },
-      { id: "nasa3d_spitzer", title: "Spitzer Space Telescope", url: "https://nasa3d.arc.nasa.gov/models/spitzer", tags: ["spitzer", "telescope", "nasa"] },
+      {
+        id: "nasa3d_iss",
+        title: "International Space Station",
+        url: "https://nasa3d.arc.nasa.gov/models/iss",
+        tags: ["iss", "space_station", "nasa"],
+      },
+      {
+        id: "nasa3d_hubble",
+        title: "Hubble Space Telescope",
+        url: "https://nasa3d.arc.nasa.gov/models/hubble",
+        tags: ["hubble", "telescope", "nasa"],
+      },
+      {
+        id: "nasa3d_perseverance",
+        title: "Mars Perseverance Rover",
+        url: "https://nasa3d.arc.nasa.gov/models/mars_perseverance_rover",
+        tags: ["mars", "rover", "perseverance", "nasa"],
+      },
+      {
+        id: "nasa3d_artemis_sls",
+        title: "Artemis SLS Rocket",
+        url: "https://nasa3d.arc.nasa.gov/models/sls",
+        tags: ["rocket", "artemis", "sls", "nasa"],
+      },
+      {
+        id: "nasa3d_orion",
+        title: "Orion Capsule",
+        url: "https://nasa3d.arc.nasa.gov/models/orion_capsule",
+        tags: ["orion", "capsule", "nasa", "artemis"],
+      },
+      {
+        id: "nasa3d_apollo_lm",
+        title: "Apollo Lunar Module",
+        url: "https://nasa3d.arc.nasa.gov/models/apollo_lunar_module",
+        tags: ["apollo", "moon", "lm", "nasa"],
+      },
+      {
+        id: "nasa3d_saturn_v",
+        title: "Saturn V Rocket",
+        url: "https://nasa3d.arc.nasa.gov/models/saturn_v",
+        tags: ["saturn_v", "rocket", "apollo", "nasa"],
+      },
+      {
+        id: "nasa3d_webb",
+        title: "James Webb Space Telescope",
+        url: "https://nasa3d.arc.nasa.gov/models/webb",
+        tags: ["webb", "telescope", "jwst", "nasa"],
+      },
+      {
+        id: "nasa3d_voyager",
+        title: "Voyager Spacecraft",
+        url: "https://nasa3d.arc.nasa.gov/models/voyager",
+        tags: ["voyager", "spacecraft", "nasa"],
+      },
+      {
+        id: "nasa3d_spitzer",
+        title: "Spitzer Space Telescope",
+        url: "https://nasa3d.arc.nasa.gov/models/spitzer",
+        tags: ["spitzer", "telescope", "nasa"],
+      },
     ];
 
     const results = [];
