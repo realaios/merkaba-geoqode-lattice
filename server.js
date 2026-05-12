@@ -785,7 +785,8 @@ const PLAI_AGENTS = [
   {
     id: 3008,
     name: "AIOSVrStudioSwarm",
-    short_desc: "54-agent 24/7 VR production studio \u00b7 Full department coverage",
+    short_desc:
+      "54-agent 24/7 VR production studio \u00b7 Full department coverage",
     description:
       "Complete film production studio as a unified agent swarm \u2014 Director, Writers, Set Directors, DP, Sound, VFX, CGI, Wardrobe, Locations \u2014 all producing A-Frame VR ClipScrypts autonomously. Self-learning, episode-expanding, quality-evolving. 8 departments, PHI=1.618 lattice-native.",
     category: "Agents",
@@ -801,7 +802,8 @@ const PLAI_AGENTS = [
   {
     id: 3009,
     name: "AIOSMalSwarm",
-    short_desc: "16-drone MAL asset discovery \u00b7 Virtual Movie Props Warehouse",
+    short_desc:
+      "16-drone MAL asset discovery \u00b7 Virtual Movie Props Warehouse",
     description:
       "Autonomous asset-hunting swarm that continuously discovers, validates, and catalogs 3D models, audio, HDRI environments, costumes, and props into the MAL Props Warehouse for reuse across all VR experiences. Supports .glb/.gltf/.obj/.fbx/.wav/.mp3/.hdr and more.",
     category: "Agents",
