@@ -509,16 +509,11 @@ function narrativePanel(scene) {
 (function(){
   var el = document.getElementById('mal-narrative');
   if (!el) return;
-  var beats = JSON.parse(el.dataset.beats);
-  var idx = 0;
-  function showNext() {
-    if (idx >= beats.length) { el.style.opacity = '0'; return; }
-    var b = beats[idx++];
-    document.getElementById('mal-narrative-text').textContent = b.text;
-    el.style.opacity = '1';
-    setTimeout(showNext, (b.durationMs || 6000) + 800);
+  function dismiss() {
+    el.style.opacity = '0';
+    setTimeout(function() { if (el.parentNode) el.parentNode.removeChild(el); }, 850);
   }
-  setTimeout(showNext, beats[0].durationMs || 6000);
+  setTimeout(dismiss, 5000);
 })();
 <\/script>`;
 }
@@ -530,9 +525,9 @@ function buildEnvironment(env, palette) {
   // Sky
   if (env.sky) {
     if (env.sky.type === "gradient") {
-      parts.push(`<a-sky color="${env.sky.topColor || palette.bg}"></a-sky>`);
+      parts.push(`<a-sky color="${env.sky.topColor || palette.secondary || palette.bg}"></a-sky>`);
     } else {
-      parts.push(`<a-sky color="${env.sky.color || palette.bg}"></a-sky>`);
+      parts.push(`<a-sky color="${palette.secondary || env.sky.color || palette.bg}"></a-sky>`);
     }
   }
   // Fog via scene fog attribute — returned as scene-level attr
