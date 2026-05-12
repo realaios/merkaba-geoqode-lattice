@@ -11899,6 +11899,516 @@
           "radius": 300
         }
       ]
+    },
+    "kiara_dawn_vr": {
+      "id": "kiara_dawn_vr",
+      "title": "Kiara Dawn",
+      "logline": "First light bleeds across the horizon — a breath before the world wakes.",
+      "palette": "golden_hour",
+      "sound": "ambient_birds",
+      "narrativeBeats": [
+        {
+          "trigger": 0,
+          "text": "Gold seeps over the ridge. Silence holds its ground.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": 30,
+          "text": "The valley fills with warmth. You are the first witness.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": 90,
+          "text": "Dawn is irreversible. So is this moment.",
+          "durationMs": 5000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#FFB347"
+        },
+        "fog": {
+          "color": "#FFD580",
+          "density": 0.005
+        }
+      },
+      "layers": []
+    },
+    "golden_bay_vr": {
+      "id": "golden_bay_vr",
+      "title": "Golden Bay",
+      "logline": "A coastal bay where light and water conspire to dazzle.",
+      "palette": "ocean",
+      "sound": "ambient_waves",
+      "narrativeBeats": [
+        {
+          "trigger": 0,
+          "text": "The bay opens wide — an invitation you cannot refuse.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": 30,
+          "text": "Salt air and sunlight. The horizon is a clean promise.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": 90,
+          "text": "Tides remember what we forget. Stand here long enough.",
+          "durationMs": 5000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#1A7AAF"
+        },
+        "fog": {
+          "color": "#85C1E9",
+          "density": 0.005
+        }
+      },
+      "layers": []
+    },
+    "lilienstein_vr": {
+      "id": "lilienstein_vr",
+      "title": "Lilienstein Rock",
+      "logline": "A lone sandstone monolith rises from the Saxon valley floor.",
+      "palette": "roman_arena",
+      "sound": "ambient_wind",
+      "narrativeBeats": [
+        {
+          "trigger": 0,
+          "text": "The rock has stood here for ten thousand years. You are a guest.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": 30,
+          "text": "Erosion is patient. So is stone. So is truth.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": 90,
+          "text": "From the summit, borders dissolve. Only landscape remains.",
+          "durationMs": 5000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#8B6914"
+        },
+        "fog": {
+          "color": "#C4A35A",
+          "density": 0.008
+        }
+      },
+      "layers": []
+    },
+    "solitude_night_vr": {
+      "id": "solitude_night_vr",
+      "title": "Solitude Night",
+      "logline": "A night so still it becomes its own kind of sound.",
+      "palette": "abyss",
+      "sound": "ambient_night",
+      "narrativeBeats": [
+        {
+          "trigger": 0,
+          "text": "Darkness is not empty. Listen — it breathes.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": 30,
+          "text": "Solitude is the original bandwidth. No interference.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": 90,
+          "text": "You came here alone. You leave knowing that was enough.",
+          "durationMs": 5000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#0A0A1A"
+        },
+        "fog": {
+          "color": "#1A1A2E",
+          "density": 0.012
+        }
+      },
+      "layers": []
+    },
+    "moonless_golf_vr": {
+      "id": "moonless_golf_vr",
+      "title": "Moonless Links",
+      "logline": "A golf course after dark — silence draped over manicured green.",
+      "palette": "forest",
+      "sound": "ambient_crickets",
+      "narrativeBeats": [
+        {
+          "trigger": 0,
+          "text": "The fairway stretches into nothing. Par for this darkness: unknown.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": 30,
+          "text": "Precision finds no purchase here. Only instinct remains.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": 90,
+          "text": "Even the greens have gone dark. The game is suspended. Rest.",
+          "durationMs": 5000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#1A2E1A"
+        },
+        "fog": {
+          "color": "#2D4A2D",
+          "density": 0.01
+        }
+      },
+      "layers": []
+    },
+    "pizzo_pernice_vr": {
+      "id": "pizzo_pernice_vr",
+      "title": "Pizzo Pernice",
+      "logline": "An alpine summit where clouds bow below your feet.",
+      "palette": "arctic",
+      "sound": "ambient_wind",
+      "narrativeBeats": [
+        {
+          "trigger": 0,
+          "text": "Above the cloud layer. Gravity seems negotiable.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": 30,
+          "text": "The Alps have no opinions. They simply persist.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": 90,
+          "text": "Altitude strips every unnecessary thought. What remains is you.",
+          "durationMs": 5000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#B8D8E8"
+        },
+        "fog": {
+          "color": "#D6EAF8",
+          "density": 0.004
+        }
+      },
+      "layers": []
+    },
+    "spree_bank_vr": {
+      "id": "spree_bank_vr",
+      "title": "Spree Bank",
+      "logline": "Berlin's river reflects a city that reinvented itself.",
+      "palette": "ocean",
+      "sound": "ambient_city_water",
+      "narrativeBeats": [
+        {
+          "trigger": 0,
+          "text": "The Spree moves slowly. Berlin watches from both banks.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": 30,
+          "text": "History is written in the water here. Read the ripples.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": 90,
+          "text": "Cities heal. Rivers remember. You are somewhere between both.",
+          "durationMs": 5000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#2A5F7F"
+        },
+        "fog": {
+          "color": "#4A8FB5",
+          "density": 0.007
+        }
+      },
+      "layers": []
+    },
+    "cannon_courtyard_vr": {
+      "id": "cannon_courtyard_vr",
+      "title": "Cannon Courtyard",
+      "logline": "A fortification courtyard where old iron holds ancient memory.",
+      "palette": "roman_arena",
+      "sound": "ambient_wind",
+      "narrativeBeats": [
+        {
+          "trigger": 0,
+          "text": "The cannon is cold now. The war it threatened is forgotten.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": 30,
+          "text": "Stone walls outlast the empires that built them. Always.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": 90,
+          "text": "Power corrodes. Craftsmanship endures. Note the difference.",
+          "durationMs": 5000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#7A5C1E"
+        },
+        "fog": {
+          "color": "#B8934A",
+          "density": 0.009
+        }
+      },
+      "layers": []
+    },
+    "modern_city_vr": {
+      "id": "modern_city_vr",
+      "title": "Modern City Rise",
+      "logline": "Glass and steel climbing toward a sky they'll never reach.",
+      "palette": "simulation",
+      "sound": "ambient_city",
+      "narrativeBeats": [
+        {
+          "trigger": 0,
+          "text": "The city hums at a frequency you feel before you hear.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": 30,
+          "text": "Every window is a decision someone made. Thousands of decisions.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": 90,
+          "text": "Architecture is frozen ambition. Walk through someone's dream.",
+          "durationMs": 5000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#001529"
+        },
+        "fog": {
+          "color": "#003366",
+          "density": 0.006
+        }
+      },
+      "layers": []
+    },
+    "old_hall_vr": {
+      "id": "old_hall_vr",
+      "title": "The Old Hall",
+      "logline": "A great hall where time has settled into the very beams.",
+      "palette": "merkaba",
+      "sound": "ambient_silence",
+      "narrativeBeats": [
+        {
+          "trigger": 0,
+          "text": "Centuries of footsteps have worn this floor smooth. Add yours.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": 30,
+          "text": "The hall remembers feasts, funerals, decisions. It keeps no secrets.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": 90,
+          "text": "Timber and stone outlast the lives that filled them. What will you outlast?",
+          "durationMs": 5000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#1A0533"
+        },
+        "fog": {
+          "color": "#3D1A5E",
+          "density": 0.01
+        }
+      },
+      "layers": []
+    },
+    "peppermint_plant_vr": {
+      "id": "peppermint_plant_vr",
+      "title": "Peppermint Powerplant",
+      "logline": "Industrial geometry reimagined as a monument to human industry.",
+      "palette": "quantum",
+      "sound": "ambient_machinery",
+      "narrativeBeats": [
+        {
+          "trigger": 0,
+          "text": "Pipes and turbines. Every revolution generates something invisible.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": 30,
+          "text": "Industry is just organized energy. So is thought. So is this moment.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": 90,
+          "text": "The plant runs on its own logic. So do you. Find the overlap.",
+          "durationMs": 5000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#000D1A"
+        },
+        "fog": {
+          "color": "#001A33",
+          "density": 0.008
+        }
+      },
+      "layers": []
+    },
+    "photo_studio_vr": {
+      "id": "photo_studio_vr",
+      "title": "Light Studio",
+      "logline": "A clean void where light is the subject and you are the aperture.",
+      "palette": "simulation",
+      "sound": "ambient_silence",
+      "narrativeBeats": [
+        {
+          "trigger": 0,
+          "text": "The studio holds all possibilities before the shutter falls.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": 30,
+          "text": "Light without shadow is not light — it is potential.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": 90,
+          "text": "Everything is already in frame. You decide what matters.",
+          "durationMs": 5000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#C8D0D8"
+        },
+        "fog": {
+          "color": "#E8EAED",
+          "density": 0.003
+        }
+      },
+      "layers": []
+    },
+    "venice_sunset_vr": {
+      "id": "venice_sunset_vr",
+      "title": "Venice at Dusk",
+      "logline": "A canal city dissolving in amber light at the edge of evening.",
+      "palette": "golden_hour",
+      "sound": "ambient_water",
+      "narrativeBeats": [
+        {
+          "trigger": 0,
+          "text": "Venice sinks a little each year. Tonight it floats on gold.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": 30,
+          "text": "The canals hold the city's reflection better than the city holds itself.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": 90,
+          "text": "Dusk erases the tourist signs. For a moment, only the city remains.",
+          "durationMs": 5000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#E8722A"
+        },
+        "fog": {
+          "color": "#F4A460",
+          "density": 0.006
+        }
+      },
+      "layers": []
+    },
+    "meadow_drift_vr": {
+      "id": "meadow_drift_vr",
+      "title": "Meadow Drift",
+      "logline": "An open meadow where the only urgency is the grass moving in wind.",
+      "palette": "forest",
+      "sound": "ambient_birds",
+      "narrativeBeats": [
+        {
+          "trigger": 0,
+          "text": "The meadow offers nothing except everything you've been ignoring.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": 30,
+          "text": "Grass grows at exactly the speed it needs to. Match it.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": 90,
+          "text": "Drift is not the absence of direction. It is trust in the wind.",
+          "durationMs": 5000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#4A7C3F"
+        },
+        "fog": {
+          "color": "#7AB855",
+          "density": 0.006
+        }
+      },
+      "layers": []
+    },
+    "snowy_park_vr": {
+      "id": "snowy_park_vr",
+      "title": "Snow Silence Park",
+      "logline": "A city park buried in snow — all noise absorbed, all edges softened.",
+      "palette": "arctic",
+      "sound": "ambient_silence",
+      "narrativeBeats": [
+        {
+          "trigger": 0,
+          "text": "Snow is the original sound insulation. The city holds its breath.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": 30,
+          "text": "Every footprint here is a declaration: I was present. I chose this path.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": 90,
+          "text": "Winter parks exist to teach you that rest is not retreat.",
+          "durationMs": 5000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#C8D8E8"
+        },
+        "fog": {
+          "color": "#E0EBF5",
+          "density": 0.004
+        }
+      },
+      "layers": []
     }
   }
 }

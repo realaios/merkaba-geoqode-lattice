@@ -608,6 +608,22 @@ const SKY_IMGS = {
   small_harbour_morning_vr: "/geoassets/skies/small_harbour_morning.jpg",
   autumn_road_vr: "/geoassets/skies/autumn_road.jpg",
   bell_tower_vr: "/geoassets/skies/bell_tower.jpg",
+  // Wave 6 — new Polyhaven downloads
+  kiara_dawn_vr: "/geoassets/skies/kiara_1_dawn.jpg",
+  golden_bay_vr: "/geoassets/skies/golden_bay.jpg",
+  lilienstein_vr: "/geoassets/skies/lilienstein.jpg",
+  solitude_night_vr: "/geoassets/skies/solitude_night.jpg",
+  moonless_golf_vr: "/geoassets/skies/moonless_golf.jpg",
+  pizzo_pernice_vr: "/geoassets/skies/pizzo_pernice.jpg",
+  spree_bank_vr: "/geoassets/skies/spree_bank.jpg",
+  cannon_courtyard_vr: "/geoassets/skies/cannon.jpg",
+  modern_city_vr: "/geoassets/skies/modern_buildings_2.jpg",
+  old_hall_vr: "/geoassets/skies/old_hall.jpg",
+  peppermint_plant_vr: "/geoassets/skies/peppermint_powerplant_2.jpg",
+  photo_studio_vr: "/geoassets/skies/photo_studio_01.jpg",
+  venice_sunset_vr: "/geoassets/skies/venice_sunset.jpg",
+  meadow_drift_vr: "/geoassets/skies/meadow_2.jpg",
+  snowy_park_vr: "/geoassets/skies/snowy_park_01.jpg",
 };
 
 function buildEnvironment(env, palette, sceneId) {
