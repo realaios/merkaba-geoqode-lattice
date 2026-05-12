@@ -3,13 +3,18 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>AIOS VR · Live Worlds · Meta Quest · Pico 4 · WebXR · realaios.com</title>
+    <title>
+      AIOS VR · Live Worlds · Meta Quest · Pico 4 · WebXR · realaios.com
+    </title>
     <meta
       name="description"
       content="Live WebXR experiences for Meta Quest 2/3, Pico 4, HTC Vive XR Elite, HP Reverb G2 &amp; all WebXR browsers · 47 programmes · 16 categories. Zero install, browser only."
     />
     <meta name="theme-color" content="#050a14" />
-    <meta property="og:title" content="AIOS VR · Live Worlds · WebXR Universal" />
+    <meta
+      property="og:title"
+      content="AIOS VR · Live Worlds · WebXR Universal"
+    />
     <meta
       property="og:description"
       content="Live WebXR experiences across 16 categories. Zero install · open realaios.com/vr in your headset browser and dive in."
@@ -718,8 +723,10 @@
         <p>
           Autonomous AI-generated spatial experiences · fully navigable in
           immersive VR.
-          <span id="vr-prog-count">·</span> live programmes across <span id="vr-cat-count">16</span> categories.
-          Works on Meta Quest &bull; Pico 4 &bull; HTC Vive XR Elite &bull; any WebXR browser. Zero install &middot; no app required.
+          <span id="vr-prog-count">·</span> live programmes across
+          <span id="vr-cat-count">16</span> categories. Works on Meta Quest
+          &bull; Pico 4 &bull; HTC Vive XR Elite &bull; any WebXR browser. Zero
+          install &middot; no app required.
         </p>
 
         <!-- Enter button · always shown; label updates based on device -->
@@ -859,7 +866,9 @@
           </div>
         </div>
         <p style="margin: 0.9rem 0 0; font-size: 0.72rem; color: #4a6080">
-          No app install &bull; No account required &bull; Quest 2 / Quest 3 / Quest Pro &bull; Pico 4 &amp; Ultra &bull; HTC Vive XR Elite &bull; HP Reverb G2 &bull; Any WebXR browser
+          No app install &bull; No account required &bull; Quest 2 / Quest 3 /
+          Quest Pro &bull; Pico 4 &amp; Ultra &bull; HTC Vive XR Elite &bull; HP
+          Reverb G2 &bull; Any WebXR browser
         </p>
       </div>
 
@@ -909,7 +918,10 @@
         <button class="cat-tab" onclick="filterProgs('medical_vr', this)">
           &#x1FA7A; Medical
         </button>
-        <button class="cat-tab" onclick="filterProgs('design_engineering', this)">
+        <button
+          class="cat-tab"
+          onclick="filterProgs('design_engineering', this)"
+        >
           &#x1F4D0; Design
         </button>
         <a
@@ -962,7 +974,10 @@
             margin-top: 0.4rem;
           "
         >
-          <span id="prog-subtitle">47 programmes &middot; 16 categories &middot; Spatial audio 396&ndash;963&thinsp;Hz</span>
+          <span id="prog-subtitle"
+            >47 programmes &middot; 16 categories &middot; Spatial audio
+            396&ndash;963&thinsp;Hz</span
+          >
         </div>
       </div>
       <div class="programme-grid" id="prog-grid">
@@ -970,79 +985,413 @@
       </div>
 
       <!-- -- VR Headset Compatibility Matrix -- -->
-      <div style="max-width:920px;margin:2.5rem auto 3rem;padding:0 2rem;">
-        <div class="section-title" style="margin-top:0;margin-bottom:1.2rem;">Headset <span>Compatibility</span></div>
-        <div style="overflow-x:auto;-webkit-overflow-scrolling:touch;">
-          <table style="width:100%;border-collapse:collapse;font-size:.82rem;text-align:left;min-width:560px;">
-            <thead><tr style="border-bottom:1px solid rgba(0,212,255,.15);">
-              <th style="padding:.6rem 1rem;color:var(--muted);font-weight:600;">Headset</th>
-              <th style="padding:.6rem 1rem;color:var(--muted);font-weight:600;">Status</th>
-              <th style="padding:.6rem 1rem;color:var(--muted);font-weight:600;white-space:nowrap;">Per-Eye Res</th>
-              <th style="padding:.6rem 1rem;color:var(--muted);font-weight:600;">Notes</th>
-            </tr></thead>
+      <div style="max-width: 920px; margin: 2.5rem auto 3rem; padding: 0 2rem">
+        <div class="section-title" style="margin-top: 0; margin-bottom: 1.2rem">
+          Headset <span>Compatibility</span>
+        </div>
+        <div style="overflow-x: auto; -webkit-overflow-scrolling: touch">
+          <table
+            style="
+              width: 100%;
+              border-collapse: collapse;
+              font-size: 0.82rem;
+              text-align: left;
+              min-width: 560px;
+            "
+          >
+            <thead>
+              <tr style="border-bottom: 1px solid rgba(0, 212, 255, 0.15)">
+                <th
+                  style="
+                    padding: 0.6rem 1rem;
+                    color: var(--muted);
+                    font-weight: 600;
+                  "
+                >
+                  Headset
+                </th>
+                <th
+                  style="
+                    padding: 0.6rem 1rem;
+                    color: var(--muted);
+                    font-weight: 600;
+                  "
+                >
+                  Status
+                </th>
+                <th
+                  style="
+                    padding: 0.6rem 1rem;
+                    color: var(--muted);
+                    font-weight: 600;
+                    white-space: nowrap;
+                  "
+                >
+                  Per-Eye Res
+                </th>
+                <th
+                  style="
+                    padding: 0.6rem 1rem;
+                    color: var(--muted);
+                    font-weight: 600;
+                  "
+                >
+                  Notes
+                </th>
+              </tr>
+            </thead>
             <tbody>
-              <tr style="border-bottom:1px solid rgba(255,255,255,.04);">
-                <td style="padding:.65rem 1rem;font-weight:700;color:var(--text);white-space:nowrap;">Meta Quest 2</td>
-                <td style="padding:.65rem 1rem;"><span style="color:#22c55e;font-weight:700;">&#x2714; Full WebXR</span></td>
-                <td style="padding:.65rem 1rem;color:var(--muted);font-family:monospace;white-space:nowrap;">1832&#xD7;1920</td>
-                <td style="padding:.65rem 1rem;color:var(--muted);font-size:.78rem;">Quest Browser &bull; hand tracking &bull; Touch controllers</td>
+              <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.04)">
+                <td
+                  style="
+                    padding: 0.65rem 1rem;
+                    font-weight: 700;
+                    color: var(--text);
+                    white-space: nowrap;
+                  "
+                >
+                  Meta Quest 2
+                </td>
+                <td style="padding: 0.65rem 1rem">
+                  <span style="color: #22c55e; font-weight: 700"
+                    >&#x2714; Full WebXR</span
+                  >
+                </td>
+                <td
+                  style="
+                    padding: 0.65rem 1rem;
+                    color: var(--muted);
+                    font-family: monospace;
+                    white-space: nowrap;
+                  "
+                >
+                  1832&#xD7;1920
+                </td>
+                <td
+                  style="
+                    padding: 0.65rem 1rem;
+                    color: var(--muted);
+                    font-size: 0.78rem;
+                  "
+                >
+                  Quest Browser &bull; hand tracking &bull; Touch controllers
+                </td>
               </tr>
-              <tr style="border-bottom:1px solid rgba(255,255,255,.04);">
-                <td style="padding:.65rem 1rem;font-weight:700;color:var(--text);white-space:nowrap;">Meta Quest 3</td>
-                <td style="padding:.65rem 1rem;"><span style="color:#22c55e;font-weight:700;">&#x2714; Full WebXR</span></td>
-                <td style="padding:.65rem 1rem;color:var(--muted);font-family:monospace;white-space:nowrap;">2064&#xD7;2208</td>
-                <td style="padding:.65rem 1rem;color:var(--muted);font-size:.78rem;">110&deg; FoV &bull; mixed reality passthrough &bull; highest resolution</td>
+              <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.04)">
+                <td
+                  style="
+                    padding: 0.65rem 1rem;
+                    font-weight: 700;
+                    color: var(--text);
+                    white-space: nowrap;
+                  "
+                >
+                  Meta Quest 3
+                </td>
+                <td style="padding: 0.65rem 1rem">
+                  <span style="color: #22c55e; font-weight: 700"
+                    >&#x2714; Full WebXR</span
+                  >
+                </td>
+                <td
+                  style="
+                    padding: 0.65rem 1rem;
+                    color: var(--muted);
+                    font-family: monospace;
+                    white-space: nowrap;
+                  "
+                >
+                  2064&#xD7;2208
+                </td>
+                <td
+                  style="
+                    padding: 0.65rem 1rem;
+                    color: var(--muted);
+                    font-size: 0.78rem;
+                  "
+                >
+                  110&deg; FoV &bull; mixed reality passthrough &bull; highest
+                  resolution
+                </td>
               </tr>
-              <tr style="border-bottom:1px solid rgba(255,255,255,.04);">
-                <td style="padding:.65rem 1rem;font-weight:700;color:var(--text);white-space:nowrap;">Meta Quest Pro</td>
-                <td style="padding:.65rem 1rem;"><span style="color:#22c55e;font-weight:700;">&#x2714; Full WebXR</span></td>
-                <td style="padding:.65rem 1rem;color:var(--muted);font-family:monospace;white-space:nowrap;">1800&#xD7;1920</td>
-                <td style="padding:.65rem 1rem;color:var(--muted);font-size:.78rem;">Eye tracking &bull; face tracking &bull; enterprise grade</td>
+              <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.04)">
+                <td
+                  style="
+                    padding: 0.65rem 1rem;
+                    font-weight: 700;
+                    color: var(--text);
+                    white-space: nowrap;
+                  "
+                >
+                  Meta Quest Pro
+                </td>
+                <td style="padding: 0.65rem 1rem">
+                  <span style="color: #22c55e; font-weight: 700"
+                    >&#x2714; Full WebXR</span
+                  >
+                </td>
+                <td
+                  style="
+                    padding: 0.65rem 1rem;
+                    color: var(--muted);
+                    font-family: monospace;
+                    white-space: nowrap;
+                  "
+                >
+                  1800&#xD7;1920
+                </td>
+                <td
+                  style="
+                    padding: 0.65rem 1rem;
+                    color: var(--muted);
+                    font-size: 0.78rem;
+                  "
+                >
+                  Eye tracking &bull; face tracking &bull; enterprise grade
+                </td>
               </tr>
-              <tr style="border-bottom:1px solid rgba(255,255,255,.04);">
-                <td style="padding:.65rem 1rem;font-weight:700;color:var(--text);white-space:nowrap;">Pico 4 &amp; Ultra</td>
-                <td style="padding:.65rem 1rem;"><span style="color:#22c55e;font-weight:700;">&#x2714; Full WebXR</span></td>
-                <td style="padding:.65rem 1rem;color:var(--muted);font-family:monospace;white-space:nowrap;">2160&#xD7;2160</td>
-                <td style="padding:.65rem 1rem;color:var(--muted);font-size:.78rem;">Pico Browser (Chromium) &bull; 105&deg; FoV &bull; standalone</td>
+              <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.04)">
+                <td
+                  style="
+                    padding: 0.65rem 1rem;
+                    font-weight: 700;
+                    color: var(--text);
+                    white-space: nowrap;
+                  "
+                >
+                  Pico 4 &amp; Ultra
+                </td>
+                <td style="padding: 0.65rem 1rem">
+                  <span style="color: #22c55e; font-weight: 700"
+                    >&#x2714; Full WebXR</span
+                  >
+                </td>
+                <td
+                  style="
+                    padding: 0.65rem 1rem;
+                    color: var(--muted);
+                    font-family: monospace;
+                    white-space: nowrap;
+                  "
+                >
+                  2160&#xD7;2160
+                </td>
+                <td
+                  style="
+                    padding: 0.65rem 1rem;
+                    color: var(--muted);
+                    font-size: 0.78rem;
+                  "
+                >
+                  Pico Browser (Chromium) &bull; 105&deg; FoV &bull; standalone
+                </td>
               </tr>
-              <tr style="border-bottom:1px solid rgba(255,255,255,.04);">
-                <td style="padding:.65rem 1rem;font-weight:700;color:var(--text);white-space:nowrap;">HTC Vive XR Elite</td>
-                <td style="padding:.65rem 1rem;"><span style="color:#22c55e;font-weight:700;">&#x2714; Full WebXR</span></td>
-                <td style="padding:.65rem 1rem;color:var(--muted);font-family:monospace;white-space:nowrap;">1920&#xD7;1920</td>
-                <td style="padding:.65rem 1rem;color:var(--muted);font-size:.78rem;">Chromium browser &bull; 105&deg; FoV &bull; standalone + PC tethered</td>
+              <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.04)">
+                <td
+                  style="
+                    padding: 0.65rem 1rem;
+                    font-weight: 700;
+                    color: var(--text);
+                    white-space: nowrap;
+                  "
+                >
+                  HTC Vive XR Elite
+                </td>
+                <td style="padding: 0.65rem 1rem">
+                  <span style="color: #22c55e; font-weight: 700"
+                    >&#x2714; Full WebXR</span
+                  >
+                </td>
+                <td
+                  style="
+                    padding: 0.65rem 1rem;
+                    color: var(--muted);
+                    font-family: monospace;
+                    white-space: nowrap;
+                  "
+                >
+                  1920&#xD7;1920
+                </td>
+                <td
+                  style="
+                    padding: 0.65rem 1rem;
+                    color: var(--muted);
+                    font-size: 0.78rem;
+                  "
+                >
+                  Chromium browser &bull; 105&deg; FoV &bull; standalone + PC
+                  tethered
+                </td>
               </tr>
-              <tr style="border-bottom:1px solid rgba(255,255,255,.04);">
-                <td style="padding:.65rem 1rem;font-weight:700;color:var(--text);white-space:nowrap;">HP Reverb G2</td>
-                <td style="padding:.65rem 1rem;"><span style="color:#22c55e;font-weight:700;">&#x2714; Full WebXR</span></td>
-                <td style="padding:.65rem 1rem;color:var(--muted);font-family:monospace;white-space:nowrap;">2160&#xD7;2160</td>
-                <td style="padding:.65rem 1rem;color:var(--muted);font-size:.78rem;">Edge / Chrome + Windows Mixed Reality runtime</td>
+              <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.04)">
+                <td
+                  style="
+                    padding: 0.65rem 1rem;
+                    font-weight: 700;
+                    color: var(--text);
+                    white-space: nowrap;
+                  "
+                >
+                  HP Reverb G2
+                </td>
+                <td style="padding: 0.65rem 1rem">
+                  <span style="color: #22c55e; font-weight: 700"
+                    >&#x2714; Full WebXR</span
+                  >
+                </td>
+                <td
+                  style="
+                    padding: 0.65rem 1rem;
+                    color: var(--muted);
+                    font-family: monospace;
+                    white-space: nowrap;
+                  "
+                >
+                  2160&#xD7;2160
+                </td>
+                <td
+                  style="
+                    padding: 0.65rem 1rem;
+                    color: var(--muted);
+                    font-size: 0.78rem;
+                  "
+                >
+                  Edge / Chrome + Windows Mixed Reality runtime
+                </td>
               </tr>
-              <tr style="border-bottom:1px solid rgba(255,255,255,.04);">
-                <td style="padding:.65rem 1rem;font-weight:700;color:var(--text);white-space:nowrap;">Valve Index</td>
-                <td style="padding:.65rem 1rem;"><span style="color:#f59e0b;font-weight:700;">&#x26A0; Partial</span></td>
-                <td style="padding:.65rem 1rem;color:var(--muted);font-family:monospace;white-space:nowrap;">1440&#xD7;1600</td>
-                <td style="padding:.65rem 1rem;color:var(--muted);font-size:.78rem;">Chrome + SteamVR OpenXR required &bull; 130&deg; FoV</td>
+              <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.04)">
+                <td
+                  style="
+                    padding: 0.65rem 1rem;
+                    font-weight: 700;
+                    color: var(--text);
+                    white-space: nowrap;
+                  "
+                >
+                  Valve Index
+                </td>
+                <td style="padding: 0.65rem 1rem">
+                  <span style="color: #f59e0b; font-weight: 700"
+                    >&#x26A0; Partial</span
+                  >
+                </td>
+                <td
+                  style="
+                    padding: 0.65rem 1rem;
+                    color: var(--muted);
+                    font-family: monospace;
+                    white-space: nowrap;
+                  "
+                >
+                  1440&#xD7;1600
+                </td>
+                <td
+                  style="
+                    padding: 0.65rem 1rem;
+                    color: var(--muted);
+                    font-size: 0.78rem;
+                  "
+                >
+                  Chrome + SteamVR OpenXR required &bull; 130&deg; FoV
+                </td>
               </tr>
-              <tr style="border-bottom:1px solid rgba(255,255,255,.04);">
-                <td style="padding:.65rem 1rem;font-weight:700;color:var(--text);white-space:nowrap;">Apple Vision Pro</td>
-                <td style="padding:.65rem 1rem;"><span style="color:#f59e0b;font-weight:700;">&#x26A0; Cinema only</span></td>
-                <td style="padding:.65rem 1rem;color:var(--muted);font-family:monospace;white-space:nowrap;">3660&#xD7;3142</td>
-                <td style="padding:.65rem 1rem;color:var(--muted);font-size:.78rem;">Safari &bull; immersive-vr limited in visionOS &bull; flat cinema works</td>
+              <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.04)">
+                <td
+                  style="
+                    padding: 0.65rem 1rem;
+                    font-weight: 700;
+                    color: var(--text);
+                    white-space: nowrap;
+                  "
+                >
+                  Apple Vision Pro
+                </td>
+                <td style="padding: 0.65rem 1rem">
+                  <span style="color: #f59e0b; font-weight: 700"
+                    >&#x26A0; Cinema only</span
+                  >
+                </td>
+                <td
+                  style="
+                    padding: 0.65rem 1rem;
+                    color: var(--muted);
+                    font-family: monospace;
+                    white-space: nowrap;
+                  "
+                >
+                  3660&#xD7;3142
+                </td>
+                <td
+                  style="
+                    padding: 0.65rem 1rem;
+                    color: var(--muted);
+                    font-size: 0.78rem;
+                  "
+                >
+                  Safari &bull; immersive-vr limited in visionOS &bull; flat
+                  cinema works
+                </td>
               </tr>
               <tr>
-                <td style="padding:.65rem 1rem;font-weight:700;color:var(--text);white-space:nowrap;">PlayStation VR2</td>
-                <td style="padding:.65rem 1rem;"><span style="color:#ef4444;font-weight:700;">&#x2715; No WebXR</span></td>
-                <td style="padding:.65rem 1rem;color:var(--muted);font-family:monospace;white-space:nowrap;">2000&#xD7;2040</td>
-                <td style="padding:.65rem 1rem;color:var(--muted);font-size:.78rem;">No web browser &bull; requires native PS5 app</td>
+                <td
+                  style="
+                    padding: 0.65rem 1rem;
+                    font-weight: 700;
+                    color: var(--text);
+                    white-space: nowrap;
+                  "
+                >
+                  PlayStation VR2
+                </td>
+                <td style="padding: 0.65rem 1rem">
+                  <span style="color: #ef4444; font-weight: 700"
+                    >&#x2715; No WebXR</span
+                  >
+                </td>
+                <td
+                  style="
+                    padding: 0.65rem 1rem;
+                    color: var(--muted);
+                    font-family: monospace;
+                    white-space: nowrap;
+                  "
+                >
+                  2000&#xD7;2040
+                </td>
+                <td
+                  style="
+                    padding: 0.65rem 1rem;
+                    color: var(--muted);
+                    font-size: 0.78rem;
+                  "
+                >
+                  No web browser &bull; requires native PS5 app
+                </td>
               </tr>
             </tbody>
           </table>
         </div>
-        <p style="margin-top:.65rem;font-size:.72rem;color:var(--muted);text-align:center;">
-          All supported headsets: open <code style="color:var(--cyan);background:rgba(0,212,255,.08);padding:.1rem .35rem;border-radius:4px;">realaios.com/vr</code> in your headset browser &bull; Zero install &bull; No account required
+        <p
+          style="
+            margin-top: 0.65rem;
+            font-size: 0.72rem;
+            color: var(--muted);
+            text-align: center;
+          "
+        >
+          All supported headsets: open
+          <code
+            style="
+              color: var(--cyan);
+              background: rgba(0, 212, 255, 0.08);
+              padding: 0.1rem 0.35rem;
+              border-radius: 4px;
+            "
+            >realaios.com/vr</code
+          >
+          in your headset browser &bull; Zero install &bull; No account required
         </p>
       </div>
-
     </div>
 
     <!-- -- VR Scene Container (injected when Enter VR clicked) -- -->
@@ -2461,21 +2810,23 @@
           })
           .catch(() => {
             // Fallback: legacy sphere/panel scene
-            _swapIn(
-              _VR_EXIT_BTN + buildAFrameScene(currentProg),
-              () => {
-                const scene = container.querySelector("a-scene");
-                if (scene)
-                  scene.addEventListener("loaded", () => attachPanelListeners());
-              }
-            );
+            _swapIn(_VR_EXIT_BTN + buildAFrameScene(currentProg), () => {
+              const scene = container.querySelector("a-scene");
+              if (scene)
+                scene.addEventListener("loaded", () => attachPanelListeners());
+            });
           });
       }
 
       function exitVRScene() {
         stopAmbientTone();
         VRNarrator.stop();
-        if (xrSession) { try { xrSession.end(); } catch (_) {} xrSession = null; }
+        if (xrSession) {
+          try {
+            xrSession.end();
+          } catch (_) {}
+          xrSession = null;
+        }
         const container = document.getElementById("vr-scene-container");
         container.style.display = "none";
         container.innerHTML = "";
@@ -2517,14 +2868,14 @@
           el.textContent = /OculusBrowser|Quest/i.test(ua)
             ? "Meta Quest"
             : /Pico|PicoXR/i.test(ua)
-            ? "Pico"
-            : /Windows.+Mixed.+Reality/i.test(ua)
-            ? "WMR Headset"
-            : /HTC.+Vive|ViveBrowser/i.test(ua)
-            ? "HTC Vive"
-            : /Mobile|Android/i.test(ua)
-            ? "Mobile"
-            : "Desktop";
+              ? "Pico"
+              : /Windows.+Mixed.+Reality/i.test(ua)
+                ? "WMR Headset"
+                : /HTC.+Vive|ViveBrowser/i.test(ua)
+                  ? "HTC Vive"
+                  : /Mobile|Android/i.test(ua)
+                    ? "Mobile"
+                    : "Desktop";
         }
         const subEl = document.getElementById("prog-subtitle");
         if (subEl) {
@@ -2535,7 +2886,8 @@
             " categories \u00b7 Spatial audio 396\u2013963\u202fHz";
         }
         const catCntEl = document.getElementById("vr-cat-count");
-        if (catCntEl) catCntEl.textContent = String(Object.keys(CAT_META).length);
+        if (catCntEl)
+          catCntEl.textContent = String(Object.keys(CAT_META).length);
       })();
 
       // -- Auto-enter if ?prog= param present -------------------------------

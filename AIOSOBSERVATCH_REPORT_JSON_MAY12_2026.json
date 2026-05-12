@@ -171,20 +171,78 @@
       "space_missions": { "count": 1, "status": "live" },
       "medical_vr": { "count": 1, "status": "live" },
       "design_engineering": { "count": 1, "status": "live" },
-      "rollercoasters": { "count": 8, "status": "coming", "directive": "VRuX Production Directive" }
+      "rollercoasters": {
+        "count": 8,
+        "status": "coming",
+        "directive": "VRuX Production Directive"
+      }
     }
   },
   "vrCompatibility": {
     "headsets": [
-      { "name": "Meta Quest 2", "webxr": "full", "perEyeRes": "1832x1920", "status": "supported", "browser": "Quest Browser" },
-      { "name": "Meta Quest 3", "webxr": "full", "perEyeRes": "2064x2208", "status": "supported", "fov": "110deg" },
-      { "name": "Meta Quest Pro", "webxr": "full", "perEyeRes": "1800x1920", "status": "supported", "extras": "eye-tracking" },
-      { "name": "Pico 4 & Ultra", "webxr": "full", "perEyeRes": "2160x2160", "status": "supported", "fov": "105deg" },
-      { "name": "HTC Vive XR Elite", "webxr": "full", "perEyeRes": "1920x1920", "status": "supported", "fov": "105deg" },
-      { "name": "HP Reverb G2", "webxr": "full", "perEyeRes": "2160x2160", "status": "supported", "runtime": "WMR" },
-      { "name": "Valve Index", "webxr": "partial", "perEyeRes": "1440x1600", "status": "partial", "note": "Chrome + SteamVR OpenXR required" },
-      { "name": "Apple Vision Pro", "webxr": "cinema-only", "perEyeRes": "3660x3142", "status": "partial", "note": "Safari; immersive-vr limited in visionOS" },
-      { "name": "PlayStation VR2", "webxr": "none", "perEyeRes": "2000x2040", "status": "unsupported", "note": "No browser available" }
+      {
+        "name": "Meta Quest 2",
+        "webxr": "full",
+        "perEyeRes": "1832x1920",
+        "status": "supported",
+        "browser": "Quest Browser"
+      },
+      {
+        "name": "Meta Quest 3",
+        "webxr": "full",
+        "perEyeRes": "2064x2208",
+        "status": "supported",
+        "fov": "110deg"
+      },
+      {
+        "name": "Meta Quest Pro",
+        "webxr": "full",
+        "perEyeRes": "1800x1920",
+        "status": "supported",
+        "extras": "eye-tracking"
+      },
+      {
+        "name": "Pico 4 & Ultra",
+        "webxr": "full",
+        "perEyeRes": "2160x2160",
+        "status": "supported",
+        "fov": "105deg"
+      },
+      {
+        "name": "HTC Vive XR Elite",
+        "webxr": "full",
+        "perEyeRes": "1920x1920",
+        "status": "supported",
+        "fov": "105deg"
+      },
+      {
+        "name": "HP Reverb G2",
+        "webxr": "full",
+        "perEyeRes": "2160x2160",
+        "status": "supported",
+        "runtime": "WMR"
+      },
+      {
+        "name": "Valve Index",
+        "webxr": "partial",
+        "perEyeRes": "1440x1600",
+        "status": "partial",
+        "note": "Chrome + SteamVR OpenXR required"
+      },
+      {
+        "name": "Apple Vision Pro",
+        "webxr": "cinema-only",
+        "perEyeRes": "3660x3142",
+        "status": "partial",
+        "note": "Safari; immersive-vr limited in visionOS"
+      },
+      {
+        "name": "PlayStation VR2",
+        "webxr": "none",
+        "perEyeRes": "2000x2040",
+        "status": "unsupported",
+        "note": "No browser available"
+      }
     ]
   },
   "sessionChanges": {

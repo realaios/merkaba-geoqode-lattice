@@ -31,30 +31,30 @@
 
 ## &#x1F3E5; HEALTH CHECK SUMMARY
 
-| Metric                     | Count | Status |
-| -------------------------- | ----- | ------ |
-| **Total Endpoints**        | 6     | &#x1F7E2; Active |
+| Metric                     | Count | Status              |
+| -------------------------- | ----- | ------------------- |
+| **Total Endpoints**        | 6     | &#x1F7E2; Active    |
 | **Critical Endpoints**     | 2     | &#x1F7E2; Monitored |
 | **Non-Critical Endpoints** | 4     | &#x1F7E2; Monitored |
-| **Up**                     | 6     | &#x2705; |
-| **Down**                   | 0     | &mdash; |
-| **Unknown**                | 0     | &mdash; |
+| **Up**                     | 6     | &#x2705;            |
+| **Down**                   | 0     | &mdash;             |
+| **Unknown**                | 0     | &mdash;             |
 
 ### Critical Endpoints (SLA: 99.9% uptime)
 
-| Endpoint ID   | URL                                    | Status | Latency | Notes |
-| ------------- | -------------------------------------- | ------ | ------- | ----- |
-| **aios-root** | https://realaios.com/health            | &#x1F7E2; UP | ~120ms | PLAIStore + VR Hub serving |
-| **api-ready** | https://api.getbrains4ai.com/api/ready | &#x1F7E2; UP | ~85ms  | Storm API operational |
+| Endpoint ID   | URL                                    | Status       | Latency | Notes                      |
+| ------------- | -------------------------------------- | ------------ | ------- | -------------------------- |
+| **aios-root** | https://realaios.com/health            | &#x1F7E2; UP | ~120ms  | PLAIStore + VR Hub serving |
+| **api-ready** | https://api.getbrains4ai.com/api/ready | &#x1F7E2; UP | ~85ms   | Storm API operational      |
 
 ### Non-Critical Endpoints
 
-| Endpoint ID              | URL                                                  | Status | Purpose                    |
-| ------------------------ | ---------------------------------------------------- | ------ | -------------------------- |
-| **plai-categories**      | https://realaios.com/api/plai/categories             | &#x1F7E2; UP | PLAIstore app catalogue    |
-| **geo-stats**            | https://realaios.com/api/geo/stats                   | &#x1F7E2; UP | .geo live stats            |
-| **aiosdream-programmes** | https://realaios.com/api/aiosdream/programmes        | &#x1F7E2; UP | VR programme feed          |
-| **aios-vr-taxonomy**     | https://realaios.com/api/aios/vr/taxonomy            | &#x1F7E2; UP | VR taxonomy + compat data  |
+| Endpoint ID              | URL                                           | Status       | Purpose                   |
+| ------------------------ | --------------------------------------------- | ------------ | ------------------------- |
+| **plai-categories**      | https://realaios.com/api/plai/categories      | &#x1F7E2; UP | PLAIstore app catalogue   |
+| **geo-stats**            | https://realaios.com/api/geo/stats            | &#x1F7E2; UP | .geo live stats           |
+| **aiosdream-programmes** | https://realaios.com/api/aiosdream/programmes | &#x1F7E2; UP | VR programme feed         |
+| **aios-vr-taxonomy**     | https://realaios.com/api/aios/vr/taxonomy     | &#x1F7E2; UP | VR taxonomy + compat data |
 
 ---
 
@@ -120,31 +120,31 @@
 
 ### Status Breakdown
 
-| Status  | Count | Description |
-| ------- | ----- | ----------- |
-| **live**   | 39    | Fully operational, WebXR-ready |
+| Status     | Count | Description                                       |
+| ---------- | ----- | ------------------------------------------------- |
+| **live**   | 39    | Fully operational, WebXR-ready                    |
 | **coming** | 8     | VRuX Rollercoasters (production directive active) |
 
 ### Category Distribution
 
-| Category | Icon | Programmes | Status |
-| -------- | ---- | ---------- | ------ |
-| cinema | &#x1F3AC; | 6 | live |
-| enterprise | &#x1F4C8; | 5 | live |
-| lab | &#x2697; | 5 | live |
-| arcade | &#x1F3AE; | 4 | live |
-| wellness | &#x1F9D8; | 4 | live |
-| education | &#x1F4DA; | 3 | live |
-| art | &#x1F3A8; | 3 | live |
-| social | &#x1F91D; | 3 | live |
-| creator | &#x2728; | 3 | live |
-| combat_worlds | &#x2694; | 1 | live |
-| open_worlds | &#x1F30D; | 1 | live |
-| real_earth | &#x1F6F0; | 1 | live |
-| space_missions | &#x1F680; | 1 | live |
-| medical_vr | &#x1FA7A; | 1 | live |
-| design_engineering | &#x1F4D0; | 1 | live |
-| rollercoasters | &#x1F3A2; | 8 | coming (VRuX Production Directive) |
+| Category           | Icon      | Programmes | Status                             |
+| ------------------ | --------- | ---------- | ---------------------------------- |
+| cinema             | &#x1F3AC; | 6          | live                               |
+| enterprise         | &#x1F4C8; | 5          | live                               |
+| lab                | &#x2697;  | 5          | live                               |
+| arcade             | &#x1F3AE; | 4          | live                               |
+| wellness           | &#x1F9D8; | 4          | live                               |
+| education          | &#x1F4DA; | 3          | live                               |
+| art                | &#x1F3A8; | 3          | live                               |
+| social             | &#x1F91D; | 3          | live                               |
+| creator            | &#x2728;  | 3          | live                               |
+| combat_worlds      | &#x2694;  | 1          | live                               |
+| open_worlds        | &#x1F30D; | 1          | live                               |
+| real_earth         | &#x1F6F0; | 1          | live                               |
+| space_missions     | &#x1F680; | 1          | live                               |
+| medical_vr         | &#x1FA7A; | 1          | live                               |
+| design_engineering | &#x1F4D0; | 1          | live                               |
+| rollercoasters     | &#x1F3A2; | 8          | coming (VRuX Production Directive) |
 
 ### MAL Scene Mapping (10 Canonical Scenes)
 
@@ -165,17 +165,17 @@ All 47 programmes map to these canonical MAL scene IDs &mdash; NEVER add new one
 
 ## &#x1F6F7; VR HEADSET COMPATIBILITY MATRIX
 
-| Headset | WebXR | Per-Eye Res | Status |
-| ------- | ----- | ----------- | ------ |
-| Meta Quest 2 | &#x2714; Full | 1832&times;1920 | &#x1F7E2; Supported |
-| Meta Quest 3 | &#x2714; Full | 2064&times;2208 | &#x1F7E2; Supported (110&deg; FoV) |
-| Meta Quest Pro | &#x2714; Full | 1800&times;1920 | &#x1F7E2; Supported (eye tracking) |
-| Pico 4 & Ultra | &#x2714; Full | 2160&times;2160 | &#x1F7E2; Supported (105&deg; FoV) |
-| HTC Vive XR Elite | &#x2714; Full | 1920&times;1920 | &#x1F7E2; Supported (105&deg; FoV) |
-| HP Reverb G2 | &#x2714; Full | 2160&times;2160 | &#x1F7E2; Supported (WMR) |
-| Valve Index | &#x26A0; Partial | 1440&times;1600 | &#x1F7E1; Chrome + SteamVR |
-| Apple Vision Pro | &#x26A0; Cinema | 3660&times;3142 | &#x1F7E1; Safari, immersive-vr limited |
-| PlayStation VR2 | &#x2715; None | 2000&times;2040 | &#x1F534; No browser |
+| Headset           | WebXR            | Per-Eye Res     | Status                                 |
+| ----------------- | ---------------- | --------------- | -------------------------------------- |
+| Meta Quest 2      | &#x2714; Full    | 1832&times;1920 | &#x1F7E2; Supported                    |
+| Meta Quest 3      | &#x2714; Full    | 2064&times;2208 | &#x1F7E2; Supported (110&deg; FoV)     |
+| Meta Quest Pro    | &#x2714; Full    | 1800&times;1920 | &#x1F7E2; Supported (eye tracking)     |
+| Pico 4 & Ultra    | &#x2714; Full    | 2160&times;2160 | &#x1F7E2; Supported (105&deg; FoV)     |
+| HTC Vive XR Elite | &#x2714; Full    | 1920&times;1920 | &#x1F7E2; Supported (105&deg; FoV)     |
+| HP Reverb G2      | &#x2714; Full    | 2160&times;2160 | &#x1F7E2; Supported (WMR)              |
+| Valve Index       | &#x26A0; Partial | 1440&times;1600 | &#x1F7E1; Chrome + SteamVR             |
+| Apple Vision Pro  | &#x26A0; Cinema  | 3660&times;3142 | &#x1F7E1; Safari, immersive-vr limited |
+| PlayStation VR2   | &#x2715; None    | 2000&times;2040 | &#x1F534; No browser                   |
 
 ---
 
@@ -234,5 +234,5 @@ All 47 programmes map to these canonical MAL scene IDs &mdash; NEVER add new one
 
 ---
 
-*Report generated by AIOSOVERwatch (Babysitter on Duty) &mdash; 2026-05-12*
-*Architecture: 8&rarr;26&rarr;48:480 | PHI=1.618 | PSI=1.414 | BASE_FREQ=72Hz*
+_Report generated by AIOSOVERwatch (Babysitter on Duty) &mdash; 2026-05-12_
+_Architecture: 8&rarr;26&rarr;48:480 | PHI=1.618 | PSI=1.414 | BASE_FREQ=72Hz_
