@@ -12851,6 +12851,516 @@
         }
       },
       "layers": []
+    },
+    "brown_photostudio_vr": {
+      "id": "brown_photostudio_vr",
+      "title": "Brown Photo Studio",
+      "logline": "A warm-toned professional studio where every subject becomes a portrait.",
+      "palette": "roman_arena",
+      "sound": "ambient_indoor",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "The studio is ready. The question is whether you are.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "30s",
+          "text": "Warm tones do not lie — they simply tell a kinder truth.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "60s",
+          "text": "Every great portrait begins with someone choosing to be seen.",
+          "durationMs": 5000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#c89060"
+        },
+        "fog": {
+          "color": "#b88050",
+          "density": 0.005
+        }
+      },
+      "layers": []
+    },
+    "dancing_hall_vr": {
+      "id": "dancing_hall_vr",
+      "title": "The Dancing Hall",
+      "logline": "A grand ballroom suspended mid-waltz, waiting for the music to remember itself.",
+      "palette": "golden_hour",
+      "sound": "ambient_indoor",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "The hall holds the memory of every dance that ever happened here.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "30s",
+          "text": "Ballrooms are the places where formality and joy negotiate a truce.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "60s",
+          "text": "The empty floor is an invitation, not an absence.",
+          "durationMs": 5000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#e8c870"
+        },
+        "fog": {
+          "color": "#d8b860",
+          "density": 0.006
+        }
+      },
+      "layers": []
+    },
+    "empty_warehouse_vr": {
+      "id": "empty_warehouse_vr",
+      "title": "Empty Warehouse",
+      "logline": "Industrial space stripped of purpose — now a cathedral of potential.",
+      "palette": "simulation",
+      "sound": "ambient_hum",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "Empty spaces are not empty — they are full of what comes next.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "30s",
+          "text": "The warehouse remembers everything it held. The air knows.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "60s",
+          "text": "Vacancy is the first condition of creation.",
+          "durationMs": 5000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#a0b0c0"
+        },
+        "fog": {
+          "color": "#889aaa",
+          "density": 0.01
+        }
+      },
+      "layers": []
+    },
+    "kiara_morning_vr": {
+      "id": "kiara_morning_vr",
+      "title": "Kiara Mid-Morning",
+      "logline": "African savanna in that golden window between dawn mist and scorching noon.",
+      "palette": "golden_hour",
+      "sound": "ambient_nature",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "Mid-morning is the hour Africa makes its promises for the day.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "30s",
+          "text": "The savanna holds its breath as the day heats up from the east.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "60s",
+          "text": "Kiara — where even the light seems to know where it belongs.",
+          "durationMs": 5000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#f0c040"
+        },
+        "fog": {
+          "color": "#d8a828",
+          "density": 0.008
+        }
+      },
+      "layers": []
+    },
+    "lebombo_vr": {
+      "id": "lebombo_vr",
+      "title": "Lebombo Ridge",
+      "logline": "Ancient mountains along the Mozambique border, watching civilisations pass below.",
+      "palette": "forest",
+      "sound": "ambient_wind",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "The Lebombo has watched every empire that ever crossed it.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "30s",
+          "text": "Mountains that old have a different relationship with urgency.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "60s",
+          "text": "From the ridge, every border below looks arbitrary.",
+          "durationMs": 5000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#88c060"
+        },
+        "fog": {
+          "color": "#70a848",
+          "density": 0.009
+        }
+      },
+      "layers": []
+    },
+    "old_depot_vr": {
+      "id": "old_depot_vr",
+      "title": "Old Railway Depot",
+      "logline": "A locomotive graveyard where iron dreams rust into permanence.",
+      "palette": "simulation",
+      "sound": "ambient_industrial",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "Every engine here once believed in its own journey.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "30s",
+          "text": "The depot is where speed goes when it finally runs out of track.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "60s",
+          "text": "Rust is just iron returning to the geological conversation.",
+          "durationMs": 5000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#7080a0"
+        },
+        "fog": {
+          "color": "#506070",
+          "density": 0.015
+        }
+      },
+      "layers": []
+    },
+    "outdoor_umbrellas_vr": {
+      "id": "outdoor_umbrellas_vr",
+      "title": "Outdoor Café Umbrellas",
+      "logline": "Striped canvas overhead — the Mediterranean art of sitting still in style.",
+      "palette": "roman_arena",
+      "sound": "ambient_village",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "The umbrellas are open. That means something is about to happen.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "30s",
+          "text": "Outdoor cafés are where ideas get permission to arrive slowly.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "60s",
+          "text": "Shade is the luxury that turns a table into a destination.",
+          "durationMs": 5000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#f0e0a0"
+        },
+        "fog": {
+          "color": "#e8d890",
+          "density": 0.006
+        }
+      },
+      "layers": []
+    },
+    "rooitou_park_vr": {
+      "id": "rooitou_park_vr",
+      "title": "Rooitou Reserve",
+      "logline": "Red-earth South African bushveld under a sky too blue to be believed.",
+      "palette": "desert_dawn",
+      "sound": "ambient_nature",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "Rooitou: where the earth is red enough to stain everything it touches.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "30s",
+          "text": "The bushveld runs on its own clock — not yours.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "60s",
+          "text": "Every animal path here has been walked for a thousand years.",
+          "durationMs": 5000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#b86030"
+        },
+        "fog": {
+          "color": "#a05020",
+          "density": 0.012
+        }
+      },
+      "layers": []
+    },
+    "country_club_vr": {
+      "id": "country_club_vr",
+      "title": "Country Club Grounds",
+      "logline": "Manicured greens where the old money of sport meets the democracy of grass.",
+      "palette": "forest",
+      "sound": "ambient_nature",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "The greens are perfect because someone decided they should be.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "30s",
+          "text": "Country clubs are places where ambition wears linen.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "60s",
+          "text": "A perfect lawn is a conversation with nature about control.",
+          "durationMs": 5000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#90c870"
+        },
+        "fog": {
+          "color": "#78b058",
+          "density": 0.007
+        }
+      },
+      "layers": []
+    },
+    "quarry_vr": {
+      "id": "quarry_vr",
+      "title": "The Quarry",
+      "logline": "A hewn landscape where stone was extracted by force — now filled with sky.",
+      "palette": "abyss",
+      "sound": "ambient_wind",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "The quarry is a wound in the earth that has learned to hold water.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "30s",
+          "text": "Every stone taken from here is somewhere else now, holding something up.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "60s",
+          "text": "Abandoned quarries become the most honest architecture.",
+          "durationMs": 5000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#607080"
+        },
+        "fog": {
+          "color": "#405060",
+          "density": 0.018
+        }
+      },
+      "layers": []
+    },
+    "winter_evening_vr": {
+      "id": "winter_evening_vr",
+      "title": "Winter Evening",
+      "logline": "A blue-hour winter dusk that compresses the world into cold and light.",
+      "palette": "abyss",
+      "sound": "ambient_wind",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "Winter evenings arrive early and stay until they are finished with you.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "30s",
+          "text": "The blue hour is when day and night agree to share the sky briefly.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "60s",
+          "text": "Cold makes everything that is warm feel like an argument for existence.",
+          "durationMs": 5000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#2040a0"
+        },
+        "fog": {
+          "color": "#183080",
+          "density": 0.02
+        }
+      },
+      "layers": []
+    },
+    "misty_pines_vr": {
+      "id": "misty_pines_vr",
+      "title": "Misty Pine Forest",
+      "logline": "Tall pines dissolving upward into mist — the forest as breathing cathedral.",
+      "palette": "forest",
+      "sound": "ambient_nature",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "The mist doesn't hide the forest — it reveals its depth.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "30s",
+          "text": "Pine forests have a specific kind of silence that demands respect.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "60s",
+          "text": "Walking into mist is always an act of trust in what comes next.",
+          "durationMs": 5000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#708070"
+        },
+        "fog": {
+          "color": "#607860",
+          "density": 0.025
+        }
+      },
+      "layers": []
+    },
+    "rural_road_vr": {
+      "id": "rural_road_vr",
+      "title": "Rural Asphalt Road",
+      "logline": "A straight country road that goes exactly where it says it does.",
+      "palette": "golden_hour",
+      "sound": "ambient_wind",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "Rural roads are honest — they go exactly where they say they go.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "30s",
+          "text": "The asphalt holds heat longer than any relationship.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "60s",
+          "text": "Every straight road is a question: are you sure this is the way?",
+          "durationMs": 5000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#d0c090"
+        },
+        "fog": {
+          "color": "#c0b080",
+          "density": 0.009
+        }
+      },
+      "layers": []
+    },
+    "autumn_field_vr": {
+      "id": "autumn_field_vr",
+      "title": "Autumn Puresky Field",
+      "logline": "A harvest field under a flawless autumn sky — the earth at its most generous.",
+      "palette": "golden_hour",
+      "sound": "ambient_wind",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "Autumn fields are the earth's receipt for a year of labour.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "30s",
+          "text": "The puresky above makes no apology for its perfection.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "60s",
+          "text": "Harvest time is the season when patience finally gets its answer.",
+          "durationMs": 5000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#e8a840"
+        },
+        "fog": {
+          "color": "#d09030",
+          "density": 0.008
+        }
+      },
+      "layers": []
+    },
+    "kiara_studio_vr": {
+      "id": "kiara_studio_vr",
+      "title": "Kiara Lighting Studio",
+      "logline": "A controlled daylight studio that asks every subject to be its best self.",
+      "palette": "simulation",
+      "sound": "ambient_indoor",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "Studio light is the most democratic light — it favours no one.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "30s",
+          "text": "The light here is calibrated to reveal, not to flatter.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "60s",
+          "text": "What you look like in a Kiara studio is what you actually look like.",
+          "durationMs": 5000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#d0e0e8"
+        },
+        "fog": {
+          "color": "#c0d0d8",
+          "density": 0.004
+        }
+      },
+      "layers": []
     }
   }
 }

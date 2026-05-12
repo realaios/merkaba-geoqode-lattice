@@ -638,6 +638,22 @@ const SKY_IMGS = {
   aft_lounge_vr: "/geoassets/skies/aft_lounge.jpg",
   mud_road_vr: "/geoassets/skies/mud_road_puresky.jpg",
   small_studio_vr: "/geoassets/skies/studio_small_03.jpg",
+  // Wave 8 — new Polyhaven downloads
+  brown_photostudio_vr: "/geoassets/skies/brown_photostudio_02.jpg",
+  dancing_hall_vr: "/geoassets/skies/dancing_hall.jpg",
+  empty_warehouse_vr: "/geoassets/skies/empty_warehouse_01.jpg",
+  kiara_morning_vr: "/geoassets/skies/kiara_4_mid-morning.jpg",
+  lebombo_vr: "/geoassets/skies/lebombo.jpg",
+  old_depot_vr: "/geoassets/skies/old_depot.jpg",
+  outdoor_umbrellas_vr: "/geoassets/skies/outdoor_umbrellas.jpg",
+  rooitou_park_vr: "/geoassets/skies/rooitou_park.jpg",
+  country_club_vr: "/geoassets/skies/country_club.jpg",
+  quarry_vr: "/geoassets/skies/quarry_01.jpg",
+  winter_evening_vr: "/geoassets/skies/winter_evening.jpg",
+  misty_pines_vr: "/geoassets/skies/misty_pines.jpg",
+  rural_road_vr: "/geoassets/skies/rural_asphalt_road.jpg",
+  autumn_field_vr: "/geoassets/skies/autumn_field_puresky.jpg",
+  kiara_studio_vr: "/geoassets/skies/kiara_4_mid-morning.jpg",
 };
 
 function buildEnvironment(env, palette, sceneId) {
