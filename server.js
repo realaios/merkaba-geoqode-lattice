@@ -4305,6 +4305,44 @@ footer{text-align:center;padding:2.5rem;color:#2a3a50;font-size:0.8rem;border-to
       return res.end();
     }
 
+    // ── GET /api/vr/mine-status — VR autonomous mining pipeline status ─────
+    if (req.method === "GET" && pathname === "/api/vr/mine-status") {
+      try {
+        const minedPath = join(__dirname, "data", "mined-assets.json");
+        const loopPath = join(__dirname, "data", "vr-loop-status.json");
+        const minedData = existsSync(minedPath)
+          ? JSON.parse(readFileSync(minedPath, "utf8"))
+          : { assets: [] };
+        const loopStatus = existsSync(loopPath)
+          ? JSON.parse(readFileSync(loopPath, "utf8"))
+          : { cycles: 0, lastRun: null };
+        const assets = minedData.assets || [];
+        const sources = {};
+        for (const a of assets) {
+          sources[a.source || "unknown"] = (sources[a.source || "unknown"] || 0) + 1;
+        }
+        const payload = {
+          totalAssets: assets.length,
+          sources,
+          lastMined: minedData.lastUpdated || null,
+          loopCycles: loopStatus.cycles || 0,
+          lastRun: loopStatus.lastRun || null,
+          nextRunAt: loopStatus.nextRunAt || null,
+          geoCoordinate: {
+            architectureSignature: "8,26,48:480",
+            semanticType: "NARRATIVE",
+            frequency: 963,
+            latticeNode: 12,
+          },
+        };
+        res.writeHead(200, { "Content-Type": "application/json; charset=utf-8" });
+        return res.end(JSON.stringify(payload));
+      } catch (err) {
+        res.writeHead(500, { "Content-Type": "application/json" });
+        return res.end(JSON.stringify({ error: err.message }));
+      }
+    }
+
     // ── 404 — HTML for browsers, JSON for API clients ──────────────────
     const accept404 = req.headers["accept"] || "";
     if (accept404.includes("text/html") || accept404.includes("*/*")) {
@@ -5016,6 +5054,70 @@ server.listen(PORT, () => {
       `[GeoQode OS] Pages MISSING (${missing.length}): ${missing.join(", ")}`,
     );
 });
+
+// ── AIOS VR Autonomous Mining Loop ───────────────────────────────────────────
+// Mines Sketchfab / PolyHaven / Poly Pizza / NASA 3D assets on a 12h cycle,
+// auto-generates A-Frame scenes, updates vr-taxonomy + MAL, then git push.
+// Only starts if AIOS_VR_MINING=true (opt-in to avoid running in restricted envs).
+if (process.env.AIOS_VR_MINING === "true") {
+  (async () => {
+    try {
+      const { AIOSAssetMinerAgent } = await import(
+        "./geo/intelligence/AIOSAssetMinerAgent.js"
+      );
+      const { spawn } = await import("child_process");
+      const { join: _join } = await import("path");
+      const { fileURLToPath: _ftu } = await import("url");
+
+      const _vrLoopDir = _join(
+        dirname(fileURLToPath(import.meta.url)),
+        "scripts",
+      );
+      const CYCLE_MS =
+        parseFloat(process.env.VR_CYCLE_HOURS || "12") * 60 * 60 * 1000;
+
+      async function _runVRCycle() {
+        console.log("[VRLoop] Starting mining cycle...");
+        try {
+          const agent = new AIOSAssetMinerAgent({
+            nasaApiKey: process.env.NASA_API_KEY || "DEMO_KEY",
+            sketchfabApiKey: process.env.SKETCHFAB_API_KEY || null,
+          });
+          const result = await agent.run();
+          console.log(`[VRLoop] Mined: ${result.assetsAdded || 0} new assets`);
+        } catch (err) {
+          console.warn("[VRLoop] Mining error:", err.message);
+        }
+        for (const script of [
+          "aios-vr-scene-generator.mjs",
+          "aios-mal-injector.mjs",
+        ]) {
+          await new Promise((resolve) => {
+            const child = spawn(
+              process.execPath,
+              [_join(_vrLoopDir, script)],
+              { cwd: dirname(fileURLToPath(import.meta.url)), stdio: "inherit", env: process.env },
+            );
+            child.on("close", resolve);
+          });
+        }
+        console.log("[VRLoop] Cycle complete.");
+      }
+
+      // First run after 60s warmup, then repeat every CYCLE_MS
+      setTimeout(async () => {
+        await _runVRCycle();
+        setInterval(_runVRCycle, CYCLE_MS);
+      }, 60_000);
+
+      console.log("[VRLoop] AIOS VR autonomous mining ENABLED — first cycle in 60s");
+    } catch (err) {
+      console.warn("[VRLoop] Failed to start VR mining loop:", err.message);
+    }
+  })();
+} else {
+  console.log("[VRLoop] AIOS_VR_MINING not set — mining loop disabled (set AIOS_VR_MINING=true to enable)");
+}
 
 process.on("SIGINT", () => {
   console.log("[GeoQode OS] Shutdown");

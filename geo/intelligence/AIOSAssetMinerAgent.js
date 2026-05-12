@@ -9,9 +9,21 @@
 //            the asset registry so VrStudioSwarm + MALSwarm can consume them.
 //
 // Sources  : NASA APIs, SpaceX Flickr CC0, Freesound CC0, PolyHaven CC0,
-//            Sketchfab (CC licensed), GrabCAD community, OSMBuildings,
-//            ESA Copernicus, Google Maps Static/Street View (display-only),
+//            Sketchfab (CC licensed glTF), Poly Pizza (CC0 glTF),
+//            GrabCAD community, OSMBuildings, ESA Copernicus,
+//            Google Maps Static/Street View (display-only),
 //            NIH 3D Print Exchange CC0.
+//
+// TODO [A23D] : A23D (https://www.a23d.co) — 520K+ 3D assets, glTF format.
+//   No public REST API exists. Integration options when subscribed:
+//   Option 1 — Plugin API Sniff: Install A23D Blender plugin, run Fiddler/
+//     Charles proxy, capture auth token + download endpoints, replicate in
+//     Node.js. Key to intercept: auth header, asset ID pattern, format param.
+//   Option 2 — Playwright automation: Login → browse → intercept download
+//     URL → stream to R2. Higher ToS risk, use with rate limits + random
+//     delays to mimic human behaviour.
+//   Implement as: mineA23D(category, maxAssets) in this agent when ready.
+//   Registry key: source="a23d", license="commercial-subscription"
 
 import fs from "fs";
 import path from "path";
@@ -53,6 +65,19 @@ const ENDPOINTS = {
   spacex_launches: "https://api.spacexdata.com/v4/launches/latest",
   freesound_search:
     "https://freesound.org/apiv2/search/text/?query={query}&fields=id,name,url,license,previews,duration&token={token}",
+  // Sketchfab REST API — requires SKETCHFAB_API_KEY env var
+  sketchfab_search:
+    "https://api.sketchfab.com/v3/models?downloadable=true&license=cc&type=models&sort_by=-likeCount&count=24&q={query}",
+  sketchfab_download:
+    "https://api.sketchfab.com/v3/models/{uid}/download",
+  // PolyHaven — CC0, no auth required
+  polyhaven_assets: "https://api.polyhaven.com/assets?t={type}",
+  polyhaven_files: "https://api.polyhaven.com/files/{slug}",
+  // Poly Pizza — CC0 glTF models
+  polypizza_search:
+    "https://poly.pizza/api/search?q={query}&format=gltf&limit=20",
+  // NASA 3D model browser (public domain gltf/obj files)
+  nasa3d_models: "https://nasa3d.arc.nasa.gov/api/nasaModels",
 };
 
 export class AIOSAssetMinerAgent {
@@ -63,6 +88,8 @@ export class AIOSAssetMinerAgent {
       options.freesoundToken || process.env.FREESOUND_TOKEN || null;
     this.nasaApiKey =
       options.nasaApiKey || process.env.NASA_API_KEY || "DEMO_KEY";
+    this.sketchfabApiKey =
+      options.sketchfabApiKey || process.env.SKETCHFAB_API_KEY || null;
     this.verbose = options.verbose !== false;
     this._registry = {
       assets: [],
@@ -346,6 +373,248 @@ export class AIOSAssetMinerAgent {
     return results;
   }
 
+  // ── Mine Sketchfab CC/CC0 downloadable glTF models ───────────────────────
+  async mineSketchfab(query = "space station") {
+    if (!this.sketchfabApiKey) {
+      this._log("Sketchfab: skipped — no key (set SKETCHFAB_API_KEY env var)");
+      return [];
+    }
+    this._log(`Mining Sketchfab glTF — query="${query}"`);
+    const url = ENDPOINTS.sketchfab_search.replace(
+      "{query}",
+      encodeURIComponent(query),
+    );
+    const data = await this._fetchAuth(url, `Token ${this.sketchfabApiKey}`).catch(
+      () => null,
+    );
+    if (!data?.results) return [];
+
+    const results = [];
+    for (const model of data.results.slice(0, 12)) {
+      const thumbnailUrl = model.thumbnails?.images?.[0]?.url || null;
+      const uid = model.uid;
+      if (!uid) continue;
+      // Build a stable viewer/embed URL; download URL requires a separate auth call
+      const embedUrl = `https://sketchfab.com/models/${uid}/embed`;
+      const apiUrl = `https://api.sketchfab.com/v3/models/${uid}`;
+      if (this._isDuplicate(apiUrl)) continue;
+
+      const license = (model.license?.label || "CC BY 4.0").toLowerCase();
+      const asset = {
+        id: `sketchfab_${uid}`,
+        title: model.name || "Sketchfab Model",
+        description: (model.description || "").slice(0, 200),
+        url: apiUrl,
+        embedUrl,
+        thumbnailUrl,
+        sketchfabUid: uid,
+        source: "sketchfab",
+        type: "3d_model",
+        format: "gltf",
+        license,
+        tags: (model.tags || []).map((t) => t.name || t).slice(0, 8),
+        viewCount: model.viewCount || 0,
+        likeCount: model.likeCount || 0,
+        suitability: 0,
+        geoCoordinate: { ...GEO_COORDINATE },
+        // Download endpoint — call separately with auth once ready to embed
+        downloadEndpoint: ENDPOINTS.sketchfab_download.replace("{uid}", uid),
+      };
+      asset.suitability = this.rateSuitability(asset);
+      results.push(asset);
+    }
+    this._log(`Sketchfab: found ${results.length} models for "${query}"`);
+    return results;
+  }
+
+  // ── Mine PolyHaven CC0 (HDRIs, textures, 3D models) ─────────────────────
+  async minePolyHaven(type = "hdri", maxItems = 20) {
+    this._log(`Mining PolyHaven — type="${type}"`);
+    const url = ENDPOINTS.polyhaven_assets.replace("{type}", type);
+    const data = await this._fetch(url).catch(() => null);
+    if (!data || typeof data !== "object") return [];
+
+    const entries = Object.entries(data).slice(0, maxItems);
+    const results = [];
+    for (const [slug, meta] of entries) {
+      const assetUrl = `https://api.polyhaven.com/files/${slug}`;
+      if (this._isDuplicate(assetUrl)) continue;
+
+      let downloadUrl = null;
+      if (type === "hdri") {
+        downloadUrl = `https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/4k/${slug}_4k.hdr`;
+      } else if (type === "3d-model" || type === "models") {
+        downloadUrl = `https://dl.polyhaven.org/file/ph-assets/3D%20Models/gltf/${slug}/${slug}.gltf`;
+      }
+
+      const asset = {
+        id: `polyhaven_${slug}`,
+        title: meta.name || slug,
+        description: meta.name ? `PolyHaven ${type}: ${meta.name}` : `PolyHaven ${slug}`,
+        url: assetUrl,
+        downloadUrl,
+        slug,
+        source: "polyhaven",
+        type: type === "hdri" ? "hdri_environment" : "3d_model",
+        format: type === "hdri" ? "hdr" : "gltf",
+        license: "cc0",
+        tags: [type, "polyhaven", "cc0", ...(meta.tags || []).slice(0, 5)],
+        categories: meta.categories || [],
+        suitability: 0,
+        geoCoordinate: { ...GEO_COORDINATE },
+        // A-Frame usage:
+        //   HDRI   → <a-sky src="${downloadUrl}">
+        //   Model  → <a-gltf-model src="${downloadUrl}">
+        aframeComponent: type === "hdri" ? "a-sky" : "a-gltf-model",
+      };
+      asset.suitability = this.rateSuitability(asset);
+      results.push(asset);
+    }
+    this._log(`PolyHaven: found ${results.length} ${type} assets`);
+    return results;
+  }
+
+  // ── Mine Poly Pizza CC0 glTF models ─────────────────────────────────────
+  async minePolyPizza(query = "space") {
+    this._log(`Mining Poly Pizza glTF — query="${query}"`);
+    // Poly Pizza has a public JSON search endpoint
+    const url = `https://poly.pizza/api/search?q=${encodeURIComponent(query)}&format=gltf&limit=20`;
+    const data = await this._fetch(url).catch(() => null);
+    // Response varies — try both result shapes
+    const items = data?.results || data?.models || (Array.isArray(data) ? data : null);
+    if (!items) {
+      this._log(`Poly Pizza: no results (API may require auth key, skipping)`);
+      return [];
+    }
+
+    const results = [];
+    for (const model of items.slice(0, 16)) {
+      const modelUrl = model.download || model.url || model.gltf;
+      if (!modelUrl || this._isDuplicate(modelUrl)) continue;
+      const asset = {
+        id: `polypizza_${model.id || model.slug || Date.now()}`,
+        title: model.name || model.title || "Poly Pizza Model",
+        description: model.description ? model.description.slice(0, 200) : "",
+        url: modelUrl,
+        thumbnailUrl: model.thumbnail || model.image || null,
+        source: "polypizza",
+        type: "3d_model",
+        format: "gltf",
+        license: "cc0",
+        tags: [query, "polypizza", "cc0", "gltf"],
+        suitability: 0,
+        geoCoordinate: { ...GEO_COORDINATE },
+        aframeComponent: "a-gltf-model",
+      };
+      asset.suitability = this.rateSuitability(asset);
+      results.push(asset);
+    }
+    this._log(`Poly Pizza: found ${results.length} models for "${query}"`);
+    return results;
+  }
+
+  // ── Mine NASA 3D resources page (known public-domain glTF/OBJ) ───────────
+  async mineNASA3DKnownModels() {
+    this._log("Mining NASA 3D known public-domain models");
+    // These are stable, well-known NASA 3D asset URLs (public domain)
+    const KNOWN_NASA_3D = [
+      { id: "nasa3d_iss", title: "International Space Station", url: "https://nasa3d.arc.nasa.gov/models/iss", tags: ["iss", "space_station", "nasa"] },
+      { id: "nasa3d_hubble", title: "Hubble Space Telescope", url: "https://nasa3d.arc.nasa.gov/models/hubble", tags: ["hubble", "telescope", "nasa"] },
+      { id: "nasa3d_perseverance", title: "Mars Perseverance Rover", url: "https://nasa3d.arc.nasa.gov/models/mars_perseverance_rover", tags: ["mars", "rover", "perseverance", "nasa"] },
+      { id: "nasa3d_artemis_sls", title: "Artemis SLS Rocket", url: "https://nasa3d.arc.nasa.gov/models/sls", tags: ["rocket", "artemis", "sls", "nasa"] },
+      { id: "nasa3d_orion", title: "Orion Capsule", url: "https://nasa3d.arc.nasa.gov/models/orion_capsule", tags: ["orion", "capsule", "nasa", "artemis"] },
+      { id: "nasa3d_apollo_lm", title: "Apollo Lunar Module", url: "https://nasa3d.arc.nasa.gov/models/apollo_lunar_module", tags: ["apollo", "moon", "lm", "nasa"] },
+      { id: "nasa3d_saturn_v", title: "Saturn V Rocket", url: "https://nasa3d.arc.nasa.gov/models/saturn_v", tags: ["saturn_v", "rocket", "apollo", "nasa"] },
+      { id: "nasa3d_webb", title: "James Webb Space Telescope", url: "https://nasa3d.arc.nasa.gov/models/webb", tags: ["webb", "telescope", "jwst", "nasa"] },
+      { id: "nasa3d_voyager", title: "Voyager Spacecraft", url: "https://nasa3d.arc.nasa.gov/models/voyager", tags: ["voyager", "spacecraft", "nasa"] },
+      { id: "nasa3d_spitzer", title: "Spitzer Space Telescope", url: "https://nasa3d.arc.nasa.gov/models/spitzer", tags: ["spitzer", "telescope", "nasa"] },
+    ];
+
+    const results = [];
+    for (const m of KNOWN_NASA_3D) {
+      if (this._isDuplicate(m.url)) continue;
+      const asset = {
+        ...m,
+        description: `${m.title} — NASA 3D Resources (public domain)`,
+        source: "nasa3d.known",
+        type: "3d_model",
+        format: "gltf_or_obj",
+        license: "public_domain",
+        suitability: 0,
+        geoCoordinate: { ...GEO_COORDINATE },
+        aframeComponent: "a-gltf-model",
+        downloadNote: "Visit URL to get direct .glb/.gltf download link",
+      };
+      asset.suitability = this.rateSuitability(asset);
+      results.push(asset);
+    }
+    this._log(`NASA 3D known: registered ${results.length} canonical models`);
+    return results;
+  }
+
+  // ── Generic fetch wrapper (no external dependencies) ─────────────────────
+  async _fetch(url) {
+    const { default: https } = await import("https");
+    const { default: http } = await import("http");
+    return new Promise((resolve, reject) => {
+      const lib = url.startsWith("https") ? https : http;
+      const req = lib.get(
+        url,
+        { headers: { "User-Agent": "AIOSAssetMiner/2.0 (realaios.com)" } },
+        (res) => {
+          const chunks = [];
+          res.on("data", (c) => chunks.push(c));
+          res.on("end", () => {
+            try {
+              resolve(JSON.parse(Buffer.concat(chunks).toString()));
+            } catch (_) {
+              resolve(null);
+            }
+          });
+        },
+      );
+      req.on("error", reject);
+      req.setTimeout(14000, () => {
+        req.destroy();
+        reject(new Error("timeout"));
+      });
+    });
+  }
+
+  // ── Authenticated fetch (Bearer / Token header) ───────────────────────────
+  async _fetchAuth(url, authHeader) {
+    const { default: https } = await import("https");
+    const { default: http } = await import("http");
+    return new Promise((resolve, reject) => {
+      const lib = url.startsWith("https") ? https : http;
+      const req = lib.get(
+        url,
+        {
+          headers: {
+            "User-Agent": "AIOSAssetMiner/2.0 (realaios.com)",
+            Authorization: authHeader,
+          },
+        },
+        (res) => {
+          const chunks = [];
+          res.on("data", (c) => chunks.push(c));
+          res.on("end", () => {
+            try {
+              resolve(JSON.parse(Buffer.concat(chunks).toString()));
+            } catch (_) {
+              resolve(null);
+            }
+          });
+        },
+      );
+      req.on("error", reject);
+      req.setTimeout(14000, () => {
+        req.destroy();
+        reject(new Error("timeout"));
+      });
+    });
+  }
+
   // ── Write mined assets to registry ───────────────────────────────────────
   writeToRegistry(newAssets) {
     const before = this._registry.assets.length;
@@ -361,7 +630,7 @@ export class AIOSAssetMinerAgent {
     return added;
   }
 
-  // ── Full mine run ─────────────────────────────────────────────────────────
+  // ── Full mine run — all sources ───────────────────────────────────────────
   async run(queries = {}) {
     const startedAt = Date.now();
     this._log(
@@ -370,36 +639,74 @@ export class AIOSAssetMinerAgent {
 
     this._loadRegistry();
 
+    // ── Configurable query sets ──────────────────────────────────────────
     const nasaQueries = queries.nasa || [
       "nebula",
       "earth from space",
       "rocket launch",
       "ISS",
+      "galaxy",
+      "aurora",
     ];
     const soundQueries = queries.sound || [
       "space ambient",
       "rocket engine",
       "wind mountain",
       "ocean waves",
+      "forest birds",
     ];
     const modelCategories = queries.models || [
       "spacecraft",
       "mars",
       "satellite",
+      "planet",
+    ];
+    const sketchfabQueries = queries.sketchfab || [
+      "space station interior",
+      "alien planet environment",
+      "futuristic city",
+      "sci-fi room",
+      "nebula skybox",
+      "spaceship cockpit",
+    ];
+    const polyPizzaQueries = queries.polyPizza || [
+      "space",
+      "rock stone",
+      "nature tree",
+      "robot character",
+      "architecture",
     ];
 
+    // ── Run all miners in parallel ───────────────────────────────────────
     const batches = await Promise.allSettled([
+      // NASA imagery
       ...nasaQueries.map((q) => this.mineNASA(q)),
+      // Mars rover imagery
       this.mineMarsMission(),
+      // SpaceX launches
       this.mineSpaceX(),
+      // Freesound CC0 audio
       ...soundQueries.map((q) => this.mineFreesound(q)),
+      // NASA images API 3D search
       ...modelCategories.map((c) => this.mine3DModels(c)),
+      // NASA 3D known canonical models
+      this.mineNASA3DKnownModels(),
+      // Sketchfab CC glTF (requires SKETCHFAB_API_KEY)
+      ...sketchfabQueries.map((q) => this.mineSketchfab(q)),
+      // PolyHaven CC0 HDRIs (for <a-sky> environments)
+      this.minePolyHaven("hdri"),
+      // PolyHaven CC0 3D models (for <a-gltf-model>)
+      this.minePolyHaven("3d-model"),
+      // Poly Pizza CC0 glTF models
+      ...polyPizzaQueries.map((q) => this.minePolyPizza(q)),
     ]);
 
     let totalNew = 0;
     for (const result of batches) {
       if (result.status === "fulfilled" && Array.isArray(result.value)) {
         totalNew += this.writeToRegistry(result.value);
+      } else if (result.status === "rejected") {
+        this._log("Batch error:", result.reason?.message || result.reason);
       }
     }
 
@@ -407,6 +714,7 @@ export class AIOSAssetMinerAgent {
 
     const elapsed = ((Date.now() - startedAt) / 1000).toFixed(1);
     this._log(`Run complete — ${totalNew} new assets mined in ${elapsed}s`);
+    this._log(`Total registry: ${this._registry.assets.length} assets`);
 
     return {
       success: true,
@@ -415,6 +723,14 @@ export class AIOSAssetMinerAgent {
       elapsed: `${elapsed}s`,
       registryPath: REGISTRY_PATH,
       geoCoordinate: GEO_COORDINATE,
+      sources: {
+        nasa: nasaQueries.length + 2, // queries + mars + spacex
+        freesound: soundQueries.length,
+        nasaModels: modelCategories.length + 1, // categories + known
+        sketchfab: sketchfabQueries.length,
+        polyhaven: 2, // hdri + models
+        polyPizza: polyPizzaQueries.length,
+      },
     };
   }
 }
