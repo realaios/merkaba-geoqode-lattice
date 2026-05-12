@@ -5,9 +5,9 @@
   "psi": 1.414,
   "base_frequency_hz": 72,
   "created_at": "2026-05-12T00:00:00.000Z",
-  "updated_at": "2026-05-12T00:00:00.000Z",
+  "updated_at": "2026-05-15T00:00:00.000Z",
   "version": "1.0.0",
-  "total_assets": 55,
+  "total_assets": 200,
   "managed_by": "AIOSMalSwarm",
   "swarm_drones": 16,
   "geoqode": {
@@ -25,19 +25,68 @@
     "d480Expansion": "FULL_HARMONIC"
   },
   "categories": {
-    "architecture": { "label": "Architecture", "semanticType": "ENTITY", "hz": 396, "count": 10 },
-    "character": { "label": "Character / Human", "semanticType": "ENTITY", "hz": 396, "count": 6 },
-    "costume": { "label": "Costume / Wardrobe", "semanticType": "ENTITY", "hz": 396, "count": 8 },
-    "vehicle": { "label": "Vehicle / Craft", "semanticType": "ACTION", "hz": 528, "count": 5 },
-    "scientific": { "label": "Scientific Instrument", "semanticType": "PHYSICS", "hz": 852, "count": 4 },
-    "symbolic": { "label": "Symbolic / Merkaba", "semanticType": "HOLOGRAPHIC", "hz": 72, "count": 3 },
-    "nature": { "label": "Nature / Terrain", "semanticType": "LOCATION", "hz": 417, "count": 4 },
-    "lighting": { "label": "Lighting / Atmospheric", "semanticType": "EMOTION", "hz": 741, "count": 5 },
-    "audio": { "label": "Audio / Soundscape", "semanticType": "DIALOGUE", "hz": 639, "count": 5 },
-    "tool": { "label": "Tools / Prop Items", "semanticType": "ACTION", "hz": 528, "count": 2 }
+    "architecture": {
+      "label": "Architecture",
+      "semanticType": "ENTITY",
+      "hz": 396,
+      "count": 10
+    },
+    "character": {
+      "label": "Character / Human",
+      "semanticType": "ENTITY",
+      "hz": 396,
+      "count": 6
+    },
+    "costume": {
+      "label": "Costume / Wardrobe",
+      "semanticType": "ENTITY",
+      "hz": 396,
+      "count": 8
+    },
+    "vehicle": {
+      "label": "Vehicle / Craft",
+      "semanticType": "ACTION",
+      "hz": 528,
+      "count": 5
+    },
+    "scientific": {
+      "label": "Scientific Instrument",
+      "semanticType": "PHYSICS",
+      "hz": 852,
+      "count": 4
+    },
+    "symbolic": {
+      "label": "Symbolic / Merkaba",
+      "semanticType": "HOLOGRAPHIC",
+      "hz": 72,
+      "count": 3
+    },
+    "nature": {
+      "label": "Nature / Terrain",
+      "semanticType": "LOCATION",
+      "hz": 417,
+      "count": 4
+    },
+    "lighting": {
+      "label": "Lighting / Atmospheric",
+      "semanticType": "EMOTION",
+      "hz": 741,
+      "count": 5
+    },
+    "audio": {
+      "label": "Audio / Soundscape",
+      "semanticType": "DIALOGUE",
+      "hz": 639,
+      "count": 5
+    },
+    "tool": {
+      "label": "Tools / Prop Items",
+      "semanticType": "ACTION",
+      "hz": 528,
+      "count": 2
+    }
   },
   "assets": [
-
     {
       "asset_id": "arch-001",
       "name": "Ancient Greek Agora Colonnade",
@@ -46,11 +95,27 @@
       "source_url": "https://sketchfab.com/search?q=greek+agora&type=models",
       "license": "CC-BY-4.0",
       "poly_count": 18000,
-      "textures": ["diffuse", "normal", "roughness"],
-      "lod_levels": [1, 2, 3],
+      "textures": [
+        "diffuse",
+        "normal",
+        "roughness"
+      ],
+      "lod_levels": [
+        1,
+        2,
+        3
+      ],
       "era": "ancient_greece",
-      "tags": ["greece", "agora", "columns", "marble", "outdoor"],
-      "used_in_scripts": ["CS-005"],
+      "tags": [
+        "greece",
+        "agora",
+        "columns",
+        "marble",
+        "outdoor"
+      ],
+      "used_in_scripts": [
+        "CS-005"
+      ],
       "semanticType": "ENTITY",
       "hz": 396,
       "quality_score": 0.91,
@@ -66,11 +131,26 @@
       "source_url": "https://sketchfab.com/search?q=roman+senate&type=models",
       "license": "CC-BY-4.0",
       "poly_count": 24000,
-      "textures": ["diffuse", "normal", "emissive"],
-      "lod_levels": [1, 2],
+      "textures": [
+        "diffuse",
+        "normal",
+        "emissive"
+      ],
+      "lod_levels": [
+        1,
+        2
+      ],
       "era": "roman",
-      "tags": ["rome", "senate", "interior", "columns", "marble"],
-      "used_in_scripts": ["CS-001"],
+      "tags": [
+        "rome",
+        "senate",
+        "interior",
+        "columns",
+        "marble"
+      ],
+      "used_in_scripts": [
+        "CS-001"
+      ],
       "semanticType": "ENTITY",
       "hz": 396,
       "quality_score": 0.94,
@@ -86,10 +166,24 @@
       "source_url": "https://sketchfab.com/search?q=medieval+castle+hall&type=models",
       "license": "CC-BY-4.0",
       "poly_count": 21000,
-      "textures": ["diffuse", "normal", "roughness"],
-      "lod_levels": [1, 2, 3],
+      "textures": [
+        "diffuse",
+        "normal",
+        "roughness"
+      ],
+      "lod_levels": [
+        1,
+        2,
+        3
+      ],
       "era": "medieval",
-      "tags": ["castle", "medieval", "great-hall", "stone", "torches"],
+      "tags": [
+        "castle",
+        "medieval",
+        "great-hall",
+        "stone",
+        "torches"
+      ],
       "used_in_scripts": [],
       "semanticType": "ENTITY",
       "hz": 396,
@@ -106,14 +200,27 @@
       "source_url": "https://sketchfab.com/search?q=egyptian+temple&type=models",
       "license": "CC-BY-4.0",
       "poly_count": 16000,
-      "textures": ["diffuse", "normal"],
-      "lod_levels": [1, 2, 3],
+      "textures": [
+        "diffuse",
+        "normal"
+      ],
+      "lod_levels": [
+        1,
+        2,
+        3
+      ],
       "era": "ancient_egypt",
-      "tags": ["egypt", "temple", "pylon", "hieroglyphs", "sandstone"],
+      "tags": [
+        "egypt",
+        "temple",
+        "pylon",
+        "hieroglyphs",
+        "sandstone"
+      ],
       "used_in_scripts": [],
       "semanticType": "LOCATION",
       "hz": 417,
-      "quality_score": 0.90,
+      "quality_score": 0.9,
       "drone_curator": "D-03",
       "status": "CATALOGED",
       "cataloged_at": "2026-05-12T00:00:00.000Z"
@@ -126,11 +233,25 @@
       "source_url": "https://sketchfab.com/search?q=wwii+operations+room&type=models",
       "license": "CC-BY-4.0",
       "poly_count": 14000,
-      "textures": ["diffuse", "emissive"],
-      "lod_levels": [1, 2],
+      "textures": [
+        "diffuse",
+        "emissive"
+      ],
+      "lod_levels": [
+        1,
+        2
+      ],
       "era": "wwii",
-      "tags": ["wwii", "operations", "radar", "map-table", "control-room"],
-      "used_in_scripts": ["CS-003"],
+      "tags": [
+        "wwii",
+        "operations",
+        "radar",
+        "map-table",
+        "control-room"
+      ],
+      "used_in_scripts": [
+        "CS-003"
+      ],
       "semanticType": "ENTITY",
       "hz": 396,
       "quality_score": 0.88,
@@ -146,11 +267,26 @@
       "source_url": "https://sketchfab.com/search?q=renaissance+workshop&type=models",
       "license": "CC-BY-4.0",
       "poly_count": 19000,
-      "textures": ["diffuse", "normal", "roughness"],
-      "lod_levels": [1, 2],
+      "textures": [
+        "diffuse",
+        "normal",
+        "roughness"
+      ],
+      "lod_levels": [
+        1,
+        2
+      ],
       "era": "renaissance",
-      "tags": ["renaissance", "workshop", "studio", "florence", "candlelight"],
-      "used_in_scripts": ["CS-002"],
+      "tags": [
+        "renaissance",
+        "workshop",
+        "studio",
+        "florence",
+        "candlelight"
+      ],
+      "used_in_scripts": [
+        "CS-002"
+      ],
       "semanticType": "NARRATIVE",
       "hz": 963,
       "quality_score": 0.93,
@@ -166,10 +302,23 @@
       "source_url": "https://nasa3d.arc.nasa.gov/models",
       "license": "CC0-1.0",
       "poly_count": 22000,
-      "textures": ["diffuse", "emissive", "metalness"],
-      "lod_levels": [1, 2],
+      "textures": [
+        "diffuse",
+        "emissive",
+        "metalness"
+      ],
+      "lod_levels": [
+        1,
+        2
+      ],
       "era": "modern",
-      "tags": ["iss", "space-station", "cupola", "orbit", "nasa"],
+      "tags": [
+        "iss",
+        "space-station",
+        "cupola",
+        "orbit",
+        "nasa"
+      ],
       "used_in_scripts": [],
       "semanticType": "LOCATION",
       "hz": 417,
@@ -186,11 +335,26 @@
       "source_url": "https://sketchfab.com/search?q=sci-fi+laboratory&type=models",
       "license": "CC-BY-4.0",
       "poly_count": 17000,
-      "textures": ["diffuse", "emissive", "normal"],
-      "lod_levels": [1, 2],
+      "textures": [
+        "diffuse",
+        "emissive",
+        "normal"
+      ],
+      "lod_levels": [
+        1,
+        2
+      ],
       "era": "quantum",
-      "tags": ["quantum", "lab", "holographic", "sci-fi", "future"],
-      "used_in_scripts": ["CS-004"],
+      "tags": [
+        "quantum",
+        "lab",
+        "holographic",
+        "sci-fi",
+        "future"
+      ],
+      "used_in_scripts": [
+        "CS-004"
+      ],
       "semanticType": "HOLOGRAPHIC",
       "hz": 72,
       "quality_score": 0.97,
@@ -206,10 +370,23 @@
       "source_url": "https://sketchfab.com/search?q=viking+longhouse&type=models",
       "license": "CC-BY-4.0",
       "poly_count": 13000,
-      "textures": ["diffuse", "roughness"],
-      "lod_levels": [1, 2, 3],
+      "textures": [
+        "diffuse",
+        "roughness"
+      ],
+      "lod_levels": [
+        1,
+        2,
+        3
+      ],
       "era": "viking",
-      "tags": ["viking", "longhouse", "mead-hall", "nordic", "fire-pit"],
+      "tags": [
+        "viking",
+        "longhouse",
+        "mead-hall",
+        "nordic",
+        "fire-pit"
+      ],
       "used_in_scripts": [],
       "semanticType": "ENTITY",
       "hz": 396,
@@ -226,10 +403,23 @@
       "source_url": "https://sketchfab.com/search?q=mayan+pyramid&type=models",
       "license": "CC-BY-4.0",
       "poly_count": 12000,
-      "textures": ["diffuse", "normal"],
-      "lod_levels": [1, 2, 3],
+      "textures": [
+        "diffuse",
+        "normal"
+      ],
+      "lod_levels": [
+        1,
+        2,
+        3
+      ],
       "era": "ancient_america",
-      "tags": ["mayan", "pyramid", "aztec", "temple", "mesoamerica"],
+      "tags": [
+        "mayan",
+        "pyramid",
+        "aztec",
+        "temple",
+        "mesoamerica"
+      ],
       "used_in_scripts": [],
       "semanticType": "LOCATION",
       "hz": 417,
@@ -238,7 +428,6 @@
       "status": "CATALOGED",
       "cataloged_at": "2026-05-12T00:00:00.000Z"
     },
-
     {
       "asset_id": "human-001",
       "name": "Generic Human Actor Rig (Neutral)",
@@ -247,11 +436,32 @@
       "source_url": "https://readyplayer.me",
       "license": "CC0-1.0",
       "poly_count": 8000,
-      "textures": ["diffuse", "normal"],
-      "animations": ["idle", "talk", "walk", "gesture-open", "gesture-point"],
+      "textures": [
+        "diffuse",
+        "normal"
+      ],
+      "animations": [
+        "idle",
+        "talk",
+        "walk",
+        "gesture-open",
+        "gesture-point"
+      ],
       "era": "universal",
-      "tags": ["human", "actor", "rig", "animated", "neutral"],
-      "used_in_scripts": ["CS-001", "CS-002", "CS-003", "CS-004", "CS-005"],
+      "tags": [
+        "human",
+        "actor",
+        "rig",
+        "animated",
+        "neutral"
+      ],
+      "used_in_scripts": [
+        "CS-001",
+        "CS-002",
+        "CS-003",
+        "CS-004",
+        "CS-005"
+      ],
       "semanticType": "ENTITY",
       "hz": 396,
       "quality_score": 0.92,
@@ -267,11 +477,28 @@
       "source_url": "https://readyplayer.me",
       "license": "CC0-1.0",
       "poly_count": 8200,
-      "textures": ["diffuse", "normal"],
-      "animations": ["idle", "talk", "walk", "write", "examine"],
+      "textures": [
+        "diffuse",
+        "normal"
+      ],
+      "animations": [
+        "idle",
+        "talk",
+        "walk",
+        "write",
+        "examine"
+      ],
       "era": "universal",
-      "tags": ["female", "academic", "scientist", "researcher", "modern"],
-      "used_in_scripts": ["CS-004"],
+      "tags": [
+        "female",
+        "academic",
+        "scientist",
+        "researcher",
+        "modern"
+      ],
+      "used_in_scripts": [
+        "CS-004"
+      ],
       "semanticType": "ENTITY",
       "hz": 396,
       "quality_score": 0.91,
@@ -287,14 +514,32 @@
       "source_url": "https://sketchfab.com/search?q=roman+senator&type=models",
       "license": "CC-BY-4.0",
       "poly_count": 9500,
-      "textures": ["diffuse", "normal", "roughness"],
-      "animations": ["idle", "orate", "gesture-raise", "sit", "stand"],
+      "textures": [
+        "diffuse",
+        "normal",
+        "roughness"
+      ],
+      "animations": [
+        "idle",
+        "orate",
+        "gesture-raise",
+        "sit",
+        "stand"
+      ],
       "era": "roman",
-      "tags": ["roman", "senator", "orator", "toga", "male"],
-      "used_in_scripts": ["CS-001"],
+      "tags": [
+        "roman",
+        "senator",
+        "orator",
+        "toga",
+        "male"
+      ],
+      "used_in_scripts": [
+        "CS-001"
+      ],
       "semanticType": "ENTITY",
       "hz": 396,
-      "quality_score": 0.90,
+      "quality_score": 0.9,
       "drone_curator": "D-03",
       "status": "CATALOGED",
       "cataloged_at": "2026-05-12T00:00:00.000Z"
@@ -307,11 +552,28 @@
       "source_url": "https://sketchfab.com/search?q=renaissance+man&type=models",
       "license": "CC-BY-4.0",
       "poly_count": 9000,
-      "textures": ["diffuse", "normal"],
-      "animations": ["idle", "paint", "write", "examine", "sculpt"],
+      "textures": [
+        "diffuse",
+        "normal"
+      ],
+      "animations": [
+        "idle",
+        "paint",
+        "write",
+        "examine",
+        "sculpt"
+      ],
       "era": "renaissance",
-      "tags": ["renaissance", "artisan", "painter", "craftsman", "male"],
-      "used_in_scripts": ["CS-002"],
+      "tags": [
+        "renaissance",
+        "artisan",
+        "painter",
+        "craftsman",
+        "male"
+      ],
+      "used_in_scripts": [
+        "CS-002"
+      ],
       "semanticType": "ENTITY",
       "hz": 396,
       "quality_score": 0.89,
@@ -327,11 +589,29 @@
       "source_url": "https://sketchfab.com/search?q=wwii+soldier&type=models",
       "license": "CC-BY-4.0",
       "poly_count": 10000,
-      "textures": ["diffuse", "normal", "roughness"],
-      "animations": ["idle", "march", "salute", "crouch", "run"],
+      "textures": [
+        "diffuse",
+        "normal",
+        "roughness"
+      ],
+      "animations": [
+        "idle",
+        "march",
+        "salute",
+        "crouch",
+        "run"
+      ],
       "era": "wwii",
-      "tags": ["wwii", "soldier", "allied", "uniform", "male"],
-      "used_in_scripts": ["CS-003"],
+      "tags": [
+        "wwii",
+        "soldier",
+        "allied",
+        "uniform",
+        "male"
+      ],
+      "used_in_scripts": [
+        "CS-003"
+      ],
       "semanticType": "ACTION",
       "hz": 528,
       "quality_score": 0.91,
@@ -347,19 +627,35 @@
       "source_url": "https://sketchfab.com/search?q=greek+philosopher&type=models",
       "license": "CC-BY-4.0",
       "poly_count": 8800,
-      "textures": ["diffuse", "normal"],
-      "animations": ["idle", "gesture-open", "walk", "sit", "orate"],
+      "textures": [
+        "diffuse",
+        "normal"
+      ],
+      "animations": [
+        "idle",
+        "gesture-open",
+        "walk",
+        "sit",
+        "orate"
+      ],
       "era": "ancient_greece",
-      "tags": ["greece", "philosopher", "socrates", "elder", "male"],
-      "used_in_scripts": ["CS-005"],
+      "tags": [
+        "greece",
+        "philosopher",
+        "socrates",
+        "elder",
+        "male"
+      ],
+      "used_in_scripts": [
+        "CS-005"
+      ],
       "semanticType": "DIALOGUE",
       "hz": 639,
-      "quality_score": 0.90,
+      "quality_score": 0.9,
       "drone_curator": "D-06",
       "status": "CATALOGED",
       "cataloged_at": "2026-05-12T00:00:00.000Z"
     },
-
     {
       "asset_id": "costume-001",
       "name": "Roman Senatorial Toga Praetexta",
@@ -368,10 +664,21 @@
       "source_url": "https://sketchfab.com/search?q=roman+toga&type=models",
       "license": "CC-BY-4.0",
       "poly_count": 4200,
-      "textures": ["diffuse", "normal"],
+      "textures": [
+        "diffuse",
+        "normal"
+      ],
       "era": "roman",
-      "tags": ["roman", "toga", "senator", "white", "purple-stripe"],
-      "used_in_scripts": ["CS-001"],
+      "tags": [
+        "roman",
+        "toga",
+        "senator",
+        "white",
+        "purple-stripe"
+      ],
+      "used_in_scripts": [
+        "CS-001"
+      ],
       "semanticType": "ENTITY",
       "hz": 396,
       "quality_score": 0.88,
@@ -387,10 +694,21 @@
       "source_url": "https://sketchfab.com/search?q=renaissance+clothing&type=models",
       "license": "CC-BY-4.0",
       "poly_count": 3800,
-      "textures": ["diffuse", "roughness"],
+      "textures": [
+        "diffuse",
+        "roughness"
+      ],
       "era": "renaissance",
-      "tags": ["renaissance", "smock", "apron", "artisan", "linen"],
-      "used_in_scripts": ["CS-002"],
+      "tags": [
+        "renaissance",
+        "smock",
+        "apron",
+        "artisan",
+        "linen"
+      ],
+      "used_in_scripts": [
+        "CS-002"
+      ],
       "semanticType": "ENTITY",
       "hz": 396,
       "quality_score": 0.86,
@@ -406,10 +724,22 @@
       "source_url": "https://sketchfab.com/search?q=raf+pilot+uniform&type=models",
       "license": "CC-BY-4.0",
       "poly_count": 5100,
-      "textures": ["diffuse", "normal", "roughness"],
+      "textures": [
+        "diffuse",
+        "normal",
+        "roughness"
+      ],
       "era": "wwii",
-      "tags": ["wwii", "raf", "pilot", "flying-suit", "helmet"],
-      "used_in_scripts": ["CS-003"],
+      "tags": [
+        "wwii",
+        "raf",
+        "pilot",
+        "flying-suit",
+        "helmet"
+      ],
+      "used_in_scripts": [
+        "CS-003"
+      ],
       "semanticType": "ENTITY",
       "hz": 396,
       "quality_score": 0.91,
@@ -425,10 +755,20 @@
       "source_url": "https://sketchfab.com/search?q=greek+chiton&type=models",
       "license": "CC-BY-4.0",
       "poly_count": 3600,
-      "textures": ["diffuse"],
+      "textures": [
+        "diffuse"
+      ],
       "era": "ancient_greece",
-      "tags": ["greece", "chiton", "himation", "philosopher", "linen"],
-      "used_in_scripts": ["CS-005"],
+      "tags": [
+        "greece",
+        "chiton",
+        "himation",
+        "philosopher",
+        "linen"
+      ],
+      "used_in_scripts": [
+        "CS-005"
+      ],
       "semanticType": "ENTITY",
       "hz": 396,
       "quality_score": 0.85,
@@ -444,9 +784,19 @@
       "source_url": "https://nasa3d.arc.nasa.gov/models",
       "license": "CC0-1.0",
       "poly_count": 6200,
-      "textures": ["diffuse", "emissive", "metalness"],
+      "textures": [
+        "diffuse",
+        "emissive",
+        "metalness"
+      ],
       "era": "modern",
-      "tags": ["space", "eva", "suit", "astronaut", "nasa"],
+      "tags": [
+        "space",
+        "eva",
+        "suit",
+        "astronaut",
+        "nasa"
+      ],
       "used_in_scripts": [],
       "semanticType": "ENTITY",
       "hz": 396,
@@ -463,13 +813,23 @@
       "source_url": "https://sketchfab.com/search?q=pharaoh+costume&type=models",
       "license": "CC-BY-4.0",
       "poly_count": 5800,
-      "textures": ["diffuse", "emissive", "metalness"],
+      "textures": [
+        "diffuse",
+        "emissive",
+        "metalness"
+      ],
       "era": "ancient_egypt",
-      "tags": ["egypt", "pharaoh", "crown", "gold", "linen"],
+      "tags": [
+        "egypt",
+        "pharaoh",
+        "crown",
+        "gold",
+        "linen"
+      ],
       "used_in_scripts": [],
       "semanticType": "ENTITY",
       "hz": 396,
-      "quality_score": 0.90,
+      "quality_score": 0.9,
       "drone_curator": "D-12",
       "status": "CATALOGED",
       "cataloged_at": "2026-05-12T00:00:00.000Z"
@@ -482,9 +842,19 @@
       "source_url": "https://sketchfab.com/search?q=viking+armor&type=models",
       "license": "CC-BY-4.0",
       "poly_count": 6500,
-      "textures": ["diffuse", "normal", "roughness"],
+      "textures": [
+        "diffuse",
+        "normal",
+        "roughness"
+      ],
       "era": "viking",
-      "tags": ["viking", "armor", "chainmail", "helm", "warrior"],
+      "tags": [
+        "viking",
+        "armor",
+        "chainmail",
+        "helm",
+        "warrior"
+      ],
       "used_in_scripts": [],
       "semanticType": "ENTITY",
       "hz": 396,
@@ -501,10 +871,20 @@
       "source_url": "https://sketchfab.com/search?q=lab+coat+scientist&type=models",
       "license": "CC-BY-4.0",
       "poly_count": 3400,
-      "textures": ["diffuse"],
+      "textures": [
+        "diffuse"
+      ],
       "era": "quantum",
-      "tags": ["scientist", "lab-coat", "modern", "researcher", "white"],
-      "used_in_scripts": ["CS-004"],
+      "tags": [
+        "scientist",
+        "lab-coat",
+        "modern",
+        "researcher",
+        "white"
+      ],
+      "used_in_scripts": [
+        "CS-004"
+      ],
       "semanticType": "ENTITY",
       "hz": 396,
       "quality_score": 0.84,
@@ -512,7 +892,6 @@
       "status": "CATALOGED",
       "cataloged_at": "2026-05-12T00:00:00.000Z"
     },
-
     {
       "asset_id": "vehicle-001",
       "name": "Roman War Chariot",
@@ -521,9 +900,18 @@
       "source_url": "https://sketchfab.com/search?q=roman+chariot&type=models",
       "license": "CC-BY-4.0",
       "poly_count": 7800,
-      "textures": ["diffuse", "normal"],
+      "textures": [
+        "diffuse",
+        "normal"
+      ],
       "era": "roman",
-      "tags": ["roman", "chariot", "war", "bronze", "horses"],
+      "tags": [
+        "roman",
+        "chariot",
+        "war",
+        "bronze",
+        "horses"
+      ],
       "used_in_scripts": [],
       "semanticType": "ACTION",
       "hz": 528,
@@ -540,10 +928,23 @@
       "source_url": "https://sketchfab.com/search?q=spitfire+wwii&type=models",
       "license": "CC-BY-4.0",
       "poly_count": 18000,
-      "textures": ["diffuse", "normal", "roughness", "metalness"],
+      "textures": [
+        "diffuse",
+        "normal",
+        "roughness",
+        "metalness"
+      ],
       "era": "wwii",
-      "tags": ["wwii", "spitfire", "raf", "fighter", "aircraft"],
-      "used_in_scripts": ["CS-003"],
+      "tags": [
+        "wwii",
+        "spitfire",
+        "raf",
+        "fighter",
+        "aircraft"
+      ],
+      "used_in_scripts": [
+        "CS-003"
+      ],
       "semanticType": "ACTION",
       "hz": 528,
       "quality_score": 0.96,
@@ -559,9 +960,19 @@
       "source_url": "https://nasa3d.arc.nasa.gov/models",
       "license": "CC0-1.0",
       "poly_count": 14000,
-      "textures": ["diffuse", "metalness", "roughness"],
+      "textures": [
+        "diffuse",
+        "metalness",
+        "roughness"
+      ],
       "era": "modern",
-      "tags": ["apollo", "nasa", "capsule", "moon", "spacecraft"],
+      "tags": [
+        "apollo",
+        "nasa",
+        "capsule",
+        "moon",
+        "spacecraft"
+      ],
       "used_in_scripts": [],
       "semanticType": "ACTION",
       "hz": 528,
@@ -578,13 +989,22 @@
       "source_url": "https://sketchfab.com/search?q=viking+longship&type=models",
       "license": "CC-BY-4.0",
       "poly_count": 12000,
-      "textures": ["diffuse", "normal"],
+      "textures": [
+        "diffuse",
+        "normal"
+      ],
       "era": "viking",
-      "tags": ["viking", "longship", "drakkar", "ocean", "sail"],
+      "tags": [
+        "viking",
+        "longship",
+        "drakkar",
+        "ocean",
+        "sail"
+      ],
       "used_in_scripts": [],
       "semanticType": "ACTION",
       "hz": 528,
-      "quality_score": 0.90,
+      "quality_score": 0.9,
       "drone_curator": "D-02",
       "status": "CATALOGED",
       "cataloged_at": "2026-05-12T00:00:00.000Z"
@@ -597,9 +1017,19 @@
       "source_url": "https://sketchfab.com/search?q=space+shuttle+sci-fi&type=models",
       "license": "CC-BY-4.0",
       "poly_count": 20000,
-      "textures": ["diffuse", "emissive", "metalness"],
+      "textures": [
+        "diffuse",
+        "emissive",
+        "metalness"
+      ],
       "era": "quantum",
-      "tags": ["spacecraft", "shuttle", "orbit", "future", "sci-fi"],
+      "tags": [
+        "spacecraft",
+        "shuttle",
+        "orbit",
+        "future",
+        "sci-fi"
+      ],
       "used_in_scripts": [],
       "semanticType": "ACTION",
       "hz": 528,
@@ -608,7 +1038,6 @@
       "status": "CATALOGED",
       "cataloged_at": "2026-05-12T00:00:00.000Z"
     },
-
     {
       "asset_id": "scientific-001",
       "name": "Renaissance Astronomical Instruments Set",
@@ -617,10 +1046,21 @@
       "source_url": "https://sketchfab.com/search?q=astrolabe+renaissance&type=models",
       "license": "CC-BY-4.0",
       "poly_count": 5500,
-      "textures": ["diffuse", "metalness"],
+      "textures": [
+        "diffuse",
+        "metalness"
+      ],
       "era": "renaissance",
-      "tags": ["astrolabe", "sextant", "compass", "brass", "renaissance"],
-      "used_in_scripts": ["CS-002"],
+      "tags": [
+        "astrolabe",
+        "sextant",
+        "compass",
+        "brass",
+        "renaissance"
+      ],
+      "used_in_scripts": [
+        "CS-002"
+      ],
       "semanticType": "PHYSICS",
       "hz": 852,
       "quality_score": 0.92,
@@ -636,10 +1076,22 @@
       "source_url": "https://sketchfab.com/search?q=quantum+computer&type=models",
       "license": "CC-BY-4.0",
       "poly_count": 9000,
-      "textures": ["diffuse", "emissive", "metalness"],
+      "textures": [
+        "diffuse",
+        "emissive",
+        "metalness"
+      ],
       "era": "quantum",
-      "tags": ["quantum", "processor", "computer", "chip", "sci-fi"],
-      "used_in_scripts": ["CS-004"],
+      "tags": [
+        "quantum",
+        "processor",
+        "computer",
+        "chip",
+        "sci-fi"
+      ],
+      "used_in_scripts": [
+        "CS-004"
+      ],
       "semanticType": "PHYSICS",
       "hz": 852,
       "quality_score": 0.95,
@@ -655,9 +1107,19 @@
       "source_url": "https://sketchfab.com/search?q=radio+telescope&type=models",
       "license": "CC-BY-4.0",
       "poly_count": 11000,
-      "textures": ["diffuse", "metalness", "roughness"],
+      "textures": [
+        "diffuse",
+        "metalness",
+        "roughness"
+      ],
       "era": "modern",
-      "tags": ["telescope", "radio", "astronomy", "dish", "observatory"],
+      "tags": [
+        "telescope",
+        "radio",
+        "astronomy",
+        "dish",
+        "observatory"
+      ],
       "used_in_scripts": [],
       "semanticType": "PHYSICS",
       "hz": 852,
@@ -674,9 +1136,19 @@
       "source_url": "https://sketchfab.com/search?q=particle+accelerator&type=models",
       "license": "CC-BY-4.0",
       "poly_count": 13000,
-      "textures": ["diffuse", "emissive", "metalness"],
+      "textures": [
+        "diffuse",
+        "emissive",
+        "metalness"
+      ],
       "era": "modern",
-      "tags": ["cern", "accelerator", "particle", "physics", "collider"],
+      "tags": [
+        "cern",
+        "accelerator",
+        "particle",
+        "physics",
+        "collider"
+      ],
       "used_in_scripts": [],
       "semanticType": "PHYSICS",
       "hz": 852,
@@ -685,7 +1157,6 @@
       "status": "CATALOGED",
       "cataloged_at": "2026-05-12T00:00:00.000Z"
     },
-
     {
       "asset_id": "symbolic-001",
       "name": "Merkaba Lattice 8→26→48 Node Display",
@@ -694,14 +1165,28 @@
       "source_url": "https://realaios.com/assets/merkaba-lattice.glb",
       "license": "AIOS-PROPRIETARY",
       "poly_count": 6200,
-      "textures": ["emissive"],
-      "animations": ["rotate-phi", "pulse-72hz", "expand-d48"],
+      "textures": [
+        "emissive"
+      ],
+      "animations": [
+        "rotate-phi",
+        "pulse-72hz",
+        "expand-d48"
+      ],
       "era": "universal",
-      "tags": ["merkaba", "lattice", "holographic", "phi", "geoqode"],
-      "used_in_scripts": ["CS-004"],
+      "tags": [
+        "merkaba",
+        "lattice",
+        "holographic",
+        "phi",
+        "geoqode"
+      ],
+      "used_in_scripts": [
+        "CS-004"
+      ],
       "semanticType": "HOLOGRAPHIC",
       "hz": 72,
-      "quality_score": 1.0,
+      "quality_score": 1,
       "drone_curator": "D-08",
       "status": "CATALOGED",
       "cataloged_at": "2026-05-12T00:00:00.000Z"
@@ -714,14 +1199,25 @@
       "source_url": "https://realaios.com/assets/geoqode-sphere.glb",
       "license": "AIOS-PROPRIETARY",
       "poly_count": 4800,
-      "textures": ["emissive"],
-      "animations": ["freq-shift", "harmonic-expand"],
+      "textures": [
+        "emissive"
+      ],
+      "animations": [
+        "freq-shift",
+        "harmonic-expand"
+      ],
       "era": "universal",
-      "tags": ["geoqode", "frequency", "spectrum", "harmonic", "phi"],
+      "tags": [
+        "geoqode",
+        "frequency",
+        "spectrum",
+        "harmonic",
+        "phi"
+      ],
       "used_in_scripts": [],
       "semanticType": "HOLOGRAPHIC",
       "hz": 72,
-      "quality_score": 1.0,
+      "quality_score": 1,
       "drone_curator": "D-09",
       "status": "CATALOGED",
       "cataloged_at": "2026-05-12T00:00:00.000Z"
@@ -734,19 +1230,29 @@
       "source_url": "https://realaios.com/assets/phi-spiral.glb",
       "license": "AIOS-PROPRIETARY",
       "poly_count": 3200,
-      "textures": ["emissive"],
-      "animations": ["spiral-grow", "phi-pulse"],
+      "textures": [
+        "emissive"
+      ],
+      "animations": [
+        "spiral-grow",
+        "phi-pulse"
+      ],
       "era": "universal",
-      "tags": ["phi", "golden-ratio", "fibonacci", "sacred-geometry", "spiral"],
+      "tags": [
+        "phi",
+        "golden-ratio",
+        "fibonacci",
+        "sacred-geometry",
+        "spiral"
+      ],
       "used_in_scripts": [],
       "semanticType": "HOLOGRAPHIC",
       "hz": 72,
-      "quality_score": 1.0,
+      "quality_score": 1,
       "drone_curator": "D-10",
       "status": "CATALOGED",
       "cataloged_at": "2026-05-12T00:00:00.000Z"
     },
-
     {
       "asset_id": "nature-001",
       "name": "Mediterranean Olive Grove",
@@ -755,10 +1261,21 @@
       "source_url": "https://sketchfab.com/search?q=olive+tree&type=models",
       "license": "CC-BY-4.0",
       "poly_count": 8500,
-      "textures": ["diffuse", "normal"],
+      "textures": [
+        "diffuse",
+        "normal"
+      ],
       "era": "ancient_greece",
-      "tags": ["olive", "tree", "mediterranean", "grove", "greek"],
-      "used_in_scripts": ["CS-005"],
+      "tags": [
+        "olive",
+        "tree",
+        "mediterranean",
+        "grove",
+        "greek"
+      ],
+      "used_in_scripts": [
+        "CS-005"
+      ],
       "semanticType": "LOCATION",
       "hz": 417,
       "quality_score": 0.87,
@@ -774,9 +1291,18 @@
       "source_url": "https://sketchfab.com/search?q=desert+dunes+palm&type=models",
       "license": "CC-BY-4.0",
       "poly_count": 10000,
-      "textures": ["diffuse", "normal"],
+      "textures": [
+        "diffuse",
+        "normal"
+      ],
       "era": "ancient_egypt",
-      "tags": ["desert", "dunes", "oasis", "palm", "egypt"],
+      "tags": [
+        "desert",
+        "dunes",
+        "oasis",
+        "palm",
+        "egypt"
+      ],
       "used_in_scripts": [],
       "semanticType": "LOCATION",
       "hz": 417,
@@ -793,9 +1319,18 @@
       "source_url": "https://sketchfab.com/search?q=pine+forest&type=models",
       "license": "CC-BY-4.0",
       "poly_count": 14000,
-      "textures": ["diffuse", "normal"],
+      "textures": [
+        "diffuse",
+        "normal"
+      ],
       "era": "viking",
-      "tags": ["forest", "pine", "nordic", "terrain", "viking"],
+      "tags": [
+        "forest",
+        "pine",
+        "nordic",
+        "terrain",
+        "viking"
+      ],
       "used_in_scripts": [],
       "semanticType": "LOCATION",
       "hz": 417,
@@ -812,9 +1347,19 @@
       "source_url": "https://nasa3d.arc.nasa.gov/models",
       "license": "CC0-1.0",
       "poly_count": 12000,
-      "textures": ["diffuse", "normal", "roughness"],
+      "textures": [
+        "diffuse",
+        "normal",
+        "roughness"
+      ],
       "era": "quantum",
-      "tags": ["space", "asteroid", "field", "cosmic", "rocks"],
+      "tags": [
+        "space",
+        "asteroid",
+        "field",
+        "cosmic",
+        "rocks"
+      ],
       "used_in_scripts": [],
       "semanticType": "LOCATION",
       "hz": 417,
@@ -823,7 +1368,6 @@
       "status": "CATALOGED",
       "cataloged_at": "2026-05-12T00:00:00.000Z"
     },
-
     {
       "asset_id": "lighting-001",
       "name": "Roman Torchlight Warm Amber Pack",
@@ -840,11 +1384,19 @@
         "animation": "flicker-slow"
       },
       "era": "roman",
-      "tags": ["torch", "warm", "amber", "flicker", "roman"],
-      "used_in_scripts": ["CS-001"],
+      "tags": [
+        "torch",
+        "warm",
+        "amber",
+        "flicker",
+        "roman"
+      ],
+      "used_in_scripts": [
+        "CS-001"
+      ],
       "semanticType": "EMOTION",
       "hz": 741,
-      "quality_score": 0.90,
+      "quality_score": 0.9,
       "drone_curator": "D-15",
       "status": "CATALOGED",
       "cataloged_at": "2026-05-12T00:00:00.000Z"
@@ -860,11 +1412,23 @@
         "type": "directional",
         "color": "#fff0cc",
         "intensity": 0.6,
-        "position": { "x": 2, "y": 4, "z": 1 }
+        "position": {
+          "x": 2,
+          "y": 4,
+          "z": 1
+        }
       },
       "era": "renaissance",
-      "tags": ["natural", "daylight", "soft", "renaissance", "window"],
-      "used_in_scripts": ["CS-002"],
+      "tags": [
+        "natural",
+        "daylight",
+        "soft",
+        "renaissance",
+        "window"
+      ],
+      "used_in_scripts": [
+        "CS-002"
+      ],
       "semanticType": "EMOTION",
       "hz": 741,
       "quality_score": 0.88,
@@ -888,8 +1452,16 @@
         "animation": "pulse-72hz"
       },
       "era": "quantum",
-      "tags": ["quantum", "holographic", "blue", "sci-fi", "glow"],
-      "used_in_scripts": ["CS-004"],
+      "tags": [
+        "quantum",
+        "holographic",
+        "blue",
+        "sci-fi",
+        "glow"
+      ],
+      "used_in_scripts": [
+        "CS-004"
+      ],
       "semanticType": "HOLOGRAPHIC",
       "hz": 72,
       "quality_score": 0.97,
@@ -911,7 +1483,13 @@
         "intensity": 0.4
       },
       "era": "universal",
-      "tags": ["cosmic", "nebula", "purple", "space", "ambient"],
+      "tags": [
+        "cosmic",
+        "nebula",
+        "purple",
+        "space",
+        "ambient"
+      ],
       "used_in_scripts": [],
       "semanticType": "LOCATION",
       "hz": 417,
@@ -931,10 +1509,20 @@
         "type": "directional",
         "color": "#fffde7",
         "intensity": 1.4,
-        "position": { "x": 0, "y": 10, "z": 0 }
+        "position": {
+          "x": 0,
+          "y": 10,
+          "z": 0
+        }
       },
       "era": "ancient_egypt",
-      "tags": ["sun", "desert", "noon", "egypt", "harsh"],
+      "tags": [
+        "sun",
+        "desert",
+        "noon",
+        "egypt",
+        "harsh"
+      ],
       "used_in_scripts": [],
       "semanticType": "PHYSICS",
       "hz": 852,
@@ -943,7 +1531,6 @@
       "status": "CATALOGED",
       "cataloged_at": "2026-05-12T00:00:00.000Z"
     },
-
     {
       "asset_id": "atmospheric-001",
       "name": "Roman Mediterranean Sky HDRI",
@@ -953,8 +1540,16 @@
       "license": "CC0-1.0",
       "resolution": "4096x2048",
       "era": "roman",
-      "tags": ["hdri", "mediterranean", "sky", "roman", "warm"],
-      "used_in_scripts": ["CS-001"],
+      "tags": [
+        "hdri",
+        "mediterranean",
+        "sky",
+        "roman",
+        "warm"
+      ],
+      "used_in_scripts": [
+        "CS-001"
+      ],
       "semanticType": "LOCATION",
       "hz": 417,
       "quality_score": 0.94,
@@ -962,7 +1557,6 @@
       "status": "CATALOGED",
       "cataloged_at": "2026-05-12T00:00:00.000Z"
     },
-
     {
       "asset_id": "audio-001",
       "name": "Roman Senate Crowd Ambience",
@@ -974,8 +1568,16 @@
       "loop": true,
       "spatial": true,
       "era": "roman",
-      "tags": ["crowd", "ambience", "senate", "voices", "roman"],
-      "used_in_scripts": ["CS-001"],
+      "tags": [
+        "crowd",
+        "ambience",
+        "senate",
+        "voices",
+        "roman"
+      ],
+      "used_in_scripts": [
+        "CS-001"
+      ],
       "semanticType": "DIALOGUE",
       "hz": 639,
       "quality_score": 0.88,
@@ -994,8 +1596,16 @@
       "loop": true,
       "spatial": true,
       "era": "renaissance",
-      "tags": ["tools", "workshop", "chisel", "wood", "crafting"],
-      "used_in_scripts": ["CS-002"],
+      "tags": [
+        "tools",
+        "workshop",
+        "chisel",
+        "wood",
+        "crafting"
+      ],
+      "used_in_scripts": [
+        "CS-002"
+      ],
       "semanticType": "ACTION",
       "hz": 528,
       "quality_score": 0.86,
@@ -1014,8 +1624,16 @@
       "loop": true,
       "spatial": true,
       "era": "wwii",
-      "tags": ["spitfire", "engine", "roar", "battle", "aircraft"],
-      "used_in_scripts": ["CS-003"],
+      "tags": [
+        "spitfire",
+        "engine",
+        "roar",
+        "battle",
+        "aircraft"
+      ],
+      "used_in_scripts": [
+        "CS-003"
+      ],
       "semanticType": "ACTION",
       "hz": 528,
       "quality_score": 0.93,
@@ -1035,11 +1653,19 @@
       "spatial": false,
       "frequency_hz": 72,
       "era": "universal",
-      "tags": ["72hz", "merkaba", "drone", "holographic", "resonance"],
-      "used_in_scripts": ["CS-004"],
+      "tags": [
+        "72hz",
+        "merkaba",
+        "drone",
+        "holographic",
+        "resonance"
+      ],
+      "used_in_scripts": [
+        "CS-004"
+      ],
       "semanticType": "HOLOGRAPHIC",
       "hz": 72,
-      "quality_score": 1.0,
+      "quality_score": 1,
       "drone_curator": "D-08",
       "status": "CATALOGED",
       "cataloged_at": "2026-05-12T00:00:00.000Z"
@@ -1055,8 +1681,16 @@
       "loop": true,
       "spatial": true,
       "era": "ancient_greece",
-      "tags": ["lyre", "greek", "agora", "ancient", "ambience"],
-      "used_in_scripts": ["CS-005"],
+      "tags": [
+        "lyre",
+        "greek",
+        "agora",
+        "ancient",
+        "ambience"
+      ],
+      "used_in_scripts": [
+        "CS-005"
+      ],
       "semanticType": "DIALOGUE",
       "hz": 639,
       "quality_score": 0.87,
@@ -1064,7 +1698,6 @@
       "status": "CATALOGED",
       "cataloged_at": "2026-05-12T00:00:00.000Z"
     },
-
     {
       "asset_id": "tool-001",
       "name": "Leonardo Da Vinci Workshop Tools Pack",
@@ -1073,10 +1706,23 @@
       "source_url": "https://sketchfab.com/search?q=workshop+tools+historical&type=models",
       "license": "CC-BY-4.0",
       "poly_count": 6800,
-      "textures": ["diffuse", "roughness", "metalness"],
+      "textures": [
+        "diffuse",
+        "roughness",
+        "metalness"
+      ],
       "era": "renaissance",
-      "tags": ["tools", "chisel", "compass", "ruler", "brush", "da-vinci"],
-      "used_in_scripts": ["CS-002"],
+      "tags": [
+        "tools",
+        "chisel",
+        "compass",
+        "ruler",
+        "brush",
+        "da-vinci"
+      ],
+      "used_in_scripts": [
+        "CS-002"
+      ],
       "semanticType": "ACTION",
       "hz": 528,
       "quality_score": 0.88,
@@ -1092,10 +1738,22 @@
       "source_url": "https://sketchfab.com/search?q=roman+scroll+laurel&type=models",
       "license": "CC-BY-4.0",
       "poly_count": 4500,
-      "textures": ["diffuse", "metalness"],
+      "textures": [
+        "diffuse",
+        "metalness"
+      ],
       "era": "roman",
-      "tags": ["roman", "laurel", "scroll", "aquila", "decoration"],
-      "used_in_scripts": ["CS-001", "CS-005"],
+      "tags": [
+        "roman",
+        "laurel",
+        "scroll",
+        "aquila",
+        "decoration"
+      ],
+      "used_in_scripts": [
+        "CS-001",
+        "CS-005"
+      ],
       "semanticType": "ENTITY",
       "hz": 396,
       "quality_score": 0.86,
@@ -1111,10 +1769,20 @@
       "source_url": "https://sketchfab.com/search?q=renaissance+painting+easel&type=models",
       "license": "CC-BY-4.0",
       "poly_count": 5200,
-      "textures": ["diffuse"],
+      "textures": [
+        "diffuse"
+      ],
       "era": "renaissance",
-      "tags": ["painting", "easel", "palette", "canvas", "da-vinci"],
-      "used_in_scripts": ["CS-002"],
+      "tags": [
+        "painting",
+        "easel",
+        "palette",
+        "canvas",
+        "da-vinci"
+      ],
+      "used_in_scripts": [
+        "CS-002"
+      ],
       "semanticType": "ENTITY",
       "hz": 396,
       "quality_score": 0.87,
@@ -1130,16 +1798,3878 @@
       "source_url": "https://sketchfab.com/search?q=roman+bench+stone&type=models",
       "license": "CC-BY-4.0",
       "poly_count": 3800,
-      "textures": ["diffuse", "roughness"],
+      "textures": [
+        "diffuse",
+        "roughness"
+      ],
       "era": "roman",
-      "tags": ["bench", "stone", "senate", "seating", "roman"],
-      "used_in_scripts": ["CS-001"],
+      "tags": [
+        "bench",
+        "stone",
+        "senate",
+        "seating",
+        "roman"
+      ],
+      "used_in_scripts": [
+        "CS-001"
+      ],
       "semanticType": "ENTITY",
       "hz": 396,
       "quality_score": 0.85,
       "drone_curator": "D-13",
       "status": "CATALOGED",
       "cataloged_at": "2026-05-12T00:00:00.000Z"
+    },
+    {
+      "asset_id": "env-009",
+      "name": "WWI Trench Warfare Environment",
+      "category": "environment",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=ww1+trench",
+      "license": "CC-BY-4.0",
+      "poly_count": 14200,
+      "textures": [
+        "diffuse",
+        "roughness",
+        "ao"
+      ],
+      "era": "wwi",
+      "tags": [
+        "trench",
+        "wwi"
+      ],
+      "used_in_scripts": [
+        "CS-009"
+      ],
+      "semanticType": "ACTION",
+      "hz": 528,
+      "quality_score": 0.88,
+      "drone_curator": "D-14",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "char-009",
+      "name": "WWI Soldier in Full Kit",
+      "category": "character",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=ww1+soldier",
+      "license": "CC-BY-4.0",
+      "poly_count": 9800,
+      "textures": [
+        "diffuse",
+        "normal"
+      ],
+      "era": "wwi",
+      "tags": [
+        "soldier",
+        "wwi"
+      ],
+      "used_in_scripts": [
+        "CS-009"
+      ],
+      "semanticType": "ENTITY",
+      "hz": 396,
+      "quality_score": 0.89,
+      "drone_curator": "D-14",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "audio-009",
+      "name": "WWI Artillery Ambience",
+      "category": "audio",
+      "format": "mp3",
+      "source_url": "https://freesound.org/search/?q=artillery",
+      "license": "CC0-1.0",
+      "duration_seconds": 180,
+      "loop": true,
+      "spatial": true,
+      "era": "wwi",
+      "tags": [
+        "artillery",
+        "wwi"
+      ],
+      "used_in_scripts": [
+        "CS-009"
+      ],
+      "semanticType": "DIALOGUE",
+      "hz": 639,
+      "quality_score": 0.9,
+      "drone_curator": "D-14",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "env-010",
+      "name": "Victorian Natural History Museum",
+      "category": "environment",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=natural+history+museum",
+      "license": "CC-BY-4.0",
+      "poly_count": 16000,
+      "textures": [
+        "diffuse",
+        "roughness"
+      ],
+      "era": "victorian",
+      "tags": [
+        "museum",
+        "darwin"
+      ],
+      "used_in_scripts": [
+        "CS-010"
+      ],
+      "semanticType": "NARRATIVE",
+      "hz": 963,
+      "quality_score": 0.91,
+      "drone_curator": "D-15",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "char-010",
+      "name": "Charles Darwin Naturalist",
+      "category": "character",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=darwin",
+      "license": "CC-BY-4.0",
+      "poly_count": 9200,
+      "textures": [
+        "diffuse",
+        "normal"
+      ],
+      "era": "victorian",
+      "tags": [
+        "darwin",
+        "scientist"
+      ],
+      "used_in_scripts": [
+        "CS-010"
+      ],
+      "semanticType": "ENTITY",
+      "hz": 396,
+      "quality_score": 0.87,
+      "drone_curator": "D-15",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "prop-010",
+      "name": "Galapagos Specimens and Field Journal",
+      "category": "prop",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=specimen+jar",
+      "license": "CC-BY-4.0",
+      "poly_count": 3400,
+      "textures": [
+        "diffuse"
+      ],
+      "era": "victorian",
+      "tags": [
+        "specimen",
+        "journal"
+      ],
+      "used_in_scripts": [
+        "CS-010"
+      ],
+      "semanticType": "ENTITY",
+      "hz": 396,
+      "quality_score": 0.86,
+      "drone_curator": "D-15",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "env-011",
+      "name": "Near-Future Space Station Interior",
+      "category": "environment",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=space+station+interior",
+      "license": "CC-BY-4.0",
+      "poly_count": 18500,
+      "textures": [
+        "diffuse",
+        "metalness"
+      ],
+      "era": "future_2150",
+      "tags": [
+        "space-station",
+        "future"
+      ],
+      "used_in_scripts": [
+        "CS-011"
+      ],
+      "semanticType": "LOCATION",
+      "hz": 417,
+      "quality_score": 0.93,
+      "drone_curator": "D-16",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "char-011",
+      "name": "Future Astronaut Commander",
+      "category": "character",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=astronaut+future",
+      "license": "CC-BY-4.0",
+      "poly_count": 10200,
+      "textures": [
+        "diffuse",
+        "normal"
+      ],
+      "era": "future_2150",
+      "tags": [
+        "astronaut",
+        "future"
+      ],
+      "used_in_scripts": [
+        "CS-011"
+      ],
+      "semanticType": "ENTITY",
+      "hz": 396,
+      "quality_score": 0.92,
+      "drone_curator": "D-16",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "audio-011",
+      "name": "Space Station Hum and Comms",
+      "category": "audio",
+      "format": "mp3",
+      "source_url": "https://freesound.org/search/?q=space+station",
+      "license": "CC0-1.0",
+      "duration_seconds": 240,
+      "loop": true,
+      "spatial": false,
+      "era": "future_2150",
+      "tags": [
+        "hum",
+        "space"
+      ],
+      "used_in_scripts": [
+        "CS-011"
+      ],
+      "semanticType": "DIALOGUE",
+      "hz": 639,
+      "quality_score": 0.91,
+      "drone_curator": "D-16",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "env-012",
+      "name": "Ancient Agora of Athens",
+      "category": "environment",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=agora+athens",
+      "license": "CC-BY-4.0",
+      "poly_count": 13600,
+      "textures": [
+        "diffuse",
+        "roughness"
+      ],
+      "era": "ancient_greece",
+      "tags": [
+        "agora",
+        "athens"
+      ],
+      "used_in_scripts": [
+        "CS-012"
+      ],
+      "semanticType": "LOCATION",
+      "hz": 417,
+      "quality_score": 0.9,
+      "drone_curator": "D-17",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "char-012",
+      "name": "Socrates Philosopher of Athens",
+      "category": "character",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=socrates",
+      "license": "CC-BY-4.0",
+      "poly_count": 8800,
+      "textures": [
+        "diffuse",
+        "normal"
+      ],
+      "era": "ancient_greece",
+      "tags": [
+        "socrates",
+        "philosopher"
+      ],
+      "used_in_scripts": [
+        "CS-012"
+      ],
+      "semanticType": "ENTITY",
+      "hz": 396,
+      "quality_score": 0.88,
+      "drone_curator": "D-17",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "audio-012",
+      "name": "Ancient Greek Market Sounds",
+      "category": "audio",
+      "format": "mp3",
+      "source_url": "https://freesound.org/search/?q=ancient+market",
+      "license": "CC0-1.0",
+      "duration_seconds": 160,
+      "loop": true,
+      "spatial": true,
+      "era": "ancient_greece",
+      "tags": [
+        "market",
+        "greek"
+      ],
+      "used_in_scripts": [
+        "CS-012"
+      ],
+      "semanticType": "DIALOGUE",
+      "hz": 639,
+      "quality_score": 0.87,
+      "drone_curator": "D-17",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "env-013",
+      "name": "Quantum Superposition Field",
+      "category": "environment",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=quantum",
+      "license": "CC-BY-4.0",
+      "poly_count": 8200,
+      "textures": [
+        "emission",
+        "diffuse"
+      ],
+      "era": "quantum",
+      "tags": [
+        "quantum",
+        "wave"
+      ],
+      "used_in_scripts": [
+        "CS-013"
+      ],
+      "semanticType": "PHYSICS",
+      "hz": 852,
+      "quality_score": 0.94,
+      "drone_curator": "D-18",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "char-013",
+      "name": "Richard Feynman Lecture",
+      "category": "character",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=professor+lecture",
+      "license": "CC-BY-4.0",
+      "poly_count": 8600,
+      "textures": [
+        "diffuse",
+        "normal"
+      ],
+      "era": "modern_science",
+      "tags": [
+        "feynman",
+        "quantum"
+      ],
+      "used_in_scripts": [
+        "CS-013"
+      ],
+      "semanticType": "ENTITY",
+      "hz": 396,
+      "quality_score": 0.89,
+      "drone_curator": "D-18",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "prop-013",
+      "name": "Feynman Diagrams Chalkboard",
+      "category": "prop",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=chalkboard+physics",
+      "license": "CC-BY-4.0",
+      "poly_count": 2800,
+      "textures": [
+        "diffuse"
+      ],
+      "era": "modern_science",
+      "tags": [
+        "chalkboard",
+        "feynman"
+      ],
+      "used_in_scripts": [
+        "CS-013"
+      ],
+      "semanticType": "ENTITY",
+      "hz": 396,
+      "quality_score": 0.88,
+      "drone_curator": "D-18",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "env-014",
+      "name": "Egyptian Temple of Karnak",
+      "category": "environment",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=karnak+temple",
+      "license": "CC-BY-4.0",
+      "poly_count": 17200,
+      "textures": [
+        "diffuse",
+        "roughness"
+      ],
+      "era": "ancient_egypt",
+      "tags": [
+        "karnak",
+        "temple"
+      ],
+      "used_in_scripts": [
+        "CS-014"
+      ],
+      "semanticType": "LOCATION",
+      "hz": 417,
+      "quality_score": 0.92,
+      "drone_curator": "D-19",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "char-014",
+      "name": "Egyptian High Priest",
+      "category": "character",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=egyptian+priest",
+      "license": "CC-BY-4.0",
+      "poly_count": 9400,
+      "textures": [
+        "diffuse",
+        "normal"
+      ],
+      "era": "ancient_egypt",
+      "tags": [
+        "priest",
+        "egypt"
+      ],
+      "used_in_scripts": [
+        "CS-014"
+      ],
+      "semanticType": "ENTITY",
+      "hz": 396,
+      "quality_score": 0.91,
+      "drone_curator": "D-19",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "audio-014",
+      "name": "Egyptian Temple Chant",
+      "category": "audio",
+      "format": "mp3",
+      "source_url": "https://freesound.org/search/?q=egyptian+chant",
+      "license": "CC0-1.0",
+      "duration_seconds": 200,
+      "loop": true,
+      "spatial": true,
+      "era": "ancient_egypt",
+      "tags": [
+        "chant",
+        "egypt"
+      ],
+      "used_in_scripts": [
+        "CS-014"
+      ],
+      "semanticType": "DIALOGUE",
+      "hz": 639,
+      "quality_score": 0.9,
+      "drone_curator": "D-19",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "env-015",
+      "name": "Viking Longship at Sea",
+      "category": "environment",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=viking+longship",
+      "license": "CC-BY-4.0",
+      "poly_count": 15800,
+      "textures": [
+        "diffuse",
+        "roughness"
+      ],
+      "era": "viking",
+      "tags": [
+        "longship",
+        "viking"
+      ],
+      "used_in_scripts": [
+        "CS-015"
+      ],
+      "semanticType": "LOCATION",
+      "hz": 417,
+      "quality_score": 0.91,
+      "drone_curator": "D-20",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "char-015",
+      "name": "Norse Chieftain Full Armor",
+      "category": "character",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=viking+warrior",
+      "license": "CC-BY-4.0",
+      "poly_count": 10400,
+      "textures": [
+        "diffuse",
+        "metalness"
+      ],
+      "era": "viking",
+      "tags": [
+        "chieftain",
+        "norse"
+      ],
+      "used_in_scripts": [
+        "CS-015"
+      ],
+      "semanticType": "ENTITY",
+      "hz": 396,
+      "quality_score": 0.92,
+      "drone_curator": "D-20",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "audio-015",
+      "name": "North Sea Storm and Drums",
+      "category": "audio",
+      "format": "mp3",
+      "source_url": "https://freesound.org/search/?q=viking+drums",
+      "license": "CC0-1.0",
+      "duration_seconds": 170,
+      "loop": true,
+      "spatial": true,
+      "era": "viking",
+      "tags": [
+        "drums",
+        "viking"
+      ],
+      "used_in_scripts": [
+        "CS-015"
+      ],
+      "semanticType": "DIALOGUE",
+      "hz": 639,
+      "quality_score": 0.89,
+      "drone_curator": "D-20",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "env-016",
+      "name": "WWII Pacific Jungle Combat",
+      "category": "environment",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=wwii+jungle",
+      "license": "CC-BY-4.0",
+      "poly_count": 16400,
+      "textures": [
+        "diffuse",
+        "roughness"
+      ],
+      "era": "wwii",
+      "tags": [
+        "jungle",
+        "wwii"
+      ],
+      "used_in_scripts": [
+        "CS-016"
+      ],
+      "semanticType": "ACTION",
+      "hz": 528,
+      "quality_score": 0.9,
+      "drone_curator": "D-21",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "char-016",
+      "name": "WWII US Marine",
+      "category": "character",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=wwii+marine",
+      "license": "CC-BY-4.0",
+      "poly_count": 9600,
+      "textures": [
+        "diffuse",
+        "normal"
+      ],
+      "era": "wwii",
+      "tags": [
+        "marine",
+        "wwii"
+      ],
+      "used_in_scripts": [
+        "CS-016"
+      ],
+      "semanticType": "ENTITY",
+      "hz": 396,
+      "quality_score": 0.91,
+      "drone_curator": "D-21",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "prop-016",
+      "name": "WWII Military Radio",
+      "category": "prop",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=military+radio",
+      "license": "CC-BY-4.0",
+      "poly_count": 4200,
+      "textures": [
+        "diffuse",
+        "metalness"
+      ],
+      "era": "wwii",
+      "tags": [
+        "radio",
+        "wwii"
+      ],
+      "used_in_scripts": [
+        "CS-016"
+      ],
+      "semanticType": "ENTITY",
+      "hz": 396,
+      "quality_score": 0.88,
+      "drone_curator": "D-21",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "env-017",
+      "name": "Renaissance Botanical Garden",
+      "category": "environment",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=renaissance+garden",
+      "license": "CC-BY-4.0",
+      "poly_count": 14600,
+      "textures": [
+        "diffuse",
+        "roughness"
+      ],
+      "era": "renaissance",
+      "tags": [
+        "garden",
+        "renaissance"
+      ],
+      "used_in_scripts": [
+        "CS-017"
+      ],
+      "semanticType": "LOCATION",
+      "hz": 417,
+      "quality_score": 0.88,
+      "drone_curator": "D-22",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "char-017",
+      "name": "Galileo with Telescope",
+      "category": "character",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=galileo",
+      "license": "CC-BY-4.0",
+      "poly_count": 8800,
+      "textures": [
+        "diffuse",
+        "normal"
+      ],
+      "era": "renaissance",
+      "tags": [
+        "galileo",
+        "scientist"
+      ],
+      "used_in_scripts": [
+        "CS-017"
+      ],
+      "semanticType": "ENTITY",
+      "hz": 396,
+      "quality_score": 0.89,
+      "drone_curator": "D-22",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "prop-017",
+      "name": "Early Telescope and Star Charts",
+      "category": "prop",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=telescope+star+chart",
+      "license": "CC-BY-4.0",
+      "poly_count": 3200,
+      "textures": [
+        "diffuse"
+      ],
+      "era": "renaissance",
+      "tags": [
+        "telescope",
+        "astronomy"
+      ],
+      "used_in_scripts": [
+        "CS-017"
+      ],
+      "semanticType": "ENTITY",
+      "hz": 396,
+      "quality_score": 0.87,
+      "drone_curator": "D-22",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "env-018",
+      "name": "1900s Chemistry Laboratory",
+      "category": "environment",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=old+chemistry+lab",
+      "license": "CC-BY-4.0",
+      "poly_count": 13800,
+      "textures": [
+        "diffuse",
+        "roughness"
+      ],
+      "era": "early_modern",
+      "tags": [
+        "laboratory",
+        "chemistry"
+      ],
+      "used_in_scripts": [
+        "CS-018"
+      ],
+      "semanticType": "ACTION",
+      "hz": 528,
+      "quality_score": 0.91,
+      "drone_curator": "D-23",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "char-018",
+      "name": "Marie Curie Nobel Scientist",
+      "category": "character",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=marie+curie",
+      "license": "CC-BY-4.0",
+      "poly_count": 8600,
+      "textures": [
+        "diffuse",
+        "normal"
+      ],
+      "era": "early_modern",
+      "tags": [
+        "curie",
+        "scientist"
+      ],
+      "used_in_scripts": [
+        "CS-018"
+      ],
+      "semanticType": "ENTITY",
+      "hz": 396,
+      "quality_score": 0.92,
+      "drone_curator": "D-23",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "prop-018",
+      "name": "Radium Lab Equipment",
+      "category": "prop",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=antique+electrometer",
+      "license": "CC-BY-4.0",
+      "poly_count": 3600,
+      "textures": [
+        "diffuse",
+        "metalness"
+      ],
+      "era": "early_modern",
+      "tags": [
+        "radium",
+        "lab"
+      ],
+      "used_in_scripts": [
+        "CS-018"
+      ],
+      "semanticType": "ENTITY",
+      "hz": 396,
+      "quality_score": 0.89,
+      "drone_curator": "D-23",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "env-019",
+      "name": "Dyson Sphere Construction Site",
+      "category": "environment",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=dyson+sphere",
+      "license": "CC-BY-4.0",
+      "poly_count": 19600,
+      "textures": [
+        "diffuse",
+        "emission"
+      ],
+      "era": "future_2500",
+      "tags": [
+        "dyson-sphere",
+        "megastructure"
+      ],
+      "used_in_scripts": [
+        "CS-019"
+      ],
+      "semanticType": "PHYSICS",
+      "hz": 852,
+      "quality_score": 0.95,
+      "drone_curator": "D-24",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "char-019",
+      "name": "Interstellar Architect Avatar",
+      "category": "character",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=space+architect",
+      "license": "CC-BY-4.0",
+      "poly_count": 9800,
+      "textures": [
+        "diffuse",
+        "emission"
+      ],
+      "era": "future_2500",
+      "tags": [
+        "architect",
+        "future"
+      ],
+      "used_in_scripts": [
+        "CS-019"
+      ],
+      "semanticType": "ENTITY",
+      "hz": 396,
+      "quality_score": 0.93,
+      "drone_curator": "D-24",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "audio-019",
+      "name": "Megastructure Construction Hum",
+      "category": "audio",
+      "format": "mp3",
+      "source_url": "https://freesound.org/search/?q=megastructure+drone",
+      "license": "CC0-1.0",
+      "duration_seconds": 300,
+      "loop": true,
+      "spatial": false,
+      "era": "future_2500",
+      "tags": [
+        "hum",
+        "future"
+      ],
+      "used_in_scripts": [
+        "CS-019"
+      ],
+      "semanticType": "DIALOGUE",
+      "hz": 639,
+      "quality_score": 0.92,
+      "drone_curator": "D-24",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "env-020",
+      "name": "Alpine Landscape Sils Maria",
+      "category": "environment",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=swiss+alpine",
+      "license": "CC-BY-4.0",
+      "poly_count": 15200,
+      "textures": [
+        "diffuse",
+        "roughness"
+      ],
+      "era": "19th_century",
+      "tags": [
+        "alpine",
+        "mountain"
+      ],
+      "used_in_scripts": [
+        "CS-020"
+      ],
+      "semanticType": "LOCATION",
+      "hz": 417,
+      "quality_score": 0.9,
+      "drone_curator": "D-25",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "char-020",
+      "name": "Friedrich Nietzsche Philosopher",
+      "category": "character",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=philosopher+19th",
+      "license": "CC-BY-4.0",
+      "poly_count": 8400,
+      "textures": [
+        "diffuse",
+        "normal"
+      ],
+      "era": "19th_century",
+      "tags": [
+        "nietzsche",
+        "philosopher"
+      ],
+      "used_in_scripts": [
+        "CS-020"
+      ],
+      "semanticType": "ENTITY",
+      "hz": 396,
+      "quality_score": 0.88,
+      "drone_curator": "D-25",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "prop-020",
+      "name": "19th Century Writing Desk",
+      "category": "prop",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=antique+writing+desk",
+      "license": "CC-BY-4.0",
+      "poly_count": 4400,
+      "textures": [
+        "diffuse"
+      ],
+      "era": "19th_century",
+      "tags": [
+        "desk",
+        "writing"
+      ],
+      "used_in_scripts": [
+        "CS-020"
+      ],
+      "semanticType": "ENTITY",
+      "hz": 396,
+      "quality_score": 0.87,
+      "drone_curator": "D-25",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "env-021",
+      "name": "Asgard Norse Celestial Realm",
+      "category": "environment",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=asgard+norse",
+      "license": "CC-BY-4.0",
+      "poly_count": 18800,
+      "textures": [
+        "diffuse",
+        "emission"
+      ],
+      "era": "norse_mythology",
+      "tags": [
+        "asgard",
+        "norse"
+      ],
+      "used_in_scripts": [
+        "CS-021"
+      ],
+      "semanticType": "NARRATIVE",
+      "hz": 963,
+      "quality_score": 0.94,
+      "drone_curator": "D-26",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "char-021",
+      "name": "Odin Allfather with Ravens",
+      "category": "character",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=odin+allfather",
+      "license": "CC-BY-4.0",
+      "poly_count": 11200,
+      "textures": [
+        "diffuse",
+        "metalness"
+      ],
+      "era": "norse_mythology",
+      "tags": [
+        "odin",
+        "ravens"
+      ],
+      "used_in_scripts": [
+        "CS-021"
+      ],
+      "semanticType": "ENTITY",
+      "hz": 396,
+      "quality_score": 0.93,
+      "drone_curator": "D-26",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "audio-021",
+      "name": "Norse Thunder and Horns",
+      "category": "audio",
+      "format": "mp3",
+      "source_url": "https://freesound.org/search/?q=norse+thunder",
+      "license": "CC0-1.0",
+      "duration_seconds": 190,
+      "loop": true,
+      "spatial": true,
+      "era": "norse_mythology",
+      "tags": [
+        "thunder",
+        "norse"
+      ],
+      "used_in_scripts": [
+        "CS-021"
+      ],
+      "semanticType": "DIALOGUE",
+      "hz": 639,
+      "quality_score": 0.91,
+      "drone_curator": "D-26",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "env-022",
+      "name": "Mongolian Steppe Yurt Camp",
+      "category": "environment",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=mongolian+yurt",
+      "license": "CC-BY-4.0",
+      "poly_count": 13400,
+      "textures": [
+        "diffuse",
+        "roughness"
+      ],
+      "era": "mongol_empire",
+      "tags": [
+        "yurt",
+        "mongol"
+      ],
+      "used_in_scripts": [
+        "CS-022"
+      ],
+      "semanticType": "LOCATION",
+      "hz": 417,
+      "quality_score": 0.89,
+      "drone_curator": "D-27",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "char-022",
+      "name": "Mongol Khan Horseback Warrior",
+      "category": "character",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=mongol+warrior",
+      "license": "CC-BY-4.0",
+      "poly_count": 10600,
+      "textures": [
+        "diffuse",
+        "roughness"
+      ],
+      "era": "mongol_empire",
+      "tags": [
+        "khan",
+        "warrior"
+      ],
+      "used_in_scripts": [
+        "CS-022"
+      ],
+      "semanticType": "ENTITY",
+      "hz": 396,
+      "quality_score": 0.9,
+      "drone_curator": "D-27",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "audio-022",
+      "name": "Steppe Wind and Horsemen",
+      "category": "audio",
+      "format": "mp3",
+      "source_url": "https://freesound.org/search/?q=steppe+wind",
+      "license": "CC0-1.0",
+      "duration_seconds": 160,
+      "loop": true,
+      "spatial": true,
+      "era": "mongol_empire",
+      "tags": [
+        "steppe",
+        "wind"
+      ],
+      "used_in_scripts": [
+        "CS-022"
+      ],
+      "semanticType": "DIALOGUE",
+      "hz": 639,
+      "quality_score": 0.88,
+      "drone_curator": "D-27",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "env-023",
+      "name": "Quantum Entanglement Chamber",
+      "category": "environment",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=quantum+entanglement",
+      "license": "CC-BY-4.0",
+      "poly_count": 9200,
+      "textures": [
+        "emission",
+        "diffuse"
+      ],
+      "era": "quantum",
+      "tags": [
+        "entanglement",
+        "quantum"
+      ],
+      "used_in_scripts": [
+        "CS-023"
+      ],
+      "semanticType": "PHYSICS",
+      "hz": 852,
+      "quality_score": 0.95,
+      "drone_curator": "D-28",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "char-023",
+      "name": "Schrodinger with Cat Experiment",
+      "category": "character",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=physicist+with+cat",
+      "license": "CC-BY-4.0",
+      "poly_count": 8800,
+      "textures": [
+        "diffuse",
+        "normal"
+      ],
+      "era": "modern_science",
+      "tags": [
+        "schrodinger",
+        "quantum"
+      ],
+      "used_in_scripts": [
+        "CS-023"
+      ],
+      "semanticType": "ENTITY",
+      "hz": 396,
+      "quality_score": 0.88,
+      "drone_curator": "D-28",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "prop-023",
+      "name": "Quantum Cat Box Apparatus",
+      "category": "prop",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=box+experiment",
+      "license": "CC-BY-4.0",
+      "poly_count": 3000,
+      "textures": [
+        "diffuse"
+      ],
+      "era": "modern_science",
+      "tags": [
+        "cat",
+        "superposition"
+      ],
+      "used_in_scripts": [
+        "CS-023"
+      ],
+      "semanticType": "ENTITY",
+      "hz": 396,
+      "quality_score": 0.87,
+      "drone_curator": "D-28",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "env-024",
+      "name": "Napoleonic Battlefield Waterloo",
+      "category": "environment",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=napoleonic+battlefield",
+      "license": "CC-BY-4.0",
+      "poly_count": 17800,
+      "textures": [
+        "diffuse",
+        "roughness"
+      ],
+      "era": "napoleonic",
+      "tags": [
+        "waterloo",
+        "napoleon"
+      ],
+      "used_in_scripts": [
+        "CS-024"
+      ],
+      "semanticType": "ACTION",
+      "hz": 528,
+      "quality_score": 0.91,
+      "drone_curator": "D-29",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "char-024",
+      "name": "Napoleon Bonaparte Imperial",
+      "category": "character",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=napoleon+uniform",
+      "license": "CC-BY-4.0",
+      "poly_count": 9200,
+      "textures": [
+        "diffuse",
+        "metalness"
+      ],
+      "era": "napoleonic",
+      "tags": [
+        "napoleon",
+        "emperor"
+      ],
+      "used_in_scripts": [
+        "CS-024"
+      ],
+      "semanticType": "ENTITY",
+      "hz": 396,
+      "quality_score": 0.9,
+      "drone_curator": "D-29",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "prop-024",
+      "name": "Napoleonic Era Cannon",
+      "category": "prop",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=napoleon+cannon",
+      "license": "CC-BY-4.0",
+      "poly_count": 5600,
+      "textures": [
+        "diffuse",
+        "metalness"
+      ],
+      "era": "napoleonic",
+      "tags": [
+        "cannon",
+        "napoleon"
+      ],
+      "used_in_scripts": [
+        "CS-024"
+      ],
+      "semanticType": "ENTITY",
+      "hz": 396,
+      "quality_score": 0.89,
+      "drone_curator": "D-29",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "env-025",
+      "name": "Exoplanet Terraforming Colony",
+      "category": "environment",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=terraforming+colony",
+      "license": "CC-BY-4.0",
+      "poly_count": 20200,
+      "textures": [
+        "diffuse",
+        "emission"
+      ],
+      "era": "future_2200",
+      "tags": [
+        "terraforming",
+        "colony"
+      ],
+      "used_in_scripts": [
+        "CS-025"
+      ],
+      "semanticType": "LOCATION",
+      "hz": 417,
+      "quality_score": 0.94,
+      "drone_curator": "D-30",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "char-025",
+      "name": "Colonial Terraformer Engineer",
+      "category": "character",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=space+engineer",
+      "license": "CC-BY-4.0",
+      "poly_count": 10000,
+      "textures": [
+        "diffuse",
+        "metalness"
+      ],
+      "era": "future_2200",
+      "tags": [
+        "engineer",
+        "colony"
+      ],
+      "used_in_scripts": [
+        "CS-025"
+      ],
+      "semanticType": "ENTITY",
+      "hz": 396,
+      "quality_score": 0.93,
+      "drone_curator": "D-30",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "audio-025",
+      "name": "Alien Biosphere Wind",
+      "category": "audio",
+      "format": "mp3",
+      "source_url": "https://freesound.org/search/?q=alien+wind",
+      "license": "CC0-1.0",
+      "duration_seconds": 220,
+      "loop": true,
+      "spatial": true,
+      "era": "future_2200",
+      "tags": [
+        "alien",
+        "wind"
+      ],
+      "used_in_scripts": [
+        "CS-025"
+      ],
+      "semanticType": "DIALOGUE",
+      "hz": 639,
+      "quality_score": 0.91,
+      "drone_curator": "D-30",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "env-026",
+      "name": "Roman Forum Imperial",
+      "category": "environment",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=roman+forum",
+      "license": "CC-BY-4.0",
+      "poly_count": 18200,
+      "textures": [
+        "diffuse",
+        "roughness"
+      ],
+      "era": "ancient_rome",
+      "tags": [
+        "forum",
+        "rome"
+      ],
+      "used_in_scripts": [
+        "CS-026"
+      ],
+      "semanticType": "LOCATION",
+      "hz": 417,
+      "quality_score": 0.92,
+      "drone_curator": "D-31",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "char-026",
+      "name": "Marcus Aurelius Stoic Emperor",
+      "category": "character",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=marcus+aurelius",
+      "license": "CC-BY-4.0",
+      "poly_count": 9600,
+      "textures": [
+        "diffuse",
+        "metalness"
+      ],
+      "era": "ancient_rome",
+      "tags": [
+        "marcus-aurelius",
+        "stoic"
+      ],
+      "used_in_scripts": [
+        "CS-026"
+      ],
+      "semanticType": "ENTITY",
+      "hz": 396,
+      "quality_score": 0.9,
+      "drone_curator": "D-31",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "prop-026",
+      "name": "Roman Meditations Scrolls",
+      "category": "prop",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=roman+scroll",
+      "license": "CC-BY-4.0",
+      "poly_count": 2800,
+      "textures": [
+        "diffuse"
+      ],
+      "era": "ancient_rome",
+      "tags": [
+        "scroll",
+        "roman"
+      ],
+      "used_in_scripts": [
+        "CS-026"
+      ],
+      "semanticType": "ENTITY",
+      "hz": 396,
+      "quality_score": 0.88,
+      "drone_curator": "D-31",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "env-027",
+      "name": "English Country Estate 1680s",
+      "category": "environment",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=english+garden+manor",
+      "license": "CC-BY-4.0",
+      "poly_count": 14200,
+      "textures": [
+        "diffuse",
+        "roughness"
+      ],
+      "era": "17th_century",
+      "tags": [
+        "garden",
+        "manor"
+      ],
+      "used_in_scripts": [
+        "CS-027"
+      ],
+      "semanticType": "LOCATION",
+      "hz": 417,
+      "quality_score": 0.89,
+      "drone_curator": "D-32",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "char-027",
+      "name": "Isaac Newton with Apple",
+      "category": "character",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=newton+scientist",
+      "license": "CC-BY-4.0",
+      "poly_count": 8600,
+      "textures": [
+        "diffuse",
+        "normal"
+      ],
+      "era": "17th_century",
+      "tags": [
+        "newton",
+        "physics"
+      ],
+      "used_in_scripts": [
+        "CS-027"
+      ],
+      "semanticType": "ENTITY",
+      "hz": 396,
+      "quality_score": 0.9,
+      "drone_curator": "D-32",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "prop-027",
+      "name": "Newton Prism and Optics",
+      "category": "prop",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=prism+optics",
+      "license": "CC-BY-4.0",
+      "poly_count": 2600,
+      "textures": [
+        "diffuse"
+      ],
+      "era": "17th_century",
+      "tags": [
+        "prism",
+        "newton"
+      ],
+      "used_in_scripts": [
+        "CS-027"
+      ],
+      "semanticType": "ENTITY",
+      "hz": 396,
+      "quality_score": 0.88,
+      "drone_curator": "D-32",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "env-028",
+      "name": "Ancient Angkor Wat Temple",
+      "category": "environment",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=angkor+wat+temple",
+      "license": "CC-BY-4.0",
+      "poly_count": 19400,
+      "textures": [
+        "diffuse",
+        "roughness",
+        "ao"
+      ],
+      "era": "ancient_india",
+      "tags": [
+        "angkor",
+        "hindu"
+      ],
+      "used_in_scripts": [
+        "CS-028"
+      ],
+      "semanticType": "NARRATIVE",
+      "hz": 963,
+      "quality_score": 0.93,
+      "drone_curator": "D-33",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "char-028",
+      "name": "Lord Vishnu Cosmic Avatar",
+      "category": "character",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=vishnu+god",
+      "license": "CC-BY-4.0",
+      "poly_count": 11400,
+      "textures": [
+        "diffuse",
+        "emission"
+      ],
+      "era": "ancient_india",
+      "tags": [
+        "vishnu",
+        "cosmic"
+      ],
+      "used_in_scripts": [
+        "CS-028"
+      ],
+      "semanticType": "ENTITY",
+      "hz": 396,
+      "quality_score": 0.92,
+      "drone_curator": "D-33",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "audio-028",
+      "name": "Vedic Chants and Temple Bells",
+      "category": "audio",
+      "format": "mp3",
+      "source_url": "https://freesound.org/search/?q=vedic+chant",
+      "license": "CC0-1.0",
+      "duration_seconds": 210,
+      "loop": true,
+      "spatial": true,
+      "era": "ancient_india",
+      "tags": [
+        "vedic",
+        "chant"
+      ],
+      "used_in_scripts": [
+        "CS-028"
+      ],
+      "semanticType": "DIALOGUE",
+      "hz": 639,
+      "quality_score": 0.9,
+      "drone_curator": "D-33",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "env-029",
+      "name": "Babylon Hanging Gardens",
+      "category": "environment",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=babylon+gardens",
+      "license": "CC-BY-4.0",
+      "poly_count": 16800,
+      "textures": [
+        "diffuse",
+        "roughness"
+      ],
+      "era": "ancient_babylon",
+      "tags": [
+        "babylon",
+        "gardens"
+      ],
+      "used_in_scripts": [
+        "CS-029"
+      ],
+      "semanticType": "LOCATION",
+      "hz": 417,
+      "quality_score": 0.91,
+      "drone_curator": "D-34",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "char-029",
+      "name": "Babylonian King Royal Regalia",
+      "category": "character",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=babylonian+king",
+      "license": "CC-BY-4.0",
+      "poly_count": 9600,
+      "textures": [
+        "diffuse",
+        "metalness"
+      ],
+      "era": "ancient_babylon",
+      "tags": [
+        "king",
+        "babylon"
+      ],
+      "used_in_scripts": [
+        "CS-029"
+      ],
+      "semanticType": "ENTITY",
+      "hz": 396,
+      "quality_score": 0.89,
+      "drone_curator": "D-34",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "audio-029",
+      "name": "Mesopotamian City Sounds",
+      "category": "audio",
+      "format": "mp3",
+      "source_url": "https://freesound.org/search/?q=ancient+city",
+      "license": "CC0-1.0",
+      "duration_seconds": 180,
+      "loop": true,
+      "spatial": true,
+      "era": "ancient_babylon",
+      "tags": [
+        "city",
+        "mesopotamia"
+      ],
+      "used_in_scripts": [
+        "CS-029"
+      ],
+      "semanticType": "DIALOGUE",
+      "hz": 639,
+      "quality_score": 0.87,
+      "drone_curator": "D-34",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "env-030",
+      "name": "Vietnam War Jungle Firebase",
+      "category": "environment",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=vietnam+firebase",
+      "license": "CC-BY-4.0",
+      "poly_count": 15600,
+      "textures": [
+        "diffuse",
+        "roughness"
+      ],
+      "era": "vietnam_war",
+      "tags": [
+        "firebase",
+        "vietnam"
+      ],
+      "used_in_scripts": [
+        "CS-030"
+      ],
+      "semanticType": "ACTION",
+      "hz": 528,
+      "quality_score": 0.9,
+      "drone_curator": "D-35",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "char-030",
+      "name": "Vietnam Era Soldier",
+      "category": "character",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=vietnam+soldier",
+      "license": "CC-BY-4.0",
+      "poly_count": 9400,
+      "textures": [
+        "diffuse",
+        "normal"
+      ],
+      "era": "vietnam_war",
+      "tags": [
+        "soldier",
+        "vietnam"
+      ],
+      "used_in_scripts": [
+        "CS-030"
+      ],
+      "semanticType": "ENTITY",
+      "hz": 396,
+      "quality_score": 0.89,
+      "drone_curator": "D-35",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "audio-030",
+      "name": "Vietnam Chopper and Night Ambience",
+      "category": "audio",
+      "format": "mp3",
+      "source_url": "https://freesound.org/search/?q=helicopter+jungle",
+      "license": "CC0-1.0",
+      "duration_seconds": 200,
+      "loop": true,
+      "spatial": true,
+      "era": "vietnam_war",
+      "tags": [
+        "chopper",
+        "jungle"
+      ],
+      "used_in_scripts": [
+        "CS-030"
+      ],
+      "semanticType": "DIALOGUE",
+      "hz": 639,
+      "quality_score": 0.88,
+      "drone_curator": "D-35",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "env-031",
+      "name": "Wardenclyffe Tesla Tower Lab",
+      "category": "environment",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=tesla+tower",
+      "license": "CC-BY-4.0",
+      "poly_count": 15000,
+      "textures": [
+        "diffuse",
+        "emission",
+        "metalness"
+      ],
+      "era": "early_modern",
+      "tags": [
+        "tesla",
+        "electricity"
+      ],
+      "used_in_scripts": [
+        "CS-031"
+      ],
+      "semanticType": "ACTION",
+      "hz": 528,
+      "quality_score": 0.92,
+      "drone_curator": "D-36",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "char-031",
+      "name": "Nikola Tesla Lightning",
+      "category": "character",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=tesla+inventor",
+      "license": "CC-BY-4.0",
+      "poly_count": 8800,
+      "textures": [
+        "diffuse",
+        "normal"
+      ],
+      "era": "early_modern",
+      "tags": [
+        "tesla",
+        "inventor"
+      ],
+      "used_in_scripts": [
+        "CS-031"
+      ],
+      "semanticType": "ENTITY",
+      "hz": 396,
+      "quality_score": 0.91,
+      "drone_curator": "D-36",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "prop-031",
+      "name": "Tesla Coil Apparatus",
+      "category": "prop",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=tesla+coil",
+      "license": "CC-BY-4.0",
+      "poly_count": 4800,
+      "textures": [
+        "diffuse",
+        "emission"
+      ],
+      "era": "early_modern",
+      "tags": [
+        "coil",
+        "tesla"
+      ],
+      "used_in_scripts": [
+        "CS-031"
+      ],
+      "semanticType": "ENTITY",
+      "hz": 396,
+      "quality_score": 0.9,
+      "drone_curator": "D-36",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "env-032",
+      "name": "Prussian University Lecture Hall 1780s",
+      "category": "environment",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=baroque+lecture+hall",
+      "license": "CC-BY-4.0",
+      "poly_count": 12800,
+      "textures": [
+        "diffuse",
+        "roughness"
+      ],
+      "era": "18th_century",
+      "tags": [
+        "lecture-hall",
+        "prussian"
+      ],
+      "used_in_scripts": [
+        "CS-032"
+      ],
+      "semanticType": "NARRATIVE",
+      "hz": 963,
+      "quality_score": 0.89,
+      "drone_curator": "D-37",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "char-032",
+      "name": "Immanuel Kant Philosopher",
+      "category": "character",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=kant+philosopher",
+      "license": "CC-BY-4.0",
+      "poly_count": 8400,
+      "textures": [
+        "diffuse",
+        "normal"
+      ],
+      "era": "18th_century",
+      "tags": [
+        "kant",
+        "philosopher"
+      ],
+      "used_in_scripts": [
+        "CS-032"
+      ],
+      "semanticType": "ENTITY",
+      "hz": 396,
+      "quality_score": 0.88,
+      "drone_curator": "D-37",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "prop-032",
+      "name": "Enlightenment Books and Globe",
+      "category": "prop",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=old+books+globe",
+      "license": "CC-BY-4.0",
+      "poly_count": 3200,
+      "textures": [
+        "diffuse"
+      ],
+      "era": "18th_century",
+      "tags": [
+        "books",
+        "philosophy"
+      ],
+      "used_in_scripts": [
+        "CS-032"
+      ],
+      "semanticType": "ENTITY",
+      "hz": 396,
+      "quality_score": 0.87,
+      "drone_curator": "D-37",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "env-033",
+      "name": "Aztec Tenochtitlan Temple Complex",
+      "category": "environment",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=aztec+tenochtitlan",
+      "license": "CC-BY-4.0",
+      "poly_count": 19200,
+      "textures": [
+        "diffuse",
+        "roughness",
+        "ao"
+      ],
+      "era": "mesoamerica",
+      "tags": [
+        "aztec",
+        "pyramid"
+      ],
+      "used_in_scripts": [
+        "CS-033"
+      ],
+      "semanticType": "NARRATIVE",
+      "hz": 963,
+      "quality_score": 0.93,
+      "drone_curator": "D-38",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "char-033",
+      "name": "Aztec High Priest Ceremonial Feathers",
+      "category": "character",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=aztec+priest",
+      "license": "CC-BY-4.0",
+      "poly_count": 10800,
+      "textures": [
+        "diffuse",
+        "metalness"
+      ],
+      "era": "mesoamerica",
+      "tags": [
+        "priest",
+        "aztec"
+      ],
+      "used_in_scripts": [
+        "CS-033"
+      ],
+      "semanticType": "ENTITY",
+      "hz": 396,
+      "quality_score": 0.91,
+      "drone_curator": "D-38",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "audio-033",
+      "name": "Aztec Drum and Conch Ceremony",
+      "category": "audio",
+      "format": "mp3",
+      "source_url": "https://freesound.org/search/?q=aztec+drum",
+      "license": "CC0-1.0",
+      "duration_seconds": 195,
+      "loop": true,
+      "spatial": true,
+      "era": "mesoamerica",
+      "tags": [
+        "drum",
+        "aztec"
+      ],
+      "used_in_scripts": [
+        "CS-033"
+      ],
+      "semanticType": "DIALOGUE",
+      "hz": 639,
+      "quality_score": 0.9,
+      "drone_curator": "D-38",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "env-034",
+      "name": "String Theory Multiverse",
+      "category": "environment",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=multiverse",
+      "license": "CC-BY-4.0",
+      "poly_count": 8800,
+      "textures": [
+        "emission",
+        "diffuse"
+      ],
+      "era": "quantum",
+      "tags": [
+        "string-theory",
+        "multiverse"
+      ],
+      "used_in_scripts": [
+        "CS-034"
+      ],
+      "semanticType": "PHYSICS",
+      "hz": 852,
+      "quality_score": 0.96,
+      "drone_curator": "D-39",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "char-034",
+      "name": "Cosmologist Scientist Avatar",
+      "category": "character",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=cosmologist",
+      "license": "CC-BY-4.0",
+      "poly_count": 8600,
+      "textures": [
+        "diffuse",
+        "normal"
+      ],
+      "era": "modern_science",
+      "tags": [
+        "cosmologist",
+        "string-theory"
+      ],
+      "used_in_scripts": [
+        "CS-034"
+      ],
+      "semanticType": "ENTITY",
+      "hz": 396,
+      "quality_score": 0.88,
+      "drone_curator": "D-39",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "prop-034",
+      "name": "Calabi-Yau Manifold Model",
+      "category": "prop",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=calabi+yau",
+      "license": "CC-BY-4.0",
+      "poly_count": 5200,
+      "textures": [
+        "emission",
+        "diffuse"
+      ],
+      "era": "modern_science",
+      "tags": [
+        "calabi-yau",
+        "topology"
+      ],
+      "used_in_scripts": [
+        "CS-034"
+      ],
+      "semanticType": "ENTITY",
+      "hz": 396,
+      "quality_score": 0.92,
+      "drone_curator": "D-39",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "env-035",
+      "name": "Silk Road Caravanserai",
+      "category": "environment",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=caravanserai",
+      "license": "CC-BY-4.0",
+      "poly_count": 14800,
+      "textures": [
+        "diffuse",
+        "roughness"
+      ],
+      "era": "medieval_trade",
+      "tags": [
+        "caravanserai",
+        "silk-road"
+      ],
+      "used_in_scripts": [
+        "CS-035"
+      ],
+      "semanticType": "LOCATION",
+      "hz": 417,
+      "quality_score": 0.9,
+      "drone_curator": "D-40",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "char-035",
+      "name": "Silk Road Merchant with Camel",
+      "category": "character",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=merchant+camel",
+      "license": "CC-BY-4.0",
+      "poly_count": 10200,
+      "textures": [
+        "diffuse",
+        "roughness"
+      ],
+      "era": "medieval_trade",
+      "tags": [
+        "merchant",
+        "camel"
+      ],
+      "used_in_scripts": [
+        "CS-035"
+      ],
+      "semanticType": "ENTITY",
+      "hz": 396,
+      "quality_score": 0.89,
+      "drone_curator": "D-40",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "audio-035",
+      "name": "Desert Wind and Camel Bells",
+      "category": "audio",
+      "format": "mp3",
+      "source_url": "https://freesound.org/search/?q=desert+camel",
+      "license": "CC0-1.0",
+      "duration_seconds": 175,
+      "loop": true,
+      "spatial": true,
+      "era": "medieval_trade",
+      "tags": [
+        "desert",
+        "camel"
+      ],
+      "used_in_scripts": [
+        "CS-035"
+      ],
+      "semanticType": "DIALOGUE",
+      "hz": 639,
+      "quality_score": 0.88,
+      "drone_curator": "D-40",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "env-036",
+      "name": "Cold War Missile Silo",
+      "category": "environment",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=cold+war+silo",
+      "license": "CC-BY-4.0",
+      "poly_count": 13600,
+      "textures": [
+        "diffuse",
+        "metalness"
+      ],
+      "era": "cold_war",
+      "tags": [
+        "silo",
+        "cold-war"
+      ],
+      "used_in_scripts": [
+        "CS-036"
+      ],
+      "semanticType": "ACTION",
+      "hz": 528,
+      "quality_score": 0.91,
+      "drone_curator": "D-41",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "char-036",
+      "name": "Cold War Military Commander",
+      "category": "character",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=cold+war+general",
+      "license": "CC-BY-4.0",
+      "poly_count": 9000,
+      "textures": [
+        "diffuse",
+        "roughness"
+      ],
+      "era": "cold_war",
+      "tags": [
+        "commander",
+        "cold-war"
+      ],
+      "used_in_scripts": [
+        "CS-036"
+      ],
+      "semanticType": "ENTITY",
+      "hz": 396,
+      "quality_score": 0.89,
+      "drone_curator": "D-41",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "prop-036",
+      "name": "Cold War Hotline Phone",
+      "category": "prop",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=cold+war+telephone",
+      "license": "CC-BY-4.0",
+      "poly_count": 2400,
+      "textures": [
+        "diffuse"
+      ],
+      "era": "cold_war",
+      "tags": [
+        "hotline",
+        "phone"
+      ],
+      "used_in_scripts": [
+        "CS-036"
+      ],
+      "semanticType": "ENTITY",
+      "hz": 396,
+      "quality_score": 0.88,
+      "drone_curator": "D-41",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "env-037",
+      "name": "Sistine Chapel Under Construction",
+      "category": "environment",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=sistine+chapel",
+      "license": "CC-BY-4.0",
+      "poly_count": 20800,
+      "textures": [
+        "diffuse",
+        "roughness",
+        "ao"
+      ],
+      "era": "renaissance",
+      "tags": [
+        "sistine",
+        "renaissance"
+      ],
+      "used_in_scripts": [
+        "CS-037"
+      ],
+      "semanticType": "NARRATIVE",
+      "hz": 963,
+      "quality_score": 0.95,
+      "drone_curator": "D-42",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "char-037",
+      "name": "Michelangelo on Scaffolding",
+      "category": "character",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=michelangelo+artist",
+      "license": "CC-BY-4.0",
+      "poly_count": 9200,
+      "textures": [
+        "diffuse",
+        "normal"
+      ],
+      "era": "renaissance",
+      "tags": [
+        "michelangelo",
+        "artist"
+      ],
+      "used_in_scripts": [
+        "CS-037"
+      ],
+      "semanticType": "ENTITY",
+      "hz": 396,
+      "quality_score": 0.92,
+      "drone_curator": "D-42",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "prop-037",
+      "name": "Fresco Painting Tools",
+      "category": "prop",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=fresco+tools",
+      "license": "CC-BY-4.0",
+      "poly_count": 3400,
+      "textures": [
+        "diffuse"
+      ],
+      "era": "renaissance",
+      "tags": [
+        "fresco",
+        "brush"
+      ],
+      "used_in_scripts": [
+        "CS-037"
+      ],
+      "semanticType": "ENTITY",
+      "hz": 396,
+      "quality_score": 0.89,
+      "drone_curator": "D-42",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "env-038",
+      "name": "Post-Singularity Hybrid City",
+      "category": "environment",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=future+city",
+      "license": "CC-BY-4.0",
+      "poly_count": 22000,
+      "textures": [
+        "diffuse",
+        "emission"
+      ],
+      "era": "post_singularity",
+      "tags": [
+        "singularity",
+        "city"
+      ],
+      "used_in_scripts": [
+        "CS-038"
+      ],
+      "semanticType": "NARRATIVE",
+      "hz": 963,
+      "quality_score": 0.96,
+      "drone_curator": "D-43",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "char-038",
+      "name": "Transhumanist Digital Avatar",
+      "category": "character",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=digital+avatar",
+      "license": "CC-BY-4.0",
+      "poly_count": 11600,
+      "textures": [
+        "emission",
+        "diffuse"
+      ],
+      "era": "post_singularity",
+      "tags": [
+        "transhumanist",
+        "digital"
+      ],
+      "used_in_scripts": [
+        "CS-038"
+      ],
+      "semanticType": "ENTITY",
+      "hz": 396,
+      "quality_score": 0.95,
+      "drone_curator": "D-43",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "audio-038",
+      "name": "Post-Singularity City Soundscape",
+      "category": "audio",
+      "format": "mp3",
+      "source_url": "https://freesound.org/search/?q=futuristic+city",
+      "license": "CC0-1.0",
+      "duration_seconds": 260,
+      "loop": true,
+      "spatial": false,
+      "era": "post_singularity",
+      "tags": [
+        "electronic",
+        "city"
+      ],
+      "used_in_scripts": [
+        "CS-038"
+      ],
+      "semanticType": "DIALOGUE",
+      "hz": 639,
+      "quality_score": 0.93,
+      "drone_curator": "D-43",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "env-039",
+      "name": "Platonic Cave Allegory",
+      "category": "environment",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=cave+shadows",
+      "license": "CC-BY-4.0",
+      "poly_count": 12400,
+      "textures": [
+        "diffuse",
+        "roughness"
+      ],
+      "era": "ancient_greece",
+      "tags": [
+        "cave",
+        "plato"
+      ],
+      "used_in_scripts": [
+        "CS-039"
+      ],
+      "semanticType": "NARRATIVE",
+      "hz": 963,
+      "quality_score": 0.91,
+      "drone_curator": "D-44",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "char-039",
+      "name": "Plato Teaching at The Academy",
+      "category": "character",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=plato+philosopher",
+      "license": "CC-BY-4.0",
+      "poly_count": 8800,
+      "textures": [
+        "diffuse",
+        "normal"
+      ],
+      "era": "ancient_greece",
+      "tags": [
+        "plato",
+        "philosopher"
+      ],
+      "used_in_scripts": [
+        "CS-039"
+      ],
+      "semanticType": "ENTITY",
+      "hz": 396,
+      "quality_score": 0.89,
+      "drone_curator": "D-44",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "prop-039",
+      "name": "Platonic Solids Sacred Geometry",
+      "category": "prop",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=platonic+solids",
+      "license": "CC0-1.0",
+      "poly_count": 2400,
+      "textures": [
+        "diffuse"
+      ],
+      "era": "ancient_greece",
+      "tags": [
+        "platonic-solids",
+        "geometry"
+      ],
+      "used_in_scripts": [
+        "CS-039"
+      ],
+      "semanticType": "ENTITY",
+      "hz": 396,
+      "quality_score": 0.9,
+      "drone_curator": "D-44",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "env-040",
+      "name": "Mount Olympus Home of the Gods",
+      "category": "environment",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=olympus+gods",
+      "license": "CC-BY-4.0",
+      "poly_count": 17400,
+      "textures": [
+        "diffuse",
+        "emission"
+      ],
+      "era": "greek_mythology",
+      "tags": [
+        "olympus",
+        "gods"
+      ],
+      "used_in_scripts": [
+        "CS-040"
+      ],
+      "semanticType": "NARRATIVE",
+      "hz": 963,
+      "quality_score": 0.93,
+      "drone_curator": "D-45",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "char-040",
+      "name": "Zeus Thunderbolt God",
+      "category": "character",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=zeus+god",
+      "license": "CC-BY-4.0",
+      "poly_count": 11000,
+      "textures": [
+        "diffuse",
+        "emission"
+      ],
+      "era": "greek_mythology",
+      "tags": [
+        "zeus",
+        "thunderbolt"
+      ],
+      "used_in_scripts": [
+        "CS-040"
+      ],
+      "semanticType": "ENTITY",
+      "hz": 396,
+      "quality_score": 0.94,
+      "drone_curator": "D-45",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "audio-040",
+      "name": "Olympian Thunder and Chorus",
+      "category": "audio",
+      "format": "mp3",
+      "source_url": "https://freesound.org/search/?q=olympian+choir",
+      "license": "CC0-1.0",
+      "duration_seconds": 230,
+      "loop": true,
+      "spatial": true,
+      "era": "greek_mythology",
+      "tags": [
+        "thunder",
+        "chorus"
+      ],
+      "used_in_scripts": [
+        "CS-040"
+      ],
+      "semanticType": "DIALOGUE",
+      "hz": 639,
+      "quality_score": 0.92,
+      "drone_curator": "D-45",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "env-041",
+      "name": "Princeton Academic Office 1950s",
+      "category": "environment",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=academic+office+1950s",
+      "license": "CC-BY-4.0",
+      "poly_count": 10800,
+      "textures": [
+        "diffuse",
+        "roughness"
+      ],
+      "era": "mid_modern",
+      "tags": [
+        "princeton",
+        "academic"
+      ],
+      "used_in_scripts": [
+        "CS-041"
+      ],
+      "semanticType": "LOCATION",
+      "hz": 417,
+      "quality_score": 0.89,
+      "drone_curator": "D-46",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "char-041",
+      "name": "Albert Einstein with Blackboard",
+      "category": "character",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=einstein",
+      "license": "CC-BY-4.0",
+      "poly_count": 9000,
+      "textures": [
+        "diffuse",
+        "normal"
+      ],
+      "era": "mid_modern",
+      "tags": [
+        "einstein",
+        "physicist"
+      ],
+      "used_in_scripts": [
+        "CS-041"
+      ],
+      "semanticType": "ENTITY",
+      "hz": 396,
+      "quality_score": 0.92,
+      "drone_curator": "D-46",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "prop-041",
+      "name": "Relativity Equations Blackboard",
+      "category": "prop",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=equations+blackboard",
+      "license": "CC-BY-4.0",
+      "poly_count": 2800,
+      "textures": [
+        "diffuse"
+      ],
+      "era": "mid_modern",
+      "tags": [
+        "blackboard",
+        "relativity"
+      ],
+      "used_in_scripts": [
+        "CS-041"
+      ],
+      "semanticType": "ENTITY",
+      "hz": 396,
+      "quality_score": 0.9,
+      "drone_curator": "D-46",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "env-042",
+      "name": "Constantinople Hagia Sophia",
+      "category": "environment",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=hagia+sophia",
+      "license": "CC-BY-4.0",
+      "poly_count": 19800,
+      "textures": [
+        "diffuse",
+        "roughness",
+        "ao"
+      ],
+      "era": "byzantine",
+      "tags": [
+        "hagia-sophia",
+        "byzantine"
+      ],
+      "used_in_scripts": [
+        "CS-042"
+      ],
+      "semanticType": "NARRATIVE",
+      "hz": 963,
+      "quality_score": 0.94,
+      "drone_curator": "D-47",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "char-042",
+      "name": "Byzantine Emperor Full Regalia",
+      "category": "character",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=byzantine+emperor",
+      "license": "CC-BY-4.0",
+      "poly_count": 10400,
+      "textures": [
+        "diffuse",
+        "metalness"
+      ],
+      "era": "byzantine",
+      "tags": [
+        "emperor",
+        "byzantine"
+      ],
+      "used_in_scripts": [
+        "CS-042"
+      ],
+      "semanticType": "ENTITY",
+      "hz": 396,
+      "quality_score": 0.91,
+      "drone_curator": "D-47",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "audio-042",
+      "name": "Byzantine Orthodox Chant",
+      "category": "audio",
+      "format": "mp3",
+      "source_url": "https://freesound.org/search/?q=byzantine+orthodox",
+      "license": "CC0-1.0",
+      "duration_seconds": 215,
+      "loop": true,
+      "spatial": true,
+      "era": "byzantine",
+      "tags": [
+        "orthodox",
+        "chant"
+      ],
+      "used_in_scripts": [
+        "CS-042"
+      ],
+      "semanticType": "DIALOGUE",
+      "hz": 639,
+      "quality_score": 0.9,
+      "drone_curator": "D-47",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "env-043",
+      "name": "Dark Matter Filament Web",
+      "category": "environment",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=dark+matter+web",
+      "license": "CC-BY-4.0",
+      "poly_count": 9400,
+      "textures": [
+        "emission",
+        "diffuse"
+      ],
+      "era": "quantum",
+      "tags": [
+        "dark-matter",
+        "cosmic-web"
+      ],
+      "used_in_scripts": [
+        "CS-043"
+      ],
+      "semanticType": "PHYSICS",
+      "hz": 852,
+      "quality_score": 0.96,
+      "drone_curator": "D-48",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "char-043",
+      "name": "Vera Rubin Dark Matter Astronomer",
+      "category": "character",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=astronomer+scientist",
+      "license": "CC-BY-4.0",
+      "poly_count": 8600,
+      "textures": [
+        "diffuse",
+        "normal"
+      ],
+      "era": "modern_science",
+      "tags": [
+        "rubin",
+        "astronomer"
+      ],
+      "used_in_scripts": [
+        "CS-043"
+      ],
+      "semanticType": "ENTITY",
+      "hz": 396,
+      "quality_score": 0.9,
+      "drone_curator": "D-48",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "prop-043",
+      "name": "Radio Telescope Array",
+      "category": "prop",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=radio+telescope",
+      "license": "CC-BY-4.0",
+      "poly_count": 6400,
+      "textures": [
+        "diffuse",
+        "metalness"
+      ],
+      "era": "modern_science",
+      "tags": [
+        "radio-telescope",
+        "astronomy"
+      ],
+      "used_in_scripts": [
+        "CS-043"
+      ],
+      "semanticType": "ENTITY",
+      "hz": 396,
+      "quality_score": 0.91,
+      "drone_curator": "D-48",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "env-044",
+      "name": "Civil War Gettysburg Battlefield",
+      "category": "environment",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=gettysburg+civil+war",
+      "license": "CC-BY-4.0",
+      "poly_count": 16200,
+      "textures": [
+        "diffuse",
+        "roughness"
+      ],
+      "era": "american_civil_war",
+      "tags": [
+        "gettysburg",
+        "civil-war"
+      ],
+      "used_in_scripts": [
+        "CS-044"
+      ],
+      "semanticType": "ACTION",
+      "hz": 528,
+      "quality_score": 0.91,
+      "drone_curator": "D-49",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "char-044",
+      "name": "Union Army Officer Dress Uniform",
+      "category": "character",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=civil+war+officer",
+      "license": "CC-BY-4.0",
+      "poly_count": 9400,
+      "textures": [
+        "diffuse",
+        "roughness"
+      ],
+      "era": "american_civil_war",
+      "tags": [
+        "officer",
+        "union"
+      ],
+      "used_in_scripts": [
+        "CS-044"
+      ],
+      "semanticType": "ENTITY",
+      "hz": 396,
+      "quality_score": 0.89,
+      "drone_curator": "D-49",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "audio-044",
+      "name": "Civil War Fife and Drum",
+      "category": "audio",
+      "format": "mp3",
+      "source_url": "https://freesound.org/search/?q=civil+war+fife",
+      "license": "CC0-1.0",
+      "duration_seconds": 165,
+      "loop": true,
+      "spatial": true,
+      "era": "american_civil_war",
+      "tags": [
+        "fife",
+        "drum"
+      ],
+      "used_in_scripts": [
+        "CS-044"
+      ],
+      "semanticType": "DIALOGUE",
+      "hz": 639,
+      "quality_score": 0.87,
+      "drone_curator": "D-49",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "env-045",
+      "name": "Medici Palace Courtyard Florence",
+      "category": "environment",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=medici+palace",
+      "license": "CC-BY-4.0",
+      "poly_count": 15600,
+      "textures": [
+        "diffuse",
+        "roughness"
+      ],
+      "era": "renaissance",
+      "tags": [
+        "medici",
+        "florence"
+      ],
+      "used_in_scripts": [
+        "CS-045"
+      ],
+      "semanticType": "LOCATION",
+      "hz": 417,
+      "quality_score": 0.92,
+      "drone_curator": "D-50",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "char-045",
+      "name": "Lorenzo de Medici Renaissance Patron",
+      "category": "character",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=renaissance+nobleman",
+      "license": "CC-BY-4.0",
+      "poly_count": 8800,
+      "textures": [
+        "diffuse",
+        "metalness"
+      ],
+      "era": "renaissance",
+      "tags": [
+        "medici",
+        "patron"
+      ],
+      "used_in_scripts": [
+        "CS-045"
+      ],
+      "semanticType": "ENTITY",
+      "hz": 396,
+      "quality_score": 0.9,
+      "drone_curator": "D-50",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "prop-045",
+      "name": "Renaissance Merchant Ledgers",
+      "category": "prop",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=merchant+ledger",
+      "license": "CC-BY-4.0",
+      "poly_count": 2600,
+      "textures": [
+        "diffuse"
+      ],
+      "era": "renaissance",
+      "tags": [
+        "ledger",
+        "banking"
+      ],
+      "used_in_scripts": [
+        "CS-045"
+      ],
+      "semanticType": "ENTITY",
+      "hz": 396,
+      "quality_score": 0.88,
+      "drone_curator": "D-50",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "env-046",
+      "name": "Berlin University Hall 1820s",
+      "category": "environment",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=neoclassical+hall",
+      "license": "CC-BY-4.0",
+      "poly_count": 13200,
+      "textures": [
+        "diffuse",
+        "roughness"
+      ],
+      "era": "19th_century",
+      "tags": [
+        "berlin",
+        "university"
+      ],
+      "used_in_scripts": [
+        "CS-046"
+      ],
+      "semanticType": "NARRATIVE",
+      "hz": 963,
+      "quality_score": 0.89,
+      "drone_curator": "D-51",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "char-046",
+      "name": "Georg Hegel Dialectic Philosopher",
+      "category": "character",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=hegel",
+      "license": "CC-BY-4.0",
+      "poly_count": 8200,
+      "textures": [
+        "diffuse",
+        "normal"
+      ],
+      "era": "19th_century",
+      "tags": [
+        "hegel",
+        "dialectic"
+      ],
+      "used_in_scripts": [
+        "CS-046"
+      ],
+      "semanticType": "ENTITY",
+      "hz": 396,
+      "quality_score": 0.88,
+      "drone_curator": "D-51",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "prop-046",
+      "name": "Dialectic Synthesis Diagram",
+      "category": "prop",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=diagram+board",
+      "license": "CC-BY-4.0",
+      "poly_count": 2200,
+      "textures": [
+        "diffuse"
+      ],
+      "era": "19th_century",
+      "tags": [
+        "diagram",
+        "dialectic"
+      ],
+      "used_in_scripts": [
+        "CS-046"
+      ],
+      "semanticType": "ENTITY",
+      "hz": 396,
+      "quality_score": 0.87,
+      "drone_curator": "D-51",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "env-047",
+      "name": "Black Hole Event Horizon",
+      "category": "environment",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=black+hole",
+      "license": "CC-BY-4.0",
+      "poly_count": 11200,
+      "textures": [
+        "emission",
+        "diffuse"
+      ],
+      "era": "future_cosmic",
+      "tags": [
+        "black-hole",
+        "cosmic"
+      ],
+      "used_in_scripts": [
+        "CS-047"
+      ],
+      "semanticType": "PHYSICS",
+      "hz": 852,
+      "quality_score": 0.97,
+      "drone_curator": "D-52",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "char-047",
+      "name": "Gravitational Wave Astronomer",
+      "category": "character",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=scientist+space",
+      "license": "CC-BY-4.0",
+      "poly_count": 8800,
+      "textures": [
+        "diffuse",
+        "normal"
+      ],
+      "era": "modern_science",
+      "tags": [
+        "astronomer",
+        "gravity"
+      ],
+      "used_in_scripts": [
+        "CS-047"
+      ],
+      "semanticType": "ENTITY",
+      "hz": 396,
+      "quality_score": 0.91,
+      "drone_curator": "D-52",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "audio-047",
+      "name": "Black Hole Sonification",
+      "category": "audio",
+      "format": "mp3",
+      "source_url": "https://freesound.org/search/?q=black+hole",
+      "license": "CC0-1.0",
+      "duration_seconds": 280,
+      "loop": true,
+      "spatial": false,
+      "era": "future_cosmic",
+      "tags": [
+        "sonification",
+        "black-hole"
+      ],
+      "used_in_scripts": [
+        "CS-047"
+      ],
+      "semanticType": "DIALOGUE",
+      "hz": 639,
+      "quality_score": 0.95,
+      "drone_curator": "D-52",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "env-048",
+      "name": "Mayan Chichen Itza Equinox",
+      "category": "environment",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=chichen+itza",
+      "license": "CC-BY-4.0",
+      "poly_count": 18600,
+      "textures": [
+        "diffuse",
+        "roughness",
+        "ao"
+      ],
+      "era": "mesoamerica",
+      "tags": [
+        "maya",
+        "pyramid"
+      ],
+      "used_in_scripts": [
+        "CS-048"
+      ],
+      "semanticType": "NARRATIVE",
+      "hz": 963,
+      "quality_score": 0.94,
+      "drone_curator": "D-53",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "char-048",
+      "name": "Mayan Astronomer Priest",
+      "category": "character",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=mayan+priest",
+      "license": "CC-BY-4.0",
+      "poly_count": 10200,
+      "textures": [
+        "diffuse",
+        "metalness"
+      ],
+      "era": "mesoamerica",
+      "tags": [
+        "maya",
+        "priest"
+      ],
+      "used_in_scripts": [
+        "CS-048"
+      ],
+      "semanticType": "ENTITY",
+      "hz": 396,
+      "quality_score": 0.92,
+      "drone_curator": "D-53",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "audio-048",
+      "name": "Mayan Ceremony Drums and Conch",
+      "category": "audio",
+      "format": "mp3",
+      "source_url": "https://freesound.org/search/?q=mayan+ceremony",
+      "license": "CC0-1.0",
+      "duration_seconds": 195,
+      "loop": true,
+      "spatial": true,
+      "era": "mesoamerica",
+      "tags": [
+        "drums",
+        "maya"
+      ],
+      "used_in_scripts": [
+        "CS-048"
+      ],
+      "semanticType": "DIALOGUE",
+      "hz": 639,
+      "quality_score": 0.91,
+      "drone_curator": "D-53",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "prop-001b",
+      "name": "Roman Gladius Sword",
+      "category": "prop",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=roman+gladius",
+      "license": "CC-BY-4.0",
+      "poly_count": 3200,
+      "textures": [
+        "diffuse",
+        "metalness"
+      ],
+      "era": "ancient_rome",
+      "tags": [
+        "sword",
+        "roman"
+      ],
+      "used_in_scripts": [
+        "CS-001"
+      ],
+      "semanticType": "ENTITY",
+      "hz": 396,
+      "quality_score": 0.89,
+      "drone_curator": "D-01",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "audio-001b",
+      "name": "Roman Colosseum Crowd Cheer",
+      "category": "audio",
+      "format": "mp3",
+      "source_url": "https://freesound.org/search/?q=crowd+cheer",
+      "license": "CC0-1.0",
+      "duration_seconds": 120,
+      "loop": true,
+      "spatial": true,
+      "era": "ancient_rome",
+      "tags": [
+        "crowd",
+        "colosseum"
+      ],
+      "used_in_scripts": [
+        "CS-001"
+      ],
+      "semanticType": "DIALOGUE",
+      "hz": 639,
+      "quality_score": 0.87,
+      "drone_curator": "D-01",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "prop-002b",
+      "name": "Renaissance Palette and Brushes",
+      "category": "prop",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=artist+palette",
+      "license": "CC-BY-4.0",
+      "poly_count": 2200,
+      "textures": [
+        "diffuse"
+      ],
+      "era": "renaissance",
+      "tags": [
+        "palette",
+        "art"
+      ],
+      "used_in_scripts": [
+        "CS-002"
+      ],
+      "semanticType": "ENTITY",
+      "hz": 396,
+      "quality_score": 0.86,
+      "drone_curator": "D-02",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "audio-002b",
+      "name": "Renaissance Workshop Sounds",
+      "category": "audio",
+      "format": "mp3",
+      "source_url": "https://freesound.org/search/?q=workshop+medieval",
+      "license": "CC0-1.0",
+      "duration_seconds": 140,
+      "loop": true,
+      "spatial": true,
+      "era": "renaissance",
+      "tags": [
+        "workshop",
+        "tools"
+      ],
+      "used_in_scripts": [
+        "CS-002"
+      ],
+      "semanticType": "DIALOGUE",
+      "hz": 639,
+      "quality_score": 0.86,
+      "drone_curator": "D-02",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "prop-003b",
+      "name": "Crusader Helm and Shield",
+      "category": "prop",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=crusader+helmet",
+      "license": "CC-BY-4.0",
+      "poly_count": 4400,
+      "textures": [
+        "diffuse",
+        "metalness"
+      ],
+      "era": "crusades",
+      "tags": [
+        "crusader",
+        "armor"
+      ],
+      "used_in_scripts": [
+        "CS-003"
+      ],
+      "semanticType": "ENTITY",
+      "hz": 396,
+      "quality_score": 0.88,
+      "drone_curator": "D-03",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "audio-003b",
+      "name": "Siege Battle Cannon Fire",
+      "category": "audio",
+      "format": "mp3",
+      "source_url": "https://freesound.org/search/?q=siege+cannon",
+      "license": "CC0-1.0",
+      "duration_seconds": 90,
+      "loop": false,
+      "spatial": true,
+      "era": "crusades",
+      "tags": [
+        "cannon",
+        "battle"
+      ],
+      "used_in_scripts": [
+        "CS-003"
+      ],
+      "semanticType": "DIALOGUE",
+      "hz": 639,
+      "quality_score": 0.87,
+      "drone_curator": "D-03",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "prop-004b",
+      "name": "Egyptian Canopic Jars",
+      "category": "prop",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=canopic+jars",
+      "license": "CC-BY-4.0",
+      "poly_count": 3800,
+      "textures": [
+        "diffuse",
+        "roughness"
+      ],
+      "era": "ancient_egypt",
+      "tags": [
+        "canopic",
+        "mummy"
+      ],
+      "used_in_scripts": [
+        "CS-004"
+      ],
+      "semanticType": "ENTITY",
+      "hz": 396,
+      "quality_score": 0.88,
+      "drone_curator": "D-04",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "audio-004b",
+      "name": "Egyptian Desert Wind Ambience",
+      "category": "audio",
+      "format": "mp3",
+      "source_url": "https://freesound.org/search/?q=egypt+wind",
+      "license": "CC0-1.0",
+      "duration_seconds": 200,
+      "loop": true,
+      "spatial": true,
+      "era": "ancient_egypt",
+      "tags": [
+        "desert",
+        "egypt"
+      ],
+      "used_in_scripts": [
+        "CS-004"
+      ],
+      "semanticType": "DIALOGUE",
+      "hz": 639,
+      "quality_score": 0.87,
+      "drone_curator": "D-04",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "prop-005b",
+      "name": "Athenian Trireme Sail",
+      "category": "prop",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=trireme+sail",
+      "license": "CC-BY-4.0",
+      "poly_count": 6400,
+      "textures": [
+        "diffuse",
+        "roughness"
+      ],
+      "era": "ancient_greece",
+      "tags": [
+        "sail",
+        "navy"
+      ],
+      "used_in_scripts": [
+        "CS-005"
+      ],
+      "semanticType": "ENTITY",
+      "hz": 396,
+      "quality_score": 0.87,
+      "drone_curator": "D-05",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "audio-005b",
+      "name": "Greek Sea Battle Oarsmen",
+      "category": "audio",
+      "format": "mp3",
+      "source_url": "https://freesound.org/search/?q=rowing+sea",
+      "license": "CC0-1.0",
+      "duration_seconds": 150,
+      "loop": true,
+      "spatial": true,
+      "era": "ancient_greece",
+      "tags": [
+        "rowing",
+        "sea"
+      ],
+      "used_in_scripts": [
+        "CS-005"
+      ],
+      "semanticType": "DIALOGUE",
+      "hz": 639,
+      "quality_score": 0.86,
+      "drone_curator": "D-05",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "prop-006b",
+      "name": "Victorian Steam Engine Model",
+      "category": "prop",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=steam+engine",
+      "license": "CC-BY-4.0",
+      "poly_count": 7200,
+      "textures": [
+        "diffuse",
+        "metalness"
+      ],
+      "era": "victorian",
+      "tags": [
+        "steam",
+        "industrial"
+      ],
+      "used_in_scripts": [
+        "CS-006"
+      ],
+      "semanticType": "ENTITY",
+      "hz": 396,
+      "quality_score": 0.89,
+      "drone_curator": "D-06",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "audio-006b",
+      "name": "Victorian Factory Steam Whistle",
+      "category": "audio",
+      "format": "mp3",
+      "source_url": "https://freesound.org/search/?q=steam+whistle",
+      "license": "CC0-1.0",
+      "duration_seconds": 60,
+      "loop": false,
+      "spatial": true,
+      "era": "victorian",
+      "tags": [
+        "whistle",
+        "factory"
+      ],
+      "used_in_scripts": [
+        "CS-006"
+      ],
+      "semanticType": "DIALOGUE",
+      "hz": 639,
+      "quality_score": 0.85,
+      "drone_curator": "D-06",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "prop-007b",
+      "name": "Medieval Castle Throne",
+      "category": "prop",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=medieval+throne",
+      "license": "CC-BY-4.0",
+      "poly_count": 5600,
+      "textures": [
+        "diffuse",
+        "roughness"
+      ],
+      "era": "medieval",
+      "tags": [
+        "throne",
+        "castle"
+      ],
+      "used_in_scripts": [
+        "CS-007"
+      ],
+      "semanticType": "ENTITY",
+      "hz": 396,
+      "quality_score": 0.88,
+      "drone_curator": "D-07",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "audio-007b",
+      "name": "Medieval Castle Ambience",
+      "category": "audio",
+      "format": "mp3",
+      "source_url": "https://freesound.org/search/?q=castle+fire",
+      "license": "CC0-1.0",
+      "duration_seconds": 180,
+      "loop": true,
+      "spatial": true,
+      "era": "medieval",
+      "tags": [
+        "castle",
+        "fire"
+      ],
+      "used_in_scripts": [
+        "CS-007"
+      ],
+      "semanticType": "DIALOGUE",
+      "hz": 639,
+      "quality_score": 0.87,
+      "drone_curator": "D-07",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "prop-008b",
+      "name": "Samurai Ceremonial Armor",
+      "category": "prop",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=samurai+armor",
+      "license": "CC-BY-4.0",
+      "poly_count": 6800,
+      "textures": [
+        "diffuse",
+        "metalness",
+        "roughness"
+      ],
+      "era": "feudal_japan",
+      "tags": [
+        "armor",
+        "samurai"
+      ],
+      "used_in_scripts": [
+        "CS-008"
+      ],
+      "semanticType": "ENTITY",
+      "hz": 396,
+      "quality_score": 0.92,
+      "drone_curator": "D-08",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "audio-008b",
+      "name": "Japanese Forest Wind and Shakuhachi",
+      "category": "audio",
+      "format": "mp3",
+      "source_url": "https://freesound.org/search/?q=shakuhachi+forest",
+      "license": "CC0-1.0",
+      "duration_seconds": 185,
+      "loop": true,
+      "spatial": true,
+      "era": "feudal_japan",
+      "tags": [
+        "shakuhachi",
+        "japan"
+      ],
+      "used_in_scripts": [
+        "CS-008"
+      ],
+      "semanticType": "DIALOGUE",
+      "hz": 639,
+      "quality_score": 0.91,
+      "drone_curator": "D-08",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "prop-011b",
+      "name": "ISS Module Equipment",
+      "category": "prop",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=space+station+module",
+      "license": "CC-BY-4.0",
+      "poly_count": 8200,
+      "textures": [
+        "diffuse",
+        "metalness"
+      ],
+      "era": "future_2150",
+      "tags": [
+        "iss",
+        "module"
+      ],
+      "used_in_scripts": [
+        "CS-011"
+      ],
+      "semanticType": "ENTITY",
+      "hz": 396,
+      "quality_score": 0.9,
+      "drone_curator": "D-16",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "prop-014b",
+      "name": "Hieroglyphic Inscription Wall",
+      "category": "prop",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=hieroglyphics",
+      "license": "CC-BY-4.0",
+      "poly_count": 4200,
+      "textures": [
+        "diffuse",
+        "roughness"
+      ],
+      "era": "ancient_egypt",
+      "tags": [
+        "hieroglyph",
+        "egypt"
+      ],
+      "used_in_scripts": [
+        "CS-014"
+      ],
+      "semanticType": "ENTITY",
+      "hz": 396,
+      "quality_score": 0.88,
+      "drone_curator": "D-19",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "prop-015b",
+      "name": "Norse Runestone",
+      "category": "prop",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=runestone",
+      "license": "CC-BY-4.0",
+      "poly_count": 3600,
+      "textures": [
+        "diffuse",
+        "roughness"
+      ],
+      "era": "viking",
+      "tags": [
+        "rune",
+        "viking"
+      ],
+      "used_in_scripts": [
+        "CS-015"
+      ],
+      "semanticType": "ENTITY",
+      "hz": 396,
+      "quality_score": 0.87,
+      "drone_curator": "D-20",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "prop-021b",
+      "name": "Mjolnir Hammer of Thor",
+      "category": "prop",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=mjolnir+hammer",
+      "license": "CC-BY-4.0",
+      "poly_count": 3400,
+      "textures": [
+        "diffuse",
+        "metalness"
+      ],
+      "era": "norse_mythology",
+      "tags": [
+        "mjolnir",
+        "thor"
+      ],
+      "used_in_scripts": [
+        "CS-021"
+      ],
+      "semanticType": "ENTITY",
+      "hz": 396,
+      "quality_score": 0.91,
+      "drone_curator": "D-26",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "prop-022b",
+      "name": "Mongol Composite Bow",
+      "category": "prop",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=mongol+bow",
+      "license": "CC-BY-4.0",
+      "poly_count": 2800,
+      "textures": [
+        "diffuse"
+      ],
+      "era": "mongol_empire",
+      "tags": [
+        "bow",
+        "mongol"
+      ],
+      "used_in_scripts": [
+        "CS-022"
+      ],
+      "semanticType": "ENTITY",
+      "hz": 396,
+      "quality_score": 0.88,
+      "drone_curator": "D-27",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "prop-025b",
+      "name": "Terraforming Atmosphere Generator",
+      "category": "prop",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=atmosphere+generator",
+      "license": "CC-BY-4.0",
+      "poly_count": 7400,
+      "textures": [
+        "diffuse",
+        "emission"
+      ],
+      "era": "future_2200",
+      "tags": [
+        "terraforming",
+        "tech"
+      ],
+      "used_in_scripts": [
+        "CS-025"
+      ],
+      "semanticType": "ENTITY",
+      "hz": 396,
+      "quality_score": 0.92,
+      "drone_curator": "D-30",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "prop-028b",
+      "name": "Hindu Temple Oil Lamp Brass",
+      "category": "prop",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=oil+lamp+brass",
+      "license": "CC-BY-4.0",
+      "poly_count": 2600,
+      "textures": [
+        "diffuse",
+        "metalness"
+      ],
+      "era": "ancient_india",
+      "tags": [
+        "lamp",
+        "temple"
+      ],
+      "used_in_scripts": [
+        "CS-028"
+      ],
+      "semanticType": "ENTITY",
+      "hz": 396,
+      "quality_score": 0.87,
+      "drone_curator": "D-33",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "prop-030b",
+      "name": "Vietnam Era Dog Tags",
+      "category": "prop",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=dog+tags+military",
+      "license": "CC-BY-4.0",
+      "poly_count": 1200,
+      "textures": [
+        "diffuse",
+        "metalness"
+      ],
+      "era": "vietnam_war",
+      "tags": [
+        "dog-tags",
+        "military"
+      ],
+      "used_in_scripts": [
+        "CS-030"
+      ],
+      "semanticType": "ENTITY",
+      "hz": 396,
+      "quality_score": 0.85,
+      "drone_curator": "D-35",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
+    },
+    {
+      "asset_id": "prop-038b",
+      "name": "Neural Interface Headset",
+      "category": "prop",
+      "format": "glb",
+      "source_url": "https://sketchfab.com/search?q=neural+headset",
+      "license": "CC-BY-4.0",
+      "poly_count": 5200,
+      "textures": [
+        "diffuse",
+        "emission"
+      ],
+      "era": "post_singularity",
+      "tags": [
+        "neural",
+        "transhumanist"
+      ],
+      "used_in_scripts": [
+        "CS-038"
+      ],
+      "semanticType": "ENTITY",
+      "hz": 396,
+      "quality_score": 0.93,
+      "drone_curator": "D-43",
+      "status": "CATALOGED",
+      "cataloged_at": "2026-05-15T00:00:00.000Z"
     }
   ],
   "discovery_queue": [],
@@ -1150,7 +5680,13 @@
       "drone": "D-01",
       "started_at": "2026-05-12T00:00:00.000Z",
       "completed_at": "2026-05-12T01:00:00.000Z",
-      "sources_scanned": ["sketchfab", "nasa3d", "polyhaven", "freesound", "readyplayer.me"],
+      "sources_scanned": [
+        "sketchfab",
+        "nasa3d",
+        "polyhaven",
+        "freesound",
+        "readyplayer.me"
+      ],
       "assets_discovered": 52,
       "assets_accepted": 52,
       "assets_rejected": 0,

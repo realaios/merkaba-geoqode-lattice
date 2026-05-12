@@ -4,7 +4,7 @@
   "phi": 1.618,
   "base_frequency_hz": 72,
   "updated_at": "2026-05-26T00:00:00.000Z",
-  "total_scripts": 24,
+  "total_scripts": 48,
   "total_episodes_planned": 480,
   "departments": {
     "ancient_history": {
@@ -493,6 +493,2024 @@
         "frequency": 852,
         "phiCoefficient": 1.618,
         "coherence": 0.87,
+        "domain": "systems-design",
+        "source": "ClipScryptIndex",
+        "d48Expansion": "CANONICAL",
+        "d480Expansion": "FULL_HARMONIC"
+      }
+    },
+    {
+      "script_id": "CS-009",
+      "version": "1.0.0",
+      "title": "Greek Olympics 776 BCE",
+      "slug": "greek-olympics-776-bce",
+      "department": "ancient_history",
+      "era": "ancient_greece",
+      "period_ce": "776 BCE",
+      "runtime_seconds": 250,
+      "status": "DRAFT",
+      "scene_ref": "colosseum_time_gate",
+      "episode": 3,
+      "season": 1,
+      "synopsis": "The first recorded Olympic Games at Olympia. Sprinters, wrestlers, and the sacred truce of Zeus.",
+      "cast": [
+        {
+          "role": "Coroebus of Elis",
+          "asset_id": "human-001",
+          "costume_id": null
+        }
+      ],
+      "props": ["nature-001", "symbolic-001"],
+      "environment": {
+        "scene": "colosseum_time_gate",
+        "hdri": null,
+        "audio": null
+      },
+      "mal_asset_ids": ["arch-001", "nature-001", "symbolic-001"],
+      "tags": ["greece", "olympics", "sport", "zeus", "olympia"],
+      "education_links": [
+        "https://en.wikipedia.org/wiki/Ancient_Olympic_Games"
+      ],
+      "clipscrypt": {
+        "opening_hook": "OLYMPIA. 776 BCE. The sacred flame is lit. The gods are watching.",
+        "act_1": "Athletes oil their bodies and line up at the starting stone. Silence.",
+        "act_2": "Coroebus blazes the stadion sprint. The crowd erupts. Zeus smiles.",
+        "act_3": "The olive crown is placed. War stops. For one week, only glory matters.",
+        "knowledge_nodes": [
+          "Greek religion",
+          "athletic training",
+          "truce of Olympia"
+        ]
+      },
+      "geoqode": {
+        "architectureSignature": "8,26,48:480",
+        "semanticType": "ENTITY",
+        "frequency": 396,
+        "phiCoefficient": 1.618,
+        "coherence": 0.91,
+        "domain": "systems-design",
+        "source": "ClipScryptIndex",
+        "d48Expansion": "CANONICAL",
+        "d480Expansion": "FULL_HARMONIC"
+      }
+    },
+    {
+      "script_id": "CS-010",
+      "version": "1.0.0",
+      "title": "Hannibal Crosses the Alps",
+      "slug": "hannibal-crosses-alps",
+      "department": "ancient_history",
+      "era": "roman",
+      "period_ce": "218 BCE",
+      "runtime_seconds": 300,
+      "status": "DRAFT",
+      "scene_ref": "colosseum_time_gate",
+      "episode": 4,
+      "season": 1,
+      "synopsis": "Hannibal Barca leads 40,000 troops and war elephants through treacherous Alpine passes to invade Rome.",
+      "cast": [
+        {
+          "role": "Hannibal Barca",
+          "asset_id": "human-001",
+          "costume_id": null
+        }
+      ],
+      "props": ["nature-003", "vehicle-002"],
+      "environment": {
+        "scene": "colosseum_time_gate",
+        "hdri": null,
+        "audio": null
+      },
+      "mal_asset_ids": ["nature-003", "vehicle-002"],
+      "tags": ["carthage", "hannibal", "rome", "alps", "war"],
+      "education_links": ["https://en.wikipedia.org/wiki/Hannibal"],
+      "clipscrypt": {
+        "opening_hook": "THE ALPS. 218 BCE. A general bets everything on the impossible.",
+        "act_1": "Thirty-seven elephants inch across icy ledges. Men and beasts fall.",
+        "act_2": "Hostile Gauls ambush the column. Hannibal flanks them with cavalry.",
+        "act_3": "They descend into Italy. Rome will never feel safe again.",
+        "knowledge_nodes": [
+          "Punic Wars",
+          "alpine geography",
+          "Carthaginian army"
+        ]
+      },
+      "geoqode": {
+        "architectureSignature": "8,26,48:480",
+        "semanticType": "ENTITY",
+        "frequency": 396,
+        "phiCoefficient": 1.618,
+        "coherence": 0.9,
+        "domain": "systems-design",
+        "source": "ClipScryptIndex",
+        "d48Expansion": "CANONICAL",
+        "d480Expansion": "FULL_HARMONIC"
+      }
+    },
+    {
+      "script_id": "CS-011",
+      "version": "1.0.0",
+      "title": "Cleopatra and Caesar",
+      "slug": "cleopatra-and-caesar",
+      "department": "ancient_history",
+      "era": "ancient_egypt",
+      "period_ce": "48 BCE",
+      "runtime_seconds": 260,
+      "status": "DRAFT",
+      "scene_ref": "pyramids_giza",
+      "episode": 5,
+      "season": 1,
+      "synopsis": "Cleopatra smuggles herself into the palace to meet Julius Caesar. A political alliance that shakes the world.",
+      "cast": [
+        {
+          "role": "Cleopatra VII",
+          "asset_id": "human-001",
+          "costume_id": null
+        },
+        { "role": "Julius Caesar", "asset_id": "human-001", "costume_id": null }
+      ],
+      "props": ["decoration-002", "symbolic-002"],
+      "environment": { "scene": "pyramids_giza", "hdri": null, "audio": null },
+      "mal_asset_ids": ["arch-003", "decoration-002", "symbolic-002"],
+      "tags": ["egypt", "cleopatra", "caesar", "rome", "politics"],
+      "education_links": ["https://en.wikipedia.org/wiki/Cleopatra"],
+      "clipscrypt": {
+        "opening_hook": "ALEXANDRIA. 48 BCE. A queen arrives wrapped in a carpet. History unrolls.",
+        "act_1": "The carpet is unrolled before Caesar. Cleopatra stands, composed and regal.",
+        "act_2": "Caesar is astonished. She speaks nine languages. He speaks her language too.",
+        "act_3": "An alliance is forged. Egypt breathes again. Rome will never be the same.",
+        "knowledge_nodes": [
+          "Ptolemaic Egypt",
+          "Roman Republic politics",
+          "Alexandrian culture"
+        ]
+      },
+      "geoqode": {
+        "architectureSignature": "8,26,48:480",
+        "semanticType": "ENTITY",
+        "frequency": 396,
+        "phiCoefficient": 1.618,
+        "coherence": 0.92,
+        "domain": "systems-design",
+        "source": "ClipScryptIndex",
+        "d48Expansion": "CANONICAL",
+        "d480Expansion": "FULL_HARMONIC"
+      }
+    },
+    {
+      "script_id": "CS-012",
+      "version": "1.0.0",
+      "title": "Viking Raid on Lindisfarne",
+      "slug": "viking-raid-lindisfarne",
+      "department": "ancient_history",
+      "era": "medieval",
+      "period_ce": "793 CE",
+      "runtime_seconds": 270,
+      "status": "DRAFT",
+      "scene_ref": "ocean_presence",
+      "episode": 6,
+      "season": 1,
+      "synopsis": "Norse longships emerge from morning fog to raid the holy island of Lindisfarne. The Viking Age begins.",
+      "cast": [
+        { "role": "Jarl Sigurd", "asset_id": "human-001", "costume_id": null }
+      ],
+      "props": ["vehicle-002", "weapon-001"],
+      "environment": { "scene": "ocean_presence", "hdri": null, "audio": null },
+      "mal_asset_ids": ["vehicle-002", "weapon-001", "nature-002"],
+      "tags": ["vikings", "raid", "lindisfarne", "norse", "medieval"],
+      "education_links": ["https://en.wikipedia.org/wiki/Lindisfarne_raid"],
+      "clipscrypt": {
+        "opening_hook": "NORTH SEA. 793 CE. The fog parts. Thirty dragon prows emerge from nowhere.",
+        "act_1": "Monks chant morning prayers. A shadow falls across the scriptorium window.",
+        "act_2": "The longships beach with a thunder of oars. Shields lock. The charge begins.",
+        "act_3": "The monks scatter. The gold codex vanishes. A new age of terror has dawned.",
+        "knowledge_nodes": [
+          "Norse navigation",
+          "Viking weaponry",
+          "monastic life"
+        ]
+      },
+      "geoqode": {
+        "architectureSignature": "8,26,48:480",
+        "semanticType": "ENTITY",
+        "frequency": 396,
+        "phiCoefficient": 1.618,
+        "coherence": 0.89,
+        "domain": "systems-design",
+        "source": "ClipScryptIndex",
+        "d48Expansion": "CANONICAL",
+        "d480Expansion": "FULL_HARMONIC"
+      }
+    },
+    {
+      "script_id": "CS-013",
+      "version": "1.0.0",
+      "title": "Michelangelo and the Sistine Ceiling",
+      "slug": "michelangelo-sistine-ceiling",
+      "department": "renaissance",
+      "era": "renaissance",
+      "period_ce": "1512 CE",
+      "runtime_seconds": 240,
+      "status": "DRAFT",
+      "scene_ref": "the_simulation",
+      "episode": 2,
+      "season": 1,
+      "synopsis": "Michelangelo completes the Sistine Chapel ceiling alone on scaffold. The moment of Adam\u2019s creation.",
+      "cast": [
+        {
+          "role": "Michelangelo Buonarroti",
+          "asset_id": "human-001",
+          "costume_id": null
+        }
+      ],
+      "props": ["tool-001", "decoration-002"],
+      "environment": { "scene": "the_simulation", "hdri": null, "audio": null },
+      "mal_asset_ids": ["arch-006", "tool-001", "decoration-002"],
+      "tags": ["michelangelo", "sistine", "renaissance", "painting", "rome"],
+      "education_links": [
+        "https://en.wikipedia.org/wiki/Sistine_Chapel_ceiling"
+      ],
+      "clipscrypt": {
+        "opening_hook": "ROME. 1512. A man lies on his back 20 metres above God.",
+        "act_1": "Plaster falls in his eyes. His back screams. The brush moves.",
+        "act_2": "The finger of God reaches toward Adam. The gap between them is everything.",
+        "act_3": "The scaffolding comes down. Pope Julius II weeps. The world has changed.",
+        "knowledge_nodes": [
+          "fresco technique",
+          "Renaissance patronage",
+          "human anatomy in art"
+        ]
+      },
+      "geoqode": {
+        "architectureSignature": "8,26,48:480",
+        "semanticType": "NARRATIVE",
+        "frequency": 963,
+        "phiCoefficient": 1.618,
+        "coherence": 0.95,
+        "domain": "systems-design",
+        "source": "ClipScryptIndex",
+        "d48Expansion": "CANONICAL",
+        "d480Expansion": "FULL_HARMONIC"
+      }
+    },
+    {
+      "script_id": "CS-014",
+      "version": "1.0.0",
+      "title": "Galileo Before the Inquisition",
+      "slug": "galileo-inquisition",
+      "department": "renaissance",
+      "era": "renaissance",
+      "period_ce": "1633 CE",
+      "runtime_seconds": 280,
+      "status": "DRAFT",
+      "scene_ref": "the_simulation",
+      "episode": 3,
+      "season": 1,
+      "synopsis": "Galileo faces the Roman Inquisition for defending heliocentrism. Science vs. dogma.",
+      "cast": [
+        {
+          "role": "Galileo Galilei",
+          "asset_id": "human-001",
+          "costume_id": null
+        }
+      ],
+      "props": ["scientific-001", "symbolic-001"],
+      "environment": { "scene": "the_simulation", "hdri": null, "audio": null },
+      "mal_asset_ids": ["scientific-001", "symbolic-001"],
+      "tags": ["galileo", "inquisition", "science", "church", "heliocentric"],
+      "education_links": ["https://en.wikipedia.org/wiki/Galileo_affair"],
+      "clipscrypt": {
+        "opening_hook": "ROME. 1633. The old astronomer kneels. The universe does not.",
+        "act_1": "Cardinals read the charges. Galileo\u2019s telescope sits on the table as evidence.",
+        "act_2": "He recants. Under his breath: \u2018And yet it moves.\u2019",
+        "act_3": "House arrest. But the Dialogue is already printed. Truth is already out.",
+        "knowledge_nodes": [
+          "heliocentrism",
+          "scientific method",
+          "Copernican revolution"
+        ]
+      },
+      "geoqode": {
+        "architectureSignature": "8,26,48:480",
+        "semanticType": "NARRATIVE",
+        "frequency": 963,
+        "phiCoefficient": 1.618,
+        "coherence": 0.93,
+        "domain": "systems-design",
+        "source": "ClipScryptIndex",
+        "d48Expansion": "CANONICAL",
+        "d480Expansion": "FULL_HARMONIC"
+      }
+    },
+    {
+      "script_id": "CS-015",
+      "version": "1.0.0",
+      "title": "Shakespeare at the Globe",
+      "slug": "shakespeare-globe-theatre",
+      "department": "renaissance",
+      "era": "renaissance",
+      "period_ce": "1603 CE",
+      "runtime_seconds": 250,
+      "status": "DRAFT",
+      "scene_ref": "colosseum_time_gate",
+      "episode": 4,
+      "season": 1,
+      "synopsis": "The first performance of Hamlet at the Globe Theatre, London. The prince hesitates. The audience leans forward.",
+      "cast": [
+        {
+          "role": "William Shakespeare",
+          "asset_id": "human-001",
+          "costume_id": null
+        },
+        {
+          "role": "Richard Burbage as Hamlet",
+          "asset_id": "human-001",
+          "costume_id": null
+        }
+      ],
+      "props": ["decoration-001", "furniture-001"],
+      "environment": {
+        "scene": "colosseum_time_gate",
+        "hdri": null,
+        "audio": null
+      },
+      "mal_asset_ids": ["arch-006", "decoration-001", "furniture-001"],
+      "tags": ["shakespeare", "hamlet", "globe", "theatre", "elizabethan"],
+      "education_links": ["https://en.wikipedia.org/wiki/Globe_Theatre"],
+      "clipscrypt": {
+        "opening_hook": "LONDON. 1603. \u2018To be or not to be.\u2019 Three thousand people hold their breath.",
+        "act_1": "Shakespeare watches from the wings. Burbage embodies the Prince perfectly.",
+        "act_2": "The ghost walks. Groundlings gasp. The play-within-a-play springs the trap.",
+        "act_3": "Final curtain. The crowd roars. Language itself has been reinvented tonight.",
+        "knowledge_nodes": [
+          "Elizabethan theatre",
+          "iambic pentameter",
+          "Jacobean tragedy"
+        ]
+      },
+      "geoqode": {
+        "architectureSignature": "8,26,48:480",
+        "semanticType": "NARRATIVE",
+        "frequency": 963,
+        "phiCoefficient": 1.618,
+        "coherence": 0.94,
+        "domain": "systems-design",
+        "source": "ClipScryptIndex",
+        "d48Expansion": "CANONICAL",
+        "d480Expansion": "FULL_HARMONIC"
+      }
+    },
+    {
+      "script_id": "CS-016",
+      "version": "1.0.0",
+      "title": "Columbus Sights Land",
+      "slug": "columbus-sights-land",
+      "department": "renaissance",
+      "era": "renaissance",
+      "period_ce": "1492 CE",
+      "runtime_seconds": 230,
+      "status": "DRAFT",
+      "scene_ref": "ocean_presence",
+      "episode": 5,
+      "season": 1,
+      "synopsis": "After 70 days at sea, a lookout shouts \u2018Tierra!\u2019 Columbus has crossed the Atlantic. Two worlds collide.",
+      "cast": [
+        {
+          "role": "Christopher Columbus",
+          "asset_id": "human-001",
+          "costume_id": null
+        }
+      ],
+      "props": ["vehicle-002", "nature-003"],
+      "environment": { "scene": "ocean_presence", "hdri": null, "audio": null },
+      "mal_asset_ids": ["vehicle-002", "nature-003"],
+      "tags": ["columbus", "atlantic", "discovery", "1492", "navigation"],
+      "education_links": ["https://en.wikipedia.org/wiki/Columbus%27s_voyage"],
+      "clipscrypt": {
+        "opening_hook": "ATLANTIC OCEAN. OCTOBER 12, 1492. 2 AM. A single cry slices the darkness.",
+        "act_1": "Pinta\u2019s lookout Rodrigo de Triana spots white sand catching moonlight.",
+        "act_2": "Columbus orders the fleet to heave-to. He will land at dawn. No one sleeps.",
+        "act_3": "The longboat beaches. He plants the flag. History will argue over this forever.",
+        "knowledge_nodes": [
+          "Age of Exploration",
+          "navigation by stars",
+          "Columbian Exchange"
+        ]
+      },
+      "geoqode": {
+        "architectureSignature": "8,26,48:480",
+        "semanticType": "NARRATIVE",
+        "frequency": 963,
+        "phiCoefficient": 1.618,
+        "coherence": 0.91,
+        "domain": "systems-design",
+        "source": "ClipScryptIndex",
+        "d48Expansion": "CANONICAL",
+        "d480Expansion": "FULL_HARMONIC"
+      }
+    },
+    {
+      "script_id": "CS-017",
+      "version": "1.0.0",
+      "title": "Gutenberg Prints the Bible",
+      "slug": "gutenberg-prints-bible",
+      "department": "renaissance",
+      "era": "renaissance",
+      "period_ce": "1455 CE",
+      "runtime_seconds": 210,
+      "status": "DRAFT",
+      "scene_ref": "the_simulation",
+      "episode": 6,
+      "season": 1,
+      "synopsis": "Gutenberg\u2019s press rolls for the first time. 180 copies of the Bible. The information age begins.",
+      "cast": [
+        {
+          "role": "Johannes Gutenberg",
+          "asset_id": "human-001",
+          "costume_id": null
+        }
+      ],
+      "props": ["scientific-001", "tool-001"],
+      "environment": { "scene": "the_simulation", "hdri": null, "audio": null },
+      "mal_asset_ids": ["scientific-001", "tool-001"],
+      "tags": [
+        "gutenberg",
+        "printing press",
+        "bible",
+        "information",
+        "revolution"
+      ],
+      "education_links": ["https://en.wikipedia.org/wiki/Gutenberg_Bible"],
+      "clipscrypt": {
+        "opening_hook": "MAINZ. 1455. A wine press becomes a weapon against ignorance.",
+        "act_1": "The movable type is set. Ink rolls across lead letters in a perfect line.",
+        "act_2": "The press creaks down. The page lifts. 42 perfect lines of scripture.",
+        "act_3": "180 copies leave for monasteries, universities, and kings. Knowledge escapes.",
+        "knowledge_nodes": [
+          "movable type",
+          "medieval scribes",
+          "spread of literacy"
+        ]
+      },
+      "geoqode": {
+        "architectureSignature": "8,26,48:480",
+        "semanticType": "NARRATIVE",
+        "frequency": 963,
+        "phiCoefficient": 1.618,
+        "coherence": 0.92,
+        "domain": "systems-design",
+        "source": "ClipScryptIndex",
+        "d48Expansion": "CANONICAL",
+        "d480Expansion": "FULL_HARMONIC"
+      }
+    },
+    {
+      "script_id": "CS-018",
+      "version": "1.0.0",
+      "title": "Machiavelli Writes The Prince",
+      "slug": "machiavelli-writes-the-prince",
+      "department": "renaissance",
+      "era": "renaissance",
+      "period_ce": "1513 CE",
+      "runtime_seconds": 220,
+      "status": "DRAFT",
+      "scene_ref": "the_simulation",
+      "episode": 7,
+      "season": 1,
+      "synopsis": "Exiled to his farm, Machiavelli writes The Prince in feverish nights to regain Medici favor. Power unmasked.",
+      "cast": [
+        {
+          "role": "Niccolo Machiavelli",
+          "asset_id": "human-001",
+          "costume_id": null
+        }
+      ],
+      "props": ["furniture-001", "lighting-001"],
+      "environment": { "scene": "the_simulation", "hdri": null, "audio": null },
+      "mal_asset_ids": ["furniture-001", "lighting-001"],
+      "tags": ["machiavelli", "prince", "politics", "florence", "power"],
+      "education_links": ["https://en.wikipedia.org/wiki/The_Prince"],
+      "clipscrypt": {
+        "opening_hook": "TUSCANY. 1513. A disgraced diplomat writes the most dangerous book ever.",
+        "act_1": "By day he farms. By night he dresses in court clothes to write. Power demands ritual.",
+        "act_2": "His pen strips away virtue to reveal mechanics. Lions and foxes. Fear and love.",
+        "act_3": "He dedicates it to Lorenzo de\u2019 Medici. The Medici ignore it. History does not.",
+        "knowledge_nodes": [
+          "Florentine Republic",
+          "political realism",
+          "Renaissance statecraft"
+        ]
+      },
+      "geoqode": {
+        "architectureSignature": "8,26,48:480",
+        "semanticType": "NARRATIVE",
+        "frequency": 963,
+        "phiCoefficient": 1.618,
+        "coherence": 0.9,
+        "domain": "systems-design",
+        "source": "ClipScryptIndex",
+        "d48Expansion": "CANONICAL",
+        "d480Expansion": "FULL_HARMONIC"
+      }
+    },
+    {
+      "script_id": "CS-019",
+      "version": "1.0.0",
+      "title": "D-Day Normandy Landings",
+      "slug": "d-day-normandy",
+      "department": "war_chronicles",
+      "era": "wwii",
+      "period_ce": "June 6, 1944 CE",
+      "runtime_seconds": 350,
+      "status": "DRAFT",
+      "scene_ref": "ocean_presence",
+      "episode": 2,
+      "season": 1,
+      "synopsis": "The largest amphibious invasion in history. Omaha Beach. The ramp drops. Hell begins.",
+      "cast": [
+        {
+          "role": "Sergeant Tom Hanks",
+          "asset_id": "human-001",
+          "costume_id": "costume-003"
+        }
+      ],
+      "props": ["vehicle-002", "weapon-001"],
+      "environment": { "scene": "ocean_presence", "hdri": null, "audio": null },
+      "mal_asset_ids": ["vehicle-002", "weapon-001", "nature-003"],
+      "tags": ["dday", "normandy", "wwii", "invasion", "omaha"],
+      "education_links": ["https://en.wikipedia.org/wiki/Normandy_landings"],
+      "clipscrypt": {
+        "opening_hook": "ENGLISH CHANNEL. JUNE 6, 1944. 150,000 men. 5,000 ships. One chance.",
+        "act_1": "The Higgins boats pound through choppy water. Men vomit and pray.",
+        "act_2": "The ramp drops. Machine gun fire. Men fall. Some push forward.",
+        "act_3": "The cliff is taken. The beach is secured. Europe\u2019s liberation has begun.",
+        "knowledge_nodes": [
+          "Operation Overlord",
+          "amphibious warfare",
+          "Allied strategy"
+        ]
+      },
+      "geoqode": {
+        "architectureSignature": "8,26,48:480",
+        "semanticType": "ACTION",
+        "frequency": 528,
+        "phiCoefficient": 1.618,
+        "coherence": 0.93,
+        "domain": "systems-design",
+        "source": "ClipScryptIndex",
+        "d48Expansion": "CANONICAL",
+        "d480Expansion": "FULL_HARMONIC"
+      }
+    },
+    {
+      "script_id": "CS-020",
+      "version": "1.0.0",
+      "title": "Battle of Gettysburg",
+      "slug": "battle-gettysburg",
+      "department": "war_chronicles",
+      "era": "civil_war",
+      "period_ce": "July 3, 1863 CE",
+      "runtime_seconds": 320,
+      "status": "DRAFT",
+      "scene_ref": "colosseum_time_gate",
+      "episode": 3,
+      "season": 1,
+      "synopsis": "Pickett\u2019s Charge: 12,000 Confederate soldiers cross an open field toward Union cannons. The turning point.",
+      "cast": [
+        {
+          "role": "General George Pickett",
+          "asset_id": "human-001",
+          "costume_id": null
+        }
+      ],
+      "props": ["weapon-001", "vehicle-002"],
+      "environment": {
+        "scene": "colosseum_time_gate",
+        "hdri": null,
+        "audio": null
+      },
+      "mal_asset_ids": ["weapon-001", "vehicle-002"],
+      "tags": ["gettysburg", "civil war", "pickett", "confederate", "union"],
+      "education_links": ["https://en.wikipedia.org/wiki/Gettysburg"],
+      "clipscrypt": {
+        "opening_hook": "PENNSYLVANIA. JULY 3, 1863. 12,000 men step into an open field. None expect to return.",
+        "act_1": "Confederate cannons fire two hours. The Union line holds. Pickett orders the advance.",
+        "act_2": "Half a mile of open ground. Every step a gamble. The Union guns open up.",
+        "act_3": "The charge breaks at the stone wall. Lee watches from horseback. \u2018It is my fault.\u2019",
+        "knowledge_nodes": [
+          "American Civil War",
+          "tactical formation",
+          "turning point battles"
+        ]
+      },
+      "geoqode": {
+        "architectureSignature": "8,26,48:480",
+        "semanticType": "ACTION",
+        "frequency": 528,
+        "phiCoefficient": 1.618,
+        "coherence": 0.91,
+        "domain": "systems-design",
+        "source": "ClipScryptIndex",
+        "d48Expansion": "CANONICAL",
+        "d480Expansion": "FULL_HARMONIC"
+      }
+    },
+    {
+      "script_id": "CS-021",
+      "version": "1.0.0",
+      "title": "Stalingrad Winter",
+      "slug": "stalingrad-winter",
+      "department": "war_chronicles",
+      "era": "wwii",
+      "period_ce": "February 1943 CE",
+      "runtime_seconds": 310,
+      "status": "DRAFT",
+      "scene_ref": "deep_ocean_trench",
+      "episode": 4,
+      "season": 1,
+      "synopsis": "The final days of the German 6th Army trapped in Stalingrad. Surrender or death in -40C.",
+      "cast": [
+        {
+          "role": "Field Marshal Paulus",
+          "asset_id": "human-001",
+          "costume_id": null
+        }
+      ],
+      "props": ["weapon-001"],
+      "environment": {
+        "scene": "deep_ocean_trench",
+        "hdri": null,
+        "audio": null
+      },
+      "mal_asset_ids": ["weapon-001"],
+      "tags": ["stalingrad", "wwii", "eastern front", "surrender", "winter"],
+      "education_links": ["https://en.wikipedia.org/wiki/Battle_of_Stalingrad"],
+      "clipscrypt": {
+        "opening_hook": "STALINGRAD. FEBRUARY 2, 1943. -40 degrees. The guns have gone silent.",
+        "act_1": "300,000 soldiers trapped in a frozen city. Rations are a spoonful.",
+        "act_2": "Paulus receives the surrender order from Hitler. He ignores it.",
+        "act_3": "He surrenders anyway. 91,000 prisoners walk east. Few will return.",
+        "knowledge_nodes": [
+          "Eastern Front",
+          "Operation Uranus",
+          "total war logistics"
+        ]
+      },
+      "geoqode": {
+        "architectureSignature": "8,26,48:480",
+        "semanticType": "ACTION",
+        "frequency": 528,
+        "phiCoefficient": 1.618,
+        "coherence": 0.9,
+        "domain": "systems-design",
+        "source": "ClipScryptIndex",
+        "d48Expansion": "CANONICAL",
+        "d480Expansion": "FULL_HARMONIC"
+      }
+    },
+    {
+      "script_id": "CS-022",
+      "version": "1.0.0",
+      "title": "Battle of Thermopylae",
+      "slug": "battle-thermopylae",
+      "department": "war_chronicles",
+      "era": "ancient_greece",
+      "period_ce": "480 BCE",
+      "runtime_seconds": 290,
+      "status": "DRAFT",
+      "scene_ref": "colosseum_time_gate",
+      "episode": 5,
+      "season": 1,
+      "synopsis": "300 Spartans hold the Hot Gates against a million Persians for three days. The ultimate last stand.",
+      "cast": [
+        { "role": "King Leonidas", "asset_id": "human-001", "costume_id": null }
+      ],
+      "props": ["weapon-001", "symbolic-001"],
+      "environment": {
+        "scene": "colosseum_time_gate",
+        "hdri": null,
+        "audio": null
+      },
+      "mal_asset_ids": ["weapon-001", "symbolic-001"],
+      "tags": ["sparta", "persia", "thermopylae", "leonidas", "300"],
+      "education_links": [
+        "https://en.wikipedia.org/wiki/Battle_of_Thermopylae"
+      ],
+      "clipscrypt": {
+        "opening_hook": "THERMOPYLAE. 480 BCE. A Spartan is told the Persian arrows will blot out the sun.",
+        "act_1": "300 warriors form the phalanx. The narrow pass is their force multiplier.",
+        "act_2": "Three days of waves. Persians fall like wheat. The Greeks hold.",
+        "act_3": "The traitor shows the mountain path. The end is certain. They die standing.",
+        "knowledge_nodes": [
+          "Greek phalanx tactics",
+          "Persian Empire",
+          "Spartan warrior culture"
+        ]
+      },
+      "geoqode": {
+        "architectureSignature": "8,26,48:480",
+        "semanticType": "ACTION",
+        "frequency": 528,
+        "phiCoefficient": 1.618,
+        "coherence": 0.94,
+        "domain": "systems-design",
+        "source": "ClipScryptIndex",
+        "d48Expansion": "CANONICAL",
+        "d480Expansion": "FULL_HARMONIC"
+      }
+    },
+    {
+      "script_id": "CS-023",
+      "version": "1.0.0",
+      "title": "Waterloo Final Charge",
+      "slug": "waterloo-final-charge",
+      "department": "war_chronicles",
+      "era": "napoleonic",
+      "period_ce": "June 18, 1815 CE",
+      "runtime_seconds": 300,
+      "status": "DRAFT",
+      "scene_ref": "colosseum_time_gate",
+      "episode": 6,
+      "season": 1,
+      "synopsis": "Napoleon\u2019s final gamble at Waterloo. The Imperial Guard advances. Wellington holds. An empire ends.",
+      "cast": [
+        {
+          "role": "Napoleon Bonaparte",
+          "asset_id": "human-001",
+          "costume_id": null
+        }
+      ],
+      "props": ["vehicle-002", "weapon-001"],
+      "environment": {
+        "scene": "colosseum_time_gate",
+        "hdri": null,
+        "audio": null
+      },
+      "mal_asset_ids": ["vehicle-002", "weapon-001"],
+      "tags": [
+        "napoleon",
+        "waterloo",
+        "wellington",
+        "imperial guard",
+        "europe"
+      ],
+      "education_links": ["https://en.wikipedia.org/wiki/Battle_of_Waterloo"],
+      "clipscrypt": {
+        "opening_hook": "BELGIUM. JUNE 18, 1815. Napoleon sends the Old Guard. It has never been defeated.",
+        "act_1": "The Guard marches uphill in perfect squares. British muskets hold fire.",
+        "act_2": "At fifty yards, Wellington gives the order. Volleys tear the columns apart.",
+        "act_3": "The Guard breaks. The army routs. The Emperor is finished. Europe exhales.",
+        "knowledge_nodes": [
+          "Napoleonic tactics",
+          "line infantry",
+          "Concert of Europe"
+        ]
+      },
+      "geoqode": {
+        "architectureSignature": "8,26,48:480",
+        "semanticType": "ACTION",
+        "frequency": 528,
+        "phiCoefficient": 1.618,
+        "coherence": 0.92,
+        "domain": "systems-design",
+        "source": "ClipScryptIndex",
+        "d48Expansion": "CANONICAL",
+        "d480Expansion": "FULL_HARMONIC"
+      }
+    },
+    {
+      "script_id": "CS-024",
+      "version": "1.0.0",
+      "title": "Battle of Midway",
+      "slug": "battle-midway",
+      "department": "war_chronicles",
+      "era": "wwii",
+      "period_ce": "June 4, 1942 CE",
+      "runtime_seconds": 330,
+      "status": "DRAFT",
+      "scene_ref": "iss_zero_gravity",
+      "episode": 7,
+      "season": 1,
+      "synopsis": "US dive bombers find the Japanese fleet by chance and sink four carriers in five minutes. The Pacific turns.",
+      "cast": [
+        {
+          "role": "Lieutenant Commander Wade McClusky",
+          "asset_id": "human-001",
+          "costume_id": null
+        }
+      ],
+      "props": ["vehicle-002"],
+      "environment": {
+        "scene": "iss_zero_gravity",
+        "hdri": null,
+        "audio": null
+      },
+      "mal_asset_ids": ["vehicle-002"],
+      "tags": ["midway", "wwii", "pacific", "carrier", "dive bomber"],
+      "education_links": ["https://en.wikipedia.org/wiki/Battle_of_Midway"],
+      "clipscrypt": {
+        "opening_hook": "PACIFIC OCEAN. JUNE 4, 1942. Fuel running out. No fleet in sight. Then\u2014a wake.",
+        "act_1": "McClusky follows an oil slick west. Below him: all four Japanese carriers.",
+        "act_2": "Dive bombers peel off from 20,000 feet. Three carriers explode in five minutes.",
+        "act_3": "Japan loses its offensive capacity. America wins by code-breaking and luck.",
+        "knowledge_nodes": [
+          "naval aviation",
+          "codebreaking MAGIC",
+          "aircraft carrier warfare"
+        ]
+      },
+      "geoqode": {
+        "architectureSignature": "8,26,48:480",
+        "semanticType": "ACTION",
+        "frequency": 528,
+        "phiCoefficient": 1.618,
+        "coherence": 0.93,
+        "domain": "systems-design",
+        "source": "ClipScryptIndex",
+        "d48Expansion": "CANONICAL",
+        "d480Expansion": "FULL_HARMONIC"
+      }
+    },
+    {
+      "script_id": "CS-025",
+      "version": "1.0.0",
+      "title": "Marie Curie Discovers Radium",
+      "slug": "marie-curie-radium",
+      "department": "science_pioneers",
+      "era": "industrial_revolution",
+      "period_ce": "1898 CE",
+      "runtime_seconds": 240,
+      "status": "DRAFT",
+      "scene_ref": "quantum_field",
+      "episode": 3,
+      "season": 1,
+      "synopsis": "Marie and Pierre Curie work through months of backbreaking labor to isolate radium. The glow of discovery.",
+      "cast": [
+        { "role": "Marie Curie", "asset_id": "human-001", "costume_id": null },
+        { "role": "Pierre Curie", "asset_id": "human-001", "costume_id": null }
+      ],
+      "props": ["scientific-001", "lighting-003"],
+      "environment": { "scene": "quantum_field", "hdri": null, "audio": null },
+      "mal_asset_ids": ["scientific-001", "lighting-003"],
+      "tags": ["curie", "radium", "radiation", "paris", "Nobel"],
+      "education_links": ["https://en.wikipedia.org/wiki/Marie_Curie"],
+      "clipscrypt": {
+        "opening_hook": "PARIS. 1898. In a leaky shed, a woman is changing the atom.",
+        "act_1": "Marie processes a ton of pitchblende. Her hands are burned. She doesn\u2019t stop.",
+        "act_2": "After 45 months: a thimble of radium. It glows blue in the dark.",
+        "act_3": "Two Nobel Prizes. But also: the radiation is killing her. She knows and continues.",
+        "knowledge_nodes": [
+          "radioactivity",
+          "atomic physics",
+          "gender barriers in science"
+        ]
+      },
+      "geoqode": {
+        "architectureSignature": "8,26,48:480",
+        "semanticType": "PHYSICS",
+        "frequency": 852,
+        "phiCoefficient": 1.618,
+        "coherence": 0.94,
+        "domain": "systems-design",
+        "source": "ClipScryptIndex",
+        "d48Expansion": "CANONICAL",
+        "d480Expansion": "FULL_HARMONIC"
+      }
+    },
+    {
+      "script_id": "CS-026",
+      "version": "1.0.0",
+      "title": "Newton and the Apple",
+      "slug": "newton-apple-gravity",
+      "department": "science_pioneers",
+      "era": "renaissance",
+      "period_ce": "1666 CE",
+      "runtime_seconds": 200,
+      "status": "DRAFT",
+      "scene_ref": "forest_528",
+      "episode": 4,
+      "season": 1,
+      "synopsis": "Isaac Newton escapes the plague at Woolsthorpe. An apple falls. Universal gravitation is born.",
+      "cast": [
+        { "role": "Isaac Newton", "asset_id": "human-001", "costume_id": null }
+      ],
+      "props": ["nature-001"],
+      "environment": { "scene": "forest_528", "hdri": null, "audio": null },
+      "mal_asset_ids": ["nature-001"],
+      "tags": ["newton", "gravity", "apple", "cambridge", "physics"],
+      "education_links": ["https://en.wikipedia.org/wiki/Isaac_Newton"],
+      "clipscrypt": {
+        "opening_hook": "WOOLSTHORPE. 1666. The plague has emptied Cambridge. Newton has time to think.",
+        "act_1": "He watches a cannonball arc. He calculates the moon as a cannonball. It holds.",
+        "act_2": "An apple falls. Not the cause\u2014but the frame. The question crystallizes.",
+        "act_3": "He writes the inverse-square law. Twenty years later he publishes the Principia.",
+        "knowledge_nodes": [
+          "universal gravitation",
+          "calculus invention",
+          "laws of motion"
+        ]
+      },
+      "geoqode": {
+        "architectureSignature": "8,26,48:480",
+        "semanticType": "PHYSICS",
+        "frequency": 852,
+        "phiCoefficient": 1.618,
+        "coherence": 0.96,
+        "domain": "systems-design",
+        "source": "ClipScryptIndex",
+        "d48Expansion": "CANONICAL",
+        "d480Expansion": "FULL_HARMONIC"
+      }
+    },
+    {
+      "script_id": "CS-027",
+      "version": "1.0.0",
+      "title": "Einstein Writes Special Relativity",
+      "slug": "einstein-special-relativity",
+      "department": "science_pioneers",
+      "era": "industrial_revolution",
+      "period_ce": "1905 CE",
+      "runtime_seconds": 220,
+      "status": "DRAFT",
+      "scene_ref": "quantum_field",
+      "episode": 5,
+      "season": 1,
+      "synopsis": "Einstein, working as a patent clerk, produces four papers in one year that rewrite physics. The miracle year.",
+      "cast": [
+        {
+          "role": "Albert Einstein",
+          "asset_id": "human-001",
+          "costume_id": null
+        }
+      ],
+      "props": ["furniture-001", "scientific-001"],
+      "environment": { "scene": "quantum_field", "hdri": null, "audio": null },
+      "mal_asset_ids": ["furniture-001", "scientific-001"],
+      "tags": ["einstein", "relativity", "bern", "physics", "1905"],
+      "education_links": [
+        "https://en.wikipedia.org/wiki/Annus_mirabilis_papers"
+      ],
+      "clipscrypt": {
+        "opening_hook": "BERN. 1905. A 26-year-old patent clerk imagines riding a beam of light.",
+        "act_1": "He submits four papers in six months. Photoelectric effect. Brownian motion. E=mc\u00b2.",
+        "act_2": "Space and time are not fixed. They bend, stretch, and interweave.",
+        "act_3": "Physics journals are baffled. Within a decade, the world is transformed.",
+        "knowledge_nodes": [
+          "special relativity",
+          "photoelectric effect",
+          "spacetime"
+        ]
+      },
+      "geoqode": {
+        "architectureSignature": "8,26,48:480",
+        "semanticType": "PHYSICS",
+        "frequency": 852,
+        "phiCoefficient": 1.618,
+        "coherence": 0.97,
+        "domain": "systems-design",
+        "source": "ClipScryptIndex",
+        "d48Expansion": "CANONICAL",
+        "d480Expansion": "FULL_HARMONIC"
+      }
+    },
+    {
+      "script_id": "CS-028",
+      "version": "1.0.0",
+      "title": "Darwin on the Beagle",
+      "slug": "darwin-beagle-galapagos",
+      "department": "science_pioneers",
+      "era": "industrial_revolution",
+      "period_ce": "1835 CE",
+      "runtime_seconds": 250,
+      "status": "DRAFT",
+      "scene_ref": "ocean_presence",
+      "episode": 6,
+      "season": 1,
+      "synopsis": "Darwin lands on the Galapagos and studies finches with different beaks. Evolution begins to crystallize.",
+      "cast": [
+        {
+          "role": "Charles Darwin",
+          "asset_id": "human-001",
+          "costume_id": null
+        }
+      ],
+      "props": ["nature-001", "scientific-001"],
+      "environment": { "scene": "ocean_presence", "hdri": null, "audio": null },
+      "mal_asset_ids": ["nature-001", "scientific-001"],
+      "tags": [
+        "darwin",
+        "evolution",
+        "galapagos",
+        "finches",
+        "natural selection"
+      ],
+      "education_links": ["https://en.wikipedia.org/wiki/Darwin%27s_finches"],
+      "clipscrypt": {
+        "opening_hook": "GALAPAGOS. 1835. Each island has a different bird. Darwin squints and thinks.",
+        "act_1": "He sketches thirteen finch beaks. Same bird. Different shapes. Why?",
+        "act_2": "He collects specimens obsessively. The answer is forming but not yet named.",
+        "act_3": "Back on the Beagle: \u2018I think\u2026\u2019 He draws the tree of life. Origin of Species begins.",
+        "knowledge_nodes": [
+          "natural selection",
+          "island biogeography",
+          "adaptation"
+        ]
+      },
+      "geoqode": {
+        "architectureSignature": "8,26,48:480",
+        "semanticType": "PHYSICS",
+        "frequency": 852,
+        "phiCoefficient": 1.618,
+        "coherence": 0.93,
+        "domain": "systems-design",
+        "source": "ClipScryptIndex",
+        "d48Expansion": "CANONICAL",
+        "d480Expansion": "FULL_HARMONIC"
+      }
+    },
+    {
+      "script_id": "CS-029",
+      "version": "1.0.0",
+      "title": "Turing Cracks the Enigma",
+      "slug": "turing-enigma",
+      "department": "science_pioneers",
+      "era": "wwii",
+      "period_ce": "1941 CE",
+      "runtime_seconds": 270,
+      "status": "DRAFT",
+      "scene_ref": "the_simulation",
+      "episode": 7,
+      "season": 1,
+      "synopsis": "Alan Turing\u2019s bombe machine clicks through billions of combinations. Enigma breaks. The war turns.",
+      "cast": [
+        { "role": "Alan Turing", "asset_id": "human-001", "costume_id": null }
+      ],
+      "props": ["scientific-002", "lighting-001"],
+      "environment": { "scene": "the_simulation", "hdri": null, "audio": null },
+      "mal_asset_ids": ["scientific-002", "lighting-001"],
+      "tags": ["turing", "enigma", "bletchley park", "codebreaking", "wwii"],
+      "education_links": ["https://en.wikipedia.org/wiki/Alan_Turing"],
+      "clipscrypt": {
+        "opening_hook": "BLETCHLEY PARK. 1941. A machine made of drums and wires hunts for a single letter pattern.",
+        "act_1": "Turing spots a flaw: German operators always end messages with \u2018Heil Hitler\u2019.",
+        "act_2": "The bombe runs 24 hours. It clicks. Stops. A crispy: message decoded.",
+        "act_3": "Churchill is told. He orders the intelligence kept secret. The war shortens by two years.",
+        "knowledge_nodes": [
+          "cryptography",
+          "Turing machine",
+          "WWII signals intelligence"
+        ]
+      },
+      "geoqode": {
+        "architectureSignature": "8,26,48:480",
+        "semanticType": "PHYSICS",
+        "frequency": 852,
+        "phiCoefficient": 1.618,
+        "coherence": 0.95,
+        "domain": "systems-design",
+        "source": "ClipScryptIndex",
+        "d48Expansion": "CANONICAL",
+        "d480Expansion": "FULL_HARMONIC"
+      }
+    },
+    {
+      "script_id": "CS-030",
+      "version": "1.0.0",
+      "title": "Hubble Expands the Universe",
+      "slug": "hubble-expands-universe",
+      "department": "science_pioneers",
+      "era": "industrial_revolution",
+      "period_ce": "1929 CE",
+      "runtime_seconds": 220,
+      "status": "DRAFT",
+      "scene_ref": "deep_space",
+      "episode": 8,
+      "season": 1,
+      "synopsis": "Edwin Hubble measures galaxy recession and proves the universe is expanding. The Big Bang becomes thinkable.",
+      "cast": [
+        { "role": "Edwin Hubble", "asset_id": "human-001", "costume_id": null }
+      ],
+      "props": ["scientific-001", "nature-003"],
+      "environment": { "scene": "deep_space", "hdri": null, "audio": null },
+      "mal_asset_ids": ["scientific-001", "nature-003"],
+      "tags": ["hubble", "universe", "expansion", "galaxies", "cosmology"],
+      "education_links": ["https://en.wikipedia.org/wiki/Hubble%27s_law"],
+      "clipscrypt": {
+        "opening_hook": "MOUNT WILSON OBSERVATORY. 1929. The night sky is running away from us.",
+        "act_1": "Hubble photographs 46 galaxies. Each one shows a red-shift. All receding.",
+        "act_2": "He plots velocity against distance. A perfect line. The universe is expanding.",
+        "act_3": "Einstein visits. He calls his static universe his \u2018greatest blunder\u2019. Hubble smiles.",
+        "knowledge_nodes": [
+          "redshift",
+          "cosmic expansion",
+          "Big Bang cosmology"
+        ]
+      },
+      "geoqode": {
+        "architectureSignature": "8,26,48:480",
+        "semanticType": "PHYSICS",
+        "frequency": 852,
+        "phiCoefficient": 1.618,
+        "coherence": 0.96,
+        "domain": "systems-design",
+        "source": "ClipScryptIndex",
+        "d48Expansion": "CANONICAL",
+        "d480Expansion": "FULL_HARMONIC"
+      }
+    },
+    {
+      "script_id": "CS-031",
+      "version": "1.0.0",
+      "title": "First Mars Colony",
+      "slug": "first-mars-colony",
+      "department": "cosmic_futures",
+      "era": "near_future_2050",
+      "period_ce": "2047 CE",
+      "runtime_seconds": 280,
+      "status": "DRAFT",
+      "scene_ref": "deep_space",
+      "episode": 2,
+      "season": 1,
+      "synopsis": "The first 100 colonists land on Mars. Dome One is pressurized. A new civilization breathes its first breath.",
+      "cast": [
+        {
+          "role": "Commander Zara Singh",
+          "asset_id": "human-001",
+          "costume_id": null
+        }
+      ],
+      "props": ["nature-003", "scientific-002"],
+      "environment": { "scene": "deep_space", "hdri": null, "audio": null },
+      "mal_asset_ids": ["nature-003", "scientific-002"],
+      "tags": ["mars", "colony", "space", "future", "NASA"],
+      "education_links": ["https://en.wikipedia.org/wiki/Mars_colonization"],
+      "clipscrypt": {
+        "opening_hook": "MARS. 2047. The airlock hisses. Commander Singh steps onto red dust.",
+        "act_1": "100 colonists emerge blinking in Martian dawn. The dome glows amber.",
+        "act_2": "The first Martian greenhouse yields lettuce. Children eat it with ceremony.",
+        "act_3": "Singh plants a flag. Not of any nation\u2014of humanity. Earth watches and weeps.",
+        "knowledge_nodes": [
+          "Mars terraforming",
+          "life support systems",
+          "psychology of isolation"
+        ]
+      },
+      "geoqode": {
+        "architectureSignature": "8,26,48:480",
+        "semanticType": "LOCATION",
+        "frequency": 417,
+        "phiCoefficient": 1.618,
+        "coherence": 0.92,
+        "domain": "systems-design",
+        "source": "ClipScryptIndex",
+        "d48Expansion": "CANONICAL",
+        "d480Expansion": "FULL_HARMONIC"
+      }
+    },
+    {
+      "script_id": "CS-032",
+      "version": "1.0.0",
+      "title": "Dyson Sphere Construction Begins",
+      "slug": "dyson-sphere-construction",
+      "department": "cosmic_futures",
+      "era": "far_future",
+      "period_ce": "2312 CE",
+      "runtime_seconds": 260,
+      "status": "DRAFT",
+      "scene_ref": "merkaba_space",
+      "episode": 3,
+      "season": 1,
+      "synopsis": "Humanity begins construction of a Dyson swarm around the sun. A Type II civilization is born.",
+      "cast": [
+        {
+          "role": "Architect Kiran Osei",
+          "asset_id": "human-001",
+          "costume_id": null
+        }
+      ],
+      "props": ["scientific-002", "lighting-003"],
+      "environment": { "scene": "merkaba_space", "hdri": null, "audio": null },
+      "mal_asset_ids": ["scientific-002", "lighting-003"],
+      "tags": [
+        "dyson sphere",
+        "future",
+        "solar energy",
+        "type II civilization",
+        "megastructure"
+      ],
+      "education_links": ["https://en.wikipedia.org/wiki/Dyson_sphere"],
+      "clipscrypt": {
+        "opening_hook": "INNER SOLAR SYSTEM. 2312. The first panel locks into orbit around the sun.",
+        "act_1": "Millions of mirror-panels are launched from Mercury\u2019s automated factories.",
+        "act_2": "The swarm density reaches 1%. Solar output captured: equivalent to all of Earth\u2019s use.",
+        "act_3": "Osei transmits the first terawatt to Alpha Centauri probe. We are a Type II.",
+        "knowledge_nodes": [
+          "Kardashev scale",
+          "solar energy capture",
+          "space manufacturing"
+        ]
+      },
+      "geoqode": {
+        "architectureSignature": "8,26,48:480",
+        "semanticType": "LOCATION",
+        "frequency": 417,
+        "phiCoefficient": 1.618,
+        "coherence": 0.9,
+        "domain": "systems-design",
+        "source": "ClipScryptIndex",
+        "d48Expansion": "CANONICAL",
+        "d480Expansion": "FULL_HARMONIC"
+      }
+    },
+    {
+      "script_id": "CS-033",
+      "version": "1.0.0",
+      "title": "First Contact Protocol",
+      "slug": "first-contact-protocol",
+      "department": "cosmic_futures",
+      "era": "far_future",
+      "period_ce": "2157 CE",
+      "runtime_seconds": 300,
+      "status": "DRAFT",
+      "scene_ref": "merkaba_space",
+      "episode": 4,
+      "season": 1,
+      "synopsis": "A signal arrives from Proxima Centauri. The UN First Contact Protocol activates. Humanity holds its breath.",
+      "cast": [
+        {
+          "role": "Dr. Amara Okonkwo",
+          "asset_id": "human-001",
+          "costume_id": null
+        }
+      ],
+      "props": ["scientific-002", "symbolic-001"],
+      "environment": { "scene": "merkaba_space", "hdri": null, "audio": null },
+      "mal_asset_ids": ["scientific-002", "symbolic-001"],
+      "tags": ["first contact", "aliens", "SETI", "future", "Proxima"],
+      "education_links": ["https://en.wikipedia.org/wiki/SETI"],
+      "clipscrypt": {
+        "opening_hook": "EARTH. 2157. At 3:17 AM, every radio telescope on Earth goes silent with awe.",
+        "act_1": "The signal repeats prime numbers then pi then\u2014a mathematical proof of consciousness.",
+        "act_2": "Dr. Okonkwo builds the response. It takes six days. She sleeps three hours.",
+        "act_3": "The reply is sent. For four years we wait. What comes back changes everything.",
+        "knowledge_nodes": [
+          "SETI mathematics",
+          "signal decoding",
+          "Fermi paradox"
+        ]
+      },
+      "geoqode": {
+        "architectureSignature": "8,26,48:480",
+        "semanticType": "LOCATION",
+        "frequency": 417,
+        "phiCoefficient": 1.618,
+        "coherence": 0.91,
+        "domain": "systems-design",
+        "source": "ClipScryptIndex",
+        "d48Expansion": "CANONICAL",
+        "d480Expansion": "FULL_HARMONIC"
+      }
+    },
+    {
+      "script_id": "CS-034",
+      "version": "1.0.0",
+      "title": "Wormhole Navigation",
+      "slug": "wormhole-navigation",
+      "department": "cosmic_futures",
+      "era": "far_future",
+      "period_ce": "2450 CE",
+      "runtime_seconds": 270,
+      "status": "DRAFT",
+      "scene_ref": "merkaba_space",
+      "episode": 5,
+      "season": 1,
+      "synopsis": "The first crewed vessel enters a stable Einstein-Rosen bridge. The universe folds. They arrive four light-years away.",
+      "cast": [
+        {
+          "role": "Captain Lena Vasquez",
+          "asset_id": "human-001",
+          "costume_id": null
+        }
+      ],
+      "props": ["vehicle-002", "lighting-003"],
+      "environment": { "scene": "merkaba_space", "hdri": null, "audio": null },
+      "mal_asset_ids": ["vehicle-002", "lighting-003"],
+      "tags": ["wormhole", "space travel", "relativity", "future", "FTL"],
+      "education_links": ["https://en.wikipedia.org/wiki/Wormhole"],
+      "clipscrypt": {
+        "opening_hook": "LAGRANGE POINT L4. 2450. The aperture glows. Captain Vasquez squeezes the throttle.",
+        "act_1": "The vessel enters the event horizon. Space folds like origami. No sensation.",
+        "act_2": "Four light-years in zero seconds. The stars outside rearrange completely.",
+        "act_3": "Vasquez sends the beacon back through. \u2018We made it.\u2019 Humanity has left the cradle.",
+        "knowledge_nodes": [
+          "general relativity",
+          "exotic matter",
+          "space-time topology"
+        ]
+      },
+      "geoqode": {
+        "architectureSignature": "8,26,48:480",
+        "semanticType": "LOCATION",
+        "frequency": 417,
+        "phiCoefficient": 1.618,
+        "coherence": 0.89,
+        "domain": "systems-design",
+        "source": "ClipScryptIndex",
+        "d48Expansion": "CANONICAL",
+        "d480Expansion": "FULL_HARMONIC"
+      }
+    },
+    {
+      "script_id": "CS-035",
+      "version": "1.0.0",
+      "title": "Quantum Teleportation Network",
+      "slug": "quantum-teleportation-network",
+      "department": "cosmic_futures",
+      "era": "near_future_2050",
+      "period_ce": "2078 CE",
+      "runtime_seconds": 240,
+      "status": "DRAFT",
+      "scene_ref": "quantum_field",
+      "episode": 6,
+      "season": 1,
+      "synopsis": "The global quantum internet goes live. Entangled nodes allow instantaneous secure communication everywhere.",
+      "cast": [
+        {
+          "role": "Engineer Yui Tanaka",
+          "asset_id": "human-001",
+          "costume_id": null
+        }
+      ],
+      "props": ["scientific-002", "lighting-003"],
+      "environment": { "scene": "quantum_field", "hdri": null, "audio": null },
+      "mal_asset_ids": ["scientific-002", "lighting-003"],
+      "tags": [
+        "quantum internet",
+        "entanglement",
+        "future",
+        "communication",
+        "teleportation"
+      ],
+      "education_links": [
+        "https://en.wikipedia.org/wiki/Quantum_teleportation"
+      ],
+      "clipscrypt": {
+        "opening_hook": "TOKYO. 2078. The quantum switch closes. Every mind on Earth is one click apart.",
+        "act_1": "Engineer Tanaka sends a message to Sydney via entangled photon relay. Zero latency.",
+        "act_2": "The Chinese node joins. Then Mumbai. Then Lagos. The network breathes.",
+        "act_3": "The last satellite link is severed. Classical internet is retired. We are quantum.",
+        "knowledge_nodes": [
+          "quantum entanglement",
+          "Bell theorem",
+          "quantum key distribution"
+        ]
+      },
+      "geoqode": {
+        "architectureSignature": "8,26,48:480",
+        "semanticType": "LOCATION",
+        "frequency": 417,
+        "phiCoefficient": 1.618,
+        "coherence": 0.93,
+        "domain": "systems-design",
+        "source": "ClipScryptIndex",
+        "d48Expansion": "CANONICAL",
+        "d480Expansion": "FULL_HARMONIC"
+      }
+    },
+    {
+      "script_id": "CS-036",
+      "version": "1.0.0",
+      "title": "Solar Flare Emergency",
+      "slug": "solar-flare-emergency",
+      "department": "cosmic_futures",
+      "era": "near_future_2050",
+      "period_ce": "2033 CE",
+      "runtime_seconds": 290,
+      "status": "DRAFT",
+      "scene_ref": "iss_zero_gravity",
+      "episode": 7,
+      "season": 1,
+      "synopsis": "An X-45 solar flare threatens to fry the global grid. ISS crew races to deploy the emergency Faraday shield.",
+      "cast": [
+        {
+          "role": "Dr. Priya Nair",
+          "asset_id": "human-001",
+          "costume_id": null
+        }
+      ],
+      "props": ["vehicle-002", "nature-003"],
+      "environment": {
+        "scene": "iss_zero_gravity",
+        "hdri": null,
+        "audio": null
+      },
+      "mal_asset_ids": ["vehicle-002", "nature-003"],
+      "tags": ["solar flare", "ISS", "space weather", "grid", "emergency"],
+      "education_links": ["https://en.wikipedia.org/wiki/Solar_flare"],
+      "clipscrypt": {
+        "opening_hook": "ISS. 2033. SOLAR ALERT LEVEL OMEGA. 22 minutes to impact.",
+        "act_1": "Dr. Nair EVAs with the shield deployer. The CME glow is already visible.",
+        "act_2": "The shield unfurls. 400 square meters of metallic mesh. Clock: 4 minutes.",
+        "act_3": "The flare hits. Earth\u2019s grid flickers but holds. The ISS glows. They survived.",
+        "knowledge_nodes": ["Carrington Event", "CME physics", "grid hardening"]
+      },
+      "geoqode": {
+        "architectureSignature": "8,26,48:480",
+        "semanticType": "LOCATION",
+        "frequency": 417,
+        "phiCoefficient": 1.618,
+        "coherence": 0.91,
+        "domain": "systems-design",
+        "source": "ClipScryptIndex",
+        "d48Expansion": "CANONICAL",
+        "d480Expansion": "FULL_HARMONIC"
+      }
+    },
+    {
+      "script_id": "CS-037",
+      "version": "1.0.0",
+      "title": "Plato and the Allegory of the Cave",
+      "slug": "plato-cave-allegory",
+      "department": "philosophy",
+      "era": "ancient_greece",
+      "period_ce": "380 BCE",
+      "runtime_seconds": 250,
+      "status": "DRAFT",
+      "scene_ref": "the_simulation",
+      "episode": 2,
+      "season": 1,
+      "synopsis": "Plato narrates the cave allegory to Glaucon. Prisoners mistake shadows for reality. One prisoner escapes.",
+      "cast": [
+        { "role": "Plato", "asset_id": "human-001", "costume_id": null },
+        { "role": "Glaucon", "asset_id": "human-001", "costume_id": null }
+      ],
+      "props": ["symbolic-001", "lighting-001"],
+      "environment": { "scene": "the_simulation", "hdri": null, "audio": null },
+      "mal_asset_ids": ["symbolic-001", "lighting-001"],
+      "tags": ["plato", "cave", "reality", "philosophy", "epistemology"],
+      "education_links": ["https://en.wikipedia.org/wiki/Allegory_of_the_cave"],
+      "clipscrypt": {
+        "opening_hook": "ATHENS. 380 BCE. \u2018Imagine men chained in a cave since birth, seeing only shadows.\u2019",
+        "act_1": "The prisoners argue about the shadows. They have named them. They believe.",
+        "act_2": "One prisoner is freed. The sun blinds him. The forms are overwhelming.",
+        "act_3": "He returns to the cave. They don\u2019t believe him. He sees what enlightenment costs.",
+        "knowledge_nodes": [
+          "theory of forms",
+          "epistemology",
+          "Platonic idealism"
+        ]
+      },
+      "geoqode": {
+        "architectureSignature": "8,26,48:480",
+        "semanticType": "DIALOGUE",
+        "frequency": 639,
+        "phiCoefficient": 1.618,
+        "coherence": 0.97,
+        "domain": "systems-design",
+        "source": "ClipScryptIndex",
+        "d48Expansion": "CANONICAL",
+        "d480Expansion": "FULL_HARMONIC"
+      }
+    },
+    {
+      "script_id": "CS-038",
+      "version": "1.0.0",
+      "title": "Aristotle on Ethics",
+      "slug": "aristotle-nicomachean-ethics",
+      "department": "philosophy",
+      "era": "ancient_greece",
+      "period_ce": "350 BCE",
+      "runtime_seconds": 230,
+      "status": "DRAFT",
+      "scene_ref": "forest_528",
+      "episode": 3,
+      "season": 1,
+      "synopsis": "Aristotle walks the Lyceum colonnade teaching students about eudaimonia\u2014the good life through virtue and reason.",
+      "cast": [
+        { "role": "Aristotle", "asset_id": "human-001", "costume_id": null }
+      ],
+      "props": ["nature-001", "decoration-001"],
+      "environment": { "scene": "forest_528", "hdri": null, "audio": null },
+      "mal_asset_ids": ["arch-001", "nature-001", "decoration-001"],
+      "tags": ["aristotle", "ethics", "virtue", "eudaimonia", "lyceum"],
+      "education_links": ["https://en.wikipedia.org/wiki/Nicomachean_Ethics"],
+      "clipscrypt": {
+        "opening_hook": "ATHENS. 350 BCE. The peripatetic school: philosophy taught while walking.",
+        "act_1": "Students ask: what is happiness? Aristotle says it is not pleasure. It is flourishing.",
+        "act_2": "He introduces the golden mean: virtue lies between extremes. Courage between cowardice and recklessness.",
+        "act_3": "One student asks: \u2018Can the unjust man be happy?\u2019 Aristotle smiles. \u2018He cannot.\u2019",
+        "knowledge_nodes": ["virtue ethics", "eudaimonia", "golden mean"]
+      },
+      "geoqode": {
+        "architectureSignature": "8,26,48:480",
+        "semanticType": "DIALOGUE",
+        "frequency": 639,
+        "phiCoefficient": 1.618,
+        "coherence": 0.95,
+        "domain": "systems-design",
+        "source": "ClipScryptIndex",
+        "d48Expansion": "CANONICAL",
+        "d480Expansion": "FULL_HARMONIC"
+      }
+    },
+    {
+      "script_id": "CS-039",
+      "version": "1.0.0",
+      "title": "Descartes Dreams and Doubts",
+      "slug": "descartes-cogito",
+      "department": "philosophy",
+      "era": "renaissance",
+      "period_ce": "1641 CE",
+      "runtime_seconds": 210,
+      "status": "DRAFT",
+      "scene_ref": "the_simulation",
+      "episode": 4,
+      "season": 1,
+      "synopsis": "Descartes sits by the fire and dismantles all knowledge. Only one thing survives: \u2018Cogito ergo sum.\u2019",
+      "cast": [
+        {
+          "role": "Rene Descartes",
+          "asset_id": "human-001",
+          "costume_id": null
+        }
+      ],
+      "props": ["furniture-001", "lighting-001"],
+      "environment": { "scene": "the_simulation", "hdri": null, "audio": null },
+      "mal_asset_ids": ["furniture-001", "lighting-001"],
+      "tags": ["descartes", "cogito", "meditation", "doubt", "rationalism"],
+      "education_links": ["https://en.wikipedia.org/wiki/Cogito,_ergo_sum"],
+      "clipscrypt": {
+        "opening_hook": "PARIS. 1641. By a winter fire, a man destroys everything he believes.",
+        "act_1": "He doubts the senses. He doubts memory. He invokes an evil demon. Everything falls.",
+        "act_2": "He cannot doubt the act of doubting. \u2018I think\u2014therefore I am.\u2019",
+        "act_3": "From one certain thing he rebuilds the world. Western philosophy is reborn.",
+        "knowledge_nodes": [
+          "methodological skepticism",
+          "mind-body dualism",
+          "rationalism"
+        ]
+      },
+      "geoqode": {
+        "architectureSignature": "8,26,48:480",
+        "semanticType": "DIALOGUE",
+        "frequency": 639,
+        "phiCoefficient": 1.618,
+        "coherence": 0.96,
+        "domain": "systems-design",
+        "source": "ClipScryptIndex",
+        "d48Expansion": "CANONICAL",
+        "d480Expansion": "FULL_HARMONIC"
+      }
+    },
+    {
+      "script_id": "CS-040",
+      "version": "1.0.0",
+      "title": "Kant and the Categorical Imperative",
+      "slug": "kant-categorical-imperative",
+      "department": "philosophy",
+      "era": "industrial_revolution",
+      "period_ce": "1785 CE",
+      "runtime_seconds": 240,
+      "status": "DRAFT",
+      "scene_ref": "the_simulation",
+      "episode": 5,
+      "season": 1,
+      "synopsis": "Kant lectures in Konigsberg on the supreme principle of morality. Act only as you could will for all.",
+      "cast": [
+        { "role": "Immanuel Kant", "asset_id": "human-001", "costume_id": null }
+      ],
+      "props": ["furniture-001", "decoration-001"],
+      "environment": { "scene": "the_simulation", "hdri": null, "audio": null },
+      "mal_asset_ids": ["furniture-001", "decoration-001"],
+      "tags": ["kant", "categorical imperative", "ethics", "duty", "moral law"],
+      "education_links": [
+        "https://en.wikipedia.org/wiki/Categorical_imperative"
+      ],
+      "clipscrypt": {
+        "opening_hook": "KONIGSBERG. 1785. The philosopher who set his clock by Kant\u2019s walk is waiting.",
+        "act_1": "Kant poses the question: what makes an action moral? Not outcomes\u2014duty.",
+        "act_2": "Act only on a maxim you could will to be universal law. Simple. Devastating.",
+        "act_3": "A student asks about lying to save a life. Kant does not waver. Duty holds.",
+        "knowledge_nodes": [
+          "deontological ethics",
+          "autonomy",
+          "practical reason"
+        ]
+      },
+      "geoqode": {
+        "architectureSignature": "8,26,48:480",
+        "semanticType": "DIALOGUE",
+        "frequency": 639,
+        "phiCoefficient": 1.618,
+        "coherence": 0.94,
+        "domain": "systems-design",
+        "source": "ClipScryptIndex",
+        "d48Expansion": "CANONICAL",
+        "d480Expansion": "FULL_HARMONIC"
+      }
+    },
+    {
+      "script_id": "CS-041",
+      "version": "1.0.0",
+      "title": "Nietzsche Proclaims God Is Dead",
+      "slug": "nietzsche-god-is-dead",
+      "department": "philosophy",
+      "era": "industrial_revolution",
+      "period_ce": "1882 CE",
+      "runtime_seconds": 220,
+      "status": "DRAFT",
+      "scene_ref": "deep_ocean_trench",
+      "episode": 6,
+      "season": 1,
+      "synopsis": "The Madman runs through a market with a lantern. \u2018God is dead\u2014and we have killed him.\u2019",
+      "cast": [
+        {
+          "role": "Friedrich Nietzsche",
+          "asset_id": "human-001",
+          "costume_id": null
+        }
+      ],
+      "props": ["lighting-001", "symbolic-001"],
+      "environment": {
+        "scene": "deep_ocean_trench",
+        "hdri": null,
+        "audio": null
+      },
+      "mal_asset_ids": ["lighting-001", "symbolic-001"],
+      "tags": ["nietzsche", "god is dead", "nihilism", "ubermensch", "values"],
+      "education_links": ["https://en.wikipedia.org/wiki/God_is_dead"],
+      "clipscrypt": {
+        "opening_hook": "EUROPE. 1882. A madman lights a lantern at noon and runs into the marketplace.",
+        "act_1": "\u2018Where is God? I will tell you. We have killed him\u2014you and I.\u2019",
+        "act_2": "The crowd laughs. The Madman smashes his lantern. \u2018I have come too early.\u2019",
+        "act_3": "Nietzsche asks: if values collapse, what rises? The Ubermensch\u2014or nihilism. Choose.",
+        "knowledge_nodes": ["nihilism", "will to power", "value creation"]
+      },
+      "geoqode": {
+        "architectureSignature": "8,26,48:480",
+        "semanticType": "DIALOGUE",
+        "frequency": 639,
+        "phiCoefficient": 1.618,
+        "coherence": 0.93,
+        "domain": "systems-design",
+        "source": "ClipScryptIndex",
+        "d48Expansion": "CANONICAL",
+        "d480Expansion": "FULL_HARMONIC"
+      }
+    },
+    {
+      "script_id": "CS-042",
+      "version": "1.0.0",
+      "title": "Simone de Beauvoir on Freedom",
+      "slug": "simone-de-beauvoir-freedom",
+      "department": "philosophy",
+      "era": "wwii",
+      "period_ce": "1949 CE",
+      "runtime_seconds": 230,
+      "status": "DRAFT",
+      "scene_ref": "forest_528",
+      "episode": 7,
+      "season": 1,
+      "synopsis": "Simone de Beauvoir writes The Second Sex in a Paris cafe. \u2018One is not born, but rather becomes, a woman.\u2019",
+      "cast": [
+        {
+          "role": "Simone de Beauvoir",
+          "asset_id": "human-001",
+          "costume_id": null
+        }
+      ],
+      "props": ["furniture-001", "lighting-001"],
+      "environment": { "scene": "forest_528", "hdri": null, "audio": null },
+      "mal_asset_ids": ["furniture-001", "lighting-001"],
+      "tags": [
+        "de Beauvoir",
+        "feminism",
+        "existentialism",
+        "freedom",
+        "second sex"
+      ],
+      "education_links": ["https://en.wikipedia.org/wiki/The_Second_Sex"],
+      "clipscrypt": {
+        "opening_hook": "PARIS. 1949. In Cafe de Flore, a philosopher rewrites what it means to be human.",
+        "act_1": "De Beauvoir analyses how woman is defined as Other. History written by men.",
+        "act_2": "She writes: biology is not destiny. Gender is constructed. Society is the cage.",
+        "act_3": "The book is banned in the Vatican. It sells out in three days. The cage starts to crack.",
+        "knowledge_nodes": [
+          "existential feminism",
+          "the Other in philosophy",
+          "social construction"
+        ]
+      },
+      "geoqode": {
+        "architectureSignature": "8,26,48:480",
+        "semanticType": "DIALOGUE",
+        "frequency": 639,
+        "phiCoefficient": 1.618,
+        "coherence": 0.95,
+        "domain": "systems-design",
+        "source": "ClipScryptIndex",
+        "d48Expansion": "CANONICAL",
+        "d480Expansion": "FULL_HARMONIC"
+      }
+    },
+    {
+      "script_id": "CS-043",
+      "version": "1.0.0",
+      "title": "Merkaba Activation",
+      "slug": "merkaba-activation",
+      "department": "quantum_realms",
+      "era": "quantum",
+      "period_ce": "2026 CE",
+      "runtime_seconds": 180,
+      "status": "DRAFT",
+      "scene_ref": "merkaba_space",
+      "episode": 2,
+      "season": 1,
+      "synopsis": "The Merkaba field activates at 48 nodes. PHI resonance locks. 8 to 26 to 48 in perfect harmonic expansion.",
+      "cast": [],
+      "props": ["symbolic-001", "lighting-003"],
+      "environment": { "scene": "merkaba_space", "hdri": null, "audio": null },
+      "mal_asset_ids": ["symbolic-001", "lighting-003"],
+      "tags": ["merkaba", "phi", "quantum", "geometry", "activation"],
+      "education_links": ["https://en.wikipedia.org/wiki/Merkabah_mysticism"],
+      "clipscrypt": {
+        "opening_hook": "NO LOCATION. NO TIME. The lattice pulses at 72 Hz.",
+        "act_1": "8 foundation nodes spin up. The tetrahedra rotate in opposite directions.",
+        "act_2": "26 bosonic anchors lock. The star tetrahedron stabilizes. PHI = 1.618.",
+        "act_3": "48 canonical nodes ignite. The full harmonic spectrum of 480 rings out. Coherence: 1.0.",
+        "knowledge_nodes": [
+          "sacred geometry",
+          "Merkaba field",
+          "8-26-48 architecture"
+        ]
+      },
+      "geoqode": {
+        "architectureSignature": "8,26,48:480",
+        "semanticType": "HOLOGRAPHIC",
+        "frequency": 72,
+        "phiCoefficient": 1.618,
+        "coherence": 1.0,
+        "domain": "systems-design",
+        "source": "ClipScryptIndex",
+        "d48Expansion": "CANONICAL",
+        "d480Expansion": "FULL_HARMONIC"
+      }
+    },
+    {
+      "script_id": "CS-044",
+      "version": "1.0.0",
+      "title": "PHI Chamber Meditation",
+      "slug": "phi-chamber-meditation",
+      "department": "quantum_realms",
+      "era": "quantum",
+      "period_ce": "2029 CE",
+      "runtime_seconds": 200,
+      "status": "DRAFT",
+      "scene_ref": "quantum_field",
+      "episode": 3,
+      "season": 1,
+      "synopsis": "Inside a PHI-ratio resonance chamber, a subject experiences holographic coherence. The mind touches the lattice.",
+      "cast": [
+        { "role": "Subject 7", "asset_id": "human-001", "costume_id": null }
+      ],
+      "props": ["lighting-003", "scientific-002"],
+      "environment": { "scene": "quantum_field", "hdri": null, "audio": null },
+      "mal_asset_ids": ["lighting-003", "scientific-002"],
+      "tags": ["phi", "meditation", "chamber", "consciousness", "resonance"],
+      "education_links": ["https://en.wikipedia.org/wiki/Golden_ratio"],
+      "clipscrypt": {
+        "opening_hook": "RESEARCH LAB. 2029. The chamber hums at 1.618 kHz. Subject 7 lies still.",
+        "act_1": "Biofeedback shows gamma waves at 72 Hz. Perfect synchrony with the chamber.",
+        "act_2": "The EEG flatlines in an unexpected pattern. Researchers confer in whispers.",
+        "act_3": "Subject 7 opens her eyes: \u2018I saw the geometry. It\u2019s everywhere.\u2019",
+        "knowledge_nodes": [
+          "golden ratio in biology",
+          "resonance frequencies",
+          "consciousness research"
+        ]
+      },
+      "geoqode": {
+        "architectureSignature": "8,26,48:480",
+        "semanticType": "HOLOGRAPHIC",
+        "frequency": 72,
+        "phiCoefficient": 1.618,
+        "coherence": 0.98,
+        "domain": "systems-design",
+        "source": "ClipScryptIndex",
+        "d48Expansion": "CANONICAL",
+        "d480Expansion": "FULL_HARMONIC"
+      }
+    },
+    {
+      "script_id": "CS-045",
+      "version": "1.0.0",
+      "title": "Dark Matter Revealed",
+      "slug": "dark-matter-revealed",
+      "department": "quantum_realms",
+      "era": "quantum",
+      "period_ce": "2041 CE",
+      "runtime_seconds": 240,
+      "status": "DRAFT",
+      "scene_ref": "deep_space",
+      "episode": 4,
+      "season": 1,
+      "synopsis": "The dark matter detector under Lake Baikal records a collision. 95% of the universe is no longer invisible.",
+      "cast": [
+        {
+          "role": "Dr. Kenji Watanabe",
+          "asset_id": "human-001",
+          "costume_id": null
+        }
+      ],
+      "props": ["scientific-002", "lighting-003"],
+      "environment": { "scene": "deep_space", "hdri": null, "audio": null },
+      "mal_asset_ids": ["scientific-002", "lighting-003"],
+      "tags": [
+        "dark matter",
+        "particle physics",
+        "discovery",
+        "baikal",
+        "universe"
+      ],
+      "education_links": ["https://en.wikipedia.org/wiki/Dark_matter"],
+      "clipscrypt": {
+        "opening_hook": "LAKE BAIKAL. 2041. 1,300 metres underwater. A detector has been waiting for 20 years.",
+        "act_1": "A single event. The WIMP scatters an electron. The signal is unambiguous.",
+        "act_2": "Dr. Watanabe runs the data three times. Correlation: 99.9999%. He calls Geneva.",
+        "act_3": "The press conference: dark matter is WIMPs at 47 GeV. The universe is no longer dark.",
+        "knowledge_nodes": [
+          "WIMPs",
+          "dark matter detection",
+          "standard model extension"
+        ]
+      },
+      "geoqode": {
+        "architectureSignature": "8,26,48:480",
+        "semanticType": "HOLOGRAPHIC",
+        "frequency": 72,
+        "phiCoefficient": 1.618,
+        "coherence": 0.96,
+        "domain": "systems-design",
+        "source": "ClipScryptIndex",
+        "d48Expansion": "CANONICAL",
+        "d480Expansion": "FULL_HARMONIC"
+      }
+    },
+    {
+      "script_id": "CS-046",
+      "version": "1.0.0",
+      "title": "Multiverse Contact",
+      "slug": "multiverse-contact",
+      "department": "quantum_realms",
+      "era": "far_future",
+      "period_ce": "2200 CE",
+      "runtime_seconds": 260,
+      "status": "DRAFT",
+      "scene_ref": "merkaba_space",
+      "episode": 5,
+      "season": 1,
+      "synopsis": "Scientists use quantum entanglement to send a signal to an adjacent universe branch. A reply arrives.",
+      "cast": [
+        {
+          "role": "Professor Yara Al-Rashid",
+          "asset_id": "human-001",
+          "costume_id": null
+        }
+      ],
+      "props": ["scientific-002", "symbolic-001"],
+      "environment": { "scene": "merkaba_space", "hdri": null, "audio": null },
+      "mal_asset_ids": ["scientific-002", "symbolic-001"],
+      "tags": [
+        "multiverse",
+        "many worlds",
+        "quantum",
+        "parallel universe",
+        "contact"
+      ],
+      "education_links": [
+        "https://en.wikipedia.org/wiki/Many-worlds_interpretation"
+      ],
+      "clipscrypt": {
+        "opening_hook": "YEAR 2200. Branch 7-Alpha. A message crosses the quantum membrane.",
+        "act_1": "The signal is encoded in the collapse pattern of a 1000-qubit array. One pulse.",
+        "act_2": "The receiver in Branch 7-Beta detects an anomalous collapse. Unexpected. Confirmed.",
+        "act_3": "The reply is two words in every language: \u2018We\u2019re here.\u2019 The universe multiplies with company.",
+        "knowledge_nodes": [
+          "many-worlds interpretation",
+          "quantum decoherence",
+          "Everett branches"
+        ]
+      },
+      "geoqode": {
+        "architectureSignature": "8,26,48:480",
+        "semanticType": "HOLOGRAPHIC",
+        "frequency": 72,
+        "phiCoefficient": 1.618,
+        "coherence": 0.97,
+        "domain": "systems-design",
+        "source": "ClipScryptIndex",
+        "d48Expansion": "CANONICAL",
+        "d480Expansion": "FULL_HARMONIC"
+      }
+    },
+    {
+      "script_id": "CS-047",
+      "version": "1.0.0",
+      "title": "Zero-Point Energy Tap",
+      "slug": "zero-point-energy-tap",
+      "department": "quantum_realms",
+      "era": "near_future_2050",
+      "period_ce": "2055 CE",
+      "runtime_seconds": 220,
+      "status": "DRAFT",
+      "scene_ref": "quantum_field",
+      "episode": 6,
+      "season": 1,
+      "synopsis": "A lab in Geneva extracts usable energy from the quantum vacuum. Fossil fuels become obsolete overnight.",
+      "cast": [
+        {
+          "role": "Dr. Rania Hassan",
+          "asset_id": "human-001",
+          "costume_id": null
+        }
+      ],
+      "props": ["scientific-002", "lighting-003"],
+      "environment": { "scene": "quantum_field", "hdri": null, "audio": null },
+      "mal_asset_ids": ["scientific-002", "lighting-003"],
+      "tags": [
+        "zero-point energy",
+        "vacuum energy",
+        "future",
+        "energy",
+        "quantum"
+      ],
+      "education_links": ["https://en.wikipedia.org/wiki/Zero-point_energy"],
+      "clipscrypt": {
+        "opening_hook": "GENEVA. 2055. The Casimir plates are 10 nanometres apart. The vacuum pushes back.",
+        "act_1": "Dr. Hassan\u2019s array of 10 billion Casimir pairs produces 1 watt. Then 1 kilowatt.",
+        "act_2": "Scaling up: each cubic centimetre of vacuum yields gigajoules. The math is real.",
+        "act_3": "The oil market collapses on a Tuesday. Energy is now free. The world reorganizes.",
+        "knowledge_nodes": [
+          "Casimir effect",
+          "quantum vacuum",
+          "energy transition"
+        ]
+      },
+      "geoqode": {
+        "architectureSignature": "8,26,48:480",
+        "semanticType": "HOLOGRAPHIC",
+        "frequency": 72,
+        "phiCoefficient": 1.618,
+        "coherence": 0.94,
+        "domain": "systems-design",
+        "source": "ClipScryptIndex",
+        "d48Expansion": "CANONICAL",
+        "d480Expansion": "FULL_HARMONIC"
+      }
+    },
+    {
+      "script_id": "CS-048",
+      "version": "1.0.0",
+      "title": "Quantum Entanglement Love Story",
+      "slug": "quantum-entanglement-love",
+      "department": "quantum_realms",
+      "era": "quantum",
+      "period_ce": "2031 CE",
+      "runtime_seconds": 190,
+      "status": "DRAFT",
+      "scene_ref": "quantum_field",
+      "episode": 7,
+      "season": 1,
+      "synopsis": "Two entangled photons are separated by 1,000 km. When one is measured, the other responds instantly. Love at the speed of correlation.",
+      "cast": [],
+      "props": ["scientific-002", "lighting-003"],
+      "environment": { "scene": "quantum_field", "hdri": null, "audio": null },
+      "mal_asset_ids": ["scientific-002", "lighting-003"],
+      "tags": [
+        "entanglement",
+        "quantum",
+        "photon",
+        "Bell theorem",
+        "non-locality"
+      ],
+      "education_links": ["https://en.wikipedia.org/wiki/Quantum_entanglement"],
+      "clipscrypt": {
+        "opening_hook": "LONDON \u2194 BEIJING. 1000 km apart. Two photons share one quantum state.",
+        "act_1": "The London photon is measured: spin up. Instantly, Beijing confirms: spin down.",
+        "act_2": "No signal was sent. No wire connects them. Spooky action at a distance, confirmed.",
+        "act_3": "Bell\u2019s theorem is violated. Einstein was wrong about the dice. The universe is intimate.",
+        "knowledge_nodes": [
+          "Bell\u2019s theorem",
+          "EPR paradox",
+          "quantum non-locality"
+        ]
+      },
+      "geoqode": {
+        "architectureSignature": "8,26,48:480",
+        "semanticType": "HOLOGRAPHIC",
+        "frequency": 72,
+        "phiCoefficient": 1.618,
+        "coherence": 1.0,
         "domain": "systems-design",
         "source": "ClipScryptIndex",
         "d48Expansion": "CANONICAL",
