@@ -782,6 +782,38 @@ const PLAI_AGENTS = [
     bundle_id: "com.aios.agent.analgesic-bees",
     entry_point: "https://realaios.com/plaistore?id=3007",
   },
+  {
+    id: 3008,
+    name: "AIOSVrStudioSwarm",
+    short_desc: "54-agent 24/7 VR production studio \u00b7 Full department coverage",
+    description:
+      "Complete film production studio as a unified agent swarm \u2014 Director, Writers, Set Directors, DP, Sound, VFX, CGI, Wardrobe, Locations \u2014 all producing A-Frame VR ClipScrypts autonomously. Self-learning, episode-expanding, quality-evolving. 8 departments, PHI=1.618 lattice-native.",
+    category: "Agents",
+    price_cents: 0,
+    downloads: 0,
+    rating_avg: 5.0,
+    developer_name: "AIOS Storm",
+    developer_verified: true,
+    type: "agent",
+    bundle_id: "com.aios.agent.vr-studio-swarm",
+    entry_point: "https://realaios.com/plaistore?id=3008",
+  },
+  {
+    id: 3009,
+    name: "AIOSMalSwarm",
+    short_desc: "16-drone MAL asset discovery \u00b7 Virtual Movie Props Warehouse",
+    description:
+      "Autonomous asset-hunting swarm that continuously discovers, validates, and catalogs 3D models, audio, HDRI environments, costumes, and props into the MAL Props Warehouse for reuse across all VR experiences. Supports .glb/.gltf/.obj/.fbx/.wav/.mp3/.hdr and more.",
+    category: "Agents",
+    price_cents: 0,
+    downloads: 0,
+    rating_avg: 4.9,
+    developer_name: "AIOS Storm",
+    developer_verified: true,
+    type: "agent",
+    bundle_id: "com.aios.agent.mal-swarm",
+    entry_point: "https://realaios.com/plaistore?id=3009",
+  },
 ];
 
 const PLAI_CODEX = [
