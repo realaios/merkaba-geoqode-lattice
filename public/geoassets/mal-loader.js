@@ -559,6 +559,22 @@ const SKY_IMGS = {
   ancient_ruins_vr:     "/geoassets/skies/ancient_ruins.jpg",
   lakeside_dawn_vr:     "/geoassets/skies/lakeside_dawn.jpg",
   bamboo_forest_vr:     "/geoassets/skies/bamboo_tunnel.jpg",
+  // Wave 3 — 15 new photo-realistic scenes
+  concrete_tunnel_vr:   "/geoassets/skies/concrete_tunnel.jpg",
+  cobblestone_night_vr: "/geoassets/skies/cobblestone_night.jpg",
+  evening_street_vr:    "/geoassets/skies/evening_street.jpg",
+  autumn_forest_vr:     "/geoassets/skies/autumn_forest.jpg",
+  frozen_lake_vr:       "/geoassets/skies/frozen_lake.jpg",
+  coastal_cliff_vr:     "/geoassets/skies/coastal_cliff.jpg",
+  white_cliffs_vr:      "/geoassets/skies/white_cliffs.jpg",
+  industrial_sunset_vr: "/geoassets/skies/industrial_sunset.jpg",
+  blouberg_sunrise_vr:  "/geoassets/skies/blouberg_sunrise.jpg",
+  simons_harbour_vr:    "/geoassets/skies/simons_harbour.jpg",
+  rock_castle_vr:       "/geoassets/skies/rock_castle.jpg",
+  abandoned_church_vr:  "/geoassets/skies/abandoned_church.jpg",
+  church_square_vr:     "/geoassets/skies/church_square.jpg",
+  railway_bridge_vr:    "/geoassets/skies/railway_bridge.jpg",
+  ornate_gardens_vr:    "/geoassets/skies/ornate_gardens.jpg",
 };
 
 function buildEnvironment(env, palette, sceneId) {

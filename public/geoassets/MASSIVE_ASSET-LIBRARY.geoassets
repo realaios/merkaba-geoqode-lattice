@@ -8218,6 +8218,1427 @@
           }
         }
       ]
+    },
+    "concrete_tunnel_vr": {
+      "id": "concrete_tunnel_vr",
+      "title": "Concrete Tunnel — Brutalist Passage",
+      "logline": "Raw concrete corridors. The architecture of power stripped to pure geometry.",
+      "palette": "simulation",
+      "sound": "ambient_city",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "Brutalism wasn’t an accident. It was a statement:\nthat material honesty matters more than decoration.",
+          "durationMs": 6000
+        },
+        {
+          "trigger": "step_1",
+          "text": "Le Corbusier called concrete “beton brut” — raw concrete.\nThe word “Brutalism” was never about violence.\nIt was about truth.",
+          "durationMs": 8000
+        },
+        {
+          "trigger": "step_2",
+          "text": "These buildings were designed to last centuries.\nMany were demolished within decades.\nWe build permanence, then change our minds.",
+          "durationMs": 8000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#1a1a2e"
+        },
+        "fog": {
+          "color": "#1a1a2e",
+          "density": 0.02
+        }
+      },
+      "layers": [
+        {
+          "id": "tunnel_floor",
+          "label": "Concrete floor",
+          "type": "plane",
+          "w": 12,
+          "h": 80,
+          "position": [
+            0,
+            0,
+            -30
+          ],
+          "rotation": [
+            -90,
+            0,
+            0
+          ],
+          "material": {
+            "color": "#3f3f46",
+            "roughness": 1
+          }
+        },
+        {
+          "id": "tunnel_left",
+          "label": "Left concrete wall",
+          "type": "box",
+          "w": 0.5,
+          "h": 6,
+          "d": 80,
+          "position": [
+            -6,
+            3,
+            -30
+          ],
+          "material": {
+            "color": "#52525b",
+            "roughness": 1
+          }
+        },
+        {
+          "id": "tunnel_right",
+          "label": "Right concrete wall",
+          "type": "box",
+          "w": 0.5,
+          "h": 6,
+          "d": 80,
+          "position": [
+            6,
+            3,
+            -30
+          ],
+          "material": {
+            "color": "#52525b",
+            "roughness": 1
+          }
+        },
+        {
+          "id": "tunnel_ceiling",
+          "label": "Concrete ceiling",
+          "type": "box",
+          "w": 12,
+          "h": 0.5,
+          "d": 80,
+          "position": [
+            0,
+            6,
+            -30
+          ],
+          "material": {
+            "color": "#3f3f46",
+            "roughness": 1
+          }
+        }
+      ]
+    },
+    "cobblestone_night_vr": {
+      "id": "cobblestone_night_vr",
+      "title": "Cobblestone Night — Old City Street",
+      "logline": "Wet cobblestones reflecting amber streetlights. A European night alive with quiet history.",
+      "palette": "merkaba",
+      "sound": "ambient_rain",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "Cobblestone streets predate concrete by 4,000 years.\nThese stones were laid by hand, one by one.",
+          "durationMs": 6000
+        },
+        {
+          "trigger": "step_1",
+          "text": "Medieval cities were built at walking pace.\nEvery street, every stone planned for foot traffic.\nThen the car arrived, and everything widened.",
+          "durationMs": 8000
+        },
+        {
+          "trigger": "step_2",
+          "text": "Paris nearly destroyed its cobblestone streets in the 1970s.\nA preservation movement saved 2,000 km of them.\nSometimes tradition is just the future we forgot to protect.",
+          "durationMs": 9000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#0f0a1a"
+        },
+        "fog": {
+          "color": "#1a0f2e",
+          "density": 0.03
+        }
+      },
+      "layers": [
+        {
+          "id": "cobble_road",
+          "label": "Cobblestone road",
+          "type": "plane",
+          "w": 8,
+          "h": 60,
+          "position": [
+            0,
+            0,
+            -20
+          ],
+          "rotation": [
+            -90,
+            0,
+            0
+          ],
+          "material": {
+            "color": "#292524",
+            "roughness": 1
+          }
+        },
+        {
+          "id": "street_lamps",
+          "label": "Amber street lights",
+          "count": 6,
+          "spread": {
+            "x": "-4 4",
+            "z": "-40 -2"
+          },
+          "element": {
+            "type": "sphere",
+            "r_range": "0.3 0.3",
+            "y_offset": 4,
+            "material": {
+              "color": "#fbbf24",
+              "emissive": "#fbbf24",
+              "emissiveIntensity": 0.8
+            }
+          }
+        },
+        {
+          "id": "puddle_reflections",
+          "label": "Wet cobble reflections",
+          "count": 20,
+          "spread": {
+            "x": "-3 3",
+            "z": "-35 -2"
+          },
+          "element": {
+            "type": "plane",
+            "w": 0.5,
+            "h": 0.5,
+            "rotation": [
+              -90,
+              0,
+              0
+            ],
+            "material": {
+              "color": "#4c1d95",
+              "opacity": 0.4,
+              "transparent": true
+            }
+          }
+        }
+      ]
+    },
+    "evening_street_vr": {
+      "id": "evening_street_vr",
+      "title": "Evening Street — Modern City Dusk",
+      "logline": "A contemporary city street at dusk. Glass towers glow gold. The day dissolves into blue hour.",
+      "palette": "simulation",
+      "sound": "ambient_city",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "The “blue hour” lasts only 20–40 minutes after sunset.\nPhotographers call it the most honest light in the world.",
+          "durationMs": 6000
+        },
+        {
+          "trigger": "step_1",
+          "text": "Modern cities emit 70% of all global carbon dioxide.\nAnd yet they’re also where 80% of GDP is created.\nThe city is both the problem and the solution.",
+          "durationMs": 8000
+        },
+        {
+          "trigger": "step_2",
+          "text": "In 1800, 3% of humanity lived in cities.\nIn 2050, it will be 68%.\nWe are becoming an urban species.",
+          "durationMs": 7000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#1e293b"
+        },
+        "fog": {
+          "color": "#1e293b",
+          "density": 0.015
+        }
+      },
+      "layers": [
+        {
+          "id": "pavement",
+          "label": "City pavement",
+          "type": "plane",
+          "w": 20,
+          "h": 60,
+          "position": [
+            0,
+            0,
+            -20
+          ],
+          "rotation": [
+            -90,
+            0,
+            0
+          ],
+          "material": {
+            "color": "#334155",
+            "roughness": 0.8
+          }
+        },
+        {
+          "id": "glass_towers",
+          "label": "Glass tower facades",
+          "count": 8,
+          "spread": {
+            "x": "-25 25",
+            "z": "-50 -10"
+          },
+          "element": {
+            "type": "box",
+            "w": 6,
+            "h": 30,
+            "d": 4,
+            "y_offset": 15,
+            "material": {
+              "color": "#0ea5e9",
+              "opacity": 0.7,
+              "transparent": true
+            }
+          }
+        }
+      ]
+    },
+    "autumn_forest_vr": {
+      "id": "autumn_forest_vr",
+      "title": "Autumn Forest — Golden Canopy",
+      "logline": "A forest ablaze with amber and crimson. The year’s most fleeting beauty measured in weeks.",
+      "palette": "forest",
+      "sound": "ambient_jungle",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "Autumn colour is not death — it’s the tree reclaiming its chlorophyll.\nGold and red were always there, hidden beneath the green.",
+          "durationMs": 6000
+        },
+        {
+          "trigger": "step_1",
+          "text": "A mature oak drops 250,000 leaves each autumn.\nEach leaf returns 80% of its nutrients to the tree before falling.\nNothing is truly wasted in a forest.",
+          "durationMs": 9000
+        },
+        {
+          "trigger": "step_2",
+          "text": "Climate change is shifting peak foliage later each decade.\nThe colours we grew up with are moving.\nBeauty itself is becoming a climate record.",
+          "durationMs": 8000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#78350f"
+        },
+        "fog": {
+          "color": "#92400e",
+          "density": 0.02
+        }
+      },
+      "layers": [
+        {
+          "id": "forest_floor",
+          "label": "Leaf-covered forest floor",
+          "type": "plane",
+          "w": 80,
+          "h": 80,
+          "position": [
+            0,
+            0,
+            -30
+          ],
+          "rotation": [
+            -90,
+            0,
+            0
+          ],
+          "material": {
+            "color": "#78350f",
+            "roughness": 1
+          }
+        },
+        {
+          "id": "autumn_trunks",
+          "label": "Forest tree trunks",
+          "count": 40,
+          "spread": {
+            "x": "-35 35",
+            "z": "-55 5"
+          },
+          "element": {
+            "type": "cylinder",
+            "r_range": "0.15 0.4",
+            "h_range": "10 18",
+            "y_offset": "half_height",
+            "material": {
+              "color": "#44403c",
+              "roughness": 1
+            }
+          }
+        },
+        {
+          "id": "canopy",
+          "label": "Autumn leaf canopy",
+          "count": 50,
+          "spread": {
+            "x": "-30 30",
+            "z": "-50 0",
+            "y": "8 16"
+          },
+          "element": {
+            "type": "sphere",
+            "r_range": "2 5",
+            "material": {
+              "color": "#f59e0b",
+              "opacity": 0.85,
+              "transparent": true
+            }
+          }
+        }
+      ]
+    },
+    "frozen_lake_vr": {
+      "id": "frozen_lake_vr",
+      "title": "Frozen Lake — Winter Stillness",
+      "logline": "A vast frozen lake under pale winter sky. Absolute silence. Ice as far as the eye can see.",
+      "palette": "arctic",
+      "sound": "ambient_arctic",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "Ice is a mineral. Lakes freeze from the top down.\nBeneath this surface, life continues in liquid darkness.",
+          "durationMs": 6000
+        },
+        {
+          "trigger": "step_1",
+          "text": "Lake Baikal in Siberia freezes to 1.5 metres thick each winter.\nFor months, trucks drive across it as a highway.\nThe road exists only as long as the cold holds.",
+          "durationMs": 9000
+        },
+        {
+          "trigger": "step_2",
+          "text": "The world’s frozen lakes are shrinking.\n230,000 lakes have lost at least one month of ice cover since 1990.\nWinter, too, has a deadline.",
+          "durationMs": 8000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#e2e8f0"
+        },
+        "fog": {
+          "color": "#cbd5e1",
+          "density": 0.01
+        }
+      },
+      "layers": [
+        {
+          "id": "ice_surface",
+          "label": "Frozen lake ice surface",
+          "type": "plane",
+          "w": 300,
+          "h": 300,
+          "position": [
+            0,
+            0,
+            -50
+          ],
+          "rotation": [
+            -90,
+            0,
+            0
+          ],
+          "material": {
+            "color": "#bfdbfe",
+            "opacity": 0.85,
+            "transparent": true
+          }
+        },
+        {
+          "id": "ice_cracks",
+          "label": "Ice crack patterns",
+          "count": 15,
+          "spread": {
+            "x": "-40 40",
+            "z": "-80 20"
+          },
+          "element": {
+            "type": "box",
+            "w": 0.05,
+            "h": 0.01,
+            "d": 8,
+            "rotation": [
+              0,
+              "random_0_180",
+              0
+            ],
+            "material": {
+              "color": "#93c5fd",
+              "opacity": 0.6,
+              "transparent": true
+            }
+          }
+        }
+      ]
+    },
+    "coastal_cliff_vr": {
+      "id": "coastal_cliff_vr",
+      "title": "Coastal Cliffside — Sea Views",
+      "logline": "Standing on the edge of a coastal cliff. Wind. Seabirds. The Atlantic churning below.",
+      "palette": "ocean",
+      "sound": "ambient_ocean",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "Coastal cliffs are the planet’s slowest moving objects.\nThey retreat between 1 cm and 1 metre per year.\nTime made visible in stone.",
+          "durationMs": 6000
+        },
+        {
+          "trigger": "step_1",
+          "text": "The Cliffs of Moher in Ireland took 300 million years to form.\nThey are made from the bodies of sea creatures.\nYou stand on compressed ancient life.",
+          "durationMs": 9000
+        },
+        {
+          "trigger": "step_2",
+          "text": "Rising seas accelerate cliff erosion by 50–100%.\nWhole villages have disappeared into the North Sea in a generation.\nThe land is becoming ocean again.",
+          "durationMs": 8000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#0c4a6e"
+        },
+        "fog": {
+          "color": "#0369a1",
+          "density": 0.008
+        }
+      },
+      "layers": [
+        {
+          "id": "cliff_top",
+          "label": "Clifftop grass surface",
+          "type": "plane",
+          "w": 60,
+          "h": 40,
+          "position": [
+            0,
+            0,
+            -10
+          ],
+          "rotation": [
+            -90,
+            0,
+            0
+          ],
+          "material": {
+            "color": "#166534",
+            "roughness": 1
+          }
+        },
+        {
+          "id": "cliff_edge",
+          "label": "Cliff face rock edge",
+          "type": "box",
+          "w": 60,
+          "h": 40,
+          "d": 2,
+          "position": [
+            0,
+            -20,
+            -11
+          ],
+          "material": {
+            "color": "#78716c",
+            "roughness": 1
+          }
+        },
+        {
+          "id": "sea_surface",
+          "label": "Ocean below",
+          "type": "plane",
+          "w": 400,
+          "h": 400,
+          "position": [
+            0,
+            -40,
+            -80
+          ],
+          "rotation": [
+            -90,
+            0,
+            0
+          ],
+          "material": {
+            "color": "#0369a1",
+            "opacity": 0.85,
+            "transparent": true
+          }
+        }
+      ]
+    },
+    "white_cliffs_vr": {
+      "id": "white_cliffs_vr",
+      "title": "White Cliffs — Dover Coast",
+      "logline": "The chalky white cliffs of Dover. England’s most iconic edge. The Channel silver below.",
+      "palette": "ocean",
+      "sound": "ambient_ocean",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "The White Cliffs of Dover are made of coccolithophores —\nmicroscopic algae that lived 90 million years ago.\nThe cliff is a graveyard visible from space.",
+          "durationMs": 7000
+        },
+        {
+          "trigger": "step_1",
+          "text": "The English Channel is only 34 km at its narrowest.\nJulius Caesar crossed it in 55 BC.\nFor 2,000 years this was the boundary of worlds.",
+          "durationMs": 8000
+        },
+        {
+          "trigger": "step_2",
+          "text": "The cliffs lose over 10,000 tonnes of chalk to the sea each year.\nBy 2100, they could be 40 metres shorter.\nThe coast is not a constant — it is a direction.",
+          "durationMs": 8000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#bae6fd"
+        },
+        "fog": {
+          "color": "#e0f2fe",
+          "density": 0.006
+        }
+      },
+      "layers": [
+        {
+          "id": "chalk_top",
+          "label": "Chalk cliff top grass",
+          "type": "plane",
+          "w": 100,
+          "h": 60,
+          "position": [
+            0,
+            0,
+            -20
+          ],
+          "rotation": [
+            -90,
+            0,
+            0
+          ],
+          "material": {
+            "color": "#84cc16",
+            "roughness": 1
+          }
+        },
+        {
+          "id": "white_face",
+          "label": "White chalk cliff face",
+          "type": "box",
+          "w": 100,
+          "h": 50,
+          "d": 3,
+          "position": [
+            0,
+            -25,
+            -22
+          ],
+          "material": {
+            "color": "#f8fafc",
+            "roughness": 0.7
+          }
+        },
+        {
+          "id": "channel_sea",
+          "label": "English Channel water",
+          "type": "plane",
+          "w": 500,
+          "h": 500,
+          "position": [
+            0,
+            -50,
+            -100
+          ],
+          "rotation": [
+            -90,
+            0,
+            0
+          ],
+          "material": {
+            "color": "#7dd3fc",
+            "opacity": 0.8,
+            "transparent": true
+          }
+        }
+      ]
+    },
+    "industrial_sunset_vr": {
+      "id": "industrial_sunset_vr",
+      "title": "Industrial Sunset — Golden Haze",
+      "logline": "A refinery at golden hour. Flames on stacks. The sun sets behind iron towers.",
+      "palette": "desert_dawn",
+      "sound": "ambient_city",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "Industrial facilities often produce the most dramatic sunsets.\nParticulates in the air scatter longer wavelengths.\nPollution creates its own beauty as it fades.",
+          "durationMs": 7000
+        },
+        {
+          "trigger": "step_1",
+          "text": "The first oil refinery opened in 1856.\nIn 170 years, we built an entire civilisation on extraction.\nNow we must learn to build one on restoration.",
+          "durationMs": 8000
+        },
+        {
+          "trigger": "step_2",
+          "text": "The last oil refinery will probably close around 2060.\nSomeone alive today will watch it.\nIndustry doesn’t end — it transforms.",
+          "durationMs": 7000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#7c2d12"
+        },
+        "fog": {
+          "color": "#9a3412",
+          "density": 0.015
+        }
+      },
+      "layers": [
+        {
+          "id": "industrial_ground",
+          "label": "Refinery ground",
+          "type": "plane",
+          "w": 200,
+          "h": 200,
+          "position": [
+            0,
+            0,
+            -50
+          ],
+          "rotation": [
+            -90,
+            0,
+            0
+          ],
+          "material": {
+            "color": "#292524",
+            "roughness": 1
+          }
+        },
+        {
+          "id": "refinery_towers",
+          "label": "Industrial refinery towers",
+          "count": 12,
+          "spread": {
+            "x": "-40 40",
+            "z": "-80 -10"
+          },
+          "element": {
+            "type": "cylinder",
+            "r_range": "0.5 2",
+            "h_range": "15 40",
+            "y_offset": "half_height",
+            "material": {
+              "color": "#44403c",
+              "roughness": 1
+            }
+          }
+        },
+        {
+          "id": "flare_stacks",
+          "label": "Flare stack flames",
+          "count": 4,
+          "spread": {
+            "x": "-20 20",
+            "z": "-60 -20"
+          },
+          "element": {
+            "type": "sphere",
+            "r_range": "0.5 1.5",
+            "y_offset": 35,
+            "material": {
+              "color": "#f97316",
+              "emissive": "#f97316",
+              "emissiveIntensity": 0.9
+            }
+          }
+        }
+      ]
+    },
+    "blouberg_sunrise_vr": {
+      "id": "blouberg_sunrise_vr",
+      "title": "Blouberg Sunrise — Cape Town Bay",
+      "logline": "Dawn over Table Bay. Table Mountain silhouetted. Cape Town waking beneath a painted sky.",
+      "palette": "golden_hour",
+      "sound": "ambient_ocean",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "Bloubergstrand means “Blue Mountain Beach” in Afrikaans.\nIt offers the most photographed view of Table Mountain on Earth.",
+          "durationMs": 6000
+        },
+        {
+          "trigger": "step_1",
+          "text": "Table Mountain is 600 million years old.\nIt predates most life on Earth.\nThe flat top was created by 1km of ice during a global glaciation.",
+          "durationMs": 8000
+        },
+        {
+          "trigger": "step_2",
+          "text": "Cape Town faces the most severe water crisis of any major city.\nDay Zero — when taps run dry — was narrowly avoided in 2018.\nThe mountain that defines the city may outlast its water supply.",
+          "durationMs": 9000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#fbbf24"
+        },
+        "fog": {
+          "color": "#f59e0b",
+          "density": 0.008
+        }
+      },
+      "layers": [
+        {
+          "id": "beach_sand",
+          "label": "Blouberg beach sand",
+          "type": "plane",
+          "w": 200,
+          "h": 100,
+          "position": [
+            0,
+            0,
+            -30
+          ],
+          "rotation": [
+            -90,
+            0,
+            0
+          ],
+          "material": {
+            "color": "#d4a253",
+            "roughness": 1
+          }
+        },
+        {
+          "id": "table_bay",
+          "label": "Table Bay sea",
+          "type": "plane",
+          "w": 500,
+          "h": 300,
+          "position": [
+            0,
+            -0.5,
+            -130
+          ],
+          "rotation": [
+            -90,
+            0,
+            0
+          ],
+          "material": {
+            "color": "#3b82f6",
+            "opacity": 0.8,
+            "transparent": true
+          }
+        },
+        {
+          "id": "table_mountain",
+          "label": "Table Mountain silhouette",
+          "type": "box",
+          "w": 80,
+          "h": 30,
+          "d": 5,
+          "position": [
+            0,
+            10,
+            -200
+          ],
+          "material": {
+            "color": "#1c1917",
+            "roughness": 1
+          }
+        }
+      ]
+    },
+    "simons_harbour_vr": {
+      "id": "simons_harbour_vr",
+      "title": "Simon's Town Harbour — Cape Navy Base",
+      "logline": "A historic naval harbour. Warships at anchor. The False Bay mountains watch from behind.",
+      "palette": "ocean",
+      "sound": "ambient_ocean",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "Simon’s Town has been a naval base since 1743.\nIt changed hands between the Dutch, British, and South African Navy.\nHarbours outlast the flags that fly over them.",
+          "durationMs": 7000
+        },
+        {
+          "trigger": "step_1",
+          "text": "The African penguin colony at Boulders Beach is just 2km from here.\nThey arrived spontaneously in 1982 — two breeding pairs.\nNow there are over 2,000. Wildlife doesn't wait for permission.",
+          "durationMs": 9000
+        },
+        {
+          "trigger": "step_2",
+          "text": "False Bay was named by sailors who confused it with Table Bay.\nA navigational error that became a permanent feature of the map.\nMistakes, when made by enough people, become geography.",
+          "durationMs": 8000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#0c4a6e"
+        },
+        "fog": {
+          "color": "#075985",
+          "density": 0.01
+        }
+      },
+      "layers": [
+        {
+          "id": "harbour_water",
+          "label": "Harbour water surface",
+          "type": "plane",
+          "w": 200,
+          "h": 200,
+          "position": [
+            0,
+            -0.3,
+            -50
+          ],
+          "rotation": [
+            -90,
+            0,
+            0
+          ],
+          "material": {
+            "color": "#0369a1",
+            "opacity": 0.8,
+            "transparent": true
+          }
+        },
+        {
+          "id": "harbour_wall",
+          "label": "Stone harbour wall",
+          "type": "box",
+          "w": 80,
+          "h": 3,
+          "d": 4,
+          "position": [
+            0,
+            1.5,
+            -5
+          ],
+          "material": {
+            "color": "#78716c",
+            "roughness": 1
+          }
+        },
+        {
+          "id": "naval_vessels",
+          "label": "Naval vessel hulls",
+          "count": 3,
+          "spread": {
+            "x": "-20 20",
+            "z": "-60 -20"
+          },
+          "element": {
+            "type": "box",
+            "w": 8,
+            "h": 4,
+            "d": 30,
+            "y_offset": 2,
+            "material": {
+              "color": "#374151",
+              "roughness": 0.8
+            }
+          }
+        }
+      ]
+    },
+    "rock_castle_vr": {
+      "id": "rock_castle_vr",
+      "title": "Rock Castle — Neurathen Sandstone",
+      "logline": "A medieval castle carved from living sandstone. Saxon Switzerland. Stone walls grown from the earth itself.",
+      "palette": "roman_arena",
+      "sound": "ambient_forest",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "Burg Neurathen in Saxon Switzerland is one of the largest rock castles in Germany.\nBuilt by carving directly into the sandstone.\nThe rock is both foundation and wall.",
+          "durationMs": 7000
+        },
+        {
+          "trigger": "step_1",
+          "text": "Saxon Switzerland is named not for Switzerland, but by two Swiss painters\nwho thought the landscape reminded them of home.\nPlace names carry old homesickness.",
+          "durationMs": 8000
+        },
+        {
+          "trigger": "step_2",
+          "text": "These sandstone pillars formed 70 million years ago as sea sediment.\nThey became rock, then were carved into castles, then became national parks.\nTime transforms everything it touches.",
+          "durationMs": 8000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#92400e"
+        },
+        "fog": {
+          "color": "#78350f",
+          "density": 0.02
+        }
+      },
+      "layers": [
+        {
+          "id": "sandstone_base",
+          "label": "Sandstone plateau base",
+          "type": "plane",
+          "w": 100,
+          "h": 100,
+          "position": [
+            0,
+            0,
+            -30
+          ],
+          "rotation": [
+            -90,
+            0,
+            0
+          ],
+          "material": {
+            "color": "#b45309",
+            "roughness": 1
+          }
+        },
+        {
+          "id": "rock_pillars",
+          "label": "Sandstone rock pillars",
+          "count": 15,
+          "spread": {
+            "x": "-30 30",
+            "z": "-60 -5"
+          },
+          "element": {
+            "type": "cylinder",
+            "r_range": "1 4",
+            "h_range": "8 25",
+            "y_offset": "half_height",
+            "material": {
+              "color": "#92400e",
+              "roughness": 1
+            }
+          }
+        },
+        {
+          "id": "castle_walls",
+          "label": "Castle stone walls",
+          "count": 5,
+          "spread": {
+            "x": "-8 8",
+            "z": "-25 -10"
+          },
+          "element": {
+            "type": "box",
+            "w": 4,
+            "h": 8,
+            "d": 1,
+            "y_offset": 4,
+            "material": {
+              "color": "#78350f",
+              "roughness": 1
+            }
+          }
+        }
+      ]
+    },
+    "abandoned_church_vr": {
+      "id": "abandoned_church_vr",
+      "title": "Abandoned Church — Eerie Silence",
+      "logline": "A ruined church swallowed by vegetation. Silence where hymns once echoed. Nature reclaiming the sacred.",
+      "palette": "abyss",
+      "sound": "ambient_forest",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "Abandoned churches outnumber active ones in many European nations.\nThe buildings remain. The congregations are gone.\nArchitecture outlasts belief.",
+          "durationMs": 6000
+        },
+        {
+          "trigger": "step_1",
+          "text": "The Church of the Good Shepherd in New Zealand\nstood empty for 80 years before tourism made it famous.\nNeglect and rediscovery happen in cycles.",
+          "durationMs": 8000
+        },
+        {
+          "trigger": "step_2",
+          "text": "Vegetation breaks stone at 1–2mm per year.\nIn 200 years, vines can collapse a cathedral.\nNature is the patient architect.",
+          "durationMs": 7000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#1c1917"
+        },
+        "fog": {
+          "color": "#0c0a09",
+          "density": 0.035
+        }
+      },
+      "layers": [
+        {
+          "id": "cracked_floor",
+          "label": "Cracked church floor",
+          "type": "plane",
+          "w": 20,
+          "h": 40,
+          "position": [
+            0,
+            0,
+            -15
+          ],
+          "rotation": [
+            -90,
+            0,
+            0
+          ],
+          "material": {
+            "color": "#292524",
+            "roughness": 1
+          }
+        },
+        {
+          "id": "broken_walls",
+          "label": "Broken church walls",
+          "count": 8,
+          "spread": {
+            "x": "-10 10",
+            "z": "-30 -2"
+          },
+          "element": {
+            "type": "box",
+            "w": 2,
+            "h": 6,
+            "d": 0.5,
+            "y_offset": 3,
+            "material": {
+              "color": "#44403c",
+              "roughness": 1
+            }
+          }
+        },
+        {
+          "id": "overgrowth",
+          "label": "Vegetation overgrowth",
+          "count": 30,
+          "spread": {
+            "x": "-12 12",
+            "z": "-32 2"
+          },
+          "element": {
+            "type": "sphere",
+            "r_range": "0.3 1.5",
+            "y_offset": 0,
+            "material": {
+              "color": "#14532d",
+              "opacity": 0.7,
+              "transparent": true
+            }
+          }
+        }
+      ]
+    },
+    "church_square_vr": {
+      "id": "church_square_vr",
+      "title": "Church Square — Blaubeuren, Bavaria",
+      "logline": "A medieval Bavarian market square. Half-timbered buildings. Church spires piercing blue sky.",
+      "palette": "golden_hour",
+      "sound": "ambient_city",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "Blaubeuren has been continuously inhabited since the Stone Age.\nThis square has hosted markets for 800 years.\nSome places simply refuse to stop mattering.",
+          "durationMs": 7000
+        },
+        {
+          "trigger": "step_1",
+          "text": "Half-timbered buildings like these were the dominant European architecture for 400 years.\nThe timber frame is structural. The infill can change.\nFlexibility built into the bones of the building.",
+          "durationMs": 9000
+        },
+        {
+          "trigger": "step_2",
+          "text": "The Blautopf spring near here produces 2,000 litres per second.\nIts blue colour comes from tiny chalk particles.\nWater this pure was what settled cities for thousands of years.",
+          "durationMs": 8000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#1d4ed8"
+        },
+        "fog": {
+          "color": "#3b82f6",
+          "density": 0.005
+        }
+      },
+      "layers": [
+        {
+          "id": "cobble_square",
+          "label": "Market square cobbles",
+          "type": "plane",
+          "w": 40,
+          "h": 40,
+          "position": [
+            0,
+            0,
+            -15
+          ],
+          "rotation": [
+            -90,
+            0,
+            0
+          ],
+          "material": {
+            "color": "#44403c",
+            "roughness": 1
+          }
+        },
+        {
+          "id": "buildings",
+          "label": "Half-timbered buildings",
+          "count": 8,
+          "spread": {
+            "x": "-25 25",
+            "z": "-30 -20"
+          },
+          "element": {
+            "type": "box",
+            "w": 8,
+            "h": 10,
+            "d": 5,
+            "y_offset": 5,
+            "material": {
+              "color": "#fef3c7",
+              "roughness": 0.8
+            }
+          }
+        },
+        {
+          "id": "church_spire",
+          "label": "Church steeple spire",
+          "type": "cylinder",
+          "r": 1,
+          "h": 25,
+          "position": [
+            0,
+            12.5,
+            -35
+          ],
+          "material": {
+            "color": "#374151",
+            "roughness": 1
+          }
+        }
+      ]
+    },
+    "railway_bridge_vr": {
+      "id": "railway_bridge_vr",
+      "title": "Railway Bridges — Iron Arch",
+      "logline": "Victorian railway viaducts spanning a valley. Iron and brick. The industrial sublime.",
+      "palette": "deep_space",
+      "sound": "ambient_city",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "The first railway bridge to span a major river opened in 1850.\nIn 50 years, iron viaducts had threaded through every mountain range in Europe.\nSpeed changed everything.",
+          "durationMs": 7000
+        },
+        {
+          "trigger": "step_1",
+          "text": "Brunel’s Clifton Suspension Bridge was designed when he was 24.\nIt took 33 years to build. He died before it opened.\nThe greatest things are often finished by others.",
+          "durationMs": 9000
+        },
+        {
+          "trigger": "step_2",
+          "text": "Railway bridges are designed to last 100 years.\nMany Victorian bridges are now 150+ years old and still carry trains daily.\nOverengineering is another word for respect for the future.",
+          "durationMs": 8000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#1e1b4b"
+        },
+        "fog": {
+          "color": "#312e81",
+          "density": 0.015
+        }
+      },
+      "layers": [
+        {
+          "id": "valley_floor",
+          "label": "Valley river floor",
+          "type": "plane",
+          "w": 100,
+          "h": 200,
+          "position": [
+            0,
+            -20,
+            -60
+          ],
+          "rotation": [
+            -90,
+            0,
+            0
+          ],
+          "material": {
+            "color": "#1c1917",
+            "roughness": 1
+          }
+        },
+        {
+          "id": "bridge_span",
+          "label": "Railway bridge span",
+          "type": "box",
+          "w": 8,
+          "h": 2,
+          "d": 100,
+          "position": [
+            0,
+            0,
+            -30
+          ],
+          "material": {
+            "color": "#292524",
+            "roughness": 1
+          }
+        },
+        {
+          "id": "bridge_arches",
+          "label": "Iron arch supports",
+          "count": 6,
+          "spread": {
+            "x": "0 0",
+            "z": "-60 -5"
+          },
+          "element": {
+            "type": "cylinder",
+            "r_range": "0.3 0.3",
+            "h_range": "20 20",
+            "y_offset": -10,
+            "material": {
+              "color": "#292524",
+              "roughness": 1
+            }
+          }
+        }
+      ]
+    },
+    "ornate_gardens_vr": {
+      "id": "ornate_gardens_vr",
+      "title": "Borghese Gardens — Rome Parkland",
+      "logline": "The formal gardens of Villa Borghese. Rome’s green lung. Ancient pines frame distant domes.",
+      "palette": "forest",
+      "sound": "ambient_forest",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "Villa Borghese was built in 1613 as a pleasure garden.\nIn 1901 it was donated to the city of Rome.\nPrivate paradise became public treasure.",
+          "durationMs": 6000
+        },
+        {
+          "trigger": "step_1",
+          "text": "The stone pines of Rome — Pinus pinea — were planted by the Romans themselves.\nSome trees alive today were saplings when Michelangelo walked beneath them.\nTrees measure time we cannot.",
+          "durationMs": 9000
+        },
+        {
+          "trigger": "step_2",
+          "text": "Rome has 14 major parks covering 15% of the city.\nA city that survived 2,800 years learned to breathe through its gardens.\nGreen space is infrastructure.",
+          "durationMs": 8000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#4d7c0f"
+        },
+        "fog": {
+          "color": "#365314",
+          "density": 0.01
+        }
+      },
+      "layers": [
+        {
+          "id": "garden_lawn",
+          "label": "Manicured garden lawn",
+          "type": "plane",
+          "w": 200,
+          "h": 200,
+          "position": [
+            0,
+            0,
+            -50
+          ],
+          "rotation": [
+            -90,
+            0,
+            0
+          ],
+          "material": {
+            "color": "#15803d",
+            "roughness": 1
+          }
+        },
+        {
+          "id": "stone_pines",
+          "label": "Roman stone pine trees",
+          "count": 25,
+          "spread": {
+            "x": "-40 40",
+            "z": "-80 -5"
+          },
+          "element": {
+            "type": "cylinder",
+            "r_range": "0.3 0.6",
+            "h_range": "15 25",
+            "y_offset": "half_height",
+            "material": {
+              "color": "#713f12",
+              "roughness": 1
+            }
+          }
+        },
+        {
+          "id": "pine_canopy",
+          "label": "Umbrella pine canopy",
+          "count": 25,
+          "spread": {
+            "x": "-40 40",
+            "z": "-80 -5",
+            "y": "18 26"
+          },
+          "element": {
+            "type": "sphere",
+            "r_range": "4 8",
+            "material": {
+              "color": "#166534",
+              "opacity": 0.9,
+              "transparent": true
+            }
+          }
+        },
+        {
+          "id": "garden_path",
+          "label": "Gravel garden path",
+          "type": "plane",
+          "w": 4,
+          "h": 80,
+          "position": [
+            0,
+            0.01,
+            -30
+          ],
+          "rotation": [
+            -90,
+            0,
+            0
+          ],
+          "material": {
+            "color": "#d4a253",
+            "roughness": 1
+          }
+        }
+      ]
     }
   }
 }
