@@ -12409,6 +12409,448 @@
         }
       },
       "layers": []
+    },
+    "kloppenheim_vr": {
+      "id": "kloppenheim_vr",
+      "title": "Kloppenheim Village",
+      "logline": "A sunlit German hamlet where cobblestones remember every footstep.",
+      "palette": "golden_hour",
+      "sound": "ambient_village",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "The village breathes slowly — chimneys exhale, shutters remember.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "30s",
+          "text": "Every stone was placed by someone who believed in permanence.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "60s",
+          "text": "Kloppenheim asks nothing of you. That is its gift.",
+          "durationMs": 5000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#f5c842"
+        },
+        "fog": {
+          "color": "#f0d080",
+          "density": 0.008
+        }
+      },
+      "layers": []
+    },
+    "evening_road_vr": {
+      "id": "evening_road_vr",
+      "title": "Evening Departure Road",
+      "logline": "An empty road at dusk that leads somewhere only you can name.",
+      "palette": "golden_hour",
+      "sound": "ambient_wind",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "The road knows where it ends. You are still deciding.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "30s",
+          "text": "Every departure is an act of faith in arrival.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "60s",
+          "text": "The last light holds the road steady for one more traveller.",
+          "durationMs": 5000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#e07030"
+        },
+        "fog": {
+          "color": "#c06020",
+          "density": 0.01
+        }
+      },
+      "layers": []
+    },
+    "kloofendal_vr": {
+      "id": "kloofendal_vr",
+      "title": "Kloofendal Highland",
+      "logline": "South African hills under a vault of cloud and possibility.",
+      "palette": "forest",
+      "sound": "ambient_nature",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "The highland holds its breath between rain and sunshine.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "30s",
+          "text": "Africa has a way of making the sky feel personal.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "60s",
+          "text": "These hills have watched civilisations rise and dissolve like cloud.",
+          "durationMs": 5000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#7aadcc"
+        },
+        "fog": {
+          "color": "#90c0a0",
+          "density": 0.007
+        }
+      },
+      "layers": []
+    },
+    "sunflower_field_vr": {
+      "id": "sunflower_field_vr",
+      "title": "Sunflower Dreamscape",
+      "logline": "A field of sunflowers tracking the sun — ten thousand acts of devotion.",
+      "palette": "golden_hour",
+      "sound": "ambient_wind",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "Heliotropism — the art of always facing the light.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "30s",
+          "text": "Each flower is a small decision made a thousand times a day.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "60s",
+          "text": "In a sunflower field, even loneliness finds direction.",
+          "durationMs": 5000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#f0c030"
+        },
+        "fog": {
+          "color": "#e8d060",
+          "density": 0.008
+        }
+      },
+      "layers": []
+    },
+    "christmas_studio_vr": {
+      "id": "christmas_studio_vr",
+      "title": "Winter Photo Studio",
+      "logline": "A warmly lit studio where the holidays are always being made.",
+      "palette": "roman_arena",
+      "sound": "ambient_indoor",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "The lights are set. The backdrop is perfect. You are the subject.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "30s",
+          "text": "Every photograph is a small act of refusing to forget.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "60s",
+          "text": "Winter light through a studio window carries the weight of December.",
+          "durationMs": 5000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#ffe8c0"
+        },
+        "fog": {
+          "color": "#f8e0b0",
+          "density": 0.005
+        }
+      },
+      "layers": []
+    },
+    "hospital_room_vr": {
+      "id": "hospital_room_vr",
+      "title": "Clinical Threshold",
+      "logline": "A sterile room where vulnerability is given a bed and a number.",
+      "palette": "simulation",
+      "sound": "ambient_hum",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "The room is white because colour costs too much certainty.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "30s",
+          "text": "Hospitals are places where time changes speed without warning.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "60s",
+          "text": "Every patient is a story the building holds without judgment.",
+          "durationMs": 5000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#e8f0f0"
+        },
+        "fog": {
+          "color": "#d0e8e8",
+          "density": 0.004
+        }
+      },
+      "layers": []
+    },
+    "rosendal_plains_vr": {
+      "id": "rosendal_plains_vr",
+      "title": "Rosendal Plains",
+      "logline": "Vast Karoo flatlands where the sky is the only architecture.",
+      "palette": "desert_dawn",
+      "sound": "ambient_wind",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "The Karoo flattens everything except your sense of scale.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "30s",
+          "text": "In the plains, distance becomes a companion rather than an obstacle.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "60s",
+          "text": "Rosendal: where the earth ends and the sky takes full responsibility.",
+          "durationMs": 5000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#c8a870"
+        },
+        "fog": {
+          "color": "#d0b080",
+          "density": 0.009
+        }
+      },
+      "layers": []
+    },
+    "sky_on_fire_vr": {
+      "id": "sky_on_fire_vr",
+      "title": "Pyroclastic Horizon",
+      "logline": "The atmosphere itself ignites — a sky that dares you to look away.",
+      "palette": "desert_dawn",
+      "sound": "ambient_wind",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "The horizon is burning and the world below is perfectly still.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "30s",
+          "text": "Fire in the sky is not destruction — it is the sun saying goodbye loudly.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "60s",
+          "text": "In a pyroclastic sky, every colour is an argument for presence.",
+          "durationMs": 5000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#e03010"
+        },
+        "fog": {
+          "color": "#c02808",
+          "density": 0.015
+        }
+      },
+      "layers": []
+    },
+    "limpopo_savanna_vr": {
+      "id": "limpopo_savanna_vr",
+      "title": "Limpopo Savanna Links",
+      "logline": "A golf course on the edge of wilderness, where civilization negotiates with nature.",
+      "palette": "forest",
+      "sound": "ambient_nature",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "The fairway ends where the bush begins — a permanent negotiation.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "30s",
+          "text": "The Limpopo has no interest in par scores.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "60s",
+          "text": "You are not playing golf here. You are playing at the edge of everything.",
+          "durationMs": 5000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#98c860"
+        },
+        "fog": {
+          "color": "#80b050",
+          "density": 0.008
+        }
+      },
+      "layers": []
+    },
+    "noon_grass_vr": {
+      "id": "noon_grass_vr",
+      "title": "Noon Verdant",
+      "logline": "Pure green at solar zenith — the earth at its most unambiguous.",
+      "palette": "forest",
+      "sound": "ambient_nature",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "At noon, the grass casts no shadow — everything is exactly where it is.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "30s",
+          "text": "Green at its most saturated is a commitment to photosynthesis.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "60s",
+          "text": "The noon field asks for nothing but your presence in it.",
+          "durationMs": 5000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#80c840"
+        },
+        "fog": {
+          "color": "#90d050",
+          "density": 0.007
+        }
+      },
+      "layers": []
+    },
+    "aft_lounge_vr": {
+      "id": "aft_lounge_vr",
+      "title": "The Aft Lounge",
+      "logline": "At the stern of everything, a room where the journey is reviewed.",
+      "palette": "ocean",
+      "sound": "ambient_ocean",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "The aft lounge faces backward — watching where you have been.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "30s",
+          "text": "Every wake is a brief autobiography written in water.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "60s",
+          "text": "In the aft lounge, departure and arrival mean the same thing.",
+          "durationMs": 5000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#3060a0"
+        },
+        "fog": {
+          "color": "#204080",
+          "density": 0.012
+        }
+      },
+      "layers": []
+    },
+    "mud_road_vr": {
+      "id": "mud_road_vr",
+      "title": "Mud Road Puresky",
+      "logline": "A raw earth track under an immaculate sky — the most honest road.",
+      "palette": "desert_dawn",
+      "sound": "ambient_wind",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "Mud roads are honest — they show you every vehicle that passed before.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "30s",
+          "text": "The sky above a mud road is always more vivid than above pavement.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "60s",
+          "text": "A pure sky over an impure road — that is the whole human story.",
+          "durationMs": 5000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#90c8f0"
+        },
+        "fog": {
+          "color": "#a0c0d8",
+          "density": 0.008
+        }
+      },
+      "layers": []
+    },
+    "small_studio_vr": {
+      "id": "small_studio_vr",
+      "title": "Small Studio Dawn",
+      "logline": "A compact creative space where the light arrives first and waits for you.",
+      "palette": "roman_arena",
+      "sound": "ambient_indoor",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "The small studio is where ideas arrive before they know their size.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "30s",
+          "text": "Constraints are the grammar of creativity.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "60s",
+          "text": "Every great work was once just light in a small room.",
+          "durationMs": 5000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#f0e0c0"
+        },
+        "fog": {
+          "color": "#e8d8b0",
+          "density": 0.005
+        }
+      },
+      "layers": []
     }
   }
 }

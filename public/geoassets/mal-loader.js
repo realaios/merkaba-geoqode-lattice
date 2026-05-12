@@ -624,6 +624,20 @@ const SKY_IMGS = {
   venice_sunset_vr: "/geoassets/skies/venice_sunset.jpg",
   meadow_drift_vr: "/geoassets/skies/meadow_2.jpg",
   snowy_park_vr: "/geoassets/skies/snowy_park_01.jpg",
+  // Wave 7 — new Polyhaven downloads
+  kloppenheim_vr: "/geoassets/skies/kloppenheim_06.jpg",
+  evening_road_vr: "/geoassets/skies/evening_road_01.jpg",
+  kloofendal_vr: "/geoassets/skies/kloofendal_48d_partly_cloudy.jpg",
+  sunflower_field_vr: "/geoassets/skies/sunflowers.jpg",
+  christmas_studio_vr: "/geoassets/skies/christmas_photo_studio_04.jpg",
+  hospital_room_vr: "/geoassets/skies/hospital_room.jpg",
+  rosendal_plains_vr: "/geoassets/skies/rosendal_plains_2.jpg",
+  sky_on_fire_vr: "/geoassets/skies/the_sky_is_on_fire.jpg",
+  limpopo_savanna_vr: "/geoassets/skies/limpopo_golf_course.jpg",
+  noon_grass_vr: "/geoassets/skies/noon_grass.jpg",
+  aft_lounge_vr: "/geoassets/skies/aft_lounge.jpg",
+  mud_road_vr: "/geoassets/skies/mud_road_puresky.jpg",
+  small_studio_vr: "/geoassets/skies/studio_small_03.jpg",
 };
 
 function buildEnvironment(env, palette, sceneId) {
