@@ -985,46 +985,11 @@
             let gazeAnimFrame = null;
             let ghostEntities = []; // {id, el, orbit, angle, speed, attuned, phase}
             let trailEls = [];
-            let audioCtx = null;
-
-            // -- Audio ---------------------------------------------------------
-            function getAudioCtx() {
-              if (!audioCtx)
-                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-              return audioCtx;
-            }
-            function playTone(hz, durationMs = 600, vol = 0.22) {
-              try {
-                const ctx = getAudioCtx();
-                const osc = ctx.createOscillator();
-                const gain = ctx.createGain();
-                osc.connect(gain);
-                gain.connect(ctx.destination);
-                osc.type = "sine";
-                osc.frequency.setValueAtTime(hz, ctx.currentTime);
-                gain.gain.setValueAtTime(vol, ctx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(
-                  0.001,
-                  ctx.currentTime + durationMs / 1000,
-                );
-                osc.start(ctx.currentTime);
-                osc.stop(ctx.currentTime + durationMs / 1000);
-              } catch (_) {}
-            }
-            function playAttuneTone(hz) {
-              // Play base note + overtone for richer attunement sound
-              playTone(hz, 900, 0.28);
-              playTone(hz * 1.5, 500, 0.12);
-              playTone((hz * PHI) / PSI, 400, 0.08);
-            }
-            function playRoundComplete() {
-              [396, 528, 639, 741, 852].forEach((f, i) =>
-                setTimeout(() => playTone(f, 400, 0.18), i * 120),
-              );
-            }
-            function playGazeStart() {
-              playTone(432, 80, 0.1);
-            }
+            // -- Audio (disabled — oscillator tones removed for UX) -----------
+            function playTone() {}
+            function playAttuneTone() {}
+            function playRoundComplete() {}
+            function playGazeStart() {}
 
             // -- Spawn stars in scene -----------------------------------------
             function spawnStars() {

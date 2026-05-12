@@ -670,43 +670,10 @@
       let enemyContainer = null;
       let enemyCount = 0;
 
-      // -- Audio -------------------------------------------------------------
-      function startTone(hz) {
-        try {
-          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-          const gain = audioCtx.createGain();
-          gain.gain.setValueAtTime(0.035, audioCtx.currentTime);
-          oscillator = audioCtx.createOscillator();
-          oscillator.type = "sine";
-          oscillator.frequency.setValueAtTime(hz, audioCtx.currentTime);
-          oscillator.connect(gain);
-          gain.connect(audioCtx.destination);
-          oscillator.start();
-        } catch (_) {}
-      }
-      function stopTone() {
-        try {
-          oscillator && oscillator.stop();
-          audioCtx && audioCtx.close();
-        } catch (_) {}
-        oscillator = null;
-        audioCtx = null;
-      }
-      function playHit() {
-        try {
-          const ctx = new (window.AudioContext || window.webkitAudioContext)();
-          const g = ctx.createGain();
-          g.gain.setValueAtTime(0.25, ctx.currentTime);
-          g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.25);
-          const o = ctx.createOscillator();
-          o.frequency.setValueAtTime(528, ctx.currentTime);
-          o.frequency.exponentialRampToValueAtTime(220, ctx.currentTime + 0.2);
-          o.connect(g);
-          g.connect(ctx.destination);
-          o.start();
-          o.stop(ctx.currentTime + 0.25);
-        } catch (_) {}
-      }
+      // -- Audio (disabled — oscillator tones removed for UX) ---------------
+      function startTone() {}
+      function stopTone() { oscillator = null; audioCtx = null; }
+      function playHit() {}
 
       // -- HUD ---------------------------------------------------------------
       function updateHUD() {

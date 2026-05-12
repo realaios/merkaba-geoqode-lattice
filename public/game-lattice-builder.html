@@ -703,79 +703,12 @@
       let nodeColors; // current colors per node
       const MAX_MISTAKES = 3;
 
-      function startTone(hz) {
-        try {
-          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-          const gain = audioCtx.createGain();
-          gain.gain.setValueAtTime(0.02, audioCtx.currentTime);
-          oscillator = audioCtx.createOscillator();
-          oscillator.type = "sine";
-          oscillator.frequency.setValueAtTime(hz, audioCtx.currentTime);
-          oscillator.connect(gain);
-          gain.connect(audioCtx.destination);
-          oscillator.start();
-        } catch (_) {}
-      }
-      function stopTone() {
-        try {
-          oscillator && oscillator.stop();
-          audioCtx && audioCtx.close();
-        } catch (_) {}
-        oscillator = null;
-        audioCtx = null;
-      }
-      function playSuccess() {
-        try {
-          const ctx = new (window.AudioContext || window.webkitAudioContext)();
-          const g = ctx.createGain();
-          g.gain.setValueAtTime(0.2, ctx.currentTime);
-          g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.4);
-          const o = ctx.createOscillator();
-          o.frequency.setValueAtTime(528, ctx.currentTime);
-          o.frequency.exponentialRampToValueAtTime(852, ctx.currentTime + 0.3);
-          o.connect(g);
-          g.connect(ctx.destination);
-          o.start();
-          o.stop(ctx.currentTime + 0.4);
-        } catch (_) {}
-      }
-      function playWrong() {
-        try {
-          const ctx = new (window.AudioContext || window.webkitAudioContext)();
-          const g = ctx.createGain();
-          g.gain.setValueAtTime(0.2, ctx.currentTime);
-          g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.3);
-          const o = ctx.createOscillator();
-          o.type = "sawtooth";
-          o.frequency.setValueAtTime(180, ctx.currentTime);
-          o.connect(g);
-          g.connect(ctx.destination);
-          o.start();
-          o.stop(ctx.currentTime + 0.3);
-        } catch (_) {}
-      }
-      function playComplete() {
-        try {
-          const freqs = [396, 528, 639, 852];
-          freqs.forEach((hz, i) => {
-            const ctx = new (
-              window.AudioContext || window.webkitAudioContext
-            )();
-            const g = ctx.createGain();
-            g.gain.setValueAtTime(0.15, ctx.currentTime + i * 0.12);
-            g.gain.exponentialRampToValueAtTime(
-              0.001,
-              ctx.currentTime + i * 0.12 + 0.5,
-            );
-            const o = ctx.createOscillator();
-            o.frequency.setValueAtTime(hz, ctx.currentTime + i * 0.12);
-            o.connect(g);
-            g.connect(ctx.destination);
-            o.start(ctx.currentTime + i * 0.12);
-            o.stop(ctx.currentTime + i * 0.12 + 0.5);
-          });
-        } catch (_) {}
-      }
+      // -- Audio (disabled — oscillator tones removed for UX) ---------------
+      function startTone() {}
+      function stopTone() { oscillator = null; audioCtx = null; }
+      function playSuccess() {}
+      function playWrong() {}
+      function playComplete() {}
 
       function generateSequence(len) {
         // PHI-based: shuffle using PHI-step

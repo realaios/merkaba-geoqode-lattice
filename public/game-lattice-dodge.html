@@ -600,42 +600,10 @@
       let enemyId = 0;
       let invincible = false; // brief invincibility after hit
 
-      function startTone(hz) {
-        try {
-          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-          const gain = audioCtx.createGain();
-          gain.gain.setValueAtTime(0.025, audioCtx.currentTime);
-          oscillator = audioCtx.createOscillator();
-          oscillator.type = "sine";
-          oscillator.frequency.setValueAtTime(hz, audioCtx.currentTime);
-          oscillator.connect(gain);
-          gain.connect(audioCtx.destination);
-          oscillator.start();
-        } catch (_) {}
-      }
-      function stopTone() {
-        try {
-          oscillator && oscillator.stop();
-          audioCtx && audioCtx.close();
-        } catch (_) {}
-        oscillator = null;
-        audioCtx = null;
-      }
-      function playHitSound() {
-        try {
-          const ctx = new (window.AudioContext || window.webkitAudioContext)();
-          const g = ctx.createGain();
-          g.gain.setValueAtTime(0.3, ctx.currentTime);
-          g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.3);
-          const o = ctx.createOscillator();
-          o.type = "sawtooth";
-          o.frequency.setValueAtTime(220, ctx.currentTime);
-          o.connect(g);
-          g.connect(ctx.destination);
-          o.start();
-          o.stop(ctx.currentTime + 0.3);
-        } catch (_) {}
-      }
+      // -- Audio (disabled — oscillator tones removed for UX) ---------------
+      function startTone() {}
+      function stopTone() { oscillator = null; audioCtx = null; }
+      function playHitSound() {}
 
       function updateLivesDots() {
         const el = document.getElementById("hud-lives-dots");
