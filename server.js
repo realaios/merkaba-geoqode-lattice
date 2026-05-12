@@ -703,7 +703,7 @@ const server = createServer(async (req, res) => {
   );
   res.setHeader(
     "Content-Security-Policy",
-    "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://www.googleadservices.com https://googleads.g.doubleclick.net https://aframe.io https://pagead2.googlesyndication.com; img-src 'self' data: https://www.google-analytics.com https://www.googletagmanager.com https://googleads.g.doubleclick.net https://www.google.com https://www.google.co.za https://www.google.co.uk https://www.google.com.au https://www.googleadservices.com https://pagead2.googlesyndication.com https://cdn.aframe.io; connect-src 'self' https://www.googletagmanager.com https://www.google-analytics.com https://analytics.google.com https://www.google.com https://stats.g.doubleclick.net https://googleads.g.doubleclick.net https://www.googleadservices.com https://api.getbrains4ai.com https://aframe.io https://cdn.aframe.io; style-src 'self' 'unsafe-inline'; frame-src 'none'; object-src 'none'; base-uri 'self'; worker-src 'self' blob:",
+    "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://www.googleadservices.com https://googleads.g.doubleclick.net https://aframe.io https://pagead2.googlesyndication.com; img-src 'self' data: https://www.google-analytics.com https://www.googletagmanager.com https://googleads.g.doubleclick.net https://www.google.com https://www.google.co.za https://www.google.co.uk https://www.google.com.au https://www.googleadservices.com https://pagead2.googlesyndication.com https://cdn.aframe.io; connect-src 'self' data: blob: https://www.googletagmanager.com https://www.google-analytics.com https://analytics.google.com https://www.google.com https://stats.g.doubleclick.net https://googleads.g.doubleclick.net https://www.googleadservices.com https://api.getbrains4ai.com https://aframe.io https://cdn.aframe.io; style-src 'self' 'unsafe-inline'; frame-src 'none'; object-src 'none'; base-uri 'self'; worker-src 'self' blob:",
   );
 
   if (req.method === "OPTIONS") {
@@ -1347,13 +1347,21 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
       }
       const filePath = resolve(PUBLIC_DIR, safeSuffix);
       const relPath = relative(PUBLIC_DIR, filePath);
-      if (!relPath || relPath.startsWith("..") || relPath.includes(`..${sep}`)) {
+      if (
+        !relPath ||
+        relPath.startsWith("..") ||
+        relPath.includes(`..${sep}`)
+      ) {
         return json(res, 400, { ok: false, error: "Invalid path" });
       }
       if (existsSync(filePath)) {
         const ext = extname(filePath);
         const mime = MIME_TYPES[ext];
-        if (!mime) return json(res, 400, { ok: false, error: "Invalid path: extension not allowed" });
+        if (!mime)
+          return json(res, 400, {
+            ok: false,
+            error: "Invalid path: extension not allowed",
+          });
         const fileBuffer = readFileSync(filePath);
         res.writeHead(200, {
           "Content-Type": mime,
