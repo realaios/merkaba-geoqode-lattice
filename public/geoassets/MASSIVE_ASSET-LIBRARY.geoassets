@@ -11194,6 +11194,711 @@
           }
         }
       ]
+    },
+    "nano_cave_vr": {
+      "id": "nano_cave_vr",
+      "title": "Nano Cave — Quantum Crystal Grotto",
+      "logline": "Descend into a crystalline nano-cave where bioluminescent formations pulse with quantum energy.",
+      "palette": "quantum",
+      "sound": "ambient_cave",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "The crystal lattice hums at frequencies beyond human hearing. You are inside the quantum substrate.",
+          "durationMs": 8000
+        },
+        {
+          "trigger": "step_1",
+          "text": "Each formation is a frozen probability wave — Schrödinger's architecture, crystallised.",
+          "durationMs": 8000
+        },
+        {
+          "trigger": "step_2",
+          "text": "Here, matter and information are one. You are not observing the cave. You are part of it.",
+          "durationMs": 8000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#0a0a1a"
+        },
+        "fog": {
+          "color": "#0d0d2b",
+          "density": 0.018
+        }
+      },
+      "layers": [
+        {
+          "id": "nano_cave_vr_sky",
+          "type": "sky",
+          "asset": "/geoassets/skies/nano_cave.jpg",
+          "radius": 500
+        },
+        {
+          "id": "nano_cave_vr_ground",
+          "type": "ground",
+          "color": "#0d0d2b",
+          "radius": 300
+        }
+      ]
+    },
+    "pyramids_giza_vr": {
+      "id": "pyramids_giza_vr",
+      "title": "Pyramids of Giza — Eternal Horizon",
+      "logline": "Stand at the base of the ancient pyramids as the desert wind carries 4,500 years of secrets.",
+      "palette": "desert_dawn",
+      "sound": "ambient_desert",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "The stones are older than every living empire. They remember the stars as they were.",
+          "durationMs": 8000
+        },
+        {
+          "trigger": "step_1",
+          "text": "Aligned to Orion's belt — a message encoded in limestone, sent to the future.",
+          "durationMs": 8000
+        },
+        {
+          "trigger": "step_2",
+          "text": "You stand where pharaohs stood. The desert wind has not changed. Only empires do.",
+          "durationMs": 8000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#c8a060"
+        },
+        "fog": {
+          "color": "#d4aa70",
+          "density": 0.006
+        }
+      },
+      "layers": [
+        {
+          "id": "pyramids_giza_vr_sky",
+          "type": "sky",
+          "asset": "/geoassets/skies/pyramids_giza.jpg",
+          "radius": 500
+        },
+        {
+          "id": "pyramids_giza_vr_ground",
+          "type": "ground",
+          "color": "#d4aa70",
+          "radius": 300
+        }
+      ]
+    },
+    "rainforest_trail_vr": {
+      "id": "rainforest_trail_vr",
+      "title": "Rainforest Trail — Living Cathedral",
+      "logline": "A primordial rainforest path where every breath is thick with oxygen and ancient intelligence.",
+      "palette": "forest",
+      "sound": "ambient_forest",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "The forest breathes. Mycorrhizal networks transmit memory beneath your feet.",
+          "durationMs": 8000
+        },
+        {
+          "trigger": "step_1",
+          "text": "Every tree is a node in a consciousness older than human language. Listen.",
+          "durationMs": 8000
+        },
+        {
+          "trigger": "step_2",
+          "text": "528 Hz pulses through the chlorophyll. The forest is already healing you.",
+          "durationMs": 8000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#1a3a1a"
+        },
+        "fog": {
+          "color": "#2a4a2a",
+          "density": 0.012
+        }
+      },
+      "layers": [
+        {
+          "id": "rainforest_trail_vr_sky",
+          "type": "sky",
+          "asset": "/geoassets/skies/rainforest_trail.jpg",
+          "radius": 500
+        },
+        {
+          "id": "rainforest_trail_vr_ground",
+          "type": "ground",
+          "color": "#2a4a2a",
+          "radius": 300
+        }
+      ]
+    },
+    "rooftop_night_vr": {
+      "id": "rooftop_night_vr",
+      "title": "Rooftop Night — Urban Zenith",
+      "logline": "The city stretches to the horizon below. Up here, the noise becomes music and the chaos becomes pattern.",
+      "palette": "abyss",
+      "sound": "ambient_city_night",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "Seven million stories below. From up here, every light is a life, a dream, a data point.",
+          "durationMs": 8000
+        },
+        {
+          "trigger": "step_1",
+          "text": "The city is a neural network running in real time. You are standing on a synapse.",
+          "durationMs": 8000
+        },
+        {
+          "trigger": "step_2",
+          "text": "Breathe. The noise dissolves. Only the pattern remains.",
+          "durationMs": 8000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#050510"
+        },
+        "fog": {
+          "color": "#0a0a20",
+          "density": 0.008
+        }
+      },
+      "layers": [
+        {
+          "id": "rooftop_night_vr_sky",
+          "type": "sky",
+          "asset": "/geoassets/skies/rooftop_night.jpg",
+          "radius": 500
+        },
+        {
+          "id": "rooftop_night_vr_ground",
+          "type": "ground",
+          "color": "#0a0a20",
+          "radius": 300
+        }
+      ]
+    },
+    "starfield_night_vr": {
+      "id": "starfield_night_vr",
+      "title": "Starfield Night — The Infinite Archive",
+      "logline": "Pure darkness shattered by ten thousand stars — each one a timestamp in the universe's autobiography.",
+      "palette": "deep_space",
+      "sound": "ambient_space",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "You are not looking at the sky. You are looking back in time — 4,000 years per light-year.",
+          "durationMs": 8000
+        },
+        {
+          "trigger": "step_1",
+          "text": "The photons hitting your eyes left their stars before your civilisation began.",
+          "durationMs": 8000
+        },
+        {
+          "trigger": "step_2",
+          "text": "You are a brief consciousness inside an infinite archive. Archive something worthy.",
+          "durationMs": 8000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#000008"
+        },
+        "fog": {
+          "color": "#000010",
+          "density": 0.003
+        }
+      },
+      "layers": [
+        {
+          "id": "starfield_night_vr_sky",
+          "type": "sky",
+          "asset": "/geoassets/skies/starfield_night.jpg",
+          "radius": 500
+        },
+        {
+          "id": "starfield_night_vr_ground",
+          "type": "ground",
+          "color": "#000010",
+          "radius": 300
+        }
+      ]
+    },
+    "tron_sky_vr": {
+      "id": "tron_sky_vr",
+      "title": "Tron Sky — Digital Firmament",
+      "logline": "The sky itself becomes a circuit board — neon grids pulsing with the heartbeat of the machine world.",
+      "palette": "simulation",
+      "sound": "ambient_digital",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "You have entered the Grid. Everything you see is information rendered as light.",
+          "durationMs": 8000
+        },
+        {
+          "trigger": "step_1",
+          "text": "The neon lines are data streams. The pulses are clock cycles. You are the process.",
+          "durationMs": 8000
+        },
+        {
+          "trigger": "step_2",
+          "text": "In the simulation, consciousness is code. Your thoughts compile in real time.",
+          "durationMs": 8000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#001122"
+        },
+        "fog": {
+          "color": "#001a33",
+          "density": 0.01
+        }
+      },
+      "layers": [
+        {
+          "id": "tron_sky_vr_sky",
+          "type": "sky",
+          "asset": "/geoassets/skies/tron_sky.jpg",
+          "radius": 500
+        },
+        {
+          "id": "tron_sky_vr_ground",
+          "type": "ground",
+          "color": "#001a33",
+          "radius": 300
+        }
+      ]
+    },
+    "courtyard_night_vr": {
+      "id": "courtyard_night_vr",
+      "title": "Courtyard at Night — Stone and Silence",
+      "logline": "A medieval courtyard under a star-strewn sky, where cobblestones hold the memory of centuries.",
+      "palette": "abyss",
+      "sound": "ambient_medieval",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "The courtyard has witnessed coronations, betrayals, and midnight confessions.",
+          "durationMs": 8000
+        },
+        {
+          "trigger": "step_1",
+          "text": "Torchlight once played on these stones. The silence tonight is not emptiness — it is history.",
+          "durationMs": 8000
+        },
+        {
+          "trigger": "step_2",
+          "text": "Stars above, stone below. You stand in the exact geometry of a thousand past moments.",
+          "durationMs": 8000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#080814"
+        },
+        "fog": {
+          "color": "#0c0c1e",
+          "density": 0.009
+        }
+      },
+      "layers": [
+        {
+          "id": "courtyard_night_vr_sky",
+          "type": "sky",
+          "asset": "/geoassets/skies/courtyard_night.jpg",
+          "radius": 500
+        },
+        {
+          "id": "courtyard_night_vr_ground",
+          "type": "ground",
+          "color": "#0c0c1e",
+          "radius": 300
+        }
+      ]
+    },
+    "between_bridges_vr": {
+      "id": "between_bridges_vr",
+      "title": "Between Bridges — River of Time",
+      "logline": "Standing between two stone bridges as twilight turns the river into molten copper.",
+      "palette": "golden_hour",
+      "sound": "ambient_river",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "Every river carries the memory of its entire watershed — mountains, forests, centuries of rain.",
+          "durationMs": 8000
+        },
+        {
+          "trigger": "step_1",
+          "text": "The bridges are metaphors made of stone. What two things are you bridging right now?",
+          "durationMs": 8000
+        },
+        {
+          "trigger": "step_2",
+          "text": "The water below you will reach the ocean in three days. It has been a glacier. It will be rain again.",
+          "durationMs": 8000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#c06030"
+        },
+        "fog": {
+          "color": "#c87840",
+          "density": 0.007
+        }
+      },
+      "layers": [
+        {
+          "id": "between_bridges_vr_sky",
+          "type": "sky",
+          "asset": "/geoassets/skies/between_bridges.jpg",
+          "radius": 500
+        },
+        {
+          "id": "between_bridges_vr_ground",
+          "type": "ground",
+          "color": "#c87840",
+          "radius": 300
+        }
+      ]
+    },
+    "german_town_street_vr": {
+      "id": "german_town_street_vr",
+      "title": "German Town Street — Cobblestone Meridian",
+      "logline": "A historic German street at golden hour, where half-timbered facades catch the last light of the day.",
+      "palette": "golden_hour",
+      "sound": "ambient_village",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "The half-timbered houses have stood for four centuries. They predate the printing press being widespread.",
+          "durationMs": 8000
+        },
+        {
+          "trigger": "step_1",
+          "text": "Each beam was placed by hand. Each joint is a craftsman's lifetime of practice made permanent.",
+          "durationMs": 8000
+        },
+        {
+          "trigger": "step_2",
+          "text": "The cobblestones are worn smooth by six generations of footsteps. Now yours.",
+          "durationMs": 8000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#d4883a"
+        },
+        "fog": {
+          "color": "#c87830",
+          "density": 0.006
+        }
+      },
+      "layers": [
+        {
+          "id": "german_town_street_vr_sky",
+          "type": "sky",
+          "asset": "/geoassets/skies/german_town_street.jpg",
+          "radius": 500
+        },
+        {
+          "id": "german_town_street_vr_ground",
+          "type": "ground",
+          "color": "#c87830",
+          "radius": 300
+        }
+      ]
+    },
+    "garden_nook_vr": {
+      "id": "garden_nook_vr",
+      "title": "Garden Nook — Secret Meridian",
+      "logline": "A secluded garden corner where time slows, bees navigate by the sun, and silence is a gift.",
+      "palette": "forest",
+      "sound": "ambient_garden",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "This corner of the garden was designed for exactly this — sitting, breathing, being.",
+          "durationMs": 8000
+        },
+        {
+          "trigger": "step_1",
+          "text": "The bees are doing mathematics. Their waggle dance encodes distance and direction in movement.",
+          "durationMs": 8000
+        },
+        {
+          "trigger": "step_2",
+          "text": "A garden is a collaboration between human intention and wild intelligence. Both are winning here.",
+          "durationMs": 8000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#88c070"
+        },
+        "fog": {
+          "color": "#70a860",
+          "density": 0.01
+        }
+      },
+      "layers": [
+        {
+          "id": "garden_nook_vr_sky",
+          "type": "sky",
+          "asset": "/geoassets/skies/garden_nook.jpg",
+          "radius": 500
+        },
+        {
+          "id": "garden_nook_vr_ground",
+          "type": "ground",
+          "color": "#70a860",
+          "radius": 300
+        }
+      ]
+    },
+    "champagne_castle_vr": {
+      "id": "champagne_castle_vr",
+      "title": "Champagne Castle — Drakensberg Dawn",
+      "logline": "The Drakensberg peaks glow amber at dawn — South Africa's cathedral of stone and sky.",
+      "palette": "desert_dawn",
+      "sound": "ambient_mountain",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "The Drakensberg — Dragon's Mountain — has been a sacred place for the San people for 30,000 years.",
+          "durationMs": 8000
+        },
+        {
+          "trigger": "step_1",
+          "text": "The Champagne Castle peak stands at 3,377 metres. From here, you can see Lesotho.",
+          "durationMs": 8000
+        },
+        {
+          "trigger": "step_2",
+          "text": "Dawn comes slowly at altitude. The light arrives like a decision being made.",
+          "durationMs": 8000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#c89050"
+        },
+        "fog": {
+          "color": "#d09860",
+          "density": 0.005
+        }
+      },
+      "layers": [
+        {
+          "id": "champagne_castle_vr_sky",
+          "type": "sky",
+          "asset": "/geoassets/skies/champagne_castle_1.jpg",
+          "radius": 500
+        },
+        {
+          "id": "champagne_castle_vr_ground",
+          "type": "ground",
+          "color": "#d09860",
+          "radius": 300
+        }
+      ]
+    },
+    "teutonic_castle_moat_vr": {
+      "id": "teutonic_castle_moat_vr",
+      "title": "Teutonic Castle Moat — Reflection of Power",
+      "logline": "A medieval moat reflects fortress walls — still water holding seven centuries of siege and sovereignty.",
+      "palette": "ocean",
+      "sound": "ambient_water",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "The Teutonic Knights built to intimidate. The moat is not just water — it is a statement.",
+          "durationMs": 8000
+        },
+        {
+          "trigger": "step_1",
+          "text": "For 300 years this fortress controlled the amber trade routes of the Baltic.",
+          "durationMs": 8000
+        },
+        {
+          "trigger": "step_2",
+          "text": "The reflection in the moat is perfectly still. History is loud. Water is patient.",
+          "durationMs": 8000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#2a4060"
+        },
+        "fog": {
+          "color": "#304870",
+          "density": 0.01
+        }
+      },
+      "layers": [
+        {
+          "id": "teutonic_castle_moat_vr_sky",
+          "type": "sky",
+          "asset": "/geoassets/skies/teutonic_castle_moat.jpg",
+          "radius": 500
+        },
+        {
+          "id": "teutonic_castle_moat_vr_ground",
+          "type": "ground",
+          "color": "#304870",
+          "radius": 300
+        }
+      ]
+    },
+    "small_harbour_morning_vr": {
+      "id": "small_harbour_morning_vr",
+      "title": "Small Harbour Morning — The First Light",
+      "logline": "A quiet harbour wakes before the town does — boats at rest, water like glass, salt in the air.",
+      "palette": "ocean",
+      "sound": "ambient_harbour",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "The harbour is its own ecosystem. The boats are sleeping. The water is thinking.",
+          "durationMs": 8000
+        },
+        {
+          "trigger": "step_1",
+          "text": "Fishermen have left from harbours like this for ten thousand years. The ritual never changes.",
+          "durationMs": 8000
+        },
+        {
+          "trigger": "step_2",
+          "text": "Morning on the water is the purest kind of beginning. Everything is still possible.",
+          "durationMs": 8000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#7090b0"
+        },
+        "fog": {
+          "color": "#6080a0",
+          "density": 0.008
+        }
+      },
+      "layers": [
+        {
+          "id": "small_harbour_morning_vr_sky",
+          "type": "sky",
+          "asset": "/geoassets/skies/small_harbour_morning.jpg",
+          "radius": 500
+        },
+        {
+          "id": "small_harbour_morning_vr_ground",
+          "type": "ground",
+          "color": "#6080a0",
+          "radius": 300
+        }
+      ]
+    },
+    "autumn_road_vr": {
+      "id": "autumn_road_vr",
+      "title": "Autumn Road — The Amber Corridor",
+      "logline": "A tree-lined road in peak autumn — gold and amber arching over the path ahead.",
+      "palette": "golden_hour",
+      "sound": "ambient_wind",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "The trees are not dying. They are making one last, extraordinary statement before rest.",
+          "durationMs": 8000
+        },
+        {
+          "trigger": "step_1",
+          "text": "Autumn is the only season that looks like it is on fire and nobody calls the fire brigade.",
+          "durationMs": 8000
+        },
+        {
+          "trigger": "step_2",
+          "text": "Every leaf is a solar panel completing its final cycle. The road ahead is paved with gold.",
+          "durationMs": 8000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#c87030"
+        },
+        "fog": {
+          "color": "#c07828",
+          "density": 0.008
+        }
+      },
+      "layers": [
+        {
+          "id": "autumn_road_vr_sky",
+          "type": "sky",
+          "asset": "/geoassets/skies/autumn_road.jpg",
+          "radius": 500
+        },
+        {
+          "id": "autumn_road_vr_ground",
+          "type": "ground",
+          "color": "#c07828",
+          "radius": 300
+        }
+      ]
+    },
+    "bell_tower_vr": {
+      "id": "bell_tower_vr",
+      "title": "Bell Tower — The Resonance Point",
+      "logline": "Standing inside an ancient bell tower as the bronze bell rings — sound becomes architecture.",
+      "palette": "roman_arena",
+      "sound": "ambient_bells",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "The bell has been marking time for five centuries. It has rung for plagues, victories, and ordinary Sundays.",
+          "durationMs": 8000
+        },
+        {
+          "trigger": "step_1",
+          "text": "Bronze was chosen because it is the only alloy whose sound travels through walls and centuries.",
+          "durationMs": 8000
+        },
+        {
+          "trigger": "step_2",
+          "text": "When the bell rings, the entire town feels it. Some signals need no translation.",
+          "durationMs": 8000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#a08050"
+        },
+        "fog": {
+          "color": "#907040",
+          "density": 0.009
+        }
+      },
+      "layers": [
+        {
+          "id": "bell_tower_vr_sky",
+          "type": "sky",
+          "asset": "/geoassets/skies/bell_tower.jpg",
+          "radius": 500
+        },
+        {
+          "id": "bell_tower_vr_ground",
+          "type": "ground",
+          "color": "#907040",
+          "radius": 300
+        }
+      ]
     }
   }
 }
