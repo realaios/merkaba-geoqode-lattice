@@ -298,6 +298,9 @@ const MIME_TYPES = {
   ".webp": "image/webp",
   ".json": "application/json; charset=utf-8",
   ".geoassets": "application/json; charset=utf-8",
+  ".gltf": "model/gltf+json",
+  ".glb": "model/gltf-binary",
+  ".bin": "application/octet-stream",
 };
 
 const PORT = parseInt(process.env.PORT || "3030", 10);
