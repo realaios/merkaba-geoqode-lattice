@@ -668,6 +668,19 @@ const SKY_IMGS = {
   spaichingen_hill_vr: "/geoassets/skies/spaichingen_hill.jpg",
   spruit_sunrise_vr: "/geoassets/skies/spruit_sunrise.jpg",
   small_hangar_vr: "/geoassets/skies/small_hangar_01.jpg",
+  // Wave 10 — Polyhaven
+  dam_road_vr: "/geoassets/skies/dam_road.jpg",
+  cape_hill_vr: "/geoassets/skies/cape_hill.jpg",
+  cobblestone_street_night_vr: "/geoassets/skies/cobblestone_street_night.jpg",
+  evening_meadow_vr: "/geoassets/skies/evening_meadow.jpg",
+  autumn_park_vr: "/geoassets/skies/autumn_park.jpg",
+  suburban_garden_vr: "/geoassets/skies/suburban_garden.jpg",
+  forest_cave_vr: "/geoassets/skies/forest_cave.jpg",
+  industrial_sunset_2_vr: "/geoassets/skies/industrial_sunset_02.jpg",
+  empty_room_vr: "/geoassets/skies/small_empty_room_1.jpg",
+  rural_landscape_vr: "/geoassets/skies/rural_landscape.jpg",
+  white_cliff_top_vr: "/geoassets/skies/white_cliff_top.jpg",
+  neon_photostudio_vr: "/geoassets/skies/neon_photostudio.jpg",
 };
 
 function buildEnvironment(env, palette, sceneId) {

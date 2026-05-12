@@ -13803,6 +13803,414 @@
         }
       },
       "layers": []
+    },
+    "dam_road_vr": {
+      "id": "dam_road_vr",
+      "title": "Dam Road",
+      "logline": "A mountain road winds alongside a reservoir — water, asphalt, and altitude in quiet conversation.",
+      "palette": "golden_hour",
+      "sound": "ambient_wind",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "Mountain roads don't take you somewhere — they take you through something.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "30s",
+          "text": "The reservoir holds the sky's reflection like an obligation.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "60s",
+          "text": "At altitude, even ordinary roads feel like choices.",
+          "durationMs": 5000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#3a5f8a"
+        },
+        "fog": {
+          "color": "#506a80",
+          "density": 0.01
+        }
+      },
+      "layers": []
+    },
+    "cape_hill_vr": {
+      "id": "cape_hill_vr",
+      "title": "Cape Hill",
+      "logline": "A coastal headland where the land runs out and the horizon takes over completely.",
+      "palette": "arctic",
+      "sound": "ambient_wind",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "Headlands are the land's final argument before the sea wins.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "30s",
+          "text": "On a cape, every direction includes water eventually.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "60s",
+          "text": "The wind up here has no obstacles left. It arrives at full speed.",
+          "durationMs": 5000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#b0c8d8"
+        },
+        "fog": {
+          "color": "#a0b8c8",
+          "density": 0.009
+        }
+      },
+      "layers": []
+    },
+    "cobblestone_street_night_vr": {
+      "id": "cobblestone_street_night_vr",
+      "title": "Cobblestone Street at Night",
+      "logline": "An old-town street after midnight — amber lamplight, wet cobblestones, the geometry of centuries.",
+      "palette": "roman_arena",
+      "sound": "ambient_hum",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "Every cobblestone was placed by a hand that expected someone to walk on it.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "30s",
+          "text": "Old towns at night become honest — no commerce, just architecture.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "60s",
+          "text": "The lamp keeps its promise. The street keeps its memory.",
+          "durationMs": 5000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#0a0806"
+        },
+        "fog": {
+          "color": "#1a1006",
+          "density": 0.02
+        }
+      },
+      "layers": []
+    },
+    "evening_meadow_vr": {
+      "id": "evening_meadow_vr",
+      "title": "Evening Meadow",
+      "logline": "Golden hour over an open meadow — the day's final light treating grass like a gift.",
+      "palette": "golden_hour",
+      "sound": "ambient_wind",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "Meadows don't perform. They simply continue being what they are.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "30s",
+          "text": "The grass bends in the evening wind without resistance.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "60s",
+          "text": "Golden hour is the light apologising for the whole day.",
+          "durationMs": 5000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#c86420"
+        },
+        "fog": {
+          "color": "#a05010",
+          "density": 0.012
+        }
+      },
+      "layers": []
+    },
+    "autumn_park_vr": {
+      "id": "autumn_park_vr",
+      "title": "Autumn Park",
+      "logline": "A park in full autumn colour — amber, rust, and gold before the long pause.",
+      "palette": "golden_hour",
+      "sound": "ambient_wind",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "Autumn parks are the year's most honest season — beautiful, and ending.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "30s",
+          "text": "The leaves let go without being asked twice.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "60s",
+          "text": "A park in October: every bench has a view of something temporary.",
+          "durationMs": 5000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#6a4a30"
+        },
+        "fog": {
+          "color": "#503828",
+          "density": 0.013
+        }
+      },
+      "layers": []
+    },
+    "suburban_garden_vr": {
+      "id": "suburban_garden_vr",
+      "title": "Suburban Garden",
+      "logline": "A backyard garden in full bloom — the quiet ambition of a small patch of earth.",
+      "palette": "forest",
+      "sound": "ambient_nature",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "Every suburban garden is a private experiment in what can grow here.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "30s",
+          "text": "Gardens are the part of a house that answers back.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "60s",
+          "text": "A lawn on a Tuesday afternoon. Silence that earned itself.",
+          "durationMs": 5000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#5a8050"
+        },
+        "fog": {
+          "color": "#487040",
+          "density": 0.014
+        }
+      },
+      "layers": []
+    },
+    "forest_cave_vr": {
+      "id": "forest_cave_vr",
+      "title": "Forest Cave",
+      "logline": "A mossy cave at the edge of a forest — where the dark inside and the green outside negotiate.",
+      "palette": "forest",
+      "sound": "ambient_hum",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "Caves are the only places where silence has texture.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "30s",
+          "text": "The moss grows here because light and dark agreed on a border.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "60s",
+          "text": "Every cave entrance is the same question: how far in will you go?",
+          "durationMs": 5000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#203818"
+        },
+        "fog": {
+          "color": "#183010",
+          "density": 0.025
+        }
+      },
+      "layers": []
+    },
+    "industrial_sunset_2_vr": {
+      "id": "industrial_sunset_2_vr",
+      "title": "Industrial Sunset II",
+      "logline": "Steel and smoke at dusk — factories catching the last light before the shift changes.",
+      "palette": "golden_hour",
+      "sound": "ambient_hum",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "Industry never pauses for sunsets. That's what makes them worth watching.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "30s",
+          "text": "Every factory chimney is pointing at the same sky.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "60s",
+          "text": "Dusk makes even steel look like it has feelings.",
+          "durationMs": 5000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#a05020"
+        },
+        "fog": {
+          "color": "#804010",
+          "density": 0.016
+        }
+      },
+      "layers": []
+    },
+    "empty_room_vr": {
+      "id": "empty_room_vr",
+      "title": "Empty Room",
+      "logline": "A bare white room with nowhere to go and everything to consider.",
+      "palette": "arctic",
+      "sound": "ambient_hum",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "An empty room is not a lack. It is a full set of options.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "30s",
+          "text": "White walls reflect everything back at you.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "60s",
+          "text": "The room doesn't need furniture to have presence.",
+          "durationMs": 5000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#e8eef2"
+        },
+        "fog": {
+          "color": "#d8e8f0",
+          "density": 0.006
+        }
+      },
+      "layers": []
+    },
+    "rural_landscape_vr": {
+      "id": "rural_landscape_vr",
+      "title": "Rural Landscape",
+      "logline": "Open countryside under a wide sky — the kind of view that slows a heartbeat.",
+      "palette": "golden_hour",
+      "sound": "ambient_wind",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "Rural landscapes don't ask anything of you. That is the point.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "30s",
+          "text": "Fields know how to wait. That is most of what they do.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "60s",
+          "text": "The horizon is always the same distance away.",
+          "durationMs": 5000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#7090a8"
+        },
+        "fog": {
+          "color": "#607888",
+          "density": 0.01
+        }
+      },
+      "layers": []
+    },
+    "white_cliff_top_vr": {
+      "id": "white_cliff_top_vr",
+      "title": "White Cliff Top",
+      "logline": "Chalk cliffs above a cold sea — where the island ends and the water takes responsibility.",
+      "palette": "arctic",
+      "sound": "ambient_wind",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "Cliff tops are the land's last word before the sea.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "30s",
+          "text": "White chalk means ancient seabeds. The cliff is made of everything that once swam here.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "60s",
+          "text": "Standing at the edge: the wind wants you to understand scale.",
+          "durationMs": 5000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#a8c8e0"
+        },
+        "fog": {
+          "color": "#90b8d0",
+          "density": 0.009
+        }
+      },
+      "layers": []
+    },
+    "neon_photostudio_vr": {
+      "id": "neon_photostudio_vr",
+      "title": "Neon Photo Studio",
+      "logline": "A photography studio saturated with neon — where colour becomes the subject.",
+      "palette": "quantum",
+      "sound": "ambient_hum",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "Some studios don't need a subject. The light is already performing.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "30s",
+          "text": "Neon doesn't illuminate — it declares.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "60s",
+          "text": "In a neon room, every shadow is a complementary colour.",
+          "durationMs": 5000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#0a0018"
+        },
+        "fog": {
+          "color": "#080012",
+          "density": 0.018
+        }
+      },
+      "layers": []
     }
   }
 }
