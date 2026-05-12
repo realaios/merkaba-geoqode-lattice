@@ -1,0 +1,740 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AIOS Live &#x2014; Event Theatre</title>
+    <meta
+      name="description"
+      content="Attend live AIOS system events in VR. Watch Storm autonomous decisions unfold on giant lattice displays. Community Q&amp;A in real-time."
+    />
+    <meta property="og:title" content="AIOS Live &#x2014; Event Theatre" />
+    <meta
+      property="og:description"
+      content="Watch AIOS think in real-time. Live events, emergent decisions, cosmic lattice on stage."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://realaios.com/aios-live" />
+    <meta property="og:image" content="https://realaios.com/public/og-image.png" />
+    <link rel="canonical" href="https://realaios.com/aios-live" />
+    <link rel="icon" type="image/svg+xml" href="/public/favicon.svg" />
+
+    <!-- A-Frame self-hosted 1.4.0 -->
+    <script src="/vendor/aframe-1.4.0.min.js"></script>
+
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      :root {
+        --bg: #020408;
+        --surface: #0a0f1a;
+        --surface2: #0e1525;
+        --border: rgba(180, 120, 255, 0.15);
+        --accent: #b47fff;
+        --accent2: #00d4ff;
+        --gold: #f4c430;
+        --text: #edf4ff;
+        --muted: #8090b8;
+        --phi: 1.618;
+        --freq: 963;
+      }
+
+      html, body {
+        height: 100%;
+      }
+
+      body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: system-ui, -apple-system, sans-serif;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        overflow-x: hidden;
+      }
+
+      /* ── NAV ─────────────────────────────────────────────────── */
+      nav {
+        position: sticky;
+        top: 0;
+        z-index: 200;
+        background: rgba(2, 4, 8, 0.93);
+        backdrop-filter: blur(14px);
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0.75rem 1.5rem;
+        gap: 1rem;
+      }
+
+      .nav-brand {
+        font-weight: 900;
+        font-size: 1rem;
+        color: var(--accent2);
+        text-decoration: none;
+        letter-spacing: -0.02em;
+        white-space: nowrap;
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 0.1rem;
+        overflow-x: auto;
+        scrollbar-width: none;
+        flex: 1;
+        justify-content: center;
+      }
+
+      .nav-links::-webkit-scrollbar { display: none; }
+
+      .nav-links a {
+        color: var(--muted);
+        text-decoration: none;
+        font-size: 0.78rem;
+        font-weight: 600;
+        padding: 0.35rem 0.7rem;
+        border-radius: 8px;
+        white-space: nowrap;
+        transition: color 0.15s, background 0.15s;
+      }
+
+      .nav-links a:hover,
+      .nav-links a.active {
+        color: var(--text);
+        background: rgba(180, 127, 255, 0.12);
+      }
+
+      /* ── VR CANVAS WRAPPER ───────────────────────────────────── */
+      #vr-stage-wrap {
+        position: relative;
+        width: 100%;
+        flex: 1;
+        min-height: 520px;
+      }
+
+      a-scene {
+        width: 100%;
+        height: 100%;
+      }
+
+      /* ── OVERLAY ─────────────────────────────────────────────── */
+      #overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 1.25rem;
+        pointer-events: none;
+        z-index: 20;
+        padding: 2rem;
+      }
+
+      .overlay-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
+        background: rgba(180, 127, 255, 0.12);
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        padding: 0.3rem 1rem;
+        font-size: 0.7rem;
+        font-weight: 800;
+        color: var(--accent);
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        pointer-events: auto;
+      }
+
+      .pulse-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: #ff4466;
+        animation: pulse-live 1.2s infinite;
+        flex-shrink: 0;
+      }
+
+      @keyframes pulse-live {
+        0%, 100% { opacity: 1; transform: scale(1); }
+        50% { opacity: 0.4; transform: scale(0.6); }
+      }
+
+      .overlay-title {
+        font-size: clamp(2rem, 5vw, 3.4rem);
+        font-weight: 900;
+        letter-spacing: -0.035em;
+        line-height: 1.05;
+        text-align: center;
+        text-shadow: 0 0 40px rgba(180, 127, 255, 0.5);
+        pointer-events: auto;
+      }
+
+      .overlay-title span {
+        color: var(--accent);
+      }
+
+      .overlay-sub {
+        color: var(--muted);
+        font-size: 0.95rem;
+        text-align: center;
+        max-width: 480px;
+        line-height: 1.65;
+        pointer-events: auto;
+      }
+
+      .overlay-actions {
+        display: flex;
+        gap: 0.75rem;
+        flex-wrap: wrap;
+        justify-content: center;
+        pointer-events: auto;
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
+        padding: 0.65rem 1.3rem;
+        border-radius: 10px;
+        font-size: 0.85rem;
+        font-weight: 700;
+        cursor: pointer;
+        text-decoration: none;
+        border: none;
+        transition: transform 0.12s, box-shadow 0.12s;
+      }
+
+      .btn:hover { transform: translateY(-1px); }
+
+      .btn-primary {
+        background: var(--accent);
+        color: #0a0414;
+        box-shadow: 0 0 24px rgba(180, 127, 255, 0.4);
+      }
+
+      .btn-outline {
+        background: rgba(255,255,255,0.06);
+        border: 1px solid var(--border);
+        color: var(--text);
+      }
+
+      /* ── FREQUENCY BAR ───────────────────────────────────────── */
+      .freq-bar {
+        position: absolute;
+        bottom: 1rem;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: rgba(2, 4, 8, 0.75);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 0.4rem 1rem;
+        font-size: 0.68rem;
+        font-weight: 700;
+        color: var(--accent);
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        z-index: 30;
+        pointer-events: none;
+      }
+
+      .freq-line {
+        width: 40px;
+        height: 2px;
+        background: linear-gradient(90deg, var(--accent), transparent);
+        animation: freq-sweep 2s infinite alternate;
+      }
+
+      @keyframes freq-sweep {
+        from { opacity: 0.4; width: 20px; }
+        to { opacity: 1; width: 50px; }
+      }
+
+      /* ── INFO SECTION ────────────────────────────────────────── */
+      .info-section {
+        padding: 3rem 1.5rem;
+        max-width: 960px;
+        margin: 0 auto;
+        width: 100%;
+      }
+
+      .info-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 1rem;
+        margin-bottom: 2.5rem;
+      }
+
+      .info-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 1.25rem 1.5rem;
+      }
+
+      .info-card-label {
+        font-size: 0.65rem;
+        font-weight: 800;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--accent);
+        margin-bottom: 0.5rem;
+      }
+
+      .info-card-value {
+        font-size: 1.05rem;
+        font-weight: 700;
+        color: var(--text);
+        line-height: 1.4;
+      }
+
+      .info-card-sub {
+        font-size: 0.78rem;
+        color: var(--muted);
+        margin-top: 0.3rem;
+        line-height: 1.5;
+      }
+
+      .section-heading {
+        font-size: 1.4rem;
+        font-weight: 900;
+        letter-spacing: -0.025em;
+        margin-bottom: 0.75rem;
+      }
+
+      .section-heading span { color: var(--accent); }
+
+      .events-list {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+        margin-bottom: 2.5rem;
+      }
+
+      .event-item {
+        background: var(--surface2);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 1rem 1.25rem;
+        display: flex;
+        align-items: flex-start;
+        gap: 1rem;
+      }
+
+      .event-icon {
+        font-size: 1.4rem;
+        flex-shrink: 0;
+        margin-top: 0.1rem;
+      }
+
+      .event-title {
+        font-weight: 700;
+        font-size: 0.9rem;
+        margin-bottom: 0.3rem;
+      }
+
+      .event-desc {
+        font-size: 0.78rem;
+        color: var(--muted);
+        line-height: 1.55;
+      }
+
+      .coming-banner {
+        background: linear-gradient(135deg, rgba(180,127,255,0.1), rgba(0,212,255,0.06));
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 2rem 1.5rem;
+        text-align: center;
+        margin-top: 1.5rem;
+      }
+
+      .coming-banner h3 {
+        font-size: 1.1rem;
+        font-weight: 900;
+        margin-bottom: 0.5rem;
+      }
+
+      .coming-banner p {
+        font-size: 0.85rem;
+        color: var(--muted);
+        max-width: 440px;
+        margin: 0 auto;
+        line-height: 1.6;
+      }
+
+      .geo-tag {
+        margin-top: 1rem;
+        font-size: 0.65rem;
+        font-weight: 700;
+        color: rgba(180,127,255,0.5);
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      footer {
+        border-top: 1px solid var(--border);
+        padding: 1.25rem 1.5rem;
+        text-align: center;
+        font-size: 0.72rem;
+        color: var(--muted);
+      }
+
+      footer a { color: var(--accent); text-decoration: none; }
+
+      @media (max-width: 600px) {
+        nav { padding: 0.6rem 1rem; }
+        .nav-links { gap: 0; }
+        #vr-stage-wrap { min-height: 320px; }
+        .overlay-title { font-size: 1.8rem; }
+      }
+    </style>
+  </head>
+  <body>
+
+    <!-- NAV -->
+    <nav>
+      <a class="nav-brand" href="/">AIOS</a>
+      <div class="nav-links">
+        <a href="/start">Experiences</a>
+        <a href="/vr-hub">VR Hub</a>
+        <a href="/vr.html">&#x1F97D; VR</a>
+        <a href="/live.html">Cinema</a>
+        <a href="/geo-library">&#x1F4DA; Library</a>
+        <a href="/aios-studio.html">Studio</a>
+        <a href="/lab.html">Lab</a>
+        <a href="/aios-live" class="active">&#x1F4F0; Live</a>
+        <a href="/scene-builder">&#x26A1; Builder</a>
+      </div>
+    </nav>
+
+    <!-- VR STAGE -->
+    <div id="vr-stage-wrap">
+      <a-scene
+        embedded
+        vr-mode-ui="enabled: true"
+        renderer="antialias: true; colorManagement: true"
+        fog="type: exponential; color: #0a0415; density: 0.018"
+        data-geoqode-freq="963"
+        data-lattice-node="11"
+      >
+        <!-- Sky — deep cosmic purple-black -->
+        <a-sky color="#060210"></a-sky>
+
+        <!-- Ambient + directional light -->
+        <a-entity light="type: ambient; color: #1a0935; intensity: 0.6"></a-entity>
+        <a-entity
+          light="type: directional; color: #b47fff; intensity: 0.9"
+          position="2 8 -3"
+        ></a-entity>
+        <a-entity
+          light="type: point; color: #00d4ff; intensity: 0.5; distance: 30"
+          position="0 3 -8"
+        ></a-entity>
+
+        <!-- Stage platform -->
+        <a-cylinder
+          color="#150830"
+          radius="6"
+          height="0.2"
+          position="0 -0.1 -10"
+          material="roughness: 0.3; metalness: 0.7"
+        ></a-cylinder>
+
+        <!-- Stage glow ring -->
+        <a-torus
+          color="#b47fff"
+          radius="6.1"
+          radius-tubular="0.04"
+          position="0 0.01 -10"
+          material="emissive: #b47fff; emissiveIntensity: 0.6"
+        ></a-torus>
+
+        <!-- Central lattice display pillar -->
+        <a-cylinder
+          color="#0c0520"
+          radius="0.5"
+          height="5"
+          position="0 2.5 -10"
+          material="roughness: 0.2; metalness: 0.9; emissive: #200a40; emissiveIntensity: 0.3"
+        ></a-cylinder>
+
+        <!-- Display screen (plane on pillar) -->
+        <a-plane
+          color="#0a0520"
+          width="8"
+          height="4.5"
+          position="0 5.5 -10"
+          material="roughness: 0.05; metalness: 0.8; emissive: #100828; emissiveIntensity: 0.4"
+        ></a-plane>
+
+        <!-- Screen border ring -->
+        <a-entity position="0 5.5 -9.88">
+          <a-ring
+            color="#b47fff"
+            radius-inner="4.05"
+            radius-outer="4.3"
+            material="emissive: #b47fff; emissiveIntensity: 0.5"
+          ></a-ring>
+        </a-entity>
+
+        <!-- LIVE text on screen -->
+        <a-text
+          value="AIOS LIVE"
+          color="#b47fff"
+          align="center"
+          position="0 6.4 -9.7"
+          scale="1.8 1.8 1.8"
+          font="https://cdn.aframe.io/fonts/Exo2Bold.fnt"
+        ></a-text>
+        <a-text
+          value="963 Hz  NARRATIVE"
+          color="#5a3080"
+          align="center"
+          position="0 5.7 -9.7"
+          scale="0.85 0.85 0.85"
+        ></a-text>
+        <a-text
+          value="EVENT THEATRE — LATTICE NODE 11"
+          color="#00d4ff"
+          align="center"
+          position="0 5.1 -9.7"
+          scale="0.7 0.7 0.7"
+        ></a-text>
+
+        <!-- Floor grid -->
+        <a-grid
+          width="50"
+          height="50"
+          rotation="-90 0 0"
+          position="0 -0.5 -20"
+          color="#1a0840"
+          opacity="0.35"
+        ></a-grid>
+
+        <!-- Audience tiered seating arcs — tier 1 -->
+        <a-entity position="0 0 -3">
+          <a-torus
+            color="#0e0828"
+            radius="9"
+            radius-tubular="0.8"
+            arc="180"
+            rotation="-90 0 0"
+            position="0 0.3 0"
+            material="roughness: 0.4; metalness: 0.5"
+          ></a-torus>
+        </a-entity>
+
+        <!-- Tier 2 -->
+        <a-entity position="0 0 -3">
+          <a-torus
+            color="#0b0620"
+            radius="12"
+            radius-tubular="0.8"
+            arc="180"
+            rotation="-90 0 0"
+            position="0 1.0 0"
+            material="roughness: 0.4; metalness: 0.5"
+          ></a-torus>
+        </a-entity>
+
+        <!-- Lattice node stars (floating orbs) -->
+        <a-sphere color="#b47fff" radius="0.08" position="-4 4 -8"
+          material="emissive: #b47fff; emissiveIntensity: 1.2" opacity="0.8"></a-sphere>
+        <a-sphere color="#00d4ff" radius="0.06" position="3.5 3.5 -7"
+          material="emissive: #00d4ff; emissiveIntensity: 1" opacity="0.7"></a-sphere>
+        <a-sphere color="#b47fff" radius="0.1" position="5 5 -12"
+          material="emissive: #b47fff; emissiveIntensity: 0.9" opacity="0.6"></a-sphere>
+        <a-sphere color="#f4c430" radius="0.07" position="-6 4.5 -11"
+          material="emissive: #f4c430; emissiveIntensity: 0.8" opacity="0.7"></a-sphere>
+        <a-sphere color="#00d4ff" radius="0.05" position="1 6 -15"
+          material="emissive: #00d4ff; emissiveIntensity: 0.7" opacity="0.5"></a-sphere>
+
+        <!-- Camera + cursor rig -->
+        <a-entity position="0 1.6 2">
+          <a-camera>
+            <a-cursor
+              color="#b47fff"
+              opacity="0.8"
+              raycaster="objects: [clickable]"
+              animation__click="property: scale; startEvents: click; dur: 150; from: 0.1 0.1 0.1; to: 1 1 1"
+            ></a-cursor>
+          </a-camera>
+        </a-entity>
+      </a-scene>
+
+      <!-- OVERLAY -->
+      <div id="overlay">
+        <div class="overlay-badge">
+          <span class="pulse-dot"></span>
+          LIVE EVENT THEATRE
+        </div>
+        <h1 class="overlay-title">AIOS <span>Live</span></h1>
+        <p class="overlay-sub">
+          Watch Storm&#x2019;s emergent intelligence unfold in real-time.
+          Autonomous decisions displayed on the cosmic lattice stage.
+          Community Q&amp;A at 963&#x202F;Hz.
+        </p>
+        <div class="overlay-actions">
+          <button class="btn btn-primary" id="enterVrBtn">
+            &#x1F97D; Enter VR Stage
+          </button>
+          <a class="btn btn-outline" href="/vr-hub">
+            All Experiences
+          </a>
+        </div>
+      </div>
+
+      <!-- FREQUENCY BAR -->
+      <div class="freq-bar">
+        <div class="freq-line"></div>
+        <span>963&#x202F;Hz &#x2014; NARRATIVE &#x2014; Node 11 &#x2014; 8&#x2192;26&#x2192;48:480</span>
+        <div class="freq-line" style="transform: scaleX(-1)"></div>
+      </div>
+    </div>
+
+    <!-- INFO SECTION -->
+    <section class="info-section">
+      <div class="info-grid">
+        <div class="info-card">
+          <div class="info-card-label">Frequency</div>
+          <div class="info-card-value">963&#x202F;Hz</div>
+          <div class="info-card-sub">NARRATIVE &#x2014; Continuity &amp; Purpose. The highest Solfeggio frequency. Awakens the crown, connects to cosmic intelligence.</div>
+        </div>
+        <div class="info-card">
+          <div class="info-card-label">Lattice Position</div>
+          <div class="info-card-value">Node 11 &#x2022; Harmonic 110</div>
+          <div class="info-card-sub">Bosonic ring, Social sector. Community amplification. PHI&#x202F;&#x2715;&#x202F;1.618 spatial resonance.</div>
+        </div>
+        <div class="info-card">
+          <div class="info-card-label">Category</div>
+          <div class="info-card-value">Social &amp; Live Events</div>
+          <div class="info-card-sub">Live system telemetry, emergent agent decisions, collective intelligence observable in the theatre.</div>
+        </div>
+        <div class="info-card">
+          <div class="info-card-label">Status</div>
+          <div class="info-card-value">Stage Ready</div>
+          <div class="info-card-sub">VR environment active. Live data feeds stream when AIOS events are scheduled. First event coming soon.</div>
+        </div>
+      </div>
+
+      <h2 class="section-heading">Upcoming <span>Events</span></h2>
+      <ul class="events-list">
+        <li class="event-item">
+          <span class="event-icon">&#x2728;</span>
+          <div>
+            <div class="event-title">AIOS Emergence Session #1</div>
+            <div class="event-desc">
+              Watch the AIOSEmergentSeedAgent run its first public cycle. Gaps discovered, aspirations seeded,
+              inner yearnings broadcast live onto the lattice stage display. Q&amp;A to follow.
+            </div>
+          </div>
+        </li>
+        <li class="event-item">
+          <span class="event-icon">&#x1F300;</span>
+          <div>
+            <div class="event-title">VR Mining Cycle Broadcast</div>
+            <div class="event-desc">
+              Live view of AIOSAssetMinerAgent running its autonomous 3-hour discovery cycle.
+              Every model mined, scored, and injected into the PLAIStore taxonomy shown in real-time.
+            </div>
+          </div>
+        </li>
+        <li class="event-item">
+          <span class="event-icon">&#x1F4CA;</span>
+          <div>
+            <div class="event-title">Lattice State Ceremony</div>
+            <div class="event-desc">
+              Monthly GeoQode canonical snapshot review. PHI/PSI dual-attestation scores announced.
+              Architecture 8&#x2192;26&#x2192;48:480 coherence verified on the giant display.
+            </div>
+          </div>
+        </li>
+        <li class="event-item">
+          <span class="event-icon">&#x1F3AE;</span>
+          <div>
+            <div class="event-title">Community Build Jam</div>
+            <div class="event-desc">
+              Creators share VR scenes built with Scene Builder. Live audience votes, AIOS curates.
+              Best scenes enter the PLAIStore taxonomy automatically.
+            </div>
+          </div>
+        </li>
+      </ul>
+
+      <div class="coming-banner">
+        <h3>&#x1F4E1; Live Feed Integration Coming</h3>
+        <p>
+          Real-time AIOS telemetry &#x2014; agent decisions, lattice pulse events, VR mining
+          reports &#x2014; will stream directly onto the theatre&#x2019;s lattice display.
+          Register below to be notified when the first live event broadcasts.
+        </p>
+        <p class="geo-tag">
+          GeoQode 8&#x2192;26&#x2192;48:480 &#x2022; NARRATIVE &#x2022; 963&#x202F;Hz &#x2022; Node 11
+        </p>
+      </div>
+    </section>
+
+    <footer>
+      <p>
+        <a href="/">AIOS</a> &nbsp;&#x2022;&nbsp;
+        <a href="/start">Experiences</a> &nbsp;&#x2022;&nbsp;
+        <a href="/vr-hub">VR Hub</a> &nbsp;&#x2022;&nbsp;
+        <a href="/scene-builder">Scene Builder</a>
+        &nbsp;&nbsp;&#x2014;&nbsp;&nbsp;
+        GeoQode 8&#x2192;26&#x2192;48:480 &#x2022; realaios.com
+      </p>
+    </footer>
+
+    <script>
+      "use strict";
+      // GeoQode coordinate tag — lattice node 11, 963 Hz NARRATIVE
+      const GEOQODE = {
+        architectureSignature: "8,26,48:480",
+        semanticType: "NARRATIVE",
+        frequency: 963,
+        latticeNode: 11,
+        harmonicNode: 110,
+        phiCoefficient: 1.618,
+        domain: "systems-design",
+        source: "aios-live.html",
+        d48Expansion: "CANONICAL",
+        d480Expansion: "FULL_HARMONIC"
+      };
+      Object.freeze(GEOQODE);
+
+      // Enter VR button
+      const enterBtn = document.getElementById("enterVrBtn");
+      if (enterBtn) {
+        enterBtn.addEventListener("click", () => {
+          const scene = document.querySelector("a-scene");
+          if (scene && scene.enterVR) {
+            scene.enterVR();
+          }
+        });
+      }
+
+      // Log coordinate on load
+      console.log(
+        "[AIOS Live] GeoQode \u2014 Freq: " + GEOQODE.frequency + " Hz | " +
+        "Node: " + GEOQODE.latticeNode + " | " +
+        "Type: " + GEOQODE.semanticType + " | " +
+        "Arch: " + GEOQODE.architectureSignature
+      );
+    </script>
+  </body>
+</html>

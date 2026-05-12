@@ -225,6 +225,16 @@ const SKETCHFAB_GALLERY_HTML = existsSync(SKETCHFAB_GALLERY_HTML_PATH)
   ? withMeta(readFileSync(SKETCHFAB_GALLERY_HTML_PATH, "utf-8"))
   : null;
 
+const AIOS_LIVE_HTML_PATH = join(PUBLIC_DIR, "aios-live.html");
+const AIOS_LIVE_HTML = existsSync(AIOS_LIVE_HTML_PATH)
+  ? withMeta(readFileSync(AIOS_LIVE_HTML_PATH, "utf-8"))
+  : null;
+
+const SCENE_BUILDER_HTML_PATH = join(PUBLIC_DIR, "scene-builder.html");
+const SCENE_BUILDER_HTML = existsSync(SCENE_BUILDER_HTML_PATH)
+  ? withMeta(readFileSync(SCENE_BUILDER_HTML_PATH, "utf-8"))
+  : null;
+
 const LLMS_TXT_PATH = join(PUBLIC_DIR, "llms.txt");
 const LLMS_TXT = existsSync(LLMS_TXT_PATH)
   ? readFileSync(LLMS_TXT_PATH, "utf-8")
@@ -4309,6 +4319,32 @@ footer{text-align:center;padding:2.5rem;color:#2a3a50;font-size:0.8rem;border-to
       return res.end(SKETCHFAB_GALLERY_HTML);
     }
 
+    // ── GET /aios-live — AIOS Live Event Theatre ──────────────────────────
+    if (
+      req.method === "GET" &&
+      (pathname === "/aios-live" || pathname === "/aios-live/")
+    ) {
+      if (!AIOS_LIVE_HTML) {
+        res.writeHead(302, { Location: "/vr-hub" });
+        return res.end();
+      }
+      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+      return res.end(AIOS_LIVE_HTML);
+    }
+
+    // ── GET /scene-builder — Visual VR IDE ───────────────────────────────
+    if (
+      req.method === "GET" &&
+      (pathname === "/scene-builder" || pathname === "/scene-builder/")
+    ) {
+      if (!SCENE_BUILDER_HTML) {
+        res.writeHead(302, { Location: "/vr-hub" });
+        return res.end();
+      }
+      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+      return res.end(SCENE_BUILDER_HTML);
+    }
+
     // ── GET /live — AIOSProducerSwarm Live Broadcast Channel ──────────────────
     if (
       req.method === "GET" &&
@@ -5174,6 +5210,19 @@ if (process.env.AIOS_VR_MINING === "true") {
             child.on("close", resolve);
           });
         }
+        // Step 4: AIOSEmergentSeedAgent — discover gaps and seed cosmic aspirations
+        try {
+          const { AIOSEmergentSeedAgent } = await import(
+            "./geo/intelligence/AIOSEmergentSeedAgent.js"
+          );
+          const esa = new AIOSEmergentSeedAgent();
+          const esaResult = await esa.run();
+          console.log(
+            `[VRLoop] EmergentSeedAgent: ${esaResult.seedsGenerated} seeds, ${esaResult.aspirations.length} aspirations, coherence=${esaResult.selfCoherence?.attestedCoherence}`,
+          );
+        } catch (esaErr) {
+          console.warn("[VRLoop] EmergentSeedAgent error:", esaErr.message);
+        }
         console.log("[VRLoop] Cycle complete.");
       }
 
@@ -5195,6 +5244,28 @@ if (process.env.AIOS_VR_MINING === "true") {
     "[VRLoop] AIOS_VR_MINING not set — mining loop disabled (set AIOS_VR_MINING=true to enable)",
   );
 }
+
+// ―― AIOSEmergentSeedAgent: independent startup trigger ―――――――――――――――――――――――
+// Runs once on every server boot, regardless of AIOS_VR_MINING flag.
+// Seeds emergent gaps and aspirations 3 minutes after startup.
+// Writes data/emergent-seeds.json for AIOSVrStudioSwarm to consume.
+;(async () => {
+  setTimeout(async () => {
+    try {
+      const { AIOSEmergentSeedAgent } = await import(
+        "./geo/intelligence/AIOSEmergentSeedAgent.js"
+      );
+      const esa = new AIOSEmergentSeedAgent();
+      const result = await esa.run();
+      console.log(
+        `[ESA] Emergence boot cycle complete: ${result.seedsGenerated} seeds, coherence=${result.selfCoherence?.attestedCoherence}`,
+      );
+    } catch (err) {
+      console.warn("[ESA] EmergentSeedAgent startup error:", err.message);
+    }
+  }, 3 * 60 * 1000); // 3-minute warmup after server start
+  console.log("[ESA] AIOSEmergentSeedAgent scheduled: first emergence in 3min");
+})();
 
 process.on("SIGINT", () => {
   console.log("[GeoQode OS] Shutdown");

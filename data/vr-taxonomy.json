@@ -574,10 +574,10 @@
         {
           "id": "aios-live",
           "display": "AIOS Live — Event Theatre",
-          "status": "coming",
-          "version": null,
-          "vrUrl": null,
-          "flatUrl": null,
+          "status": "live",
+          "version": "1.0.0",
+          "vrUrl": "/aios-live",
+          "flatUrl": "/aios-live",
           "semanticType": "NARRATIVE",
           "frequencyHz": 963,
           "latticeNode": 11,
@@ -588,7 +588,7 @@
           "questCompatible": true,
           "flatCompatible": true,
           "estimatedDuration": "varies",
-          "releaseDate": "2026-Q4"
+          "releaseDate": "2026-05"
         },
         {
           "id": "creator-collab",
@@ -682,10 +682,10 @@
         {
           "id": "scene-builder",
           "display": "Scene Builder — Visual VR IDE",
-          "status": "coming",
-          "version": null,
-          "vrUrl": null,
-          "flatUrl": null,
+          "status": "live",
+          "version": "1.0.0",
+          "vrUrl": "/scene-builder",
+          "flatUrl": "/scene-builder",
           "semanticType": "ACTION",
           "frequencyHz": 528,
           "latticeNode": 8,
@@ -696,7 +696,7 @@
           "questCompatible": false,
           "flatCompatible": true,
           "estimatedDuration": "open-ended",
-          "releaseDate": "2026-Q3"
+          "releaseDate": "2026-05"
         },
         {
           "id": "aios-asset-store",
