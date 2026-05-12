@@ -254,7 +254,7 @@
       <div class="success-view" id="success-view">
         <div class="success-icon">✓</div>
         <h2>Account created!</h2>
-        <p>Welcome to AIOS. Taking you to PLAIStore…</p>
+        <p>Welcome to AIOS. Taking you to VR Hub…</p>
       </div>
     </div>
 
@@ -273,16 +273,16 @@
           errEl.classList.remove("show");
         }
 
-        // If already logged in, go straight to PLAIStore
+        // If already logged in, go straight to VR Hub
         if (localStorage.getItem("plai_jwt")) {
-          window.location.replace("/plaistore");
+          window.location.replace("/vr-hub");
           return;
         }
 
         // Check for redirect param
         var redirectTo =
           new URLSearchParams(window.location.search).get("redirect") ||
-          "/plaistore";
+          "/vr-hub";
 
         btn.addEventListener("click", async function () {
           hideError();

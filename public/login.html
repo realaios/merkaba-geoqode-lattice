@@ -228,15 +228,15 @@
           errEl.classList.remove("show");
         }
 
-        // If already logged in, go straight to PLAIStore
+        // If already logged in, go straight to VR Hub
         if (localStorage.getItem("plai_jwt")) {
-          window.location.replace("/plaistore");
+          window.location.replace("/vr-hub");
           return;
         }
 
         var redirectTo =
           new URLSearchParams(window.location.search).get("redirect") ||
-          "/plaistore";
+          "/vr-hub";
 
         btn.addEventListener("click", async function () {
           hideError();
