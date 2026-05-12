@@ -491,11 +491,8 @@
       renderer="antialias: true; colorManagement: true"
       fog="type: linear; color: #000820; near: 130; far: 340"
     >
-      <!-- Real Poly Haven deep space sky -->
-      <a-sky
-        src="/public/geoassets/skies/deep_space_sky.jpg"
-        rotation="0 90 0"
-      ></a-sky>
+      <!-- Deep space sky - solid color to ensure reliable rendering -->
+      <a-sky color="#010818"></a-sky>
 
       <!-- Lighting rig -->
       <a-light type="ambient" color="#04080f" intensity="0.5"></a-light>
