@@ -1118,23 +1118,23 @@
           id="btn-record"
           onclick="toggleRecord()"
           title="Record"
-        >&#x25CF;</button>
+        >
+          &#x25CF;
+        </button>
         <button
           class="music-btn"
           id="btn-play-loop"
           onclick="toggleLoop()"
           title="Loop"
-        >&#x21BB;</button>
-        <button
-          class="music-btn"
-          onclick="changeScale()"
-          title="Scale"
-        >&#x25C8;</button>
-        <button
-          class="music-btn"
-          onclick="changeOctave()"
-          title="Octave"
-        >&#x2195;</button>
+        >
+          &#x21BB;
+        </button>
+        <button class="music-btn" onclick="changeScale()" title="Scale">
+          &#x25C8;
+        </button>
+        <button class="music-btn" onclick="changeOctave()" title="Octave">
+          &#x2195;
+        </button>
       </div>
     </div>
 
@@ -1247,7 +1247,7 @@
 
       // --- SETTINGS STATE --------------------------------------------------------
       const SETTINGS = {
-        sound: true,
+        sound: false,
         particles: true,
         thoughts: true,
         theme: "dark",

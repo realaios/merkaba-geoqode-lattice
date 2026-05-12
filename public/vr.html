@@ -2697,25 +2697,8 @@
         );
       }
 
-      function startAmbientTone(hz) {
-        try {
-          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-          const gainNode = audioCtx.createGain();
-          gainNode.gain.setValueAtTime(0.04, audioCtx.currentTime);
-          oscillator = audioCtx.createOscillator();
-          oscillator.type = "sine";
-          oscillator.frequency.setValueAtTime(hz, audioCtx.currentTime);
-          oscillator.connect(gainNode);
-          gainNode.connect(audioCtx.destination);
-          oscillator.start();
-        } catch (_) {}
-      }
-
+      function startAmbientTone() {} // audio disabled — oscillator tones removed
       function stopAmbientTone() {
-        try {
-          oscillator && oscillator.stop();
-          audioCtx && audioCtx.close();
-        } catch (_) {}
         oscillator = null;
         audioCtx = null;
       }

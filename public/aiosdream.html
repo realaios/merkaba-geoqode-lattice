@@ -10848,6 +10848,7 @@
       }
 
       function startAmbientAudio(progId) {
+        return; // audio disabled — oscillator tones removed for UX
         try {
           _ensureAudio();
           stopAmbientAudio();
@@ -11122,6 +11123,7 @@
         }
       }
       function _startBinaural(progId) {
+        return; // audio disabled — oscillator tones removed for UX
         _stopBinaural();
         if (!_audioCtx) return;
         const cfg = PROG_AUDIO_CFG[progId] || PROG_AUDIO_CFG.merkaba;

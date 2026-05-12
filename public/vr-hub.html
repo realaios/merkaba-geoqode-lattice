@@ -3186,8 +3186,9 @@
         _xpACtx = new (window.AudioContext || window.webkitAudioContext)();
       }
 
-      // XP card hover tone · PHI-frequency sweep, stereo-panned
-      function _xpHoverTone(hz) {
+      // XP card hover tone — disabled, oscillator tones removed
+      function _xpHoverTone() {} // audio disabled
+      function _playVrSting_disabled(hz) {
         try {
           _ensureXpAudio();
           if (_xpACtx.state === "suspended") _xpACtx.resume();
@@ -3252,8 +3253,11 @@
           });
       })();
 
-      // VR entry audio sting · rising dual-sine sweep
+      // VR entry audio sting — disabled, oscillator tones removed for UX
       function _playVrSting() {
+        return;
+      } // audio disabled
+      function _playVrSting_orig_disabled() {
         try {
           _ensureXpAudio();
           var ctx = _xpACtx;
