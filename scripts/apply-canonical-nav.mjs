@@ -50,7 +50,7 @@ ${links}
       </div>
       <div class="site-nav-right">
         <a href="/live" class="site-nav-live">● LIVE</a>
-        <a href="/start" class="site-nav-cta">Start Free →</a>
+        <a href="/login" class="site-nav-cta">Login</a>
       </div>
     </nav>`;
 }
