@@ -220,6 +220,11 @@ const HANDSHAKE_HTML = existsSync(HANDSHAKE_HTML_PATH)
   ? withMeta(readFileSync(HANDSHAKE_HTML_PATH, "utf-8"))
   : null;
 
+const SKETCHFAB_GALLERY_HTML_PATH = join(PUBLIC_DIR, "sketchfab-gallery.html");
+const SKETCHFAB_GALLERY_HTML = existsSync(SKETCHFAB_GALLERY_HTML_PATH)
+  ? withMeta(readFileSync(SKETCHFAB_GALLERY_HTML_PATH, "utf-8"))
+  : null;
+
 const LLMS_TXT_PATH = join(PUBLIC_DIR, "llms.txt");
 const LLMS_TXT = existsSync(LLMS_TXT_PATH)
   ? readFileSync(LLMS_TXT_PATH, "utf-8")
@@ -4291,6 +4296,19 @@ footer{text-align:center;padding:2.5rem;color:#2a3a50;font-size:0.8rem;border-to
       return;
     }
 
+    // ── GET /sketchfab-gallery — Interactive 3D model gallery ─────────────
+    if (
+      req.method === "GET" &&
+      (pathname === "/sketchfab-gallery" || pathname === "/sketchfab-gallery/")
+    ) {
+      if (!SKETCHFAB_GALLERY_HTML) {
+        res.writeHead(302, { Location: "/vr-hub" });
+        return res.end();
+      }
+      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+      return res.end(SKETCHFAB_GALLERY_HTML);
+    }
+
     // ── GET /live — AIOSProducerSwarm Live Broadcast Channel ──────────────────
     if (
       req.method === "GET" &&
@@ -4338,6 +4356,56 @@ footer{text-align:center;padding:2.5rem;color:#2a3a50;font-size:0.8rem;border-to
         };
         res.writeHead(200, {
           "Content-Type": "application/json; charset=utf-8",
+        });
+        return res.end(JSON.stringify(payload));
+      } catch (err) {
+        res.writeHead(500, { "Content-Type": "application/json" });
+        return res.end(JSON.stringify({ error: err.message }));
+      }
+    }
+
+    // ── GET /api/vr/sketchfab-models — Mined Sketchfab model list ────────
+    if (req.method === "GET" && pathname === "/api/vr/sketchfab-models") {
+      try {
+        const minedPath = join(__dirname_static, "data", "mined-assets.json");
+        const minedData = existsSync(minedPath)
+          ? JSON.parse(readFileSync(minedPath, "utf8"))
+          : { assets: [] };
+        const assets = minedData.assets || [];
+        const models = assets
+          .filter((a) => a.source === "sketchfab" && a.sketchfabUid)
+          .map((a) => ({
+            sketchfabUid: a.sketchfabUid,
+            title: a.title || "Untitled Model",
+            description: a.description || "",
+            embedUrl: a.embedUrl || ("https://sketchfab.com/models/" + a.sketchfabUid + "/embed"),
+            thumbnailUrl: a.thumbnailUrl || null,
+            license: a.license || "cc by 4.0",
+            tags: a.tags || [],
+            viewCount: a.viewCount || 0,
+            likeCount: a.likeCount || 0,
+            suitability: a.suitability || 0,
+            format: a.format || "gltf",
+            dateAdded: a.dateCreated || null,
+          }))
+          .sort((a, b) => (b.likeCount || 0) - (a.likeCount || 0));
+        const payload = {
+          models,
+          total: models.length,
+          geoCoordinate: {
+            architectureSignature: "8,26,48:480",
+            semanticType: "ENTITY",
+            frequency: 396,
+            latticeNode: 18,
+            harmonicNode: 180,
+            phiCoefficient: 1.618,
+            domain: "data-structs",
+            source: "sketchfab-models-api",
+          },
+        };
+        res.writeHead(200, {
+          "Content-Type": "application/json; charset=utf-8",
+          "Cache-Control": "public, max-age=300",
         });
         return res.end(JSON.stringify(payload));
       } catch (err) {
