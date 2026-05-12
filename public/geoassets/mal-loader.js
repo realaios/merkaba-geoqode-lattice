@@ -654,6 +654,20 @@ const SKY_IMGS = {
   rural_road_vr: "/geoassets/skies/rural_asphalt_road.jpg",
   autumn_field_vr: "/geoassets/skies/autumn_field_puresky.jpg",
   kiara_studio_vr: "/geoassets/skies/kiara_4_mid-morning.jpg",
+  // Wave 9 — Polyhaven
+  belfast_sunset_vr: "/geoassets/skies/belfast_sunset.jpg",
+  goegap_vr: "/geoassets/skies/goegap.jpg",
+  lauter_waterfall_vr: "/geoassets/skies/lauter_waterfall.jpg",
+  lost_city_vr: "/geoassets/skies/the_lost_city.jpg",
+  chinese_garden_vr: "/geoassets/skies/chinese_garden.jpg",
+  loft_studio_vr: "/geoassets/skies/photo_studio_loft_hall.jpg",
+  kloppenheim_2_vr: "/geoassets/skies/kloppenheim_02.jpg",
+  satara_night_vr: "/geoassets/skies/satara_night.jpg",
+  moonlit_golf_vr: "/geoassets/skies/moonlit_golf.jpg",
+  dreifaltigkeitsberg_vr: "/geoassets/skies/dreifaltigkeitsberg.jpg",
+  spaichingen_hill_vr: "/geoassets/skies/spaichingen_hill.jpg",
+  spruit_sunrise_vr: "/geoassets/skies/spruit_sunrise.jpg",
+  small_hangar_vr: "/geoassets/skies/small_hangar_01.jpg",
 };
 
 function buildEnvironment(env, palette, sceneId) {

@@ -13361,6 +13361,448 @@
         }
       },
       "layers": []
+    },
+    "belfast_sunset_vr": {
+      "id": "belfast_sunset_vr",
+      "title": "Belfast Sunset",
+      "logline": "The Irish city dissolves into amber as the Atlantic light makes its final argument.",
+      "palette": "golden_hour",
+      "sound": "ambient_wind",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "Belfast sunsets are earned — they come after weather.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "30s",
+          "text": "Every shipyard crane becomes a brushstroke at this hour.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "60s",
+          "text": "The Lagan holds the last light longer than anyone expects.",
+          "durationMs": 5000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#e06820"
+        },
+        "fog": {
+          "color": "#c05010",
+          "density": 0.01
+        }
+      },
+      "layers": []
+    },
+    "goegap_vr": {
+      "id": "goegap_vr",
+      "title": "Goegap Nature Reserve",
+      "logline": "Spring flowers carpet the Namaqualand — the desert's annual impossible act.",
+      "palette": "desert_dawn",
+      "sound": "ambient_nature",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "Namaqualand flowers for eight weeks a year. This is one of them.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "30s",
+          "text": "The desert saves colour all year for this single performance.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "60s",
+          "text": "Goegap: proof that restraint can produce spectacle.",
+          "durationMs": 5000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#d0a060"
+        },
+        "fog": {
+          "color": "#b88848",
+          "density": 0.01
+        }
+      },
+      "layers": []
+    },
+    "lauter_waterfall_vr": {
+      "id": "lauter_waterfall_vr",
+      "title": "Lauter Waterfall",
+      "logline": "Swiss mountain water in free fall — gravity as the purest form of commitment.",
+      "palette": "forest",
+      "sound": "ambient_ocean",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "The waterfall has been saying the same thing for ten thousand years.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "30s",
+          "text": "Water doesn't fall — it arrives at a lower state of potential.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "60s",
+          "text": "Standing near a waterfall, even silence becomes audible.",
+          "durationMs": 5000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#60a080"
+        },
+        "fog": {
+          "color": "#508870",
+          "density": 0.018
+        }
+      },
+      "layers": []
+    },
+    "lost_city_vr": {
+      "id": "lost_city_vr",
+      "title": "The Lost City",
+      "logline": "Ruins reclaimed by jungle — the architecture of civilisations that ran out of future.",
+      "palette": "abyss",
+      "sound": "ambient_nature",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "Every lost city was once someone's only city.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "30s",
+          "text": "The jungle does not conquer ruins — it volunteers to be their memory.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "60s",
+          "text": "What we call lost, the earth calls returned.",
+          "durationMs": 5000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#304820"
+        },
+        "fog": {
+          "color": "#203810",
+          "density": 0.025
+        }
+      },
+      "layers": []
+    },
+    "chinese_garden_vr": {
+      "id": "chinese_garden_vr",
+      "title": "Classical Chinese Garden",
+      "logline": "Stone, water, pavilion — a philosophy compressed into a courtyard.",
+      "palette": "forest",
+      "sound": "ambient_nature",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "Chinese gardens are arguments made in stone and water.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "30s",
+          "text": "Every rock placement is a decision that took ten years to make.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "60s",
+          "text": "The garden is the landscape distilled to its essential conversation.",
+          "durationMs": 5000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#70a860"
+        },
+        "fog": {
+          "color": "#609050",
+          "density": 0.012
+        }
+      },
+      "layers": []
+    },
+    "loft_studio_vr": {
+      "id": "loft_studio_vr",
+      "title": "Loft Photography Hall",
+      "logline": "High-ceilinged industrial space converted into a light-flooded creative arena.",
+      "palette": "simulation",
+      "sound": "ambient_indoor",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "The loft hall remembers when it made things. Now it makes images.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "30s",
+          "text": "High ceilings tell the light it has permission to spread out.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "60s",
+          "text": "Every converted industrial space carries its past use as atmosphere.",
+          "durationMs": 5000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#d0c8b8"
+        },
+        "fog": {
+          "color": "#c0b8a8",
+          "density": 0.004
+        }
+      },
+      "layers": []
+    },
+    "kloppenheim_2_vr": {
+      "id": "kloppenheim_2_vr",
+      "title": "Kloppenheim Heights",
+      "logline": "A second view over the German village — the same cobblestones, different light.",
+      "palette": "golden_hour",
+      "sound": "ambient_village",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "The same village seen from a different angle is a different village.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "30s",
+          "text": "Perspective is the cheapest form of travel available.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "60s",
+          "text": "Kloppenheim has more angles than it has residents.",
+          "durationMs": 5000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#e8b840"
+        },
+        "fog": {
+          "color": "#d0a030",
+          "density": 0.008
+        }
+      },
+      "layers": []
+    },
+    "satara_night_vr": {
+      "id": "satara_night_vr",
+      "title": "Satara After Dark",
+      "logline": "Kruger National Park's Satara camp under a dome of southern stars.",
+      "palette": "abyss",
+      "sound": "ambient_night",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "Satara at night belongs entirely to what cannot be seen.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "30s",
+          "text": "The darkness here is not absence — it is presence at maximum concentration.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "60s",
+          "text": "In Kruger, the night watches you back.",
+          "durationMs": 5000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#080c18"
+        },
+        "fog": {
+          "color": "#060810",
+          "density": 0.022
+        }
+      },
+      "layers": []
+    },
+    "moonlit_golf_vr": {
+      "id": "moonlit_golf_vr",
+      "title": "Moonlit Golf Course",
+      "logline": "Fairways silver under a full moon — the game continues without permission.",
+      "palette": "abyss",
+      "sound": "ambient_night",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "Golf at night is either philosophy or stubbornness. Both work.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "30s",
+          "text": "The moon illuminates the fairway without asking what par is.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "60s",
+          "text": "Under moonlight, every course becomes a meditation on patience.",
+          "durationMs": 5000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#10203a"
+        },
+        "fog": {
+          "color": "#0c1828",
+          "density": 0.018
+        }
+      },
+      "layers": []
+    },
+    "dreifaltigkeitsberg_vr": {
+      "id": "dreifaltigkeitsberg_vr",
+      "title": "Dreifaltigkeitsberg Summit",
+      "logline": "The Trinity Mountain of Germany — a pilgrimage site floating above the Rhine plain.",
+      "palette": "forest",
+      "sound": "ambient_wind",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "The mountain is named for the Trinity — three peaks, one conviction.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "30s",
+          "text": "Pilgrimage peaks always have a view that justifies the climb.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "60s",
+          "text": "From Dreifaltigkeitsberg, the Rhine looks like a sentence trailing off.",
+          "durationMs": 5000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#80a870"
+        },
+        "fog": {
+          "color": "#6a9060",
+          "density": 0.01
+        }
+      },
+      "layers": []
+    },
+    "spaichingen_hill_vr": {
+      "id": "spaichingen_hill_vr",
+      "title": "Spaichingen Hillside",
+      "logline": "The rolling Swabian hills above Spaichingen — Germany's quietly magnificent interior.",
+      "palette": "forest",
+      "sound": "ambient_wind",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "Swabian hills don't perform grandeur — they simply persist magnificently.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "30s",
+          "text": "These hills have been farmed for two thousand years without complaint.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "60s",
+          "text": "From Spaichingen's heights, even the horizon seems locally sourced.",
+          "durationMs": 5000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#90b870"
+        },
+        "fog": {
+          "color": "#78a058",
+          "density": 0.009
+        }
+      },
+      "layers": []
+    },
+    "spruit_sunrise_vr": {
+      "id": "spruit_sunrise_vr",
+      "title": "Spruit Sunrise",
+      "logline": "A South African stream at first light — the land waking by degrees.",
+      "palette": "golden_hour",
+      "sound": "ambient_nature",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "The spruit carries yesterday's rain toward tomorrow's sea.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "30s",
+          "text": "Dawn on a South African stream arrives with the sound of everything beginning.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "60s",
+          "text": "Light on moving water is the oldest conversation in the world.",
+          "durationMs": 5000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#f0a030"
+        },
+        "fog": {
+          "color": "#d88820",
+          "density": 0.009
+        }
+      },
+      "layers": []
+    },
+    "small_hangar_vr": {
+      "id": "small_hangar_vr",
+      "title": "Small Aircraft Hangar",
+      "logline": "A private aerodrome hangar where small planes dream of larger distances.",
+      "palette": "simulation",
+      "sound": "ambient_hum",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "Every small plane in this hangar has a pilot who believes in its potential.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "30s",
+          "text": "Hangars smell like aviation fuel and unfinished plans.",
+          "durationMs": 5000
+        },
+        {
+          "trigger": "60s",
+          "text": "The door opens outward. That is the whole philosophy.",
+          "durationMs": 5000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#a8b8c8"
+        },
+        "fog": {
+          "color": "#98a8b8",
+          "density": 0.006
+        }
+      },
+      "layers": []
     }
   }
 }
