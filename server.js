@@ -1337,6 +1337,35 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
       });
     }
 
+    // ── GET /vendor/* — alias for /public/vendor/* (legacy pages use this path)
+    if (req.method === "GET" && pathname.startsWith("/vendor/")) {
+      const safeSuffix = ("vendor/" + pathname.slice("/vendor/".length))
+        .replace(/\\/g, "/")
+        .replace(/^\/+/, "");
+      if (!safeSuffix || safeSuffix.includes("..")) {
+        return json(res, 400, { ok: false, error: "Invalid path" });
+      }
+      const filePath = resolve(PUBLIC_DIR, safeSuffix);
+      const relPath = relative(PUBLIC_DIR, filePath);
+      if (!relPath || relPath.startsWith("..") || relPath.includes(`..${sep}`)) {
+        return json(res, 400, { ok: false, error: "Invalid path" });
+      }
+      if (existsSync(filePath)) {
+        const ext = extname(filePath);
+        const mime = MIME_TYPES[ext];
+        if (!mime) return json(res, 400, { ok: false, error: "Invalid path: extension not allowed" });
+        const fileBuffer = readFileSync(filePath);
+        res.writeHead(200, {
+          "Content-Type": mime,
+          "Cache-Control": "public, max-age=31536000, immutable",
+          "X-Content-Type-Options": "nosniff",
+        });
+        res.end(fileBuffer);
+        return;
+      }
+      return json(res, 404, { ok: false, error: "Static file not found" });
+    }
+
     // ── GET /public/* — static files ──────────────────────────────────────
     if (req.method === "GET" && pathname.startsWith("/public/")) {
       const safeSuffix = pathname
