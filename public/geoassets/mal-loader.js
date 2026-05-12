@@ -575,6 +575,22 @@ const SKY_IMGS = {
   church_square_vr: "/geoassets/skies/church_square.jpg",
   railway_bridge_vr: "/geoassets/skies/railway_bridge.jpg",
   ornate_gardens_vr: "/geoassets/skies/ornate_gardens.jpg",
+  // Wave 4 — existing sky files, new scenes
+  abandoned_factory_vr:    "/geoassets/skies/abandoned_factory.jpg",
+  arctic_tundra_vr:        "/geoassets/skies/arctic_tundra.jpg",
+  city_night_streets_vr:   "/geoassets/skies/city_night_streets.jpg",
+  colosseum_time_gate_vr:  "/geoassets/skies/colosseum_time_gate.jpg",
+  deep_space_vr:           "/geoassets/skies/deep_space_sky.jpg",
+  dikhololo_night_vr:      "/geoassets/skies/dikhololo_night.jpg",
+  football_stadium_vr:     "/geoassets/skies/football_stadium.jpg",
+  forest_528hz_vr:         "/geoassets/skies/forest_528.jpg",
+  gothic_cathedral_vr:     "/geoassets/skies/gothic_cathedral.jpg",
+  grand_canyon_vr:         "/geoassets/skies/grand_canyon.jpg",
+  leadenhall_market_vr:    "/geoassets/skies/leadenhall_market.jpg",
+  moon_lab_vr:             "/geoassets/skies/moon_lab.jpg",
+  moonlit_night_vr:        "/geoassets/skies/moonlit_night.jpg",
+  ocean_beach_vr:          "/geoassets/skies/ocean_beach.jpg",
+  volcanic_summit_vr:      "/geoassets/skies/volcanic_summit.jpg",
 };
 
 function buildEnvironment(env, palette, sceneId) {

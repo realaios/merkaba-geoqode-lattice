@@ -9639,6 +9639,1561 @@
           }
         }
       ]
+    },
+    "abandoned_factory_vr": {
+      "id": "abandoned_factory_vr",
+      "title": "Abandoned Factory — Industrial Ruins",
+      "logline": "A derelict industrial plant, silent machines frozen in time. Rust and memory.",
+      "palette": "simulation",
+      "sound": "ambient_city",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "At its peak, this factory employed 4,000 workers across three shifts.\nThe last worker clocked out in 1987. The machines have not moved since.\nSilence has a texture in places like this.",
+          "durationMs": 8000
+        },
+        {
+          "trigger": "step_1",
+          "text": "Rust is iron returning to its natural state.\nMetal remembers what it once was — ore pulled from the earth.\nDecay is not failure. It is completion.",
+          "durationMs": 8000
+        },
+        {
+          "trigger": "step_2",
+          "text": "Industrial ruins are the cathedrals of a departed civilization.\nWe built these places with the same conviction ancient Romans built their forums.\nFuture archaeologists will study them with equal reverence.",
+          "durationMs": 9000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#0a0a0a"
+        },
+        "fog": {
+          "color": "#1c1917",
+          "density": 0.02
+        }
+      },
+      "layers": [
+        {
+          "id": "factory_floor",
+          "label": "Cracked concrete factory floor",
+          "type": "plane",
+          "w": 200,
+          "h": 200,
+          "position": [
+            0,
+            0,
+            -40
+          ],
+          "rotation": [
+            -90,
+            0,
+            0
+          ],
+          "material": {
+            "color": "#292524",
+            "roughness": 1
+          }
+        },
+        {
+          "id": "factory_pillars",
+          "label": "Corroded steel support columns",
+          "count": 16,
+          "spread": {
+            "x": "-30 30",
+            "z": "-60 -5"
+          },
+          "element": {
+            "type": "cylinder",
+            "r_range": "0.4 0.6",
+            "h_range": "12 18",
+            "y_offset": "half_height",
+            "material": {
+              "color": "#44403c",
+              "roughness": 1
+            }
+          }
+        },
+        {
+          "id": "debris_piles",
+          "label": "Scrap metal and rubble",
+          "count": 30,
+          "spread": {
+            "x": "-40 40",
+            "z": "-70 -3"
+          },
+          "element": {
+            "type": "box",
+            "w_range": "0.5 3",
+            "h_range": "0.2 1.5",
+            "d_range": "0.5 2",
+            "y_offset": "half_height",
+            "material": {
+              "color": "#78716c",
+              "roughness": 1
+            }
+          }
+        }
+      ]
+    },
+    "arctic_tundra_vr": {
+      "id": "arctic_tundra_vr",
+      "title": "Arctic Tundra — Polar Expanse",
+      "logline": "Endless white flatlands under a steel sky. The frozen edge of the world.",
+      "palette": "arctic",
+      "sound": "ambient_wind",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "The Arctic tundra covers 5.5 million square miles.\nIn summer, the sun never sets. In winter, it never rises.\nTime itself loses meaning at the poles.",
+          "durationMs": 8000
+        },
+        {
+          "trigger": "step_1",
+          "text": "Permafrost beneath the tundra has been frozen for 10,000 years.\nIt stores 1.7 trillion tonnes of carbon — twice the amount currently in our atmosphere.\nThe ground itself is a climate archive.",
+          "durationMs": 9000
+        },
+        {
+          "trigger": "step_2",
+          "text": "Arctic foxes change colour with the seasons: white in winter, brown in summer.\nSome populations have a third colour morph called 'blue'.\nAdaptation is the deepest form of intelligence.",
+          "durationMs": 8000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#cbd5e1"
+        },
+        "fog": {
+          "color": "#e2e8f0",
+          "density": 0.008
+        }
+      },
+      "layers": [
+        {
+          "id": "snow_plain",
+          "label": "Flat arctic snow plain",
+          "type": "plane",
+          "w": 400,
+          "h": 400,
+          "position": [
+            0,
+            0,
+            -80
+          ],
+          "rotation": [
+            -90,
+            0,
+            0
+          ],
+          "material": {
+            "color": "#f1f5f9",
+            "roughness": 1
+          }
+        },
+        {
+          "id": "ice_boulders",
+          "label": "Frozen ice boulders",
+          "count": 20,
+          "spread": {
+            "x": "-60 60",
+            "z": "-120 -5"
+          },
+          "element": {
+            "type": "sphere",
+            "r_range": "0.5 3",
+            "y_offset": "half_height",
+            "material": {
+              "color": "#bfdbfe",
+              "roughness": 0.3,
+              "metalness": 0.1
+            }
+          }
+        },
+        {
+          "id": "snow_drifts",
+          "label": "Wind-sculpted snow drifts",
+          "count": 15,
+          "spread": {
+            "x": "-50 50",
+            "z": "-100 -5"
+          },
+          "element": {
+            "type": "box",
+            "w_range": "2 8",
+            "h_range": "0.5 1.5",
+            "d_range": "4 12",
+            "y_offset": "half_height",
+            "material": {
+              "color": "#e2e8f0",
+              "roughness": 1
+            }
+          }
+        }
+      ]
+    },
+    "city_night_streets_vr": {
+      "id": "city_night_streets_vr",
+      "title": "City Night Streets — Urban Pulse",
+      "logline": "Rain-slicked streets under sodium streetlights. The city breathes after dark.",
+      "palette": "quantum",
+      "sound": "ambient_city",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "More than half of all humans now live in cities.\nFor the first time in history, we are an urban species.\nThe city is our new nature.",
+          "durationMs": 7000
+        },
+        {
+          "trigger": "step_1",
+          "text": "Wet asphalt reflects light at 300% efficiency compared to dry.\nThis is why rain-soaked city streets look more beautiful than dry ones.\nThe world improves when it rains.",
+          "durationMs": 8000
+        },
+        {
+          "trigger": "step_2",
+          "text": "Edward Hopper painted empty late-night diners to capture urban loneliness.\nNighttime city scenes carry an emotional charge that daylight cannot.\nDarkness reveals what light conceals.",
+          "durationMs": 9000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#0f0f23"
+        },
+        "fog": {
+          "color": "#1e1b4b",
+          "density": 0.025
+        }
+      },
+      "layers": [
+        {
+          "id": "wet_street",
+          "label": "Rain-slicked asphalt road",
+          "type": "plane",
+          "w": 120,
+          "h": 200,
+          "position": [
+            0,
+            0,
+            -40
+          ],
+          "rotation": [
+            -90,
+            0,
+            0
+          ],
+          "material": {
+            "color": "#1c1917",
+            "roughness": 0.3,
+            "metalness": 0.4
+          }
+        },
+        {
+          "id": "street_lamps",
+          "label": "Sodium streetlight poles",
+          "count": 12,
+          "spread": {
+            "x": "-20 20",
+            "z": "-80 -5"
+          },
+          "element": {
+            "type": "cylinder",
+            "r_range": "0.08 0.1",
+            "h_range": "6 8",
+            "y_offset": "half_height",
+            "material": {
+              "color": "#374151",
+              "roughness": 1,
+              "emissive": "#fbbf24",
+              "emissiveIntensity": 0.3
+            }
+          }
+        },
+        {
+          "id": "building_facades",
+          "label": "Dark building facades",
+          "count": 10,
+          "spread": {
+            "x": "-50 50",
+            "z": "-100 -20"
+          },
+          "element": {
+            "type": "box",
+            "w_range": "8 20",
+            "h_range": "20 50",
+            "d_range": "10 15",
+            "y_offset": "half_height",
+            "material": {
+              "color": "#111827",
+              "roughness": 1
+            }
+          }
+        }
+      ]
+    },
+    "colosseum_time_gate_vr": {
+      "id": "colosseum_time_gate_vr",
+      "title": "Colosseum Time Gate — Ancient Arena",
+      "logline": "The Colosseum at the golden hour. 2,000 years of stone and shadow.",
+      "palette": "roman_arena",
+      "sound": "ambient_wind",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "The Colosseum was completed in 80 AD and could seat 80,000 spectators.\nIts elliptical design meant every seat had a clear view of the arena floor.\nThe Romans mastered crowd psychology before they mastered architecture.",
+          "durationMs": 9000
+        },
+        {
+          "trigger": "step_1",
+          "text": "The arena floor was called the 'harena' — Latin for sand.\nSand was used to absorb blood. The word 'arena' has never lost its original meaning.\nLanguage remembers what history prefers to forget.",
+          "durationMs": 9000
+        },
+        {
+          "trigger": "step_2",
+          "text": "The Colosseum has been damaged by 4 major earthquakes since it was built.\nHalf of the original structure was quarried for other Roman buildings in the Middle Ages.\nWe build monuments. Then we cannibalise them. Then we mourn their loss.",
+          "durationMs": 10000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#92400e"
+        },
+        "fog": {
+          "color": "#b45309",
+          "density": 0.01
+        }
+      },
+      "layers": [
+        {
+          "id": "arena_sand",
+          "label": "Sand-covered arena floor",
+          "type": "plane",
+          "w": 80,
+          "h": 120,
+          "position": [
+            0,
+            0,
+            -30
+          ],
+          "rotation": [
+            -90,
+            0,
+            0
+          ],
+          "material": {
+            "color": "#d4a253",
+            "roughness": 1
+          }
+        },
+        {
+          "id": "colosseum_arches",
+          "label": "Travertine stone arches",
+          "count": 20,
+          "spread": {
+            "x": "-40 40",
+            "z": "-80 -10"
+          },
+          "element": {
+            "type": "box",
+            "w_range": "2 3",
+            "h_range": "8 15",
+            "d_range": "1 2",
+            "y_offset": "half_height",
+            "material": {
+              "color": "#c4a256",
+              "roughness": 1
+            }
+          }
+        },
+        {
+          "id": "arena_wall",
+          "label": "Outer arena wall",
+          "type": "box",
+          "w": 120,
+          "h": 30,
+          "d": 5,
+          "position": [
+            0,
+            15,
+            -65
+          ],
+          "material": {
+            "color": "#b08438",
+            "roughness": 1
+          }
+        }
+      ]
+    },
+    "deep_space_vr": {
+      "id": "deep_space_vr",
+      "title": "Deep Space — Stellar Void",
+      "logline": "Beyond the heliosphere. Infinite dark punctuated by ancient light.",
+      "palette": "deep_space",
+      "sound": "ambient_cosmic",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "The observable universe is 93 billion light-years in diameter.\nThe light from the most distant stars left before Earth existed.\nWe are surrounded by messages from the past.",
+          "durationMs": 8000
+        },
+        {
+          "trigger": "step_1",
+          "text": "There are more stars in the observable universe than grains of sand on all of Earth's beaches.\nYet space is so vast that the nearest star is 4.24 light-years away.\nAbundance and emptiness coexist at cosmic scale.",
+          "durationMs": 9000
+        },
+        {
+          "trigger": "step_2",
+          "text": "The Voyager 1 probe has been travelling for 47 years and is still inside our solar system.\nTo reach the nearest star at Voyager's speed would take 73,000 years.\nDistance is the universe's primary language.",
+          "durationMs": 9000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#00010a"
+        },
+        "fog": {
+          "color": "#020617",
+          "density": 0.001
+        }
+      },
+      "layers": [
+        {
+          "id": "star_field_near",
+          "label": "Near stellar field",
+          "count": 200,
+          "spread": {
+            "x": "-200 200",
+            "z": "-300 -20",
+            "y": "-100 150"
+          },
+          "element": {
+            "type": "sphere",
+            "r_range": "0.05 0.3",
+            "material": {
+              "color": "#ffffff",
+              "emissive": "#e2e8f0",
+              "emissiveIntensity": 1,
+              "roughness": 0
+            }
+          }
+        },
+        {
+          "id": "nebula_cloud",
+          "label": "Ionized gas nebula",
+          "count": 5,
+          "spread": {
+            "x": "-80 80",
+            "z": "-150 -50",
+            "y": "10 60"
+          },
+          "element": {
+            "type": "sphere",
+            "r_range": "15 35",
+            "material": {
+              "color": "#4c1d95",
+              "opacity": 0.08,
+              "transparent": true,
+              "roughness": 0.5
+            }
+          }
+        },
+        {
+          "id": "distant_galaxy",
+          "label": "Distant spiral galaxy",
+          "type": "sphere",
+          "r": 20,
+          "position": [
+            60,
+            30,
+            -200
+          ],
+          "material": {
+            "color": "#6d28d9",
+            "opacity": 0.15,
+            "transparent": true,
+            "emissive": "#7c3aed",
+            "emissiveIntensity": 0.3
+          }
+        }
+      ]
+    },
+    "dikhololo_night_vr": {
+      "id": "dikhololo_night_vr",
+      "title": "Dikhololo Night — African Twilight",
+      "logline": "A South African reserve at night. Fireflies and stars. The sound of Africa sleeping.",
+      "palette": "abyss",
+      "sound": "ambient_wind",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "Dikhololo is a private game reserve 90km north of Pretoria, South Africa.\nAt night, the Milky Way is fully visible — there is almost no light pollution.\nThe further from cities, the further into time you can see.",
+          "durationMs": 8000
+        },
+        {
+          "trigger": "step_1",
+          "text": "Impala are crepuscular — most active at dawn and dusk.\nThey feed for 30 minutes, then watch for predators for 30 minutes. Continuously.\nVigilance is the price of survival in an open landscape.",
+          "durationMs": 9000
+        },
+        {
+          "trigger": "step_2",
+          "text": "The Milky Way seen from the Southern Hemisphere shows the galactic core.\nYou see the brightest, densest part of our galaxy — not visible from northern latitudes.\nWhere you stand on Earth determines what you can see of the universe.",
+          "durationMs": 9000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#020617"
+        },
+        "fog": {
+          "color": "#0a0a1a",
+          "density": 0.005
+        }
+      },
+      "layers": [
+        {
+          "id": "savanna_floor",
+          "label": "Dry savanna grassland",
+          "type": "plane",
+          "w": 400,
+          "h": 400,
+          "position": [
+            0,
+            0,
+            -80
+          ],
+          "rotation": [
+            -90,
+            0,
+            0
+          ],
+          "material": {
+            "color": "#44403c",
+            "roughness": 1
+          }
+        },
+        {
+          "id": "acacia_trees",
+          "label": "Silhouetted acacia trees",
+          "count": 15,
+          "spread": {
+            "x": "-60 60",
+            "z": "-100 -10"
+          },
+          "element": {
+            "type": "cylinder",
+            "r_range": "0.2 0.4",
+            "h_range": "5 9",
+            "y_offset": "half_height",
+            "material": {
+              "color": "#1c1917",
+              "roughness": 1
+            }
+          }
+        },
+        {
+          "id": "fireflies",
+          "label": "Fireflies",
+          "count": 40,
+          "spread": {
+            "x": "-30 30",
+            "z": "-50 -5",
+            "y": "0.5 3"
+          },
+          "element": {
+            "type": "sphere",
+            "r_range": "0.05 0.1",
+            "material": {
+              "color": "#fef08a",
+              "emissive": "#fde047",
+              "emissiveIntensity": 2,
+              "roughness": 0
+            }
+          }
+        }
+      ]
+    },
+    "football_stadium_vr": {
+      "id": "football_stadium_vr",
+      "title": "Football Stadium — Arena Lights",
+      "logline": "An empty stadium under floodlights. The pitch waits. Anticipation without release.",
+      "palette": "simulation",
+      "sound": "ambient_city",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "Football is played in 200 countries — more than are members of the United Nations.\nIt is the only truly global sport. Every culture plays by the same 17 rules.\nThe pitch is a rare human universal.",
+          "durationMs": 8000
+        },
+        {
+          "trigger": "step_1",
+          "text": "An empty stadium feels larger than a full one.\nWithout the crowd filling the geometry with sound and colour, the architecture becomes pure.\nAbsence reveals structure.",
+          "durationMs": 8000
+        },
+        {
+          "trigger": "step_2",
+          "text": "The Camp Nou in Barcelona holds 99,354 people.\nOn match days, it becomes the 4th largest city in Catalonia.\nTemporary cities assemble and dissolve every two weeks.",
+          "durationMs": 8000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#0a0a12"
+        },
+        "fog": {
+          "color": "#111827",
+          "density": 0.008
+        }
+      },
+      "layers": [
+        {
+          "id": "pitch",
+          "label": "Football pitch turf",
+          "type": "plane",
+          "w": 105,
+          "h": 68,
+          "position": [
+            0,
+            0,
+            -20
+          ],
+          "rotation": [
+            -90,
+            0,
+            0
+          ],
+          "material": {
+            "color": "#15803d",
+            "roughness": 1
+          }
+        },
+        {
+          "id": "pitch_lines",
+          "label": "White pitch markings",
+          "count": 8,
+          "spread": {
+            "x": "-45 45",
+            "z": "-50 10"
+          },
+          "element": {
+            "type": "plane",
+            "w_range": "0.15 80",
+            "h_range": "0.15 0.2",
+            "material": {
+              "color": "#f8fafc",
+              "roughness": 1
+            }
+          }
+        },
+        {
+          "id": "floodlight_towers",
+          "label": "Stadium floodlight towers",
+          "count": 4,
+          "spread": {
+            "x": "-55 55",
+            "z": "-50 10"
+          },
+          "element": {
+            "type": "cylinder",
+            "r_range": "0.5 0.7",
+            "h_range": "35 45",
+            "y_offset": "half_height",
+            "material": {
+              "color": "#9ca3af",
+              "roughness": 0.5,
+              "emissive": "#fef3c7",
+              "emissiveIntensity": 0.8
+            }
+          }
+        }
+      ]
+    },
+    "forest_528hz_vr": {
+      "id": "forest_528hz_vr",
+      "title": "Forest 528Hz — Sacred Grove",
+      "logline": "A sun-dappled forest resonating at 528Hz. Ancient trees. The frequency of restoration.",
+      "palette": "forest",
+      "sound": "ambient_forest",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "528Hz is known as the 'Miracle Tone' — the frequency of transformation and DNA repair.\nForests naturally produce soundscapes in this frequency range through insect and bird calls.\nThe ancient world knew the forest was medicine.",
+          "durationMs": 9000
+        },
+        {
+          "trigger": "step_1",
+          "text": "Trees in a forest communicate through mycorrhizal networks — fungal threads connecting roots.\nA mother tree can send carbon, water, and even chemical defence signals to her offspring.\nThe forest floor is a living internet.",
+          "durationMs": 9000
+        },
+        {
+          "trigger": "step_2",
+          "text": "Shinrin-yoku — 'forest bathing' — is prescribed by Japanese physicians.\nTwo hours in a forest reduces cortisol by 16%, blood pressure by 5%, heart rate by 4%.\nThe dose makes the medicine. And the forest is free.",
+          "durationMs": 9000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#14532d"
+        },
+        "fog": {
+          "color": "#166534",
+          "density": 0.015
+        }
+      },
+      "layers": [
+        {
+          "id": "forest_floor",
+          "label": "Mossy forest floor",
+          "type": "plane",
+          "w": 200,
+          "h": 200,
+          "position": [
+            0,
+            0,
+            -40
+          ],
+          "rotation": [
+            -90,
+            0,
+            0
+          ],
+          "material": {
+            "color": "#15803d",
+            "roughness": 1
+          }
+        },
+        {
+          "id": "tall_trees",
+          "label": "Ancient forest trees",
+          "count": 30,
+          "spread": {
+            "x": "-50 50",
+            "z": "-80 -5"
+          },
+          "element": {
+            "type": "cylinder",
+            "r_range": "0.5 1.2",
+            "h_range": "20 35",
+            "y_offset": "half_height",
+            "material": {
+              "color": "#7c2d12",
+              "roughness": 1
+            }
+          }
+        },
+        {
+          "id": "tree_canopy",
+          "label": "Forest canopy layer",
+          "count": 30,
+          "spread": {
+            "x": "-50 50",
+            "z": "-80 -5",
+            "y": "20 35"
+          },
+          "element": {
+            "type": "sphere",
+            "r_range": "5 12",
+            "material": {
+              "color": "#15803d",
+              "opacity": 0.85,
+              "transparent": true
+            }
+          }
+        },
+        {
+          "id": "light_shafts",
+          "label": "Sunlight shafts through canopy",
+          "count": 8,
+          "spread": {
+            "x": "-20 20",
+            "z": "-60 -10",
+            "y": "0 0"
+          },
+          "element": {
+            "type": "cylinder",
+            "r_range": "0.3 1",
+            "h_range": "20 30",
+            "y_offset": "half_height",
+            "material": {
+              "color": "#fef9c3",
+              "opacity": 0.05,
+              "transparent": true
+            }
+          }
+        }
+      ]
+    },
+    "gothic_cathedral_vr": {
+      "id": "gothic_cathedral_vr",
+      "title": "Gothic Cathedral — Sacred Vaults",
+      "logline": "Inside a medieval cathedral. Light through rose windows. Stone prayers frozen in time.",
+      "palette": "merkaba",
+      "sound": "ambient_cosmic",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "Notre-Dame de Paris took 182 years to build, from 1163 to 1345.\nThe architects who began it would never see it complete.\nCathedrals are built across generations — an act of faith in the future.",
+          "durationMs": 9000
+        },
+        {
+          "trigger": "step_1",
+          "text": "Gothic vaulted ceilings redirect the weight of the stone outward through flying buttresses.\nThis allows walls to become windows — stone dissolves into light.\nThe entire structural system is a philosophy made physical.",
+          "durationMs": 9000
+        },
+        {
+          "trigger": "step_2",
+          "text": "The oldest stained glass in the world is at Augsburg Cathedral, made in 1065 AD.\nGlass is technically a supercooled liquid — it flows imperceptibly over centuries.\nAncient windows are thicker at the bottom than the top.",
+          "durationMs": 9000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#1e1b4b"
+        },
+        "fog": {
+          "color": "#312e81",
+          "density": 0.012
+        }
+      },
+      "layers": [
+        {
+          "id": "cathedral_floor",
+          "label": "Stone cathedral floor",
+          "type": "plane",
+          "w": 30,
+          "h": 100,
+          "position": [
+            0,
+            0,
+            -30
+          ],
+          "rotation": [
+            -90,
+            0,
+            0
+          ],
+          "material": {
+            "color": "#78716c",
+            "roughness": 1
+          }
+        },
+        {
+          "id": "gothic_columns",
+          "label": "Gothic stone columns",
+          "count": 12,
+          "spread": {
+            "x": "-15 15",
+            "z": "-70 -5"
+          },
+          "element": {
+            "type": "cylinder",
+            "r_range": "0.6 0.9",
+            "h_range": "25 35",
+            "y_offset": "half_height",
+            "material": {
+              "color": "#a8a29e",
+              "roughness": 1
+            }
+          }
+        },
+        {
+          "id": "vault_ribs",
+          "label": "Vaulted ceiling ribs",
+          "count": 20,
+          "spread": {
+            "x": "-15 15",
+            "z": "-70 -5",
+            "y": "25 35"
+          },
+          "element": {
+            "type": "sphere",
+            "r_range": "8 15",
+            "material": {
+              "color": "#57534e",
+              "opacity": 0.3,
+              "transparent": true
+            }
+          }
+        },
+        {
+          "id": "altar_light",
+          "label": "Light from rose window",
+          "type": "sphere",
+          "r": 3,
+          "position": [
+            0,
+            10,
+            -80
+          ],
+          "material": {
+            "color": "#7c3aed",
+            "emissive": "#6d28d9",
+            "emissiveIntensity": 0.5,
+            "opacity": 0.4,
+            "transparent": true
+          }
+        }
+      ]
+    },
+    "grand_canyon_vr": {
+      "id": "grand_canyon_vr",
+      "title": "Grand Canyon — Ancient Chasm",
+      "logline": "Standing on the rim of the Grand Canyon. Two billion years of Earth's history in one view.",
+      "palette": "desert_dawn",
+      "sound": "ambient_wind",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "The Grand Canyon is 277 miles long, 18 miles wide, and over a mile deep.\nThe Colorado River has been carving it for 5 to 6 million years.\nBut the rocks at the bottom are 1.8 billion years old.",
+          "durationMs": 8000
+        },
+        {
+          "trigger": "step_1",
+          "text": "Each layer of the canyon wall is a chapter in Earth's history.\nThe Kaibab Limestone at the top was laid down 270 million years ago as a shallow sea.\nThe canyon is a library written in stone.",
+          "durationMs": 9000
+        },
+        {
+          "trigger": "step_2",
+          "text": "The Grand Canyon creates its own weather system.\nTemperature difference between rim and floor can be 30°F.\nThe inner gorge creates its own thunderstorms.\nScale changes physics.",
+          "durationMs": 8000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#7c2d12"
+        },
+        "fog": {
+          "color": "#92400e",
+          "density": 0.005
+        }
+      },
+      "layers": [
+        {
+          "id": "canyon_rim",
+          "label": "Canyon rim plateau",
+          "type": "plane",
+          "w": 300,
+          "h": 300,
+          "position": [
+            0,
+            0,
+            -60
+          ],
+          "rotation": [
+            -90,
+            0,
+            0
+          ],
+          "material": {
+            "color": "#c2410c",
+            "roughness": 1
+          }
+        },
+        {
+          "id": "canyon_walls",
+          "label": "Stratified canyon walls",
+          "count": 6,
+          "spread": {
+            "x": "-80 80",
+            "z": "-120 -20"
+          },
+          "element": {
+            "type": "box",
+            "w_range": "20 40",
+            "h_range": "30 60",
+            "d_range": "10 20",
+            "y_offset": "half_height",
+            "material": {
+              "color": "#b45309",
+              "roughness": 1
+            }
+          }
+        },
+        {
+          "id": "canyon_spires",
+          "label": "Sandstone spires and mesas",
+          "count": 12,
+          "spread": {
+            "x": "-60 60",
+            "z": "-100 -15"
+          },
+          "element": {
+            "type": "cylinder",
+            "r_range": "2 8",
+            "h_range": "20 50",
+            "y_offset": "half_height",
+            "material": {
+              "color": "#dc2626",
+              "roughness": 1
+            }
+          }
+        }
+      ]
+    },
+    "leadenhall_market_vr": {
+      "id": "leadenhall_market_vr",
+      "title": "Leadenhall Market — Victorian Iron",
+      "logline": "London's ornate Victorian market hall. Glass and iron. The 19th century at its most confident.",
+      "palette": "golden_hour",
+      "sound": "ambient_city",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "Leadenhall Market was built in 1881 on the site of the Roman forum of Londinium.\nShoppers today walk on ground that once served as the civic heart of Roman Britain.\nThe city layers its histories like geological strata.",
+          "durationMs": 9000
+        },
+        {
+          "trigger": "step_1",
+          "text": "The market's roof is painted in burgundy, maroon, and cream.\nArchitect Horace Jones used colour to signal wealth and permanence.\nVictorians understood that public spaces are civic theatre.",
+          "durationMs": 8000
+        },
+        {
+          "trigger": "step_2",
+          "text": "Leadenhall Market was used as filming location for Harry Potter's Diagon Alley.\nFiction often returns to Victorian iron and glass for its vision of the magical.\nSome architecture already looks like another world.",
+          "durationMs": 8000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#78350f"
+        },
+        "fog": {
+          "color": "#92400e",
+          "density": 0.015
+        }
+      },
+      "layers": [
+        {
+          "id": "market_floor",
+          "label": "Victorian market cobblestone floor",
+          "type": "plane",
+          "w": 20,
+          "h": 80,
+          "position": [
+            0,
+            0,
+            -20
+          ],
+          "rotation": [
+            -90,
+            0,
+            0
+          ],
+          "material": {
+            "color": "#78716c",
+            "roughness": 1
+          }
+        },
+        {
+          "id": "iron_columns",
+          "label": "Ornate cast iron columns",
+          "count": 16,
+          "spread": {
+            "x": "-10 10",
+            "z": "-60 -5"
+          },
+          "element": {
+            "type": "cylinder",
+            "r_range": "0.15 0.25",
+            "h_range": "8 12",
+            "y_offset": "half_height",
+            "material": {
+              "color": "#7f1d1d",
+              "roughness": 0.5
+            }
+          }
+        },
+        {
+          "id": "glass_roof",
+          "label": "Victorian glass and iron roof",
+          "type": "box",
+          "w": 25,
+          "h": 1,
+          "d": 80,
+          "position": [
+            0,
+            12,
+            -30
+          ],
+          "material": {
+            "color": "#bae6fd",
+            "opacity": 0.3,
+            "transparent": true,
+            "roughness": 0
+          }
+        },
+        {
+          "id": "shop_facades",
+          "label": "Victorian shop facades",
+          "count": 8,
+          "spread": {
+            "x": "-12 12",
+            "z": "-60 -5"
+          },
+          "element": {
+            "type": "box",
+            "w_range": "6 10",
+            "h_range": "6 9",
+            "d_range": "2 3",
+            "y_offset": "half_height",
+            "material": {
+              "color": "#7c2d12",
+              "roughness": 1
+            }
+          }
+        }
+      ]
+    },
+    "moon_lab_vr": {
+      "id": "moon_lab_vr",
+      "title": "Moon Laboratory — Lunar Research",
+      "logline": "A lunar research base on the moon's surface. Earth rises above the crater rim.",
+      "palette": "orbital",
+      "sound": "ambient_cosmic",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "The moon has no atmosphere. Sound cannot travel. It is the most silent place reachable by humans.\nThe only sounds an astronaut hears are inside their own suit.\nSilence at this scale is a different substance.",
+          "durationMs": 9000
+        },
+        {
+          "trigger": "step_1",
+          "text": "The lunar surface has been undisturbed for 3 billion years in most places.\nAstronaut footprints from 1969 are still perfectly preserved.\nWithout weather, history is literally written in the ground.",
+          "durationMs": 9000
+        },
+        {
+          "trigger": "step_2",
+          "text": "A lunar day lasts 29.5 Earth days.\nTemperature swings from +127°C in sunlight to -173°C in shadow.\nThe moon teaches you that all weather is atmospheric — remove the atmosphere, reality hardens.",
+          "durationMs": 9000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#000000"
+        },
+        "fog": {
+          "color": "#0a0a0a",
+          "density": 0.001
+        }
+      },
+      "layers": [
+        {
+          "id": "lunar_regolith",
+          "label": "Lunar regolith surface",
+          "type": "plane",
+          "w": 500,
+          "h": 500,
+          "position": [
+            0,
+            0,
+            -100
+          ],
+          "rotation": [
+            -90,
+            0,
+            0
+          ],
+          "material": {
+            "color": "#a8a29e",
+            "roughness": 1
+          }
+        },
+        {
+          "id": "impact_craters",
+          "label": "Ancient impact craters",
+          "count": 10,
+          "spread": {
+            "x": "-80 80",
+            "z": "-150 -10"
+          },
+          "element": {
+            "type": "sphere",
+            "r_range": "3 12",
+            "y_offset": "-0.5",
+            "material": {
+              "color": "#78716c",
+              "roughness": 1
+            }
+          }
+        },
+        {
+          "id": "hab_modules",
+          "label": "Research habitat modules",
+          "count": 3,
+          "spread": {
+            "x": "-15 15",
+            "z": "-30 -10"
+          },
+          "element": {
+            "type": "sphere",
+            "r_range": "4 6",
+            "y_offset": "half_height",
+            "material": {
+              "color": "#e2e8f0",
+              "roughness": 0.2,
+              "metalness": 0.8
+            }
+          }
+        },
+        {
+          "id": "earth_sphere",
+          "label": "Earth rising above horizon",
+          "type": "sphere",
+          "r": 12,
+          "position": [
+            50,
+            40,
+            -200
+          ],
+          "material": {
+            "color": "#1d4ed8",
+            "emissive": "#1e40af",
+            "emissiveIntensity": 0.4
+          }
+        }
+      ]
+    },
+    "moonlit_night_vr": {
+      "id": "moonlit_night_vr",
+      "title": "Moonlit Night — Quiet Glow",
+      "logline": "A pastoral landscape under a full moon. Silver light on fields. The world at rest.",
+      "palette": "abyss",
+      "sound": "ambient_wind",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "The full moon is 400,000 times dimmer than the sun.\nYet it casts enough light to read by, to navigate by, to plant crops by.\nSufficiency is not brightness. It is the right amount of light.",
+          "durationMs": 8000
+        },
+        {
+          "trigger": "step_1",
+          "text": "Before artificial lighting, the full moon was a social event.\nFarms held harvest dances by moonlight. Markets opened at midnight.\nThe moon once structured human time as completely as the clock does now.",
+          "durationMs": 9000
+        },
+        {
+          "trigger": "step_2",
+          "text": "Moonlight is reflected sunlight delayed by 1.3 seconds.\nYou are seeing where the sun was 1.3 seconds ago, bounced off the moon's surface.\nAll light is a message from the past.",
+          "durationMs": 8000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#0f172a"
+        },
+        "fog": {
+          "color": "#1e293b",
+          "density": 0.008
+        }
+      },
+      "layers": [
+        {
+          "id": "moonlit_field",
+          "label": "Silver-lit meadow",
+          "type": "plane",
+          "w": 400,
+          "h": 400,
+          "position": [
+            0,
+            0,
+            -80
+          ],
+          "rotation": [
+            -90,
+            0,
+            0
+          ],
+          "material": {
+            "color": "#1e293b",
+            "roughness": 1
+          }
+        },
+        {
+          "id": "field_trees",
+          "label": "Trees silhouetted by moonlight",
+          "count": 15,
+          "spread": {
+            "x": "-60 60",
+            "z": "-100 -10"
+          },
+          "element": {
+            "type": "cylinder",
+            "r_range": "0.3 0.7",
+            "h_range": "8 15",
+            "y_offset": "half_height",
+            "material": {
+              "color": "#0f172a",
+              "roughness": 1
+            }
+          }
+        },
+        {
+          "id": "moon_disc",
+          "label": "Full moon",
+          "type": "sphere",
+          "r": 8,
+          "position": [
+            20,
+            50,
+            -200
+          ],
+          "material": {
+            "color": "#e2e8f0",
+            "emissive": "#cbd5e1",
+            "emissiveIntensity": 0.6
+          }
+        },
+        {
+          "id": "reflection_pond",
+          "label": "Moonlit pond",
+          "type": "plane",
+          "w": 20,
+          "h": 15,
+          "position": [
+            10,
+            0.1,
+            -20
+          ],
+          "rotation": [
+            -90,
+            0,
+            0
+          ],
+          "material": {
+            "color": "#334155",
+            "roughness": 0.1,
+            "metalness": 0.5
+          }
+        }
+      ]
+    },
+    "ocean_beach_vr": {
+      "id": "ocean_beach_vr",
+      "title": "Ocean Beach — Horizon Drift",
+      "logline": "A wide beach at low tide. The sea pulls back. Wet sand reflects the sky.",
+      "palette": "ocean",
+      "sound": "ambient_ocean",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "The ocean covers 71% of Earth's surface and produces 70% of its oxygen.\nMost of it is unexplored — we have better maps of the moon than of our ocean floor.\nThe sea is the largest unknown on our own planet.",
+          "durationMs": 8000
+        },
+        {
+          "trigger": "step_1",
+          "text": "A beach is a temporary archive.\nTides rewrite it twice a day. Storms can move a beach by metres in hours.\nYet beaches persist for thousands of years, always changing, always returning.",
+          "durationMs": 8000
+        },
+        {
+          "trigger": "step_2",
+          "text": "The Pacific Ocean is larger than all of Earth's landmass combined.\nIf you removed all land from the planet and filled the basin with water, it would cover everything.\nThe ocean is the planet's default state. Land is the exception.",
+          "durationMs": 9000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#0c4a6e"
+        },
+        "fog": {
+          "color": "#075985",
+          "density": 0.008
+        }
+      },
+      "layers": [
+        {
+          "id": "wet_sand",
+          "label": "Wet sand at low tide",
+          "type": "plane",
+          "w": 200,
+          "h": 300,
+          "position": [
+            0,
+            0,
+            -60
+          ],
+          "rotation": [
+            -90,
+            0,
+            0
+          ],
+          "material": {
+            "color": "#d4a253",
+            "roughness": 0.7,
+            "metalness": 0.1
+          }
+        },
+        {
+          "id": "surf_zone",
+          "label": "Breaking surf zone",
+          "type": "plane",
+          "w": 200,
+          "h": 30,
+          "position": [
+            0,
+            0.2,
+            -90
+          ],
+          "rotation": [
+            -90,
+            0,
+            0
+          ],
+          "material": {
+            "color": "#bae6fd",
+            "opacity": 0.6,
+            "transparent": true,
+            "roughness": 0.3
+          }
+        },
+        {
+          "id": "open_sea",
+          "label": "Open ocean",
+          "type": "plane",
+          "w": 500,
+          "h": 300,
+          "position": [
+            0,
+            0.5,
+            -160
+          ],
+          "rotation": [
+            -90,
+            0,
+            0
+          ],
+          "material": {
+            "color": "#0369a1",
+            "roughness": 0.2,
+            "metalness": 0.3
+          }
+        },
+        {
+          "id": "driftwood",
+          "label": "Driftwood on beach",
+          "count": 8,
+          "spread": {
+            "x": "-40 40",
+            "z": "-50 -5"
+          },
+          "element": {
+            "type": "cylinder",
+            "r_range": "0.1 0.3",
+            "h_range": "1 3",
+            "y_offset": "0.1",
+            "material": {
+              "color": "#78716c",
+              "roughness": 1
+            }
+          }
+        }
+      ]
+    },
+    "volcanic_summit_vr": {
+      "id": "volcanic_summit_vr",
+      "title": "Volcanic Summit — Lava Crown",
+      "logline": "At the crater rim of an active volcano. Heat shimmers. The planet breathes.",
+      "palette": "desert_dawn",
+      "sound": "ambient_wind",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "Earth has 1,500 potentially active volcanoes.\n80% of the planet's surface was formed by volcanic activity.\nThe ground you stand on anywhere began as magma.",
+          "durationMs": 8000
+        },
+        {
+          "trigger": "step_1",
+          "text": "Kilauea volcano in Hawaii has been erupting continuously since 1983.\nIt has added 875 acres of new land to the Big Island.\nCreation and destruction are the same geological process.",
+          "durationMs": 8000
+        },
+        {
+          "trigger": "step_2",
+          "text": "The temperature at the centre of Earth's core is 5,200°C — as hot as the sun's surface.\nThe entire planet is a cooling body of magma with a thin cooled crust we call home.\nThe ground is the least solid thing about us.",
+          "durationMs": 9000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#450a0a"
+        },
+        "fog": {
+          "color": "#7f1d1d",
+          "density": 0.02
+        }
+      },
+      "layers": [
+        {
+          "id": "cooled_lava",
+          "label": "Cooled basalt lava field",
+          "type": "plane",
+          "w": 300,
+          "h": 300,
+          "position": [
+            0,
+            0,
+            -60
+          ],
+          "rotation": [
+            -90,
+            0,
+            0
+          ],
+          "material": {
+            "color": "#1c1917",
+            "roughness": 1
+          }
+        },
+        {
+          "id": "lava_rocks",
+          "label": "Volcanic rock formations",
+          "count": 25,
+          "spread": {
+            "x": "-50 50",
+            "z": "-80 -5"
+          },
+          "element": {
+            "type": "box",
+            "w_range": "0.5 5",
+            "h_range": "0.5 3",
+            "d_range": "0.5 4",
+            "y_offset": "half_height",
+            "material": {
+              "color": "#292524",
+              "roughness": 1
+            }
+          }
+        },
+        {
+          "id": "lava_glow",
+          "label": "Molten lava glow in vents",
+          "count": 8,
+          "spread": {
+            "x": "-25 25",
+            "z": "-60 -10"
+          },
+          "element": {
+            "type": "sphere",
+            "r_range": "0.5 2",
+            "y_offset": "-0.5",
+            "material": {
+              "color": "#dc2626",
+              "emissive": "#ef4444",
+              "emissiveIntensity": 2,
+              "roughness": 0
+            }
+          }
+        },
+        {
+          "id": "ash_cloud",
+          "label": "Volcanic ash cloud",
+          "type": "sphere",
+          "r": 40,
+          "position": [
+            0,
+            30,
+            -100
+          ],
+          "material": {
+            "color": "#78716c",
+            "opacity": 0.12,
+            "transparent": true
+          }
+        }
+      ]
     }
   }
 }
