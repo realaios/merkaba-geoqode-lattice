@@ -15,7 +15,10 @@
     />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://realaios.com/scene-builder" />
-    <meta property="og:image" content="https://realaios.com/public/og-image.png" />
+    <meta
+      property="og:image"
+      content="https://realaios.com/public/og-image.png"
+    />
     <link rel="canonical" href="https://realaios.com/scene-builder" />
     <link rel="icon" type="image/svg+xml" href="/public/favicon.svg" />
 
@@ -46,14 +49,18 @@
         --panel-w: 280px;
       }
 
-      html, body {
+      html,
+      body {
         height: 100%;
       }
 
       body {
         background: var(--bg);
         color: var(--text);
-        font-family: system-ui, -apple-system, sans-serif;
+        font-family:
+          system-ui,
+          -apple-system,
+          sans-serif;
         height: 100vh;
         display: flex;
         flex-direction: column;
@@ -92,7 +99,9 @@
         justify-content: center;
       }
 
-      .nav-links::-webkit-scrollbar { display: none; }
+      .nav-links::-webkit-scrollbar {
+        display: none;
+      }
 
       .nav-links a {
         color: var(--muted);
@@ -102,7 +111,9 @@
         padding: 0.3rem 0.65rem;
         border-radius: 8px;
         white-space: nowrap;
-        transition: color 0.15s, background 0.15s;
+        transition:
+          color 0.15s,
+          background 0.15s;
       }
 
       .nav-links a:hover,
@@ -138,7 +149,9 @@
         scrollbar-width: none;
       }
 
-      .toolbar::-webkit-scrollbar { display: none; }
+      .toolbar::-webkit-scrollbar {
+        display: none;
+      }
 
       .toolbar-group {
         display: flex;
@@ -167,13 +180,16 @@
         font-weight: 600;
         cursor: pointer;
         white-space: nowrap;
-        transition: color 0.12s, background 0.12s, border-color 0.12s;
+        transition:
+          color 0.12s,
+          background 0.12s,
+          border-color 0.12s;
       }
 
       .tb-btn:hover {
         color: var(--text);
-        background: rgba(0,212,255,0.08);
-        border-color: rgba(0,212,255,0.3);
+        background: rgba(0, 212, 255, 0.08);
+        border-color: rgba(0, 212, 255, 0.3);
       }
 
       .tb-btn.primary {
@@ -190,12 +206,12 @@
       }
 
       .tb-btn.danger {
-        border-color: rgba(255,60,80,0.3);
+        border-color: rgba(255, 60, 80, 0.3);
         color: #ff6070;
       }
 
       .tb-btn.danger:hover {
-        background: rgba(255,60,80,0.1);
+        background: rgba(255, 60, 80, 0.1);
       }
 
       .tb-label {
@@ -259,10 +275,12 @@
       }
 
       .panel-search input:focus {
-        border-color: rgba(0,212,255,0.5);
+        border-color: rgba(0, 212, 255, 0.5);
       }
 
-      .panel-search input::placeholder { color: var(--muted2); }
+      .panel-search input::placeholder {
+        color: var(--muted2);
+      }
 
       .asset-categories {
         flex: 1;
@@ -302,17 +320,22 @@
         align-items: center;
         gap: 0.25rem;
         cursor: grab;
-        transition: background 0.12s, border-color 0.12s, transform 0.1s;
+        transition:
+          background 0.12s,
+          border-color 0.12s,
+          transform 0.1s;
         user-select: none;
       }
 
       .asset-item:hover {
-        background: rgba(0,212,255,0.08);
-        border-color: rgba(0,212,255,0.25);
+        background: rgba(0, 212, 255, 0.08);
+        border-color: rgba(0, 212, 255, 0.25);
         transform: translateY(-1px);
       }
 
-      .asset-item:active { cursor: grabbing; }
+      .asset-item:active {
+        cursor: grabbing;
+      }
 
       .asset-item.dragging {
         opacity: 0.4;
@@ -358,7 +381,9 @@
         color: var(--muted);
         cursor: pointer;
         border-bottom: 2px solid transparent;
-        transition: color 0.12s, border-color 0.12s;
+        transition:
+          color 0.12s,
+          border-color 0.12s;
         white-space: nowrap;
       }
 
@@ -367,7 +392,9 @@
         border-bottom-color: var(--accent);
       }
 
-      .canvas-tab:hover { color: var(--text); }
+      .canvas-tab:hover {
+        color: var(--text);
+      }
 
       .canvas-view {
         flex: 1;
@@ -424,13 +451,15 @@
         bottom: 0;
         border: 2px dashed transparent;
         border-radius: 4px;
-        transition: border-color 0.15s, background 0.15s;
+        transition:
+          border-color 0.15s,
+          background 0.15s;
         pointer-events: none;
       }
 
       .canvas-drop-zone.drag-over {
-        border-color: rgba(0,212,255,0.4);
-        background: rgba(0,212,255,0.04);
+        border-color: rgba(0, 212, 255, 0.4);
+        background: rgba(0, 212, 255, 0.04);
       }
 
       /* Scene object bubbles -->
@@ -496,11 +525,22 @@
         tab-size: 2;
       }
 
-      .code-keyword { color: #c792ea; }
-      .code-tag { color: #82aaff; }
-      .code-attr { color: #c3e88d; }
-      .code-value { color: #f78c6c; }
-      .code-comment { color: #4a5a78; font-style: italic; }
+      .code-keyword {
+        color: #c792ea;
+      }
+      .code-tag {
+        color: #82aaff;
+      }
+      .code-attr {
+        color: #c3e88d;
+      }
+      .code-value {
+        color: #f78c6c;
+      }
+      .code-comment {
+        color: #4a5a78;
+        font-style: italic;
+      }
 
       .code-copy-row {
         padding: 0.5rem 0.75rem;
@@ -538,23 +578,36 @@
         flex-shrink: 0;
       }
 
-      .status-dot.gold { background: var(--gold); }
+      .status-dot.gold {
+        background: var(--gold);
+      }
 
       @media (max-width: 900px) {
-        .panel-code { width: 240px; }
-        .panel-library { width: 220px; }
+        .panel-code {
+          width: 240px;
+        }
+        .panel-library {
+          width: 220px;
+        }
       }
 
       @media (max-width: 640px) {
-        :root { --panel-w: 180px; }
-        .panel-code { display: none; }
-        nav { padding: 0.5rem 0.75rem; }
-        .nav-freq-tag { display: none; }
+        :root {
+          --panel-w: 180px;
+        }
+        .panel-code {
+          display: none;
+        }
+        nav {
+          padding: 0.5rem 0.75rem;
+        }
+        .nav-freq-tag {
+          display: none;
+        }
       }
     </style>
   </head>
   <body>
-
     <!-- NAV -->
     <nav>
       <a class="nav-brand" href="/">AIOS</a>
@@ -578,68 +631,126 @@
     <div class="toolbar">
       <div class="toolbar-group">
         <span class="tb-label">Scene</span>
-        <button class="tb-btn" id="btnNew" title="New scene">&#x2795; New</button>
-        <button class="tb-btn" id="btnLoad" title="Load preset">&#x1F4C2; Open</button>
-        <button class="tb-btn" id="btnSave" title="Save scene">&#x1F4BE; Save</button>
+        <button class="tb-btn" id="btnNew" title="New scene">
+          &#x2795; New
+        </button>
+        <button class="tb-btn" id="btnLoad" title="Load preset">
+          &#x1F4C2; Open
+        </button>
+        <button class="tb-btn" id="btnSave" title="Save scene">
+          &#x1F4BE; Save
+        </button>
       </div>
       <div class="toolbar-group">
         <span class="tb-label">Add</span>
-        <button class="tb-btn" id="btnAddBox" data-shape="box">&#x25A2; Box</button>
-        <button class="tb-btn" id="btnAddSphere" data-shape="sphere">&#x25CB; Sphere</button>
-        <button class="tb-btn" id="btnAddPlane" data-shape="plane">&#x25AD; Plane</button>
-        <button class="tb-btn" id="btnAddText" data-shape="text">&#x54; Text</button>
-        <button class="tb-btn" id="btnAddLight" data-shape="light">&#x1F4A1; Light</button>
-        <button class="tb-btn" id="btnAddSky" data-shape="sky">&#x1F305; Sky</button>
+        <button class="tb-btn" id="btnAddBox" data-shape="box">
+          &#x25A2; Box
+        </button>
+        <button class="tb-btn" id="btnAddSphere" data-shape="sphere">
+          &#x25CB; Sphere
+        </button>
+        <button class="tb-btn" id="btnAddPlane" data-shape="plane">
+          &#x25AD; Plane
+        </button>
+        <button class="tb-btn" id="btnAddText" data-shape="text">
+          &#x54; Text
+        </button>
+        <button class="tb-btn" id="btnAddLight" data-shape="light">
+          &#x1F4A1; Light
+        </button>
+        <button class="tb-btn" id="btnAddSky" data-shape="sky">
+          &#x1F305; Sky
+        </button>
       </div>
       <div class="toolbar-group">
         <span class="tb-label">Edit</span>
         <button class="tb-btn" id="btnUndo">&#x21B6; Undo</button>
-        <button class="tb-btn" id="btnDelete" class="danger">&#x1F5D1; Delete</button>
+        <button class="tb-btn" id="btnDelete" class="danger">
+          &#x1F5D1; Delete
+        </button>
       </div>
       <div class="toolbar-group">
-        <button class="tb-btn primary" id="btnPreview">&#x25B6; Preview VR</button>
+        <button class="tb-btn primary" id="btnPreview">
+          &#x25B6; Preview VR
+        </button>
         <button class="tb-btn" id="btnExport">&#x2193; Export .html</button>
       </div>
     </div>
 
     <!-- IDE LAYOUT -->
     <div class="ide-layout">
-
       <!-- ASSET LIBRARY PANEL -->
       <aside class="panel-library" id="libraryPanel">
         <div class="panel-header">
           <span>Asset Library</span>
-          <span style="font-size: 0.6rem; color: var(--muted2); font-weight: 600;">PHI&#x202F;=&#x202F;1.618</span>
+          <span
+            style="font-size: 0.6rem; color: var(--muted2); font-weight: 600"
+            >PHI&#x202F;=&#x202F;1.618</span
+          >
         </div>
         <div class="panel-search">
-          <input type="text" id="assetSearch" placeholder="Search assets..." autocomplete="off" />
+          <input
+            type="text"
+            id="assetSearch"
+            placeholder="Search assets..."
+            autocomplete="off"
+          />
         </div>
         <div class="asset-categories" id="assetCategories">
-
           <div class="category-group">
             <div class="category-label">Primitives</div>
             <div class="asset-grid">
-              <div class="asset-item" draggable="true" data-type="box" data-color="#00d4ff">
+              <div
+                class="asset-item"
+                draggable="true"
+                data-type="box"
+                data-color="#00d4ff"
+              >
                 <span class="asset-icon">&#x25A0;</span>
                 <span class="asset-name">Box</span>
               </div>
-              <div class="asset-item" draggable="true" data-type="sphere" data-color="#b47fff">
+              <div
+                class="asset-item"
+                draggable="true"
+                data-type="sphere"
+                data-color="#b47fff"
+              >
                 <span class="asset-icon">&#x25CF;</span>
                 <span class="asset-name">Sphere</span>
               </div>
-              <div class="asset-item" draggable="true" data-type="cylinder" data-color="#f4c430">
+              <div
+                class="asset-item"
+                draggable="true"
+                data-type="cylinder"
+                data-color="#f4c430"
+              >
                 <span class="asset-icon">&#x25A1;</span>
                 <span class="asset-name">Cylinder</span>
               </div>
-              <div class="asset-item" draggable="true" data-type="plane" data-color="#4aff88">
+              <div
+                class="asset-item"
+                draggable="true"
+                data-type="plane"
+                data-color="#4aff88"
+              >
                 <span class="asset-icon">&#x25AC;</span>
                 <span class="asset-name">Plane</span>
               </div>
-              <div class="asset-item" draggable="true" data-type="cone" data-color="#ff6b6b">
+              <div
+                class="asset-item"
+                draggable="true"
+                data-type="cone"
+                data-color="#ff6b6b"
+              >
                 <span class="asset-icon">&#x25B2;</span>
                 <span class="asset-name">Cone</span>
               </div>
-              <div class="asset-item" draggable="true" data-type="torus" data-color="#00d4ff">
+              <div
+                class="asset-item"
+                draggable="true"
+                data-type="torus"
+                data-color="#00d4ff"
+              >
                 <span class="asset-icon">&#x25EF;</span>
                 <span class="asset-name">Torus</span>
               </div>
@@ -667,11 +778,19 @@
           <div class="category-group">
             <div class="category-label">Lighting</div>
             <div class="asset-grid">
-              <div class="asset-item" draggable="true" data-type="ambient-light">
+              <div
+                class="asset-item"
+                draggable="true"
+                data-type="ambient-light"
+              >
                 <span class="asset-icon">&#x1F4A1;</span>
                 <span class="asset-name">Ambient</span>
               </div>
-              <div class="asset-item" draggable="true" data-type="directional-light">
+              <div
+                class="asset-item"
+                draggable="true"
+                data-type="directional-light"
+              >
                 <span class="asset-icon">&#x2600;</span>
                 <span class="asset-name">Directional</span>
               </div>
@@ -715,11 +834,21 @@
           <div class="category-group">
             <div class="category-label">GeoQode</div>
             <div class="asset-grid">
-              <div class="asset-item" draggable="true" data-type="geo-node" data-color="#b47fff">
+              <div
+                class="asset-item"
+                draggable="true"
+                data-type="geo-node"
+                data-color="#b47fff"
+              >
                 <span class="asset-icon">&#x2B22;</span>
                 <span class="asset-name">Lattice Node</span>
               </div>
-              <div class="asset-item" draggable="true" data-type="geo-ring" data-color="#00d4ff">
+              <div
+                class="asset-item"
+                draggable="true"
+                data-type="geo-ring"
+                data-color="#00d4ff"
+              >
                 <span class="asset-icon">&#x25CE;</span>
                 <span class="asset-name">Phi Ring</span>
               </div>
@@ -729,7 +858,6 @@
               </div>
             </div>
           </div>
-
         </div>
       </aside>
 
@@ -748,11 +876,20 @@
               <div class="empty-icon">&#x2B22;</div>
               <div class="empty-title">Empty Scene</div>
               <div class="empty-hint">
-                Drag assets from the library panel onto the canvas,
-                or click the Add buttons in the toolbar.
+                Drag assets from the library panel onto the canvas, or click the
+                Add buttons in the toolbar.
               </div>
-              <div style="font-size: 0.65rem; color: var(--muted2); margin-top: 0.5rem; letter-spacing: 0.06em; text-transform: uppercase;">
-                528&#x202F;Hz ACTION &#x2022; Node&#x202F;8 &#x2022; 8&#x2192;26&#x2192;48:480
+              <div
+                style="
+                  font-size: 0.65rem;
+                  color: var(--muted2);
+                  margin-top: 0.5rem;
+                  letter-spacing: 0.06em;
+                  text-transform: uppercase;
+                "
+              >
+                528&#x202F;Hz ACTION &#x2022; Node&#x202F;8 &#x2022;
+                8&#x2192;26&#x2192;48:480
               </div>
             </div>
             <!-- Scene nodes rendered here by JS -->
@@ -763,8 +900,10 @@
       <!-- CODE OUTPUT PANEL -->
       <aside class="panel-code" id="codePanel">
         <div class="panel-header">A-Frame Output</div>
-        <pre class="code-output" id="codeOutput"
-><span class="code-comment">&lt;!-- Scene Builder &#x2014; GeoQode 8&#x2192;26&#x2192;48:480 --&gt;
+        <pre
+          class="code-output"
+          id="codeOutput"
+        ><span class="code-comment">&lt;!-- Scene Builder &#x2014; GeoQode 8&#x2192;26&#x2192;48:480 --&gt;
 &lt;!-- 528 Hz ACTION &#x2022; Node 8 &#x2022; Lattice-native --&gt;
 &lt;!-- Drag assets from the library to generate code --&gt;</span>
 
@@ -773,11 +912,12 @@
   <span class="code-attr">data-lattice-node</span>=<span class="code-value">"8"</span><span class="code-tag">&gt;</span>
 <span class="code-tag">&lt;/a-scene&gt;</span></pre>
         <div class="code-copy-row">
-          <button class="tb-btn primary" id="btnCopyCode" style="flex:1">&#x1F4CB; Copy Code</button>
+          <button class="tb-btn primary" id="btnCopyCode" style="flex: 1">
+            &#x1F4CB; Copy Code
+          </button>
           <button class="tb-btn" id="btnExport2">&#x2193; .html</button>
         </div>
       </aside>
-
     </div>
 
     <!-- STATUS BAR -->
@@ -796,7 +936,7 @@
       <div class="status-item">
         <span>PHI = 1.618 &#x2022; PSI = 1.414</span>
       </div>
-      <div class="status-item" style="margin-left: auto;">
+      <div class="status-item" style="margin-left: auto">
         <span>8&#x2192;26&#x2192;48:480 &#x2022; Scene Builder</span>
       </div>
     </div>
@@ -816,7 +956,7 @@
         domain: "code-eng",
         source: "scene-builder.html",
         d48Expansion: "CANONICAL",
-        d480Expansion: "FULL_HARMONIC"
+        d480Expansion: "FULL_HARMONIC",
       });
 
       // ── Scene state ────────────────────────────────────────────
@@ -838,27 +978,108 @@
 
       // ── Default shape configs ──────────────────────────────────
       const SHAPE_DEFAULTS = {
-        box:               { el: "a-box",       color: "#00d4ff", icon: "\u25A0", label: "Box" },
-        sphere:            { el: "a-sphere",    color: "#b47fff", icon: "\u25CF", label: "Sphere" },
-        cylinder:          { el: "a-cylinder",  color: "#f4c430", icon: "\u25A1", label: "Cylinder" },
-        plane:             { el: "a-plane",     color: "#4aff88", icon: "\u25AC", label: "Plane" },
-        cone:              { el: "a-cone",      color: "#ff6b6b", icon: "\u25B2", label: "Cone" },
-        torus:             { el: "a-torus",     color: "#00d4ff", icon: "\u25EF", label: "Torus" },
-        sky:               { el: "a-sky",       color: "#060210", icon: "\u2605", label: "Sky" },
-        floor:             { el: "a-plane",     color: "#1a2a3a", icon: "\u{1F7EB}", label: "Floor", rotation: "-90 0 0" },
-        "ambient-light":   { el: "a-entity",   color: "#ffffff", icon: "\u{1F4A1}", label: "Ambient" },
-        "directional-light":{ el: "a-entity",  color: "#ffffff", icon: "\u2600", label: "Dir.Light" },
-        "point-light":     { el: "a-entity",   color: "#ffff88", icon: "\u{1F7E1}", label: "Point Light" },
-        "text-3d":         { el: "a-text",      color: "#ffffff", icon: "T", label: "Text" },
-        fog:               { el: "fog",         color: "#060210", icon: "\u{1F32B}", label: "Fog" },
-        "geo-node":        { el: "a-sphere",    color: "#b47fff", icon: "\u2B22", label: "Lattice Node" },
-        "geo-ring":        { el: "a-torus",     color: "#00d4ff", icon: "\u25CE", label: "Phi Ring" },
-        "geo-grid":        { el: "a-grid",      color: "#1a0840", icon: "\u29C9", label: "Lattice Grid" },
-        "link-portal":     { el: "a-link",      color: "#ff88cc", icon: "\u{1F517}", label: "Portal" },
-        cursor:            { el: "a-cursor",    color: "#00d4ff", icon: "\u{1F518}", label: "Cursor" },
-        image:             { el: "a-image",     color: null, icon: "\u{1F5BC}", label: "Image" },
-        video:             { el: "a-video",     color: null, icon: "\u{1F3AC}", label: "Video" },
-        sound:             { el: "a-sound",     color: null, icon: "\u{1F50A}", label: "Sound" },
+        box: { el: "a-box", color: "#00d4ff", icon: "\u25A0", label: "Box" },
+        sphere: {
+          el: "a-sphere",
+          color: "#b47fff",
+          icon: "\u25CF",
+          label: "Sphere",
+        },
+        cylinder: {
+          el: "a-cylinder",
+          color: "#f4c430",
+          icon: "\u25A1",
+          label: "Cylinder",
+        },
+        plane: {
+          el: "a-plane",
+          color: "#4aff88",
+          icon: "\u25AC",
+          label: "Plane",
+        },
+        cone: { el: "a-cone", color: "#ff6b6b", icon: "\u25B2", label: "Cone" },
+        torus: {
+          el: "a-torus",
+          color: "#00d4ff",
+          icon: "\u25EF",
+          label: "Torus",
+        },
+        sky: { el: "a-sky", color: "#060210", icon: "\u2605", label: "Sky" },
+        floor: {
+          el: "a-plane",
+          color: "#1a2a3a",
+          icon: "\u{1F7EB}",
+          label: "Floor",
+          rotation: "-90 0 0",
+        },
+        "ambient-light": {
+          el: "a-entity",
+          color: "#ffffff",
+          icon: "\u{1F4A1}",
+          label: "Ambient",
+        },
+        "directional-light": {
+          el: "a-entity",
+          color: "#ffffff",
+          icon: "\u2600",
+          label: "Dir.Light",
+        },
+        "point-light": {
+          el: "a-entity",
+          color: "#ffff88",
+          icon: "\u{1F7E1}",
+          label: "Point Light",
+        },
+        "text-3d": { el: "a-text", color: "#ffffff", icon: "T", label: "Text" },
+        fog: { el: "fog", color: "#060210", icon: "\u{1F32B}", label: "Fog" },
+        "geo-node": {
+          el: "a-sphere",
+          color: "#b47fff",
+          icon: "\u2B22",
+          label: "Lattice Node",
+        },
+        "geo-ring": {
+          el: "a-torus",
+          color: "#00d4ff",
+          icon: "\u25CE",
+          label: "Phi Ring",
+        },
+        "geo-grid": {
+          el: "a-grid",
+          color: "#1a0840",
+          icon: "\u29C9",
+          label: "Lattice Grid",
+        },
+        "link-portal": {
+          el: "a-link",
+          color: "#ff88cc",
+          icon: "\u{1F517}",
+          label: "Portal",
+        },
+        cursor: {
+          el: "a-cursor",
+          color: "#00d4ff",
+          icon: "\u{1F518}",
+          label: "Cursor",
+        },
+        image: {
+          el: "a-image",
+          color: null,
+          icon: "\u{1F5BC}",
+          label: "Image",
+        },
+        video: {
+          el: "a-video",
+          color: null,
+          icon: "\u{1F3AC}",
+          label: "Video",
+        },
+        sound: {
+          el: "a-sound",
+          color: null,
+          icon: "\u{1F50A}",
+          label: "Sound",
+        },
       };
 
       // ── Add object to scene ────────────────────────────────────
@@ -866,9 +1087,12 @@
         const def = SHAPE_DEFAULTS[type];
         if (!def) return;
         history.push(JSON.stringify(scene.objects));
-        const id = "obj-" + (idCounter++);
+        const id = "obj-" + idCounter++;
         const obj = {
-          id, type, label: def.label, icon: def.icon,
+          id,
+          type,
+          label: def.label,
+          icon: def.icon,
           color: def.color,
           x: x != null ? x : 60 + Math.random() * 200,
           y: y != null ? y : 80 + Math.random() * 140,
@@ -882,13 +1106,14 @@
       // ── Render canvas ──────────────────────────────────────────
       function renderCanvas() {
         // Remove old nodes
-        preview.querySelectorAll(".scene-node").forEach(n => n.remove());
+        preview.querySelectorAll(".scene-node").forEach((n) => n.remove());
         emptyState.style.display = scene.objects.length === 0 ? "" : "none";
         statusCount.textContent = scene.objects.length;
 
-        scene.objects.forEach(obj => {
+        scene.objects.forEach((obj) => {
           const node = document.createElement("div");
-          node.className = "scene-node" + (obj.id === selectedId ? " selected" : "");
+          node.className =
+            "scene-node" + (obj.id === selectedId ? " selected" : "");
           node.style.left = obj.x + "px";
           node.style.top = obj.y + "px";
           node.dataset.id = obj.id;
@@ -928,7 +1153,7 @@
       function deleteSelected() {
         if (!selectedId) return;
         history.push(JSON.stringify(scene.objects));
-        scene.objects = scene.objects.filter(o => o.id !== selectedId);
+        scene.objects = scene.objects.filter((o) => o.id !== selectedId);
         selectedId = null;
         renderCanvas();
         renderCode();
@@ -938,7 +1163,7 @@
       function undo() {
         if (!history.length) return;
         scene.objects = JSON.parse(history.pop());
-        if (selectedId && !scene.objects.find(o => o.id === selectedId)) {
+        if (selectedId && !scene.objects.find((o) => o.id === selectedId)) {
           selectedId = null;
         }
         renderCanvas();
@@ -973,71 +1198,98 @@
       // ── Render code output ─────────────────────────────────────
       function renderCode() {
         const lines = [
-          "<span class=\"code-comment\">&lt;!-- Scene Builder \u2014 GeoQode 8\u219226\u219248:480 --&gt;\n"
-          + "&lt;!-- 528 Hz ACTION \u2022 Node 8 \u2022 Lattice-native --&gt;</span>",
+          '<span class="code-comment">&lt;!-- Scene Builder \u2014 GeoQode 8\u219226\u219248:480 --&gt;\n' +
+            "&lt;!-- 528 Hz ACTION \u2022 Node 8 \u2022 Lattice-native --&gt;</span>",
           "",
-          "<span class=\"code-tag\">&lt;a-scene</span>",
-          "  <span class=\"code-attr\">data-geoqode-freq</span>=<span class=\"code-value\">\"528\"</span>",
-          "  <span class=\"code-attr\">data-lattice-node</span>=<span class=\"code-value\">\"8\"</span>",
-          "  <span class=\"code-attr\">renderer</span>=<span class=\"code-value\">\"antialias: true\"</span><span class=\"code-tag\">&gt;</span>",
+          '<span class="code-tag">&lt;a-scene</span>',
+          '  <span class="code-attr">data-geoqode-freq</span>=<span class="code-value">"528"</span>',
+          '  <span class="code-attr">data-lattice-node</span>=<span class="code-value">"8"</span>',
+          '  <span class="code-attr">renderer</span>=<span class="code-value">"antialias: true"</span><span class="code-tag">&gt;</span>',
         ];
 
-        scene.objects.forEach(obj => {
+        scene.objects.forEach((obj) => {
           const def = SHAPE_DEFAULTS[obj.type];
           if (!def) return;
-          const colorAttr = obj.color ? " <span class=\"code-attr\">color</span>=<span class=\"code-value\">\"" + obj.color + "\"</span>" : "";
+          const colorAttr = obj.color
+            ? ' <span class="code-attr">color</span>=<span class="code-value">"' +
+              obj.color +
+              '"</span>'
+            : "";
           const posX = ((obj.x - 200) / 100).toFixed(2);
           const posY = "1";
           const posZ = "-" + (2 + Math.abs((obj.y - 100) / 80)).toFixed(2);
           lines.push(
-            "  <span class=\"code-tag\">&lt;" + def.el + "</span>"
-            + colorAttr
-            + " <span class=\"code-attr\">position</span>=<span class=\"code-value\">\"" + posX + " " + posY + " " + posZ + "\"</span>"
-            + "<span class=\"code-tag\">&gt;&lt;/" + def.el + "&gt;</span>"
+            '  <span class="code-tag">&lt;' +
+              def.el +
+              "</span>" +
+              colorAttr +
+              ' <span class="code-attr">position</span>=<span class="code-value">"' +
+              posX +
+              " " +
+              posY +
+              " " +
+              posZ +
+              '"</span>' +
+              '<span class="code-tag">&gt;&lt;/' +
+              def.el +
+              "&gt;</span>",
           );
         });
 
-        lines.push("<span class=\"code-tag\">&lt;/a-scene&gt;</span>");
+        lines.push('<span class="code-tag">&lt;/a-scene&gt;</span>');
         codeOutput.innerHTML = lines.join("\n");
       }
 
       // ── Generate clean A-Frame HTML for export ─────────────────
       function generateExportHTML() {
-        const objLines = scene.objects.map(obj => {
-          const def = SHAPE_DEFAULTS[obj.type];
-          if (!def) return "";
-          const colorAttr = obj.color ? ' color="' + obj.color + '"' : "";
-          const posX = ((obj.x - 200) / 100).toFixed(2);
-          const posZ = "-" + (2 + Math.abs((obj.y - 100) / 80)).toFixed(2);
-          return '    <' + def.el + colorAttr + ' position="' + posX + ' 1 ' + posZ + '"></' + def.el + '>';
-        }).join("\n");
+        const objLines = scene.objects
+          .map((obj) => {
+            const def = SHAPE_DEFAULTS[obj.type];
+            if (!def) return "";
+            const colorAttr = obj.color ? ' color="' + obj.color + '"' : "";
+            const posX = ((obj.x - 200) / 100).toFixed(2);
+            const posZ = "-" + (2 + Math.abs((obj.y - 100) / 80)).toFixed(2);
+            return (
+              "    <" +
+              def.el +
+              colorAttr +
+              ' position="' +
+              posX +
+              " 1 " +
+              posZ +
+              '"></' +
+              def.el +
+              ">"
+            );
+          })
+          .join("\n");
 
         return [
-          '<!doctype html>',
+          "<!doctype html>",
           '<html lang="en">',
-          '<head>',
+          "<head>",
           '  <meta charset="UTF-8" />',
-          '  <title>AIOS Scene \u2014 GeoQode 8\u219226\u219248:480</title>',
+          "  <title>AIOS Scene \u2014 GeoQode 8\u219226\u219248:480</title>",
           '  <script src="/vendor/aframe-1.4.0.min.js"><\/script>',
-          '</head>',
-          '<body>',
-          '  <!-- GeoQode: 528 Hz ACTION | Node 8 | 8,26,48:480 -->',
+          "</head>",
+          "<body>",
+          "  <!-- GeoQode: 528 Hz ACTION | Node 8 | 8,26,48:480 -->",
           '  <a-scene data-geoqode-freq="528" data-lattice-node="8">',
           '    <a-sky color="' + scene.skyColor + '"></a-sky>',
           objLines,
           '    <a-entity position="0 1.6 2">',
-          '      <a-camera></a-camera>',
-          '    </a-entity>',
-          '  </a-scene>',
-          '</body>',
-          '</html>',
+          "      <a-camera></a-camera>",
+          "    </a-entity>",
+          "  </a-scene>",
+          "</body>",
+          "</html>",
         ].join("\n");
       }
 
       // ── Drag-and-drop from library ─────────────────────────────
       let draggingType = null;
 
-      document.querySelectorAll(".asset-item[draggable]").forEach(item => {
+      document.querySelectorAll(".asset-item[draggable]").forEach((item) => {
         item.addEventListener("dragstart", (e) => {
           draggingType = item.dataset.type;
           item.classList.add("dragging");
@@ -1078,12 +1330,14 @@
       });
 
       // ── Toolbar buttons ────────────────────────────────────────
-      document.querySelectorAll("[data-shape]").forEach(btn => {
+      document.querySelectorAll("[data-shape]").forEach((btn) => {
         btn.addEventListener("click", () => addObject(btn.dataset.shape));
       });
 
       document.getElementById("btnUndo").addEventListener("click", undo);
-      document.getElementById("btnDelete").addEventListener("click", deleteSelected);
+      document
+        .getElementById("btnDelete")
+        .addEventListener("click", deleteSelected);
 
       document.getElementById("btnNew").addEventListener("click", () => {
         if (scene.objects.length > 0 && !confirm("Clear scene?")) return;
@@ -1111,22 +1365,30 @@
         a.click();
       }
 
-      document.getElementById("btnExport").addEventListener("click", exportHTML);
-      document.getElementById("btnExport2").addEventListener("click", exportHTML);
+      document
+        .getElementById("btnExport")
+        .addEventListener("click", exportHTML);
+      document
+        .getElementById("btnExport2")
+        .addEventListener("click", exportHTML);
 
       document.getElementById("btnCopyCode").addEventListener("click", () => {
         const text = codeOutput.innerText;
         navigator.clipboard.writeText(text).then(() => {
           const btn = document.getElementById("btnCopyCode");
           btn.textContent = "\u2713 Copied!";
-          setTimeout(() => { btn.innerHTML = "\u{1F4CB} Copy Code"; }, 1800);
+          setTimeout(() => {
+            btn.innerHTML = "\u{1F4CB} Copy Code";
+          }, 1800);
         });
       });
 
       // Canvas tabs
-      document.querySelectorAll(".canvas-tab").forEach(tab => {
+      document.querySelectorAll(".canvas-tab").forEach((tab) => {
         tab.addEventListener("click", () => {
-          document.querySelectorAll(".canvas-tab").forEach(t => t.classList.remove("active"));
+          document
+            .querySelectorAll(".canvas-tab")
+            .forEach((t) => t.classList.remove("active"));
           tab.classList.add("active");
         });
       });
@@ -1134,8 +1396,10 @@
       // Asset search filter
       document.getElementById("assetSearch").addEventListener("input", (e) => {
         const q = e.target.value.toLowerCase();
-        document.querySelectorAll(".asset-item").forEach(item => {
-          const name = item.querySelector(".asset-name").textContent.toLowerCase();
+        document.querySelectorAll(".asset-item").forEach((item) => {
+          const name = item
+            .querySelector(".asset-name")
+            .textContent.toLowerCase();
           item.style.display = name.includes(q) ? "" : "none";
         });
       });
@@ -1145,10 +1409,17 @@
       renderCode();
 
       console.log(
-        "[SceneBuilder] GeoQode \u2014 Freq: " + GEOQODE.frequency + " Hz | " +
-        "Node: " + GEOQODE.latticeNode + " | " +
-        "Type: " + GEOQODE.semanticType + " | " +
-        "Arch: " + GEOQODE.architectureSignature
+        "[SceneBuilder] GeoQode \u2014 Freq: " +
+          GEOQODE.frequency +
+          " Hz | " +
+          "Node: " +
+          GEOQODE.latticeNode +
+          " | " +
+          "Type: " +
+          GEOQODE.semanticType +
+          " | " +
+          "Arch: " +
+          GEOQODE.architectureSignature,
       );
     </script>
   </body>

@@ -1,6 +1,6 @@
 ﻿<!doctype html>
 <html lang="en">
-<!--
+  <!--
   AIOSuniverse &#x2014; D480 Merkaba Lattice &#x2014; Cosmos Infinite (ALL IN Rebuild)
   ====================================================================================
   Architecture : 8&#x2192;26&#x2192;48:480  |  PHI: 1.618  |  PSI: 1.414  |  BASE_HZ: 72
@@ -9,1104 +9,1743 @@
   CANONICAL_ARCHITECTURE = "8,26,48:480"   @alignment 8&#x2192;26&#x2192;48:480
   COPYRIGHT &#x00A9; 2026 Brains4Ai / S4Ai (Bradley Levitan). All rights reserved.
 -->
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>AIOSuniverse &#x2014; Cosmos Infinite | D480 Merkaba Lattice</title>
-  <meta name="description" content="Explore the living Merkaba Dimensional OS. D480 holographic lattice: 8 foundations, 26 anchors, 48 canonical worlds, 480 harmonics. PHI=1.618 BASE_HZ=72." />
-  <script src="/vendor/aframe-1.4.0.min.js"></script>
-  <style>
-    /* ── Intro Modal ──────────────────────────────────────────────────────── */
-    *,*::before,*::after{box-sizing:border-box}
-    body{margin:0;padding:0;background:#000005;overflow:hidden}
-    #introModal {
-      position: fixed; inset: 0; z-index: 9999;
-      background: radial-gradient(ellipse at 50% 60%, #06101e 0%, #000005 75%);
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      font-family: 'Segoe UI', system-ui, sans-serif; color: #e2e8f0;
-      transition: opacity 0.85s ease;
-    }
-    #introModal.fade-out { opacity: 0; pointer-events: none; }
-    #introCanvas {
-      width: 420px; height: 260px; border-radius: 14px;
-      border: 1px solid rgba(0,212,255,0.22);
-      box-shadow: 0 0 60px rgba(0,212,255,0.18), 0 0 120px rgba(79,70,229,0.12);
-    }
-    .intro-title {
-      font-size: 2.1rem; font-weight: 800; letter-spacing: 0.12em;
-      background: linear-gradient(130deg, #00d4ff 0%, #9b5cff 50%, #f59e0b 100%);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-      background-clip: text;
-      margin: 1.2rem 0 0.2rem;
-    }
-    .intro-subtitle {
-      font-size: 0.82rem; color: #94a3b8; letter-spacing: 0.2em;
-      margin-bottom: 1.1rem; text-transform: uppercase;
-    }
-    .intro-stats {
-      display: flex; gap: 2.2rem; margin-bottom: 1.5rem; text-align: center;
-    }
-    .stat-block { display: flex; flex-direction: column; align-items: center; gap: 2px; }
-    .stat-num { font-size: 1.8rem; font-weight: 700; color: #00d4ff; line-height: 1; }
-    .stat-lbl { font-size: 0.6rem; color: #64748b; letter-spacing: 0.14em; text-transform: uppercase; line-height: 1.4; }
-    #enterBtn {
-      padding: 0.75rem 2.6rem; font-size: 0.95rem; font-weight: 600;
-      letter-spacing: 0.22em; text-transform: uppercase; cursor: pointer;
-      background: transparent; border: 1px solid rgba(0,212,255,0.45);
-      color: #00d4ff; border-radius: 8px;
-      box-shadow: 0 0 18px rgba(0,212,255,0.18); transition: all 0.3s ease;
-    }
-    #enterBtn:hover {
-      background: rgba(0,212,255,0.1); box-shadow: 0 0 40px rgba(0,212,255,0.4);
-      transform: scale(1.04);
-    }
-    .intro-copy {
-      margin-top: 1.2rem; font-size: 0.58rem; color: #2d3748;
-      letter-spacing: 0.12em; text-align: center; line-height: 1.8;
-    }
-    /* ── HUD panels ──────────────────────────────────────────────────────── */
-    #hud-left, #hud-right, #freq-legend, #controls-hint {
-      position: fixed; z-index: 100; font-family: 'Segoe UI', monospace;
-      pointer-events: none;
-    }
-    #hud-left {
-      top: 32px; left: 14px; width: 210px;
-      background: rgba(4,8,15,0.78); border: 1px solid rgba(0,212,255,0.16);
-      border-radius: 10px; padding: 11px 13px;
-      box-shadow: 0 0 24px rgba(0,212,255,0.06);
-      backdrop-filter: blur(8px);
-    }
-    .hud-title { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.2em; color: #00d4ff; text-transform: uppercase; margin-bottom: 5px; }
-    .hud-arch  { font-size: 0.6rem; color: #9b5cff; letter-spacing: 0.1em; margin-bottom: 3px; }
-    .hud-tag   { font-size: 0.56rem; color: #64748b; margin-bottom: 2px; }
-    .hud-status{ font-size: 0.58rem; color: #22c55e; margin-top: 5px; letter-spacing: 0.1em; }
-    .hud-nav   { margin-top: 7px; }
-    .hud-nav a { display: inline-block; font-size: 0.56rem; color: #94a3b8; text-decoration: none; margin-right: 6px; pointer-events: all; transition: color 0.2s; }
-    .hud-nav a:hover { color: #00d4ff; }
-    #hud-right {
-      top: 32px; right: 14px; width: 165px;
-      background: rgba(4,8,15,0.78); border: 1px solid rgba(0,212,255,0.16);
-      border-radius: 10px; padding: 11px 13px;
-      backdrop-filter: blur(8px);
-    }
-    .ring-row { display: flex; align-items: center; gap: 7px; font-size: 0.58rem; color: #94a3b8; margin-bottom: 5px; }
-    .ring-dot  { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-    #freq-legend {
-      bottom: 36px; right: 14px;
-      background: rgba(4,8,15,0.72); border: 1px solid rgba(155,92,255,0.18);
-      border-radius: 8px; padding: 7px 11px; backdrop-filter: blur(6px);
-    }
-    .freq-row { display: flex; gap: 6px; align-items: center; font-size: 0.53rem; color: #94a3b8; margin-bottom: 3px; }
-    .freq-dot  { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
-    #controls-hint {
-      bottom: 12px; left: 50%; transform: translateX(-50%);
-      background: rgba(4,8,15,0.68); border: 1px solid rgba(0,212,255,0.1);
-      border-radius: 20px; padding: 5px 15px; font-size: 0.52rem;
-      color: #64748b; white-space: nowrap; backdrop-filter: blur(4px);
-    }
-    /* ── Sector Ticker ───────────────────────────────────────────────────── */
-    #sector-ticker {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 101;
-      height: 26px; background: rgba(4,8,15,0.88);
-      border-bottom: 1px solid rgba(0,212,255,0.1);
-      overflow: hidden; pointer-events: none;
-    }
-    #ticker-inner { display: flex; align-items: center; height: 100%; padding: 0 12px; gap: 28px; }
-    .ticker-sector { font-size: 0.56rem; letter-spacing: 0.13em; white-space: nowrap; color: #2d3748; font-family: monospace; transition: color 0.4s; }
-    .ticker-sector.active { color: #00d4ff; }
-    /* ── VR hides HUD ────────────────────────────────────────────────────── */
-    .a-fullscreen #sector-ticker,
-    .a-fullscreen #hud-left,
-    .a-fullscreen #hud-right,
-    .a-fullscreen #freq-legend,
-    .a-fullscreen #controls-hint { display: none !important; }
-    .a-enter-vr-button { pointer-events: all !important; }
-  </style>
-</head>
-<body>
-
-<!-- ══════════════════════════════════════════════════════════════════════════
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AIOSuniverse &#x2014; Cosmos Infinite | D480 Merkaba Lattice</title>
+    <meta
+      name="description"
+      content="Explore the living Merkaba Dimensional OS. D480 holographic lattice: 8 foundations, 26 anchors, 48 canonical worlds, 480 harmonics. PHI=1.618 BASE_HZ=72."
+    />
+    <script src="/vendor/aframe-1.4.0.min.js"></script>
+    <style>
+      /* ── Intro Modal ──────────────────────────────────────────────────────── */
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        padding: 0;
+        background: #000005;
+        overflow: hidden;
+      }
+      #introModal {
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        background: radial-gradient(
+          ellipse at 50% 60%,
+          #06101e 0%,
+          #000005 75%
+        );
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        font-family: "Segoe UI", system-ui, sans-serif;
+        color: #e2e8f0;
+        transition: opacity 0.85s ease;
+      }
+      #introModal.fade-out {
+        opacity: 0;
+        pointer-events: none;
+      }
+      #introCanvas {
+        width: 420px;
+        height: 260px;
+        border-radius: 14px;
+        border: 1px solid rgba(0, 212, 255, 0.22);
+        box-shadow:
+          0 0 60px rgba(0, 212, 255, 0.18),
+          0 0 120px rgba(79, 70, 229, 0.12);
+      }
+      .intro-title {
+        font-size: 2.1rem;
+        font-weight: 800;
+        letter-spacing: 0.12em;
+        background: linear-gradient(
+          130deg,
+          #00d4ff 0%,
+          #9b5cff 50%,
+          #f59e0b 100%
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin: 1.2rem 0 0.2rem;
+      }
+      .intro-subtitle {
+        font-size: 0.82rem;
+        color: #94a3b8;
+        letter-spacing: 0.2em;
+        margin-bottom: 1.1rem;
+        text-transform: uppercase;
+      }
+      .intro-stats {
+        display: flex;
+        gap: 2.2rem;
+        margin-bottom: 1.5rem;
+        text-align: center;
+      }
+      .stat-block {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2px;
+      }
+      .stat-num {
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: #00d4ff;
+        line-height: 1;
+      }
+      .stat-lbl {
+        font-size: 0.6rem;
+        color: #64748b;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        line-height: 1.4;
+      }
+      #enterBtn {
+        padding: 0.75rem 2.6rem;
+        font-size: 0.95rem;
+        font-weight: 600;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        cursor: pointer;
+        background: transparent;
+        border: 1px solid rgba(0, 212, 255, 0.45);
+        color: #00d4ff;
+        border-radius: 8px;
+        box-shadow: 0 0 18px rgba(0, 212, 255, 0.18);
+        transition: all 0.3s ease;
+      }
+      #enterBtn:hover {
+        background: rgba(0, 212, 255, 0.1);
+        box-shadow: 0 0 40px rgba(0, 212, 255, 0.4);
+        transform: scale(1.04);
+      }
+      .intro-copy {
+        margin-top: 1.2rem;
+        font-size: 0.58rem;
+        color: #2d3748;
+        letter-spacing: 0.12em;
+        text-align: center;
+        line-height: 1.8;
+      }
+      /* ── HUD panels ──────────────────────────────────────────────────────── */
+      #hud-left,
+      #hud-right,
+      #freq-legend,
+      #controls-hint {
+        position: fixed;
+        z-index: 100;
+        font-family: "Segoe UI", monospace;
+        pointer-events: none;
+      }
+      #hud-left {
+        top: 32px;
+        left: 14px;
+        width: 210px;
+        background: rgba(4, 8, 15, 0.78);
+        border: 1px solid rgba(0, 212, 255, 0.16);
+        border-radius: 10px;
+        padding: 11px 13px;
+        box-shadow: 0 0 24px rgba(0, 212, 255, 0.06);
+        backdrop-filter: blur(8px);
+      }
+      .hud-title {
+        font-size: 0.68rem;
+        font-weight: 700;
+        letter-spacing: 0.2em;
+        color: #00d4ff;
+        text-transform: uppercase;
+        margin-bottom: 5px;
+      }
+      .hud-arch {
+        font-size: 0.6rem;
+        color: #9b5cff;
+        letter-spacing: 0.1em;
+        margin-bottom: 3px;
+      }
+      .hud-tag {
+        font-size: 0.56rem;
+        color: #64748b;
+        margin-bottom: 2px;
+      }
+      .hud-status {
+        font-size: 0.58rem;
+        color: #22c55e;
+        margin-top: 5px;
+        letter-spacing: 0.1em;
+      }
+      .hud-nav {
+        margin-top: 7px;
+      }
+      .hud-nav a {
+        display: inline-block;
+        font-size: 0.56rem;
+        color: #94a3b8;
+        text-decoration: none;
+        margin-right: 6px;
+        pointer-events: all;
+        transition: color 0.2s;
+      }
+      .hud-nav a:hover {
+        color: #00d4ff;
+      }
+      #hud-right {
+        top: 32px;
+        right: 14px;
+        width: 165px;
+        background: rgba(4, 8, 15, 0.78);
+        border: 1px solid rgba(0, 212, 255, 0.16);
+        border-radius: 10px;
+        padding: 11px 13px;
+        backdrop-filter: blur(8px);
+      }
+      .ring-row {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        font-size: 0.58rem;
+        color: #94a3b8;
+        margin-bottom: 5px;
+      }
+      .ring-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        flex-shrink: 0;
+      }
+      #freq-legend {
+        bottom: 36px;
+        right: 14px;
+        background: rgba(4, 8, 15, 0.72);
+        border: 1px solid rgba(155, 92, 255, 0.18);
+        border-radius: 8px;
+        padding: 7px 11px;
+        backdrop-filter: blur(6px);
+      }
+      .freq-row {
+        display: flex;
+        gap: 6px;
+        align-items: center;
+        font-size: 0.53rem;
+        color: #94a3b8;
+        margin-bottom: 3px;
+      }
+      .freq-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        flex-shrink: 0;
+      }
+      #controls-hint {
+        bottom: 12px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(4, 8, 15, 0.68);
+        border: 1px solid rgba(0, 212, 255, 0.1);
+        border-radius: 20px;
+        padding: 5px 15px;
+        font-size: 0.52rem;
+        color: #64748b;
+        white-space: nowrap;
+        backdrop-filter: blur(4px);
+      }
+      /* ── Sector Ticker ───────────────────────────────────────────────────── */
+      #sector-ticker {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 101;
+        height: 26px;
+        background: rgba(4, 8, 15, 0.88);
+        border-bottom: 1px solid rgba(0, 212, 255, 0.1);
+        overflow: hidden;
+        pointer-events: none;
+      }
+      #ticker-inner {
+        display: flex;
+        align-items: center;
+        height: 100%;
+        padding: 0 12px;
+        gap: 28px;
+      }
+      .ticker-sector {
+        font-size: 0.56rem;
+        letter-spacing: 0.13em;
+        white-space: nowrap;
+        color: #2d3748;
+        font-family: monospace;
+        transition: color 0.4s;
+      }
+      .ticker-sector.active {
+        color: #00d4ff;
+      }
+      /* ── VR hides HUD ────────────────────────────────────────────────────── */
+      .a-fullscreen #sector-ticker,
+      .a-fullscreen #hud-left,
+      .a-fullscreen #hud-right,
+      .a-fullscreen #freq-legend,
+      .a-fullscreen #controls-hint {
+        display: none !important;
+      }
+      .a-enter-vr-button {
+        pointer-events: all !important;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ══════════════════════════════════════════════════════════════════════════
      INTRO MODAL
 ════════════════════════════════════════════════════════════════════════════ -->
-<div id="introModal">
-  <canvas id="introCanvas" width="840" height="520"></canvas>
-  <div class="intro-title">AIOSuniverse</div>
-  <div class="intro-subtitle">D480 Merkaba Lattice &nbsp;&#x2022;&nbsp; 8&#x2192;26&#x2192;48:480 &nbsp;&#x2022;&nbsp; Cosmos Infinite</div>
-  <div class="intro-stats">
-    <div class="stat-block"><span class="stat-num">8</span><span class="stat-lbl">Foundation<br>Sectors</span></div>
-    <div class="stat-block"><span class="stat-num">26</span><span class="stat-lbl">Bosonic<br>Anchors</span></div>
-    <div class="stat-block"><span class="stat-num">48</span><span class="stat-lbl">Canonical<br>Worlds</span></div>
-    <div class="stat-block"><span class="stat-num">480</span><span class="stat-lbl">Harmonic<br>Nodes</span></div>
-  </div>
-  <button id="enterBtn" onclick="enterUniverse()">&#x25B6;&nbsp; ENTER THE UNIVERSE</button>
-  <div class="intro-copy">
-    &#x00A9; 2026 Brains4Ai &nbsp;&#x2022;&nbsp; Merkaba Dimensional OS &nbsp;&#x2022;&nbsp; AIOS-HCS-2026-05-10<br>
-    PHI=1.618 &nbsp;&#x2022;&nbsp; PSI=1.414 &nbsp;&#x2022;&nbsp; BASE_HZ=72 &nbsp;&#x2022;&nbsp; CANONICAL_ARCHITECTURE="8,26,48:480"
-  </div>
-</div>
+    <div id="introModal">
+      <canvas id="introCanvas" width="840" height="520"></canvas>
+      <div class="intro-title">AIOSuniverse</div>
+      <div class="intro-subtitle">
+        D480 Merkaba Lattice &nbsp;&#x2022;&nbsp; 8&#x2192;26&#x2192;48:480
+        &nbsp;&#x2022;&nbsp; Cosmos Infinite
+      </div>
+      <div class="intro-stats">
+        <div class="stat-block">
+          <span class="stat-num">8</span
+          ><span class="stat-lbl">Foundation<br />Sectors</span>
+        </div>
+        <div class="stat-block">
+          <span class="stat-num">26</span
+          ><span class="stat-lbl">Bosonic<br />Anchors</span>
+        </div>
+        <div class="stat-block">
+          <span class="stat-num">48</span
+          ><span class="stat-lbl">Canonical<br />Worlds</span>
+        </div>
+        <div class="stat-block">
+          <span class="stat-num">480</span
+          ><span class="stat-lbl">Harmonic<br />Nodes</span>
+        </div>
+      </div>
+      <button id="enterBtn" onclick="enterUniverse()">
+        &#x25B6;&nbsp; ENTER THE UNIVERSE
+      </button>
+      <div class="intro-copy">
+        &#x00A9; 2026 Brains4Ai &nbsp;&#x2022;&nbsp; Merkaba Dimensional OS
+        &nbsp;&#x2022;&nbsp; AIOS-HCS-2026-05-10<br />
+        PHI=1.618 &nbsp;&#x2022;&nbsp; PSI=1.414 &nbsp;&#x2022;&nbsp; BASE_HZ=72
+        &nbsp;&#x2022;&nbsp; CANONICAL_ARCHITECTURE="8,26,48:480"
+      </div>
+    </div>
 
-<!-- ══════════════════════════════════════════════════════════════════════════
+    <!-- ══════════════════════════════════════════════════════════════════════════
      SECTOR TICKER
 ════════════════════════════════════════════════════════════════════════════ -->
-<div id="sector-ticker">
-  <div id="ticker-inner">
-    <span class="ticker-sector" data-s="1">&#x25CF; S1&nbsp;quantum-arch&nbsp;|&nbsp;PHYSICS&nbsp;@&nbsp;852Hz</span>
-    <span class="ticker-sector" data-s="2">&#x25CF; S2&nbsp;code-eng&nbsp;|&nbsp;ACTION&nbsp;@&nbsp;528Hz</span>
-    <span class="ticker-sector" data-s="3">&#x25CF; S3&nbsp;systems-design&nbsp;|&nbsp;NARRATIVE&nbsp;@&nbsp;963Hz</span>
-    <span class="ticker-sector" data-s="4">&#x25CF; S4&nbsp;data-structs&nbsp;|&nbsp;ENTITY&nbsp;@&nbsp;396Hz</span>
-    <span class="ticker-sector" data-s="5">&#x25CF; S5&nbsp;self-evolve&nbsp;|&nbsp;HOLOGRAPHIC&nbsp;@&nbsp;72Hz</span>
-    <span class="ticker-sector" data-s="6">&#x25CF; S6&nbsp;pain-removal&nbsp;|&nbsp;EMOTION&nbsp;@&nbsp;741Hz</span>
-    <span class="ticker-sector" data-s="7">&#x25CF; S7&nbsp;perf-forge&nbsp;|&nbsp;ACTION&nbsp;@&nbsp;528Hz</span>
-    <span class="ticker-sector" data-s="8">&#x25CF; S8&nbsp;security-forge&nbsp;|&nbsp;PHYSICS&nbsp;@&nbsp;852Hz</span>
-  </div>
-</div>
+    <div id="sector-ticker">
+      <div id="ticker-inner">
+        <span class="ticker-sector" data-s="1"
+          >&#x25CF;
+          S1&nbsp;quantum-arch&nbsp;|&nbsp;PHYSICS&nbsp;@&nbsp;852Hz</span
+        >
+        <span class="ticker-sector" data-s="2"
+          >&#x25CF; S2&nbsp;code-eng&nbsp;|&nbsp;ACTION&nbsp;@&nbsp;528Hz</span
+        >
+        <span class="ticker-sector" data-s="3"
+          >&#x25CF;
+          S3&nbsp;systems-design&nbsp;|&nbsp;NARRATIVE&nbsp;@&nbsp;963Hz</span
+        >
+        <span class="ticker-sector" data-s="4"
+          >&#x25CF;
+          S4&nbsp;data-structs&nbsp;|&nbsp;ENTITY&nbsp;@&nbsp;396Hz</span
+        >
+        <span class="ticker-sector" data-s="5"
+          >&#x25CF;
+          S5&nbsp;self-evolve&nbsp;|&nbsp;HOLOGRAPHIC&nbsp;@&nbsp;72Hz</span
+        >
+        <span class="ticker-sector" data-s="6"
+          >&#x25CF;
+          S6&nbsp;pain-removal&nbsp;|&nbsp;EMOTION&nbsp;@&nbsp;741Hz</span
+        >
+        <span class="ticker-sector" data-s="7"
+          >&#x25CF;
+          S7&nbsp;perf-forge&nbsp;|&nbsp;ACTION&nbsp;@&nbsp;528Hz</span
+        >
+        <span class="ticker-sector" data-s="8"
+          >&#x25CF;
+          S8&nbsp;security-forge&nbsp;|&nbsp;PHYSICS&nbsp;@&nbsp;852Hz</span
+        >
+      </div>
+    </div>
 
-<!-- ══════════════════════════════════════════════════════════════════════════
+    <!-- ══════════════════════════════════════════════════════════════════════════
      HUD OVERLAYS
 ════════════════════════════════════════════════════════════════════════════ -->
-<div id="hud-left">
-  <div class="hud-title">AIOSuniverse</div>
-  <div class="hud-arch">8&#x2192;26&#x2192;48:480 &nbsp;|&nbsp; PHI 1.618</div>
-  <div class="hud-tag">HOLOGRAPHIC @ 72 Hz</div>
-  <div class="hud-tag">D48 CANONICAL LATTICE</div>
-  <div class="hud-tag">D480 HARMONIC SPECTRUM</div>
-  <div class="hud-status">&#x25CF; LIVE &nbsp;|&nbsp; MERKABA ACTIVE</div>
-  <div class="hud-nav">
-    <a href="/start">Experiences</a>
-    <a href="/vr-hub">VR Hub</a>
-    <a href="/">Home</a>
-  </div>
-</div>
+    <div id="hud-left">
+      <div class="hud-title">AIOSuniverse</div>
+      <div class="hud-arch">
+        8&#x2192;26&#x2192;48:480 &nbsp;|&nbsp; PHI 1.618
+      </div>
+      <div class="hud-tag">HOLOGRAPHIC @ 72 Hz</div>
+      <div class="hud-tag">D48 CANONICAL LATTICE</div>
+      <div class="hud-tag">D480 HARMONIC SPECTRUM</div>
+      <div class="hud-status">&#x25CF; LIVE &nbsp;|&nbsp; MERKABA ACTIVE</div>
+      <div class="hud-nav">
+        <a href="/start">Experiences</a>
+        <a href="/vr-hub">VR Hub</a>
+        <a href="/">Home</a>
+      </div>
+    </div>
 
-<div id="hud-right">
-  <div class="hud-title" style="font-size:0.6rem;margin-bottom:7px">RING LEGEND</div>
-  <div class="ring-row"><div class="ring-dot" style="background:#f59e0b;box-shadow:0 0 5px #f59e0b"></div>D8 Foundation (r=18)</div>
-  <div class="ring-row"><div class="ring-dot" style="background:#7c3aed;box-shadow:0 0 5px #7c3aed"></div>D26 Bosonic (r=30)</div>
-  <div class="ring-row"><div class="ring-dot" style="background:#00d4ff;box-shadow:0 0 5px #00d4ff"></div>D48 Canonical (r=46)</div>
-  <div class="ring-row"><div class="ring-dot" style="background:#60a5fa;box-shadow:0 0 5px #60a5fa"></div>D480 Galaxy (r=90+)</div>
-  <div class="ring-row" style="margin-top:6px"><div class="ring-dot" style="background:#4f46e5;box-shadow:0 0 5px #4f46e5"></div>Merkaba Core</div>
-</div>
+    <div id="hud-right">
+      <div class="hud-title" style="font-size: 0.6rem; margin-bottom: 7px">
+        RING LEGEND
+      </div>
+      <div class="ring-row">
+        <div
+          class="ring-dot"
+          style="background: #f59e0b; box-shadow: 0 0 5px #f59e0b"
+        ></div>
+        D8 Foundation (r=18)
+      </div>
+      <div class="ring-row">
+        <div
+          class="ring-dot"
+          style="background: #7c3aed; box-shadow: 0 0 5px #7c3aed"
+        ></div>
+        D26 Bosonic (r=30)
+      </div>
+      <div class="ring-row">
+        <div
+          class="ring-dot"
+          style="background: #00d4ff; box-shadow: 0 0 5px #00d4ff"
+        ></div>
+        D48 Canonical (r=46)
+      </div>
+      <div class="ring-row">
+        <div
+          class="ring-dot"
+          style="background: #60a5fa; box-shadow: 0 0 5px #60a5fa"
+        ></div>
+        D480 Galaxy (r=90+)
+      </div>
+      <div class="ring-row" style="margin-top: 6px">
+        <div
+          class="ring-dot"
+          style="background: #4f46e5; box-shadow: 0 0 5px #4f46e5"
+        ></div>
+        Merkaba Core
+      </div>
+    </div>
 
-<div id="freq-legend">
-  <div class="hud-title" style="font-size:0.56rem;margin-bottom:5px">FREQ MAP</div>
-  <div class="freq-row"><div class="freq-dot" style="background:#ef4444"></div>396Hz ENTITY</div>
-  <div class="freq-row"><div class="freq-dot" style="background:#f59e0b"></div>417Hz LOCATION</div>
-  <div class="freq-row"><div class="freq-dot" style="background:#22c55e"></div>528Hz ACTION</div>
-  <div class="freq-row"><div class="freq-dot" style="background:#00d4ff"></div>639Hz DIALOGUE</div>
-  <div class="freq-row"><div class="freq-dot" style="background:#8b5cf6"></div>741Hz EMOTION</div>
-  <div class="freq-row"><div class="freq-dot" style="background:#e879f9"></div>852Hz PHYSICS</div>
-  <div class="freq-row"><div class="freq-dot" style="background:#fbbf24"></div>963Hz NARRATIVE</div>
-  <div class="freq-row"><div class="freq-dot" style="background:#60a5fa"></div>72Hz HOLOGRAPHIC</div>
-</div>
+    <div id="freq-legend">
+      <div class="hud-title" style="font-size: 0.56rem; margin-bottom: 5px">
+        FREQ MAP
+      </div>
+      <div class="freq-row">
+        <div class="freq-dot" style="background: #ef4444"></div>
+        396Hz ENTITY
+      </div>
+      <div class="freq-row">
+        <div class="freq-dot" style="background: #f59e0b"></div>
+        417Hz LOCATION
+      </div>
+      <div class="freq-row">
+        <div class="freq-dot" style="background: #22c55e"></div>
+        528Hz ACTION
+      </div>
+      <div class="freq-row">
+        <div class="freq-dot" style="background: #00d4ff"></div>
+        639Hz DIALOGUE
+      </div>
+      <div class="freq-row">
+        <div class="freq-dot" style="background: #8b5cf6"></div>
+        741Hz EMOTION
+      </div>
+      <div class="freq-row">
+        <div class="freq-dot" style="background: #e879f9"></div>
+        852Hz PHYSICS
+      </div>
+      <div class="freq-row">
+        <div class="freq-dot" style="background: #fbbf24"></div>
+        963Hz NARRATIVE
+      </div>
+      <div class="freq-row">
+        <div class="freq-dot" style="background: #60a5fa"></div>
+        72Hz HOLOGRAPHIC
+      </div>
+    </div>
 
-<div id="controls-hint">
-  WASD / Arrow Keys &nbsp;&#x2022;&nbsp; Mouse Drag &nbsp;&#x2022;&nbsp; Click VR to enter headset &nbsp;&#x2022;&nbsp; Explore the lattice
-</div>
+    <div id="controls-hint">
+      WASD / Arrow Keys &nbsp;&#x2022;&nbsp; Mouse Drag &nbsp;&#x2022;&nbsp;
+      Click VR to enter headset &nbsp;&#x2022;&nbsp; Explore the lattice
+    </div>
 
-<!-- ══════════════════════════════════════════════════════════════════════════
+    <!-- ══════════════════════════════════════════════════════════════════════════
      A-FRAME SCENE
 ════════════════════════════════════════════════════════════════════════════ -->
-<a-scene
-  vr-mode-ui="enabled: true"
-  loading-screen="dotsColor: #00d4ff; backgroundColor: #000005"
-  renderer="antialias: true; colorManagement: true"
-  fog="type: linear; color: #000820; near: 130; far: 340"
->
-  <!-- Real Poly Haven deep space sky -->
-  <a-sky src="/public/geoassets/skies/deep_space_sky.jpg" rotation="0 90 0"></a-sky>
+    <a-scene
+      vr-mode-ui="enabled: true"
+      loading-screen="dotsColor: #00d4ff; backgroundColor: #000005"
+      renderer="antialias: true; colorManagement: true"
+      fog="type: linear; color: #000820; near: 130; far: 340"
+    >
+      <!-- Real Poly Haven deep space sky -->
+      <a-sky
+        src="/public/geoassets/skies/deep_space_sky.jpg"
+        rotation="0 90 0"
+      ></a-sky>
 
-  <!-- Lighting rig -->
-  <a-light type="ambient" color="#04080f" intensity="0.5"></a-light>
-  <a-light type="point" color="#00d4ff" intensity="3.0" distance="90"  decay="2" position="0 0 0"></a-light>
-  <a-light type="point" color="#9b5cff" intensity="2.0" distance="65"  decay="2" position="22 16 -22"></a-light>
-  <a-light type="point" color="#f59e0b" intensity="1.6" distance="55"  decay="2" position="-20 -14 20"></a-light>
-  <a-light type="point" color="#e879f9" intensity="1.2" distance="80"  decay="2" position="0 34 -34"></a-light>
+      <!-- Lighting rig -->
+      <a-light type="ambient" color="#04080f" intensity="0.5"></a-light>
+      <a-light
+        type="point"
+        color="#00d4ff"
+        intensity="3.0"
+        distance="90"
+        decay="2"
+        position="0 0 0"
+      ></a-light>
+      <a-light
+        type="point"
+        color="#9b5cff"
+        intensity="2.0"
+        distance="65"
+        decay="2"
+        position="22 16 -22"
+      ></a-light>
+      <a-light
+        type="point"
+        color="#f59e0b"
+        intensity="1.6"
+        distance="55"
+        decay="2"
+        position="-20 -14 20"
+      ></a-light>
+      <a-light
+        type="point"
+        color="#e879f9"
+        intensity="1.2"
+        distance="80"
+        decay="2"
+        position="0 34 -34"
+      ></a-light>
 
-  <!-- ── MERKABA CORE ── -->
-  <a-entity merkaba-core position="0 0 0"></a-entity>
+      <!-- ── MERKABA CORE ── -->
+      <a-entity merkaba-core position="0 0 0"></a-entity>
 
-  <!-- ── QUEEN BEE CROWN (cylinder beams to D8) ── -->
-  <a-entity queen-bee-crown position="0 0 0"></a-entity>
+      <!-- ── QUEEN BEE CROWN (cylinder beams to D8) ── -->
+      <a-entity queen-bee-crown position="0 0 0"></a-entity>
 
-  <!-- ── LATTICE PULSE (D8 ↔ D26 ↔ D48 web) ── -->
-  <a-entity lattice-pulse position="0 0 0"></a-entity>
+      <!-- ── LATTICE PULSE (D8 ↔ D26 ↔ D48 web) ── -->
+      <a-entity lattice-pulse position="0 0 0"></a-entity>
 
-  <!-- ── D8 FOUNDATION PLANETS ── -->
-  <a-entity d8-foundation position="0 0 0"></a-entity>
+      <!-- ── D8 FOUNDATION PLANETS ── -->
+      <a-entity d8-foundation position="0 0 0"></a-entity>
 
-  <!-- ── D26 BOSONIC ANCHORS ── -->
-  <a-entity d26-bosonic position="0 0 0"></a-entity>
+      <!-- ── D26 BOSONIC ANCHORS ── -->
+      <a-entity d26-bosonic position="0 0 0"></a-entity>
 
-  <!-- ── D48 CANONICAL WORLDS ── -->
-  <a-entity d48-canonical position="0 0 0"></a-entity>
+      <!-- ── D48 CANONICAL WORLDS ── -->
+      <a-entity d48-canonical position="0 0 0"></a-entity>
 
-  <!-- ── D480 GALAXY ── -->
-  <a-entity d480-galaxy position="0 0 0"></a-entity>
+      <!-- ── D480 GALAXY ── -->
+      <a-entity d480-galaxy position="0 0 0"></a-entity>
 
-  <!-- ── STARFIELD ── -->
-  <a-entity starfield></a-entity>
+      <!-- ── STARFIELD ── -->
+      <a-entity starfield></a-entity>
 
-  <!-- ── NEBULA CLOUDS ── -->
-  <a-entity nebula-cloud position="62 22 -82"  rotation="12 30 0"     scale="1.2 1.2 1.2"></a-entity>
-  <a-entity nebula-cloud position="-72 -26 -64" rotation="-8 -48 18"   scale="1.0 1.0 1.0"></a-entity>
-  <a-entity nebula-cloud position="42 -42 72"  rotation="6 118 -12"   scale="0.9 0.9 0.9"></a-entity>
-  <a-entity nebula-cloud position="-52 36 82"  rotation="-18 -122 8"  scale="1.1 1.1 1.1"></a-entity>
+      <!-- ── NEBULA CLOUDS ── -->
+      <a-entity
+        nebula-cloud
+        position="62 22 -82"
+        rotation="12 30 0"
+        scale="1.2 1.2 1.2"
+      ></a-entity>
+      <a-entity
+        nebula-cloud
+        position="-72 -26 -64"
+        rotation="-8 -48 18"
+        scale="1.0 1.0 1.0"
+      ></a-entity>
+      <a-entity
+        nebula-cloud
+        position="42 -42 72"
+        rotation="6 118 -12"
+        scale="0.9 0.9 0.9"
+      ></a-entity>
+      <a-entity
+        nebula-cloud
+        position="-52 36 82"
+        rotation="-18 -122 8"
+        scale="1.1 1.1 1.1"
+      ></a-entity>
 
-  <!-- Ring labels -->
-  <a-text value="D8 FOUNDATION"  color="#f59e0b" position="0 22.5 0"  scale="2.0 2.0 2.0" align="center" font="mozillavr"></a-text>
-  <a-text value="D26 BOSONIC"    color="#7c3aed" position="0 34.5 0"  scale="1.5 1.5 1.5" align="center" font="mozillavr"></a-text>
-  <a-text value="D48 CANONICAL"  color="#00d4ff" position="0 50.5 0"  scale="1.2 1.2 1.2" align="center" font="mozillavr"></a-text>
+      <!-- Ring labels -->
+      <a-text
+        value="D8 FOUNDATION"
+        color="#f59e0b"
+        position="0 22.5 0"
+        scale="2.0 2.0 2.0"
+        align="center"
+        font="mozillavr"
+      ></a-text>
+      <a-text
+        value="D26 BOSONIC"
+        color="#7c3aed"
+        position="0 34.5 0"
+        scale="1.5 1.5 1.5"
+        align="center"
+        font="mozillavr"
+      ></a-text>
+      <a-text
+        value="D48 CANONICAL"
+        color="#00d4ff"
+        position="0 50.5 0"
+        scale="1.2 1.2 1.2"
+        align="center"
+        font="mozillavr"
+      ></a-text>
 
-  <!-- Camera rig -->
-  <a-entity id="cameraRig" position="0 5 72">
-    <a-camera wasd-controls="acceleration: 30" look-controls="pointerLockEnabled: false" fov="70">
-      <a-cursor fuse="false" color="#00d4ff" opacity="0.7"></a-cursor>
-    </a-camera>
-  </a-entity>
-</a-scene>
+      <!-- Camera rig -->
+      <a-entity id="cameraRig" position="0 5 72">
+        <a-camera
+          wasd-controls="acceleration: 30"
+          look-controls="pointerLockEnabled: false"
+          fov="70"
+        >
+          <a-cursor fuse="false" color="#00d4ff" opacity="0.7"></a-cursor>
+        </a-camera>
+      </a-entity>
+    </a-scene>
 
-<!-- ══════════════════════════════════════════════════════════════════════════
+    <!-- ══════════════════════════════════════════════════════════════════════════
      MAIN SCRIPT
 ════════════════════════════════════════════════════════════════════════════ -->
-<script>
-"use strict";
+    <script>
+      "use strict";
 
-/* ── GeoQode coordinate envelope ───────────────────────────────────────── */
-const GEO = {
-  architectureSignature: "8,26,48:480",
-  semanticType: "HOLOGRAPHIC",
-  frequency: 72,
-  latticeNode: 0,
-  harmonicNode: 0,
-  phiCoefficient: 1.618,
-  coherence: 1.0,
-  domain: "self-evolve",
-  source: "cosmos-infinite",
-  d48Expansion: "CANONICAL",
-  d480Expansion: "FULL_HARMONIC"
-};
+      /* ── GeoQode coordinate envelope ───────────────────────────────────────── */
+      const GEO = {
+        architectureSignature: "8,26,48:480",
+        semanticType: "HOLOGRAPHIC",
+        frequency: 72,
+        latticeNode: 0,
+        harmonicNode: 0,
+        phiCoefficient: 1.618,
+        coherence: 1.0,
+        domain: "self-evolve",
+        source: "cosmos-infinite",
+        d48Expansion: "CANONICAL",
+        d480Expansion: "FULL_HARMONIC",
+      };
 
-/* ── Merkaba constants ─────────────────────────────────────────────────── */
-const PHI          = 1.618033988749895;
-const PSI          = 1.4142135623730951;
-const GOLDEN_BAND  = PHI + PSI;          // 3.032
-const BASE_HZ      = 72;
-const GOLDEN_ANGLE = Math.PI * (3 - Math.sqrt(5));
-const CANONICAL_ARCHITECTURE = "8,26,48:480";
-if (CANONICAL_ARCHITECTURE !== "8,26,48:480") { throw new Error("Architecture invariant violated"); }
+      /* ── Merkaba constants ─────────────────────────────────────────────────── */
+      const PHI = 1.618033988749895;
+      const PSI = 1.4142135623730951;
+      const GOLDEN_BAND = PHI + PSI; // 3.032
+      const BASE_HZ = 72;
+      const GOLDEN_ANGLE = Math.PI * (3 - Math.sqrt(5));
+      const CANONICAL_ARCHITECTURE = "8,26,48:480";
+      if (CANONICAL_ARCHITECTURE !== "8,26,48:480") {
+        throw new Error("Architecture invariant violated");
+      }
 
-/* ── D-Ring radii ──────────────────────────────────────────────────────── */
-const R8  = 18;
-const R26 = 30;
-const R48 = 46;
+      /* ── D-Ring radii ──────────────────────────────────────────────────────── */
+      const R8 = 18;
+      const R26 = 30;
+      const R48 = 46;
 
-/* ── Sector definitions ────────────────────────────────────────────────── */
-const SECTORS = [
-  { id: 1, domain: "quantum-arch",   type: "PHYSICS",     hz: 852, color: 0x4f46e5, emissive: 0x1a0fa0 },
-  { id: 2, domain: "code-eng",        type: "ACTION",      hz: 528, color: 0x22c55e, emissive: 0x0a5a28 },
-  { id: 3, domain: "systems-design",  type: "NARRATIVE",   hz: 963, color: 0xe2e8f0, emissive: 0x607080 },
-  { id: 4, domain: "data-structs",    type: "ENTITY",      hz: 396, color: 0xef4444, emissive: 0x8a1010 },
-  { id: 5, domain: "self-evolve",     type: "HOLOGRAPHIC", hz: 72,  color: 0xf59e0b, emissive: 0x8a5500 },
-  { id: 6, domain: "pain-removal",    type: "EMOTION",     hz: 741, color: 0x8b5cf6, emissive: 0x4a18a0 },
-  { id: 7, domain: "perf-forge",      type: "ACTION",      hz: 528, color: 0x86efac, emissive: 0x2a7048 },
-  { id: 8, domain: "security-forge",  type: "PHYSICS",     hz: 852, color: 0x818cf8, emissive: 0x1a1460 }
-];
+      /* ── Sector definitions ────────────────────────────────────────────────── */
+      const SECTORS = [
+        {
+          id: 1,
+          domain: "quantum-arch",
+          type: "PHYSICS",
+          hz: 852,
+          color: 0x4f46e5,
+          emissive: 0x1a0fa0,
+        },
+        {
+          id: 2,
+          domain: "code-eng",
+          type: "ACTION",
+          hz: 528,
+          color: 0x22c55e,
+          emissive: 0x0a5a28,
+        },
+        {
+          id: 3,
+          domain: "systems-design",
+          type: "NARRATIVE",
+          hz: 963,
+          color: 0xe2e8f0,
+          emissive: 0x607080,
+        },
+        {
+          id: 4,
+          domain: "data-structs",
+          type: "ENTITY",
+          hz: 396,
+          color: 0xef4444,
+          emissive: 0x8a1010,
+        },
+        {
+          id: 5,
+          domain: "self-evolve",
+          type: "HOLOGRAPHIC",
+          hz: 72,
+          color: 0xf59e0b,
+          emissive: 0x8a5500,
+        },
+        {
+          id: 6,
+          domain: "pain-removal",
+          type: "EMOTION",
+          hz: 741,
+          color: 0x8b5cf6,
+          emissive: 0x4a18a0,
+        },
+        {
+          id: 7,
+          domain: "perf-forge",
+          type: "ACTION",
+          hz: 528,
+          color: 0x86efac,
+          emissive: 0x2a7048,
+        },
+        {
+          id: 8,
+          domain: "security-forge",
+          type: "PHYSICS",
+          hz: 852,
+          color: 0x818cf8,
+          emissive: 0x1a1460,
+        },
+      ];
 
-/* ── Freq → color map ──────────────────────────────────────────────────── */
-const FREQ_COLOR = {
-  396:  0xef4444,
-  417:  0xf59e0b,
-  528:  0x22c55e,
-  639:  0x00d4ff,
-  741:  0x8b5cf6,
-  852:  0xe879f9,
-  963:  0xfbbf24,
-  72:   0x60a5fa
-};
-const FREQ_EMISSIVE = {
-  396:  0x8a1010,
-  417:  0x7a4400,
-  528:  0x0a6020,
-  639:  0x006a80,
-  741:  0x4a0090,
-  852:  0x880088,
-  963:  0x806600,
-  72:   0x1a4090
-};
+      /* ── Freq → color map ──────────────────────────────────────────────────── */
+      const FREQ_COLOR = {
+        396: 0xef4444,
+        417: 0xf59e0b,
+        528: 0x22c55e,
+        639: 0x00d4ff,
+        741: 0x8b5cf6,
+        852: 0xe879f9,
+        963: 0xfbbf24,
+        72: 0x60a5fa,
+      };
+      const FREQ_EMISSIVE = {
+        396: 0x8a1010,
+        417: 0x7a4400,
+        528: 0x0a6020,
+        639: 0x006a80,
+        741: 0x4a0090,
+        852: 0x880088,
+        963: 0x806600,
+        72: 0x1a4090,
+      };
 
-/* ── Fibonacci sphere ──────────────────────────────────────────────────── */
-function fibSphere(n, r) {
-  const pts = [];
-  for (let i = 0; i < n; i++) {
-    const y     = 1 - (i / (n - 1)) * 2;
-    const radius = Math.sqrt(Math.max(0, 1 - y * y));
-    const theta  = GOLDEN_ANGLE * i;
-    pts.push({
-      x: Math.cos(theta) * radius * r,
-      y: y * r,
-      z: Math.sin(theta) * radius * r
-    });
-  }
-  return pts;
-}
+      /* ── Fibonacci sphere ──────────────────────────────────────────────────── */
+      function fibSphere(n, r) {
+        const pts = [];
+        for (let i = 0; i < n; i++) {
+          const y = 1 - (i / (n - 1)) * 2;
+          const radius = Math.sqrt(Math.max(0, 1 - y * y));
+          const theta = GOLDEN_ANGLE * i;
+          pts.push({
+            x: Math.cos(theta) * radius * r,
+            y: y * r,
+            z: Math.sin(theta) * radius * r,
+          });
+        }
+        return pts;
+      }
 
-/* ══════════════════════════════════════════════════════════════════════════
+      /* ══════════════════════════════════════════════════════════════════════════
    INTRO CANVAS — animated galaxy preview
 ══════════════════════════════════════════════════════════════════════════ */
-(function initIntroCanvas() {
-  const cv  = document.getElementById("introCanvas");
-  if (!cv) return;
-  const ctx = cv.getContext("2d");
-  const W = cv.width, H = cv.height;
-  const cx = W / 2, cy = H / 2;
+      (function initIntroCanvas() {
+        const cv = document.getElementById("introCanvas");
+        if (!cv) return;
+        const ctx = cv.getContext("2d");
+        const W = cv.width,
+          H = cv.height;
+        const cx = W / 2,
+          cy = H / 2;
 
-  /* Background stars */
-  const stars = [];
-  for (let i = 0; i < 900; i++) {
-    stars.push({
-      x:  Math.random() * W,
-      y:  Math.random() * H,
-      r:  Math.random() * 1.3 + 0.15,
-      a:  Math.random(),
-      da: (Math.random() - 0.5) * 0.007
-    });
-  }
+        /* Background stars */
+        const stars = [];
+        for (let i = 0; i < 900; i++) {
+          stars.push({
+            x: Math.random() * W,
+            y: Math.random() * H,
+            r: Math.random() * 1.3 + 0.15,
+            a: Math.random(),
+            da: (Math.random() - 0.5) * 0.007,
+          });
+        }
 
-  /* Galaxy particles — 5 arms */
-  const gp = [];
-  const armHues = [195, 265, 42, 170, 310];
-  for (let arm = 0; arm < 5; arm++) {
-    const offset = (arm / 5) * Math.PI * 2;
-    for (let i = 0; i < 300; i++) {
-      const t = i / 300;
-      const r = 28 + t * 200;
-      const angle = offset + t * Math.PI * 3.4;
-      const spread = 14 * t;
-      gp.push({
-        x:    cx + Math.cos(angle) * r + (Math.random() - 0.5) * spread,
-        y:    cy + Math.sin(angle) * r * 0.36 + (Math.random() - 0.5) * spread * 0.36,
-        r:    0.7 + Math.random() * 1.9,
-        hue:  armHues[arm],
-        a:    0.4 + (1 - t) * 0.55
-      });
-    }
-  }
+        /* Galaxy particles — 5 arms */
+        const gp = [];
+        const armHues = [195, 265, 42, 170, 310];
+        for (let arm = 0; arm < 5; arm++) {
+          const offset = (arm / 5) * Math.PI * 2;
+          for (let i = 0; i < 300; i++) {
+            const t = i / 300;
+            const r = 28 + t * 200;
+            const angle = offset + t * Math.PI * 3.4;
+            const spread = 14 * t;
+            gp.push({
+              x: cx + Math.cos(angle) * r + (Math.random() - 0.5) * spread,
+              y:
+                cy +
+                Math.sin(angle) * r * 0.36 +
+                (Math.random() - 0.5) * spread * 0.36,
+              r: 0.7 + Math.random() * 1.9,
+              hue: armHues[arm],
+              a: 0.4 + (1 - t) * 0.55,
+            });
+          }
+        }
 
-  let frame = 0;
-  let running = true;
-  window._introStopAnim = function() { running = false; };
+        let frame = 0;
+        let running = true;
+        window._introStopAnim = function () {
+          running = false;
+        };
 
-  function draw() {
-    if (!running) return;
-    ctx.fillStyle = "#00000e";
-    ctx.fillRect(0, 0, W, H);
+        function draw() {
+          if (!running) return;
+          ctx.fillStyle = "#00000e";
+          ctx.fillRect(0, 0, W, H);
 
-    /* Stars */
-    for (const s of stars) {
-      s.a = Math.max(0.1, Math.min(1, s.a + s.da));
-      if (s.a <= 0.12 || s.a >= 0.98) s.da = -s.da;
-      ctx.beginPath();
-      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-      ctx.fillStyle = "rgba(255,255,255," + s.a.toFixed(2) + ")";
-      ctx.fill();
-    }
+          /* Stars */
+          for (const s of stars) {
+            s.a = Math.max(0.1, Math.min(1, s.a + s.da));
+            if (s.a <= 0.12 || s.a >= 0.98) s.da = -s.da;
+            ctx.beginPath();
+            ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+            ctx.fillStyle = "rgba(255,255,255," + s.a.toFixed(2) + ")";
+            ctx.fill();
+          }
 
-    /* Rotating galaxy */
-    ctx.save();
-    ctx.translate(cx, cy);
-    ctx.rotate(frame * 0.003);
-    ctx.translate(-cx, -cy);
-    for (const p of gp) {
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-      ctx.fillStyle = "hsla(" + p.hue + ",78%,68%," + p.a.toFixed(2) + ")";
-      ctx.fill();
-    }
-    ctx.restore();
+          /* Rotating galaxy */
+          ctx.save();
+          ctx.translate(cx, cy);
+          ctx.rotate(frame * 0.003);
+          ctx.translate(-cx, -cy);
+          for (const p of gp) {
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+            ctx.fillStyle =
+              "hsla(" + p.hue + ",78%,68%," + p.a.toFixed(2) + ")";
+            ctx.fill();
+          }
+          ctx.restore();
 
-    /* Core glow */
-    const cg = ctx.createRadialGradient(cx, cy, 0, cx, cy, 90);
-    cg.addColorStop(0,   "rgba(245,158,11,0.92)");
-    cg.addColorStop(0.28,"rgba(79,70,229,0.55)");
-    cg.addColorStop(0.65,"rgba(0,212,255,0.14)");
-    cg.addColorStop(1,   "rgba(0,0,0,0)");
-    ctx.fillStyle = cg;
-    ctx.fillRect(0, 0, W, H);
+          /* Core glow */
+          const cg = ctx.createRadialGradient(cx, cy, 0, cx, cy, 90);
+          cg.addColorStop(0, "rgba(245,158,11,0.92)");
+          cg.addColorStop(0.28, "rgba(79,70,229,0.55)");
+          cg.addColorStop(0.65, "rgba(0,212,255,0.14)");
+          cg.addColorStop(1, "rgba(0,0,0,0)");
+          ctx.fillStyle = cg;
+          ctx.fillRect(0, 0, W, H);
 
-    /* PHI ring pulse */
-    const op = 0.22 + Math.sin(frame * 0.07) * 0.14;
-    ctx.beginPath();
-    ctx.arc(cx, cy, 58, 0, Math.PI * 2);
-    ctx.strokeStyle = "rgba(0,212,255," + op.toFixed(2) + ")";
-    ctx.lineWidth = 0.9;
-    ctx.stroke();
+          /* PHI ring pulse */
+          const op = 0.22 + Math.sin(frame * 0.07) * 0.14;
+          ctx.beginPath();
+          ctx.arc(cx, cy, 58, 0, Math.PI * 2);
+          ctx.strokeStyle = "rgba(0,212,255," + op.toFixed(2) + ")";
+          ctx.lineWidth = 0.9;
+          ctx.stroke();
 
-    frame++;
-    requestAnimationFrame(draw);
-  }
-  draw();
-})();
+          frame++;
+          requestAnimationFrame(draw);
+        }
+        draw();
+      })();
 
-/* ══════════════════════════════════════════════════════════════════════════
+      /* ══════════════════════════════════════════════════════════════════════════
    AUDIO ENGINE
 ══════════════════════════════════════════════════════════════════════════ */
-let audioCtx = null;
+      let audioCtx = null;
 
-function initAudio() {
-  if (audioCtx) return;
-  audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-  const master = audioCtx.createGain();
-  master.gain.setValueAtTime(0.26, audioCtx.currentTime);
-  master.connect(audioCtx.destination);
+      function initAudio() {
+        if (audioCtx) return;
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const master = audioCtx.createGain();
+        master.gain.setValueAtTime(0.26, audioCtx.currentTime);
+        master.connect(audioCtx.destination);
 
-  function mkOsc(type, freq, gain, detune) {
-    const o = audioCtx.createOscillator();
-    const g = audioCtx.createGain();
-    o.type = type;
-    o.frequency.value = freq;
-    if (detune) o.detune.value = detune;
-    g.gain.value = gain;
-    o.connect(g);
-    g.connect(master);
-    o.start();
-    return { osc: o, gain: g };
-  }
+        function mkOsc(type, freq, gain, detune) {
+          const o = audioCtx.createOscillator();
+          const g = audioCtx.createGain();
+          o.type = type;
+          o.frequency.value = freq;
+          if (detune) o.detune.value = detune;
+          g.gain.value = gain;
+          o.connect(g);
+          g.connect(master);
+          o.start();
+          return { osc: o, gain: g };
+        }
 
-  /* 72 Hz holographic drone */
-  const drone = mkOsc("sine", BASE_HZ, 0.50);
-  mkOsc("sine", BASE_HZ / 2, 0.28);
+        /* 72 Hz holographic drone */
+        const drone = mkOsc("sine", BASE_HZ, 0.5);
+        mkOsc("sine", BASE_HZ / 2, 0.28);
 
-  /* Merkaba sacred frequencies */
-  mkOsc("triangle", 528, 0.038);
-  mkOsc("sine",     741, 0.026);
-  mkOsc("sine",     852, 0.028);
-  mkOsc("sine",     963, 0.022);
+        /* Merkaba sacred frequencies */
+        mkOsc("triangle", 528, 0.038);
+        mkOsc("sine", 741, 0.026);
+        mkOsc("sine", 852, 0.028);
+        mkOsc("sine", 963, 0.022);
 
-  /* Binaural theta beat 432 / 437 Hz */
-  const lOsc = audioCtx.createOscillator();
-  lOsc.type = "sine"; lOsc.frequency.value = 432;
-  const rOsc = audioCtx.createOscillator();
-  rOsc.type = "sine"; rOsc.frequency.value = 437;
-  const merger = audioCtx.createChannelMerger(2);
-  const gL = audioCtx.createGain(); gL.gain.value = 0.055;
-  const gR = audioCtx.createGain(); gR.gain.value = 0.055;
-  lOsc.connect(gL); gL.connect(merger, 0, 0);
-  rOsc.connect(gR); gR.connect(merger, 0, 1);
-  merger.connect(master);
-  lOsc.start(); rOsc.start();
+        /* Binaural theta beat 432 / 437 Hz */
+        const lOsc = audioCtx.createOscillator();
+        lOsc.type = "sine";
+        lOsc.frequency.value = 432;
+        const rOsc = audioCtx.createOscillator();
+        rOsc.type = "sine";
+        rOsc.frequency.value = 437;
+        const merger = audioCtx.createChannelMerger(2);
+        const gL = audioCtx.createGain();
+        gL.gain.value = 0.055;
+        const gR = audioCtx.createGain();
+        gR.gain.value = 0.055;
+        lOsc.connect(gL);
+        gL.connect(merger, 0, 0);
+        rOsc.connect(gR);
+        gR.connect(merger, 0, 1);
+        merger.connect(master);
+        lOsc.start();
+        rOsc.start();
 
-  /* LFO on drone gain */
-  const lfo = audioCtx.createOscillator();
-  const lfoG = audioCtx.createGain();
-  lfo.type = "sine"; lfo.frequency.value = 0.08;
-  lfoG.gain.value = 0.014;
-  lfo.connect(lfoG);
-  lfoG.connect(drone.gain);
-  lfo.start();
+        /* LFO on drone gain */
+        const lfo = audioCtx.createOscillator();
+        const lfoG = audioCtx.createGain();
+        lfo.type = "sine";
+        lfo.frequency.value = 0.08;
+        lfoG.gain.value = 0.014;
+        lfo.connect(lfoG);
+        lfoG.connect(drone.gain);
+        lfo.start();
 
-  window._audioMaster = master;
-}
+        window._audioMaster = master;
+      }
 
-function playEntry() {
-  if (!audioCtx) return;
-  const t = audioCtx.currentTime;
-  [396, 528, 741, 963].forEach(function(f, i) {
-    const o = audioCtx.createOscillator();
-    const g = audioCtx.createGain();
-    o.type = "triangle";
-    o.frequency.value = f;
-    g.gain.setValueAtTime(0, t + i * 0.16);
-    g.gain.linearRampToValueAtTime(0.13, t + i * 0.16 + 0.14);
-    g.gain.exponentialRampToValueAtTime(0.001, t + i * 0.16 + 1.6);
-    o.connect(g);
-    g.connect(audioCtx.destination);
-    o.start(t + i * 0.16);
-    o.stop(t + i * 0.16 + 1.7);
-  });
-}
+      function playEntry() {
+        if (!audioCtx) return;
+        const t = audioCtx.currentTime;
+        [396, 528, 741, 963].forEach(function (f, i) {
+          const o = audioCtx.createOscillator();
+          const g = audioCtx.createGain();
+          o.type = "triangle";
+          o.frequency.value = f;
+          g.gain.setValueAtTime(0, t + i * 0.16);
+          g.gain.linearRampToValueAtTime(0.13, t + i * 0.16 + 0.14);
+          g.gain.exponentialRampToValueAtTime(0.001, t + i * 0.16 + 1.6);
+          o.connect(g);
+          g.connect(audioCtx.destination);
+          o.start(t + i * 0.16);
+          o.stop(t + i * 0.16 + 1.7);
+        });
+      }
 
-function firePulse() {
-  if (!audioCtx) return;
-  const t = audioCtx.currentTime;
-  const o = audioCtx.createOscillator();
-  const g = audioCtx.createGain();
-  o.type = "sine";
-  o.frequency.setValueAtTime(BASE_HZ * PHI, t);
-  o.frequency.exponentialRampToValueAtTime(BASE_HZ, t + 0.45);
-  g.gain.setValueAtTime(0.2, t);
-  g.gain.exponentialRampToValueAtTime(0.001, t + 0.55);
-  o.connect(g);
-  g.connect(audioCtx.destination);
-  o.start(t);
-  o.stop(t + 0.6);
-}
+      function firePulse() {
+        if (!audioCtx) return;
+        const t = audioCtx.currentTime;
+        const o = audioCtx.createOscillator();
+        const g = audioCtx.createGain();
+        o.type = "sine";
+        o.frequency.setValueAtTime(BASE_HZ * PHI, t);
+        o.frequency.exponentialRampToValueAtTime(BASE_HZ, t + 0.45);
+        g.gain.setValueAtTime(0.2, t);
+        g.gain.exponentialRampToValueAtTime(0.001, t + 0.55);
+        o.connect(g);
+        g.connect(audioCtx.destination);
+        o.start(t);
+        o.stop(t + 0.6);
+      }
 
-/* ══════════════════════════════════════════════════════════════════════════
+      /* ══════════════════════════════════════════════════════════════════════════
    NARRATOR
 ══════════════════════════════════════════════════════════════════════════ */
-var NARRATION = [
-  [3200,  "Welcome to AIOSuniverse. You are entering the Merkaba Dimensional OS."],
-  [8500,  "At the center: the living Merkaba core. Gold Icosahedron. Cyan Octahedron. PHI torus knot — geometry made flesh."],
-  [15000, "Eight Foundation sector nodes orbit at radius 18. Each is a unique quantum world with its own geometry and resonance."],
-  [21500, "Twenty-six Bosonic anchors form the second ring at radius 30 — integration points connecting all services."],
-  [28000, "Forty-eight canonical worlds complete the Merkaba lattice. Architecture: 8 by 26 by 48 colon 480."],
-  [34500, "D480 — 4800 stars spiral in the living galaxy surrounding you. The full harmonic spectrum. All of it."],
-  [41000, "Frequency 72 hertz is the holographic resonance lock. The base frequency. All lattice nodes sing from it."],
-  [47500, "PHI equals 1.618. PSI equals 1.414. Golden Band equals 3.032 — its digit sum is 8. The Foundation."],
-  [54000, "The eight Queen-Bee sectors each carry a semantic frequency — from 396 hertz Entity, to 963 hertz Narrative."],
-  [61000, "Dual attestation. Alpha pole at PHI. Omega pole at PSI. Scanning from opposite geometric positions. Absolute coherence."],
-  [68000, "The lattice is alive. Your actions become its memory. The system moves forward only. Welcome."]
-];
+      var NARRATION = [
+        [
+          3200,
+          "Welcome to AIOSuniverse. You are entering the Merkaba Dimensional OS.",
+        ],
+        [
+          8500,
+          "At the center: the living Merkaba core. Gold Icosahedron. Cyan Octahedron. PHI torus knot — geometry made flesh.",
+        ],
+        [
+          15000,
+          "Eight Foundation sector nodes orbit at radius 18. Each is a unique quantum world with its own geometry and resonance.",
+        ],
+        [
+          21500,
+          "Twenty-six Bosonic anchors form the second ring at radius 30 — integration points connecting all services.",
+        ],
+        [
+          28000,
+          "Forty-eight canonical worlds complete the Merkaba lattice. Architecture: 8 by 26 by 48 colon 480.",
+        ],
+        [
+          34500,
+          "D480 — 4800 stars spiral in the living galaxy surrounding you. The full harmonic spectrum. All of it.",
+        ],
+        [
+          41000,
+          "Frequency 72 hertz is the holographic resonance lock. The base frequency. All lattice nodes sing from it.",
+        ],
+        [
+          47500,
+          "PHI equals 1.618. PSI equals 1.414. Golden Band equals 3.032 — its digit sum is 8. The Foundation.",
+        ],
+        [
+          54000,
+          "The eight Queen-Bee sectors each carry a semantic frequency — from 396 hertz Entity, to 963 hertz Narrative.",
+        ],
+        [
+          61000,
+          "Dual attestation. Alpha pole at PHI. Omega pole at PSI. Scanning from opposite geometric positions. Absolute coherence.",
+        ],
+        [
+          68000,
+          "The lattice is alive. Your actions become its memory. The system moves forward only. Welcome.",
+        ],
+      ];
 
-function startNarrator() {
-  if (!window.speechSynthesis) return;
-  var synth  = window.speechSynthesis;
-  var voices = synth.getVoices();
-  var voice  = voices.find(function(v) { return v.name === "Daniel"; })
-    || voices.find(function(v) { return v.name.indexOf("UK English Male") !== -1; })
-    || voices.find(function(v) { return v.name === "Alex"; })
-    || voices.find(function(v) { return v.lang && v.lang.indexOf("en") === 0 && v.name.indexOf("Female") === -1; });
+      function startNarrator() {
+        if (!window.speechSynthesis) return;
+        var synth = window.speechSynthesis;
+        var voices = synth.getVoices();
+        var voice =
+          voices.find(function (v) {
+            return v.name === "Daniel";
+          }) ||
+          voices.find(function (v) {
+            return v.name.indexOf("UK English Male") !== -1;
+          }) ||
+          voices.find(function (v) {
+            return v.name === "Alex";
+          }) ||
+          voices.find(function (v) {
+            return (
+              v.lang &&
+              v.lang.indexOf("en") === 0 &&
+              v.name.indexOf("Female") === -1
+            );
+          });
 
-  NARRATION.forEach(function(item) {
-    setTimeout(function() {
-      var utt = new SpeechSynthesisUtterance(item[1]);
-      if (voice) utt.voice = voice;
-      utt.rate = 0.82; utt.pitch = 0.88; utt.volume = 0.95;
-      synth.speak(utt);
-    }, item[0]);
-  });
-}
+        NARRATION.forEach(function (item) {
+          setTimeout(function () {
+            var utt = new SpeechSynthesisUtterance(item[1]);
+            if (voice) utt.voice = voice;
+            utt.rate = 0.82;
+            utt.pitch = 0.88;
+            utt.volume = 0.95;
+            synth.speak(utt);
+          }, item[0]);
+        });
+      }
 
-/* ══════════════════════════════════════════════════════════════════════════
+      /* ══════════════════════════════════════════════════════════════════════════
    ENTER UNIVERSE
 ══════════════════════════════════════════════════════════════════════════ */
-function enterUniverse() {
-  initAudio();
-  playEntry();
-  if (window._introStopAnim) window._introStopAnim();
-  var modal = document.getElementById("introModal");
-  modal.classList.add("fade-out");
-  setTimeout(function() { modal.style.display = "none"; }, 920);
-  /* Start narrator after voices loaded */
-  if (window.speechSynthesis) {
-    var v = window.speechSynthesis.getVoices();
-    if (v.length) { startNarrator(); }
-    else { window.speechSynthesis.onvoiceschanged = startNarrator; }
-  }
-  /* Lattice pulse every 3.5 s */
-  setInterval(firePulse, 3500);
-}
+      function enterUniverse() {
+        initAudio();
+        playEntry();
+        if (window._introStopAnim) window._introStopAnim();
+        var modal = document.getElementById("introModal");
+        modal.classList.add("fade-out");
+        setTimeout(function () {
+          modal.style.display = "none";
+        }, 920);
+        /* Start narrator after voices loaded */
+        if (window.speechSynthesis) {
+          var v = window.speechSynthesis.getVoices();
+          if (v.length) {
+            startNarrator();
+          } else {
+            window.speechSynthesis.onvoiceschanged = startNarrator;
+          }
+        }
+        /* Lattice pulse every 3.5 s */
+        setInterval(firePulse, 3500);
+      }
 
-/* ══════════════════════════════════════════════════════════════════════════
+      /* ══════════════════════════════════════════════════════════════════════════
    SECTOR TICKER
 ══════════════════════════════════════════════════════════════════════════ */
-(function runTicker() {
-  var spans = document.querySelectorAll(".ticker-sector");
-  var idx = 0;
-  function tick() {
-    spans.forEach(function(s) { s.classList.remove("active"); });
-    spans[idx % spans.length].classList.add("active");
-    idx++;
-    setTimeout(tick, 2800);
-  }
-  tick();
-})();
+      (function runTicker() {
+        var spans = document.querySelectorAll(".ticker-sector");
+        var idx = 0;
+        function tick() {
+          spans.forEach(function (s) {
+            s.classList.remove("active");
+          });
+          spans[idx % spans.length].classList.add("active");
+          idx++;
+          setTimeout(tick, 2800);
+        }
+        tick();
+      })();
 
-/* ══════════════════════════════════════════════════════════════════════════
+      /* ══════════════════════════════════════════════════════════════════════════
    A-FRAME COMPONENTS
 ══════════════════════════════════════════════════════════════════════════ */
 
-/* ── merkaba-core ─────────────────────────────────────────────────────── */
-AFRAME.registerComponent("merkaba-core", {
-  init: function () {
-    var THREE = AFRAME.THREE;
-    var group = new THREE.Group();
+      /* ── merkaba-core ─────────────────────────────────────────────────────── */
+      AFRAME.registerComponent("merkaba-core", {
+        init: function () {
+          var THREE = AFRAME.THREE;
+          var group = new THREE.Group();
 
-    /* 1. Outer gold Icosahedron */
-    this.icoMesh = new THREE.Mesh(
-      new THREE.IcosahedronGeometry(5, 1),
-      new THREE.MeshPhongMaterial({
-        color: 0xf59e0b, emissive: 0x8a5500, emissiveIntensity: 0.9,
-        shininess: 130, transparent: true, opacity: 0.93
-      })
-    );
-    group.add(this.icoMesh);
+          /* 1. Outer gold Icosahedron */
+          this.icoMesh = new THREE.Mesh(
+            new THREE.IcosahedronGeometry(5, 1),
+            new THREE.MeshPhongMaterial({
+              color: 0xf59e0b,
+              emissive: 0x8a5500,
+              emissiveIntensity: 0.9,
+              shininess: 130,
+              transparent: true,
+              opacity: 0.93,
+            }),
+          );
+          group.add(this.icoMesh);
 
-    /* 2. Inner cyan Octahedron */
-    this.octMesh = new THREE.Mesh(
-      new THREE.OctahedronGeometry(3.5, 0),
-      new THREE.MeshPhongMaterial({
-        color: 0x00d4ff, emissive: 0x008099, emissiveIntensity: 1.5,
-        shininess: 200, transparent: true, opacity: 0.82
-      })
-    );
-    group.add(this.octMesh);
+          /* 2. Inner cyan Octahedron */
+          this.octMesh = new THREE.Mesh(
+            new THREE.OctahedronGeometry(3.5, 0),
+            new THREE.MeshPhongMaterial({
+              color: 0x00d4ff,
+              emissive: 0x008099,
+              emissiveIntensity: 1.5,
+              shininess: 200,
+              transparent: true,
+              opacity: 0.82,
+            }),
+          );
+          group.add(this.octMesh);
 
-    /* 3. PHI TorusKnot */
-    this.tknMesh = new THREE.Mesh(
-      new THREE.TorusKnotGeometry(4.2, 0.32, 128, 16),
-      new THREE.MeshPhongMaterial({
-        color: 0xfbbf24, emissive: 0xa06000, emissiveIntensity: 1.3,
-        shininess: 160, transparent: true, opacity: 0.80
-      })
-    );
-    group.add(this.tknMesh);
+          /* 3. PHI TorusKnot */
+          this.tknMesh = new THREE.Mesh(
+            new THREE.TorusKnotGeometry(4.2, 0.32, 128, 16),
+            new THREE.MeshPhongMaterial({
+              color: 0xfbbf24,
+              emissive: 0xa06000,
+              emissiveIntensity: 1.3,
+              shininess: 160,
+              transparent: true,
+              opacity: 0.8,
+            }),
+          );
+          group.add(this.tknMesh);
 
-    /* 4. Deep-purple glow core sphere */
-    group.add(new THREE.Mesh(
-      new THREE.SphereGeometry(1.8, 32, 32),
-      new THREE.MeshPhongMaterial({
-        color: 0x4f46e5, emissive: 0x4f46e5, emissiveIntensity: 3.0,
-        transparent: true, opacity: 0.96
-      })
-    ));
+          /* 4. Deep-purple glow core sphere */
+          group.add(
+            new THREE.Mesh(
+              new THREE.SphereGeometry(1.8, 32, 32),
+              new THREE.MeshPhongMaterial({
+                color: 0x4f46e5,
+                emissive: 0x4f46e5,
+                emissiveIntensity: 3.0,
+                transparent: true,
+                opacity: 0.96,
+              }),
+            ),
+          );
 
-    /* 5. BackSide aura */
-    group.add(new THREE.Mesh(
-      new THREE.SphereGeometry(8.5, 16, 16),
-      new THREE.MeshPhongMaterial({
-        color: 0x4f46e5, emissive: 0x4f46e5, emissiveIntensity: 0.5,
-        side: THREE.BackSide, transparent: true, opacity: 0.13
-      })
-    ));
+          /* 5. BackSide aura */
+          group.add(
+            new THREE.Mesh(
+              new THREE.SphereGeometry(8.5, 16, 16),
+              new THREE.MeshPhongMaterial({
+                color: 0x4f46e5,
+                emissive: 0x4f46e5,
+                emissiveIntensity: 0.5,
+                side: THREE.BackSide,
+                transparent: true,
+                opacity: 0.13,
+              }),
+            ),
+          );
 
-    /* 6. Equatorial ring */
-    this.ringMesh = new THREE.Mesh(
-      new THREE.TorusGeometry(7.4, 0.09, 8, 90),
-      new THREE.MeshPhongMaterial({
-        color: 0x00d4ff, emissive: 0x007799, emissiveIntensity: 1.1,
-        transparent: true, opacity: 0.55
-      })
-    );
-    this.ringMesh.rotation.x = Math.PI / 2;
-    group.add(this.ringMesh);
+          /* 6. Equatorial ring */
+          this.ringMesh = new THREE.Mesh(
+            new THREE.TorusGeometry(7.4, 0.09, 8, 90),
+            new THREE.MeshPhongMaterial({
+              color: 0x00d4ff,
+              emissive: 0x007799,
+              emissiveIntensity: 1.1,
+              transparent: true,
+              opacity: 0.55,
+            }),
+          );
+          this.ringMesh.rotation.x = Math.PI / 2;
+          group.add(this.ringMesh);
 
-    /* 7. Second tilted ring */
-    this.ring2Mesh = new THREE.Mesh(
-      new THREE.TorusGeometry(6.8, 0.06, 8, 80),
-      new THREE.MeshPhongMaterial({
-        color: 0x9b5cff, emissive: 0x4a00cc, emissiveIntensity: 1.0,
-        transparent: true, opacity: 0.45
-      })
-    );
-    this.ring2Mesh.rotation.x = Math.PI / 3;
-    group.add(this.ring2Mesh);
+          /* 7. Second tilted ring */
+          this.ring2Mesh = new THREE.Mesh(
+            new THREE.TorusGeometry(6.8, 0.06, 8, 80),
+            new THREE.MeshPhongMaterial({
+              color: 0x9b5cff,
+              emissive: 0x4a00cc,
+              emissiveIntensity: 1.0,
+              transparent: true,
+              opacity: 0.45,
+            }),
+          );
+          this.ring2Mesh.rotation.x = Math.PI / 3;
+          group.add(this.ring2Mesh);
 
-    this.el.setObject3D("merkaba-core-group", group);
-    this.t = 0;
-  },
+          this.el.setObject3D("merkaba-core-group", group);
+          this.t = 0;
+        },
 
-  tick: function (time) {
-    this.t = time * 0.001;
-    var t = this.t;
-    if (this.icoMesh)  { this.icoMesh.rotation.y  =  t * 0.26; }
-    if (this.octMesh)  { this.octMesh.rotation.y   = -t * 0.26 * PHI; this.octMesh.rotation.x = t * 0.12; }
-    if (this.tknMesh)  { this.tknMesh.rotation.z   =  t * 0.20; this.tknMesh.rotation.x = t * 0.08; }
-    if (this.ringMesh) { this.ringMesh.rotation.z  =  t * 0.32; this.ringMesh.material.opacity  = 0.38 + Math.sin(t * 2.2) * 0.18; }
-    if (this.ring2Mesh){ this.ring2Mesh.rotation.z = -t * 0.28; this.ring2Mesh.material.opacity = 0.28 + Math.sin(t * 1.8 + 1) * 0.15; }
-  }
-});
-
-/* ── queen-bee-crown ─────────────────────────────────────────────────── */
-AFRAME.registerComponent("queen-bee-crown", {
-  init: function () {
-    var THREE = AFRAME.THREE;
-    var group = new THREE.Group();
-    var d8pts = fibSphere(8, R8);
-
-    d8pts.forEach(function(pt) {
-      var dir = new THREE.Vector3(pt.x, pt.y, pt.z);
-      var len = dir.length();
-      dir.normalize();
-
-      var cyl = new THREE.Mesh(
-        new THREE.CylinderGeometry(0.055, 0.055, len, 8),
-        new THREE.MeshPhongMaterial({
-          color: 0x4f46e5, emissive: 0x4f46e5, emissiveIntensity: 1.6,
-          transparent: true, opacity: 0.52
-        })
-      );
-      cyl.position.set(pt.x / 2, pt.y / 2, pt.z / 2);
-      var up = new THREE.Vector3(0, 1, 0);
-      cyl.setRotationFromQuaternion(new THREE.Quaternion().setFromUnitVectors(up, dir));
-      group.add(cyl);
-    });
-
-    this.el.setObject3D("qb-group", group);
-    this.group = group;
-    this.t = 0;
-  },
-
-  tick: function (time) {
-    this.t = time * 0.001;
-    var op = 0.32 + Math.sin(this.t * 1.9) * 0.22;
-    if (this.group) {
-      this.group.children.forEach(function(c) { if (c.material) c.material.opacity = op; });
-    }
-  }
-});
-
-/* ── lattice-pulse (connection web) ─────────────────────────────────── */
-AFRAME.registerComponent("lattice-pulse", {
-  init: function () {
-    var THREE = AFRAME.THREE;
-    var group = new THREE.Group();
-    var d8pts  = fibSphere(8,  R8);
-    var d26pts = fibSphere(26, R26);
-    var d48pts = fibSphere(48, R48);
-
-    /* D8 → D26 nearest 3 */
-    var mat1 = new THREE.LineBasicMaterial({ color: 0x7c3aed, transparent: true, opacity: 0.20 });
-    d8pts.forEach(function(a) {
-      var sorted = d26pts.slice().sort(function(x, y) {
-        return Math.hypot(x.x-a.x,x.y-a.y,x.z-a.z) - Math.hypot(y.x-a.x,y.y-a.y,y.z-a.z);
-      }).slice(0, 3);
-      sorted.forEach(function(b) {
-        var pos = new Float32Array([a.x,a.y,a.z, b.x,b.y,b.z]);
-        var geo = new THREE.BufferGeometry();
-        geo.setAttribute("position", new THREE.BufferAttribute(pos, 3));
-        group.add(new THREE.Line(geo, mat1.clone()));
+        tick: function (time) {
+          this.t = time * 0.001;
+          var t = this.t;
+          if (this.icoMesh) {
+            this.icoMesh.rotation.y = t * 0.26;
+          }
+          if (this.octMesh) {
+            this.octMesh.rotation.y = -t * 0.26 * PHI;
+            this.octMesh.rotation.x = t * 0.12;
+          }
+          if (this.tknMesh) {
+            this.tknMesh.rotation.z = t * 0.2;
+            this.tknMesh.rotation.x = t * 0.08;
+          }
+          if (this.ringMesh) {
+            this.ringMesh.rotation.z = t * 0.32;
+            this.ringMesh.material.opacity = 0.38 + Math.sin(t * 2.2) * 0.18;
+          }
+          if (this.ring2Mesh) {
+            this.ring2Mesh.rotation.z = -t * 0.28;
+            this.ring2Mesh.material.opacity =
+              0.28 + Math.sin(t * 1.8 + 1) * 0.15;
+          }
+        },
       });
-    });
 
-    /* D26 → D48 (every 3rd node) */
-    var mat2 = new THREE.LineBasicMaterial({ color: 0x00d4ff, transparent: true, opacity: 0.10 });
-    d26pts.forEach(function(a, ai) {
-      if (ai % 3 !== 0) return;
-      var sorted = d48pts.slice().sort(function(x, y) {
-        return Math.hypot(x.x-a.x,x.y-a.y,x.z-a.z) - Math.hypot(y.x-a.x,y.y-a.y,y.z-a.z);
+      /* ── queen-bee-crown ─────────────────────────────────────────────────── */
+      AFRAME.registerComponent("queen-bee-crown", {
+        init: function () {
+          var THREE = AFRAME.THREE;
+          var group = new THREE.Group();
+          var d8pts = fibSphere(8, R8);
+
+          d8pts.forEach(function (pt) {
+            var dir = new THREE.Vector3(pt.x, pt.y, pt.z);
+            var len = dir.length();
+            dir.normalize();
+
+            var cyl = new THREE.Mesh(
+              new THREE.CylinderGeometry(0.055, 0.055, len, 8),
+              new THREE.MeshPhongMaterial({
+                color: 0x4f46e5,
+                emissive: 0x4f46e5,
+                emissiveIntensity: 1.6,
+                transparent: true,
+                opacity: 0.52,
+              }),
+            );
+            cyl.position.set(pt.x / 2, pt.y / 2, pt.z / 2);
+            var up = new THREE.Vector3(0, 1, 0);
+            cyl.setRotationFromQuaternion(
+              new THREE.Quaternion().setFromUnitVectors(up, dir),
+            );
+            group.add(cyl);
+          });
+
+          this.el.setObject3D("qb-group", group);
+          this.group = group;
+          this.t = 0;
+        },
+
+        tick: function (time) {
+          this.t = time * 0.001;
+          var op = 0.32 + Math.sin(this.t * 1.9) * 0.22;
+          if (this.group) {
+            this.group.children.forEach(function (c) {
+              if (c.material) c.material.opacity = op;
+            });
+          }
+        },
       });
-      var b = sorted[0];
-      var pos = new Float32Array([a.x,a.y,a.z, b.x,b.y,b.z]);
-      var geo = new THREE.BufferGeometry();
-      geo.setAttribute("position", new THREE.BufferAttribute(pos, 3));
-      group.add(new THREE.Line(geo, mat2.clone()));
-    });
 
-    this.el.setObject3D("lp-group", group);
-    this.group = group;
-    this.t = 0;
-  },
+      /* ── lattice-pulse (connection web) ─────────────────────────────────── */
+      AFRAME.registerComponent("lattice-pulse", {
+        init: function () {
+          var THREE = AFRAME.THREE;
+          var group = new THREE.Group();
+          var d8pts = fibSphere(8, R8);
+          var d26pts = fibSphere(26, R26);
+          var d48pts = fibSphere(48, R48);
 
-  tick: function (time) {
-    this.t = time * 0.001;
-    var op = 0.10 + Math.sin(this.t * 0.85) * 0.09;
-    if (this.group) {
-      this.group.children.forEach(function(c) { if (c.material) c.material.opacity = op; });
-    }
-  }
-});
+          /* D8 → D26 nearest 3 */
+          var mat1 = new THREE.LineBasicMaterial({
+            color: 0x7c3aed,
+            transparent: true,
+            opacity: 0.2,
+          });
+          d8pts.forEach(function (a) {
+            var sorted = d26pts
+              .slice()
+              .sort(function (x, y) {
+                return (
+                  Math.hypot(x.x - a.x, x.y - a.y, x.z - a.z) -
+                  Math.hypot(y.x - a.x, y.y - a.y, y.z - a.z)
+                );
+              })
+              .slice(0, 3);
+            sorted.forEach(function (b) {
+              var pos = new Float32Array([a.x, a.y, a.z, b.x, b.y, b.z]);
+              var geo = new THREE.BufferGeometry();
+              geo.setAttribute("position", new THREE.BufferAttribute(pos, 3));
+              group.add(new THREE.Line(geo, mat1.clone()));
+            });
+          });
 
-/* ── d8-foundation ───────────────────────────────────────────────────── */
-AFRAME.registerComponent("d8-foundation", {
-  init: function () {
-    var THREE = AFRAME.THREE;
-    var group = new THREE.Group();
-    var pts   = fibSphere(8, R8);
+          /* D26 → D48 (every 3rd node) */
+          var mat2 = new THREE.LineBasicMaterial({
+            color: 0x00d4ff,
+            transparent: true,
+            opacity: 0.1,
+          });
+          d26pts.forEach(function (a, ai) {
+            if (ai % 3 !== 0) return;
+            var sorted = d48pts.slice().sort(function (x, y) {
+              return (
+                Math.hypot(x.x - a.x, x.y - a.y, x.z - a.z) -
+                Math.hypot(y.x - a.x, y.y - a.y, y.z - a.z)
+              );
+            });
+            var b = sorted[0];
+            var pos = new Float32Array([a.x, a.y, a.z, b.x, b.y, b.z]);
+            var geo = new THREE.BufferGeometry();
+            geo.setAttribute("position", new THREE.BufferAttribute(pos, 3));
+            group.add(new THREE.Line(geo, mat2.clone()));
+          });
 
-    var geoFns = [
-      function() { return new THREE.IcosahedronGeometry(2.2, 1);   },  /* S1 quantum-arch */
-      function() { return new THREE.OctahedronGeometry(2.0, 0);    },  /* S2 code-eng */
-      function() { return new THREE.DodecahedronGeometry(2.0, 0);  },  /* S3 systems-design */
-      function() { return new THREE.TetrahedronGeometry(2.4, 0);   },  /* S4 data-structs */
-      function() { return new THREE.SphereGeometry(2.2, 32, 32);   },  /* S5 self-evolve */
-      function() { return new THREE.TorusGeometry(1.4, 0.55, 16, 40); },/* S6 pain-removal */
-      function() { return new THREE.IcosahedronGeometry(2.0, 0);   },  /* S7 perf-forge */
-      function() { return new THREE.OctahedronGeometry(2.2, 1);    }   /* S8 security-forge */
-    ];
+          this.el.setObject3D("lp-group", group);
+          this.group = group;
+          this.t = 0;
+        },
 
-    this.nodes = [];
-    var self = this;
-    pts.forEach(function(pt, i) {
-      var s = SECTORS[i];
-      var ng = new THREE.Group();
-      ng.position.set(pt.x, pt.y, pt.z);
-
-      /* Main body */
-      var mat = new THREE.MeshPhongMaterial({
-        color: s.color, emissive: s.emissive, emissiveIntensity: 0.80,
-        shininess: 100, transparent: true, opacity: 0.95
+        tick: function (time) {
+          this.t = time * 0.001;
+          var op = 0.1 + Math.sin(this.t * 0.85) * 0.09;
+          if (this.group) {
+            this.group.children.forEach(function (c) {
+              if (c.material) c.material.opacity = op;
+            });
+          }
+        },
       });
-      var mesh = new THREE.Mesh(geoFns[i](), mat);
-      ng.add(mesh);
 
-      /* Glow aura — BackSide */
-      ng.add(new THREE.Mesh(
-        new THREE.SphereGeometry(4.6, 14, 14),
-        new THREE.MeshPhongMaterial({
-          color: s.color, emissive: s.color, emissiveIntensity: 0.35,
-          side: THREE.BackSide, transparent: true, opacity: 0.10
-        })
-      ));
+      /* ── d8-foundation ───────────────────────────────────────────────────── */
+      AFRAME.registerComponent("d8-foundation", {
+        init: function () {
+          var THREE = AFRAME.THREE;
+          var group = new THREE.Group();
+          var pts = fibSphere(8, R8);
 
-      /* Orbital ring */
-      var ring = new THREE.Mesh(
-        new THREE.TorusGeometry(3.6, 0.065, 8, 64),
-        new THREE.MeshPhongMaterial({
-          color: s.color, emissive: s.color, emissiveIntensity: 0.9,
-          transparent: true, opacity: 0.58
-        })
-      );
-      ring.rotation.x = Math.PI / 4 + i * 0.28;
-      ng.add(ring);
+          var geoFns = [
+            function () {
+              return new THREE.IcosahedronGeometry(2.2, 1);
+            } /* S1 quantum-arch */,
+            function () {
+              return new THREE.OctahedronGeometry(2.0, 0);
+            } /* S2 code-eng */,
+            function () {
+              return new THREE.DodecahedronGeometry(2.0, 0);
+            } /* S3 systems-design */,
+            function () {
+              return new THREE.TetrahedronGeometry(2.4, 0);
+            } /* S4 data-structs */,
+            function () {
+              return new THREE.SphereGeometry(2.2, 32, 32);
+            } /* S5 self-evolve */,
+            function () {
+              return new THREE.TorusGeometry(1.4, 0.55, 16, 40);
+            } /* S6 pain-removal */,
+            function () {
+              return new THREE.IcosahedronGeometry(2.0, 0);
+            } /* S7 perf-forge */,
+            function () {
+              return new THREE.OctahedronGeometry(2.2, 1);
+            } /* S8 security-forge */,
+          ];
 
-      group.add(ng);
-      self.nodes.push({ ng: ng, mesh: mesh, ring: ring, spd: 0.17 + i * 0.04 });
-    });
+          this.nodes = [];
+          var self = this;
+          pts.forEach(function (pt, i) {
+            var s = SECTORS[i];
+            var ng = new THREE.Group();
+            ng.position.set(pt.x, pt.y, pt.z);
 
-    this.el.setObject3D("d8-group", group);
-    this.t = 0;
-  },
+            /* Main body */
+            var mat = new THREE.MeshPhongMaterial({
+              color: s.color,
+              emissive: s.emissive,
+              emissiveIntensity: 0.8,
+              shininess: 100,
+              transparent: true,
+              opacity: 0.95,
+            });
+            var mesh = new THREE.Mesh(geoFns[i](), mat);
+            ng.add(mesh);
 
-  tick: function (time) {
-    this.t = time * 0.001;
-    var t = this.t;
-    this.nodes.forEach(function(n) {
-      n.mesh.rotation.y = t * n.spd;
-      n.mesh.rotation.x = t * n.spd * 0.55;
-      n.ring.rotation.z = t * n.spd * 1.4;
-    });
-  }
-});
+            /* Glow aura — BackSide */
+            ng.add(
+              new THREE.Mesh(
+                new THREE.SphereGeometry(4.6, 14, 14),
+                new THREE.MeshPhongMaterial({
+                  color: s.color,
+                  emissive: s.color,
+                  emissiveIntensity: 0.35,
+                  side: THREE.BackSide,
+                  transparent: true,
+                  opacity: 0.1,
+                }),
+              ),
+            );
 
-/* ── d26-bosonic ─────────────────────────────────────────────────────── */
-AFRAME.registerComponent("d26-bosonic", {
-  init: function () {
-    var THREE = AFRAME.THREE;
-    var group = new THREE.Group();
-    var pts   = fibSphere(26, R26);
+            /* Orbital ring */
+            var ring = new THREE.Mesh(
+              new THREE.TorusGeometry(3.6, 0.065, 8, 64),
+              new THREE.MeshPhongMaterial({
+                color: s.color,
+                emissive: s.color,
+                emissiveIntensity: 0.9,
+                transparent: true,
+                opacity: 0.58,
+              }),
+            );
+            ring.rotation.x = Math.PI / 4 + i * 0.28;
+            ng.add(ring);
 
-    this.meshes = [];
-    var self = this;
-    pts.forEach(function(pt, i) {
-      var ng = new THREE.Group();
-      ng.position.set(pt.x, pt.y, pt.z);
+            group.add(ng);
+            self.nodes.push({
+              ng: ng,
+              mesh: mesh,
+              ring: ring,
+              spd: 0.17 + i * 0.04,
+            });
+          });
 
-      var mesh = new THREE.Mesh(
-        new THREE.OctahedronGeometry(0.82, 0),
-        new THREE.MeshPhongMaterial({
-          color: 0x7c3aed, emissive: 0x4a00b8, emissiveIntensity: 0.85,
-          shininess: 110, transparent: true, opacity: 0.90
-        })
-      );
-      ng.add(mesh);
+          this.el.setObject3D("d8-group", group);
+          this.t = 0;
+        },
 
-      /* Glow aura */
-      ng.add(new THREE.Mesh(
-        new THREE.SphereGeometry(2.2, 10, 10),
-        new THREE.MeshPhongMaterial({
-          color: 0x7c3aed, emissive: 0x4a00b8, emissiveIntensity: 0.4,
-          side: THREE.BackSide, transparent: true, opacity: 0.11
-        })
-      ));
+        tick: function (time) {
+          this.t = time * 0.001;
+          var t = this.t;
+          this.nodes.forEach(function (n) {
+            n.mesh.rotation.y = t * n.spd;
+            n.mesh.rotation.x = t * n.spd * 0.55;
+            n.ring.rotation.z = t * n.spd * 1.4;
+          });
+        },
+      });
 
-      group.add(ng);
-      self.meshes.push({ mesh: mesh, spd: 0.28 + (i % 6) * 0.08, axis: i % 3 });
-    });
+      /* ── d26-bosonic ─────────────────────────────────────────────────────── */
+      AFRAME.registerComponent("d26-bosonic", {
+        init: function () {
+          var THREE = AFRAME.THREE;
+          var group = new THREE.Group();
+          var pts = fibSphere(26, R26);
 
-    this.el.setObject3D("d26-group", group);
-    this.t = 0;
-  },
+          this.meshes = [];
+          var self = this;
+          pts.forEach(function (pt, i) {
+            var ng = new THREE.Group();
+            ng.position.set(pt.x, pt.y, pt.z);
 
-  tick: function (time) {
-    this.t = time * 0.001;
-    var t = this.t;
-    this.meshes.forEach(function(m) {
-      if      (m.axis === 0) { m.mesh.rotation.y = t * m.spd; }
-      else if (m.axis === 1) { m.mesh.rotation.x = t * m.spd; }
-      else                   { m.mesh.rotation.z = t * m.spd; }
-    });
-  }
-});
+            var mesh = new THREE.Mesh(
+              new THREE.OctahedronGeometry(0.82, 0),
+              new THREE.MeshPhongMaterial({
+                color: 0x7c3aed,
+                emissive: 0x4a00b8,
+                emissiveIntensity: 0.85,
+                shininess: 110,
+                transparent: true,
+                opacity: 0.9,
+              }),
+            );
+            ng.add(mesh);
 
-/* ── d48-canonical ───────────────────────────────────────────────────── */
-AFRAME.registerComponent("d48-canonical", {
-  init: function () {
-    var THREE = AFRAME.THREE;
-    var group = new THREE.Group();
-    var pts   = fibSphere(48, R48);
-    var fkeys = [396, 417, 528, 639, 741, 852, 963, 72];
+            /* Glow aura */
+            ng.add(
+              new THREE.Mesh(
+                new THREE.SphereGeometry(2.2, 10, 10),
+                new THREE.MeshPhongMaterial({
+                  color: 0x7c3aed,
+                  emissive: 0x4a00b8,
+                  emissiveIntensity: 0.4,
+                  side: THREE.BackSide,
+                  transparent: true,
+                  opacity: 0.11,
+                }),
+              ),
+            );
 
-    this.meshes = [];
-    var self = this;
-    pts.forEach(function(pt, i) {
-      var fk  = fkeys[i % fkeys.length];
-      var col = FREQ_COLOR[fk]   || 0x00d4ff;
-      var em  = FREQ_EMISSIVE[fk] || 0x006080;
-      var mesh = new THREE.Mesh(
-        new THREE.IcosahedronGeometry(0.46, 0),
-        new THREE.MeshPhongMaterial({
-          color: col, emissive: em, emissiveIntensity: 0.75,
-          shininess: 90, transparent: true, opacity: 0.88
-        })
-      );
-      mesh.position.set(pt.x, pt.y, pt.z);
-      group.add(mesh);
-      self.meshes.push({ mesh: mesh, spd: 0.45 + (i % 7) * 0.09 });
-    });
+            group.add(ng);
+            self.meshes.push({
+              mesh: mesh,
+              spd: 0.28 + (i % 6) * 0.08,
+              axis: i % 3,
+            });
+          });
 
-    this.el.setObject3D("d48-group", group);
-    this.t = 0;
-  },
+          this.el.setObject3D("d26-group", group);
+          this.t = 0;
+        },
 
-  tick: function (time) {
-    this.t = time * 0.001;
-    var t = this.t;
-    this.meshes.forEach(function(m) {
-      m.mesh.rotation.y = t * m.spd;
-      m.mesh.rotation.x = t * m.spd * 0.65;
-    });
-  }
-});
+        tick: function (time) {
+          this.t = time * 0.001;
+          var t = this.t;
+          this.meshes.forEach(function (m) {
+            if (m.axis === 0) {
+              m.mesh.rotation.y = t * m.spd;
+            } else if (m.axis === 1) {
+              m.mesh.rotation.x = t * m.spd;
+            } else {
+              m.mesh.rotation.z = t * m.spd;
+            }
+          });
+        },
+      });
 
-/* ── d480-galaxy ─────────────────────────────────────────────────────── */
-AFRAME.registerComponent("d480-galaxy", {
-  init: function () {
-    var THREE = AFRAME.THREE;
-    var group = new THREE.Group();
+      /* ── d48-canonical ───────────────────────────────────────────────────── */
+      AFRAME.registerComponent("d48-canonical", {
+        init: function () {
+          var THREE = AFRAME.THREE;
+          var group = new THREE.Group();
+          var pts = fibSphere(48, R48);
+          var fkeys = [396, 417, 528, 639, 741, 852, 963, 72];
 
-    var ARMS = 6, PER_ARM = 700, CORE = 600;
-    var total = ARMS * PER_ARM + CORE;
-    var positions = new Float32Array(total * 3);
-    var colors    = new Float32Array(total * 3);
-    var idx = 0;
+          this.meshes = [];
+          var self = this;
+          pts.forEach(function (pt, i) {
+            var fk = fkeys[i % fkeys.length];
+            var col = FREQ_COLOR[fk] || 0x00d4ff;
+            var em = FREQ_EMISSIVE[fk] || 0x006080;
+            var mesh = new THREE.Mesh(
+              new THREE.IcosahedronGeometry(0.46, 0),
+              new THREE.MeshPhongMaterial({
+                color: col,
+                emissive: em,
+                emissiveIntensity: 0.75,
+                shininess: 90,
+                transparent: true,
+                opacity: 0.88,
+              }),
+            );
+            mesh.position.set(pt.x, pt.y, pt.z);
+            group.add(mesh);
+            self.meshes.push({ mesh: mesh, spd: 0.45 + (i % 7) * 0.09 });
+          });
 
-    /* Core cluster */
-    for (var c = 0; c < CORE; c++) {
-      var cr   = Math.pow(Math.random(), 1.8) * 14;
-      var cth  = Math.random() * Math.PI * 2;
-      var cphi = Math.acos(2 * Math.random() - 1);
-      positions[idx*3]   = Math.sin(cphi) * Math.cos(cth) * cr;
-      positions[idx*3+1] = Math.cos(cphi) * cr * 0.42;
-      positions[idx*3+2] = Math.sin(cphi) * Math.sin(cth) * cr;
-      var bright = 1 - cr / 14;
-      colors[idx*3]   = 0.96 * bright + 0.3 * (1 - bright);
-      colors[idx*3+1] = 0.80 * bright + 0.2 * (1 - bright);
-      colors[idx*3+2] = 0.18 * bright;
-      idx++;
-    }
+          this.el.setObject3D("d48-group", group);
+          this.t = 0;
+        },
 
-    /* Spiral arms */
-    var armHuePairs = [[0.1, 0.7, 1.0], [0.55, 0.18, 1.0], [0.0, 0.72, 0.85],
-                       [0.1, 0.7, 1.0], [0.55, 0.18, 1.0], [0.96, 0.76, 0.10]];
-    for (var arm = 0; arm < ARMS; arm++) {
-      var armOff = (arm / ARMS) * Math.PI * 2;
-      var hp = armHuePairs[arm];
-      for (var j = 0; j < PER_ARM; j++) {
-        var t   = j / PER_ARM;
-        var r   = 12 + t * 80;
-        var ang = armOff + t * Math.PI * 4.8;
-        var sp  = 4 + t * 18;
-        positions[idx*3]   = Math.cos(ang) * r + (Math.random() - 0.5) * sp;
-        positions[idx*3+1] = (Math.random() - 0.5) * sp * 0.22;
-        positions[idx*3+2] = Math.sin(ang) * r + (Math.random() - 0.5) * sp;
-        var bri = (0.65 - t * 0.38 + Math.random() * 0.28);
-        colors[idx*3]   = hp[0] * bri;
-        colors[idx*3+1] = hp[1] * bri;
-        colors[idx*3+2] = hp[2] * bri;
-        idx++;
-      }
-    }
+        tick: function (time) {
+          this.t = time * 0.001;
+          var t = this.t;
+          this.meshes.forEach(function (m) {
+            m.mesh.rotation.y = t * m.spd;
+            m.mesh.rotation.x = t * m.spd * 0.65;
+          });
+        },
+      });
 
-    var geo = new THREE.BufferGeometry();
-    geo.setAttribute("position", new THREE.BufferAttribute(positions, 3));
-    geo.setAttribute("color",    new THREE.BufferAttribute(colors, 3));
+      /* ── d480-galaxy ─────────────────────────────────────────────────────── */
+      AFRAME.registerComponent("d480-galaxy", {
+        init: function () {
+          var THREE = AFRAME.THREE;
+          var group = new THREE.Group();
 
-    var mat = new THREE.PointsMaterial({
-      size: 0.58,
-      vertexColors: true,
-      transparent: true,
-      opacity: 0.84,
-      blending: THREE.AdditiveBlending,
-      depthWrite: false,
-      sizeAttenuation: true
-    });
+          var ARMS = 6,
+            PER_ARM = 700,
+            CORE = 600;
+          var total = ARMS * PER_ARM + CORE;
+          var positions = new Float32Array(total * 3);
+          var colors = new Float32Array(total * 3);
+          var idx = 0;
 
-    this.points = new THREE.Points(geo, mat);
-    group.add(this.points);
-    this.el.setObject3D("galaxy-group", group);
-    this.t = 0;
-  },
+          /* Core cluster */
+          for (var c = 0; c < CORE; c++) {
+            var cr = Math.pow(Math.random(), 1.8) * 14;
+            var cth = Math.random() * Math.PI * 2;
+            var cphi = Math.acos(2 * Math.random() - 1);
+            positions[idx * 3] = Math.sin(cphi) * Math.cos(cth) * cr;
+            positions[idx * 3 + 1] = Math.cos(cphi) * cr * 0.42;
+            positions[idx * 3 + 2] = Math.sin(cphi) * Math.sin(cth) * cr;
+            var bright = 1 - cr / 14;
+            colors[idx * 3] = 0.96 * bright + 0.3 * (1 - bright);
+            colors[idx * 3 + 1] = 0.8 * bright + 0.2 * (1 - bright);
+            colors[idx * 3 + 2] = 0.18 * bright;
+            idx++;
+          }
 
-  tick: function (time) {
-    this.t = time * 0.001;
-    if (this.points) { this.points.rotation.y = this.t * 0.016; }
-  }
-});
+          /* Spiral arms */
+          var armHuePairs = [
+            [0.1, 0.7, 1.0],
+            [0.55, 0.18, 1.0],
+            [0.0, 0.72, 0.85],
+            [0.1, 0.7, 1.0],
+            [0.55, 0.18, 1.0],
+            [0.96, 0.76, 0.1],
+          ];
+          for (var arm = 0; arm < ARMS; arm++) {
+            var armOff = (arm / ARMS) * Math.PI * 2;
+            var hp = armHuePairs[arm];
+            for (var j = 0; j < PER_ARM; j++) {
+              var t = j / PER_ARM;
+              var r = 12 + t * 80;
+              var ang = armOff + t * Math.PI * 4.8;
+              var sp = 4 + t * 18;
+              positions[idx * 3] =
+                Math.cos(ang) * r + (Math.random() - 0.5) * sp;
+              positions[idx * 3 + 1] = (Math.random() - 0.5) * sp * 0.22;
+              positions[idx * 3 + 2] =
+                Math.sin(ang) * r + (Math.random() - 0.5) * sp;
+              var bri = 0.65 - t * 0.38 + Math.random() * 0.28;
+              colors[idx * 3] = hp[0] * bri;
+              colors[idx * 3 + 1] = hp[1] * bri;
+              colors[idx * 3 + 2] = hp[2] * bri;
+              idx++;
+            }
+          }
 
-/* ── starfield ───────────────────────────────────────────────────────── */
-AFRAME.registerComponent("starfield", {
-  init: function () {
-    var THREE = AFRAME.THREE;
-    var COUNT = 8000;
-    var pos = new Float32Array(COUNT * 3);
-    var col = new Float32Array(COUNT * 3);
+          var geo = new THREE.BufferGeometry();
+          geo.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+          geo.setAttribute("color", new THREE.BufferAttribute(colors, 3));
 
-    for (var i = 0; i < COUNT; i++) {
-      var r   = 160 + Math.random() * 220;
-      var th  = Math.random() * Math.PI * 2;
-      var ph  = Math.acos(2 * Math.random() - 1);
-      pos[i*3]   = Math.sin(ph) * Math.cos(th) * r;
-      pos[i*3+1] = Math.cos(ph) * r;
-      pos[i*3+2] = Math.sin(ph) * Math.sin(th) * r;
-      var v = 0.55 + Math.random() * 0.45;
-      var tk = Math.random();
-      col[i*3]   = v * (0.78 + tk * 0.22);
-      col[i*3+1] = v * (0.82 + tk * 0.15);
-      col[i*3+2] = v * (0.88 + tk * 0.12);
-    }
+          var mat = new THREE.PointsMaterial({
+            size: 0.58,
+            vertexColors: true,
+            transparent: true,
+            opacity: 0.84,
+            blending: THREE.AdditiveBlending,
+            depthWrite: false,
+            sizeAttenuation: true,
+          });
 
-    var geo = new THREE.BufferGeometry();
-    geo.setAttribute("position", new THREE.BufferAttribute(pos, 3));
-    geo.setAttribute("color",    new THREE.BufferAttribute(col, 3));
+          this.points = new THREE.Points(geo, mat);
+          group.add(this.points);
+          this.el.setObject3D("galaxy-group", group);
+          this.t = 0;
+        },
 
-    this.el.setObject3D("starfield", new THREE.Points(geo, new THREE.PointsMaterial({
-      size: 0.42, vertexColors: true,
-      transparent: true, opacity: 0.88,
-      blending: THREE.AdditiveBlending, depthWrite: false
-    })));
-  }
-});
+        tick: function (time) {
+          this.t = time * 0.001;
+          if (this.points) {
+            this.points.rotation.y = this.t * 0.016;
+          }
+        },
+      });
 
-/* ── nebula-cloud ────────────────────────────────────────────────────── */
-AFRAME.registerComponent("nebula-cloud", {
-  init: function () {
-    var THREE = AFRAME.THREE;
-    var COUNT = 1400;
-    var pos = new Float32Array(COUNT * 3);
-    var col = new Float32Array(COUNT * 3);
+      /* ── starfield ───────────────────────────────────────────────────────── */
+      AFRAME.registerComponent("starfield", {
+        init: function () {
+          var THREE = AFRAME.THREE;
+          var COUNT = 8000;
+          var pos = new Float32Array(COUNT * 3);
+          var col = new Float32Array(COUNT * 3);
 
-    var palettes = [
-      [0.05, 0.18, 0.95], /* deep blue */
-      [0.55, 0.10, 0.90], /* violet */
-      [0.00, 0.65, 0.85], /* cyan-teal */
-      [0.92, 0.12, 0.72]  /* magenta */
-    ];
-    var pal = palettes[Math.floor(Math.random() * palettes.length)];
+          for (var i = 0; i < COUNT; i++) {
+            var r = 160 + Math.random() * 220;
+            var th = Math.random() * Math.PI * 2;
+            var ph = Math.acos(2 * Math.random() - 1);
+            pos[i * 3] = Math.sin(ph) * Math.cos(th) * r;
+            pos[i * 3 + 1] = Math.cos(ph) * r;
+            pos[i * 3 + 2] = Math.sin(ph) * Math.sin(th) * r;
+            var v = 0.55 + Math.random() * 0.45;
+            var tk = Math.random();
+            col[i * 3] = v * (0.78 + tk * 0.22);
+            col[i * 3 + 1] = v * (0.82 + tk * 0.15);
+            col[i * 3 + 2] = v * (0.88 + tk * 0.12);
+          }
 
-    for (var i = 0; i < COUNT; i++) {
-      pos[i*3]   = (Math.random() - 0.5) * 46;
-      pos[i*3+1] = (Math.random() - 0.5) * 28;
-      pos[i*3+2] = (Math.random() - 0.5) * 46;
-      var v = 0.28 + Math.random() * 0.52;
-      col[i*3]   = pal[0] * v;
-      col[i*3+1] = pal[1] * v;
-      col[i*3+2] = pal[2] * v;
-    }
+          var geo = new THREE.BufferGeometry();
+          geo.setAttribute("position", new THREE.BufferAttribute(pos, 3));
+          geo.setAttribute("color", new THREE.BufferAttribute(col, 3));
 
-    var geo = new THREE.BufferGeometry();
-    geo.setAttribute("position", new THREE.BufferAttribute(pos, 3));
-    geo.setAttribute("color",    new THREE.BufferAttribute(col, 3));
+          this.el.setObject3D(
+            "starfield",
+            new THREE.Points(
+              geo,
+              new THREE.PointsMaterial({
+                size: 0.42,
+                vertexColors: true,
+                transparent: true,
+                opacity: 0.88,
+                blending: THREE.AdditiveBlending,
+                depthWrite: false,
+              }),
+            ),
+          );
+        },
+      });
 
-    this.el.setObject3D("nebula", new THREE.Points(geo, new THREE.PointsMaterial({
-      size: 2.0, vertexColors: true,
-      transparent: true, opacity: 0.30,
-      blending: THREE.AdditiveBlending, depthWrite: false,
-      sizeAttenuation: true
-    })));
-  }
-});
+      /* ── nebula-cloud ────────────────────────────────────────────────────── */
+      AFRAME.registerComponent("nebula-cloud", {
+        init: function () {
+          var THREE = AFRAME.THREE;
+          var COUNT = 1400;
+          var pos = new Float32Array(COUNT * 3);
+          var col = new Float32Array(COUNT * 3);
 
-</script>
-</body>
+          var palettes = [
+            [0.05, 0.18, 0.95] /* deep blue */,
+            [0.55, 0.1, 0.9] /* violet */,
+            [0.0, 0.65, 0.85] /* cyan-teal */,
+            [0.92, 0.12, 0.72] /* magenta */,
+          ];
+          var pal = palettes[Math.floor(Math.random() * palettes.length)];
+
+          for (var i = 0; i < COUNT; i++) {
+            pos[i * 3] = (Math.random() - 0.5) * 46;
+            pos[i * 3 + 1] = (Math.random() - 0.5) * 28;
+            pos[i * 3 + 2] = (Math.random() - 0.5) * 46;
+            var v = 0.28 + Math.random() * 0.52;
+            col[i * 3] = pal[0] * v;
+            col[i * 3 + 1] = pal[1] * v;
+            col[i * 3 + 2] = pal[2] * v;
+          }
+
+          var geo = new THREE.BufferGeometry();
+          geo.setAttribute("position", new THREE.BufferAttribute(pos, 3));
+          geo.setAttribute("color", new THREE.BufferAttribute(col, 3));
+
+          this.el.setObject3D(
+            "nebula",
+            new THREE.Points(
+              geo,
+              new THREE.PointsMaterial({
+                size: 2.0,
+                vertexColors: true,
+                transparent: true,
+                opacity: 0.3,
+                blending: THREE.AdditiveBlending,
+                depthWrite: false,
+                sizeAttenuation: true,
+              }),
+            ),
+          );
+        },
+      });
+    </script>
+  </body>
 </html>

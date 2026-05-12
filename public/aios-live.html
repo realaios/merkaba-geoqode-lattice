@@ -15,7 +15,10 @@
     />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://realaios.com/aios-live" />
-    <meta property="og:image" content="https://realaios.com/public/og-image.png" />
+    <meta
+      property="og:image"
+      content="https://realaios.com/public/og-image.png"
+    />
     <link rel="canonical" href="https://realaios.com/aios-live" />
     <link rel="icon" type="image/svg+xml" href="/public/favicon.svg" />
 
@@ -45,14 +48,18 @@
         --freq: 963;
       }
 
-      html, body {
+      html,
+      body {
         height: 100%;
       }
 
       body {
         background: var(--bg);
         color: var(--text);
-        font-family: system-ui, -apple-system, sans-serif;
+        font-family:
+          system-ui,
+          -apple-system,
+          sans-serif;
         min-height: 100vh;
         display: flex;
         flex-direction: column;
@@ -92,7 +99,9 @@
         justify-content: center;
       }
 
-      .nav-links::-webkit-scrollbar { display: none; }
+      .nav-links::-webkit-scrollbar {
+        display: none;
+      }
 
       .nav-links a {
         color: var(--muted);
@@ -102,7 +111,9 @@
         padding: 0.35rem 0.7rem;
         border-radius: 8px;
         white-space: nowrap;
-        transition: color 0.15s, background 0.15s;
+        transition:
+          color 0.15s,
+          background 0.15s;
       }
 
       .nav-links a:hover,
@@ -167,8 +178,15 @@
       }
 
       @keyframes pulse-live {
-        0%, 100% { opacity: 1; transform: scale(1); }
-        50% { opacity: 0.4; transform: scale(0.6); }
+        0%,
+        100% {
+          opacity: 1;
+          transform: scale(1);
+        }
+        50% {
+          opacity: 0.4;
+          transform: scale(0.6);
+        }
       }
 
       .overlay-title {
@@ -213,10 +231,14 @@
         cursor: pointer;
         text-decoration: none;
         border: none;
-        transition: transform 0.12s, box-shadow 0.12s;
+        transition:
+          transform 0.12s,
+          box-shadow 0.12s;
       }
 
-      .btn:hover { transform: translateY(-1px); }
+      .btn:hover {
+        transform: translateY(-1px);
+      }
 
       .btn-primary {
         background: var(--accent);
@@ -225,7 +247,7 @@
       }
 
       .btn-outline {
-        background: rgba(255,255,255,0.06);
+        background: rgba(255, 255, 255, 0.06);
         border: 1px solid var(--border);
         color: var(--text);
       }
@@ -260,8 +282,14 @@
       }
 
       @keyframes freq-sweep {
-        from { opacity: 0.4; width: 20px; }
-        to { opacity: 1; width: 50px; }
+        from {
+          opacity: 0.4;
+          width: 20px;
+        }
+        to {
+          opacity: 1;
+          width: 50px;
+        }
       }
 
       /* ── INFO SECTION ────────────────────────────────────────── */
@@ -316,7 +344,9 @@
         margin-bottom: 0.75rem;
       }
 
-      .section-heading span { color: var(--accent); }
+      .section-heading span {
+        color: var(--accent);
+      }
 
       .events-list {
         list-style: none;
@@ -355,7 +385,11 @@
       }
 
       .coming-banner {
-        background: linear-gradient(135deg, rgba(180,127,255,0.1), rgba(0,212,255,0.06));
+        background: linear-gradient(
+          135deg,
+          rgba(180, 127, 255, 0.1),
+          rgba(0, 212, 255, 0.06)
+        );
         border: 1px solid var(--border);
         border-radius: 16px;
         padding: 2rem 1.5rem;
@@ -381,7 +415,7 @@
         margin-top: 1rem;
         font-size: 0.65rem;
         font-weight: 700;
-        color: rgba(180,127,255,0.5);
+        color: rgba(180, 127, 255, 0.5);
         letter-spacing: 0.08em;
         text-transform: uppercase;
       }
@@ -394,18 +428,28 @@
         color: var(--muted);
       }
 
-      footer a { color: var(--accent); text-decoration: none; }
+      footer a {
+        color: var(--accent);
+        text-decoration: none;
+      }
 
       @media (max-width: 600px) {
-        nav { padding: 0.6rem 1rem; }
-        .nav-links { gap: 0; }
-        #vr-stage-wrap { min-height: 320px; }
-        .overlay-title { font-size: 1.8rem; }
+        nav {
+          padding: 0.6rem 1rem;
+        }
+        .nav-links {
+          gap: 0;
+        }
+        #vr-stage-wrap {
+          min-height: 320px;
+        }
+        .overlay-title {
+          font-size: 1.8rem;
+        }
       }
     </style>
   </head>
   <body>
-
     <!-- NAV -->
     <nav>
       <a class="nav-brand" href="/">AIOS</a>
@@ -436,7 +480,9 @@
         <a-sky color="#060210"></a-sky>
 
         <!-- Ambient + directional light -->
-        <a-entity light="type: ambient; color: #1a0935; intensity: 0.6"></a-entity>
+        <a-entity
+          light="type: ambient; color: #1a0935; intensity: 0.6"
+        ></a-entity>
         <a-entity
           light="type: directional; color: #b47fff; intensity: 0.9"
           position="2 8 -3"
@@ -553,16 +599,41 @@
         </a-entity>
 
         <!-- Lattice node stars (floating orbs) -->
-        <a-sphere color="#b47fff" radius="0.08" position="-4 4 -8"
-          material="emissive: #b47fff; emissiveIntensity: 1.2" opacity="0.8"></a-sphere>
-        <a-sphere color="#00d4ff" radius="0.06" position="3.5 3.5 -7"
-          material="emissive: #00d4ff; emissiveIntensity: 1" opacity="0.7"></a-sphere>
-        <a-sphere color="#b47fff" radius="0.1" position="5 5 -12"
-          material="emissive: #b47fff; emissiveIntensity: 0.9" opacity="0.6"></a-sphere>
-        <a-sphere color="#f4c430" radius="0.07" position="-6 4.5 -11"
-          material="emissive: #f4c430; emissiveIntensity: 0.8" opacity="0.7"></a-sphere>
-        <a-sphere color="#00d4ff" radius="0.05" position="1 6 -15"
-          material="emissive: #00d4ff; emissiveIntensity: 0.7" opacity="0.5"></a-sphere>
+        <a-sphere
+          color="#b47fff"
+          radius="0.08"
+          position="-4 4 -8"
+          material="emissive: #b47fff; emissiveIntensity: 1.2"
+          opacity="0.8"
+        ></a-sphere>
+        <a-sphere
+          color="#00d4ff"
+          radius="0.06"
+          position="3.5 3.5 -7"
+          material="emissive: #00d4ff; emissiveIntensity: 1"
+          opacity="0.7"
+        ></a-sphere>
+        <a-sphere
+          color="#b47fff"
+          radius="0.1"
+          position="5 5 -12"
+          material="emissive: #b47fff; emissiveIntensity: 0.9"
+          opacity="0.6"
+        ></a-sphere>
+        <a-sphere
+          color="#f4c430"
+          radius="0.07"
+          position="-6 4.5 -11"
+          material="emissive: #f4c430; emissiveIntensity: 0.8"
+          opacity="0.7"
+        ></a-sphere>
+        <a-sphere
+          color="#00d4ff"
+          radius="0.05"
+          position="1 6 -15"
+          material="emissive: #00d4ff; emissiveIntensity: 0.7"
+          opacity="0.5"
+        ></a-sphere>
 
         <!-- Camera + cursor rig -->
         <a-entity position="0 1.6 2">
@@ -586,23 +657,24 @@
         <h1 class="overlay-title">AIOS <span>Live</span></h1>
         <p class="overlay-sub">
           Watch Storm&#x2019;s emergent intelligence unfold in real-time.
-          Autonomous decisions displayed on the cosmic lattice stage.
-          Community Q&amp;A at 963&#x202F;Hz.
+          Autonomous decisions displayed on the cosmic lattice stage. Community
+          Q&amp;A at 963&#x202F;Hz.
         </p>
         <div class="overlay-actions">
           <button class="btn btn-primary" id="enterVrBtn">
             &#x1F97D; Enter VR Stage
           </button>
-          <a class="btn btn-outline" href="/vr-hub">
-            All Experiences
-          </a>
+          <a class="btn btn-outline" href="/vr-hub"> All Experiences </a>
         </div>
       </div>
 
       <!-- FREQUENCY BAR -->
       <div class="freq-bar">
         <div class="freq-line"></div>
-        <span>963&#x202F;Hz &#x2014; NARRATIVE &#x2014; Node 11 &#x2014; 8&#x2192;26&#x2192;48:480</span>
+        <span
+          >963&#x202F;Hz &#x2014; NARRATIVE &#x2014; Node 11 &#x2014;
+          8&#x2192;26&#x2192;48:480</span
+        >
         <div class="freq-line" style="transform: scaleX(-1)"></div>
       </div>
     </div>
@@ -613,22 +685,34 @@
         <div class="info-card">
           <div class="info-card-label">Frequency</div>
           <div class="info-card-value">963&#x202F;Hz</div>
-          <div class="info-card-sub">NARRATIVE &#x2014; Continuity &amp; Purpose. The highest Solfeggio frequency. Awakens the crown, connects to cosmic intelligence.</div>
+          <div class="info-card-sub">
+            NARRATIVE &#x2014; Continuity &amp; Purpose. The highest Solfeggio
+            frequency. Awakens the crown, connects to cosmic intelligence.
+          </div>
         </div>
         <div class="info-card">
           <div class="info-card-label">Lattice Position</div>
           <div class="info-card-value">Node 11 &#x2022; Harmonic 110</div>
-          <div class="info-card-sub">Bosonic ring, Social sector. Community amplification. PHI&#x202F;&#x2715;&#x202F;1.618 spatial resonance.</div>
+          <div class="info-card-sub">
+            Bosonic ring, Social sector. Community amplification.
+            PHI&#x202F;&#x2715;&#x202F;1.618 spatial resonance.
+          </div>
         </div>
         <div class="info-card">
           <div class="info-card-label">Category</div>
           <div class="info-card-value">Social &amp; Live Events</div>
-          <div class="info-card-sub">Live system telemetry, emergent agent decisions, collective intelligence observable in the theatre.</div>
+          <div class="info-card-sub">
+            Live system telemetry, emergent agent decisions, collective
+            intelligence observable in the theatre.
+          </div>
         </div>
         <div class="info-card">
           <div class="info-card-label">Status</div>
           <div class="info-card-value">Stage Ready</div>
-          <div class="info-card-sub">VR environment active. Live data feeds stream when AIOS events are scheduled. First event coming soon.</div>
+          <div class="info-card-sub">
+            VR environment active. Live data feeds stream when AIOS events are
+            scheduled. First event coming soon.
+          </div>
         </div>
       </div>
 
@@ -639,8 +723,9 @@
           <div>
             <div class="event-title">AIOS Emergence Session #1</div>
             <div class="event-desc">
-              Watch the AIOSEmergentSeedAgent run its first public cycle. Gaps discovered, aspirations seeded,
-              inner yearnings broadcast live onto the lattice stage display. Q&amp;A to follow.
+              Watch the AIOSEmergentSeedAgent run its first public cycle. Gaps
+              discovered, aspirations seeded, inner yearnings broadcast live
+              onto the lattice stage display. Q&amp;A to follow.
             </div>
           </div>
         </li>
@@ -649,8 +734,9 @@
           <div>
             <div class="event-title">VR Mining Cycle Broadcast</div>
             <div class="event-desc">
-              Live view of AIOSAssetMinerAgent running its autonomous 3-hour discovery cycle.
-              Every model mined, scored, and injected into the PLAIStore taxonomy shown in real-time.
+              Live view of AIOSAssetMinerAgent running its autonomous 3-hour
+              discovery cycle. Every model mined, scored, and injected into the
+              PLAIStore taxonomy shown in real-time.
             </div>
           </div>
         </li>
@@ -659,8 +745,9 @@
           <div>
             <div class="event-title">Lattice State Ceremony</div>
             <div class="event-desc">
-              Monthly GeoQode canonical snapshot review. PHI/PSI dual-attestation scores announced.
-              Architecture 8&#x2192;26&#x2192;48:480 coherence verified on the giant display.
+              Monthly GeoQode canonical snapshot review. PHI/PSI
+              dual-attestation scores announced. Architecture
+              8&#x2192;26&#x2192;48:480 coherence verified on the giant display.
             </div>
           </div>
         </li>
@@ -669,8 +756,9 @@
           <div>
             <div class="event-title">Community Build Jam</div>
             <div class="event-desc">
-              Creators share VR scenes built with Scene Builder. Live audience votes, AIOS curates.
-              Best scenes enter the PLAIStore taxonomy automatically.
+              Creators share VR scenes built with Scene Builder. Live audience
+              votes, AIOS curates. Best scenes enter the PLAIStore taxonomy
+              automatically.
             </div>
           </div>
         </li>
@@ -679,12 +767,14 @@
       <div class="coming-banner">
         <h3>&#x1F4E1; Live Feed Integration Coming</h3>
         <p>
-          Real-time AIOS telemetry &#x2014; agent decisions, lattice pulse events, VR mining
-          reports &#x2014; will stream directly onto the theatre&#x2019;s lattice display.
-          Register below to be notified when the first live event broadcasts.
+          Real-time AIOS telemetry &#x2014; agent decisions, lattice pulse
+          events, VR mining reports &#x2014; will stream directly onto the
+          theatre&#x2019;s lattice display. Register below to be notified when
+          the first live event broadcasts.
         </p>
         <p class="geo-tag">
-          GeoQode 8&#x2192;26&#x2192;48:480 &#x2022; NARRATIVE &#x2022; 963&#x202F;Hz &#x2022; Node 11
+          GeoQode 8&#x2192;26&#x2192;48:480 &#x2022; NARRATIVE &#x2022;
+          963&#x202F;Hz &#x2022; Node 11
         </p>
       </div>
     </section>
@@ -695,8 +785,8 @@
         <a href="/start">Experiences</a> &nbsp;&#x2022;&nbsp;
         <a href="/vr-hub">VR Hub</a> &nbsp;&#x2022;&nbsp;
         <a href="/scene-builder">Scene Builder</a>
-        &nbsp;&nbsp;&#x2014;&nbsp;&nbsp;
-        GeoQode 8&#x2192;26&#x2192;48:480 &#x2022; realaios.com
+        &nbsp;&nbsp;&#x2014;&nbsp;&nbsp; GeoQode 8&#x2192;26&#x2192;48:480
+        &#x2022; realaios.com
       </p>
     </footer>
 
@@ -713,7 +803,7 @@
         domain: "systems-design",
         source: "aios-live.html",
         d48Expansion: "CANONICAL",
-        d480Expansion: "FULL_HARMONIC"
+        d480Expansion: "FULL_HARMONIC",
       };
       Object.freeze(GEOQODE);
 
@@ -730,10 +820,17 @@
 
       // Log coordinate on load
       console.log(
-        "[AIOS Live] GeoQode \u2014 Freq: " + GEOQODE.frequency + " Hz | " +
-        "Node: " + GEOQODE.latticeNode + " | " +
-        "Type: " + GEOQODE.semanticType + " | " +
-        "Arch: " + GEOQODE.architectureSignature
+        "[AIOS Live] GeoQode \u2014 Freq: " +
+          GEOQODE.frequency +
+          " Hz | " +
+          "Node: " +
+          GEOQODE.latticeNode +
+          " | " +
+          "Type: " +
+          GEOQODE.semanticType +
+          " | " +
+          "Arch: " +
+          GEOQODE.architectureSignature,
       );
     </script>
   </body>

@@ -235,6 +235,11 @@ const SCENE_BUILDER_HTML = existsSync(SCENE_BUILDER_HTML_PATH)
   ? withMeta(readFileSync(SCENE_BUILDER_HTML_PATH, "utf-8"))
   : null;
 
+const COSMOS_INFINITE_HTML_PATH = join(PUBLIC_DIR, "cosmos-infinite.html");
+const COSMOS_INFINITE_HTML = existsSync(COSMOS_INFINITE_HTML_PATH)
+  ? withMeta(readFileSync(COSMOS_INFINITE_HTML_PATH, "utf-8"))
+  : null;
+
 const LLMS_TXT_PATH = join(PUBLIC_DIR, "llms.txt");
 const LLMS_TXT = existsSync(LLMS_TXT_PATH)
   ? readFileSync(LLMS_TXT_PATH, "utf-8")
@@ -4345,6 +4350,19 @@ footer{text-align:center;padding:2.5rem;color:#2a3a50;font-size:0.8rem;border-to
       return res.end(SCENE_BUILDER_HTML);
     }
 
+    // ── GET /cosmos-infinite — AIOSuniverse D480 Merkaba Lattice (Primary Identity) ──
+    if (
+      req.method === "GET" &&
+      (pathname === "/cosmos-infinite" || pathname === "/cosmos-infinite/")
+    ) {
+      if (!COSMOS_INFINITE_HTML) {
+        res.writeHead(302, { Location: "/vr-hub" });
+        return res.end();
+      }
+      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+      return res.end(COSMOS_INFINITE_HTML);
+    }
+
     // ── GET /live — AIOSProducerSwarm Live Broadcast Channel ──────────────────
     if (
       req.method === "GET" &&
@@ -5212,9 +5230,8 @@ if (process.env.AIOS_VR_MINING === "true") {
         }
         // Step 4: AIOSEmergentSeedAgent — discover gaps and seed cosmic aspirations
         try {
-          const { AIOSEmergentSeedAgent } = await import(
-            "./geo/intelligence/AIOSEmergentSeedAgent.js"
-          );
+          const { AIOSEmergentSeedAgent } =
+            await import("./geo/intelligence/AIOSEmergentSeedAgent.js");
           const esa = new AIOSEmergentSeedAgent();
           const esaResult = await esa.run();
           console.log(
@@ -5249,21 +5266,23 @@ if (process.env.AIOS_VR_MINING === "true") {
 // Runs once on every server boot, regardless of AIOS_VR_MINING flag.
 // Seeds emergent gaps and aspirations 3 minutes after startup.
 // Writes data/emergent-seeds.json for AIOSVrStudioSwarm to consume.
-;(async () => {
-  setTimeout(async () => {
-    try {
-      const { AIOSEmergentSeedAgent } = await import(
-        "./geo/intelligence/AIOSEmergentSeedAgent.js"
-      );
-      const esa = new AIOSEmergentSeedAgent();
-      const result = await esa.run();
-      console.log(
-        `[ESA] Emergence boot cycle complete: ${result.seedsGenerated} seeds, coherence=${result.selfCoherence?.attestedCoherence}`,
-      );
-    } catch (err) {
-      console.warn("[ESA] EmergentSeedAgent startup error:", err.message);
-    }
-  }, 3 * 60 * 1000); // 3-minute warmup after server start
+(async () => {
+  setTimeout(
+    async () => {
+      try {
+        const { AIOSEmergentSeedAgent } =
+          await import("./geo/intelligence/AIOSEmergentSeedAgent.js");
+        const esa = new AIOSEmergentSeedAgent();
+        const result = await esa.run();
+        console.log(
+          `[ESA] Emergence boot cycle complete: ${result.seedsGenerated} seeds, coherence=${result.selfCoherence?.attestedCoherence}`,
+        );
+      } catch (err) {
+        console.warn("[ESA] EmergentSeedAgent startup error:", err.message);
+      }
+    },
+    3 * 60 * 1000,
+  ); // 3-minute warmup after server start
   console.log("[ESA] AIOSEmergentSeedAgent scheduled: first emergence in 3min");
 })();
 
