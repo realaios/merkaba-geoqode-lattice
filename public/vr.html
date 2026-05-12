@@ -702,10 +702,12 @@
     <div id="flat-ui">
       <nav class="site-nav">
         <a href="/" class="site-nav-logo">&#x2B21; AIOS</a>
-        <div class="site-nav-links"><a href="/vr">&#x1F97D; VR</a><a href="/news">News</a></div>
+        <div class="site-nav-links">
+          <a href="/vr">&#x1F97D; VR</a><a href="/news">News</a><a href="/geo-codec">Geoqode</a>
+        </div>
         <div class="site-nav-right">
           <a href="/live" class="site-nav-live">&#x25CF; LIVE</a>
-          <a href="/start" class="site-nav-cta">Start Free &#x2192;</a>
+          <a href="/login" class="site-nav-cta">Login</a>
         </div>
       </nav>
 
@@ -916,44 +918,8 @@
         >
           &#x1F4D0; Design
         </button>
-        <a
-          href="/vr-hub"
-          class="cat-tab"
-          style="border-color: rgba(0, 212, 255, 0.3); color: var(--cyan)"
-        >
-          Full Hub &#x2192;</a
-        >
       </div>
 
-      <!-- -- Lattice Constants -- -->
-      <div class="grid-panel">
-        <div class="info-grid">
-          <div class="info-cell">
-            <div class="ic-label">Architecture</div>
-            <div class="ic-val">AIOS</div>
-          </div>
-          <div class="info-cell">
-            <div class="ic-label">Platform</div>
-            <div class="ic-val">WebXR</div>
-          </div>
-          <div class="info-cell">
-            <div class="ic-label">Rendering</div>
-            <div class="ic-val">A-Frame 1.4.0</div>
-          </div>
-          <div class="info-cell">
-            <div class="ic-label">AI Engine</div>
-            <div class="ic-val">AIOS</div>
-          </div>
-          <div class="info-cell">
-            <div class="ic-label">Device</div>
-            <div class="ic-val" id="ic-device">Detecting&hellip;</div>
-          </div>
-          <div class="info-cell">
-            <div class="ic-label">VR Platform</div>
-            <div class="ic-val">Quest &bull; Pico &bull; WMR &bull; WebXR</div>
-          </div>
-        </div>
-      </div>
 
       <!-- -- Programme Cards -- -->
       <div class="section-title">
@@ -3311,6 +3277,21 @@
                 ${sceneHTML}
               </a-scene>` +
                 narrativeHTML,
+              function () {
+                // Wire dismiss for #mal-narrative (scripts in innerHTML don't execute)
+                var narr = document.getElementById("mal-narrative");
+                if (narr) {
+                  function _narrDismiss() {
+                    narr.style.opacity = "0";
+                    setTimeout(function () {
+                      if (narr.parentNode) narr.parentNode.removeChild(narr);
+                    }, 850);
+                  }
+                  setTimeout(_narrDismiss, 5000);
+                  narr.addEventListener("click", _narrDismiss);
+                  narr.addEventListener("pointerdown", _narrDismiss);
+                }
+              },
             );
           })
           .catch(() => {

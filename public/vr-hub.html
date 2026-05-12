@@ -9,7 +9,7 @@
     <title>AIOS VR Hub — Live WebXR Worlds, Zero Install</title>
     <meta
       name="description"
-      content="Live WebXR experiences for Meta Quest 2/3. Cinema, Enterprise, Lab, PLAIstore VR, Wellness, Social, Creator, Education, Art · browser only, no download."
+      content="Live WebXR experiences for Meta Quest 2/3. Cinema, Enterprise, Lab, Wellness, Social, Creator, Education, Art · browser only, no download."
     />
     <meta
       property="og:title"
@@ -17,7 +17,7 @@
     />
     <meta
       property="og:description"
-      content="Live WebXR experiences across 9 categories: Cinema, Enterprise, Education, PLAIstore VR, Wellness, Social, Creator, Art & Music, Lab. Zero-install · open in Meta Quest Browser and dive in."
+      content="Live WebXR experiences across 8 categories: Cinema, Enterprise, Education, Wellness, Social, Creator, Art & Music, Lab. Zero-install · open in Meta Quest Browser and dive in."
     />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://realaios.com/vr-hub" />
@@ -33,7 +33,7 @@
     />
     <meta
       name="twitter:description"
-      content="Live WebXR experiences across 9 categories. Zero install · open on Meta Quest Browser."
+      content="Live WebXR experiences across 8 categories. Zero install · open on Meta Quest Browser."
     />
     <meta
       name="twitter:image"
@@ -45,9 +45,9 @@
         "@context": "https://schema.org",
         "@type": "ItemList",
         "name": "AIOS VR Hub · Live WebXR Experiences",
-        "description": "Live WebXR experiences across 9 categories for Meta Quest 2/3. Browser-only, zero install.",
+        "description": "Live WebXR experiences across 8 categories for Meta Quest 2/3. Browser-only, zero install.",
         "url": "https://realaios.com/vr-hub",
-        "numberOfItems": 9,
+        "numberOfItems": 8,
         "itemListElement": [
           {
             "@type": "ListItem",
@@ -70,36 +70,30 @@
           {
             "@type": "ListItem",
             "position": 4,
-            "name": "PLAIstore VR",
-            "url": "https://realaios.com/vr-hub#arcade"
-          },
-          {
-            "@type": "ListItem",
-            "position": 5,
             "name": "Wellness",
             "url": "https://realaios.com/vr-hub#wellness"
           },
           {
             "@type": "ListItem",
-            "position": 6,
+            "position": 5,
             "name": "Social",
             "url": "https://realaios.com/vr-hub#social"
           },
           {
             "@type": "ListItem",
-            "position": 7,
+            "position": 6,
             "name": "Creator",
             "url": "https://realaios.com/vr-hub#creator"
           },
           {
             "@type": "ListItem",
-            "position": 8,
+            "position": 7,
             "name": "Education",
             "url": "https://realaios.com/vr-hub#education"
           },
           {
             "@type": "ListItem",
-            "position": 9,
+            "position": 8,
             "name": "Art",
             "url": "https://realaios.com/vr-hub#art"
           }
@@ -1528,19 +1522,12 @@
       <h1 class="hero-title">Enter Any World.<br />Zero Install.</h1>
       <p class="hero-sub">
         Live WebXR experiences for Meta Quest 2/3. Cinema, Enterprise,
-        Education, PLAIstore VR, Wellness, Social, Art &amp; Music · all
+        Education, Wellness, Social, Art &amp; Music · all
         delivered through your Quest Browser. Open URL. Dive in.
       </p>
       <div class="hero-ctas">
         <a href="/vr" class="btn-primary"> Launch VR Experience</a>
         <a href="#browse" class="btn-secondary"> Browse All Categories</a>
-        <a
-          href="/experiences"
-          class="btn-secondary"
-          style="border-color: rgba(34, 197, 94, 0.3); color: #22c55e"
-        >
-          Live Now</a
-        >
       </div>
       <!-- Quest detected CTA -->
       <div id="quest-hero-cta">
@@ -1560,11 +1547,7 @@
     <div class="stats-bar">
       <div class="stat">
         <span class="stat-num" id="stat-xp">·</span
-        ><span class="stat-label">Live Now</span>
-      </div>
-      <div class="stat">
-        <span class="stat-num" id="stat-live">·</span
-        ><span class="stat-label">Coming Soon</span>
+        ><span class="stat-label">Experiences</span>
       </div>
       <div class="stat">
         <span class="stat-num" id="stat-categories">·</span
@@ -1577,28 +1560,6 @@
       <div class="stat">
         <span class="stat-num">WebXR</span
         ><span class="stat-label">Meta Quest Ready</span>
-      </div>
-    </div>
-
-    <!-- -- UPCOMING EVENTS ------------------------------------------------ -->
-    <div class="events-section" id="events">
-      <div class="events-header">
-        <div class="events-title">Scheduled Events (Live Feed)</div>
-        <span class="live-badge" id="live-now-badge" style="display: none">
-          LIVE NOW</span
-        >
-      </div>
-      <div class="events-scroll" id="events-scroll">
-        <!-- JS-rendered from /api/aios/vr/taxonomy events -->
-        <div
-          style="
-            color: rgba(248, 250, 252, 0.3);
-            font-size: 0.85rem;
-            padding: 1rem 0;
-          "
-        >
-          Loading events·
-        </div>
       </div>
     </div>
 
@@ -1633,7 +1594,6 @@
         Enterprise</a
       >
       <a href="#lab" class="cat-pill" data-cat="lab"> Lab</a>
-      <a href="#arcade" class="cat-pill" data-cat="arcade"> PLAIstore VR</a>
       <a href="#wellness" class="cat-pill" data-cat="wellness"> Wellness</a>
       <a href="#social" class="cat-pill" data-cat="social"> Social</a>
       <a href="#creator" class="cat-pill" data-cat="creator">Creator</a>
@@ -1709,7 +1669,6 @@
             Boardrooms, investor decks, training · production VR for business
           </div>
         </div>
-        <a href="/plaistore" class="see-all">Enterprise Plans</a>
       </div>
       <div class="enterprise-grid">
         <a
@@ -1803,29 +1762,6 @@
         <a href="/lab" class="see-all">AIOS Lab</a>
       </div>
       <div class="xp-grid" id="lab-grid"></div>
-    </div>
-
-    <!-- -- ARCADE ------------------------------------------------------------ -->
-    <div class="cat-section" id="arcade">
-      <div class="cat-section-header">
-        <div>
-          <div class="cat-section-title" style="color: var(--arcade)">
-            PLAIstore VR
-            <span class="live-pill" data-live-pill="arcade">catalog only</span>
-          </div>
-          <div class="cat-section-desc">
-            The arcade pages are retired. Browse current VR-ready releases
-            through PLAIstore instead.
-          </div>
-        </div>
-      </div>
-      <div class="xp-grid" id="arcade-grid"></div>
-      <!-- Coming soon teasers -->
-      <div
-        class="teaser-grid"
-        style="margin-top: 1rem"
-        id="arcade-teaser"
-      ></div>
     </div>
 
     <!-- -- WELLNESS ---------------------------------------------------------- -->
@@ -1955,7 +1891,7 @@
             <span class="live-pill" data-live-pill="creator">2 live</span>
           </div>
           <div class="cat-section-desc">
-            Build and publish VR experiences to PLAIstore · 70/30 revenue share
+            Build and deploy VR experiences on the AIOS platform
           </div>
         </div>
         <a href="/vr-developer" class="see-all">Developer Portal</a>
@@ -1972,35 +1908,12 @@
             <div class="xp-name">3D Coordinate Editor</div>
             <div class="xp-desc">
               Assign grid coordinates and AIOS metadata to any A-Frame scene.
-              Export as PLAIstore package.
+              Export as AIOS GeoQode package.
             </div>
           </div>
           <div class="xp-footer">
             <span class="xp-freq">Ambient</span
             ><span class="xp-enter">Open Lab</span>
-          </div>
-        </a>
-        <a
-          href="/vr-developer"
-          class="xp-card"
-          style="--accent: var(--creator)"
-        >
-          <div class="xp-thumb" style="background: rgba(248, 250, 252, 0.05)">
-            <div class="xp-thumb-bg"></div>
-
-            <div class="xp-badge badge-live">Live</div>
-          </div>
-          <div class="xp-body">
-            <div class="xp-cat">PLAIstore</div>
-            <div class="xp-name">Submit Your VR App</div>
-            <div class="xp-desc">
-              Publish WebXR experiences to PLAIstore. Reach every Meta Quest
-              user on realaios.com. 70% revenue share, zero gatekeeping.
-            </div>
-          </div>
-          <div class="xp-footer">
-            <span class="xp-freq">Developer Portal</span
-            ><span class="xp-enter">Submit App</span>
           </div>
         </a>
         <div
@@ -2066,10 +1979,8 @@
       <div>
         <div class="dev-banner-title">Build on the AIOS VR Platform</div>
         <div class="dev-banner-desc">
-          Submit WebXR experiences to PLAIstore, reach 20M+ Meta Quest users
-          through realaios.com, and earn 70% of every sale. No app store
-          approval. No gatekeeping. The AIOS SDK gives your experience immersive
-          coordinates and metadata, and 24/7 SWARM promotion automatically.
+          Build and deploy WebXR experiences on the AIOS platform. The AIOS SDK gives your experience
+          immersive coordinates and metadata, with 24/7 SWARM promotion automatically.
         </div>
       </div>
       <div class="dev-banner-actions">
@@ -2109,12 +2020,10 @@
           <a href="/vr?prog=governance">Governance Council</a>
           <a href="/vr?prog=training-sim">Training Simulator</a>
           <a href="/vr?prog=remote-hq">Remote HQ</a>
-          <a href="/plaistore">Enterprise Plans</a>
         </div>
         <div class="footer-col">
           <h4>Explore</h4>
           <a href="#lab">Lab</a>
-          <a href="#arcade">PLAIstore VR</a>
           <a href="#wellness">Wellness</a>
           <a href="#social">Social</a>
           <a href="#creator">Creator</a>
@@ -2124,7 +2033,7 @@
         <div class="footer-col">
           <h4>Platform</h4>
           <a href="/">AIOS Home</a>
-          <a href="/experiences">All Live XPs</a>
+          <a href="/vr-hub">VR Hub</a>
 
           <a href="/lab">AIOS Lab</a>
           <a href="/dashboard">Dashboard</a>
@@ -2280,23 +2189,6 @@
           badge: "live",
           entry: "/vr?prog=audio-map",
         },
-      ];
-
-      const ARCADE_LIVE = [
-        {
-          emoji: "???",
-          title: "PLAIstore VR",
-          desc: "Browse the current VR-ready catalog through PLAIstore instead of retired standalone arcade pages.",
-          freq: "Catalog",
-          color: "#ef4444",
-          badge: "catalog",
-          entry: "/plaistore",
-        },
-      ];
-      const ARCADE_TEASER = [
-        { emoji: "??", title: "VR Hub", cat: "Immersive", eta: "Live now" },
-        { emoji: "???", title: "PLAIstore", cat: "Catalog", eta: "Live now" },
-        { emoji: "??", title: "AIOSdream", cat: "Cinema", eta: "Live now" },
       ];
 
       const WELLNESS_XP = [
@@ -2583,18 +2475,6 @@
       ).join("");
       document.getElementById("wellness-row").innerHTML =
         WELLNESS_XP.map(buildWellCard).join("");
-      document.getElementById("arcade-teaser").innerHTML =
-        ARCADE_TEASER.map(buildTeaserCard).join("");
-      if (ARCADE_LIVE.length) {
-        document.getElementById("arcade-grid").innerHTML = ARCADE_LIVE.map(
-          (x) => buildXpCard(x, "#ef4444"),
-        ).join("");
-      } else {
-        document.getElementById("arcade-grid").innerHTML =
-          `<div style="padding:1.5rem;color:var(--muted);font-size:0.9rem;grid-column:1/-1;">
-             The standalone arcade has been retired. Use PLAIstore for current VR titles and VR Hub for live immersive experiences.
-          </div>`;
-      }
 
       // -- Share sheet -------------------------------------------------------
       window.shareXP = function (id, title) {
@@ -2713,7 +2593,7 @@
         { passive: true },
       );
 
-      // -- Stat: live XP count from taxonomy (canonical) + PLAIstore -------
+      // -- Stat: live XP count from taxonomy (canonical) -------
       fetch("/api/aios/vr/taxonomy")
         .then((r) => (r.ok ? r.json() : null))
         .then((d) => {
@@ -2772,98 +2652,7 @@
                 "Live experience loaded from the current VR taxonomy feed.";
           }
         })
-        .catch(() => {
-          // Fallback to PLAIstore
-          fetch(`${API_BASE}/plai/apps?category=VR&limit=100&sort=downloads`)
-            .then((r) => (r.ok ? r.json() : null))
-            .then((d) => {
-              if (d && d.total)
-                document.getElementById("stat-xp").textContent = d.apps
-                  ? d.apps.filter((a) => a.status === "live").length
-                  : d.total;
-            })
-            .catch(() => {});
-        });
-
-      // -- Events renderer --------------------------------------------------
-      (function renderEvents() {
-        fetch("/api/aios/vr/events")
-          .then((r) => (r.ok ? r.json() : null))
-          .then((d) => {
-            if (!d || !d.events || d.events.length === 0) {
-              document.getElementById("events-scroll").innerHTML =
-                '<p style="color:rgba(248,250,252,0.3);font-size:0.85rem;">No upcoming events · check back soon.</p>';
-              return;
-            }
-            if (d.live > 0) {
-              document.getElementById("live-now-badge").style.display =
-                "inline-block";
-            }
-            const scroll = document.getElementById("events-scroll");
-            scroll.innerHTML = "";
-            d.events.forEach((ev) => {
-              const card = document.createElement("div");
-              card.className = "event-card";
-              card.style.borderLeftColor = ev.accent || "#00d4ff";
-              const statusLabel = ev.isLive ? " LIVE" : "upcoming";
-              const statusClass = ev.isLive ? "live" : "upcoming";
-              const dateStr = new Date(ev.startISO).toLocaleDateString(
-                "en-US",
-                {
-                  weekday: "short",
-                  month: "short",
-                  day: "numeric",
-                  hour: "2-digit",
-                  minute: "2-digit",
-                },
-              );
-              card.innerHTML = `
-                <div class="event-card-top">
-                  <span class="event-type">${ev.type || "event"}</span>
-                  <span class="event-status ${statusClass}">${statusLabel}</span>
-                </div>
-                <div class="event-title">${ev.title}</div>
-                <div class="event-desc">${ev.description}</div>
-                <div class="event-countdown" id="cd-${ev.id}">${ev.isLive ? "\u25CF LIVE NOW" : "\u23F3"}</div>
-                <div class="event-meta">
-                  <span>&#x1F4C5; ${dateStr}</span>
-                  <span>&#x23F1; ${ev.durationMinutes || 60}min</span>
-                  <span>&#x1F465; ${ev.maxAttendees || "8"} max</span>
-                </div>
-                ${ev.vrUrl ? `<a href="${ev.vrUrl}" class="event-enter-btn">&#x2192; ${ev.isLive ? "Join Now" : "View"}</a>` : ""}
-              `;
-              scroll.appendChild(card);
-            });
-            // Countdown timers
-            function tickCountdowns() {
-              const now = Date.now();
-              d.events.forEach((ev) => {
-                const el = document.getElementById("cd-" + ev.id);
-                if (!el) return;
-                const start = new Date(ev.startISO).getTime();
-                const end = start + (ev.durationMinutes || 60) * 60000;
-                if (now >= start && now < end) {
-                  el.textContent = "\u25CF LIVE NOW";
-                } else if (now < start) {
-                  const diff = start - now;
-                  const d2 = Math.floor(diff / 86400000);
-                  const h = Math.floor((diff % 86400000) / 3600000);
-                  const m = Math.floor((diff % 3600000) / 60000);
-                  el.textContent =
-                    d2 > 0 ? `\u23F3 ${d2}d ${h}h ${m}m` : `\u23F3 ${h}h ${m}m`;
-                } else {
-                  el.textContent = "Complete";
-                }
-              });
-            }
-            tickCountdowns();
-            setInterval(tickCountdowns, 30000);
-          })
-          .catch(() => {
-            document.getElementById("events-scroll").innerHTML =
-              '<p style="color:rgba(248,250,252,0.3);font-size:0.85rem;">Events unavailable.</p>';
-          });
-      })();
+        .catch(() => {});
 
       // -- Search filter -----------------------------------------------------
       (function initSearch() {

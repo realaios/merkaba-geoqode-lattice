@@ -492,30 +492,22 @@ function narrativePanel(scene) {
   if (!scene.narrativeBeats || !scene.narrativeBeats.length) return "";
   const beats = scene.narrativeBeats;
   const first = beats[0];
+  // Note: no inline <script> — scripts injected via innerHTML do not execute.
+  // Dismiss logic is wired in vr.html's _swapIn onReady callback.
   return `
 <div id="mal-narrative" style="
   position:fixed; bottom:32px; left:50%; transform:translateX(-50%);
   background:rgba(0,10,0,0.82); border:1px solid #00ff41; border-radius:8px;
   padding:18px 28px; max-width:560px; width:90%; color:#00ff41;
   font-family:'Courier New',monospace; font-size:14px; line-height:1.7;
-  white-space:pre-wrap; z-index:9999; pointer-events:none;
+  white-space:pre-wrap; z-index:9999; pointer-events:auto; cursor:pointer;
   text-shadow:0 0 8px #00ff41; box-shadow:0 0 20px rgba(0,255,65,0.2);
   transition:opacity 0.8s ease;
 " data-beat="0" data-beats='${JSON.stringify(beats).replace(/'/g, "&apos;")}'>
-  <div style="font-size:10px;opacity:0.55;margin-bottom:6px;letter-spacing:2px;">AIOS VR — ${scene.title.toUpperCase()}</div>
+  <div style="font-size:10px;opacity:0.55;margin-bottom:6px;letter-spacing:2px;">AIOS VR &#x2014; ${scene.title.toUpperCase()}</div>
   <div id="mal-narrative-text">${first.text}</div>
-</div>
-<script>
-(function(){
-  var el = document.getElementById('mal-narrative');
-  if (!el) return;
-  function dismiss() {
-    el.style.opacity = '0';
-    setTimeout(function() { if (el.parentNode) el.parentNode.removeChild(el); }, 850);
-  }
-  setTimeout(dismiss, 5000);
-})();
-<\/script>`;
+  <div style="font-size:10px;opacity:0.4;margin-top:10px;letter-spacing:1px;">tap to dismiss</div>
+</div>`;
 }
 
 // ─── Environment builder ────────────────────────────────────────────
