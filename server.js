@@ -3230,7 +3230,6 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
       res.end();
       return;
     }
-    }
 
     // ── GET /vr-hub — AIOS VR Platform Hub (storefront + categories) ──────
     if (
