@@ -4378,7 +4378,9 @@ footer{text-align:center;padding:2.5rem;color:#2a3a50;font-size:0.8rem;border-to
             sketchfabUid: a.sketchfabUid,
             title: a.title || "Untitled Model",
             description: a.description || "",
-            embedUrl: a.embedUrl || ("https://sketchfab.com/models/" + a.sketchfabUid + "/embed"),
+            embedUrl:
+              a.embedUrl ||
+              "https://sketchfab.com/models/" + a.sketchfabUid + "/embed",
             thumbnailUrl: a.thumbnailUrl || null,
             license: a.license || "cc by 4.0",
             tags: a.tags || [],
@@ -5127,9 +5129,10 @@ server.listen(PORT, () => {
 });
 
 // ── AIOS VR Autonomous Mining Loop ───────────────────────────────────────────
-// Mines Sketchfab / PolyHaven / Poly Pizza / NASA 3D assets on a 12h cycle,
+// Mines Sketchfab / PolyHaven / Poly Pizza / NASA 3D assets on a 3h cycle,
 // auto-generates A-Frame scenes, updates vr-taxonomy + MAL, then git push.
 // Only starts if AIOS_VR_MINING=true (opt-in to avoid running in restricted envs).
+// Override with VR_CYCLE_HOURS env var (default: 3h).
 if (process.env.AIOS_VR_MINING === "true") {
   (async () => {
     try {
@@ -5144,7 +5147,7 @@ if (process.env.AIOS_VR_MINING === "true") {
         "scripts",
       );
       const CYCLE_MS =
-        parseFloat(process.env.VR_CYCLE_HOURS || "12") * 60 * 60 * 1000;
+        parseFloat(process.env.VR_CYCLE_HOURS || "3") * 60 * 60 * 1000;
 
       async function _runVRCycle() {
         console.log("[VRLoop] Starting mining cycle...");
