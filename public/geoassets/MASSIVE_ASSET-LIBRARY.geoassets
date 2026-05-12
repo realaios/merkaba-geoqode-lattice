@@ -3918,6 +3918,1883 @@
           }
         }
       ]
+    },
+    "arctic_tundra": {
+      "id": "arctic_tundra",
+      "title": "Arctic Tundra — White Silence",
+      "logline": "Frozen tundra under a Polyhaven sky. Aurora curtains. Absolute stillness at -40°C.",
+      "palette": "arctic",
+      "sound": "ambient_wind_cold",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "The Arctic holds more silence than any place on Earth.\nListen to nothing — it's the loudest thing you've ever heard.",
+          "durationMs": 7000
+        },
+        {
+          "trigger": "step_1",
+          "text": "At the poles, time moves differently.\nMagnetic north is shifting 50km per year. The compass follows.",
+          "durationMs": 7000
+        },
+        {
+          "trigger": "step_2",
+          "text": "Ice cores here hold 800,000 years of climate data.\nEvery bubble of air is a message from another era.",
+          "durationMs": 8000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#a8d8ea"
+        },
+        "fog": {
+          "color": "#c9e8f0",
+          "density": 0.018
+        }
+      },
+      "layers": [
+        {
+          "id": "ice_formations",
+          "label": "Ice spires — 40 crystalline columns",
+          "count": 40,
+          "spread": {
+            "x": "-30 30",
+            "z": "-30 5"
+          },
+          "element": {
+            "type": "cone",
+            "r_range": "0.3 1.2",
+            "h_range": "2 8",
+            "y_offset": "half_height",
+            "material": {
+              "color": "#a8d8ea",
+              "opacity": 0.7,
+              "transparent": true,
+              "roughness": 0.1
+            },
+            "animation": "none"
+          }
+        },
+        {
+          "id": "snow_ground",
+          "label": "Snow ground plane",
+          "type": "plane",
+          "w": 200,
+          "h": 200,
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "rotation": [
+            -90,
+            0,
+            0
+          ],
+          "material": {
+            "color": "#e8f4f8",
+            "roughness": 1
+          }
+        },
+        {
+          "id": "aurora_ribbons",
+          "label": "Aurora borealis — 6 tall translucent ribbons",
+          "count": 6,
+          "spread": {
+            "x": "-40 40",
+            "z": "-60 -20",
+            "y": "15 25"
+          },
+          "element": {
+            "type": "box",
+            "w": 0.3,
+            "h": 20,
+            "d": 8,
+            "y_offset": 10,
+            "material": {
+              "color": "#22d3ee",
+              "opacity": 0.15,
+              "transparent": true
+            },
+            "animation": "pulse_opacity"
+          }
+        },
+        {
+          "id": "snowflakes",
+          "label": "Drifting snowflakes — 120 tiny spheres",
+          "count": 120,
+          "spread": {
+            "x": "-20 20",
+            "z": "-20 5",
+            "y": "1 8"
+          },
+          "element": {
+            "type": "sphere",
+            "r_range": "0.02 0.05",
+            "material": {
+              "color": "#e0f2fe",
+              "opacity": 0.8,
+              "transparent": true
+            },
+            "animation": "drift_down_slow",
+            "animDelayFn": "random_0_6000"
+          }
+        }
+      ]
+    },
+    "volcanic_summit": {
+      "id": "volcanic_summit",
+      "title": "Volcanic Summit — The Forge of Worlds",
+      "logline": "Active caldera rim at dusk. Lava rivers. Ash clouds. Earth's raw creation engine.",
+      "palette": "golden_hour",
+      "sound": "ambient_rumble",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "You stand at the edge of creation.\nEvery atom of iron in your blood was forged in a star like this.",
+          "durationMs": 7000
+        },
+        {
+          "trigger": "step_1",
+          "text": "The lava flows at 1200°C.\nRock that was liquid an hour ago is now permanent ground.",
+          "durationMs": 7000
+        },
+        {
+          "trigger": "step_2",
+          "text": "Volcanoes built every continent.\nHawaii didn't exist 5 million years ago. It grew up through the ocean.",
+          "durationMs": 8000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#7c2d12"
+        },
+        "fog": {
+          "color": "#451a03",
+          "density": 0.025
+        }
+      },
+      "layers": [
+        {
+          "id": "lava_pools",
+          "label": "Lava pool clusters — 20 glowing spheres",
+          "count": 20,
+          "spread": {
+            "x": "-20 20",
+            "z": "-20 5",
+            "y": "0 0.2"
+          },
+          "element": {
+            "type": "sphere",
+            "r_range": "0.5 2.5",
+            "material": {
+              "color": "#f97316",
+              "emissive": "#c2410c",
+              "emissiveIntensity": 1.5
+            },
+            "animation": "pulse_emissive",
+            "animDelayFn": "random_0_3000"
+          }
+        },
+        {
+          "id": "rock_formations",
+          "label": "Volcanic rock formations — 35 boxes",
+          "count": 35,
+          "spread": {
+            "x": "-25 25",
+            "z": "-25 5"
+          },
+          "element": {
+            "type": "box",
+            "w_range": "1 4",
+            "h_range": "0.5 3",
+            "d_range": "1 4",
+            "y_offset": "half_height",
+            "material": {
+              "color": "#1c0a00",
+              "roughness": 1
+            }
+          }
+        },
+        {
+          "id": "lava_ground",
+          "label": "Lava field ground",
+          "type": "plane",
+          "w": 200,
+          "h": 200,
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "rotation": [
+            -90,
+            0,
+            0
+          ],
+          "material": {
+            "color": "#292524",
+            "roughness": 1
+          }
+        },
+        {
+          "id": "ash_particles",
+          "label": "Ash cloud particles — 80 tiny dark spheres",
+          "count": 80,
+          "spread": {
+            "x": "-20 20",
+            "z": "-20 5",
+            "y": "2 12"
+          },
+          "element": {
+            "type": "sphere",
+            "r_range": "0.03 0.08",
+            "material": {
+              "color": "#44403c",
+              "opacity": 0.6,
+              "transparent": true
+            },
+            "animation": "drift_up_slow",
+            "animDelayFn": "random_0_5000"
+          }
+        },
+        {
+          "id": "lava_streams",
+          "label": "Lava stream ribbons — 8 glowing planes",
+          "count": 8,
+          "spread": {
+            "x": "-15 15",
+            "z": "-15 0"
+          },
+          "element": {
+            "type": "box",
+            "w": 0.8,
+            "h": 0.05,
+            "d_range": "5 15",
+            "material": {
+              "color": "#f97316",
+              "emissive": "#c2410c",
+              "emissiveIntensity": 1.2
+            },
+            "animation": "pulse_emissive"
+          }
+        }
+      ]
+    },
+    "gothic_cathedral": {
+      "id": "gothic_cathedral",
+      "title": "Gothic Cathedral — Vaulted Infinity",
+      "logline": "14th century cathedral interior. Polyhaven skylight. Rose windows. Organ resonance at 432 Hz.",
+      "palette": "merkaba",
+      "sound": "ambient_organ",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "Gothic architecture was engineering as theology.\nEvery pointed arch is a prayer compressed into physics.",
+          "durationMs": 7000
+        },
+        {
+          "trigger": "step_1",
+          "text": "The builders worked for 200 years.\nNo one who laid the foundation lived to see the spire completed.",
+          "durationMs": 7000
+        },
+        {
+          "trigger": "step_2",
+          "text": "The rose window geometry is pure sacred mathematics.\nFibonacci spirals encoded in 13th-century stone.",
+          "durationMs": 8000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#1e1b4b"
+        },
+        "fog": {
+          "color": "#312e81",
+          "density": 0.01
+        }
+      },
+      "layers": [
+        {
+          "id": "columns",
+          "label": "Gothic stone columns — 12 tall cylinders",
+          "count": 12,
+          "spread": {
+            "x": "-10 10",
+            "z": "-25 5"
+          },
+          "element": {
+            "type": "cylinder",
+            "r_range": "0.4 0.6",
+            "h_range": "12 18",
+            "y_offset": "half_height",
+            "material": {
+              "color": "#d1d5db",
+              "roughness": 0.9
+            }
+          }
+        },
+        {
+          "id": "vaulted_ceiling",
+          "label": "Vaulted ceiling arches — box grid",
+          "count": 16,
+          "spread": {
+            "x": "-10 10",
+            "z": "-20 5",
+            "y": "12 15"
+          },
+          "element": {
+            "type": "box",
+            "w_range": "3 6",
+            "h": 0.3,
+            "d_range": "3 6",
+            "material": {
+              "color": "#9ca3af",
+              "roughness": 0.8
+            }
+          }
+        },
+        {
+          "id": "stone_floor",
+          "label": "Cathedral stone floor",
+          "type": "plane",
+          "w": 30,
+          "h": 60,
+          "position": [
+            0,
+            0,
+            -10
+          ],
+          "rotation": [
+            -90,
+            0,
+            0
+          ],
+          "material": {
+            "color": "#374151",
+            "roughness": 1
+          }
+        },
+        {
+          "id": "stained_glass_light",
+          "label": "Stained glass color shafts — 8 translucent beams",
+          "count": 8,
+          "spread": {
+            "x": "-8 8",
+            "z": "-18 2",
+            "y": "0 8"
+          },
+          "element": {
+            "type": "box",
+            "w": 0.6,
+            "h": 12,
+            "d": 0.6,
+            "material": {
+              "color": "#7c3aed",
+              "opacity": 0.12,
+              "transparent": true
+            },
+            "animation": "pulse_opacity"
+          }
+        },
+        {
+          "id": "candle_flames",
+          "label": "Candelabra candles — 30 tiny glowing spheres",
+          "count": 30,
+          "spread": {
+            "x": "-6 6",
+            "z": "-15 2",
+            "y": "0.5 2"
+          },
+          "element": {
+            "type": "sphere",
+            "r_range": "0.04 0.08",
+            "material": {
+              "color": "#fbbf24",
+              "emissive": "#f59e0b",
+              "emissiveIntensity": 1.8
+            },
+            "animation": "flicker",
+            "animDelayFn": "random_0_2000"
+          }
+        }
+      ]
+    },
+    "abandoned_factory": {
+      "id": "abandoned_factory",
+      "title": "Abandoned Factory — Industrial Ruin",
+      "logline": "Derelict industrial warehouse. Broken skylights. Nature reclaiming concrete. Rust and silence.",
+      "palette": "simulation",
+      "sound": "ambient_industrial",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "Everything built eventually becomes archaeology.\nThis factory made something essential. Now it makes silence.",
+          "durationMs": 7000
+        },
+        {
+          "trigger": "step_1",
+          "text": "The machines stopped in 1987.\nThe last worker locked the door and never came back.",
+          "durationMs": 7000
+        },
+        {
+          "trigger": "step_2",
+          "text": "Nature always wins. Always.\nIn 50 years this will be forest again, if we let it.",
+          "durationMs": 8000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#292524"
+        },
+        "fog": {
+          "color": "#1c1917",
+          "density": 0.015
+        }
+      },
+      "layers": [
+        {
+          "id": "factory_walls",
+          "label": "Crumbling factory walls — tall boxes",
+          "count": 8,
+          "spread": {
+            "x": "-15 15",
+            "z": "-25 5"
+          },
+          "element": {
+            "type": "box",
+            "w_range": "2 4",
+            "h_range": "6 10",
+            "d": 0.5,
+            "y_offset": "half_height",
+            "material": {
+              "color": "#57534e",
+              "roughness": 1
+            }
+          }
+        },
+        {
+          "id": "broken_machinery",
+          "label": "Rusted machinery remnants — 20 box clusters",
+          "count": 20,
+          "spread": {
+            "x": "-12 12",
+            "z": "-20 3"
+          },
+          "element": {
+            "type": "box",
+            "w_range": "0.5 2",
+            "h_range": "0.5 3",
+            "d_range": "0.5 2",
+            "y_offset": "half_height",
+            "material": {
+              "color": "#292524",
+              "roughness": 1
+            }
+          }
+        },
+        {
+          "id": "concrete_floor",
+          "label": "Cracked concrete floor",
+          "type": "plane",
+          "w": 60,
+          "h": 60,
+          "position": [
+            0,
+            0,
+            -8
+          ],
+          "rotation": [
+            -90,
+            0,
+            0
+          ],
+          "material": {
+            "color": "#3f3f46",
+            "roughness": 1
+          }
+        },
+        {
+          "id": "dust_particles",
+          "label": "Floating dust motes — 60 tiny spheres",
+          "count": 60,
+          "spread": {
+            "x": "-12 12",
+            "z": "-18 3",
+            "y": "0.5 5"
+          },
+          "element": {
+            "type": "sphere",
+            "r_range": "0.02 0.05",
+            "material": {
+              "color": "#a8a29e",
+              "opacity": 0.4,
+              "transparent": true
+            },
+            "animation": "drift_up_slow",
+            "animDelayFn": "random_0_8000"
+          }
+        },
+        {
+          "id": "plant_growth",
+          "label": "Plants reclaiming the factory — 15 green spheres",
+          "count": 15,
+          "spread": {
+            "x": "-10 10",
+            "z": "-15 3",
+            "y": "0 2"
+          },
+          "element": {
+            "type": "sphere",
+            "r_range": "0.3 1.0",
+            "material": {
+              "color": "#166534",
+              "emissive": "#14532d",
+              "emissiveIntensity": 0.3
+            },
+            "animation": "none"
+          }
+        }
+      ]
+    },
+    "grand_canyon": {
+      "id": "grand_canyon",
+      "title": "Grand Canyon — Geological Deep Time",
+      "logline": "Rim of the Grand Canyon at golden hour. 1.7 billion years of Earth history visible in one view.",
+      "palette": "desert_dawn",
+      "sound": "ambient_wind_canyon",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "The Colorado River carved this in 5-6 million years.\nThe rock walls are 1.7 billion years old.",
+          "durationMs": 7000
+        },
+        {
+          "trigger": "step_1",
+          "text": "The canyon is 446km long, 29km wide, 1.8km deep.\nThe human brain cannot fully comprehend that scale.",
+          "durationMs": 7000
+        },
+        {
+          "trigger": "step_2",
+          "text": "Each rock layer is a chapter.\nThe Vishnu Schist at the bottom formed when there was no life on land.",
+          "durationMs": 8000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#7c3d12"
+        },
+        "fog": {
+          "color": "#92400e",
+          "density": 0.006
+        }
+      },
+      "layers": [
+        {
+          "id": "canyon_walls",
+          "label": "Canyon wall formations — 50 tall layered boxes",
+          "count": 50,
+          "spread": {
+            "x": "-40 40",
+            "z": "-50 -10"
+          },
+          "element": {
+            "type": "box",
+            "w_range": "3 12",
+            "h_range": "10 40",
+            "d_range": "5 20",
+            "y_offset": "half_height",
+            "material": {
+              "color": "#92400e",
+              "roughness": 1
+            }
+          }
+        },
+        {
+          "id": "red_rock_near",
+          "label": "Near red rock formations — 20 boxes",
+          "count": 20,
+          "spread": {
+            "x": "-20 20",
+            "z": "-15 5"
+          },
+          "element": {
+            "type": "box",
+            "w_range": "2 8",
+            "h_range": "3 12",
+            "d_range": "2 8",
+            "y_offset": "half_height",
+            "material": {
+              "color": "#b45309",
+              "roughness": 1
+            }
+          }
+        },
+        {
+          "id": "canyon_floor",
+          "label": "Canyon rim ground",
+          "type": "plane",
+          "w": 200,
+          "h": 200,
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "rotation": [
+            -90,
+            0,
+            0
+          ],
+          "material": {
+            "color": "#78350f",
+            "roughness": 1
+          }
+        },
+        {
+          "id": "dust_haze",
+          "label": "Canyon dust haze — 40 large translucent spheres",
+          "count": 40,
+          "spread": {
+            "x": "-30 30",
+            "z": "-40 -5",
+            "y": "5 20"
+          },
+          "element": {
+            "type": "sphere",
+            "r_range": "2 6",
+            "material": {
+              "color": "#d97706",
+              "opacity": 0.05,
+              "transparent": true
+            }
+          }
+        }
+      ]
+    },
+    "city_night_streets": {
+      "id": "city_night_streets",
+      "title": "City Night Streets — Neon Rain",
+      "logline": "Rain-soaked urban night. Polyhaven city skybox. Neon reflections on wet concrete. Human density at 2am.",
+      "palette": "deep_space",
+      "sound": "ambient_city_rain",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "2am in the city. The real residents come out.\nThe people who live here — not the ones who visit.",
+          "durationMs": 7000
+        },
+        {
+          "trigger": "step_1",
+          "text": "Cities contain more per square kilometre than anywhere else:\nIdeas, heartbreak, ambition, loneliness — all compressed.",
+          "durationMs": 7000
+        },
+        {
+          "trigger": "step_2",
+          "text": "The neon reflects on the wet pavement.\nThe same light — experienced twice — refracted into meaning.",
+          "durationMs": 8000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#0c0a09"
+        },
+        "fog": {
+          "color": "#1c1917",
+          "density": 0.02
+        }
+      },
+      "layers": [
+        {
+          "id": "buildings",
+          "label": "City building silhouettes — 30 tall boxes",
+          "count": 30,
+          "spread": {
+            "x": "-30 30",
+            "z": "-50 -10"
+          },
+          "element": {
+            "type": "box",
+            "w_range": "3 10",
+            "h_range": "8 35",
+            "d_range": "3 10",
+            "y_offset": "half_height",
+            "material": {
+              "color": "#0c0a09",
+              "roughness": 1
+            }
+          }
+        },
+        {
+          "id": "neon_signs",
+          "label": "Neon signs — 25 glowing boxes",
+          "count": 25,
+          "spread": {
+            "x": "-20 20",
+            "z": "-30 -5",
+            "y": "3 12"
+          },
+          "element": {
+            "type": "box",
+            "w_range": "1 3",
+            "h": 0.4,
+            "d": 0.1,
+            "material": {
+              "color": "#06b6d4",
+              "emissive": "#0891b2",
+              "emissiveIntensity": 2
+            },
+            "animation": "flicker",
+            "animDelayFn": "random_0_4000"
+          }
+        },
+        {
+          "id": "wet_street",
+          "label": "Rain-soaked street",
+          "type": "plane",
+          "w": 100,
+          "h": 100,
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "rotation": [
+            -90,
+            0,
+            0
+          ],
+          "material": {
+            "color": "#1c1917",
+            "roughness": 0.1
+          }
+        },
+        {
+          "id": "rain_drops",
+          "label": "Falling rain particles — 150 tiny spheres",
+          "count": 150,
+          "spread": {
+            "x": "-15 15",
+            "z": "-15 5",
+            "y": "1 10"
+          },
+          "element": {
+            "type": "sphere",
+            "r_range": "0.01 0.03",
+            "material": {
+              "color": "#bae6fd",
+              "opacity": 0.5,
+              "transparent": true
+            },
+            "animation": "drift_down_fast",
+            "animDelayFn": "random_0_2000"
+          }
+        },
+        {
+          "id": "street_lights",
+          "label": "Street lamps — 10 glowing spheres",
+          "count": 10,
+          "spread": {
+            "x": "-12 12",
+            "z": "-20 3",
+            "y": "4 5"
+          },
+          "element": {
+            "type": "sphere",
+            "r_range": "0.15 0.25",
+            "material": {
+              "color": "#fde68a",
+              "emissive": "#f59e0b",
+              "emissiveIntensity": 2
+            }
+          }
+        }
+      ]
+    },
+    "football_stadium": {
+      "id": "football_stadium",
+      "title": "Football Stadium — 80,000 Souls",
+      "logline": "Premier League stadium before kickoff. Polyhaven sky. The collective energy of 80,000 humans.",
+      "palette": "simulation",
+      "sound": "ambient_crowd",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "80,000 people breathing together.\nThis is one of the largest voluntary collective experiences humans create.",
+          "durationMs": 7000
+        },
+        {
+          "trigger": "step_1",
+          "text": "The pre-match atmosphere is a specific emotion.\nAnticipation compressed into a physical sensation in the chest.",
+          "durationMs": 7000
+        },
+        {
+          "trigger": "step_2",
+          "text": "Sport is ritual. The stadium is a temple.\nThe game is the ceremony — we've been doing this since Olympia.",
+          "durationMs": 8000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#0c4a6e"
+        },
+        "fog": {
+          "color": "#082f49",
+          "density": 0.005
+        }
+      },
+      "layers": [
+        {
+          "id": "stands_lower",
+          "label": "Lower stands — 40 seat-bank boxes",
+          "count": 40,
+          "spread": {
+            "x": "-35 35",
+            "z": "-35 -5"
+          },
+          "element": {
+            "type": "box",
+            "w_range": "5 12",
+            "h": 3,
+            "d_range": "4 8",
+            "y_offset": "half_height",
+            "material": {
+              "color": "#1e3a5f",
+              "roughness": 1
+            }
+          }
+        },
+        {
+          "id": "stands_upper",
+          "label": "Upper tier stands — 20 boxes",
+          "count": 20,
+          "spread": {
+            "x": "-30 30",
+            "z": "-30 -10",
+            "y": "4 8"
+          },
+          "element": {
+            "type": "box",
+            "w_range": "5 12",
+            "h": 4,
+            "d_range": "3 6",
+            "y_offset": "half_height",
+            "material": {
+              "color": "#1e3a5f",
+              "roughness": 1
+            }
+          }
+        },
+        {
+          "id": "pitch",
+          "label": "Football pitch — green plane",
+          "type": "plane",
+          "w": 68,
+          "h": 105,
+          "position": [
+            0,
+            0,
+            -12
+          ],
+          "rotation": [
+            -90,
+            0,
+            0
+          ],
+          "material": {
+            "color": "#166534",
+            "roughness": 1
+          }
+        },
+        {
+          "id": "pitch_lines",
+          "label": "Pitch line markings — white boxes",
+          "count": 12,
+          "spread": {
+            "x": "-30 30",
+            "z": "-30 5",
+            "y": "0.01 0.01"
+          },
+          "element": {
+            "type": "box",
+            "w_range": "0.1 68",
+            "h": 0.01,
+            "d": 0.12,
+            "material": {
+              "color": "#f0fdf4"
+            }
+          }
+        },
+        {
+          "id": "floodlights",
+          "label": "Stadium floodlights — 8 intense spheres high up",
+          "count": 8,
+          "spread": {
+            "x": "-25 25",
+            "z": "-25 5",
+            "y": "20 25"
+          },
+          "element": {
+            "type": "sphere",
+            "r_range": "0.5 0.8",
+            "material": {
+              "color": "#fef9c3",
+              "emissive": "#fde047",
+              "emissiveIntensity": 3
+            }
+          }
+        }
+      ]
+    },
+    "ocean_beach": {
+      "id": "ocean_beach",
+      "title": "Ocean Beach — Blue Lagoon",
+      "logline": "Tropical blue lagoon. Polyhaven coastal sky. Crystal water. The original human habitat.",
+      "palette": "ocean",
+      "sound": "ambient_waves",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "Human DNA still carries the coastal blueprint.\nWe evolved at the edge of land and sea — this is cellular memory.",
+          "durationMs": 7000
+        },
+        {
+          "trigger": "step_1",
+          "text": "The ocean covers 71% of Earth's surface.\nWe've mapped less than 20% of it. The rest is unknown.",
+          "durationMs": 7000
+        },
+        {
+          "trigger": "step_2",
+          "text": "The blue of this lagoon is physics, not pigment.\nWater molecules absorb red and scatter blue. Colour is frequency.",
+          "durationMs": 8000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#0ea5e9"
+        },
+        "fog": {
+          "color": "#0284c7",
+          "density": 0.008
+        }
+      },
+      "layers": [
+        {
+          "id": "ocean_plane",
+          "label": "Ocean surface",
+          "type": "plane",
+          "w": 500,
+          "h": 500,
+          "position": [
+            0,
+            -0.2,
+            -30
+          ],
+          "rotation": [
+            -90,
+            0,
+            0
+          ],
+          "material": {
+            "color": "#0284c7",
+            "roughness": 0.05,
+            "opacity": 0.85,
+            "transparent": true
+          }
+        },
+        {
+          "id": "sand_beach",
+          "label": "Sandy beach",
+          "type": "plane",
+          "w": 60,
+          "h": 30,
+          "position": [
+            0,
+            0,
+            5
+          ],
+          "rotation": [
+            -90,
+            0,
+            0
+          ],
+          "material": {
+            "color": "#fef3c7",
+            "roughness": 1
+          }
+        },
+        {
+          "id": "waves",
+          "label": "Wave crests — 20 low translucent boxes",
+          "count": 20,
+          "spread": {
+            "x": "-30 30",
+            "z": "-30 -5",
+            "y": "0 0.3"
+          },
+          "element": {
+            "type": "box",
+            "w_range": "3 10",
+            "h": 0.2,
+            "d": 0.5,
+            "material": {
+              "color": "#e0f2fe",
+              "opacity": 0.5,
+              "transparent": true
+            },
+            "animation": "pulse_opacity"
+          }
+        },
+        {
+          "id": "palm_trees",
+          "label": "Palm trees — 12 cylinders with sphere tops",
+          "count": 12,
+          "spread": {
+            "x": "-15 15",
+            "z": "0 10"
+          },
+          "element": {
+            "type": "cylinder",
+            "r_range": "0.15 0.25",
+            "h_range": "5 9",
+            "y_offset": "half_height",
+            "material": {
+              "color": "#92400e",
+              "roughness": 1
+            }
+          }
+        },
+        {
+          "id": "ocean_sparkles",
+          "label": "Ocean light sparkles — 60 tiny glowing spheres",
+          "count": 60,
+          "spread": {
+            "x": "-25 25",
+            "z": "-25 -3",
+            "y": "0.1 0.4"
+          },
+          "element": {
+            "type": "sphere",
+            "r_range": "0.04 0.1",
+            "material": {
+              "color": "#bae6fd",
+              "emissive": "#7dd3fc",
+              "emissiveIntensity": 0.8
+            },
+            "animation": "pulse_emissive",
+            "animDelayFn": "random_0_5000"
+          }
+        }
+      ]
+    },
+    "rainforest_trail": {
+      "id": "rainforest_trail",
+      "title": "Rainforest Trail — Amazon Canopy",
+      "logline": "Deep Amazon trail at dawn. Polyhaven jungle sky. 10% of Earth's biodiversity in one square kilometre.",
+      "palette": "forest",
+      "sound": "ambient_jungle",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "The Amazon produces 20% of Earth's oxygen.\nEvery breath you've taken today had Amazon in it.",
+          "durationMs": 7000
+        },
+        {
+          "trigger": "step_1",
+          "text": "There are 400 billion trees here.\nScientists discovered 11,000 new species in the last decade alone.",
+          "durationMs": 7000
+        },
+        {
+          "trigger": "step_2",
+          "text": "Indigenous people here mapped the pharmacopoeia of 40,000 plants.\nModern medicine has only studied 1% of them.",
+          "durationMs": 8000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#052e16"
+        },
+        "fog": {
+          "color": "#064e3b",
+          "density": 0.03
+        }
+      },
+      "layers": [
+        {
+          "id": "jungle_trees",
+          "label": "Tropical hardwood trunks — 45 cylinders",
+          "count": 45,
+          "spread": {
+            "x": "-30 30",
+            "z": "-30 5"
+          },
+          "element": {
+            "type": "cylinder",
+            "r_range": "0.4 1.2",
+            "h_range": "15 30",
+            "y_offset": "half_height",
+            "material": {
+              "color": "#431407",
+              "roughness": 1
+            }
+          }
+        },
+        {
+          "id": "jungle_canopy",
+          "label": "Dense jungle canopy spheres — 50 large",
+          "count": 50,
+          "spread": {
+            "x": "-28 28",
+            "z": "-28 5",
+            "y": "12 22"
+          },
+          "element": {
+            "type": "sphere",
+            "r_range": "2.5 5",
+            "material": {
+              "color": "#14532d",
+              "opacity": 0.9,
+              "transparent": true
+            }
+          }
+        },
+        {
+          "id": "jungle_floor",
+          "label": "Jungle floor — dark green plane",
+          "type": "plane",
+          "w": 100,
+          "h": 100,
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "rotation": [
+            -90,
+            0,
+            0
+          ],
+          "material": {
+            "color": "#052e16",
+            "roughness": 1
+          }
+        },
+        {
+          "id": "undergrowth",
+          "label": "Fern undergrowth — 80 small spheres at ground level",
+          "count": 80,
+          "spread": {
+            "x": "-20 20",
+            "z": "-20 5",
+            "y": "0 1"
+          },
+          "element": {
+            "type": "sphere",
+            "r_range": "0.2 0.8",
+            "material": {
+              "color": "#166534"
+            }
+          }
+        },
+        {
+          "id": "light_shafts_jungle",
+          "label": "Jungle light shafts — 10 pale beams",
+          "count": 10,
+          "spread": {
+            "x": "-12 12",
+            "z": "-12 2"
+          },
+          "element": {
+            "type": "box",
+            "w": 0.5,
+            "h": 25,
+            "d": 0.5,
+            "y_offset": 12,
+            "material": {
+              "color": "#86efac",
+              "opacity": 0.04,
+              "transparent": true
+            },
+            "animation": "pulse_opacity"
+          }
+        },
+        {
+          "id": "fireflies",
+          "label": "Jungle fireflies — 100 tiny glowing spheres",
+          "count": 100,
+          "spread": {
+            "x": "-18 18",
+            "z": "-18 4",
+            "y": "0.5 4"
+          },
+          "element": {
+            "type": "sphere",
+            "r_range": "0.02 0.05",
+            "material": {
+              "color": "#a3e635",
+              "emissive": "#84cc16",
+              "emissiveIntensity": 1.5
+            },
+            "animation": "drift_up_slow",
+            "animDelayFn": "random_0_7000"
+          }
+        }
+      ]
+    },
+    "dikhololo_night": {
+      "id": "dikhololo_night",
+      "title": "Dikhololo — African Savanna Night",
+      "logline": "Southern African game reserve at midnight. Polyhaven starfield. The original human sky.",
+      "palette": "deep_space",
+      "sound": "ambient_savanna_night",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "This is the sky our ancestors navigated by for 300,000 years.\nNo light pollution. No notifications. Just stars.",
+          "durationMs": 7000
+        },
+        {
+          "trigger": "step_1",
+          "text": "The Milky Way is our galaxy viewed edge-on.\n200 billion stars — only 5,000 visible to the naked eye.",
+          "durationMs": 7000
+        },
+        {
+          "trigger": "step_2",
+          "text": "The nearest star is 4.2 light-years away.\nAt the speed of our fastest spacecraft, it would take 17,000 years.",
+          "durationMs": 8000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#020617"
+        },
+        "fog": {
+          "color": "#0f0a1e",
+          "density": 0.004
+        }
+      },
+      "layers": [
+        {
+          "id": "acacia_trees",
+          "label": "Acacia tree silhouettes — 20 flat-topped forms",
+          "count": 20,
+          "spread": {
+            "x": "-25 25",
+            "z": "-25 5"
+          },
+          "element": {
+            "type": "cylinder",
+            "r_range": "0.2 0.5",
+            "h_range": "4 8",
+            "y_offset": "half_height",
+            "material": {
+              "color": "#1c0a00",
+              "roughness": 1
+            }
+          }
+        },
+        {
+          "id": "savanna_grass",
+          "label": "African savanna ground",
+          "type": "plane",
+          "w": 300,
+          "h": 300,
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "rotation": [
+            -90,
+            0,
+            0
+          ],
+          "material": {
+            "color": "#1c1408",
+            "roughness": 1
+          }
+        },
+        {
+          "id": "stars_layer",
+          "label": "Star field — 200 tiny distant spheres",
+          "count": 200,
+          "spread": {
+            "x": "-50 50",
+            "z": "-80 -20",
+            "y": "20 60"
+          },
+          "element": {
+            "type": "sphere",
+            "r_range": "0.05 0.2",
+            "material": {
+              "color": "#f0f9ff",
+              "emissive": "#e0f2fe",
+              "emissiveIntensity": 1.2
+            },
+            "animation": "pulse_emissive",
+            "animDelayFn": "random_0_8000"
+          }
+        },
+        {
+          "id": "campfire",
+          "label": "Single campfire glow",
+          "count": 1,
+          "spread": {
+            "x": "0 0.1",
+            "z": "-3 -2.9",
+            "y": "0 0.1"
+          },
+          "element": {
+            "type": "sphere",
+            "r_range": "0.3 0.4",
+            "material": {
+              "color": "#f97316",
+              "emissive": "#ea580c",
+              "emissiveIntensity": 2.5
+            },
+            "animation": "flicker"
+          }
+        },
+        {
+          "id": "fireflies_savanna",
+          "label": "Southern Cross fireflies — 30 tiny spheres",
+          "count": 30,
+          "spread": {
+            "x": "-15 15",
+            "z": "-15 3",
+            "y": "0.3 3"
+          },
+          "element": {
+            "type": "sphere",
+            "r_range": "0.02 0.05",
+            "material": {
+              "color": "#fde68a",
+              "emissive": "#fbbf24",
+              "emissiveIntensity": 1
+            },
+            "animation": "drift_up_slow",
+            "animDelayFn": "random_0_6000"
+          }
+        }
+      ]
+    },
+    "tron_grid": {
+      "id": "tron_grid",
+      "title": "TRON Grid — Digital Infinity",
+      "logline": "Inside a digital grid. Neon blue wireframe. The aesthetic memory of every 80s sci-fi dream.",
+      "palette": "simulation",
+      "sound": "ambient_synth",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "You're inside the machine.\nEvery line of this grid was once a thought that became code.",
+          "durationMs": 7000
+        },
+        {
+          "trigger": "step_1",
+          "text": "The first computer program ran in 1948.\nIn 80 years we went from vacuum tubes to this.",
+          "durationMs": 7000
+        },
+        {
+          "trigger": "step_2",
+          "text": "Information is the new matter.\nData has mass — every server farm converts electricity to knowledge.",
+          "durationMs": 8000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#000d1a"
+        },
+        "fog": {
+          "color": "#001830",
+          "density": 0.012
+        }
+      },
+      "layers": [
+        {
+          "id": "grid_floor",
+          "label": "Wireframe grid floor",
+          "type": "plane",
+          "w": 300,
+          "h": 300,
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "rotation": [
+            -90,
+            0,
+            0
+          ],
+          "material": {
+            "color": "#001830",
+            "wireframe": true,
+            "opacity": 0.6,
+            "transparent": true
+          }
+        },
+        {
+          "id": "grid_pillars",
+          "label": "Neon grid towers — 30 tall wireframe boxes",
+          "count": 30,
+          "spread": {
+            "x": "-30 30",
+            "z": "-40 5"
+          },
+          "element": {
+            "type": "box",
+            "w": 0.5,
+            "h_range": "5 20",
+            "d": 0.5,
+            "y_offset": "half_height",
+            "material": {
+              "color": "#06b6d4",
+              "emissive": "#0891b2",
+              "emissiveIntensity": 1.5,
+              "wireframe": true,
+              "opacity": 0.7,
+              "transparent": true
+            },
+            "animation": "pulse_opacity",
+            "animDelayFn": "random_0_3000"
+          }
+        },
+        {
+          "id": "data_streams",
+          "label": "Vertical data stream lines — 50 thin cylinders",
+          "count": 50,
+          "spread": {
+            "x": "-20 20",
+            "z": "-30 3",
+            "y": "5 15"
+          },
+          "element": {
+            "type": "cylinder",
+            "r_range": "0.02 0.04",
+            "h_range": "3 12",
+            "y_offset": "half_height",
+            "material": {
+              "color": "#22d3ee",
+              "emissive": "#06b6d4",
+              "emissiveIntensity": 1
+            },
+            "animation": "drift_down_fast",
+            "animDelayFn": "random_0_5000"
+          }
+        },
+        {
+          "id": "tron_particles",
+          "label": "Digital particles — 100 tiny glowing spheres",
+          "count": 100,
+          "spread": {
+            "x": "-18 18",
+            "z": "-18 4",
+            "y": "0.2 8"
+          },
+          "element": {
+            "type": "sphere",
+            "r_range": "0.02 0.06",
+            "material": {
+              "color": "#67e8f9",
+              "emissive": "#22d3ee",
+              "emissiveIntensity": 1.2
+            },
+            "animation": "drift_up_slow",
+            "animDelayFn": "random_0_6000"
+          }
+        }
+      ]
+    },
+    "nano_bloodstream": {
+      "id": "nano_bloodstream",
+      "title": "Nano Bloodstream — Inner Universe",
+      "logline": "Microscopic journey through a human blood vessel. Red cells at human scale. You are 37 trillion cells.",
+      "palette": "quantum",
+      "sound": "ambient_heartbeat",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "You're inside a capillary 0.008mm wide.\nScaled to walking size, a red blood cell is the size of a football.",
+          "durationMs": 7000
+        },
+        {
+          "trigger": "step_1",
+          "text": "Your heart pumps 7,000 litres of blood per day.\nThe entire journey around your body takes 23 seconds.",
+          "durationMs": 7000
+        },
+        {
+          "trigger": "step_2",
+          "text": "Every red blood cell carries 270 million haemoglobin molecules.\nEach one can carry 4 oxygen atoms. You are extraordinary.",
+          "durationMs": 8000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#3b0a0a"
+        },
+        "fog": {
+          "color": "#450a0a",
+          "density": 0.04
+        }
+      },
+      "layers": [
+        {
+          "id": "blood_vessel_wall",
+          "label": "Blood vessel tube wall — curved box array",
+          "count": 20,
+          "spread": {
+            "x": "-15 15",
+            "z": "-30 5",
+            "y": "-3 6"
+          },
+          "element": {
+            "type": "box",
+            "w": 0.4,
+            "h": 0.4,
+            "d_range": "2 5",
+            "material": {
+              "color": "#7f1d1d",
+              "opacity": 0.85,
+              "transparent": true,
+              "roughness": 0.7
+            }
+          }
+        },
+        {
+          "id": "red_blood_cells",
+          "label": "Erythrocytes — 50 biconcave discs (flattened spheres)",
+          "count": 50,
+          "spread": {
+            "x": "-8 8",
+            "z": "-20 3",
+            "y": "-1 3"
+          },
+          "element": {
+            "type": "sphere",
+            "r_range": "0.6 1.0",
+            "material": {
+              "color": "#dc2626",
+              "emissive": "#991b1b",
+              "emissiveIntensity": 0.6
+            },
+            "animation": "drift_forward",
+            "animDelayFn": "random_0_4000"
+          }
+        },
+        {
+          "id": "white_blood_cells",
+          "label": "Leukocytes — 8 large irregular spheres",
+          "count": 8,
+          "spread": {
+            "x": "-6 6",
+            "z": "-15 2",
+            "y": "0 2"
+          },
+          "element": {
+            "type": "sphere",
+            "r_range": "1.5 2.5",
+            "material": {
+              "color": "#e0f2fe",
+              "opacity": 0.7,
+              "transparent": true
+            },
+            "animation": "drift_up_slow",
+            "animDelayFn": "random_0_5000"
+          }
+        },
+        {
+          "id": "plasma_flow",
+          "label": "Plasma particles — 80 tiny golden spheres",
+          "count": 80,
+          "spread": {
+            "x": "-8 8",
+            "z": "-18 3",
+            "y": "0 4"
+          },
+          "element": {
+            "type": "sphere",
+            "r_range": "0.02 0.08",
+            "material": {
+              "color": "#fde68a",
+              "opacity": 0.4,
+              "transparent": true
+            },
+            "animation": "drift_forward",
+            "animDelayFn": "random_0_3000"
+          }
+        }
+      ]
+    },
+    "spacex_capsule": {
+      "id": "spacex_capsule",
+      "title": "SpaceX Dragon Capsule — LEO",
+      "logline": "Inside a Dragon capsule in low Earth orbit. Touchscreens. Hatch window. Earth below at 28,000 km/h.",
+      "palette": "orbital",
+      "sound": "ambient_space_hum",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "Low Earth orbit. 400km altitude. 28,000 km/h.\nYou orbit Earth every 90 minutes. 16 sunrises per day.",
+          "durationMs": 7000
+        },
+        {
+          "trigger": "step_1",
+          "text": "SpaceX built this for $2 billion — NASA's equivalent would cost $10 billion.\nPrivate spaceflight changed the economics of the cosmos.",
+          "durationMs": 7000
+        },
+        {
+          "trigger": "step_2",
+          "text": "Zero gravity is not the absence of gravity — it's perpetual freefall.\nYou're falling toward Earth fast enough to miss it forever.",
+          "durationMs": 8000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#000005"
+        },
+        "fog": {
+          "color": "#00000a",
+          "density": 0.001
+        }
+      },
+      "layers": [
+        {
+          "id": "capsule_interior",
+          "label": "Dragon capsule interior walls — curved box ring",
+          "count": 16,
+          "spread": {
+            "x": "-2 2",
+            "z": "-4 2",
+            "y": "-1 3"
+          },
+          "element": {
+            "type": "box",
+            "w": 0.15,
+            "h": 4,
+            "d": 0.15,
+            "y_offset": 2,
+            "material": {
+              "color": "#1e293b",
+              "roughness": 0.3
+            }
+          }
+        },
+        {
+          "id": "instrument_panels",
+          "label": "Touchscreen instrument panels — 6 flat boxes",
+          "count": 6,
+          "spread": {
+            "x": "-1.5 1.5",
+            "z": "-1.5 1.5",
+            "y": "0.8 1.5"
+          },
+          "element": {
+            "type": "box",
+            "w_range": "0.5 1.2",
+            "h": 0.05,
+            "d_range": "0.4 0.8",
+            "material": {
+              "color": "#0ea5e9",
+              "emissive": "#0284c7",
+              "emissiveIntensity": 1.5
+            }
+          }
+        },
+        {
+          "id": "porthole",
+          "label": "Capsule porthole window — single glowing disc",
+          "count": 1,
+          "spread": {
+            "x": "0 0.1",
+            "z": "-2.5 -2.4",
+            "y": "1.2 1.3"
+          },
+          "element": {
+            "type": "cylinder",
+            "r_range": "0.4 0.5",
+            "h": 0.08,
+            "y_offset": 0,
+            "material": {
+              "color": "#0ea5e9",
+              "opacity": 0.3,
+              "transparent": true
+            }
+          }
+        },
+        {
+          "id": "earth_glow",
+          "label": "Earth albedo glow — diffuse blue sphere",
+          "count": 1,
+          "spread": {
+            "x": "0 0.1",
+            "z": "-10 -9.9",
+            "y": "0 0.1"
+          },
+          "element": {
+            "type": "sphere",
+            "r_range": "5 6",
+            "material": {
+              "color": "#0ea5e9",
+              "opacity": 0.08,
+              "transparent": true
+            }
+          }
+        },
+        {
+          "id": "star_field",
+          "label": "Stars through porthole — 150 tiny spheres",
+          "count": 150,
+          "spread": {
+            "x": "-40 40",
+            "z": "-80 -20",
+            "y": "10 50"
+          },
+          "element": {
+            "type": "sphere",
+            "r_range": "0.04 0.15",
+            "material": {
+              "color": "#f0f9ff",
+              "emissive": "#e0f2fe",
+              "emissiveIntensity": 0.8
+            },
+            "animation": "none"
+          }
+        }
+      ]
+    },
+    "earth_orbit": {
+      "id": "earth_orbit",
+      "title": "Earth Orbit — The Overview Effect",
+      "logline": "External view from 400km altitude. The ISS orbital track. Earth’s curvature visible. The ‘overview effect’ in real-time.",
+      "palette": "orbital",
+      "sound": "ambient_space_silence",
+      "narrativeBeats": [
+        {
+          "trigger": "enter",
+          "text": "The ‘Overview Effect’: astronauts who see Earth from space are permanently changed.\nThe borders disappear. The fragility becomes visceral.",
+          "durationMs": 7000
+        },
+        {
+          "trigger": "step_1",
+          "text": "Yuri Gagarin was the first human to see this.\nHis first words: ‘The Earth is blue.’ He wept.",
+          "durationMs": 7000
+        },
+        {
+          "trigger": "step_2",
+          "text": "The ISS has been continuously inhabited since November 2, 2000.\nHumans have not left low Earth orbit since then.",
+          "durationMs": 8000
+        }
+      ],
+      "environment": {
+        "sky": {
+          "color": "#000005"
+        },
+        "fog": {
+          "color": "#00000a",
+          "density": 0.0005
+        }
+      },
+      "layers": [
+        {
+          "id": "earth_sphere",
+          "label": "Earth — massive blue sphere below",
+          "count": 1,
+          "spread": {
+            "x": "0 0.1",
+            "z": "-120 -119.9",
+            "y": "-110 -109.9"
+          },
+          "element": {
+            "type": "sphere",
+            "r_range": "100 101",
+            "material": {
+              "color": "#1d4ed8",
+              "emissive": "#1e40af",
+              "emissiveIntensity": 0.3,
+              "opacity": 0.9,
+              "transparent": true
+            }
+          }
+        },
+        {
+          "id": "cloud_layer",
+          "label": "Cloud cover — translucent sphere over Earth",
+          "count": 1,
+          "spread": {
+            "x": "0 0.1",
+            "z": "-120 -119.9",
+            "y": "-110 -109.9"
+          },
+          "element": {
+            "type": "sphere",
+            "r_range": "103 104",
+            "material": {
+              "color": "#f0f9ff",
+              "opacity": 0.12,
+              "transparent": true
+            }
+          }
+        },
+        {
+          "id": "iss_truss",
+          "label": "ISS solar panel truss structure — 8 long boxes",
+          "count": 8,
+          "spread": {
+            "x": "-20 20",
+            "z": "-5 0",
+            "y": "0 0.5"
+          },
+          "element": {
+            "type": "box",
+            "w": 0.3,
+            "h": 0.3,
+            "d_range": "8 15",
+            "material": {
+              "color": "#94a3b8",
+              "roughness": 0.5
+            }
+          }
+        },
+        {
+          "id": "solar_panels",
+          "label": "ISS solar panels — 6 flat rectangles",
+          "count": 6,
+          "spread": {
+            "x": "-15 15",
+            "z": "-4 0",
+            "y": "0.5 1"
+          },
+          "element": {
+            "type": "box",
+            "w_range": "6 8",
+            "h": 0.05,
+            "d": 2,
+            "material": {
+              "color": "#1e3a5f",
+              "emissive": "#1d4ed8",
+              "emissiveIntensity": 0.8
+            }
+          }
+        },
+        {
+          "id": "orbit_stars",
+          "label": "Deep space stars — 300 tiny spheres",
+          "count": 300,
+          "spread": {
+            "x": "-80 80",
+            "z": "-150 -10",
+            "y": "5 80"
+          },
+          "element": {
+            "type": "sphere",
+            "r_range": "0.05 0.25",
+            "material": {
+              "color": "#f0f9ff",
+              "emissive": "#e0f2fe",
+              "emissiveIntensity": 0.7
+            }
+          }
+        }
+      ]
     }
   }
 }

@@ -520,10 +520,31 @@ function narrativePanel(scene) {
 
 // ─── Environment builder ────────────────────────────────────────────
 
-function buildEnvironment(env, palette) {
+// Photo-realistic equirectangular skybox images (Polyhaven tonemapped JPGs)
+const SKY_IMGS = {
+  forest_528:          "/geoassets/skies/forest_528.jpg",
+  rainforest_trail:    "/geoassets/skies/rainforest_trail.jpg",
+  colosseum_time_gate: "/geoassets/skies/colosseum_time_gate.jpg",
+  pyramids_giza:       "/geoassets/skies/pyramids_giza.jpg",
+  deep_space:          "/geoassets/skies/deep_space_sky.jpg",
+  arctic_tundra:       "/geoassets/skies/arctic_tundra.jpg",
+  volcanic_summit:     "/geoassets/skies/volcanic_summit.jpg",
+  gothic_cathedral:    "/geoassets/skies/gothic_cathedral.jpg",
+  abandoned_factory:   "/geoassets/skies/abandoned_factory.jpg",
+  grand_canyon:        "/geoassets/skies/grand_canyon.jpg",
+  city_night_streets:  "/geoassets/skies/city_night_streets.jpg",
+  football_stadium:    "/geoassets/skies/football_stadium.jpg",
+  ocean_beach:         "/geoassets/skies/ocean_beach.jpg",
+  dikhololo_night:     "/geoassets/skies/dikhololo_night.jpg",
+};
+
+function buildEnvironment(env, palette, sceneId) {
   const parts = [];
-  // Sky
-  if (env.sky) {
+  // Sky — photo-realistic skybox takes priority over solid-color fallback
+  const skyImg = SKY_IMGS[sceneId];
+  if (skyImg) {
+    parts.push(`<a-sky src="${skyImg}" radius="500"></a-sky>`);
+  } else if (env.sky) {
     if (env.sky.type === "gradient") {
       parts.push(
         `<a-sky color="${env.sky.topColor || palette.secondary || palette.bg}"></a-sky>`,
@@ -567,8 +588,8 @@ export async function buildMALScene(sceneId) {
   const palette = mal.palettes[scene.palette] || mal.palettes.simulation;
   const sceneParts = [];
 
-  // Environment
-  sceneParts.push(buildEnvironment(scene.environment || {}, palette));
+  // Environment (pass sceneId for photo skybox lookup)
+  sceneParts.push(buildEnvironment(scene.environment || {}, palette, sceneId));
 
   // Layers
   for (const layer of scene.layers || []) {
