@@ -522,20 +522,20 @@ function narrativePanel(scene) {
 
 // Photo-realistic equirectangular skybox images (Polyhaven tonemapped JPGs)
 const SKY_IMGS = {
-  forest_528:          "/geoassets/skies/forest_528.jpg",
-  rainforest_trail:    "/geoassets/skies/rainforest_trail.jpg",
+  forest_528: "/geoassets/skies/forest_528.jpg",
+  rainforest_trail: "/geoassets/skies/rainforest_trail.jpg",
   colosseum_time_gate: "/geoassets/skies/colosseum_time_gate.jpg",
-  pyramids_giza:       "/geoassets/skies/pyramids_giza.jpg",
-  deep_space:          "/geoassets/skies/deep_space_sky.jpg",
-  arctic_tundra:       "/geoassets/skies/arctic_tundra.jpg",
-  volcanic_summit:     "/geoassets/skies/volcanic_summit.jpg",
-  gothic_cathedral:    "/geoassets/skies/gothic_cathedral.jpg",
-  abandoned_factory:   "/geoassets/skies/abandoned_factory.jpg",
-  grand_canyon:        "/geoassets/skies/grand_canyon.jpg",
-  city_night_streets:  "/geoassets/skies/city_night_streets.jpg",
-  football_stadium:    "/geoassets/skies/football_stadium.jpg",
-  ocean_beach:         "/geoassets/skies/ocean_beach.jpg",
-  dikhololo_night:     "/geoassets/skies/dikhololo_night.jpg",
+  pyramids_giza: "/geoassets/skies/pyramids_giza.jpg",
+  deep_space: "/geoassets/skies/deep_space_sky.jpg",
+  arctic_tundra: "/geoassets/skies/arctic_tundra.jpg",
+  volcanic_summit: "/geoassets/skies/volcanic_summit.jpg",
+  gothic_cathedral: "/geoassets/skies/gothic_cathedral.jpg",
+  abandoned_factory: "/geoassets/skies/abandoned_factory.jpg",
+  grand_canyon: "/geoassets/skies/grand_canyon.jpg",
+  city_night_streets: "/geoassets/skies/city_night_streets.jpg",
+  football_stadium: "/geoassets/skies/football_stadium.jpg",
+  ocean_beach: "/geoassets/skies/ocean_beach.jpg",
+  dikhololo_night: "/geoassets/skies/dikhololo_night.jpg",
 };
 
 function buildEnvironment(env, palette, sceneId) {
