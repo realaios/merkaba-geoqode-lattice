@@ -4308,8 +4308,8 @@ footer{text-align:center;padding:2.5rem;color:#2a3a50;font-size:0.8rem;border-to
     // ── GET /api/vr/mine-status — VR autonomous mining pipeline status ─────
     if (req.method === "GET" && pathname === "/api/vr/mine-status") {
       try {
-        const minedPath = join(__dirname, "data", "mined-assets.json");
-        const loopPath = join(__dirname, "data", "vr-loop-status.json");
+        const minedPath = join(__dirname_static, "data", "mined-assets.json");
+        const loopPath = join(__dirname_static, "data", "vr-loop-status.json");
         const minedData = existsSync(minedPath)
           ? JSON.parse(readFileSync(minedPath, "utf8"))
           : { assets: [] };
