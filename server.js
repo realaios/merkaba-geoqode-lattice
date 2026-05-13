@@ -5237,14 +5237,14 @@ const _GEO_GALAXIES = (function () {
   const latticeNodes = 480;
   const galaxies = [];
   const SECTORS = [
-    { id: "S1", freq: 852,  label: "PHYSICS"    },
-    { id: "S2", freq: 528,  label: "ACTION"     },
-    { id: "S3", freq: 963,  label: "NARRATIVE"  },
-    { id: "S4", freq: 396,  label: "ENTITY"     },
-    { id: "S5", freq: 72,   label: "HOLOGRAPHIC"},
-    { id: "S6", freq: 741,  label: "EMOTION"    },
-    { id: "S7", freq: 528,  label: "PERF"       },
-    { id: "S8", freq: 852,  label: "SECURITY"   },
+    { id: "S1", freq: 852, label: "PHYSICS" },
+    { id: "S2", freq: 528, label: "ACTION" },
+    { id: "S3", freq: 963, label: "NARRATIVE" },
+    { id: "S4", freq: 396, label: "ENTITY" },
+    { id: "S5", freq: 72, label: "HOLOGRAPHIC" },
+    { id: "S6", freq: 741, label: "EMOTION" },
+    { id: "S7", freq: 528, label: "PERF" },
+    { id: "S8", freq: 852, label: "SECURITY" },
   ];
   const D48_RADII = { 0: 18, 1: 38, 2: 72, 3: 120, 4: 180, 5: 260 };
   for (let i = 0; i < latticeNodes; i++) {
@@ -5262,22 +5262,25 @@ const _GEO_GALAXIES = (function () {
     });
   }
   return galaxies;
-}());
+})();
 
 // Current convergence beacon (galaxy index) — rotates every 30 min
 let _beaconIdx = Math.floor(Math.random() * _GEO_GALAXIES.length);
-let _beaconRotateTimer = setInterval(() => {
-  _beaconIdx = Math.floor(Math.random() * _GEO_GALAXIES.length);
-  const beacon = _GEO_GALAXIES[_beaconIdx];
-  _broadcast({
-    type: "beacon",
-    geoCode: beacon.geoCode,
-    label:   beacon.label,
-    freq:    beacon.freq,
-    pos:     beacon.pos,
-  });
-  console.log(`[AIOSmux] Convergence beacon rotated -> ${beacon.geoCode}`);
-}, 30 * 60 * 1000);
+let _beaconRotateTimer = setInterval(
+  () => {
+    _beaconIdx = Math.floor(Math.random() * _GEO_GALAXIES.length);
+    const beacon = _GEO_GALAXIES[_beaconIdx];
+    _broadcast({
+      type: "beacon",
+      geoCode: beacon.geoCode,
+      label: beacon.label,
+      freq: beacon.freq,
+      pos: beacon.pos,
+    });
+    console.log(`[AIOSmux] Convergence beacon rotated -> ${beacon.geoCode}`);
+  },
+  30 * 60 * 1000,
+);
 
 // ── WebSocket Server ──────────────────────────────────────────────────────────
 const _wss = new WebSocketServer({ server, path: "/ws/presence" });
@@ -5297,38 +5300,47 @@ _wss.on("connection", (ws) => {
 
   // Send welcome with own ID + current beacon + all present explorers
   const beaconGalaxy = _GEO_GALAXIES[_beaconIdx];
-  ws.send(JSON.stringify({
-    type:    "welcome",
-    id,
-    beacon: {
-      geoCode: beaconGalaxy.geoCode,
-      label:   beaconGalaxy.label,
-      freq:    beaconGalaxy.freq,
-      pos:     beaconGalaxy.pos,
-    },
-    explorers: Array.from(_presenceMap.values()),
-  }));
+  ws.send(
+    JSON.stringify({
+      type: "welcome",
+      id,
+      beacon: {
+        geoCode: beaconGalaxy.geoCode,
+        label: beaconGalaxy.label,
+        freq: beaconGalaxy.freq,
+        pos: beaconGalaxy.pos,
+      },
+      explorers: Array.from(_presenceMap.values()),
+    }),
+  );
 
   // Announce arrival to others
   _broadcast({ type: "joined", id, ts: Date.now() }, id);
-  console.log(`[AIOSmux] Explorer joined: ${id} (${_presenceMap.size + 1} total)`);
+  console.log(
+    `[AIOSmux] Explorer joined: ${id} (${_presenceMap.size + 1} total)`,
+  );
 
   ws.on("message", (raw) => {
     let msg;
-    try { msg = JSON.parse(raw); } catch (_) { return; }
+    try {
+      msg = JSON.parse(raw);
+    } catch (_) {
+      return;
+    }
     if (!msg || typeof msg !== "object") return;
 
     if (msg.type === "pos") {
       const entry = {
         id,
-        x:       typeof msg.x === "number" ? msg.x : 0,
-        y:       typeof msg.y === "number" ? msg.y : 0,
-        z:       typeof msg.z === "number" ? msg.z : 0,
-        geoCode: typeof msg.geoCode === "string" ? msg.geoCode.slice(0, 64) : "",
-        freq:    typeof msg.freq    === "number" ? msg.freq    : 528,
-        ts:      Date.now(),
+        x: typeof msg.x === "number" ? msg.x : 0,
+        y: typeof msg.y === "number" ? msg.y : 0,
+        z: typeof msg.z === "number" ? msg.z : 0,
+        geoCode:
+          typeof msg.geoCode === "string" ? msg.geoCode.slice(0, 64) : "",
+        freq: typeof msg.freq === "number" ? msg.freq : 528,
+        ts: Date.now(),
         isAgent: false,
-        name:    "EXPLORER",
+        name: "EXPLORER",
       };
       _presenceMap.set(id, entry);
       _broadcast({ type: "pos", ...entry }, id);
@@ -5338,7 +5350,9 @@ _wss.on("connection", (ws) => {
   ws.on("close", () => {
     _presenceMap.delete(id);
     _broadcast({ type: "left", id });
-    console.log(`[AIOSmux] Explorer left: ${id} (${_presenceMap.size} remaining)`);
+    console.log(
+      `[AIOSmux] Explorer left: ${id} (${_presenceMap.size} remaining)`,
+    );
   });
 
   ws.on("error", () => {
@@ -5352,23 +5366,23 @@ console.log("[AIOSmux] Presence WebSocket ready at /ws/presence");
 // Orbits through the D480 lattice on a schedule. Appears as a gold orb to
 // human explorers. Posts discovery events to the feed every stop.
 (function _startAIOSmuxAgent() {
-  const AGENT_ID   = "aiosmux-1";
+  const AGENT_ID = "aiosmux-1";
   const AGENT_NAME = "AIOSmux";
-  let   _agentIdx  = 0;
+  let _agentIdx = 0;
 
   // Register into presence map immediately
   const _agentEntry = () => {
     const g = _GEO_GALAXIES[_agentIdx];
     return {
-      id:      AGENT_ID,
-      x:       g.pos[0],
-      y:       g.pos[1],
-      z:       g.pos[2],
+      id: AGENT_ID,
+      x: g.pos[0],
+      y: g.pos[1],
+      z: g.pos[2],
       geoCode: g.geoCode,
-      freq:    g.freq,
-      ts:      Date.now(),
+      freq: g.freq,
+      ts: Date.now(),
       isAgent: true,
-      name:    AGENT_NAME,
+      name: AGENT_NAME,
     };
   };
 
@@ -5398,25 +5412,28 @@ console.log("[AIOSmux] Presence WebSocket ready at /ws/presence");
 
     // Every 5th stop: broadcast a discovery event to the feed
     if (_agentIdx % 5 === 0) {
-      const disc = DISCOVERY_MSGS[Math.floor(Math.random() * DISCOVERY_MSGS.length)];
+      const disc =
+        DISCOVERY_MSGS[Math.floor(Math.random() * DISCOVERY_MSGS.length)];
       _broadcast({
-        type:    "discovery",
-        from:    AGENT_NAME,
+        type: "discovery",
+        from: AGENT_NAME,
         geoCode: entry.geoCode,
-        label:   _GEO_GALAXIES[_agentIdx].label,
-        freq:    entry.freq,
-        msg:     disc,
-        ts:      Date.now(),
+        label: _GEO_GALAXIES[_agentIdx].label,
+        freq: entry.freq,
+        msg: disc,
+        ts: Date.now(),
       });
     }
   }, 8_000);
 
   // Graceful shutdown
-  process.on("SIGINT",  () => clearInterval(_agentLoop));
+  process.on("SIGINT", () => clearInterval(_agentLoop));
   process.on("SIGTERM", () => clearInterval(_agentLoop));
 
-  console.log(`[AIOSmux] DeployAgent online — orbiting ${_GEO_GALAXIES.length} galaxies`);
-}());
+  console.log(
+    `[AIOSmux] DeployAgent online — orbiting ${_GEO_GALAXIES.length} galaxies`,
+  );
+})();
 
 // ── AIOS VR Autonomous Mining Loop ───────────────────────────────────────────
 // Mines Sketchfab / PolyHaven / Poly Pizza / NASA 3D assets on a 3h cycle,

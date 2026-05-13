@@ -5628,34 +5628,68 @@
     ════════════════════════════════════════════════════════════════════════════ -->
 
     <!-- Discovery Feed -->
-    <div id="discovery-feed" style="
-      position:fixed; bottom:80px; left:16px; z-index:9000;
-      width:340px; max-height:130px; overflow:hidden;
-      pointer-events:none; user-select:none;">
-    </div>
+    <div
+      id="discovery-feed"
+      style="
+        position: fixed;
+        bottom: 80px;
+        left: 16px;
+        z-index: 9000;
+        width: 340px;
+        max-height: 130px;
+        overflow: hidden;
+        pointer-events: none;
+        user-select: none;
+      "
+    ></div>
 
     <!-- Explorer Count Badge -->
-    <div id="explorer-badge" style="
-      position:fixed; top:14px; right:16px; z-index:9000;
-      background:rgba(0,20,40,0.82); border:1px solid rgba(0,212,255,0.35);
-      border-radius:20px; padding:5px 14px; font-family:monospace;
-      font-size:12px; color:#00d4ff; letter-spacing:1px;">
+    <div
+      id="explorer-badge"
+      style="
+        position: fixed;
+        top: 14px;
+        right: 16px;
+        z-index: 9000;
+        background: rgba(0, 20, 40, 0.82);
+        border: 1px solid rgba(0, 212, 255, 0.35);
+        border-radius: 20px;
+        padding: 5px 14px;
+        font-family: monospace;
+        font-size: 12px;
+        color: #00d4ff;
+        letter-spacing: 1px;
+      "
+    >
       <span id="explorer-count">0</span> EXPLORERS ONLINE
     </div>
 
     <!-- Convergence Beacon Banner -->
-    <div id="beacon-banner" style="
-      position:fixed; top:46px; right:16px; z-index:9000;
-      background:rgba(0,20,40,0.82); border:1px solid rgba(255,200,60,0.45);
-      border-radius:8px; padding:5px 14px; font-family:monospace;
-      font-size:10px; color:#ffc83c; letter-spacing:1px;
-      display:none; max-width:260px;">
+    <div
+      id="beacon-banner"
+      style="
+        position: fixed;
+        top: 46px;
+        right: 16px;
+        z-index: 9000;
+        background: rgba(0, 20, 40, 0.82);
+        border: 1px solid rgba(255, 200, 60, 0.45);
+        border-radius: 8px;
+        padding: 5px 14px;
+        font-family: monospace;
+        font-size: 10px;
+        color: #ffc83c;
+        letter-spacing: 1px;
+        display: none;
+        max-width: 260px;
+      "
+    >
       \u26a1 CONVERGENCE BEACON: <span id="beacon-label">---</span>
     </div>
 
     <style>
       .disc-entry {
-        background: rgba(0,15,30,0.88);
+        background: rgba(0, 15, 30, 0.88);
         border-left: 2px solid #00d4ff;
         border-radius: 0 4px 4px 0;
         padding: 4px 10px;
@@ -5674,8 +5708,14 @@
         color: #ffe090;
       }
       @keyframes discFadeIn {
-        from { opacity: 0; transform: translateX(-8px); }
-        to   { opacity: 1; transform: translateX(0); }
+        from {
+          opacity: 0;
+          transform: translateX(-8px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
       }
     </style>
 
@@ -5685,29 +5725,31 @@
         "use strict";
 
         /* ── Config ───────────────────────────────────────────────────────── */
-        var WS_URL = (location.protocol === "https:" ? "wss://" : "ws://") +
-                     location.host + "/ws/presence";
-        var RECONNECT_DELAY_MS  = 4000;
-        var POS_SEND_INTERVAL   = 2500;   // send position every 2.5s
-        var FEED_MAX_ENTRIES    = 5;
-        var GHOST_CLEANUP_MS    = 15000;  // remove ghost if no update for 15s
+        var WS_URL =
+          (location.protocol === "https:" ? "wss://" : "ws://") +
+          location.host +
+          "/ws/presence";
+        var RECONNECT_DELAY_MS = 4000;
+        var POS_SEND_INTERVAL = 2500; // send position every 2.5s
+        var FEED_MAX_ENTRIES = 5;
+        var GHOST_CLEANUP_MS = 15000; // remove ghost if no update for 15s
 
         /* ── State ────────────────────────────────────────────────────────── */
-        var _ws          = null;
-        var _myId        = null;
-        var _ghostMap    = {};   // id -> { el, ts, isAgent }
-        var _ghostScene  = null; // a-entity container for ghosts
-        var _beaconEl    = null; // pulsing beacon ring in A-Frame
-        var _beaconCode  = null;
+        var _ws = null;
+        var _myId = null;
+        var _ghostMap = {}; // id -> { el, ts, isAgent }
+        var _ghostScene = null; // a-entity container for ghosts
+        var _beaconEl = null; // pulsing beacon ring in A-Frame
+        var _beaconCode = null;
         var _reconnTimer = null;
-        var _posSendTimer= null;
-        var _cleanupTimer= null;
+        var _posSendTimer = null;
+        var _cleanupTimer = null;
 
         /* ── DOM refs ─────────────────────────────────────────────────────── */
-        var _feed         = document.getElementById("discovery-feed");
-        var _explorerBadge= document.getElementById("explorer-count");
+        var _feed = document.getElementById("discovery-feed");
+        var _explorerBadge = document.getElementById("explorer-count");
         var _beaconBanner = document.getElementById("beacon-banner");
-        var _beaconLabel  = document.getElementById("beacon-label");
+        var _beaconLabel = document.getElementById("beacon-label");
 
         /* ── Discovery feed ───────────────────────────────────────────────── */
         function _addFeedEntry(text, isAgent) {
@@ -5746,13 +5788,25 @@
             orb.setAttribute("color", color);
             orb.setAttribute("opacity", opacity);
             orb.setAttribute("emissive", color);
-            orb.setAttribute("emissive-intensity", entry.isAgent ? "0.7" : "0.4");
-            orb.setAttribute("material", "shader:standard;metalness:0.1;roughness:0.6;transparent:true");
-            orb.setAttribute("position", entry.x + " " + entry.y + " " + entry.z);
+            orb.setAttribute(
+              "emissive-intensity",
+              entry.isAgent ? "0.7" : "0.4",
+            );
+            orb.setAttribute(
+              "material",
+              "shader:standard;metalness:0.1;roughness:0.6;transparent:true",
+            );
+            orb.setAttribute(
+              "position",
+              entry.x + " " + entry.y + " " + entry.z,
+            );
 
             /* Label */
             var label = document.createElement("a-text");
-            label.setAttribute("value", entry.isAgent ? "\u26a1 " + entry.name : "\u25cf EXPLORER");
+            label.setAttribute(
+              "value",
+              entry.isAgent ? "\u26a1 " + entry.name : "\u25cf EXPLORER",
+            );
             label.setAttribute("align", "center");
             label.setAttribute("color", color);
             label.setAttribute("scale", "12 12 12");
@@ -5767,15 +5821,25 @@
               ring.setAttribute("radius-tubular", "0.3");
               ring.setAttribute("color", "#ffc83c");
               ring.setAttribute("opacity", "0.4");
-              ring.setAttribute("animation", "property:rotation;to:0 360 0;loop:true;dur:4000;easing:linear");
+              ring.setAttribute(
+                "animation",
+                "property:rotation;to:0 360 0;loop:true;dur:4000;easing:linear",
+              );
               orb.appendChild(ring);
             }
 
             _ghostScene.appendChild(orb);
-            _ghostMap[entry.id] = { el: orb, ts: Date.now(), isAgent: entry.isAgent };
+            _ghostMap[entry.id] = {
+              el: orb,
+              ts: Date.now(),
+              isAgent: entry.isAgent,
+            };
           } else {
             /* Update position */
-            existing.el.setAttribute("position", entry.x + " " + entry.y + " " + entry.z);
+            existing.el.setAttribute(
+              "position",
+              entry.x + " " + entry.y + " " + entry.z,
+            );
             existing.ts = Date.now();
           }
         }
@@ -5788,8 +5852,13 @@
         }
 
         function _updateExplorerCount() {
-          var humans = Array.from ? Array.from(Object.values(_ghostMap)).filter(function (g) { return !g.isAgent; }).length
-                                  : Object.keys(_ghostMap).reduce(function (n, k) { return n + (_ghostMap[k].isAgent ? 0 : 1); }, 0);
+          var humans = Array.from
+            ? Array.from(Object.values(_ghostMap)).filter(function (g) {
+                return !g.isAgent;
+              }).length
+            : Object.keys(_ghostMap).reduce(function (n, k) {
+                return n + (_ghostMap[k].isAgent ? 0 : 1);
+              }, 0);
           _explorerBadge.textContent = humans;
         }
 
@@ -5797,7 +5866,10 @@
         _cleanupTimer = setInterval(function () {
           var now = Date.now();
           Object.keys(_ghostMap).forEach(function (id) {
-            if (!_ghostMap[id].isAgent && now - _ghostMap[id].ts > GHOST_CLEANUP_MS) {
+            if (
+              !_ghostMap[id].isAgent &&
+              now - _ghostMap[id].ts > GHOST_CLEANUP_MS
+            ) {
               _removeGhost(id);
             }
           });
@@ -5816,7 +5888,14 @@
           _beaconCode = beaconData.geoCode;
 
           var container = document.createElement("a-entity");
-          container.setAttribute("position", beaconData.pos[0] + " " + beaconData.pos[1] + " " + beaconData.pos[2]);
+          container.setAttribute(
+            "position",
+            beaconData.pos[0] +
+              " " +
+              beaconData.pos[1] +
+              " " +
+              beaconData.pos[2],
+          );
 
           /* Outer slow ring */
           var r1 = document.createElement("a-torus");
@@ -5824,7 +5903,10 @@
           r1.setAttribute("radius-tubular", "0.6");
           r1.setAttribute("color", "#ffc83c");
           r1.setAttribute("opacity", "0.35");
-          r1.setAttribute("animation", "property:rotation;to:0 360 0;loop:true;dur:8000;easing:linear");
+          r1.setAttribute(
+            "animation",
+            "property:rotation;to:0 360 0;loop:true;dur:8000;easing:linear",
+          );
           container.appendChild(r1);
 
           /* Inner fast ring */
@@ -5833,7 +5915,10 @@
           r2.setAttribute("radius-tubular", "0.4");
           r2.setAttribute("color", "#ff9f00");
           r2.setAttribute("opacity", "0.5");
-          r2.setAttribute("animation", "property:rotation;to:360 0 0;loop:true;dur:3500;easing:linear");
+          r2.setAttribute(
+            "animation",
+            "property:rotation;to:360 0 0;loop:true;dur:3500;easing:linear",
+          );
           container.appendChild(r2);
 
           /* Central beacon sphere */
@@ -5843,7 +5928,10 @@
           core.setAttribute("opacity", "0.25");
           core.setAttribute("emissive", "#ffc83c");
           core.setAttribute("emissive-intensity", "0.6");
-          core.setAttribute("animation__pulse", "property:scale;to:1.4 1.4 1.4;dir:alternate;loop:true;dur:1500;easing:easeInOutSine");
+          core.setAttribute(
+            "animation__pulse",
+            "property:scale;to:1.4 1.4 1.4;dir:alternate;loop:true;dur:1500;easing:easeInOutSine",
+          );
           container.appendChild(core);
 
           /* Label */
@@ -5860,10 +5948,18 @@
           _beaconEl = container;
 
           /* Update banner */
-          _beaconLabel.textContent = beaconData.label + " \u2022 " + beaconData.freq + " Hz";
+          _beaconLabel.textContent =
+            beaconData.label + " \u2022 " + beaconData.freq + " Hz";
           _beaconBanner.style.display = "block";
 
-          _addFeedEntry("\u26a1 BEACON -> " + beaconData.label + " \u2022 " + beaconData.freq + " Hz", true);
+          _addFeedEntry(
+            "\u26a1 BEACON -> " +
+              beaconData.label +
+              " \u2022 " +
+              beaconData.freq +
+              " Hz",
+            true,
+          );
         }
 
         /* ── Position sender ──────────────────────────────────────────────── */
@@ -5876,41 +5972,52 @@
           /* Get current galaxy geoCode from cosmos component if available */
           var du = document.querySelector("[distant-universe]");
           var geoCode = "";
-          var freq    = 528;
+          var freq = 528;
           if (du && du.components && du.components["distant-universe"]) {
             var comp = du.components["distant-universe"];
             if (comp._currentGalaxy) {
               geoCode = comp._currentGalaxy.geoCode || "";
-              freq    = comp._currentGalaxy.freq    || 528;
+              freq = comp._currentGalaxy.freq || 528;
             }
           }
 
-          _ws.send(JSON.stringify({
-            type:    "pos",
-            x:       pos.x || 0,
-            y:       pos.y || 0,
-            z:       pos.z || 0,
-            geoCode: geoCode,
-            freq:    freq,
-          }));
+          _ws.send(
+            JSON.stringify({
+              type: "pos",
+              x: pos.x || 0,
+              y: pos.y || 0,
+              z: pos.z || 0,
+              geoCode: geoCode,
+              freq: freq,
+            }),
+          );
         }
 
         /* ── WebSocket connect / reconnect ────────────────────────────────── */
         function _connect() {
           if (_ws) {
-            try { _ws.close(); } catch (_) {}
+            try {
+              _ws.close();
+            } catch (_) {}
           }
           _ws = new WebSocket(WS_URL);
 
           _ws.onopen = function () {
             console.log("[AIOSmux] Presence WebSocket connected");
-            if (_reconnTimer) { clearTimeout(_reconnTimer); _reconnTimer = null; }
+            if (_reconnTimer) {
+              clearTimeout(_reconnTimer);
+              _reconnTimer = null;
+            }
             _posSendTimer = setInterval(_sendPosition, POS_SEND_INTERVAL);
           };
 
           _ws.onmessage = function (ev) {
             var msg;
-            try { msg = JSON.parse(ev.data); } catch (_) { return; }
+            try {
+              msg = JSON.parse(ev.data);
+            } catch (_) {
+              return;
+            }
             if (!msg || !msg.type) return;
 
             switch (msg.type) {
@@ -5925,7 +6032,10 @@
                 }
                 /* Place initial beacon */
                 if (msg.beacon) _placeBeacon(msg.beacon);
-                _addFeedEntry("CONNECTED \u2014 ID " + _myId.toUpperCase(), false);
+                _addFeedEntry(
+                  "CONNECTED \u2014 ID " + _myId.toUpperCase(),
+                  false,
+                );
                 break;
 
               case "pos":
@@ -5936,25 +6046,43 @@
                 break;
 
               case "joined":
-                _addFeedEntry("EXPLORER_" + msg.id.slice(0, 4).toUpperCase() + " entered the cosmos", false);
+                _addFeedEntry(
+                  "EXPLORER_" +
+                    msg.id.slice(0, 4).toUpperCase() +
+                    " entered the cosmos",
+                  false,
+                );
                 _updateExplorerCount();
                 break;
 
               case "left":
                 _removeGhost(msg.id);
-                _addFeedEntry("EXPLORER_" + msg.id.slice(0, 4).toUpperCase() + " left", false);
+                _addFeedEntry(
+                  "EXPLORER_" + msg.id.slice(0, 4).toUpperCase() + " left",
+                  false,
+                );
                 _updateExplorerCount();
                 break;
 
               case "discovery":
                 _upsertGhost({
-                  id: "aiosmux-1", x: 0, y: 0, z: 0,
-                  isAgent: true, name: msg.from,
-                  geoCode: msg.geoCode, freq: msg.freq,
+                  id: "aiosmux-1",
+                  x: 0,
+                  y: 0,
+                  z: 0,
+                  isAgent: true,
+                  name: msg.from,
+                  geoCode: msg.geoCode,
+                  freq: msg.freq,
                 });
                 _addFeedEntry(
-                  "\u26a1 " + msg.from + " @ " + msg.label + " \u2022 " + msg.msg,
-                  true
+                  "\u26a1 " +
+                    msg.from +
+                    " @ " +
+                    msg.label +
+                    " \u2022 " +
+                    msg.msg,
+                  true,
                 );
                 _updateExplorerCount();
                 break;
@@ -5962,16 +6090,27 @@
               case "beacon":
                 _placeBeacon(msg);
                 _addFeedEntry(
-                  "\u26a1 BEACON ROTATED -> " + msg.label + " \u2022 " + msg.freq + " Hz",
-                  true
+                  "\u26a1 BEACON ROTATED -> " +
+                    msg.label +
+                    " \u2022 " +
+                    msg.freq +
+                    " Hz",
+                  true,
                 );
                 break;
             }
           };
 
           _ws.onclose = function () {
-            console.log("[AIOSmux] WebSocket closed — reconnecting in " + (RECONNECT_DELAY_MS / 1000) + "s");
-            if (_posSendTimer) { clearInterval(_posSendTimer); _posSendTimer = null; }
+            console.log(
+              "[AIOSmux] WebSocket closed — reconnecting in " +
+                RECONNECT_DELAY_MS / 1000 +
+                "s",
+            );
+            if (_posSendTimer) {
+              clearInterval(_posSendTimer);
+              _posSendTimer = null;
+            }
             _reconnTimer = setTimeout(_connect, RECONNECT_DELAY_MS);
           };
 
@@ -5989,8 +6128,7 @@
         } else {
           window.addEventListener("load", _connect);
         }
-
-      }());
+      })();
     </script>
   </body>
 </html>
