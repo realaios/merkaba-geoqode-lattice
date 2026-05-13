@@ -550,6 +550,63 @@
         white-space: normal;
         line-height: 1.4;
       }
+      /* ── Nearby Systems HUD ────────────────────────────────────────────── */
+      #nearby-hud {
+        position: fixed;
+        bottom: 18px;
+        left: 18px;
+        z-index: 500;
+        font-family: 'Courier New', monospace;
+        font-size: 11px;
+        color: #9ef;
+        letter-spacing: 0.06em;
+        line-height: 1.65;
+        background: rgba(0, 10, 28, 0.78);
+        border: 1px solid rgba(0, 200, 255, 0.22);
+        border-radius: 5px;
+        padding: 8px 12px 9px;
+        min-width: 195px;
+        max-width: 240px;
+        display: none;
+        pointer-events: none;
+        backdrop-filter: blur(6px);
+        box-shadow: 0 0 18px rgba(0, 180, 255, 0.12);
+      }
+      .nh-title {
+        font-size: 8px;
+        letter-spacing: 0.28em;
+        color: rgba(0, 212, 255, 0.55);
+        margin-bottom: 6px;
+        border-bottom: 1px solid rgba(0, 212, 255, 0.12);
+        padding-bottom: 4px;
+      }
+      .nh-row {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        margin: 2px 0;
+      }
+      .nh-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        flex-shrink: 0;
+        box-shadow: 0 0 5px currentColor;
+      }
+      .nh-name {
+        flex: 1;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        color: #cef;
+        font-size: 10px;
+      }
+      .nh-dist {
+        color: #556;
+        font-size: 9px;
+        flex-shrink: 0;
+      }
+
       /* ── DON'T PANIC badge ──────────────────────────────────────────────── */
       #dont-panic {
         position: fixed;
@@ -2761,7 +2818,13 @@
           });
           gMat.fog = false;
           this._gPoints = new THREE.Points(gGeo, gMat);
+          this._gColArr = gCol; /* live reference for gold-marker updates */
           this.el.setObject3D("galaxy-anchors", this._gPoints);
+
+          /* Restore gold markers for galaxies visited in prior sessions */
+          this._initVisitedMarkers();
+          /* Nearby systems HUD — refresh every 3.5 s */
+          setInterval(function () { self._updateNearbyHUD(); }, 3500);
 
           /* ── Input: click + hover ──────────────────────────────────── */
           this._warping = false;
@@ -2914,6 +2977,11 @@
               };
               localStorage.setItem("cosmos-visited", JSON.stringify(_vis));
             } catch (_e) {}
+          }
+          /* Gold marker + trail update on every new warp */
+          if (gd && gd.geoCode && !gd.isStation) {
+            this._markVisited(gd.geoCode);
+            this._updateConstellation();
           }
           window._hyperspaceWarp(
             gd,
@@ -3341,6 +3409,117 @@
             posAttr.needsUpdate = true;
           }
         },
+
+        /* ── Visited-galaxy gold markers ─────────────────────────────── */
+        _initVisitedMarkers: function () {
+          try {
+            var vis = JSON.parse(localStorage.getItem("cosmos-visited") || "{}");
+            var self = this;
+            Object.keys(vis).forEach(function (gc) { self._markVisited(gc); });
+            if (Object.keys(vis).length >= 2) this._updateConstellation();
+          } catch (e) {}
+        },
+
+        _markVisited: function (geoCode) {
+          if (!this._gColArr || !this._gPoints) return;
+          var data = this._galaxyData;
+          for (var i = 0; i < 480; i++) {
+            if (data[i] && data[i].geoCode === geoCode) {
+              this._gColArr[i * 3]     = 1.0;  /* gold R */
+              this._gColArr[i * 3 + 1] = 0.88; /* gold G */
+              this._gColArr[i * 3 + 2] = 0.08; /* gold B */
+              this._gPoints.geometry.attributes.color.needsUpdate = true;
+              break;
+            }
+          }
+        },
+
+        /* ── Constellation trail (visited nodes connected in order) ──── */
+        _updateConstellation: function () {
+          var THREE = AFRAME.THREE;
+          this.el.removeObject3D("constellation-trail");
+          var vis;
+          try { vis = JSON.parse(localStorage.getItem("cosmos-visited") || "{}"); }
+          catch (e) { return; }
+          var entries = Object.keys(vis).map(function (gc) {
+            return { gc: gc, ts: (vis[gc] && vis[gc].ts) || 0 };
+          }).sort(function (a, b) { return a.ts - b.ts; });
+          if (entries.length < 2) return;
+
+          var positions = [];
+          var data = this._galaxyData;
+          entries.forEach(function (e) {
+            for (var i = 0; i < 480; i++) {
+              if (data[i] && data[i].geoCode === e.gc) {
+                var p = data[i].pos;
+                positions.push(p[0], p[1], p[2]);
+                break;
+              }
+            }
+          });
+          if (positions.length < 6) return;
+
+          /* Connect consecutive pairs as line segments */
+          var linePos = [];
+          for (var i = 0; i < positions.length - 3; i += 3) {
+            linePos.push(
+              positions[i],     positions[i + 1],     positions[i + 2],
+              positions[i + 3], positions[i + 4], positions[i + 5]
+            );
+          }
+          var geo = new THREE.BufferGeometry();
+          geo.setAttribute("position", new THREE.BufferAttribute(new Float32Array(linePos), 3));
+          var mat = new THREE.LineBasicMaterial({
+            color: 0x00aaff,
+            transparent: true,
+            opacity: 0.30,
+            blending: THREE.AdditiveBlending,
+            depthWrite: false,
+          });
+          this.el.setObject3D("constellation-trail", new THREE.LineSegments(geo, mat));
+        },
+
+        /* ── Nearby systems HUD ──────────────────────────────────────── */
+        _updateNearbyHUD: function () {
+          var hud = document.getElementById("nearby-hud");
+          if (!hud) return;
+          var rig = document.getElementById("cameraRig");
+          if (!rig || !rig.object3D) return;
+          var cp = rig.object3D.position;
+          var FREQ_HEX = {
+            396: "#ef4444", 417: "#f59e0b", 528: "#22c55e",
+            639: "#00d4ff", 741: "#8b5cf6", 852: "#e879f9",
+            963: "#fbbf24", 72: "#60a5fa"
+          };
+          var vis = {};
+          try { vis = JSON.parse(localStorage.getItem("cosmos-visited") || "{}"); } catch (e) {}
+          var dists = [];
+          var data = this._galaxyData;
+          for (var i = 0; i < 480; i++) {
+            var gi = data[i];
+            if (!gi || gi.isStation || vis[gi.geoCode]) continue;
+            var dx = gi.pos[0] - cp.x;
+            var dy = gi.pos[1] - cp.y;
+            var dz = gi.pos[2] - cp.z;
+            dists.push({ d: Math.sqrt(dx * dx + dy * dy + dz * dz), gi: gi });
+          }
+          dists.sort(function (a, b) { return a.d - b.d; });
+          var top = dists.slice(0, 5);
+          if (top.length === 0) { hud.style.display = "none"; return; }
+          var html = '<div class="nh-title">NEARBY SYSTEMS</div>';
+          top.forEach(function (e) {
+            var col = FREQ_HEX[e.gi.freq] || "#00d4ff";
+            var ly = (e.d * 8.5).toFixed(0);
+            html += '<div class="nh-row">' +
+              '<span class="nh-dot" style="background:' + col + ';color:' + col + '"></span>' +
+              '<span class="nh-name">' + e.gi.label + '</span>' +
+              '<span class="nh-dist">' + ly + ' ly</span>' +
+              '</div>';
+          });
+          hud.innerHTML = html;
+          hud.style.display = "block";
+        },
+
       });
 
       /* ═══════════════════════════════════════════════════════════════════
@@ -3737,6 +3916,7 @@
       })();
     </script>
     <canvas id="hyperspace-overlay"></canvas>
+    <div id="nearby-hud"></div>
     <div id="geo-tooltip"></div>
     <div id="galaxy-hud"></div>
     <div id="dont-panic">DON'T PANIC</div>
