@@ -3015,6 +3015,7 @@
                 if (!gd.isStation) {
                   self._spawnSun(gd);
                   self._spawnOrbits(gd);
+                  self._spawnMerkaba(gd);
                 }
               }
             },
@@ -3058,6 +3059,12 @@
             if (this._sunPoint.geometry) this._sunPoint.geometry.dispose();
             if (this._sunPoint.material) this._sunPoint.material.dispose();
             this._sunPoint = null;
+          }
+          if (this._merkabaGroup) {
+            this.el.removeObject3D("local-merkaba");
+            this._merkabaGroup = null;
+            this._merkabaUp = null;
+            this._merkabaDown = null;
           }
         },
 
@@ -3414,9 +3421,71 @@
           this.el.setObject3D("local-orbits", this._orbitsObj);
         },
 
+        _spawnMerkaba: function (gd) {
+          var THREE = AFRAME.THREE;
+          var FREQ_COLS = {
+            396: [0.78, 0.18, 1.0], 417: [0.0, 0.95, 0.58],
+            528: [0.28, 0.92, 1.0], 639: [1.0, 0.78, 0.18],
+            741: [1.0, 0.32, 0.62], 852: [0.45, 0.75, 1.0],
+            963: [0.95, 0.52, 1.0], 72: [1.0, 1.0, 1.0],
+          };
+          var sc = FREQ_COLS[gd.freq] || [1.0, 0.95, 0.75];
+          var color = new THREE.Color(sc[0], sc[1], sc[2]);
+          var radius = 35;
+          var group = new THREE.Group();
+          group.position.set(gd.pos[0], gd.pos[1] + 80, gd.pos[2]);
+
+          /* -- Triangle UP: points skyward, spins forward(+X) and left(+Y) -- */
+          var geoUp = new THREE.TetrahedronGeometry(radius, 0);
+          var matUpFill = new THREE.MeshBasicMaterial({
+            color: color, transparent: true, opacity: 0.13,
+            side: THREE.DoubleSide, depthWrite: false,
+          });
+          var matUpWire = new THREE.MeshBasicMaterial({
+            color: color, wireframe: true, transparent: true, opacity: 0.92,
+          });
+          this._merkabaUp = new THREE.Group();
+          this._merkabaUp.add(new THREE.Mesh(geoUp, matUpFill));
+          this._merkabaUp.add(new THREE.Mesh(geoUp, matUpWire));
+          group.add(this._merkabaUp);
+
+          /* -- Triangle DOWN: flipped tetrahedron, spins back(-X) and right(-Y) -- */
+          var geoDown = new THREE.TetrahedronGeometry(radius, 0);
+          var matDownFill = new THREE.MeshBasicMaterial({
+            color: color, transparent: true, opacity: 0.13,
+            side: THREE.DoubleSide, depthWrite: false,
+          });
+          var matDownWire = new THREE.MeshBasicMaterial({
+            color: color, wireframe: true, transparent: true, opacity: 0.92,
+          });
+          this._merkabaDown = new THREE.Group();
+          this._merkabaDown.rotation.z = Math.PI; /* flip: apex points down */
+          this._merkabaDown.add(new THREE.Mesh(geoDown, matDownFill));
+          this._merkabaDown.add(new THREE.Mesh(geoDown, matDownWire));
+          group.add(this._merkabaDown);
+
+          /* -- Glowing centre-core -- */
+          var coreGeo = new THREE.SphereGeometry(radius * 0.18, 8, 8);
+          var coreMat = new THREE.MeshBasicMaterial({
+            color: new THREE.Color(1, 1, 1), transparent: true, opacity: 0.95,
+          });
+          group.add(new THREE.Mesh(coreGeo, coreMat));
+
+          this._merkabaGroup = group;
+          this.el.setObject3D("local-merkaba", group);
+        },
+
         tick: function (time) {
           if (this._bgPoints) this._bgPoints.rotation.y = time * 0.0000035;
           if (this._localWorld) this._localWorld.rotation.y = time * 0.0000014;
+          /* Counter-rotating Merkaba: up-tri forward+left, down-tri back+right, 1:1 */
+          if (this._merkabaUp && this._merkabaDown) {
+            var ms = time * 0.00045;
+            this._merkabaUp.rotation.x = ms;    /* forward */
+            this._merkabaUp.rotation.y = ms;    /* left    */
+            this._merkabaDown.rotation.x = -ms; /* back    */
+            this._merkabaDown.rotation.y = -ms; /* right   */
+          }
           /* Orbital mechanics */
           if (this._planetData && this._orbitsObj) {
             var posAttr = this._orbitsObj.geometry.attributes.position;
