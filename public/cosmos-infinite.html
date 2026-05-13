@@ -4791,31 +4791,13 @@
             return d;
           }
 
-          /* Layers 1-7 (pure CSS — just need the element in DOM) */
-          mk("holo-vignette");
-          mk("holo-ca-r");
-          mk("holo-ca-b");
-          mk("holo-ca-g");
-          mk("holo-scan");
-          mk("holo-fresnel");
-          mk("holo-rim");
+          /* Holographic overlay layers DISABLED — pure deep black space */
+          /* mk("holo-vignette"); mk("holo-ca-r"); mk("holo-ca-b"); */
+          /* mk("holo-ca-g"); mk("holo-scan"); mk("holo-fresnel"); mk("holo-rim"); */
+          /* corners, shimmer all disabled */
 
-          /* Layer 8 + 9 — Corner brackets and dot emitters */
-          var cornersEl = mk("holo-corners");
-          ["tl", "tr", "bl", "br"].forEach(function (cls) {
-            var b = document.createElement("div");
-            b.className = "hc " + cls;
-            cornersEl.appendChild(b);
-            var dot = document.createElement("div");
-            dot.className = "hc-dot " + cls;
-            body.appendChild(dot);
-          });
-
-          /* Layer 10 — Iridescent shimmer */
-          mk("holo-shimmer");
-
-          /* Layer 11 — Glitch bar (JS driven, rare) */
-          var glitch = mk("holo-glitch");
+          /* Layer 11 — Glitch bar disabled (holo overlay removed) */
+          var glitch = { style: {}, className: "" }; /* dummy — no DOM element */
 
           /* Glitch bar spawner ─────────────────────────────────────────── */
           function spawnGlitch() {
