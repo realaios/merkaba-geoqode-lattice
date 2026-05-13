@@ -5040,7 +5040,14 @@
         },
 
         tick: function (time) {
-          if (this._bgPoints) this._bgPoints.rotation.y = time * 0.000025;
+          if (this._bgPoints) {
+            this._bgPoints.rotation.y = time * 0.000025;
+            /* Merkaba star twinkle — two incommensurable sine waves give non-repeating shimmer */
+            this._bgPoints.material.opacity =
+              0.54 +
+              Math.sin(time * 0.00073) * 0.14 +
+              Math.sin(time * 0.00117) * 0.08;
+          }
           if (this._localWorld) this._localWorld.rotation.y = time * 0.00001;
           if (this._nebulaeGroup)
             this._nebulaeGroup.rotation.y = time * 0.000005;
@@ -6153,18 +6160,18 @@
     <script>
       /* Auto-enter universe on scene load — bypasses intro modal that blocks A-Frame events */
       (function () {
-        var scene = document.querySelector('a-scene');
+        var scene = document.querySelector("a-scene");
         function tryEnter() {
           setTimeout(function () {
-            if (typeof enterUniverse === 'function') enterUniverse();
+            if (typeof enterUniverse === "function") enterUniverse();
           }, 500);
         }
         if (scene && scene.hasLoaded) {
           tryEnter();
         } else if (scene) {
-          scene.addEventListener('loaded', tryEnter, { once: true });
+          scene.addEventListener("loaded", tryEnter, { once: true });
         } else {
-          window.addEventListener('load', tryEnter);
+          window.addEventListener("load", tryEnter);
         }
       })();
     </script>
