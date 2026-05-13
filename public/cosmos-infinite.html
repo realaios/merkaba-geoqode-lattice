@@ -1782,10 +1782,9 @@
       vr-mode-ui="enabled: true"
       loading-screen="dotsColor: #00d4ff; backgroundColor: #000005"
       renderer="antialias: true; colorManagement: true"
-      fog="type: linear; color: #000820; near: 2000; far: 18000"
     >
-      <!-- Deep space sky - solid color to ensure reliable rendering -->
-      <a-sky color="#010818"></a-sky>
+      <!-- Deep space sky - pitch black void, no fog -->
+      <a-sky color="#000000"></a-sky>
 
       <!-- Lighting rig -->
       <a-light type="ambient" color="#04080f" intensity="0.5"></a-light>
@@ -1975,11 +1974,73 @@
       <!-- Distant Universe: 80k bg stars + 480 clickable GeoQode galaxy anchors -->
       <a-entity distant-universe></a-entity>
 
+      <!-- ── OUR SOLAR SYSTEM — Real orbital positions (J2000 epoch + live sim) ── -->
+      <a-entity id="solar-system" position="-600 0 -900" solar-system-realtime>
+        <a-text value="OUR SOLAR SYSTEM" position="0 40 0" align="center" color="#aaaaff" scale="12 12 12" font="mozillavr"></a-text>
+        <!-- Sun -->
+        <a-sphere id="sun-body" radius="20" material="shader: flat; color: #fff8a0">
+          <a-light type="point" color="#fff5e0" intensity="4.0" distance="600" decay="1"></a-light>
+        </a-sphere>
+        <!-- Mercury -->
+        <a-entity id="mercury-orbit">
+          <a-sphere position="22 0 0" radius="1.0" material="color: #999999; roughness: 0.9; metalness: 0.1">
+            <a-text value="Mercury" position="0 1.8 0" align="center" color="#bbbbbb" scale="3 3 3" font="mozillavr"></a-text>
+          </a-sphere>
+        </a-entity>
+        <!-- Venus -->
+        <a-entity id="venus-orbit">
+          <a-sphere position="38 0 0" radius="2.0" material="color: #e8c97a; roughness: 0.9; metalness: 0.0">
+            <a-text value="Venus" position="0 3 0" align="center" color="#e8c97a" scale="3 3 3" font="mozillavr"></a-text>
+          </a-sphere>
+        </a-entity>
+        <!-- Earth + Moon -->
+        <a-entity id="earth-orbit">
+          <a-sphere id="earth-sphere" position="55 0 0" radius="2.2" material="color: #3d7ab5; roughness: 0.8; metalness: 0.0">
+            <a-text value="Earth" position="0 3.5 0" align="center" color="#7ab5e8" scale="3 3 3" font="mozillavr"></a-text>
+            <a-entity id="moon-orbit" animation="property: rotation; from: 0 0 0; to: 0 360 0; dur: 4490; loop: true; easing: linear">
+              <a-sphere position="6 0 0" radius="0.6" material="color: #aaaaaa; roughness: 0.95; metalness: 0.0"></a-sphere>
+            </a-entity>
+          </a-sphere>
+        </a-entity>
+        <!-- Mars -->
+        <a-entity id="mars-orbit">
+          <a-sphere position="80 0 0" radius="1.3" material="color: #c1440e; roughness: 0.9; metalness: 0.0">
+            <a-text value="Mars" position="0 2.5 0" align="center" color="#e05020" scale="3 3 3" font="mozillavr"></a-text>
+          </a-sphere>
+        </a-entity>
+        <!-- Jupiter -->
+        <a-entity id="jupiter-orbit">
+          <a-sphere position="150 0 0" radius="6.0" material="color: #d8b48c; roughness: 0.8; metalness: 0.0">
+            <a-text value="Jupiter" position="0 8 0" align="center" color="#d8b48c" scale="3 3 3" font="mozillavr"></a-text>
+          </a-sphere>
+        </a-entity>
+        <!-- Saturn + rings -->
+        <a-entity id="saturn-orbit">
+          <a-sphere position="230 0 0" radius="5.0" material="color: #f0d5a0; roughness: 0.8; metalness: 0.0">
+            <a-text value="Saturn" position="0 11 0" align="center" color="#f0d5a0" scale="3 3 3" font="mozillavr"></a-text>
+            <a-ring radius-inner="7" radius-outer="12" rotation="-90 0 0" material="color: #c8a86b; opacity: 0.75; transparent: true; side: double"></a-ring>
+          </a-sphere>
+        </a-entity>
+        <!-- Uranus + rings -->
+        <a-entity id="uranus-orbit">
+          <a-sphere position="320 0 0" radius="3.5" material="color: #7fcfd3; roughness: 0.8; metalness: 0.0">
+            <a-text value="Uranus" position="0 5.5 0" align="center" color="#7fcfd3" scale="3 3 3" font="mozillavr"></a-text>
+            <a-ring radius-inner="5" radius-outer="7" rotation="0 0 0" material="color: #aaddee; opacity: 0.4; transparent: true; side: double"></a-ring>
+          </a-sphere>
+        </a-entity>
+        <!-- Neptune -->
+        <a-entity id="neptune-orbit">
+          <a-sphere position="420 0 0" radius="3.2" material="color: #4b70dd; roughness: 0.8; metalness: 0.0">
+            <a-text value="Neptune" position="0 5 0" align="center" color="#7090ff" scale="3 3 3" font="mozillavr"></a-text>
+          </a-sphere>
+        </a-entity>
+      </a-entity>
+
       <!-- Camera rig -->
       <a-entity id="cameraRig" position="0 5 72">
         <a-camera
           wasd-controls="acceleration: 800"
-          look-controls="pointerLockEnabled: false"
+          look-controls="pointerLockEnabled: false; reverseMouseDrag: true"
           fov="70"
         >
         </a-camera>
@@ -5231,6 +5292,46 @@
          HYPERSPACE WARP ENGINE
          Canvas streak animation  +  camera teleport  +  warp audio
       ═══════════════════════════════════════════════════════════════════ */
+      /* ── solar-system-realtime ───────────────────────────────────────────── */
+      /* Drives per-planet Y-rotation from J2000 mean longitude data.         */
+      /* EARTH_YEAR_MS = 60000: 60 real seconds = 1 Earth year (sped up).     */
+      /* All planet periods scale by same factor => relative motion accurate. */
+      AFRAME.registerComponent("solar-system-realtime", {
+        init: function () {
+          var J2000_MS = 946728000000; // Unix ms for Jan 1 2000 12:00 UTC
+          var EARTH_YEAR_MS = 60000;   // 60 game-seconds = 1 Earth year
+          var dNow = (Date.now() - J2000_MS) / 86400000; // days since J2000
+          this._startMs    = Date.now();
+          this._startDaysJ = dNow;
+          this._EYMS       = EARTH_YEAR_MS;
+          // mean longitude at J2000 (deg), daily motion (deg/day), period (days)
+          this._planets = [
+            { id: "mercury-orbit", L0: 252.2503, dL: 4.0923344, period:    87.97 },
+            { id: "venus-orbit",   L0: 181.9798, dL: 1.6021302, period:   224.70 },
+            { id: "earth-orbit",   L0: 100.4664, dL: 0.9856474, period:   365.25 },
+            { id: "mars-orbit",    L0: 355.4533, dL: 0.5240208, period:   686.97 },
+            { id: "jupiter-orbit", L0:  34.3515, dL: 0.0830853, period:  4332.59 },
+            { id: "saturn-orbit",  L0:  49.9441, dL: 0.0334978, period: 10759.22 },
+            { id: "uranus-orbit",  L0: 313.2339, dL: 0.0117279, period: 30688.50 },
+            { id: "neptune-orbit", L0: 304.8800, dL: 0.0059915, period: 60195.00 },
+          ];
+          this._planets.forEach(function (p) {
+            p.el = document.getElementById(p.id);
+          });
+        },
+        tick: function () {
+          var simDays = ((Date.now() - this._startMs) / this._EYMS) * 365.25;
+          var D2R = Math.PI / 180;
+          for (var i = 0; i < this._planets.length; i++) {
+            var p = this._planets[i];
+            if (!p.el) { p.el = document.getElementById(p.id); if (!p.el) continue; }
+            var init = ((p.L0 + p.dL * this._startDaysJ) % 360 + 360) % 360;
+            var angle = (init + (360 / p.period) * simDays) * D2R;
+            p.el.object3D.rotation.y = angle;
+          }
+        },
+      });
+
       window._hyperspaceWarp = function (gd, onTeleport, onComplete) {
         var cv = document.getElementById("hyperspace-overlay");
         cv.width = window.innerWidth;
