@@ -1561,6 +1561,49 @@
           opacity: 0;
         }
       }
+      /* ── Home Vector Compass HUD — top-right corner ────────────────────── */
+      #compass-hud {
+        position: fixed;
+        top: 215px;
+        right: 14px;
+        z-index: 318;
+        pointer-events: none;
+        font-family: "Courier New", monospace;
+        font-size: 7.5px;
+        letter-spacing: 0.12em;
+        color: #7ab5e8;
+        background: rgba(2, 6, 14, 0.9);
+        border: 1px solid rgba(61, 122, 181, 0.28);
+        border-radius: 6px;
+        padding: 6px 9px;
+        width: 143px;
+        backdrop-filter: blur(6px);
+        box-shadow: 0 0 10px rgba(0, 140, 255, 0.05);
+        line-height: 1.8;
+      }
+      #compass-hud .ch-title {
+        font-size: 6.5px;
+        letter-spacing: 0.24em;
+        color: #3a6fa0;
+        text-transform: uppercase;
+        margin-bottom: 3px;
+        border-bottom: 1px solid rgba(61, 122, 181, 0.2);
+        padding-bottom: 3px;
+      }
+      #compass-hud .ch-sep {
+        border-top: 1px solid rgba(61, 122, 181, 0.18);
+        margin: 3px 0;
+      }
+      #compass-hud .ch-row {
+        display: flex;
+        justify-content: space-between;
+        font-size: 7.5px;
+      }
+      #compass-hud .ch-label { color: #3a6a88; }
+      #compass-hud .ch-val   { color: #a0cce8; font-weight: 700; }
+      #compass-hud .ch-dir   { color: #4db8ff; }
+      .a-fullscreen #compass-hud { display: none !important; }
+
       /* ── CLEAN-VIEW MODE: all HUD/overlay hidden — focus on the universe ── */
       #freq-legend,
       #controls-hint,
@@ -1574,6 +1617,7 @@
       #nav-reticle,
       #target-label,
       #vel-hud,
+      #compass-hud,
       #boost-vignette,
       #pilot-guide,
       #dont-panic,
@@ -1724,6 +1768,17 @@
         ></div>
         Merkaba Core
       </div>
+    </div>
+
+    <!-- Home Vector Compass HUD -->
+    <div id="compass-hud">
+      <div class="ch-title">&#x25C8; EARTH / HOME</div>
+      <div class="ch-row"><span class="ch-label">BEAR</span><span class="ch-val" id="ch-bear">---&#xB0; --</span></div>
+      <div class="ch-row"><span class="ch-label">ELEV</span><span class="ch-val" id="ch-elev">---&#xB0;</span></div>
+      <div class="ch-row"><span class="ch-label">DIST</span><span class="ch-val" id="ch-dist">---u</span></div>
+      <div class="ch-sep"></div>
+      <div class="ch-row"><span class="ch-label">HDG</span><span class="ch-val" id="ch-hdg">---&#xB0; --</span></div>
+      <div class="ch-row"><span class="ch-label">PTCH</span><span class="ch-val" id="ch-ptch">---&#xB0;</span></div>
     </div>
 
     <div id="freq-legend">
@@ -1976,62 +2031,185 @@
 
       <!-- ── OUR SOLAR SYSTEM — Real orbital positions (J2000 epoch + live sim) ── -->
       <a-entity id="solar-system" position="-600 0 -900" solar-system-realtime>
-        <a-text value="OUR SOLAR SYSTEM" position="0 40 0" align="center" color="#aaaaff" scale="12 12 12" font="mozillavr"></a-text>
+        <a-text
+          value="OUR SOLAR SYSTEM"
+          position="0 40 0"
+          align="center"
+          color="#aaaaff"
+          scale="12 12 12"
+          font="mozillavr"
+        ></a-text>
         <!-- Sun -->
-        <a-sphere id="sun-body" radius="20" material="shader: flat; color: #fff8a0">
-          <a-light type="point" color="#fff5e0" intensity="4.0" distance="600" decay="1"></a-light>
+        <a-sphere
+          id="sun-body"
+          radius="20"
+          material="shader: flat; color: #fff8a0"
+        >
+          <a-light
+            type="point"
+            color="#fff5e0"
+            intensity="4.0"
+            distance="600"
+            decay="1"
+          ></a-light>
         </a-sphere>
         <!-- Mercury -->
         <a-entity id="mercury-orbit">
-          <a-sphere position="22 0 0" radius="1.0" material="color: #999999; roughness: 0.9; metalness: 0.1">
-            <a-text value="Mercury" position="0 1.8 0" align="center" color="#bbbbbb" scale="3 3 3" font="mozillavr"></a-text>
+          <a-sphere
+            position="22 0 0"
+            radius="1.0"
+            material="color: #999999; roughness: 0.9; metalness: 0.1"
+          >
+            <a-text
+              value="Mercury"
+              position="0 1.8 0"
+              align="center"
+              color="#bbbbbb"
+              scale="3 3 3"
+              font="mozillavr"
+            ></a-text>
           </a-sphere>
         </a-entity>
         <!-- Venus -->
         <a-entity id="venus-orbit">
-          <a-sphere position="38 0 0" radius="2.0" material="color: #e8c97a; roughness: 0.9; metalness: 0.0">
-            <a-text value="Venus" position="0 3 0" align="center" color="#e8c97a" scale="3 3 3" font="mozillavr"></a-text>
+          <a-sphere
+            position="38 0 0"
+            radius="2.0"
+            material="color: #e8c97a; roughness: 0.9; metalness: 0.0"
+          >
+            <a-text
+              value="Venus"
+              position="0 3 0"
+              align="center"
+              color="#e8c97a"
+              scale="3 3 3"
+              font="mozillavr"
+            ></a-text>
           </a-sphere>
         </a-entity>
         <!-- Earth + Moon -->
         <a-entity id="earth-orbit">
-          <a-sphere id="earth-sphere" position="55 0 0" radius="2.2" material="color: #3d7ab5; roughness: 0.8; metalness: 0.0">
-            <a-text value="Earth" position="0 3.5 0" align="center" color="#7ab5e8" scale="3 3 3" font="mozillavr"></a-text>
-            <a-entity id="moon-orbit" animation="property: rotation; from: 0 0 0; to: 0 360 0; dur: 4490; loop: true; easing: linear">
-              <a-sphere position="6 0 0" radius="0.6" material="color: #aaaaaa; roughness: 0.95; metalness: 0.0"></a-sphere>
+          <a-sphere
+            id="earth-sphere"
+            position="55 0 0"
+            radius="2.2"
+            material="color: #3d7ab5; roughness: 0.8; metalness: 0.0"
+          >
+            <a-text
+              value="Earth"
+              position="0 3.5 0"
+              align="center"
+              color="#7ab5e8"
+              scale="3 3 3"
+              font="mozillavr"
+            ></a-text>
+            <a-entity
+              id="moon-orbit"
+              animation="property: rotation; from: 0 0 0; to: 0 360 0; dur: 4490; loop: true; easing: linear"
+            >
+              <a-sphere
+                position="6 0 0"
+                radius="0.6"
+                material="color: #aaaaaa; roughness: 0.95; metalness: 0.0"
+              ></a-sphere>
             </a-entity>
           </a-sphere>
         </a-entity>
         <!-- Mars -->
         <a-entity id="mars-orbit">
-          <a-sphere position="80 0 0" radius="1.3" material="color: #c1440e; roughness: 0.9; metalness: 0.0">
-            <a-text value="Mars" position="0 2.5 0" align="center" color="#e05020" scale="3 3 3" font="mozillavr"></a-text>
+          <a-sphere
+            position="80 0 0"
+            radius="1.3"
+            material="color: #c1440e; roughness: 0.9; metalness: 0.0"
+          >
+            <a-text
+              value="Mars"
+              position="0 2.5 0"
+              align="center"
+              color="#e05020"
+              scale="3 3 3"
+              font="mozillavr"
+            ></a-text>
           </a-sphere>
         </a-entity>
         <!-- Jupiter -->
         <a-entity id="jupiter-orbit">
-          <a-sphere position="150 0 0" radius="6.0" material="color: #d8b48c; roughness: 0.8; metalness: 0.0">
-            <a-text value="Jupiter" position="0 8 0" align="center" color="#d8b48c" scale="3 3 3" font="mozillavr"></a-text>
+          <a-sphere
+            position="150 0 0"
+            radius="6.0"
+            material="color: #d8b48c; roughness: 0.8; metalness: 0.0"
+          >
+            <a-text
+              value="Jupiter"
+              position="0 8 0"
+              align="center"
+              color="#d8b48c"
+              scale="3 3 3"
+              font="mozillavr"
+            ></a-text>
           </a-sphere>
         </a-entity>
         <!-- Saturn + rings -->
         <a-entity id="saturn-orbit">
-          <a-sphere position="230 0 0" radius="5.0" material="color: #f0d5a0; roughness: 0.8; metalness: 0.0">
-            <a-text value="Saturn" position="0 11 0" align="center" color="#f0d5a0" scale="3 3 3" font="mozillavr"></a-text>
-            <a-ring radius-inner="7" radius-outer="12" rotation="-90 0 0" material="color: #c8a86b; opacity: 0.75; transparent: true; side: double"></a-ring>
+          <a-sphere
+            position="230 0 0"
+            radius="5.0"
+            material="color: #f0d5a0; roughness: 0.8; metalness: 0.0"
+          >
+            <a-text
+              value="Saturn"
+              position="0 11 0"
+              align="center"
+              color="#f0d5a0"
+              scale="3 3 3"
+              font="mozillavr"
+            ></a-text>
+            <a-ring
+              radius-inner="7"
+              radius-outer="12"
+              rotation="-90 0 0"
+              material="color: #c8a86b; opacity: 0.75; transparent: true; side: double"
+            ></a-ring>
           </a-sphere>
         </a-entity>
         <!-- Uranus + rings -->
         <a-entity id="uranus-orbit">
-          <a-sphere position="320 0 0" radius="3.5" material="color: #7fcfd3; roughness: 0.8; metalness: 0.0">
-            <a-text value="Uranus" position="0 5.5 0" align="center" color="#7fcfd3" scale="3 3 3" font="mozillavr"></a-text>
-            <a-ring radius-inner="5" radius-outer="7" rotation="0 0 0" material="color: #aaddee; opacity: 0.4; transparent: true; side: double"></a-ring>
+          <a-sphere
+            position="320 0 0"
+            radius="3.5"
+            material="color: #7fcfd3; roughness: 0.8; metalness: 0.0"
+          >
+            <a-text
+              value="Uranus"
+              position="0 5.5 0"
+              align="center"
+              color="#7fcfd3"
+              scale="3 3 3"
+              font="mozillavr"
+            ></a-text>
+            <a-ring
+              radius-inner="5"
+              radius-outer="7"
+              rotation="0 0 0"
+              material="color: #aaddee; opacity: 0.4; transparent: true; side: double"
+            ></a-ring>
           </a-sphere>
         </a-entity>
         <!-- Neptune -->
         <a-entity id="neptune-orbit">
-          <a-sphere position="420 0 0" radius="3.2" material="color: #4b70dd; roughness: 0.8; metalness: 0.0">
-            <a-text value="Neptune" position="0 5 0" align="center" color="#7090ff" scale="3 3 3" font="mozillavr"></a-text>
+          <a-sphere
+            position="420 0 0"
+            radius="3.2"
+            material="color: #4b70dd; roughness: 0.8; metalness: 0.0"
+          >
+            <a-text
+              value="Neptune"
+              position="0 5 0"
+              align="center"
+              color="#7090ff"
+              scale="3 3 3"
+              font="mozillavr"
+            ></a-text>
           </a-sphere>
         </a-entity>
       </a-entity>
@@ -5299,21 +5477,36 @@
       AFRAME.registerComponent("solar-system-realtime", {
         init: function () {
           var J2000_MS = 946728000000; // Unix ms for Jan 1 2000 12:00 UTC
-          var EARTH_YEAR_MS = 60000;   // 60 game-seconds = 1 Earth year
+          var EARTH_YEAR_MS = 60000; // 60 game-seconds = 1 Earth year
           var dNow = (Date.now() - J2000_MS) / 86400000; // days since J2000
-          this._startMs    = Date.now();
+          this._startMs = Date.now();
           this._startDaysJ = dNow;
-          this._EYMS       = EARTH_YEAR_MS;
+          this._EYMS = EARTH_YEAR_MS;
           // mean longitude at J2000 (deg), daily motion (deg/day), period (days)
           this._planets = [
-            { id: "mercury-orbit", L0: 252.2503, dL: 4.0923344, period:    87.97 },
-            { id: "venus-orbit",   L0: 181.9798, dL: 1.6021302, period:   224.70 },
-            { id: "earth-orbit",   L0: 100.4664, dL: 0.9856474, period:   365.25 },
-            { id: "mars-orbit",    L0: 355.4533, dL: 0.5240208, period:   686.97 },
-            { id: "jupiter-orbit", L0:  34.3515, dL: 0.0830853, period:  4332.59 },
-            { id: "saturn-orbit",  L0:  49.9441, dL: 0.0334978, period: 10759.22 },
-            { id: "uranus-orbit",  L0: 313.2339, dL: 0.0117279, period: 30688.50 },
-            { id: "neptune-orbit", L0: 304.8800, dL: 0.0059915, period: 60195.00 },
+            { id: "mercury-orbit", L0: 252.2503, dL: 4.0923344, period: 87.97 },
+            { id: "venus-orbit", L0: 181.9798, dL: 1.6021302, period: 224.7 },
+            { id: "earth-orbit", L0: 100.4664, dL: 0.9856474, period: 365.25 },
+            { id: "mars-orbit", L0: 355.4533, dL: 0.5240208, period: 686.97 },
+            {
+              id: "jupiter-orbit",
+              L0: 34.3515,
+              dL: 0.0830853,
+              period: 4332.59,
+            },
+            {
+              id: "saturn-orbit",
+              L0: 49.9441,
+              dL: 0.0334978,
+              period: 10759.22,
+            },
+            {
+              id: "uranus-orbit",
+              L0: 313.2339,
+              dL: 0.0117279,
+              period: 30688.5,
+            },
+            { id: "neptune-orbit", L0: 304.88, dL: 0.0059915, period: 60195.0 },
           ];
           this._planets.forEach(function (p) {
             p.el = document.getElementById(p.id);
@@ -5324,13 +5517,91 @@
           var D2R = Math.PI / 180;
           for (var i = 0; i < this._planets.length; i++) {
             var p = this._planets[i];
-            if (!p.el) { p.el = document.getElementById(p.id); if (!p.el) continue; }
-            var init = ((p.L0 + p.dL * this._startDaysJ) % 360 + 360) % 360;
+            if (!p.el) {
+              p.el = document.getElementById(p.id);
+              if (!p.el) continue;
+            }
+            var init = (((p.L0 + p.dL * this._startDaysJ) % 360) + 360) % 360;
             var angle = (init + (360 / p.period) * simDays) * D2R;
             p.el.object3D.rotation.y = angle;
           }
         },
       });
+
+      /* ── Home Vector Compass HUD — rAF tick ────────────────────────────── */
+      (function () {
+        var DIRS = ["N","NNE","NE","ENE","E","ESE","SE","SSE",
+                    "S","SSW","SW","WSW","W","WNW","NW","NNW"];
+        var _fwd   = new THREE.Vector3();
+        var _rPos  = new THREE.Vector3();
+        var _hPos  = new THREE.Vector3();
+        var _toH   = new THREE.Vector3();
+        var elBear = document.getElementById("ch-bear");
+        var elElev = document.getElementById("ch-elev");
+        var elDist = document.getElementById("ch-dist");
+        var elHdg  = document.getElementById("ch-hdg");
+        var elPtch = document.getElementById("ch-ptch");
+        var camEl, rigEl;
+        var lastUpdate = 0;
+
+        function bearLabel(deg) {
+          var idx = Math.round(((deg % 360) + 360) % 360 / 22.5) % 16;
+          return DIRS[idx];
+        }
+        function fmtSigned(n) {
+          var r = Math.round(n);
+          return (r >= 0 ? "+" : "") + r + "\u00b0";
+        }
+
+        function tick(ts) {
+          requestAnimationFrame(tick);
+          if (ts - lastUpdate < 100) return; // 10 Hz — sharp, not heavy
+          lastUpdate = ts;
+          if (!camEl) {
+            camEl = document.querySelector("[look-controls]");
+            rigEl = document.getElementById("cameraRig");
+          }
+          if (!camEl || !rigEl) return;
+
+          // Camera forward vector
+          camEl.object3D.getWorldDirection(_fwd);
+          var hdgDeg = ((Math.atan2(_fwd.x, -_fwd.z) * 180 / Math.PI) + 360) % 360;
+          var ptchDeg = Math.asin(Math.max(-1, Math.min(1, _fwd.y))) * 180 / Math.PI;
+
+          // Earth world position (tracks the live orbit)
+          var earthEl = document.getElementById("earth-sphere");
+          if (earthEl) {
+            earthEl.object3D.getWorldPosition(_hPos);
+          } else {
+            _hPos.set(-600, 0, -900); // solar system centre fallback
+          }
+
+          // Player (rig) world position
+          rigEl.object3D.getWorldPosition(_rPos);
+
+          // Vector to home
+          _toH.subVectors(_hPos, _rPos);
+          var dist    = _toH.length();
+          var bearDeg = ((Math.atan2(_toH.x, -_toH.z) * 180 / Math.PI) + 360) % 360;
+          var elevDeg = Math.atan2(_toH.y,
+                          Math.sqrt(_toH.x * _toH.x + _toH.z * _toH.z)
+                        ) * 180 / Math.PI;
+
+          var distStr = dist > 9999 ? (dist / 1000).toFixed(1) + "ku"
+                      : dist > 999  ? (dist / 1000).toFixed(2) + "ku"
+                      : Math.round(dist) + "u";
+
+          elBear.textContent = Math.round(bearDeg) + "\u00b0 " + bearLabel(bearDeg);
+          elElev.textContent = fmtSigned(elevDeg);
+          elDist.textContent = distStr;
+          elHdg.textContent  = Math.round(hdgDeg) + "\u00b0 " + bearLabel(hdgDeg);
+          elPtch.textContent = fmtSigned(ptchDeg);
+        }
+
+        var scene = document.querySelector("a-scene");
+        if (scene.hasLoaded) { requestAnimationFrame(tick); }
+        else { scene.addEventListener("loaded", function () { requestAnimationFrame(tick); }); }
+      })();
 
       window._hyperspaceWarp = function (gd, onTeleport, onComplete) {
         var cv = document.getElementById("hyperspace-overlay");
