@@ -3285,10 +3285,11 @@
           ctx.beginPath();
           for (var mi = 0; mi < 12; mi++) {
             var mAng = (mi * Math.PI) / 6 - Math.PI / 2;
-            var mR = (mi % 2 === 0) ? 14 : 7;
+            var mR = mi % 2 === 0 ? 14 : 7;
             var mpx = 16 + Math.cos(mAng) * mR;
             var mpy = 16 + Math.sin(mAng) * mR;
-            if (mi === 0) ctx.moveTo(mpx, mpy); else ctx.lineTo(mpx, mpy);
+            if (mi === 0) ctx.moveTo(mpx, mpy);
+            else ctx.lineTo(mpx, mpy);
           }
           ctx.closePath();
           ctx.fill();
