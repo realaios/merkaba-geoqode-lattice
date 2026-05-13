@@ -4094,15 +4094,7 @@
           };
           var pal = FREQ_PAL[gd.freq] || FREQ_PAL[528];
           var type = gd.isStation ? 5 : gd.latticeNode % 5;
-          /* PHI-anchored spread: galaxy cloud size = distance / PHI^4 (6.854) */
-          /* Nearest galaxy r=900 → spread≈131  |  Far galaxy r=12000 → spread≈1751 */
-          var PHI_LOCAL = 1.618;
-          var spread = gd.isStation
-            ? 550
-            : Math.max(
-                50,
-                gd.r / (PHI_LOCAL * PHI_LOCAL * PHI_LOCAL * PHI_LOCAL),
-              );
+          var spread = gd.isStation ? 55 : 140;
           for (var i = 0; i < COUNT; i++) {
             var x = 0,
               y = 0,
