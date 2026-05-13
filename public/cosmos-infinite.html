@@ -18,6 +18,7 @@
       content="Explore the living Merkaba Dimensional OS. D480 holographic lattice: 8 foundations, 26 anchors, 48 canonical worlds, 480 harmonics. PHI=1.618 BASE_HZ=72."
     />
     <script src="/vendor/aframe-1.4.0.min.js"></script>
+    <script src="/public/geoanchor.js"></script>
     <style>
       /* ── Intro Modal ──────────────────────────────────────────────────────── */
       *,
@@ -292,11 +293,40 @@
       .a-fullscreen #hud-left,
       .a-fullscreen #hud-right,
       .a-fullscreen #freq-legend,
-      .a-fullscreen #controls-hint {
+      .a-fullscreen #controls-hint,
+      .a-fullscreen #scale-indicator {
         display: none !important;
       }
       .a-enter-vr-button {
         pointer-events: all !important;
+      }
+      /* ── Scale Drill-Down HUD ─────────────────────────────────────────── */
+      #scale-indicator {
+        position: fixed;
+        bottom: 14px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 100;
+        background: rgba(4, 8, 15, 0.78);
+        border: 1px solid rgba(0, 212, 255, 0.22);
+        border-radius: 12px;
+        padding: 5px 20px;
+        text-align: center;
+        backdrop-filter: blur(6px);
+        pointer-events: none;
+        font-family: monospace;
+        transition: opacity 0.4s;
+      }
+      .scale-level {
+        font-size: 0.72rem;
+        letter-spacing: 0.18em;
+        color: #00d4ff;
+        font-weight: bold;
+      }
+      .scale-dist {
+        font-size: 0.52rem;
+        color: #64748b;
+        letter-spacing: 0.1em;
       }
     </style>
   </head>
@@ -479,7 +509,13 @@
 
     <div id="controls-hint">
       WASD / Arrow Keys &nbsp;&#x2022;&nbsp; Mouse Drag &nbsp;&#x2022;&nbsp;
-      Click VR to enter headset &nbsp;&#x2022;&nbsp; Explore the lattice
+      Scroll to Zoom &nbsp;&#x2022;&nbsp; Double-Click to Teleport &nbsp;&#x2022;&nbsp;
+      Click VR button for headset
+    </div>
+
+    <div id="scale-indicator">
+      <div class="scale-level">D480 SPECTRUM</div>
+      <div class="scale-dist">72.0 au</div>
     </div>
 
     <!-- ══════════════════════════════════════════════════════════════════════════
@@ -590,6 +626,7 @@
           src="/public/models/mothership/mothership.gltf"
           position="0 -2 0"
           scale="0.005 0.005 0.005"
+          geoanchor="operator: otimes; frequency: 852; latticeNode: 0; proximityRadius: 15; label: MOTHERSHIP; swarmSync: true"
         ></a-gltf-model>
       </a-entity>
 
@@ -599,6 +636,7 @@
         position="30 3 0"
         scale="4 4 4"
         animation="property: rotation; to: 0 360 0; dur: 26000; loop: true; easing: linear"
+        geoanchor="operator: phi; frequency: 528; latticeNode: 2; proximityRadius: 20; label: PLANET-1; swarmSync: true"
       ></a-gltf-model>
 
       <!-- Quaternius Planet 5 — D26 southwest — CC0 low-poly -->
@@ -607,6 +645,7 @@
         position="-22 -2 -21"
         scale="5 5 5"
         animation="property: rotation; to: 0 360 0; dur: 34000; loop: true; easing: linear"
+        geoanchor="operator: wave; frequency: 741; latticeNode: 4; proximityRadius: 20; label: PLANET-5; swarmSync: true"
       ></a-gltf-model>
 
       <!-- Quaternius GeodesicDome station — D26 north — CC0 low-poly -->
@@ -615,6 +654,7 @@
         position="0 8 -30"
         scale="3 3 3"
         animation="property: rotation; to: 0 360 0; dur: 18000; loop: true; easing: linear"
+        geoanchor="operator: delta; frequency: 963; latticeNode: 12; proximityRadius: 18; label: GEODOME; swarmSync: true"
       ></a-gltf-model>
 
       <!-- Spaceship Bee orbits D8 ring (r=18) — Quaternius CC0 -->
@@ -625,6 +665,7 @@
           src="/public/models/spaceship_bee.gltf"
           position="18 5 0"
           scale="2.5 2.5 2.5"
+          geoanchor="operator: phi; frequency: 528; latticeNode: 6; proximityRadius: 8; label: BEE-SHIP; swarmSync: true"
         ></a-gltf-model>
       </a-entity>
 
@@ -636,6 +677,7 @@
           src="/public/models/spaceship_red_panda.gltf"
           position="0 -3 18"
           scale="2.5 2.5 2.5"
+          geoanchor="operator: wave; frequency: 639; latticeNode: 38; proximityRadius: 8; label: RED-PANDA; swarmSync: true"
         ></a-gltf-model>
       </a-entity>
 
@@ -1803,6 +1845,166 @@
           );
         },
       });
+
+      /* ====================================================================
+         GeoAnchor Navigation: Scroll Zoom + Pinch Zoom +
+         Double-Click Teleport + Scale Drill-Down HUD
+         @alignment 8->26->48:480  (GeoQode canonical nav layer)
+      ==================================================================== */
+      (function initGeoNav() {
+        var MIN_DIST = 1.8, MAX_DIST = 480;
+        var SCALE_LEVELS = [
+          { max: 2,   label: "MERKABA CORE",   color: "#fbbf24" },
+          { max: 5,   label: "QUANTUM FIELD",  color: "#e879f9" },
+          { max: 12,  label: "PHOTON SHELL",   color: "#60a5fa" },
+          { max: 18,  label: "D8 FOUNDATION",  color: "#f59e0b" },
+          { max: 30,  label: "D26 BOSONIC",    color: "#7c3aed" },
+          { max: 46,  label: "D48 CANONICAL",  color: "#00d4ff" },
+          { max: 90,  label: "D480 SPECTRUM",  color: "#60a5fa" },
+          { max: 160, label: "NEBULA FIELD",   color: "#22c55e" },
+          { max: 320, label: "GALAXY",         color: "#8b5cf6" },
+          { max: 480, label: "UNIVERSE",       color: "#e2e8f0" },
+        ];
+
+        function getScaleLevel(dist) {
+          for (var i = 0; i < SCALE_LEVELS.length; i++) {
+            if (dist <= SCALE_LEVELS[i].max) return SCALE_LEVELS[i];
+          }
+          return SCALE_LEVELS[SCALE_LEVELS.length - 1];
+        }
+
+        /* Global HUD update - called by geoanchor.js on proximity events too */
+        window._updateScaleHUD = function (dist, overrideLabel) {
+          var el = document.getElementById("scale-indicator");
+          if (!el) return;
+          if (dist == null) {
+            var rig = document.getElementById("cameraRig");
+            if (!rig || !rig.object3D) return;
+            var p = rig.object3D.position;
+            dist = Math.sqrt(p.x * p.x + p.y * p.y + p.z * p.z);
+          }
+          if (overrideLabel) {
+            var lvEl = el.querySelector(".scale-level");
+            if (lvEl) { lvEl.textContent = overrideLabel; lvEl.style.color = "#e879f9"; }
+            var dtEl = el.querySelector(".scale-dist");
+            if (dtEl) dtEl.textContent = dist.toFixed(1) + " au";
+            return;
+          }
+          var lvl = getScaleLevel(dist);
+          var lvEl = el.querySelector(".scale-level");
+          var dtEl = el.querySelector(".scale-dist");
+          if (lvEl) { lvEl.textContent = lvl.label; lvEl.style.color = lvl.color; }
+          if (dtEl) dtEl.textContent = dist.toFixed(1) + " au";
+        };
+
+        /* ---- Scroll zoom -------------------------------------------------- */
+        window.addEventListener("wheel", function (e) {
+          var rig = document.getElementById("cameraRig");
+          if (!rig || !rig.object3D) return;
+          var pos = rig.object3D.position;
+          var dist = pos.length();
+          if (dist < 0.001) dist = 72;
+          var nx = pos.x / dist, ny = pos.y / dist, nz = pos.z / dist;
+          var speed = Math.max(0.6, dist * 0.038);
+          var newDist = Math.max(MIN_DIST, Math.min(MAX_DIST, dist + (e.deltaY > 0 ? speed : -speed)));
+          pos.x = nx * newDist; pos.y = ny * newDist; pos.z = nz * newDist;
+          window._updateScaleHUD(newDist, null);
+          if (window.GeoAnchor) window.GeoAnchor.notifyZoom(newDist);
+        }, { passive: true });
+
+        /* ---- Pinch zoom --------------------------------------------------- */
+        var _pinch0 = 0;
+        window.addEventListener("touchstart", function (e) {
+          if (e.touches.length === 2)
+            _pinch0 = Math.hypot(e.touches[1].clientX - e.touches[0].clientX,
+                                 e.touches[1].clientY - e.touches[0].clientY);
+        }, { passive: true });
+        window.addEventListener("touchmove", function (e) {
+          if (e.touches.length !== 2 || _pinch0 === 0) return;
+          var d = Math.hypot(e.touches[1].clientX - e.touches[0].clientX,
+                             e.touches[1].clientY - e.touches[0].clientY);
+          var rig = document.getElementById("cameraRig");
+          if (!rig || !rig.object3D) return;
+          var pos = rig.object3D.position;
+          var dist = pos.length(); if (dist < 0.001) dist = 72;
+          var nx = pos.x / dist, ny = pos.y / dist, nz = pos.z / dist;
+          var newDist = Math.max(MIN_DIST, Math.min(MAX_DIST, dist + (_pinch0 - d) * 0.12));
+          _pinch0 = d;
+          pos.x = nx * newDist; pos.y = ny * newDist; pos.z = nz * newDist;
+          window._updateScaleHUD(newDist, null);
+        }, { passive: true });
+
+        /* ---- Double-click teleport ---------------------------------------- */
+        var _animating = false;
+        document.addEventListener("dblclick", function (e) {
+          if (_animating) return;
+          var scene = document.querySelector("a-scene");
+          var cam = scene && scene.camera;
+          var rig = document.getElementById("cameraRig");
+          if (!cam || !rig || !rig.object3D) return;
+          var THREE = AFRAME.THREE;
+          var canvas = scene.canvas;
+          var rect = canvas
+            ? canvas.getBoundingClientRect()
+            : { left: 0, top: 0, width: window.innerWidth, height: window.innerHeight };
+          var mouse = new THREE.Vector2(
+            ((e.clientX - rect.left) / rect.width) * 2 - 1,
+            -((e.clientY - rect.top) / rect.height) * 2 + 1
+          );
+          var raycaster = new THREE.Raycaster();
+          raycaster.setFromCamera(mouse, cam);
+          var meshes = [];
+          scene.object3D.traverse(function (o) { if (o.isMesh) meshes.push(o); });
+          var hits = raycaster.intersectObjects(meshes, false);
+          var targetPos;
+          if (hits.length > 0) {
+            var pt = hits[0].point;
+            var dir = new THREE.Vector3().subVectors(rig.object3D.position, pt).normalize();
+            var backoff = Math.max(5, hits[0].distance * 0.25);
+            targetPos = { x: pt.x + dir.x * backoff, y: pt.y + dir.y * backoff + 1.6, z: pt.z + dir.z * backoff };
+          } else {
+            var ray = raycaster.ray.direction;
+            var curDist = rig.object3D.position.length();
+            var step = Math.max(8, curDist * 0.35);
+            targetPos = {
+              x: rig.object3D.position.x + ray.x * step,
+              y: rig.object3D.position.y + ray.y * step,
+              z: rig.object3D.position.z + ray.z * step,
+            };
+          }
+          /* Clamp to sane range */
+          var td = Math.sqrt(targetPos.x * targetPos.x + targetPos.y * targetPos.y + targetPos.z * targetPos.z);
+          if (td < MIN_DIST || td > MAX_DIST) {
+            var sf = Math.max(MIN_DIST, Math.min(MAX_DIST, td)) / (td || 1);
+            targetPos.x *= sf; targetPos.y *= sf; targetPos.z *= sf;
+          }
+          /* Animate over 900 ms (cubic ease in-out) */
+          _animating = true;
+          var sx = rig.object3D.position.x, sy = rig.object3D.position.y, sz = rig.object3D.position.z;
+          var t0 = performance.now();
+          (function step() {
+            var t = Math.min(1.0, (performance.now() - t0) / 900);
+            var e2 = t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+            rig.object3D.position.set(
+              sx + (targetPos.x - sx) * e2,
+              sy + (targetPos.y - sy) * e2,
+              sz + (targetPos.z - sz) * e2
+            );
+            window._updateScaleHUD(rig.object3D.position.length(), null);
+            if (t < 1.0) requestAnimationFrame(step);
+            else _animating = false;
+          })();
+          if (typeof window.firePulse === "function") window.firePulse();
+        });
+
+        /* ---- Initial HUD + 2-second refresh -------------------------------- */
+        setTimeout(function () { window._updateScaleHUD(null, null); }, 2200);
+        setInterval(function () {
+          if (document.body.classList.contains("a-fullscreen")) return;
+          window._updateScaleHUD(null, null);
+        }, 2000);
+      })();
+
     </script>
   </body>
 </html>
