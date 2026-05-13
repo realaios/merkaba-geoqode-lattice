@@ -1374,9 +1374,8 @@
       vr-mode-ui="enabled: true"
       loading-screen="dotsColor: #00d4ff; backgroundColor: #000005"
       renderer="antialias: true; colorManagement: true"
+      background="color: #000000"
     >
-      <!-- Deep space sky - pitch black void, no fog -->
-      <a-sky color="#000000"></a-sky>
 
       <!-- Lighting rig -->
       <a-light type="ambient" color="#04080f" intensity="0.5"></a-light>
@@ -1437,30 +1436,30 @@
       <!-- ── STARFIELD ── -->
       <a-entity starfield></a-entity>
 
-      <!-- ── NEBULA CLOUDS ── -->
+      <!-- ── NEBULA CLOUDS (distant deep space) ── -->
       <a-entity
         nebula-cloud
-        position="62 22 -82"
+        position="480 160 -1400"
         rotation="12 30 0"
-        scale="1.2 1.2 1.2"
+        scale="9 9 9"
       ></a-entity>
       <a-entity
         nebula-cloud
-        position="-72 -26 -64"
+        position="-620 -220 -1100"
         rotation="-8 -48 18"
-        scale="1.0 1.0 1.0"
+        scale="8 8 8"
       ></a-entity>
       <a-entity
         nebula-cloud
-        position="42 -42 72"
+        position="380 -300 1800"
         rotation="6 118 -12"
-        scale="0.9 0.9 0.9"
+        scale="10 10 10"
       ></a-entity>
       <a-entity
         nebula-cloud
-        position="-52 36 82"
+        position="-500 280 2000"
         rotation="-18 -122 8"
-        scale="1.1 1.1 1.1"
+        scale="11 11 11"
       ></a-entity>
 
       <!-- ── REAL 3D GLTF MODELS ───────────────────────────────────────────── -->
@@ -1730,6 +1729,16 @@
                 ></a-sphere>
               </a-entity>
             </a-sphere>
+            <!-- SpaceX Starlink ~6,200 active satellites in 3 orbital shells -->
+            <a-entity starlink-constellation></a-entity>
+            <a-text
+              value="STARLINK 6,200+"
+              position="0 5.5 0"
+              align="center"
+              color="#88AAFF"
+              width="8"
+              font="mozillavr"
+            ></a-text>
           </a-entity>
           <a-text
             value="Earth"
@@ -5303,6 +5312,55 @@
          HYPERSPACE WARP ENGINE
          Canvas streak animation  +  camera teleport  +  warp audio
       ═══════════════════════════════════════════════════════════════════ */
+      /* ── starlink-constellation — SpaceX Starlink ~6,200 active sats ── */
+      AFRAME.registerComponent("starlink-constellation", {
+        init: function () {
+          var THREE = AFRAME.THREE;
+          var group = new THREE.Object3D();
+          /* 3 orbital shells matching real Starlink inclinations */
+          var shells = [
+            { count: 80, radius: 3.0, inclDeg: 53,  speed: 0.0004  },
+            { count: 70, radius: 3.4, inclDeg: 70,  speed: 0.00035 },
+            { count: 50, radius: 3.8, inclDeg: 97,  speed: 0.0003  }
+          ];
+          this._meshes = [];
+          var self = this;
+          shells.forEach(function (shell) {
+            var positions = new Float32Array(shell.count * 3);
+            for (var i = 0; i < shell.count; i++) {
+              var ang = (i / shell.count) * Math.PI * 2;
+              var inclRad = shell.inclDeg * Math.PI / 180;
+              positions[i * 3]     = shell.radius * Math.cos(ang);
+              positions[i * 3 + 1] = shell.radius * Math.sin(ang) * Math.sin(inclRad);
+              positions[i * 3 + 2] = shell.radius * Math.sin(ang) * Math.cos(inclRad);
+            }
+            var geo = new THREE.BufferGeometry();
+            geo.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+            var mat = new THREE.PointsMaterial({
+              color: 0xC8DEFF,
+              size: 0.10,
+              sizeAttenuation: true,
+              transparent: true,
+              opacity: 0.85,
+              blending: THREE.AdditiveBlending,
+              depthWrite: false
+            });
+            var mesh = new THREE.Points(geo, mat);
+            mesh.userData.speed = shell.speed;
+            group.add(mesh);
+            self._meshes.push(mesh);
+          });
+          this.el.object3D.add(group);
+          this._group = group;
+        },
+        tick: function () {
+          if (!this._meshes) return;
+          this._meshes.forEach(function (m) {
+            m.rotation.y += m.userData.speed;
+          });
+        }
+      });
+
       /* ── solar-system-realtime — J2000 orbital mechanics + moon orbits ── */
       /* EARTH_YEAR_MS = 60000 → 60 real seconds = 1 Earth year (time-warp)  */
       /* Asteroid belt (320 rocks) procedurally placed at init               */
