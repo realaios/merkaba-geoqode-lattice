@@ -2431,6 +2431,8 @@
         modal.classList.add("fade-out");
         setTimeout(function () {
           modal.style.display = "none";
+          var cvs = document.querySelector("a-scene canvas");
+          if (cvs) cvs.focus();
         }, 920);
         /* Start narrator — disabled: clean-view mode */
         /* if (window.speechSynthesis) {
@@ -6157,23 +6159,6 @@
         }
       })();
     </script>
-    <script>
-      /* Auto-enter universe on scene load — bypasses intro modal that blocks A-Frame events */
-      (function () {
-        var scene = document.querySelector("a-scene");
-        function tryEnter() {
-          setTimeout(function () {
-            if (typeof enterUniverse === "function") enterUniverse();
-          }, 500);
-        }
-        if (scene && scene.hasLoaded) {
-          tryEnter();
-        } else if (scene) {
-          scene.addEventListener("loaded", tryEnter, { once: true });
-        } else {
-          window.addEventListener("load", tryEnter);
-        }
-      })();
-    </script>
+
   </body>
 </html>
