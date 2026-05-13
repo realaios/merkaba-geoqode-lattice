@@ -1539,7 +1539,7 @@
       ════════════════════════════════════════════════════════════════════ -->
       <a-entity
         id="solar-system"
-        position="0 -5 -200"
+        position="0 -5 -2000"
         scale="10 10 10"
         solar-system-realtime
       >
@@ -2710,7 +2710,7 @@
           var mat1 = new THREE.LineBasicMaterial({
             color: 0x7c3aed,
             transparent: true,
-            opacity: 0.2,
+            opacity: 0.06,
           });
           d8pts.forEach(function (a) {
             var sorted = d26pts
@@ -2734,7 +2734,7 @@
           var mat2 = new THREE.LineBasicMaterial({
             color: 0x00d4ff,
             transparent: true,
-            opacity: 0.1,
+            opacity: 0.04,
           });
           d26pts.forEach(function (a, ai) {
             if (ai % 3 !== 0) return;
@@ -6307,7 +6307,7 @@
           if (earthEl) {
             earthEl.object3D.getWorldPosition(_hPos);
           } else {
-            _hPos.set(0, -5, -200); // solar system centre fallback
+            _hPos.set(0, -5, -2000); // solar system centre fallback
           }
 
           // Player (rig) world position
