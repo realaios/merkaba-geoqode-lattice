@@ -2900,6 +2900,21 @@
           var self = this;
           this._warping = true;
           this._clearLocalWorld();
+          /* Track visited galaxies */
+          if (gd && gd.geoCode) {
+            try {
+              var _vis = JSON.parse(
+                localStorage.getItem("cosmos-visited") || "{}",
+              );
+              var _prev = _vis[gd.geoCode] || {};
+              _vis[gd.geoCode] = {
+                label: gd.label,
+                ts: Date.now(),
+                visits: (_prev.visits || 0) + 1,
+              };
+              localStorage.setItem("cosmos-visited", JSON.stringify(_vis));
+            } catch (_e) {}
+          }
           window._hyperspaceWarp(
             gd,
             function onTeleport() {
@@ -2924,7 +2939,13 @@
                 }
               }
               if (typeof firePulse === "function") firePulse();
-              if (gd.r !== undefined && gd.r > 150) self._spawnLocalWorld(gd);
+              if (gd.r !== undefined && gd.r > 150) {
+                self._spawnLocalWorld(gd);
+                if (!gd.isStation) {
+                  self._spawnSun(gd);
+                  self._spawnOrbits(gd);
+                }
+              }
             },
             function onComplete() {
               self._warping = false;
@@ -2953,6 +2974,19 @@
             if (this._localWorld.geometry) this._localWorld.geometry.dispose();
             if (this._localWorld.material) this._localWorld.material.dispose();
             this._localWorld = null;
+          }
+          if (this._orbitsObj) {
+            this.el.removeObject3D("local-orbits");
+            if (this._orbitsObj.geometry) this._orbitsObj.geometry.dispose();
+            if (this._orbitsObj.material) this._orbitsObj.material.dispose();
+            this._orbitsObj = null;
+            this._planetData = null;
+          }
+          if (this._sunPoint) {
+            this.el.removeObject3D("local-sun");
+            if (this._sunPoint.geometry) this._sunPoint.geometry.dispose();
+            if (this._sunPoint.material) this._sunPoint.material.dispose();
+            this._sunPoint = null;
           }
         },
 
@@ -3109,6 +3143,15 @@
                 z = (Math.random() - 0.5) * 76;
               }
             }
+            /* Stellar halo \u2014 18% of stars go full-sphere for 360\u00b0 immersion */
+            if (!gd.isStation && Math.random() < 0.18) {
+              var hTheta = Math.random() * Math.PI * 2;
+              var hPhi = Math.acos(2 * Math.random() - 1);
+              var hR = (0.35 + Math.random() * 0.62) * spread;
+              x = Math.sin(hPhi) * Math.cos(hTheta) * hR;
+              y = Math.sin(hPhi) * Math.sin(hTheta) * hR;
+              z = Math.cos(hPhi) * hR;
+            }
             pos[i * 3] = cx + x;
             pos[i * 3 + 1] = cy + y;
             pos[i * 3 + 2] = cz + z;
@@ -3122,22 +3165,181 @@
           geo.setAttribute("position", new THREE.BufferAttribute(pos, 3));
           geo.setAttribute("color", new THREE.BufferAttribute(col, 3));
           var mat = new THREE.PointsMaterial({
-            size: 2.2,
+            size: 2.0,
+            map: this._makeStarTex(),
             vertexColors: true,
             transparent: true,
-            opacity: 0.94,
+            opacity: 0.92,
             blending: THREE.AdditiveBlending,
             depthWrite: false,
             sizeAttenuation: false,
+            alphaTest: 0.015,
           });
           mat.fog = false;
           this._localWorld = new THREE.Points(geo, mat);
           this.el.setObject3D("local-world", this._localWorld);
         },
 
+        _makeStarTex: function () {
+          if (this.__starTex) return this.__starTex;
+          var c = document.createElement("canvas");
+          c.width = c.height = 32;
+          var ctx = c.getContext("2d");
+          var g = ctx.createRadialGradient(16, 16, 0, 16, 16, 15);
+          g.addColorStop(0, "rgba(255,255,255,1)");
+          g.addColorStop(0.28, "rgba(255,255,255,0.88)");
+          g.addColorStop(0.72, "rgba(255,255,255,0.12)");
+          g.addColorStop(1, "rgba(255,255,255,0)");
+          ctx.fillStyle = g;
+          ctx.fillRect(0, 0, 32, 32);
+          this.__starTex = new AFRAME.THREE.CanvasTexture(c);
+          return this.__starTex;
+        },
+
+        _spawnSun: function (gd) {
+          var THREE = AFRAME.THREE;
+          var p = gd.pos;
+          var FREQ_COLS = {
+            396: [0.78, 0.18, 1.0],
+            417: [0.0, 0.95, 0.58],
+            528: [0.28, 0.92, 1.0],
+            639: [1.0, 0.78, 0.18],
+            741: [1.0, 0.32, 0.62],
+            852: [0.45, 0.75, 1.0],
+            963: [0.95, 0.52, 1.0],
+            72: [1.0, 1.0, 1.0],
+          };
+          var sc = FREQ_COLS[gd.freq] || [1.0, 0.95, 0.75];
+          var geo = new THREE.BufferGeometry();
+          geo.setAttribute(
+            "position",
+            new THREE.BufferAttribute(new Float32Array([p[0], p[1], p[2]]), 3),
+          );
+          geo.setAttribute(
+            "color",
+            new THREE.BufferAttribute(new Float32Array(sc), 3),
+          );
+          var mat = new THREE.PointsMaterial({
+            size: 10.0,
+            map: this._makeStarTex(),
+            vertexColors: true,
+            transparent: true,
+            opacity: 1.0,
+            blending: THREE.AdditiveBlending,
+            depthWrite: false,
+            sizeAttenuation: false,
+          });
+          this._sunPoint = new THREE.Points(geo, mat);
+          this.el.setObject3D("local-sun", this._sunPoint);
+        },
+
+        _spawnOrbits: function (gd) {
+          var THREE = AFRAME.THREE;
+          var cx = gd.pos[0],
+            cy = gd.pos[1],
+            cz = gd.pos[2];
+          var ln = gd.latticeNode || 0;
+          var PHI = 1.618;
+          var numPlanets = 3 + (ln % 4);
+          var PTS_PER = 14;
+          var total = numPlanets * PTS_PER;
+          var posArr = new Float32Array(total * 3);
+          var colArr = new Float32Array(total * 3);
+          var PCOLS = [
+            [1.0, 0.55, 0.12],
+            [0.18, 0.85, 1.0],
+            [0.95, 0.25, 0.22],
+            [0.32, 1.0, 0.48],
+            [0.88, 0.62, 1.0],
+            [1.0, 0.92, 0.48],
+          ];
+          this._planetData = [];
+          this._PTS_PER = PTS_PER;
+          for (var i = 0; i < numPlanets; i++) {
+            var orbitR = 11 + i * 8 + ((ln * 3) % 7);
+            var orbitSpeed = 0.000052 / Math.sqrt(orbitR * 0.1);
+            var baseAngle =
+              ((i / numPlanets) * Math.PI * 2 + ln * PHI) % (Math.PI * 2);
+            var orbitTilt = Math.sin(i * PHI + ln * 0.4) * orbitR * 0.14;
+            var pcol = PCOLS[i % PCOLS.length];
+            var jitters = new Float32Array(PTS_PER * 3);
+            for (var j = 0; j < PTS_PER; j++) {
+              jitters[j * 3] = (Math.random() - 0.5) * 2.0;
+              jitters[j * 3 + 1] = (Math.random() - 0.5) * 2.0;
+              jitters[j * 3 + 2] = (Math.random() - 0.5) * 2.0;
+            }
+            this._planetData.push({
+              i: i,
+              orbitR: orbitR,
+              orbitSpeed: orbitSpeed,
+              baseAngle: baseAngle,
+              orbitTilt: orbitTilt,
+              col: pcol,
+              cx: cx,
+              cy: cy,
+              cz: cz,
+              ptsBase: i * PTS_PER,
+              jitters: jitters,
+            });
+            var angle0 = baseAngle;
+            var bx = cx + Math.cos(angle0) * orbitR;
+            var by = cy + orbitTilt;
+            var bz = cz + Math.sin(angle0) * orbitR;
+            for (var j2 = 0; j2 < PTS_PER; j2++) {
+              var base = (i * PTS_PER + j2) * 3;
+              posArr[base] = bx + jitters[j2 * 3];
+              posArr[base + 1] = by + jitters[j2 * 3 + 1];
+              posArr[base + 2] = bz + jitters[j2 * 3 + 2];
+              var bright = 0.62 + Math.random() * 0.38;
+              colArr[base] = Math.min(1, pcol[0] * bright);
+              colArr[base + 1] = Math.min(1, pcol[1] * bright);
+              colArr[base + 2] = Math.min(1, pcol[2] * bright);
+            }
+          }
+          var geo = new THREE.BufferGeometry();
+          geo.setAttribute("position", new THREE.BufferAttribute(posArr, 3));
+          geo.setAttribute("color", new THREE.BufferAttribute(colArr, 3));
+          var mat = new THREE.PointsMaterial({
+            size: 4.5,
+            map: this._makeStarTex(),
+            vertexColors: true,
+            transparent: true,
+            opacity: 0.96,
+            blending: THREE.AdditiveBlending,
+            depthWrite: false,
+            sizeAttenuation: false,
+          });
+          this._orbitsObj = new THREE.Points(geo, mat);
+          this.el.setObject3D("local-orbits", this._orbitsObj);
+        },
+
         tick: function (time) {
           if (this._bgPoints) this._bgPoints.rotation.y = time * 0.0000035;
           if (this._localWorld) this._localWorld.rotation.y = time * 0.0000014;
+          /* Orbital mechanics */
+          if (this._planetData && this._orbitsObj) {
+            var posAttr = this._orbitsObj.geometry.attributes.position;
+            var pArr = posAttr.array;
+            var PTS_PER = this._PTS_PER;
+            for (var pi = 0; pi < this._planetData.length; pi++) {
+              var pl = this._planetData[pi];
+              var angle = pl.baseAngle + time * pl.orbitSpeed;
+              var px = pl.cx + Math.cos(angle) * pl.orbitR;
+              var py =
+                pl.cy +
+                Math.sin(angle * 0.28 + pl.i) * Math.abs(pl.orbitTilt) * 0.5 +
+                pl.orbitTilt;
+              var pz = pl.cz + Math.sin(angle) * pl.orbitR;
+              var jitters = pl.jitters;
+              for (var pj = 0; pj < PTS_PER; pj++) {
+                var base = (pl.ptsBase + pj) * 3;
+                pArr[base] = px + jitters[pj * 3];
+                pArr[base + 1] = py + jitters[pj * 3 + 1];
+                pArr[base + 2] = pz + jitters[pj * 3 + 2];
+              }
+            }
+            posAttr.needsUpdate = true;
+          }
         },
       });
 
@@ -3294,7 +3496,14 @@
           } else {
             /* Arrival */
             if (hud) hud.classList.remove("visible");
-            window._showSectorBrief(gd, isStation);
+            var _vsData = null;
+            try {
+              var _vsAll = JSON.parse(
+                localStorage.getItem("cosmos-visited") || "{}",
+              );
+              _vsData = gd ? _vsAll[gd.geoCode] : null;
+            } catch (_e) {}
+            window._showSectorBrief(gd, isStation, _vsData);
             cv.style.transition = "opacity 0.75s";
             cv.style.opacity = "0";
             setTimeout(function () {
@@ -3431,7 +3640,7 @@
           "OPTIMAL",
         ];
         var brief = null;
-        return function showSectorBrief(gd, isStation) {
+        return function showSectorBrief(gd, isStation, vsData) {
           if (!brief) {
             brief = document.createElement("div");
             brief.id = "sector-brief";
@@ -3455,14 +3664,31 @@
           var freq = gd ? gd.freq || 528 : 528;
           var galType = isStation ? "STATION" : GAL_TYPES[ln % 5];
           var starCount = isStation ? 1400 : 2800 + ln * 137 + hn * 11;
+          var numPlanets = isStation ? 0 : 3 + (ln % 4);
           var anom1 = ANOMALIES[(ln * 3 + hn) % ANOMALIES.length];
           var anom2 = ANOMALIES[(ln * 7 + hn + 4) % ANOMALIES.length];
           var status = STATUSES[(ln + hn) % STATUSES.length];
-          var msg = TRANSMISSIONS[(ln * 5 + hn) % TRANSMISSIONS.length];
+          var visitNum = vsData ? vsData.visits : 1;
+          var RETURN_MSGS = [
+            "You have been here before. The stars remember.",
+            "Sensors confirm: this frequency was last scanned by you.",
+            "RETURNING TRAVELLER CONFIRMED. Your orbit has come full circle.",
+            "Visit #" + visitNum + ". The cosmos is starting to recognize you.",
+            "The local anomaly seems oddly pleased to see you again.",
+          ];
+          var msg =
+            vsData && vsData.visits > 1
+              ? RETURN_MSGS[(visitNum + ln) % RETURN_MSGS.length]
+              : TRANSMISSIONS[(ln * 5 + hn) % TRANSMISSIONS.length];
+          var headerTitle = isStation
+            ? "DOCKING CONFIRMATION"
+            : vsData && vsData.visits > 1
+              ? "SECTOR RETURN #" + vsData.visits
+              : "SECTOR ARRIVAL BRIEFING";
           var dist = gd ? Math.round((gd.r || 1) * 4.1) : "?";
           frame.innerHTML =
             '<div class="sb-header">' +
-            (isStation ? "DOCKING CONFIRMATION" : "SECTOR ARRIVAL BRIEFING") +
+            headerTitle +
             " \u00b7 MERKABA NAV-CORE</div>" +
             '<div class="sb-sector">' +
             (gd ? gd.label : "UNKNOWN") +
@@ -3485,8 +3711,13 @@
             dist +
             " light-years</span></div>" +
             '<div class="sb-row"><span>LOCAL BODIES</span><span>' +
-            starCount.toLocaleString() +
-            " detected</span></div>" +
+            (isStation
+              ? starCount.toLocaleString() + " detected"
+              : numPlanets +
+                " worlds in orbit \u00b7 " +
+                starCount.toLocaleString() +
+                " stars") +
+            "</span></div>" +
             '<div class="sb-row"><span>ANOMALY 1</span><span>' +
             anom1 +
             "</span></div>" +
