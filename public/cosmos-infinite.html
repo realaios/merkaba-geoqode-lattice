@@ -1561,12 +1561,29 @@
         }
       }
       /* ── CLEAN-VIEW MODE: all HUD/overlay hidden — focus on the universe ── */
-      #freq-legend, #controls-hint, #scale-indicator,
-      #freq-hud, #systems-mapped, #briefing-toggle,
-      #nearby-hud, #galaxy-hud, #sector-brief,
-      #nav-reticle, #target-label, #vel-hud, #boost-vignette, #pilot-guide,
-      #dont-panic, #geo-tooltip, #discovery-feed, #explorer-badge,
-      #beacon-banner, #milestone-flash, #warp-bloom { display: none !important; }
+      #freq-legend,
+      #controls-hint,
+      #scale-indicator,
+      #freq-hud,
+      #systems-mapped,
+      #briefing-toggle,
+      #nearby-hud,
+      #galaxy-hud,
+      #sector-brief,
+      #nav-reticle,
+      #target-label,
+      #vel-hud,
+      #boost-vignette,
+      #pilot-guide,
+      #dont-panic,
+      #geo-tooltip,
+      #discovery-feed,
+      #explorer-badge,
+      #beacon-banner,
+      #milestone-flash,
+      #warp-bloom {
+        display: none !important;
+      }
     </style>
   </head>
   <body>
@@ -4080,7 +4097,12 @@
           /* PHI-anchored spread: galaxy cloud size = distance / PHI^4 (6.854) */
           /* Nearest galaxy r=900 → spread≈131  |  Far galaxy r=12000 → spread≈1751 */
           var PHI_LOCAL = 1.618;
-          var spread = gd.isStation ? 550 : Math.max(50, gd.r / (PHI_LOCAL * PHI_LOCAL * PHI_LOCAL * PHI_LOCAL));
+          var spread = gd.isStation
+            ? 550
+            : Math.max(
+                50,
+                gd.r / (PHI_LOCAL * PHI_LOCAL * PHI_LOCAL * PHI_LOCAL),
+              );
           for (var i = 0; i < COUNT; i++) {
             var x = 0,
               y = 0,
