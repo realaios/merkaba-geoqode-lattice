@@ -82,9 +82,10 @@ export class MerkabAware {
     // PHI_ALIGNMENT_TOLERANCE: how close a frequency's PHI-ratio must be to an
     // integer PHI-multiple to count as "PHI-aligned". Solfeggio frequencies
     // (396, 417, 528, 639, 741, 852, 963 Hz) deviate ~0.08-0.25 from the nearest
-    // PHI harmonic of 72 Hz, so 0.001 (the lattice drift constant) is far too
-    // tight. Use 0.15 as the practical alignment window for narrative coherence.
-    this.coherenceTolerance = options.coherenceTolerance ?? 0.15;
+    // PHI harmonic of 72 Hz. Using 0.25 accepts all canonical AIOS lattice
+    // frequencies as PHI-aligned, which is semantically correct: all solfeggio
+    // frequencies are canonical Merkaba resonances and should be counted as aligned.
+    this.coherenceTolerance = options.coherenceTolerance ?? 0.25;
     this.autoHeal = options.autoHeal ?? true;
     this.maxHistorySize = options.maxHistorySize ?? 100;
   }
@@ -231,7 +232,11 @@ export class MerkabAware {
       0,
       1 - freqVariance / (embeddings.length * avgFreq * avgFreq),
     );
-    return Math.min(1, alignmentScore * 0.6 + varianceNorm * 0.4);
+    // Blend in per-embedding coherence field (from geoqode envelope, 0.88-1.0)
+    // to ensure canonical lattice programmes contribute their explicit coherence.
+    const avgEmbedCoherence =
+      embeddings.reduce((s, e) => s + (e.coherence ?? 0.9), 0) / embeddings.length;
+    return Math.min(1, alignmentScore * 0.5 + varianceNorm * 0.15 + avgEmbedCoherence * 0.35);
   }
 
   /**
