@@ -356,7 +356,9 @@
         text-align: center;
         white-space: nowrap;
         backdrop-filter: blur(14px);
-        box-shadow: 0 0 28px rgba(0, 212, 255, 0.18), 0 4px 32px rgba(0,0,0,0.7);
+        box-shadow:
+          0 0 28px rgba(0, 212, 255, 0.18),
+          0 4px 32px rgba(0, 0, 0, 0.7);
       }
       #geo-tooltip.visible {
         opacity: 1;
@@ -431,6 +433,70 @@
         margin-top: 5px;
         opacity: 0.88;
       }
+      /* ── Sector Briefing Panel (arrival) ─────────────────────────────── */
+      #sector-brief {
+        position: fixed;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        z-index: 9996;
+        pointer-events: none;
+        display: none;
+        font-family: monospace;
+      }
+      #sector-brief.visible { display: block; }
+      .sb-frame {
+        position: absolute;
+        top: 50%; left: 50%;
+        transform: translate(-50%, -50%);
+        width: min(580px, 90vw);
+        background: rgba(0,2,12,0.92);
+        border: 1px solid rgba(0,212,255,0.35);
+        border-radius: 4px;
+        padding: 28px 34px 24px;
+        box-shadow: 0 0 44px rgba(0,212,255,0.18), inset 0 0 22px rgba(0,0,0,0.6);
+        animation: sb-in 0.55s cubic-bezier(0.22,1,0.36,1) both;
+      }
+      @keyframes sb-in {
+        from { opacity: 0; transform: translate(-50%, -48%) scaleY(0.88); }
+        to   { opacity: 1; transform: translate(-50%, -50%) scaleY(1); }
+      }
+      .sb-header {
+        font-size: 0.52rem; letter-spacing: 0.42em;
+        color: rgba(0,212,255,0.6); border-bottom: 1px solid rgba(0,212,255,0.2);
+        padding-bottom: 8px; margin-bottom: 14px;
+      }
+      .sb-sector {
+        font-size: 1.55rem; font-weight: 900; color: #fff;
+        letter-spacing: 0.18em;
+        text-shadow: 0 0 28px #00d4ff, 0 0 66px rgba(124,58,237,0.6);
+        margin-bottom: 4px;
+      }
+      .sb-coord {
+        font-size: 0.62rem; color: #7c3aed;
+        letter-spacing: 0.22em; margin-bottom: 16px;
+      }
+      .sb-row {
+        display: flex; justify-content: space-between;
+        font-size: 0.58rem; color: #94a3b8;
+        letter-spacing: 0.12em; margin-bottom: 6px;
+      }
+      .sb-row span:last-child { color: #e2e8f0; }
+      .sb-divider {
+        border: none; border-top: 1px solid rgba(255,255,255,0.07);
+        margin: 12px 0;
+      }
+      .sb-transmission {
+        font-size: 0.72rem; color: #f59e0b;
+        font-style: italic; line-height: 1.6;
+        border-left: 2px solid rgba(245,158,11,0.4);
+        padding-left: 12px; margin-top: 12px;
+      }
+      .sb-dismiss {
+        margin-top: 18px; text-align: center;
+        font-size: 0.5rem; color: rgba(0,212,255,0.38);
+        letter-spacing: 0.3em; animation: sb-blink 1.4s step-end infinite;
+      }
+      @keyframes sb-blink { 0%,100%{opacity:0.38} 50%{opacity:0.9} }
       .geo-note {
         font-size: 0.82rem;
         color: #4ade80;
@@ -2057,8 +2123,8 @@
          @alignment 8->26->48:480  (GeoQode canonical nav layer)
       ==================================================================== */
       (function initGeoNav() {
-        var MIN_DIST = 1.8,
-          MAX_DIST = 480;
+        var MIN_DIST = 1.2,
+          MAX_DIST = 16000;
         var SCALE_LEVELS = [
           { max: 2, label: "MERKABA CORE", color: "#fbbf24" },
           { max: 5, label: "QUANTUM FIELD", color: "#e879f9" },
@@ -2658,17 +2724,32 @@
           /* ── Input: click + hover ──────────────────────────────────── */
           this._warping = false;
           this._hoverTS = 0;
+          /* Drag guard tracking */
+          this._dragMoved = false;
+          this._dragStart = { x: 0, y: 0 };
           var sceneEl = document.querySelector("a-scene");
           var bindIO = function () {
             var cv = sceneEl.canvas;
-            cv.addEventListener("click", function (e) {
-              self._onClick(e);
+            cv.addEventListener("mousedown", function (e) {
+              if (e.button === 0) {
+                self._dragMoved = false;
+                self._dragStart.x = e.clientX;
+                self._dragStart.y = e.clientY;
+              }
             });
             cv.addEventListener("mousemove", function (e) {
+              if (e.buttons === 1) {
+                var dx = e.clientX - self._dragStart.x;
+                var dy = e.clientY - self._dragStart.y;
+                if (Math.sqrt(dx*dx + dy*dy) > 6) self._dragMoved = true;
+              }
               var now = Date.now();
               if (now - self._hoverTS < 55) return;
               self._hoverTS = now;
               self._onHover(e);
+            });
+            cv.addEventListener("click", function (e) {
+              self._onClick(e);
             });
           };
           if (sceneEl.hasLoaded) {
@@ -2762,8 +2843,10 @@
 
         _onClick: function (e) {
           if (this._warping) return;
+          /* Drag guard — ignore if mouse moved more than 6px */
+          if (this._dragMoved) return;
           var ndc = this._ndcMouse(e);
-          var hit = this._nearest(ndc.x, ndc.y, 0.05);
+          var hit = this._nearest(ndc.x, ndc.y, 0.025);
           if (!hit) return;
           var tip = document.getElementById("geo-tooltip");
           if (tip) tip.classList.remove("visible");
@@ -2774,6 +2857,7 @@
         _warpTo: function (gd) {
           var self = this;
           this._warping = true;
+          this._clearLocalWorld();
           window._hyperspaceWarp(
             gd,
             function onTeleport() {
@@ -2784,7 +2868,7 @@
                 var nx = p[0] / dist,
                   ny = p[1] / dist,
                   nz = p[2] / dist;
-                var arrDist = gd.isStation ? 30 : 8;
+                var arrDist = gd.isStation ? 28 : 3;
                 rig.object3D.position.set(
                   p[0] - nx * arrDist,
                   p[1] - ny * arrDist,
@@ -2798,6 +2882,7 @@
                 }
               }
               if (typeof firePulse === "function") firePulse();
+              if (gd.r !== undefined && gd.r > 150) self._spawnLocalWorld(gd);
             },
             function onComplete() {
               self._warping = false;
@@ -2820,8 +2905,197 @@
           });
         },
 
+        _clearLocalWorld: function () {
+          if (this._localWorld) {
+            this.el.removeObject3D("local-world");
+            if (this._localWorld.geometry) this._localWorld.geometry.dispose();
+            if (this._localWorld.material) this._localWorld.material.dispose();
+            this._localWorld = null;
+          }
+        },
+
+        _spawnLocalWorld: function (gd) {
+          var THREE = AFRAME.THREE;
+          var p = gd.pos;
+          var cx = p[0],
+            cy = p[1],
+            cz = p[2];
+          var COUNT = gd.isStation ? 1400 : 3400;
+          var pos = new Float32Array(COUNT * 3);
+          var col = new Float32Array(COUNT * 3);
+          var FREQ_PAL = {
+            396: [
+              [0.55, 0.1, 1.0],
+              [0.75, 0.45, 1.0],
+              [0.35, 0.0, 0.85],
+            ],
+            417: [
+              [0.0, 0.9, 0.5],
+              [0.25, 1.0, 0.7],
+              [0.0, 0.65, 0.35],
+            ],
+            528: [
+              [0.1, 0.8, 1.0],
+              [0.45, 1.0, 1.0],
+              [0.0, 0.5, 0.85],
+            ],
+            639: [
+              [1.0, 0.6, 0.1],
+              [1.0, 0.85, 0.3],
+              [0.9, 0.4, 0.0],
+            ],
+            741: [
+              [1.0, 0.2, 0.5],
+              [1.0, 0.5, 0.7],
+              [0.8, 0.0, 0.35],
+            ],
+            852: [
+              [0.2, 0.62, 1.0],
+              [0.5, 0.82, 1.0],
+              [0.1, 0.32, 0.9],
+            ],
+            963: [
+              [0.9, 0.42, 1.0],
+              [1.0, 0.72, 1.0],
+              [0.62, 0.12, 0.85],
+            ],
+            72: [
+              [1.0, 1.0, 1.0],
+              [0.82, 0.92, 1.0],
+              [0.92, 0.82, 0.72],
+            ],
+          };
+          var pal = FREQ_PAL[gd.freq] || FREQ_PAL[528];
+          var type = gd.isStation ? 5 : gd.latticeNode % 5;
+          var spread = gd.isStation ? 55 : 140;
+          for (var i = 0; i < COUNT; i++) {
+            var x = 0,
+              y = 0,
+              z = 0,
+              r,
+              theta,
+              phi,
+              t,
+              t2,
+              arm,
+              arm2;
+            if (type === 0) {
+              /* Spiral — 3 arms */
+              arm = i % 3;
+              t = (i / COUNT) * Math.PI * 9;
+              r = 4 + Math.pow(i / COUNT, 0.5) * spread * 0.94;
+              theta = t + arm * ((Math.PI * 2) / 3);
+              x = Math.cos(theta) * r + (Math.random() - 0.5) * 17;
+              y = (Math.random() - 0.5) * 15 * (1 - (i / COUNT) * 0.55);
+              z = Math.sin(theta) * r + (Math.random() - 0.5) * 17;
+            } else if (type === 1) {
+              /* Ring galaxy */
+              theta = Math.random() * Math.PI * 2;
+              r = spread * 0.32 + (Math.random() - 0.5) * 24;
+              x = Math.cos(theta) * r + (Math.random() - 0.5) * 11;
+              y =
+                Math.random() < 0.12
+                  ? (Math.random() - 0.5) * spread * 0.42
+                  : (Math.random() - 0.5) * 9;
+              z = Math.sin(theta) * r + (Math.random() - 0.5) * 11;
+            } else if (type === 2) {
+              /* Elliptical — dense core */
+              theta = Math.random() * Math.PI * 2;
+              phi = Math.acos(2 * Math.random() - 1);
+              r = Math.pow(Math.random(), 0.32) * spread * 0.88;
+              x = Math.sin(phi) * Math.cos(theta) * r;
+              y = Math.sin(phi) * Math.sin(theta) * r * 0.56;
+              z = Math.cos(phi) * r;
+            } else if (type === 3) {
+              /* Barred spiral */
+              if (Math.random() < 0.22) {
+                x = (Math.random() - 0.5) * spread * 0.56;
+                y = (Math.random() - 0.5) * 11;
+                z = (Math.random() - 0.5) * 17;
+              } else {
+                arm2 = i % 2;
+                t2 = (i / COUNT) * Math.PI * 7;
+                r = 19 + Math.pow(i / COUNT, 0.58) * spread * 0.77;
+                theta = t2 + arm2 * Math.PI + (arm2 ? 0.52 : -0.52);
+                x = Math.cos(theta) * r + (Math.random() - 0.5) * 21;
+                y = (Math.random() - 0.5) * 13;
+                z = Math.sin(theta) * r + (Math.random() - 0.5) * 21;
+              }
+            } else if (type === 4) {
+              /* Irregular */
+              x =
+                Math.pow(Math.random(), 0.68) *
+                spread *
+                (Math.random() < 0.5 ? 1 : -1) *
+                0.92;
+              y = (Math.random() - 0.5) * spread * 0.46;
+              z =
+                Math.pow(Math.random(), 0.68) *
+                spread *
+                (Math.random() < 0.5 ? 1 : -1) *
+                0.92;
+            } else {
+              /* type 5 — Space Station interior: grid corridors + ring deck */
+              var lane = i % 4;
+              if (lane === 0) {
+                x = (Math.random() - 0.5) * 88;
+                y =
+                  (Math.floor(Math.random() * 3) - 1) * 13 +
+                  (Math.random() - 0.5) * 2;
+                z =
+                  (Math.floor(Math.random() * 3) - 1) * 13 +
+                  (Math.random() - 0.5) * 2;
+              } else if (lane === 1) {
+                x =
+                  (Math.floor(Math.random() * 3) - 1) * 13 +
+                  (Math.random() - 0.5) * 2;
+                y =
+                  (Math.floor(Math.random() * 3) - 1) * 13 +
+                  (Math.random() - 0.5) * 2;
+                z = (Math.random() - 0.5) * 88;
+              } else if (lane === 2) {
+                theta = Math.random() * Math.PI * 2;
+                r = 34 + (Math.random() - 0.5) * 5;
+                x = Math.cos(theta) * r;
+                y =
+                  Math.floor(Math.random() * 5 - 2) * 9 +
+                  (Math.random() - 0.5) * 2;
+                z = Math.sin(theta) * r;
+              } else {
+                x = (Math.random() - 0.5) * 76;
+                y = (Math.random() - 0.5) * 44;
+                z = (Math.random() - 0.5) * 76;
+              }
+            }
+            pos[i * 3] = cx + x;
+            pos[i * 3 + 1] = cy + y;
+            pos[i * 3 + 2] = cz + z;
+            var c = pal[i % pal.length];
+            var bright = 0.44 + Math.random() * 0.56;
+            col[i * 3] = Math.min(1, c[0] * bright);
+            col[i * 3 + 1] = Math.min(1, c[1] * bright);
+            col[i * 3 + 2] = Math.min(1, c[2] * bright);
+          }
+          var geo = new THREE.BufferGeometry();
+          geo.setAttribute("position", new THREE.BufferAttribute(pos, 3));
+          geo.setAttribute("color", new THREE.BufferAttribute(col, 3));
+          var mat = new THREE.PointsMaterial({
+            size: 2.2,
+            vertexColors: true,
+            transparent: true,
+            opacity: 0.94,
+            blending: THREE.AdditiveBlending,
+            depthWrite: false,
+            sizeAttenuation: false,
+          });
+          mat.fog = false;
+          this._localWorld = new THREE.Points(geo, mat);
+          this.el.setObject3D("local-world", this._localWorld);
+        },
+
         tick: function (time) {
           if (this._bgPoints) this._bgPoints.rotation.y = time * 0.0000035;
+          if (this._localWorld) this._localWorld.rotation.y = time * 0.0000014;
         },
       });
 
@@ -2977,23 +3251,8 @@
             requestAnimationFrame(frame);
           } else {
             /* Arrival */
-            if (hud) {
-              hud.innerHTML =
-                '<div class="warp-title">' +
-                (isStation ? "DOCKED" : "ARRIVED") +
-                "</div>" +
-                '<div class="warp-coord">' +
-                (gd ? gd.label : "") +
-                "</div>" +
-                '<div class="warp-sub">' +
-                (gd ? gd.geoCode : "") +
-                " \u00b7 press H to return</div>" +
-                (gd && gd.note
-                  ? '<div class="warp-improbability">\u201c' +
-                    gd.note +
-                    "\u201d</div>"
-                  : "");
-            }
+            if (hud) hud.classList.remove("visible");
+            window._showSectorBrief(gd, isStation);
             cv.style.transition = "opacity 0.75s";
             cv.style.opacity = "0";
             setTimeout(function () {
@@ -3013,29 +3272,23 @@
 
       /* ── PAN CONTROLS: Right-click drag or Middle-click drag to pan ──── */
       (function initPanControls() {
-        var panning = false,
-          lastPX = 0,
-          lastPY = 0;
-        document.addEventListener("contextmenu", function (e) {
-          e.preventDefault();
-        });
-        document.addEventListener("mousedown", function (e) {
+        var panning = false, lastPX = 0, lastPY = 0;
+        window.addEventListener("contextmenu", function (e) { e.preventDefault(); }, { capture: true });
+        window.addEventListener("mousedown", function (e) {
           if (e.button === 1 || e.button === 2) {
+            e.preventDefault();
             panning = true;
             lastPX = e.clientX;
             lastPY = e.clientY;
-            if (e.button === 1) e.preventDefault();
           }
-        });
-        document.addEventListener("mouseup", function (e) {
+        }, { capture: true });
+        window.addEventListener("mouseup", function (e) {
           if (e.button === 1 || e.button === 2) panning = false;
-        });
-        document.addEventListener("mousemove", function (e) {
+        }, { capture: true });
+        window.addEventListener("mousemove", function (e) {
           if (!panning) return;
-          var dx = e.clientX - lastPX,
-            dy = e.clientY - lastPY;
-          lastPX = e.clientX;
-          lastPY = e.clientY;
+          var dx = e.clientX - lastPX, dy = e.clientY - lastPY;
+          lastPX = e.clientX; lastPY = e.clientY;
           if (!dx && !dy) return;
           var rig = document.getElementById("cameraRig");
           if (!rig || !rig.object3D) return;
@@ -3044,17 +3297,91 @@
           var THREE = AFRAME.THREE;
           var right = new THREE.Vector3();
           right.setFromMatrixColumn(sceneEl.camera.matrixWorld, 0);
-          right.y = 0;
-          right.normalize();
+          right.y = 0; right.normalize();
+          var up = new THREE.Vector3(0, 1, 0);
           var pos = rig.object3D.position;
-          var dist = Math.max(
-            2,
-            Math.sqrt(pos.x * pos.x + pos.y * pos.y + pos.z * pos.z),
-          );
-          var spd = Math.max(0.06, dist * 0.003);
+          var dist = Math.max(2, Math.sqrt(pos.x*pos.x + pos.y*pos.y + pos.z*pos.z));
+          var spd = Math.max(0.08, dist * 0.004);
           pos.addScaledVector(right, -dx * spd);
-          pos.y -= dy * spd;
-        });
+          pos.addScaledVector(up, dy * spd);
+        }, { capture: true });
+      })();
+
+      /* ── SECTOR BRIEFING (Star Trek arrival panel) ──────────────────── */
+      window._showSectorBrief = (function () {
+        var TRANSMISSIONS = [
+          "You have entered a region where the normal laws of physics take a coffee break.",
+          "Submitted for your approval: a traveler who found exactly what they were looking for.",
+          "Beyond this point, time is less of a river and more of a suggestion.",
+          "Consider, if you will, the audacity of crossing 11,000 light-years on a Tuesday.",
+          "Strange transmissions detected. Origin: unknown. Content: disturbingly cheerful.",
+          "Your arrival has been logged. By whom is a question best left unasked.",
+          "The universe is not only stranger than we suppose — it's stranger than we CAN suppose.",
+          "You have reached a place beyond maps. The maps simply gave up.",
+          "Signal acquired. Crew morale: inexplicable. Hull integrity: philosophical.",
+          "This region last visited by beings who left no forwarding address.",
+          "Warp termination confirmed. Local reality: approximately nominal.",
+          "Distance is merely the universe's way of making arrival feel earned.",
+          "No life signs detected. Several philosophy signs detected instead.",
+          "The stars here are older than your questions about them.",
+          "You are exactly where you need to be. We think.",
+          "INCOMING TRANSMISSION: 'You're late.' — Unknown sender, unknown epoch.",
+          "The fabric of spacetime here has been dry-cleaned recently. It shows.",
+          "Congratulations on not ceasing to exist during transit.",
+          "Your position: confirmed. Your purpose: pending committee review.",
+          "Red alert cancelled. It was just Tuesday again.",
+        ];
+        var GAL_TYPES = ["SPIRAL","RING","ELLIPTICAL","BARRED SPIRAL","IRREGULAR","STATION"];
+        var ANOMALIES = [
+          "Dark matter filament","Temporal echo","Subspace harmonic","Null-space pocket",
+          "Gravitational lens","Ion storm remnant","Quantized void","Resonance cascade",
+          "Chromatic flux zone","Probability inversion","Standing wave anomaly","Phase boundary",
+        ];
+        var STATUSES = ["NOMINAL","STABLE","ANOMALOUS","FLUCTUATING","CLEAR","DEGRADED","OPTIMAL"];
+        var brief = null;
+        return function showSectorBrief(gd, isStation) {
+          if (!brief) {
+            brief = document.createElement("div");
+            brief.id = "sector-brief";
+            brief.innerHTML = '<div class="sb-frame"></div>';
+            document.body.appendChild(brief);
+            brief.addEventListener("click", function () {
+              brief.classList.remove("visible");
+            });
+            window.addEventListener("keydown", function (e) {
+              if (brief.classList.contains("visible") && (e.key === " " || e.key === "Enter" || e.key === "Escape")) {
+                brief.classList.remove("visible");
+              }
+            });
+          }
+          var frame = brief.querySelector(".sb-frame");
+          var ln = gd ? (gd.latticeNode || 0) : 0;
+          var hn = gd ? (gd.harmonicNode || 0) : 0;
+          var freq = gd ? (gd.freq || 528) : 528;
+          var galType = isStation ? "STATION" : GAL_TYPES[ln % 5];
+          var starCount = isStation ? 1400 : (2800 + ln * 137 + hn * 11);
+          var anom1 = ANOMALIES[(ln * 3 + hn) % ANOMALIES.length];
+          var anom2 = ANOMALIES[(ln * 7 + hn + 4) % ANOMALIES.length];
+          var status = STATUSES[(ln + hn) % STATUSES.length];
+          var msg = TRANSMISSIONS[(ln * 5 + hn) % TRANSMISSIONS.length];
+          var dist = gd ? Math.round((gd.r || 1) * 4.1) : "?";
+          frame.innerHTML =
+            '<div class="sb-header">' + (isStation ? "DOCKING CONFIRMATION" : "SECTOR ARRIVAL BRIEFING") + " \u00b7 MERKABA NAV-CORE</div>" +
+            '<div class="sb-sector">' + (gd ? gd.label : "UNKNOWN") + "</div>" +
+            '<div class="sb-coord">' + (gd ? gd.geoCode : "") + "</div>" +
+            '<div class="sb-row"><span>CLASSIFICATION</span><span>' + galType + "</span></div>" +
+            '<div class="sb-row"><span>LATTICE NODE</span><span>D48/' + ln + " \u00b7 H480/" + hn + "</span></div>" +
+            '<div class="sb-row"><span>RESONANCE FREQ</span><span>' + freq + " Hz</span></div>" +
+            '<div class="sb-row"><span>EST. DISTANCE</span><span>' + dist + " light-years</span></div>" +
+            '<div class="sb-row"><span>LOCAL BODIES</span><span>' + starCount.toLocaleString() + " detected</span></div>" +
+            '<div class="sb-row"><span>ANOMALY 1</span><span>' + anom1 + "</span></div>" +
+            '<div class="sb-row"><span>ANOMALY 2</span><span>' + anom2 + "</span></div>" +
+            '<div class="sb-row"><span>SECTOR STATUS</span><span>' + status + "</span></div>" +
+            '<hr class="sb-divider">' +
+            '<div class="sb-transmission">\u201c' + msg + "\u201d</div>" +
+            '<div class="sb-dismiss">[ CLICK ANYWHERE OR PRESS SPACE TO DISMISS ]</div>';
+          brief.classList.add("visible");
+        };
       })();
     </script>
     <canvas id="hyperspace-overlay"></canvas>
