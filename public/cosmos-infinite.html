@@ -1781,7 +1781,7 @@
       vr-mode-ui="enabled: true"
       loading-screen="dotsColor: #00d4ff; backgroundColor: #000005"
       renderer="antialias: true; colorManagement: true"
-      fog="type: linear; color: #000820; near: 130; far: 340"
+      fog="type: linear; color: #000820; near: 2000; far: 18000"
     >
       <!-- Deep space sky - solid color to ensure reliable rendering -->
       <a-sky color="#010818"></a-sky>
@@ -6147,6 +6147,24 @@
           _scene.addEventListener("loaded", _connect, { once: true });
         } else {
           window.addEventListener("load", _connect);
+        }
+      })();
+    </script>
+    <script>
+      /* Auto-enter universe on scene load — bypasses intro modal that blocks A-Frame events */
+      (function () {
+        var scene = document.querySelector('a-scene');
+        function tryEnter() {
+          setTimeout(function () {
+            if (typeof enterUniverse === 'function') enterUniverse();
+          }, 500);
+        }
+        if (scene && scene.hasLoaded) {
+          tryEnter();
+        } else if (scene) {
+          scene.addEventListener('loaded', tryEnter, { once: true });
+        } else {
+          window.addEventListener('load', tryEnter);
         }
       })();
     </script>
