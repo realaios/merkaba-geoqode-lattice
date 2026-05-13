@@ -294,8 +294,7 @@
       .a-fullscreen #hud-right,
       .a-fullscreen #freq-legend,
       .a-fullscreen #controls-hint,
-      .a-fullscreen #scale-indicator,
-      .a-fullscreen #introModal {
+      .a-fullscreen #scale-indicator {
         display: none !important;
       }
       .a-enter-vr-button {
@@ -853,491 +852,6 @@
       }
 
       /* ═══════════════════════════════════════════════════════════════════
-         HOLOGRAPHIC DISPLAY OVERLAY — eye-bending 3-5% edge zone
-         All layers are pointer-events:none and sit above the 3D canvas.
-         ═══════════════════════════════════════════════════════════════════ */
-
-      /* Layer 1 — Primary dark vignette + cyan fringe at all 4 edges */
-      #holo-vignette {
-        position: fixed;
-        inset: 0;
-        z-index: 300;
-        pointer-events: none;
-        background:
-          radial-gradient(
-            ellipse 91% 89% at 50% 50%,
-            transparent 0%,
-            transparent 82%,
-            rgba(0, 10, 28, 0.3) 90%,
-            rgba(0, 4, 18, 0.8) 96%,
-            rgba(0, 1, 10, 0.96) 100%
-          ),
-          /* Cyan fringe glow at all 4 edges */
-          linear-gradient(
-              to bottom,
-              rgba(0, 212, 255, 0.11) 0%,
-              rgba(0, 212, 255, 0.03) 2.2%,
-              transparent 4.5%
-            ),
-          linear-gradient(
-            to top,
-            rgba(0, 212, 255, 0.11) 0%,
-            rgba(0, 212, 255, 0.03) 2.2%,
-            transparent 4.5%
-          ),
-          linear-gradient(
-            to right,
-            rgba(0, 180, 255, 0.09) 0%,
-            rgba(0, 180, 255, 0.02) 2.5%,
-            transparent 5%
-          ),
-          linear-gradient(
-            to left,
-            rgba(0, 180, 255, 0.09) 0%,
-            rgba(0, 180, 255, 0.02) 2.5%,
-            transparent 5%
-          );
-      }
-
-      /* Layer 2 — Chromatic aberration: RED channel drifts left/top edge */
-      #holo-ca-r {
-        position: fixed;
-        inset: 0;
-        z-index: 301;
-        pointer-events: none;
-        mix-blend-mode: screen;
-        background:
-          linear-gradient(
-            to right,
-            rgba(255, 20, 0, 0.14) 0%,
-            rgba(255, 20, 0, 0.04) 3.2%,
-            transparent 5.5%
-          ),
-          linear-gradient(
-            to left,
-            rgba(255, 20, 0, 0.1) 0%,
-            rgba(255, 20, 0, 0.02) 3%,
-            transparent 5.5%
-          ),
-          linear-gradient(
-            to bottom,
-            rgba(255, 20, 0, 0.1) 0%,
-            rgba(255, 20, 0, 0.02) 2.2%,
-            transparent 4.5%
-          ),
-          linear-gradient(
-            to top,
-            rgba(255, 20, 0, 0.1) 0%,
-            rgba(255, 20, 0, 0.02) 2.2%,
-            transparent 4.5%
-          );
-      }
-
-      /* Layer 3 — Chromatic aberration: BLUE channel drifts opposite edges */
-      #holo-ca-b {
-        position: fixed;
-        inset: 0;
-        z-index: 302;
-        pointer-events: none;
-        mix-blend-mode: screen;
-        background:
-          linear-gradient(
-            to left,
-            rgba(0, 40, 255, 0.14) 0%,
-            rgba(0, 40, 255, 0.04) 3.2%,
-            transparent 5.5%
-          ),
-          linear-gradient(
-            to right,
-            rgba(0, 40, 255, 0.1) 0%,
-            rgba(0, 40, 255, 0.02) 3%,
-            transparent 5.5%
-          ),
-          linear-gradient(
-            to top,
-            rgba(0, 40, 255, 0.1) 0%,
-            rgba(0, 40, 255, 0.02) 2.2%,
-            transparent 4.5%
-          ),
-          linear-gradient(
-            to bottom,
-            rgba(0, 40, 255, 0.1) 0%,
-            rgba(0, 40, 255, 0.02) 2.2%,
-            transparent 4.5%
-          );
-      }
-
-      /* Layer 4 — GREEN channel shifts diagonally (creates the split-RGB depth illusion) */
-      #holo-ca-g {
-        position: fixed;
-        inset: 0;
-        z-index: 303;
-        pointer-events: none;
-        mix-blend-mode: screen;
-        background:
-          linear-gradient(to right, rgba(0, 255, 80, 0.06) 0%, transparent 4%),
-          linear-gradient(to left, rgba(0, 255, 80, 0.06) 0%, transparent 4%),
-          linear-gradient(to bottom, rgba(0, 255, 80, 0.05) 0%, transparent 3%),
-          linear-gradient(to top, rgba(0, 255, 80, 0.05) 0%, transparent 3%);
-        animation: holo-g-drift 7s ease-in-out infinite alternate;
-        transform: translate(0, 0);
-      }
-      @keyframes holo-g-drift {
-        from {
-          transform: translate(0px, 0px);
-          opacity: 0.55;
-        }
-        to {
-          transform: translate(2px, 1px);
-          opacity: 0.95;
-        }
-      }
-
-      /* Layer 5 — Horizontal scanlines (holographic refresh lines) */
-      #holo-scan {
-        position: fixed;
-        inset: 0;
-        z-index: 304;
-        pointer-events: none;
-        mix-blend-mode: screen;
-        background: repeating-linear-gradient(
-          0deg,
-          transparent 0px,
-          transparent 3px,
-          rgba(0, 212, 255, 0.016) 3px,
-          rgba(0, 212, 255, 0.016) 4px
-        );
-        animation: holo-scan-move 12s linear infinite;
-      }
-      @keyframes holo-scan-move {
-        from {
-          background-position: 0 0;
-        }
-        to {
-          background-position: 0 80px;
-        }
-      }
-
-      /* Layer 6 — Fresnel interference rings at corners (concentric arcs) */
-      #holo-fresnel {
-        position: fixed;
-        inset: 0;
-        z-index: 305;
-        pointer-events: none;
-        background:
-          radial-gradient(
-            circle at 0% 0%,
-            transparent 4.5%,
-            rgba(0, 212, 255, 0.055) 5%,
-            transparent 5.5%,
-            transparent 8.5%,
-            rgba(0, 212, 255, 0.035) 9%,
-            transparent 9.5%,
-            transparent 13%,
-            rgba(0, 212, 255, 0.02) 13.5%,
-            transparent 14%
-          ),
-          radial-gradient(
-            circle at 100% 0%,
-            transparent 4.5%,
-            rgba(0, 212, 255, 0.055) 5%,
-            transparent 5.5%,
-            transparent 8.5%,
-            rgba(0, 212, 255, 0.035) 9%,
-            transparent 9.5%,
-            transparent 13%,
-            rgba(0, 212, 255, 0.02) 13.5%,
-            transparent 14%
-          ),
-          radial-gradient(
-            circle at 0% 100%,
-            transparent 4.5%,
-            rgba(0, 212, 255, 0.055) 5%,
-            transparent 5.5%,
-            transparent 8.5%,
-            rgba(0, 212, 255, 0.035) 9%,
-            transparent 9.5%
-          ),
-          radial-gradient(
-            circle at 100% 100%,
-            transparent 4.5%,
-            rgba(0, 212, 255, 0.055) 5%,
-            transparent 5.5%,
-            transparent 8.5%,
-            rgba(0, 212, 255, 0.035) 9%,
-            transparent 9.5%
-          );
-        animation: holo-fresnel-breathe 5s ease-in-out infinite;
-      }
-      @keyframes holo-fresnel-breathe {
-        0%,
-        100% {
-          opacity: 0.65;
-        }
-        50% {
-          opacity: 1;
-        }
-      }
-
-      /* Layer 7 — Breathing edge glow (thin inset box-shadow, the "projector rim") */
-      #holo-rim {
-        position: fixed;
-        inset: 0;
-        z-index: 306;
-        pointer-events: none;
-        box-shadow:
-          inset 0 0 0 1px rgba(0, 212, 255, 0.22),
-          inset 0 0 0 2px rgba(0, 212, 255, 0.07),
-          inset 0 0 16px rgba(0, 212, 255, 0.04);
-        animation: holo-rim-breathe 6s ease-in-out infinite;
-      }
-      @keyframes holo-rim-breathe {
-        0%,
-        100% {
-          box-shadow:
-            inset 0 0 0 1px rgba(0, 212, 255, 0.22),
-            inset 0 0 0 2px rgba(0, 212, 255, 0.07),
-            inset 0 0 16px rgba(0, 212, 255, 0.04);
-        }
-        50% {
-          box-shadow:
-            inset 0 0 0 1px rgba(0, 212, 255, 0.45),
-            inset 0 0 0 3px rgba(0, 212, 255, 0.14),
-            inset 0 0 28px rgba(0, 212, 255, 0.08),
-            inset 0 0 55px rgba(0, 212, 255, 0.03);
-        }
-      }
-
-      /* Layer 8 — Corner HUD brackets + dot nodes */
-      #holo-corners {
-        position: fixed;
-        inset: 0;
-        z-index: 307;
-        pointer-events: none;
-      }
-      .hc {
-        position: absolute;
-        width: 32px;
-        height: 32px;
-        border-color: rgba(0, 212, 255, 0.5);
-        border-style: solid;
-        animation: hc-pulse 4s ease-in-out infinite;
-      }
-      .hc.tl {
-        top: 10px;
-        left: 10px;
-        border-width: 1.5px 0 0 1.5px;
-      }
-      .hc.tr {
-        top: 10px;
-        right: 10px;
-        border-width: 1.5px 1.5px 0 0;
-        animation-delay: 1s;
-      }
-      .hc.bl {
-        bottom: 10px;
-        left: 10px;
-        border-width: 0 0 1.5px 1.5px;
-        animation-delay: 2s;
-      }
-      .hc.br {
-        bottom: 10px;
-        right: 10px;
-        border-width: 0 1.5px 1.5px 0;
-        animation-delay: 3s;
-      }
-      .hc::before,
-      .hc::after {
-        content: "";
-        position: absolute;
-      }
-      /* Corner tick marks — extend the bracket lines slightly */
-      .hc.tl::before {
-        top: -1px;
-        left: 8px;
-        width: 6px;
-        height: 0;
-        border-top: 1px solid rgba(0, 212, 255, 0.25);
-      }
-      .hc.tl::after {
-        top: 8px;
-        left: -1px;
-        width: 0;
-        height: 6px;
-        border-left: 1px solid rgba(0, 212, 255, 0.25);
-      }
-      .hc.tr::before {
-        top: -1px;
-        right: 8px;
-        width: 6px;
-        height: 0;
-        border-top: 1px solid rgba(0, 212, 255, 0.25);
-      }
-      .hc.tr::after {
-        top: 8px;
-        right: -1px;
-        width: 0;
-        height: 6px;
-        border-right: 1px solid rgba(0, 212, 255, 0.25);
-      }
-      .hc.bl::before {
-        bottom: -1px;
-        left: 8px;
-        width: 6px;
-        height: 0;
-        border-bottom: 1px solid rgba(0, 212, 255, 0.25);
-      }
-      .hc.bl::after {
-        bottom: 8px;
-        left: -1px;
-        width: 0;
-        height: 6px;
-        border-left: 1px solid rgba(0, 212, 255, 0.25);
-      }
-      .hc.br::before {
-        bottom: -1px;
-        right: 8px;
-        width: 6px;
-        height: 0;
-        border-bottom: 1px solid rgba(0, 212, 255, 0.25);
-      }
-      .hc.br::after {
-        bottom: 8px;
-        right: -1px;
-        width: 0;
-        height: 6px;
-        border-right: 1px solid rgba(0, 212, 255, 0.25);
-      }
-      @keyframes hc-pulse {
-        0%,
-        70%,
-        100% {
-          opacity: 0.55;
-        }
-        35% {
-          opacity: 1;
-          filter: drop-shadow(0 0 6px rgba(0, 212, 255, 0.5));
-        }
-      }
-
-      /* Layer 9 — Corner dot nodes (projector emitter points) */
-      .hc-dot {
-        position: absolute;
-        width: 5px;
-        height: 5px;
-        background: rgba(0, 212, 255, 0.75);
-        border-radius: 50%;
-        box-shadow:
-          0 0 7px rgba(0, 212, 255, 0.9),
-          0 0 14px rgba(0, 212, 255, 0.4);
-        animation: hc-dot-blink 4s ease-in-out infinite;
-      }
-      .hc-dot.tl {
-        top: 9px;
-        left: 9px;
-      }
-      .hc-dot.tr {
-        top: 9px;
-        right: 9px;
-        animation-delay: 1s;
-      }
-      .hc-dot.bl {
-        bottom: 9px;
-        left: 9px;
-        animation-delay: 2s;
-      }
-      .hc-dot.br {
-        bottom: 9px;
-        right: 9px;
-        animation-delay: 3s;
-      }
-      @keyframes hc-dot-blink {
-        0%,
-        60%,
-        100% {
-          opacity: 0.65;
-          transform: scale(1);
-        }
-        30% {
-          opacity: 1;
-          transform: scale(1.6);
-        }
-      }
-
-      /* Layer 10 — Iridescent shimmer strip (1px line at very edge, color-shifts) */
-      #holo-shimmer {
-        position: fixed;
-        inset: 0;
-        z-index: 308;
-        pointer-events: none;
-        box-shadow: inset 0 0 0 1px rgba(0, 212, 255, 0); /* invisible base */
-      }
-      #holo-shimmer::before {
-        content: "";
-        position: absolute;
-        inset: 0;
-        border: 1.5px solid transparent;
-        border-image: linear-gradient(
-            135deg,
-            rgba(255, 40, 40, 0.55) 0%,
-            rgba(0, 212, 255, 0.8) 15%,
-            rgba(80, 255, 120, 0.6) 30%,
-            rgba(180, 80, 255, 0.7) 45%,
-            rgba(0, 212, 255, 0.8) 60%,
-            rgba(255, 200, 40, 0.55) 75%,
-            rgba(255, 40, 40, 0.55) 100%
-          )
-          1;
-        animation: holo-shimmer-rotate 8s linear infinite;
-        opacity: 0.45;
-      }
-      @keyframes holo-shimmer-rotate {
-        from {
-          filter: hue-rotate(0deg);
-        }
-        to {
-          filter: hue-rotate(360deg);
-        }
-      }
-
-      /* Layer 11 — Glitch bar (JS-driven) */
-      #holo-glitch {
-        position: fixed;
-        left: 0;
-        right: 0;
-        z-index: 309;
-        pointer-events: none;
-        height: 2px;
-        display: none;
-        mix-blend-mode: screen;
-        background: linear-gradient(
-          to right,
-          rgba(255, 20, 20, 0) 0%,
-          rgba(255, 20, 20, 0.55) 18%,
-          rgba(0, 212, 255, 0.45) 38%,
-          rgba(255, 255, 255, 0.6) 50%,
-          rgba(0, 212, 255, 0.45) 62%,
-          rgba(255, 20, 20, 0.55) 82%,
-          rgba(255, 20, 20, 0) 100%
-        );
-      }
-      /* Wide glitch variant */
-      #holo-glitch.wide {
-        height: 4px;
-        background: linear-gradient(
-          to right,
-          rgba(0, 212, 255, 0) 0%,
-          rgba(255, 20, 20, 0.4) 12%,
-          rgba(0, 212, 255, 0.5) 30%,
-          rgba(255, 255, 255, 0.35) 50%,
-          rgba(0, 212, 255, 0.5) 70%,
-          rgba(255, 20, 20, 0.4) 88%,
-          rgba(0, 212, 255, 0) 100%
-        );
-        box-shadow: 0 0 12px rgba(0, 212, 255, 0.3);
-      }
-
-      /* ═══════════════════════════════════════════════════════════════════
          ROUND 6 — PILOT SEAT: WASD boost, target reticle, warp bloom
       ═══════════════════════════════════════════════════════════════════ */
 
@@ -1626,7 +1140,6 @@
       #nav-reticle,
       #target-label,
       #vel-hud,
-      #compass-hud,
       #boost-vignette,
       #pilot-guide,
       #dont-panic,
@@ -2058,7 +1571,7 @@
            All 8 planets + Pluto + major moons + asteroid belt + orbit paths
            Canvas textures applied by initPlanetTextures() at scene load
       ════════════════════════════════════════════════════════════════════ -->
-      <a-entity id="solar-system" position="-600 0 -900" solar-system-realtime>
+      <a-entity id="solar-system" position="0 -20 -350" solar-system-realtime>
         <!-- ── ORBIT PATH RINGS (faint, flat on XZ plane) ───────────────── -->
         <a-ring
           radius-inner="21.8"
@@ -3798,7 +3311,10 @@
             /* Speed scales with distance so it feels natural at all scales */
             var speed = Math.max(1.5, dist * 0.06);
             /* scroll down (deltaY > 0) = move forward; scroll up = move back */
-            rig.object3D.position.addScaledVector(fwd, e.deltaY > 0 ? speed : -speed);
+            rig.object3D.position.addScaledVector(
+              fwd,
+              e.deltaY > 0 ? speed : -speed,
+            );
             var newDist = rig.object3D.position.length();
             window._updateScaleHUD(newDist, null);
             if (window.GeoAnchor) window.GeoAnchor.notifyZoom(newDist);
@@ -5335,13 +4851,8 @@
           }
         },
 
-        /* ── Holographic display frame ─────────────────────────────────────
-           Injects 11 CSS overlay layers above the 3D canvas:
-           vignette, RGB chromatic aberration (3 channels), scanlines,
-           Fresnel corner rings, breathing rim, corner HUD brackets,
-           corner dot emitters, iridescent shimmer strip, glitch bar.
-        ──────────────────────────────────────────────────────────────────── */
         _initHoloDisplay: function () {
+          /* removed — clean viewport */
           var body = document.body;
 
           /* Helper — create a div, append to body, return it */
@@ -6734,7 +6245,7 @@
           if (earthEl) {
             earthEl.object3D.getWorldPosition(_hPos);
           } else {
-            _hPos.set(-600, 0, -900); // solar system centre fallback
+            _hPos.set(0, -20, -350); // solar system centre fallback
           }
 
           // Player (rig) world position
