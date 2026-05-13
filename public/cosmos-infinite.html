@@ -1376,7 +1376,6 @@
       renderer="antialias: true; colorManagement: true"
       background="color: #000000"
     >
-
       <!-- Lighting rig -->
       <a-light type="ambient" color="#04080f" intensity="0.5"></a-light>
       <a-light
@@ -5319,9 +5318,9 @@
           var group = new THREE.Object3D();
           /* 3 orbital shells matching real Starlink inclinations */
           var shells = [
-            { count: 80, radius: 3.0, inclDeg: 53,  speed: 0.0004  },
-            { count: 70, radius: 3.4, inclDeg: 70,  speed: 0.00035 },
-            { count: 50, radius: 3.8, inclDeg: 97,  speed: 0.0003  }
+            { count: 80, radius: 3.0, inclDeg: 53, speed: 0.0004 },
+            { count: 70, radius: 3.4, inclDeg: 70, speed: 0.00035 },
+            { count: 50, radius: 3.8, inclDeg: 97, speed: 0.0003 },
           ];
           this._meshes = [];
           var self = this;
@@ -5329,21 +5328,26 @@
             var positions = new Float32Array(shell.count * 3);
             for (var i = 0; i < shell.count; i++) {
               var ang = (i / shell.count) * Math.PI * 2;
-              var inclRad = shell.inclDeg * Math.PI / 180;
-              positions[i * 3]     = shell.radius * Math.cos(ang);
-              positions[i * 3 + 1] = shell.radius * Math.sin(ang) * Math.sin(inclRad);
-              positions[i * 3 + 2] = shell.radius * Math.sin(ang) * Math.cos(inclRad);
+              var inclRad = (shell.inclDeg * Math.PI) / 180;
+              positions[i * 3] = shell.radius * Math.cos(ang);
+              positions[i * 3 + 1] =
+                shell.radius * Math.sin(ang) * Math.sin(inclRad);
+              positions[i * 3 + 2] =
+                shell.radius * Math.sin(ang) * Math.cos(inclRad);
             }
             var geo = new THREE.BufferGeometry();
-            geo.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+            geo.setAttribute(
+              "position",
+              new THREE.BufferAttribute(positions, 3),
+            );
             var mat = new THREE.PointsMaterial({
-              color: 0xC8DEFF,
-              size: 0.10,
+              color: 0xc8deff,
+              size: 0.1,
               sizeAttenuation: true,
               transparent: true,
               opacity: 0.85,
               blending: THREE.AdditiveBlending,
-              depthWrite: false
+              depthWrite: false,
             });
             var mesh = new THREE.Points(geo, mat);
             mesh.userData.speed = shell.speed;
@@ -5358,7 +5362,7 @@
           this._meshes.forEach(function (m) {
             m.rotation.y += m.userData.speed;
           });
-        }
+        },
       });
 
       /* ── solar-system-realtime — J2000 orbital mechanics + moon orbits ── */
