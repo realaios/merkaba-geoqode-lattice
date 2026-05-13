@@ -1439,65 +1439,65 @@
 
       <!-- ── REAL 3D GLTF MODELS ───────────────────────────────────────────── -->
 
-      <!-- Mothership: sci-fi saucer with PBR metallic + green emissive glow -->
-      <!-- Scale 0.005 => ~8.9 units wide (fits inside D8 ring r=18) -->
+      <!-- Mothership: sci-fi saucer — at Merkaba core, scale reduced for clean fit -->
+      <!-- Scale 0.001 => fits cleanly inside D8 ring (r=18) -->
       <a-entity
         animation="property: rotation; to: 0 360 0; dur: 44000; loop: true; easing: linear"
       >
         <a-gltf-model
           src="/public/models/mothership/mothership.gltf"
           position="0 -2 0"
-          scale="0.005 0.005 0.005"
+          scale="0.001 0.001 0.001"
           geoanchor="operator: otimes; frequency: 852; latticeNode: 0; proximityRadius: 15; label: MOTHERSHIP; swarmSync: true"
         ></a-gltf-model>
       </a-entity>
 
-      <!-- Quaternius Planet 1 — D26 east (r=30) — CC0 low-poly -->
+      <!-- Quaternius Planet 1 — beyond D48 east (r=80) — CC0 low-poly -->
       <a-gltf-model
         src="/public/models/planet1.gltf"
-        position="30 3 0"
+        position="80 5 0"
         scale="4 4 4"
         animation="property: rotation; to: 0 360 0; dur: 26000; loop: true; easing: linear"
         geoanchor="operator: phi; frequency: 528; latticeNode: 2; proximityRadius: 20; label: PLANET-1; swarmSync: true"
       ></a-gltf-model>
 
-      <!-- Quaternius Planet 5 — D26 southwest — CC0 low-poly -->
+      <!-- Quaternius Planet 5 — beyond D48 southwest (r=95) — CC0 low-poly -->
       <a-gltf-model
         src="/public/models/planet5.gltf"
-        position="-22 -2 -21"
+        position="-68 -5 -68"
         scale="5 5 5"
         animation="property: rotation; to: 0 360 0; dur: 34000; loop: true; easing: linear"
         geoanchor="operator: wave; frequency: 741; latticeNode: 4; proximityRadius: 20; label: PLANET-5; swarmSync: true"
       ></a-gltf-model>
 
-      <!-- Quaternius GeodesicDome station — D26 north — CC0 low-poly -->
+      <!-- Quaternius GeodesicDome station — beyond D48 rear (r=110) — CC0 low-poly -->
       <a-gltf-model
         src="/public/models/geodesic_dome.gltf"
-        position="0 8 -30"
+        position="0 10 -110"
         scale="3 3 3"
         animation="property: rotation; to: 0 360 0; dur: 18000; loop: true; easing: linear"
         geoanchor="operator: delta; frequency: 963; latticeNode: 12; proximityRadius: 18; label: GEODOME; swarmSync: true"
       ></a-gltf-model>
 
-      <!-- Spaceship Bee orbits D8 ring (r=18) — Quaternius CC0 -->
+      <!-- Spaceship Bee orbits just outside D48 ring (r=55) — Quaternius CC0 -->
       <a-entity
         animation="property: rotation; to: 0 360 0; dur: 24000; loop: true; easing: linear"
       >
         <a-gltf-model
           src="/public/models/spaceship_bee.gltf"
-          position="18 5 0"
+          position="55 8 0"
           scale="2.5 2.5 2.5"
           geoanchor="operator: phi; frequency: 528; latticeNode: 6; proximityRadius: 8; label: BEE-SHIP; swarmSync: true"
         ></a-gltf-model>
       </a-entity>
 
-      <!-- Spaceship Red Panda counter-orbits D8 ring — Quaternius CC0 -->
+      <!-- Spaceship Red Panda counter-orbits outside D48 ring (r=55) — Quaternius CC0 -->
       <a-entity
         animation="property: rotation; to: 0 -360 0; dur: 31000; loop: true; easing: linear"
       >
         <a-gltf-model
           src="/public/models/spaceship_red_panda.gltf"
-          position="0 -3 18"
+          position="0 -5 55"
           scale="2.5 2.5 2.5"
           geoanchor="operator: wave; frequency: 639; latticeNode: 38; proximityRadius: 8; label: RED-PANDA; swarmSync: true"
         ></a-gltf-model>
