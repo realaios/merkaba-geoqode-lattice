@@ -1545,7 +1545,12 @@
            All 8 planets + Pluto + major moons + asteroid belt + orbit paths
            Canvas textures applied by initPlanetTextures() at scene load
       ════════════════════════════════════════════════════════════════════ -->
-      <a-entity id="solar-system" position="0 -5 -200" scale="5 5 5" solar-system-realtime>
+      <a-entity
+        id="solar-system"
+        position="0 -5 -200"
+        scale="5 5 5"
+        solar-system-realtime
+      >
         <!-- ── ORBIT PATH RINGS (faint, flat on XZ plane) ───────────────── -->
         <a-ring
           radius-inner="21.8"
@@ -5289,13 +5294,33 @@
           /* Real Starlink shells: spread sats across many orbital planes (RAAN) */
           /* Each sat: random RAAN (ascending node) + evenly spaced true anomaly  */
           var shells = [
-            { count: 28, radius: 3.0, inclDeg: 53,  speed: 0.00038, planesPerShell: 7 },
-            { count: 20, radius: 3.4, inclDeg: 70,  speed: 0.00030, planesPerShell: 5 },
-            { count: 16, radius: 3.8, inclDeg: 97,  speed: 0.00024, planesPerShell: 4 },
+            {
+              count: 28,
+              radius: 3.0,
+              inclDeg: 53,
+              speed: 0.00038,
+              planesPerShell: 7,
+            },
+            {
+              count: 20,
+              radius: 3.4,
+              inclDeg: 70,
+              speed: 0.0003,
+              planesPerShell: 5,
+            },
+            {
+              count: 16,
+              radius: 3.8,
+              inclDeg: 97,
+              speed: 0.00024,
+              planesPerShell: 4,
+            },
           ];
           this._meshes = [];
           var self = this;
-          var PI = Math.PI, cos = Math.cos, sin = Math.sin;
+          var PI = Math.PI,
+            cos = Math.cos,
+            sin = Math.sin;
           shells.forEach(function (shell) {
             var positions = new Float32Array(shell.count * 3);
             var satsPerPlane = Math.ceil(shell.count / shell.planesPerShell);
@@ -5304,7 +5329,8 @@
             for (var p = 0; p < shell.planesPerShell; p++) {
               /* evenly distribute RAAN across 360 deg */
               var raan = (p / shell.planesPerShell) * PI * 2;
-              var cr = cos(raan), sr = sin(raan);
+              var cr = cos(raan),
+                sr = sin(raan);
               for (var s = 0; s < satsPerPlane && si < shell.count; s++, si++) {
                 var nu = (s / satsPerPlane) * PI * 2;
                 /* position in orbital plane before RAAN rotation */
@@ -5312,19 +5338,22 @@
                 var yOrb = shell.radius * sin(nu) * sin(inclRad);
                 var zOrb = shell.radius * sin(nu) * cos(inclRad);
                 /* rotate by RAAN around world-Y axis */
-                positions[si * 3]     = xOrb * cr - zOrb * sr;
+                positions[si * 3] = xOrb * cr - zOrb * sr;
                 positions[si * 3 + 1] = yOrb;
                 positions[si * 3 + 2] = xOrb * sr + zOrb * cr;
               }
             }
             var geo = new THREE.BufferGeometry();
-            geo.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+            geo.setAttribute(
+              "position",
+              new THREE.BufferAttribute(positions, 3),
+            );
             var mat = new THREE.PointsMaterial({
               color: 0xd0e8ff,
               size: 0.14,
               sizeAttenuation: true,
               transparent: true,
-              opacity: 0.90,
+              opacity: 0.9,
               blending: THREE.AdditiveBlending,
               depthWrite: false,
             });
@@ -5338,7 +5367,9 @@
         },
         tick: function () {
           if (!this._meshes) return;
-          this._meshes.forEach(function (m) { m.rotation.y += m.userData.speed; });
+          this._meshes.forEach(function (m) {
+            m.rotation.y += m.userData.speed;
+          });
         },
       });
 
@@ -7272,7 +7303,11 @@
         width: 42px;
         height: 42px;
         border-radius: 50%;
-        background: radial-gradient(circle at 38% 36%, rgba(0,212,255,0.9), rgba(0,140,200,0.6));
+        background: radial-gradient(
+          circle at 38% 36%,
+          rgba(0, 212, 255, 0.9),
+          rgba(0, 140, 200, 0.6)
+        );
         box-shadow: 0 0 10px rgba(0, 212, 255, 0.6);
         pointer-events: none;
         transition: transform 0.05s linear;
@@ -7300,7 +7335,9 @@
         line-height: 1;
         text-align: center;
       }
-      #sketchfab-btn:hover { background: rgba(0, 180, 100, 0.38); }
+      #sketchfab-btn:hover {
+        background: rgba(0, 180, 100, 0.38);
+      }
       /* ── Sketchfab panel ── */
       #sketchfab-panel {
         display: none;
@@ -7315,7 +7352,9 @@
         border-radius: 12px;
         overflow: hidden;
         z-index: 4000;
-        box-shadow: 0 0 40px rgba(0, 220, 120, 0.25), 0 20px 80px rgba(0,0,0,0.8);
+        box-shadow:
+          0 0 40px rgba(0, 220, 120, 0.25),
+          0 20px 80px rgba(0, 0, 0, 0.8);
       }
       #sketchfab-panel iframe {
         width: 100%;
@@ -7330,7 +7369,7 @@
         justify-content: space-between;
         padding: 0 14px;
         border-bottom: 1px solid rgba(0, 220, 120, 0.3);
-        font-family: 'Courier New', monospace;
+        font-family: "Courier New", monospace;
         font-size: 13px;
         color: #00dc78;
       }
@@ -7378,42 +7417,57 @@
         if (!joyWrap || !joyStick) return;
 
         /* Show joystick only on touch-capable devices */
-        var isTouch = ("ontouchstart" in window) || (navigator.maxTouchPoints > 0);
+        var isTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
         if (isTouch) {
           joyWrap.style.display = "block";
           /* Also show Sketchfab button on all devices */
         }
 
         var joyActive = false;
-        var joyDX = 0, joyDY = 0;
+        var joyDX = 0,
+          joyDY = 0;
         var baseRect = null;
         var RADIUS = 55; /* half of 110px base */
         var DEAD = 0.08; /* dead zone */
 
-        function clamp(v, lo, hi) { return v < lo ? lo : v > hi ? hi : v; }
+        function clamp(v, lo, hi) {
+          return v < lo ? lo : v > hi ? hi : v;
+        }
 
-        joyWrap.addEventListener("touchstart", function (e) {
-          e.preventDefault();
-          joyActive = true;
-          baseRect = joyWrap.getBoundingClientRect();
-        }, { passive: false });
+        joyWrap.addEventListener(
+          "touchstart",
+          function (e) {
+            e.preventDefault();
+            joyActive = true;
+            baseRect = joyWrap.getBoundingClientRect();
+          },
+          { passive: false },
+        );
 
-        joyWrap.addEventListener("touchmove", function (e) {
-          if (!joyActive || !baseRect) return;
-          e.preventDefault();
-          var t = e.touches[0];
-          var cx = baseRect.left + baseRect.width / 2;
-          var cy = baseRect.top + baseRect.height / 2;
-          var rawX = (t.clientX - cx) / RADIUS;
-          var rawY = (t.clientY - cy) / RADIUS;
-          /* clamp to unit circle */
-          var mag = Math.sqrt(rawX * rawX + rawY * rawY);
-          if (mag > 1.0) { rawX /= mag; rawY /= mag; }
-          joyDX = rawX;
-          joyDY = rawY;
-          /* Move stick visual */
-          joyStick.style.transform = "translate(" + (joyDX * 32) + "px," + (joyDY * 32) + "px)";
-        }, { passive: false });
+        joyWrap.addEventListener(
+          "touchmove",
+          function (e) {
+            if (!joyActive || !baseRect) return;
+            e.preventDefault();
+            var t = e.touches[0];
+            var cx = baseRect.left + baseRect.width / 2;
+            var cy = baseRect.top + baseRect.height / 2;
+            var rawX = (t.clientX - cx) / RADIUS;
+            var rawY = (t.clientY - cy) / RADIUS;
+            /* clamp to unit circle */
+            var mag = Math.sqrt(rawX * rawX + rawY * rawY);
+            if (mag > 1.0) {
+              rawX /= mag;
+              rawY /= mag;
+            }
+            joyDX = rawX;
+            joyDY = rawY;
+            /* Move stick visual */
+            joyStick.style.transform =
+              "translate(" + joyDX * 32 + "px," + joyDY * 32 + "px)";
+          },
+          { passive: false },
+        );
 
         function resetJoy() {
           joyActive = false;
@@ -7451,43 +7505,63 @@
 
         /* ── Two-finger drag (pan/fly) — separate from pinch ── */
         /* We intercept 2-touch events when NOT pinching         */
-        var _pan0X = 0, _pan0Y = 0, _panActive = false;
-        window.addEventListener("touchstart", function (e) {
-          if (e.touches.length === 2) {
-            var t0 = e.touches[0], t1 = e.touches[1];
-            var dist = Math.hypot(t1.clientX - t0.clientX, t1.clientY - t0.clientY);
-            _panStartDist = dist;
-            _pan0X = (t0.clientX + t1.clientX) / 2;
-            _pan0Y = (t0.clientY + t1.clientY) / 2;
-            _panActive = true;
-          } else {
-            _panActive = false;
-          }
-        }, { passive: true });
+        var _pan0X = 0,
+          _pan0Y = 0,
+          _panActive = false;
+        window.addEventListener(
+          "touchstart",
+          function (e) {
+            if (e.touches.length === 2) {
+              var t0 = e.touches[0],
+                t1 = e.touches[1];
+              var dist = Math.hypot(
+                t1.clientX - t0.clientX,
+                t1.clientY - t0.clientY,
+              );
+              _panStartDist = dist;
+              _pan0X = (t0.clientX + t1.clientX) / 2;
+              _pan0Y = (t0.clientY + t1.clientY) / 2;
+              _panActive = true;
+            } else {
+              _panActive = false;
+            }
+          },
+          { passive: true },
+        );
 
         var _panStartDist = 0;
-        window.addEventListener("touchmove", function (e) {
-          if (!_panActive || e.touches.length !== 2) return;
-          var t0 = e.touches[0], t1 = e.touches[1];
-          var dist = Math.hypot(t1.clientX - t0.clientX, t1.clientY - t0.clientY);
-          var cx = (t0.clientX + t1.clientX) / 2;
-          var cy = (t0.clientY + t1.clientY) / 2;
-          var ddist = dist - _panStartDist;
-          /* pinch/spread = zoom (handled by original pinch handler) */
-          /* but we also add a small vertical fly for 2-finger swipe */
-          var ddY = cy - _pan0Y;
-          _pan0X = cx; _pan0Y = cy; _panStartDist = dist;
-          if (Math.abs(ddY) > 1) {
-            var rig = document.getElementById("cameraRig");
-            var camEl = document.querySelector("[look-controls]");
-            if (rig && rig.object3D && camEl && camEl.object3D) {
-              var THREE = AFRAME.THREE;
-              var fwd2 = new THREE.Vector3();
-              camEl.object3D.getWorldDirection(fwd2);
-              rig.object3D.position.addScaledVector(fwd2, ddY * 0.25);
+        window.addEventListener(
+          "touchmove",
+          function (e) {
+            if (!_panActive || e.touches.length !== 2) return;
+            var t0 = e.touches[0],
+              t1 = e.touches[1];
+            var dist = Math.hypot(
+              t1.clientX - t0.clientX,
+              t1.clientY - t0.clientY,
+            );
+            var cx = (t0.clientX + t1.clientX) / 2;
+            var cy = (t0.clientY + t1.clientY) / 2;
+            var ddist = dist - _panStartDist;
+            /* pinch/spread = zoom (handled by original pinch handler) */
+            /* but we also add a small vertical fly for 2-finger swipe */
+            var ddY = cy - _pan0Y;
+            _pan0X = cx;
+            _pan0Y = cy;
+            _panStartDist = dist;
+            if (Math.abs(ddY) > 1) {
+              var rig = document.getElementById("cameraRig");
+              var camEl = document.querySelector("[look-controls]");
+              if (rig && rig.object3D && camEl && camEl.object3D) {
+                var THREE = AFRAME.THREE;
+                var fwd2 = new THREE.Vector3();
+                camEl.object3D.getWorldDirection(fwd2);
+                rig.object3D.position.addScaledVector(fwd2, ddY * 0.25);
+              }
             }
-          }
-        }, { passive: true });
+          },
+          { passive: true },
+        );
       })();
 
       /* ─── Sketchfab 3D panel ──────────────────────────────────────────── */
@@ -7501,7 +7575,8 @@
         /* Always show the button */
         btn.style.display = "flex";
 
-        var MODEL_URL = "https://sketchfab.com/models/23d23e9be6954de5a8d1e8be8ecf62e5/embed?autostart=1&ui_theme=dark&camera=0";
+        var MODEL_URL =
+          "https://sketchfab.com/models/23d23e9be6954de5a8d1e8be8ecf62e5/embed?autostart=1&ui_theme=dark&camera=0";
         var open = false;
 
         btn.addEventListener("click", function () {
