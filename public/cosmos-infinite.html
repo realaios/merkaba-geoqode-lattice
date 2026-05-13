@@ -357,11 +357,31 @@
         white-space: nowrap;
         backdrop-filter: blur(10px);
       }
-      #geo-tooltip.visible { opacity: 1; }
-      .geo-op     { font-size: 0.82rem; font-weight: 700; color: #00d4ff; margin-bottom: 2px; }
-      .geo-addr   { font-size: 0.58rem; color: #9b5cff; letter-spacing: 0.1em; }
-      .geo-domain { font-size: 0.52rem; color: #f59e0b; margin-top: 1px; }
-      .geo-hint   { font-size: 0.48rem; color: #475569; margin-top: 3px; letter-spacing: 0.14em; }
+      #geo-tooltip.visible {
+        opacity: 1;
+      }
+      .geo-op {
+        font-size: 0.82rem;
+        font-weight: 700;
+        color: #00d4ff;
+        margin-bottom: 2px;
+      }
+      .geo-addr {
+        font-size: 0.58rem;
+        color: #9b5cff;
+        letter-spacing: 0.1em;
+      }
+      .geo-domain {
+        font-size: 0.52rem;
+        color: #f59e0b;
+        margin-top: 1px;
+      }
+      .geo-hint {
+        font-size: 0.48rem;
+        color: #475569;
+        margin-top: 3px;
+        letter-spacing: 0.14em;
+      }
 
       /* ── Warp HUD ──────────────────────────────────────────────────────── */
       #galaxy-hud {
@@ -376,17 +396,65 @@
         opacity: 0;
         transition: opacity 0.35s;
       }
-      #galaxy-hud.visible { opacity: 1; }
+      #galaxy-hud.visible {
+        opacity: 1;
+      }
       .warp-title {
         font-size: 2rem;
         font-weight: 900;
         letter-spacing: 0.3em;
         color: #ffffff;
-        text-shadow: 0 0 30px #00d4ff, 0 0 70px #7c3aed;
+        text-shadow:
+          0 0 30px #00d4ff,
+          0 0 70px #7c3aed;
         margin-bottom: 6px;
       }
-      .warp-coord { font-size: 0.72rem; color: #00d4ff; letter-spacing: 0.22em; }
-      .warp-sub   { font-size: 0.5rem;  color: #475569; letter-spacing: 0.16em; margin-top: 4px; }
+      .warp-coord {
+        font-size: 0.72rem;
+        color: #00d4ff;
+        letter-spacing: 0.22em;
+      }
+      .warp-sub {
+        font-size: 0.5rem;
+        color: #475569;
+        letter-spacing: 0.16em;
+        margin-top: 4px;
+      }
+      .warp-improbability {
+        font-size: 0.44rem;
+        color: #22c55e;
+        letter-spacing: 0.18em;
+        margin-top: 5px;
+        opacity: 0.88;
+      }
+      .geo-note {
+        font-size: 0.48rem;
+        color: #22c55e;
+        font-style: italic;
+        margin-top: 3px;
+        opacity: 0.85;
+        letter-spacing: 0.04em;
+      }
+      /* ── DON'T PANIC badge ──────────────────────────────────────────────── */
+      #dont-panic {
+        position: fixed;
+        bottom: 18px;
+        right: 22px;
+        z-index: 500;
+        font-family: monospace;
+        font-size: 0.62rem;
+        font-weight: 900;
+        letter-spacing: 0.28em;
+        color: #ff6b35;
+        text-shadow: 0 0 12px #ff6b35, 0 0 28px rgba(255,107,53,0.45);
+        animation: dp-pulse 3.2s ease-in-out infinite;
+        pointer-events: none;
+        user-select: none;
+      }
+      @keyframes dp-pulse {
+        0%, 100% { opacity: 0.65; text-shadow: 0 0 8px #ff6b35; }
+        50% { opacity: 1.0; text-shadow: 0 0 22px #ff6b35, 0 0 55px rgba(255,107,53,0.55); }
+      }
     </style>
   </head>
   <body>
@@ -1872,24 +1940,31 @@
       AFRAME.registerComponent("nebula-cloud", {
         init: function () {
           var THREE = AFRAME.THREE;
-          var COUNT = 1400;
+          var COUNT = 2400;
+          var SPARKLE = 200;
           var pos = new Float32Array(COUNT * 3);
           var col = new Float32Array(COUNT * 3);
 
           var palettes = [
             [0.05, 0.18, 0.95] /* deep blue */,
-            [0.55, 0.1, 0.9] /* violet */,
-            [0.0, 0.65, 0.85] /* cyan-teal */,
+            [0.55, 0.1, 0.9]   /* violet */,
+            [0.0, 0.65, 0.85]  /* cyan-teal */,
             [0.92, 0.12, 0.72] /* magenta */,
+            [0.98, 0.55, 0.1]  /* amber-fire */,
+            [0.1, 0.88, 0.56]  /* aurora-green */,
           ];
           var pal = palettes[Math.floor(Math.random() * palettes.length)];
 
+          /* Ellipsoidal distribution: clusters toward centre, flattened on Y */
           for (var i = 0; i < COUNT; i++) {
-            pos[i * 3] = (Math.random() - 0.5) * 46;
-            pos[i * 3 + 1] = (Math.random() - 0.5) * 28;
-            pos[i * 3 + 2] = (Math.random() - 0.5) * 46;
-            var v = 0.28 + Math.random() * 0.52;
-            col[i * 3] = pal[0] * v;
+            var theta = Math.random() * Math.PI * 2;
+            var phi2  = Math.acos(2.0 * Math.random() - 1.0);
+            var r2    = Math.pow(Math.random(), 0.45) * 26;
+            pos[i * 3]     = r2 * Math.sin(phi2) * Math.cos(theta);
+            pos[i * 3 + 1] = r2 * Math.sin(phi2) * Math.sin(theta) * 0.52;
+            pos[i * 3 + 2] = r2 * Math.cos(phi2);
+            var v = 0.3 + Math.random() * 0.7;
+            col[i * 3]     = pal[0] * v;
             col[i * 3 + 1] = pal[1] * v;
             col[i * 3 + 2] = pal[2] * v;
           }
@@ -1897,22 +1972,58 @@
           var geo = new THREE.BufferGeometry();
           geo.setAttribute("position", new THREE.BufferAttribute(pos, 3));
           geo.setAttribute("color", new THREE.BufferAttribute(col, 3));
+          this._mat = new THREE.PointsMaterial({
+            size: 2.8,
+            vertexColors: true,
+            transparent: true,
+            opacity: 0.5,
+            blending: THREE.AdditiveBlending,
+            depthWrite: false,
+            sizeAttenuation: true,
+          });
+          this.el.setObject3D("nebula", new THREE.Points(geo, this._mat));
 
-          this.el.setObject3D(
-            "nebula",
-            new THREE.Points(
-              geo,
-              new THREE.PointsMaterial({
-                size: 2.0,
-                vertexColors: true,
-                transparent: true,
-                opacity: 0.3,
-                blending: THREE.AdditiveBlending,
-                depthWrite: false,
-                sizeAttenuation: true,
-              }),
-            ),
-          );
+          /* ── Sparkle layer: bright micro-stars that shimmer ───────────── */
+          var sPos = new Float32Array(SPARKLE * 3);
+          var sCol = new Float32Array(SPARKLE * 3);
+          for (var j = 0; j < SPARKLE; j++) {
+            var sa = Math.random() * Math.PI * 2;
+            var sb = Math.acos(2.0 * Math.random() - 1.0);
+            var sr = Math.pow(Math.random(), 0.3) * 26;
+            sPos[j * 3]     = sr * Math.sin(sb) * Math.cos(sa);
+            sPos[j * 3 + 1] = sr * Math.sin(sb) * Math.sin(sa) * 0.52;
+            sPos[j * 3 + 2] = sr * Math.cos(sb);
+            sCol[j * 3]     = 0.74 + pal[0] * 0.26;
+            sCol[j * 3 + 1] = 0.74 + pal[1] * 0.26;
+            sCol[j * 3 + 2] = 0.84 + pal[2] * 0.16;
+          }
+          var sGeo = new THREE.BufferGeometry();
+          sGeo.setAttribute("position", new THREE.BufferAttribute(sPos, 3));
+          sGeo.setAttribute("color", new THREE.BufferAttribute(sCol, 3));
+          this._sparkleMat = new THREE.PointsMaterial({
+            size: 1.2,
+            vertexColors: true,
+            transparent: true,
+            opacity: 0.9,
+            blending: THREE.AdditiveBlending,
+            depthWrite: false,
+            sizeAttenuation: true,
+          });
+          this.el.setObject3D("sparkle", new THREE.Points(sGeo, this._sparkleMat));
+
+          this._t = Math.random() * 100;
+          this._rotSpd = (Math.random() - 0.5) * 0.00014;
+        },
+        tick: function (time, delta) {
+          this._t += delta * 0.001;
+          var t = this._t;
+          /* Multi-frequency shimmer: genuine diamond-sparkle feel */
+          this._sparkleMat.opacity =
+            0.5 + Math.sin(t * 2.3) * 0.28 + Math.sin(t * 7.1) * 0.12 + Math.sin(t * 13.4) * 0.06;
+          this._mat.opacity = 0.38 + Math.sin(t * 0.7) * 0.14;
+          /* Slow drift rotation */
+          this.el.object3D.rotation.y += this._rotSpd;
+          this.el.object3D.rotation.x += this._rotSpd * 0.4;
         },
       });
 
@@ -2140,34 +2251,49 @@
          SPACE STATION COMPONENT
          .geo: 26.263@852hz/security-forge  |  PHYSICS sector  |  CANONICAL
       ═══════════════════════════════════════════════════════════════════ */
-      AFRAME.registerComponent('space-station', {
+      AFRAME.registerComponent("space-station", {
         init: function () {
           var THREE = AFRAME.THREE;
           var group = new THREE.Group();
 
           /* Hub cylinder */
           var hubMat = new THREE.MeshPhongMaterial({
-            color: 0x8899bb, emissive: 0x223366, emissiveIntensity: 0.6, shininess: 200
+            color: 0x8899bb,
+            emissive: 0x223366,
+            emissiveIntensity: 0.6,
+            shininess: 200,
           });
-          group.add(new THREE.Mesh(new THREE.CylinderGeometry(4, 4, 8, 24), hubMat));
+          group.add(
+            new THREE.Mesh(new THREE.CylinderGeometry(4, 4, 8, 24), hubMat),
+          );
 
           /* Top / bottom caps */
           var capMat = new THREE.MeshPhongMaterial({
-            color: 0x99aacc, emissive: 0x334477, emissiveIntensity: 0.5
+            color: 0x99aacc,
+            emissive: 0x334477,
+            emissiveIntensity: 0.5,
           });
           [-4.3, 4.3].forEach(function (y) {
-            var cap = new THREE.Mesh(new THREE.CylinderGeometry(4.3, 4.3, 0.55, 24), capMat);
+            var cap = new THREE.Mesh(
+              new THREE.CylinderGeometry(4.3, 4.3, 0.55, 24),
+              capMat,
+            );
             cap.position.y = y;
             group.add(cap);
           });
 
           /* 4 radial arms + solar panels + window lights */
           var armMat = new THREE.MeshPhongMaterial({
-            color: 0x667799, emissive: 0x112244, emissiveIntensity: 0.4
+            color: 0x667799,
+            emissive: 0x112244,
+            emissiveIntensity: 0.4,
           });
           for (var a = 0; a < 4; a++) {
             var aAngle = (a / 4) * Math.PI * 2;
-            var arm = new THREE.Mesh(new THREE.BoxGeometry(14, 1.3, 1.3), armMat);
+            var arm = new THREE.Mesh(
+              new THREE.BoxGeometry(14, 1.3, 1.3),
+              armMat,
+            );
             arm.position.set(Math.cos(aAngle) * 7, 0, Math.sin(aAngle) * 7);
             arm.rotation.y = aAngle;
             group.add(arm);
@@ -2176,11 +2302,19 @@
             var panel = new THREE.Mesh(
               new THREE.BoxGeometry(6, 0.1, 3.8),
               new THREE.MeshPhongMaterial({
-                color: 0x1144aa, emissive: 0x0033ff, emissiveIntensity: 0.6,
-                shininess: 220, transparent: true, opacity: 0.9
-              })
+                color: 0x1144aa,
+                emissive: 0x0033ff,
+                emissiveIntensity: 0.6,
+                shininess: 220,
+                transparent: true,
+                opacity: 0.9,
+              }),
             );
-            panel.position.set(Math.cos(aAngle) * 14.5, 0.7, Math.sin(aAngle) * 14.5);
+            panel.position.set(
+              Math.cos(aAngle) * 14.5,
+              0.7,
+              Math.sin(aAngle) * 14.5,
+            );
             panel.rotation.y = aAngle;
             group.add(panel);
 
@@ -2188,27 +2322,44 @@
             for (var w = 0; w < 5; w++) {
               var wl = new THREE.Mesh(
                 new THREE.SphereGeometry(0.2, 7, 7),
-                new THREE.MeshPhongMaterial({ color: 0xffffff, emissive: 0xffffbb, emissiveIntensity: 3.2 })
+                new THREE.MeshPhongMaterial({
+                  color: 0xffffff,
+                  emissive: 0xffffbb,
+                  emissiveIntensity: 3.2,
+                }),
               );
-              wl.position.set(Math.cos(aAngle) * (4.5 + w * 1.7), 0.8, Math.sin(aAngle) * (4.5 + w * 1.7));
+              wl.position.set(
+                Math.cos(aAngle) * (4.5 + w * 1.7),
+                0.8,
+                Math.sin(aAngle) * (4.5 + w * 1.7),
+              );
               group.add(wl);
             }
           }
 
           /* Rotating centrifuge ring */
           this._ring = new THREE.Group();
-          this._ring.add(new THREE.Mesh(
-            new THREE.TorusGeometry(17, 1.2, 14, 80),
-            new THREE.MeshPhongMaterial({
-              color: 0xaabbdd, emissive: 0x2244aa, emissiveIntensity: 0.5, shininess: 180
-            })
-          ));
+          this._ring.add(
+            new THREE.Mesh(
+              new THREE.TorusGeometry(17, 1.2, 14, 80),
+              new THREE.MeshPhongMaterial({
+                color: 0xaabbdd,
+                emissive: 0x2244aa,
+                emissiveIntensity: 0.5,
+                shininess: 180,
+              }),
+            ),
+          );
           /* Ring porthole windows */
           for (var rw = 0; rw < 32; rw++) {
             var rwA = (rw / 32) * Math.PI * 2;
             var rwM = new THREE.Mesh(
               new THREE.SphereGeometry(0.3, 6, 6),
-              new THREE.MeshPhongMaterial({ color: 0xffffff, emissive: 0x88ccff, emissiveIntensity: 2.8 })
+              new THREE.MeshPhongMaterial({
+                color: 0xffffff,
+                emissive: 0x88ccff,
+                emissiveIntensity: 2.8,
+              }),
             );
             rwM.position.set(Math.cos(rwA) * 17, Math.sin(rwA) * 17, 0);
             this._ring.add(rwM);
@@ -2216,37 +2367,55 @@
           group.add(this._ring);
 
           /* Central docking spire */
-          group.add(new THREE.Mesh(
-            new THREE.ConeGeometry(1.1, 10, 12),
-            new THREE.MeshPhongMaterial({ color: 0xccddff, emissive: 0x4466ff, emissiveIntensity: 0.9 })
-          ));
+          group.add(
+            new THREE.Mesh(
+              new THREE.ConeGeometry(1.1, 10, 12),
+              new THREE.MeshPhongMaterial({
+                color: 0xccddff,
+                emissive: 0x4466ff,
+                emissiveIntensity: 0.9,
+              }),
+            ),
+          );
 
           /* Docking beacon */
           this._beacon = new THREE.Mesh(
             new THREE.SphereGeometry(0.6, 10, 10),
-            new THREE.MeshPhongMaterial({ color: 0xff3300, emissive: 0xff3300, emissiveIntensity: 3.5 })
+            new THREE.MeshPhongMaterial({
+              color: 0xff3300,
+              emissive: 0xff3300,
+              emissiveIntensity: 3.5,
+            }),
           );
           this._beacon.position.y = 10.5;
           group.add(this._beacon);
 
           /* Outer glow shell */
-          group.add(new THREE.Mesh(
-            new THREE.SphereGeometry(24, 12, 12),
-            new THREE.MeshPhongMaterial({
-              color: 0x0044ff, emissive: 0x001888, emissiveIntensity: 0.2,
-              side: THREE.BackSide, transparent: true, opacity: 0.07
-            })
-          ));
+          group.add(
+            new THREE.Mesh(
+              new THREE.SphereGeometry(24, 12, 12),
+              new THREE.MeshPhongMaterial({
+                color: 0x0044ff,
+                emissive: 0x001888,
+                emissiveIntensity: 0.2,
+                side: THREE.BackSide,
+                transparent: true,
+                opacity: 0.07,
+              }),
+            ),
+          );
 
-          this.el.setObject3D('station-group', group);
+          this.el.setObject3D("station-group", group);
           this._group = group;
         },
         tick: function (time) {
           var t = time * 0.001;
-          if (this._group)  this._group.rotation.y  = t * 0.042;
-          if (this._ring)   this._ring.rotation.z   = t * 0.26;
-          if (this._beacon) this._beacon.material.emissiveIntensity = 2.0 + Math.sin(t * 4.2) * 2.0;
-        }
+          if (this._group) this._group.rotation.y = t * 0.042;
+          if (this._ring) this._ring.rotation.z = t * 0.26;
+          if (this._beacon)
+            this._beacon.material.emissiveIntensity =
+              2.0 + Math.sin(t * 4.2) * 2.0;
+        },
       });
 
       /* ═══════════════════════════════════════════════════════════════════
@@ -2254,10 +2423,10 @@
          80,000 background stars + 480 GeoQode-anchored galaxy destinations
          Each galaxy carries a .geo URI  click = hyperspace warp
       ═══════════════════════════════════════════════════════════════════ */
-      AFRAME.registerComponent('distant-universe', {
+      AFRAME.registerComponent("distant-universe", {
         init: function () {
           var THREE = AFRAME.THREE;
-          var self  = this;
+          var self = this;
 
           /* ── 80,000 background stars ───────────────────────────────── */
           var BG = 80000;
@@ -2267,46 +2436,114 @@
             var br = 280 + Math.pow(Math.random(), 0.5) * 19720;
             var bth = Math.random() * Math.PI * 2;
             var bph = Math.acos(2 * Math.random() - 1);
-            bgP[i * 3]     = Math.sin(bph) * Math.cos(bth) * br;
+            bgP[i * 3] = Math.sin(bph) * Math.cos(bth) * br;
             bgP[i * 3 + 1] = Math.cos(bph) * br * (i % 3 === 0 ? 1.0 : 0.28);
             bgP[i * 3 + 2] = Math.sin(bph) * Math.sin(bth) * br;
             var bv = 0.35 + Math.random() * 0.65;
             var bk = Math.random();
-            bgC[i * 3]     = bv * (0.72 + bk * 0.28);
-            bgC[i * 3 + 1] = bv * (0.80 + bk * 0.18);
+            bgC[i * 3] = bv * (0.72 + bk * 0.28);
+            bgC[i * 3 + 1] = bv * (0.8 + bk * 0.18);
             bgC[i * 3 + 2] = bv * (0.92 + bk * 0.08);
           }
           var bgGeo = new THREE.BufferGeometry();
-          bgGeo.setAttribute('position', new THREE.BufferAttribute(bgP, 3));
-          bgGeo.setAttribute('color',    new THREE.BufferAttribute(bgC, 3));
+          bgGeo.setAttribute("position", new THREE.BufferAttribute(bgP, 3));
+          bgGeo.setAttribute("color", new THREE.BufferAttribute(bgC, 3));
           var bgMat = new THREE.PointsMaterial({
-            size: 1.15, vertexColors: true, transparent: true, opacity: 0.66,
-            blending: THREE.AdditiveBlending, depthWrite: false,
-            sizeAttenuation: false
+            size: 1.15,
+            vertexColors: true,
+            transparent: true,
+            opacity: 0.66,
+            blending: THREE.AdditiveBlending,
+            depthWrite: false,
+            sizeAttenuation: false,
           });
           bgMat.fog = false;
           this._bgPoints = new THREE.Points(bgGeo, bgMat);
-          this.el.setObject3D('bg-stars', this._bgPoints);
+          this.el.setObject3D("bg-stars", this._bgPoints);
 
           /* ── 480 GeoQode galaxy anchors (interactive) ──────────────── */
-          var DOMAINS   = ['quantum-arch','code-eng','systems-design','data-structs',
-                           'self-evolve','pain-removal','perf-forge','security-forge'];
-          var OPS       = ['phi','otimes','delta','wave'];
+          var DOMAINS = [
+            "quantum-arch",
+            "code-eng",
+            "systems-design",
+            "data-structs",
+            "self-evolve",
+            "pain-removal",
+            "perf-forge",
+            "security-forge",
+          ];
+          var OPS = ["phi", "otimes", "delta", "wave"];
           var FREQ_KEYS = [396, 417, 528, 639, 741, 852, 963, 72];
           var FREQ_COLS = {
-            396:  [0.94, 0.27, 0.27],
-            417:  [0.97, 0.62, 0.08],
-            528:  [0.14, 0.78, 0.38],
-            639:  [0.0,  0.83, 1.0 ],
-            741:  [0.56, 0.36, 0.97],
-            852:  [0.91, 0.47, 0.98],
-            963:  [0.98, 0.75, 0.14],
-            72:   [0.38, 0.65, 0.98]
+            396: [0.94, 0.27, 0.27],
+            417: [0.97, 0.62, 0.08],
+            528: [0.14, 0.78, 0.38],
+            639: [0.0, 0.83, 1.0],
+            741: [0.56, 0.36, 0.97],
+            852: [0.91, 0.47, 0.98],
+            963: [0.98, 0.75, 0.14],
+            72: [0.38, 0.65, 0.98],
           };
-          var GAL_NAMES = ['Andromeda','Triangulum','Pinwheel','Whirlpool','Sombrero',
-                           'Cartwheel','Centaurus','Sculptor','Fornax','Antennae',
-                           'Sunflower','Black Eye','Bode','Cigar','Coma',
-                           'Fireworks','Helix','Iris','Jewel','Leo'];
+          var GAL_NAMES = [
+            "Andromeda",
+            "Triangulum",
+            "Pinwheel",
+            "Whirlpool",
+            "Sombrero",
+            "Cartwheel",
+            "Centaurus",
+            "Sculptor",
+            "Fornax",
+            "Antennae",
+            "Sunflower",
+            "Black Eye",
+            "Bode",
+            "Cigar",
+            "Coma",
+            "Fireworks",
+            "Helix",
+            "Iris",
+            "Jewel",
+            "Leo",
+          ];
+          var GUIDE_NOTES = [
+            "Mostly harmless.",
+            "Pack your towel.",
+            "Highly improbable. And yet.",
+            "Babel fish recommended.",
+            "Smells faintly of petunias.",
+            "The mice have been asking questions.",
+            "No tea. Not even close.",
+            "Time: an illusion. Distances: also suspicious.",
+            "Previous visitors chose not to return.",
+            "Bypass strongly advised.",
+            "Don't try to understand it. Just observe.",
+            "Probability engine last serviced: never.",
+            "Mostly dark, with occasional bafflement.",
+            "Currency: bewilderment.",
+            "Self-aware gravity. Be polite.",
+            "An SEP field of considerable magnitude.",
+            "The planet's self-esteem is inexplicably high.",
+            "Quantum uncertainty: high. Sandwiches: zero.",
+            "Shares coordinates with mild existential dread.",
+            "Philosophers here have gone very quiet.",
+            "Harmless when approached with low expectations.",
+            "The dolphins said goodbye from somewhere near here.",
+            "Third most improbable location in the sector.",
+            "Pan-dimensional beings: none confirmed. Don't ask.",
+            "A fine destination for meaninglessness tourism.",
+            "The local star is indifferent to your presence.",
+            "Population: unknown. Attitude: comparable.",
+            "You are here. The universe remains unimpressed.",
+            "Temporal anomalies: Thursday.",
+            "Probability of safe return: reassuringly low.",
+            "Guide entry: unremarkable in every measurable way.",
+            "Coordinates verified by bureaucratic consensus.",
+            "Don't panic. You're already here.",
+            "Contains traces of sentient gas and regret.",
+            "Entry in the Hitchhiker's Guide: see 'Worrying'.",
+            "Approach from the left. The right doesn't exist.",
+          ];
           var GN = 480;
           var goldenAngle = Math.PI * (3.0 - Math.sqrt(5.0));
           var gPos = new Float32Array(GN * 3);
@@ -2314,87 +2551,120 @@
           this._galaxyData = [];
 
           for (var g = 0; g < GN; g++) {
-            var gt  = g / (GN - 1);
+            var gt = g / (GN - 1);
             var gyi = 1.0 - gt * 2.0;
             var grad = Math.sqrt(Math.max(0, 1 - gyi * gyi));
             var gang = goldenAngle * g;
-            var gr  = 900 + Math.pow(gt, 0.62) * 11100;
+            var gr = 900 + Math.pow(gt, 0.62) * 11100;
             var gpx = Math.cos(gang) * grad * gr;
             var gpy = gyi * gr * 0.55;
             var gpz = Math.sin(gang) * grad * gr;
 
-            gPos[g * 3]     = gpx;
+            gPos[g * 3] = gpx;
             gPos[g * 3 + 1] = gpy;
             gPos[g * 3 + 2] = gpz;
 
             var gfreq = FREQ_KEYS[g % 8];
-            var gfc   = FREQ_COLS[gfreq];
-            gCol[g * 3]     = gfc[0];
+            var gfc = FREQ_COLS[gfreq];
+            gCol[g * 3] = gfc[0];
             gCol[g * 3 + 1] = gfc[1];
             gCol[g * 3 + 2] = gfc[2];
 
-            var glatticeNode  = g % 48;
+            var glatticeNode = g % 48;
             var gharmonicNode = g % 480;
-            var ggeoCode = 'geo://' + glatticeNode + '.' + gharmonicNode +
-                           '@' + gfreq + 'hz/' + DOMAINS[g % 8];
-            var glabel = GAL_NAMES[g % GAL_NAMES.length] +
-                         '-' + (((g / GAL_NAMES.length) | 0) * 7 + (g % 97) + 1);
+            var ggeoCode =
+              "geo://" +
+              glatticeNode +
+              "." +
+              gharmonicNode +
+              "@" +
+              gfreq +
+              "hz/" +
+              DOMAINS[g % 8];
+            var glabel =
+              GAL_NAMES[g % GAL_NAMES.length] +
+              "-" +
+              (((g / GAL_NAMES.length) | 0) * 7 + (g % 97) + 1);
 
             this._galaxyData.push({
-              pos: [gpx, gpy, gpz], freq: gfreq,
-              latticeNode: glatticeNode, harmonicNode: gharmonicNode,
-              operator: OPS[g % 4], domain: DOMAINS[g % 8],
-              geoCode: ggeoCode, label: glabel, r: gr
+              pos: [gpx, gpy, gpz],
+              freq: gfreq,
+              latticeNode: glatticeNode,
+              harmonicNode: gharmonicNode,
+              operator: OPS[g % 4],
+              domain: DOMAINS[g % 8],
+              geoCode: ggeoCode,
+              label: glabel,
+              note: GUIDE_NOTES[g % GUIDE_NOTES.length],
+              r: gr,
             });
           }
 
           /* Space Station as special warp destination */
           this._galaxyData.push({
-            pos: [180, 8, -55], freq: 852, latticeNode: 26, harmonicNode: 263,
-            operator: 'otimes', domain: 'security-forge',
-            geoCode: 'geo://26.263@852hz/security-forge',
-            label: 'STATION-ALPHA', r: 189, isStation: true
+            pos: [180, 8, -55],
+            freq: 852,
+            latticeNode: 26,
+            harmonicNode: 263,
+            operator: "otimes",
+            domain: "security-forge",
+            geoCode: "geo://26.263@852hz/security-forge",
+            label: "STATION-ALPHA",
+            note: "Docking bay 6 is inexplicably sentient. Bay 7 remains in denial.",
+            r: 189,
+            isStation: true,
           });
 
           var gGeo = new THREE.BufferGeometry();
-          gGeo.setAttribute('position', new THREE.BufferAttribute(gPos, 3));
-          gGeo.setAttribute('color',    new THREE.BufferAttribute(gCol, 3));
+          gGeo.setAttribute("position", new THREE.BufferAttribute(gPos, 3));
+          gGeo.setAttribute("color", new THREE.BufferAttribute(gCol, 3));
           var gMat = new THREE.PointsMaterial({
-            size: 3.2, vertexColors: true, transparent: true, opacity: 0.95,
-            blending: THREE.AdditiveBlending, depthWrite: false,
-            sizeAttenuation: false
+            size: 3.2,
+            vertexColors: true,
+            transparent: true,
+            opacity: 0.95,
+            blending: THREE.AdditiveBlending,
+            depthWrite: false,
+            sizeAttenuation: false,
           });
           gMat.fog = false;
           this._gPoints = new THREE.Points(gGeo, gMat);
-          this.el.setObject3D('galaxy-anchors', this._gPoints);
+          this.el.setObject3D("galaxy-anchors", this._gPoints);
 
           /* ── Input: click + hover ──────────────────────────────────── */
-          this._warping  = false;
-          this._hoverTS  = 0;
-          var sceneEl = document.querySelector('a-scene');
+          this._warping = false;
+          this._hoverTS = 0;
+          var sceneEl = document.querySelector("a-scene");
           var bindIO = function () {
             var cv = sceneEl.canvas;
-            cv.addEventListener('click',     function (e) { self._onClick(e); });
-            cv.addEventListener('mousemove', function (e) {
+            cv.addEventListener("click", function (e) {
+              self._onClick(e);
+            });
+            cv.addEventListener("mousemove", function (e) {
               var now = Date.now();
               if (now - self._hoverTS < 55) return;
               self._hoverTS = now;
               self._onHover(e);
             });
           };
-          if (sceneEl.hasLoaded) { bindIO(); }
-          else { sceneEl.addEventListener('loaded', bindIO); }
+          if (sceneEl.hasLoaded) {
+            bindIO();
+          } else {
+            sceneEl.addEventListener("loaded", bindIO);
+          }
 
           /* H key = warp home to Merkaba Core */
-          window.addEventListener('keydown', function (e) {
-            if (e.key === 'h' || e.key === 'H') { self._warpHome(); }
+          window.addEventListener("keydown", function (e) {
+            if (e.key === "h" || e.key === "H") {
+              self._warpHome();
+            }
           });
         },
 
         /* Project a galaxy world-position to NDC via scene camera */
         _ndcOf: function (gd) {
           var THREE = AFRAME.THREE;
-          var sceneEl = document.querySelector('a-scene');
+          var sceneEl = document.querySelector("a-scene");
           if (!sceneEl || !sceneEl.camera) return null;
           var v = new THREE.Vector3(gd.pos[0], gd.pos[1], gd.pos[2]);
           v.project(sceneEl.camera);
@@ -2403,23 +2673,28 @@
 
         /* Find galaxy nearest to click NDC within threshold (squared) */
         _nearest: function (mx, my, thr) {
-          var best = null, bestD = thr * thr;
+          var best = null,
+            bestD = thr * thr;
           for (var i = 0; i < this._galaxyData.length; i++) {
             var v = this._ndcOf(this._galaxyData[i]);
             if (!v || v.z > 1.0) continue; /* behind camera */
-            var dx = v.x - mx, dy = v.y - my;
+            var dx = v.x - mx,
+              dy = v.y - my;
             var d2 = dx * dx + dy * dy;
-            if (d2 < bestD) { bestD = d2; best = this._galaxyData[i]; }
+            if (d2 < bestD) {
+              bestD = d2;
+              best = this._galaxyData[i];
+            }
           }
           return best;
         },
 
         _ndcMouse: function (e) {
-          var cv  = document.querySelector('a-scene').canvas;
-          var rc  = cv.getBoundingClientRect();
+          var cv = document.querySelector("a-scene").canvas;
+          var rc = cv.getBoundingClientRect();
           return {
-            x:  ((e.clientX - rc.left) / rc.width)  * 2 - 1,
-            y: -((e.clientY - rc.top)  / rc.height) * 2 + 1
+            x: ((e.clientX - rc.left) / rc.width) * 2 - 1,
+            y: -((e.clientY - rc.top) / rc.height) * 2 + 1,
           };
         },
 
@@ -2427,22 +2702,35 @@
           if (this._warping) return;
           var ndc = this._ndcMouse(e);
           var hit = this._nearest(ndc.x, ndc.y, 0.07);
-          var tip = document.getElementById('geo-tooltip');
+          var tip = document.getElementById("geo-tooltip");
           if (hit) {
-            document.body.style.cursor = 'crosshair';
+            document.body.style.cursor = "crosshair";
             if (tip) {
               tip.innerHTML =
-                '<div class="geo-op">' + hit.label + '</div>' +
-                '<div class="geo-addr">' + hit.geoCode + '</div>' +
-                '<div class="geo-domain">L' + hit.latticeNode +
-                ' \u00b7 H' + hit.harmonicNode +
-                ' \u00b7 ' + hit.freq + 'Hz \u00b7 ' + hit.domain + '</div>' +
-                '<div class="geo-hint">' + (hit.isStation ? 'CLICK TO DOCK' : 'CLICK TO WARP') + '</div>';
-              tip.classList.add('visible');
+                '<div class="geo-op">' +
+                hit.label +
+                "</div>" +
+                '<div class="geo-addr">' +
+                hit.geoCode +
+                "</div>" +
+                '<div class="geo-domain">L' +
+                hit.latticeNode +
+                " \u00b7 H" +
+                hit.harmonicNode +
+                " \u00b7 " +
+                hit.freq +
+                "Hz \u00b7 " +
+                hit.domain +
+                "</div>" +
+                (hit.note ? '<div class="geo-note">\u201c' + hit.note + '\u201d</div>' : "") +
+                '<div class="geo-hint">' +
+                (hit.isStation ? "CLICK TO DOCK" : "CLICK TO WARP") +
+                "</div>";
+              tip.classList.add("visible");
             }
           } else {
-            document.body.style.cursor = '';
-            if (tip) tip.classList.remove('visible');
+            document.body.style.cursor = "";
+            if (tip) tip.classList.remove("visible");
           }
         },
 
@@ -2451,9 +2739,9 @@
           var ndc = this._ndcMouse(e);
           var hit = this._nearest(ndc.x, ndc.y, 0.05);
           if (!hit) return;
-          var tip = document.getElementById('geo-tooltip');
-          if (tip) tip.classList.remove('visible');
-          document.body.style.cursor = '';
+          var tip = document.getElementById("geo-tooltip");
+          if (tip) tip.classList.remove("visible");
+          document.body.style.cursor = "";
           this._warpTo(hit);
         },
 
@@ -2462,40 +2750,53 @@
           this._warping = true;
           window._hyperspaceWarp(
             gd,
-            function onTeleport () {
-              var rig = document.getElementById('cameraRig');
+            function onTeleport() {
+              var rig = document.getElementById("cameraRig");
               if (rig && rig.object3D) {
-                var p = gd.pos, dist = gd.r;
-                var nx = p[0] / dist, ny = p[1] / dist, nz = p[2] / dist;
+                var p = gd.pos,
+                  dist = gd.r;
+                var nx = p[0] / dist,
+                  ny = p[1] / dist,
+                  nz = p[2] / dist;
                 var arrDist = gd.isStation ? 30 : 8;
                 rig.object3D.position.set(
                   p[0] - nx * arrDist,
                   p[1] - ny * arrDist,
-                  p[2] - nz * arrDist
+                  p[2] - nz * arrDist,
                 );
-                if (typeof window._updateScaleHUD === 'function') {
-                  window._updateScaleHUD(dist, gd.isStation ? 'STATION-ALPHA' : gd.label);
+                if (typeof window._updateScaleHUD === "function") {
+                  window._updateScaleHUD(
+                    dist,
+                    gd.isStation ? "STATION-ALPHA" : gd.label,
+                  );
                 }
               }
-              if (typeof firePulse === 'function') firePulse();
+              if (typeof firePulse === "function") firePulse();
             },
-            function onComplete () { self._warping = false; }
+            function onComplete() {
+              self._warping = false;
+            },
           );
         },
 
         _warpHome: function () {
           if (this._warping) return;
           this._warpTo({
-            pos: [0, 5, 72], freq: 72, latticeNode: 0, harmonicNode: 0,
-            operator: 'phi', domain: 'self-evolve',
-            geoCode: 'geo://0.0@72hz/self-evolve',
-            label: 'MERKABA CORE', r: 72
+            pos: [0, 5, 72],
+            freq: 72,
+            latticeNode: 0,
+            harmonicNode: 0,
+            operator: "phi",
+            domain: "self-evolve",
+            geoCode: "geo://0.0@72hz/self-evolve",
+            label: "MERKABA CORE",
+            r: 72,
           });
         },
 
         tick: function (time) {
           if (this._bgPoints) this._bgPoints.rotation.y = time * 0.0000035;
-        }
+        },
       });
 
       /* ═══════════════════════════════════════════════════════════════════
@@ -2503,43 +2804,60 @@
          Canvas streak animation  +  camera teleport  +  warp audio
       ═══════════════════════════════════════════════════════════════════ */
       window._hyperspaceWarp = function (gd, onTeleport, onComplete) {
-        var cv = document.getElementById('hyperspace-overlay');
-        cv.width  = window.innerWidth;
+        var cv = document.getElementById("hyperspace-overlay");
+        cv.width = window.innerWidth;
         cv.height = window.innerHeight;
-        cv.style.display    = 'block';
-        cv.style.opacity    = '1';
-        cv.style.transition = '';
-        var ctx = cv.getContext('2d');
-        var cx  = cv.width / 2, cy = cv.height / 2;
+        cv.style.display = "block";
+        cv.style.opacity = "1";
+        cv.style.transition = "";
+        var ctx = cv.getContext("2d");
+        var cx = cv.width / 2,
+          cy = cv.height / 2;
         var maxR = Math.sqrt(cx * cx + cy * cy) * 1.45;
-        var isStation  = !!(gd && gd.isStation);
-        var DURATION   = isStation ? 900 : 1600;
-        var startTime  = null;
-        var tpFired    = false;
+        var isStation = !!(gd && gd.isStation);
+        var DURATION = isStation ? 900 : 1600;
+        var startTime = null;
+        var tpFired = false;
 
         /* Warp HUD */
-        var hud = document.getElementById('galaxy-hud');
+        var hud = document.getElementById("galaxy-hud");
+        var improbNum = gd && gd.latticeNode !== undefined ? gd.latticeNode * 31337 + 42 : 42;
         if (hud) {
           hud.innerHTML =
-            '<div class="warp-title">' + (isStation ? 'DOCKING' : 'HYPERSPACE') + '</div>' +
-            '<div class="warp-coord">' + (gd ? gd.label   : '') + '</div>' +
-            '<div class="warp-sub">'   + (gd ? gd.geoCode : '') + '</div>';
-          hud.classList.add('visible');
+            '<div class="warp-title">' +
+            (isStation ? "DOCKING" : "HYPERSPACE") +
+            "</div>" +
+            '<div class="warp-coord">' +
+            (gd ? gd.label : "") +
+            "</div>" +
+            '<div class="warp-sub">' +
+            (gd ? gd.geoCode : "") +
+            "</div>" +
+            '<div class="warp-improbability">IMPROBABILITY FACTOR: 1 IN ' + improbNum + "</div>";
+          hud.classList.add("visible");
         }
 
         /* Warp audio (oscillator sweep) */
-        if (audioCtx && audioCtx.state === 'running') {
-          var t0  = audioCtx.currentTime;
-          var wo  = audioCtx.createOscillator();
-          var wg  = audioCtx.createGain();
-          wo.type = 'sawtooth';
+        if (audioCtx && audioCtx.state === "running") {
+          var t0 = audioCtx.currentTime;
+          var wo = audioCtx.createOscillator();
+          var wg = audioCtx.createGain();
+          wo.type = "sawtooth";
           wo.frequency.setValueAtTime(100, t0);
-          wo.frequency.exponentialRampToValueAtTime(3400, t0 + DURATION * 0.001 * 0.82);
+          wo.frequency.exponentialRampToValueAtTime(
+            3400,
+            t0 + DURATION * 0.001 * 0.82,
+          );
           wg.gain.setValueAtTime(0, t0);
           wg.gain.linearRampToValueAtTime(0.12, t0 + 0.06);
-          wg.gain.exponentialRampToValueAtTime(0.001, t0 + DURATION * 0.001 * 0.93);
-          wo.connect(wg); wg.connect(audioCtx.destination);
-          wo.start(t0); wo.stop(t0 + DURATION * 0.001);
+          wg.gain.exponentialRampToValueAtTime(
+            0.001,
+            t0 + DURATION * 0.001 * 0.93,
+          );
+          wo.connect(wg);
+          wg.connect(audioCtx.destination);
+          wo.start(t0);
+          wo.stop(t0 + DURATION * 0.001);
         }
 
         /* Pre-generate stable streak data */
@@ -2549,29 +2867,30 @@
         for (var si = 0; si < NUM; si++) {
           streaks.push({
             angle: (si / NUM) * Math.PI * 2,
-            spd:   0.6 + Math.random() * 0.75,
-            w:     0.22 + Math.random() * 2.4,
-            hue:   (baseHue + Math.random() * 90) % 360,
-            sat:   55 + (Math.random() * 40) | 0,
-            lgt:   52 + (Math.random() * 38) | 0,
-            sf:    Math.random() * 0.05
+            spd: 0.6 + Math.random() * 0.75,
+            w: 0.22 + Math.random() * 2.4,
+            hue: (baseHue + Math.random() * 90) % 360,
+            sat: (55 + Math.random() * 40) | 0,
+            lgt: (52 + Math.random() * 38) | 0,
+            sf: Math.random() * 0.05,
           });
         }
 
-        function frame (ts) {
+        function frame(ts) {
           if (!startTime) startTime = ts;
           var progress = Math.min(1.0, (ts - startTime) / DURATION);
-          var ease     = 1.0 - Math.pow(1.0 - progress, 2.4);
+          var ease = 1.0 - Math.pow(1.0 - progress, 2.4);
 
           /* Dark background with motion-blur trail */
-          ctx.fillStyle = 'rgba(0,1,10,' + Math.min(0.94, 0.18 + ease * 0.80).toFixed(2) + ')';
+          ctx.fillStyle =
+            "rgba(0,1,10," + Math.min(0.94, 0.18 + ease * 0.8).toFixed(2) + ")";
           ctx.fillRect(0, 0, cv.width, cv.height);
 
           /* Radial streaks */
           for (var si = 0; si < NUM; si++) {
-            var s  = streaks[si];
+            var s = streaks[si];
             var f0 = s.sf + ease * s.spd * 0.07;
-            var f1 = f0  + 0.02 + ease * s.spd * 0.72;
+            var f1 = f0 + 0.02 + ease * s.spd * 0.72;
             var x0 = cx + Math.cos(s.angle) * f0 * maxR;
             var y0 = cy + Math.sin(s.angle) * f0 * maxR;
             var x1 = cx + Math.cos(s.angle) * Math.min(1.08, f1) * maxR;
@@ -2580,31 +2899,48 @@
             ctx.beginPath();
             ctx.moveTo(x0, y0);
             ctx.lineTo(x1, y1);
-            ctx.strokeStyle = 'hsla(' + s.hue + ',' + s.sat + '%,' + s.lgt + '%,' + alpha.toFixed(2) + ')';
-            ctx.lineWidth   = s.w * Math.max(0.12, ease);
+            ctx.strokeStyle =
+              "hsla(" +
+              s.hue +
+              "," +
+              s.sat +
+              "%," +
+              s.lgt +
+              "%," +
+              alpha.toFixed(2) +
+              ")";
+            ctx.lineWidth = s.w * Math.max(0.12, ease);
             ctx.stroke();
           }
 
           /* Bright core radial glow */
           var coreR = 12 + ease * 95;
           var cg = ctx.createRadialGradient(cx, cy, 0, cx, cy, coreR);
-          cg.addColorStop(0,   'rgba(255,255,255,' + Math.min(0.98, ease * 2.1).toFixed(2) + ')');
-          cg.addColorStop(0.3, 'rgba(150,210,255,' + (ease * 0.5).toFixed(2) + ')');
-          cg.addColorStop(1,   'rgba(0,0,0,0)');
+          cg.addColorStop(
+            0,
+            "rgba(255,255,255," + Math.min(0.98, ease * 2.1).toFixed(2) + ")",
+          );
+          cg.addColorStop(
+            0.3,
+            "rgba(150,210,255," + (ease * 0.5).toFixed(2) + ")",
+          );
+          cg.addColorStop(1, "rgba(0,0,0,0)");
           ctx.fillStyle = cg;
-          ctx.beginPath(); ctx.arc(cx, cy, coreR, 0, Math.PI * 2); ctx.fill();
+          ctx.beginPath();
+          ctx.arc(cx, cy, coreR, 0, Math.PI * 2);
+          ctx.fill();
 
           /* Teleport camera at 72% */
           if (progress >= 0.72 && !tpFired) {
             tpFired = true;
-            if (typeof onTeleport === 'function') onTeleport();
+            if (typeof onTeleport === "function") onTeleport();
           }
 
           /* White flash at peak */
           if (progress > 0.87) {
             var fp = (progress - 0.87) / 0.13;
             var fl = Math.sin(fp * Math.PI) * 0.98;
-            ctx.fillStyle = 'rgba(255,255,255,' + fl.toFixed(2) + ')';
+            ctx.fillStyle = "rgba(255,255,255," + fl.toFixed(2) + ")";
             ctx.fillRect(0, 0, cv.width, cv.height);
           }
 
@@ -2614,28 +2950,76 @@
             /* Arrival */
             if (hud) {
               hud.innerHTML =
-                '<div class="warp-title">' + (isStation ? 'DOCKED' : 'ARRIVED') + '</div>' +
-                '<div class="warp-coord">' + (gd ? gd.label   : '') + '</div>' +
-                '<div class="warp-sub">'   + (gd ? gd.geoCode : '') +
-                ' \u00b7 press H to return</div>';
+                '<div class="warp-title">' +
+                (isStation ? "DOCKED" : "ARRIVED") +
+                "</div>" +
+                '<div class="warp-coord">' +
+                (gd ? gd.label : "") +
+                "</div>" +
+                '<div class="warp-sub">' +
+                (gd ? gd.geoCode : "") +
+                " \u00b7 press H to return</div>" +
+                (gd && gd.note ? '<div class="warp-improbability">\u201c' + gd.note + '\u201d</div>' : "");
             }
-            cv.style.transition = 'opacity 0.75s';
-            cv.style.opacity    = '0';
+            cv.style.transition = "opacity 0.75s";
+            cv.style.opacity = "0";
             setTimeout(function () {
-              cv.style.display    = 'none';
-              cv.style.opacity    = '1';
-              cv.style.transition = '';
-              if (hud) setTimeout(function () { hud.classList.remove('visible'); }, 2400);
-              if (typeof onComplete === 'function') onComplete();
+              cv.style.display = "none";
+              cv.style.opacity = "1";
+              cv.style.transition = "";
+              if (hud)
+                setTimeout(function () {
+                  hud.classList.remove("visible");
+                }, 2400);
+              if (typeof onComplete === "function") onComplete();
             }, 860);
           }
         }
         requestAnimationFrame(frame);
       };
 
+      /* ── PAN CONTROLS: Right-click drag or Middle-click drag to pan ──── */
+      (function initPanControls() {
+        var panning = false, lastPX = 0, lastPY = 0;
+        document.addEventListener("contextmenu", function (e) {
+          e.preventDefault();
+        });
+        document.addEventListener("mousedown", function (e) {
+          if (e.button === 1 || e.button === 2) {
+            panning = true;
+            lastPX = e.clientX;
+            lastPY = e.clientY;
+            if (e.button === 1) e.preventDefault();
+          }
+        });
+        document.addEventListener("mouseup", function (e) {
+          if (e.button === 1 || e.button === 2) panning = false;
+        });
+        document.addEventListener("mousemove", function (e) {
+          if (!panning) return;
+          var dx = e.clientX - lastPX, dy = e.clientY - lastPY;
+          lastPX = e.clientX; lastPY = e.clientY;
+          if (!dx && !dy) return;
+          var rig = document.getElementById("cameraRig");
+          if (!rig || !rig.object3D) return;
+          var sceneEl = document.querySelector("a-scene");
+          if (!sceneEl || !sceneEl.camera) return;
+          var THREE = AFRAME.THREE;
+          var right = new THREE.Vector3();
+          right.setFromMatrixColumn(sceneEl.camera.matrixWorld, 0);
+          right.y = 0;
+          right.normalize();
+          var pos = rig.object3D.position;
+          var dist = Math.max(2, Math.sqrt(pos.x * pos.x + pos.y * pos.y + pos.z * pos.z));
+          var spd = Math.max(0.06, dist * 0.003);
+          pos.addScaledVector(right, -dx * spd);
+          pos.y -= dy * spd;
+        });
+      }());
     </script>
     <canvas id="hyperspace-overlay"></canvas>
     <div id="geo-tooltip"></div>
     <div id="galaxy-hud"></div>
+    <div id="dont-panic">DON'T PANIC</div>
   </body>
 </html>
