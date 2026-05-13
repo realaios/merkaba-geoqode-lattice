@@ -573,42 +573,330 @@ function _seedPlaiApps() {
 
   // ── Agents ────────────────────────────────────────────────────────────────
   PLAI_AGENTS.push(
-    { id: 1001, name: "PHI Reasoning Agent", short_desc: "Autonomous quantum-geometric decision engine powered by the Golden Root.", description: "PHI Reasoning Agent applies the PHI=1.618 golden ratio to every decision node, producing coherent multi-perspective outcomes aligned with the Merkaba 8\u219226\u219248:480 lattice. Ideal for strategic planning, anomaly detection, and creative synthesis across all 8 Queen-Bee sectors.", category: "Agents", price_cents: 0, downloads: 2840, rating_avg: 4.8, developer_name: "Brains4Ai", developer_verified: true, type: "agent", bundle_id: "com.brains4ai.phi-reasoning-agent", entry_point: "/agents/phi-reasoning", published_at: _d1, updated_at: _d2 },
-    { id: 1002, name: "MerkabAware Sentinel", short_desc: "Continuous lattice coherence monitor with self-healing drift recovery.", description: "MerkabAware Sentinel runs the PHI/PSI dual-attestation coherence scan every 5 minutes across all active GEO programmes. When coherenceIndex drops below 0.72, it automatically triggers harmonic recalibration sequences and logs drift events to the canonical audit trail.", category: "Agents", price_cents: 0, downloads: 1976, rating_avg: 4.9, developer_name: "Brains4Ai", developer_verified: true, type: "agent", bundle_id: "com.brains4ai.merkaba-aware-sentinel", entry_point: "/agents/merkaba-aware", published_at: _d1, updated_at: _d3 },
-    { id: 1003, name: "Lattice Scout", short_desc: "Explores the D480 harmonic spectrum and surfaces undiscovered resonance nodes.", description: "Lattice Scout dispatches lightweight probe agents across all 480 harmonic nodes of the Merkaba lattice, cataloguing resonance patterns, identifying sparse coverage zones, and generating GEO programme recommendations to fill harmonic gaps. Reports include PHI-alignment scores and GeoQode coordinate envelopes.", category: "Agents", price_cents: 0, downloads: 1342, rating_avg: 4.7, developer_name: "Brains4Ai", developer_verified: true, type: "agent", bundle_id: "com.brains4ai.lattice-scout", entry_point: "/agents/lattice-scout", published_at: _d2, updated_at: _d3 }
+    {
+      id: 1001,
+      name: "PHI Reasoning Agent",
+      short_desc:
+        "Autonomous quantum-geometric decision engine powered by the Golden Root.",
+      description:
+        "PHI Reasoning Agent applies the PHI=1.618 golden ratio to every decision node, producing coherent multi-perspective outcomes aligned with the Merkaba 8\u219226\u219248:480 lattice. Ideal for strategic planning, anomaly detection, and creative synthesis across all 8 Queen-Bee sectors.",
+      category: "Agents",
+      price_cents: 0,
+      downloads: 2840,
+      rating_avg: 4.8,
+      developer_name: "Brains4Ai",
+      developer_verified: true,
+      type: "agent",
+      bundle_id: "com.brains4ai.phi-reasoning-agent",
+      entry_point: "/agents/phi-reasoning",
+      published_at: _d1,
+      updated_at: _d2,
+    },
+    {
+      id: 1002,
+      name: "MerkabAware Sentinel",
+      short_desc:
+        "Continuous lattice coherence monitor with self-healing drift recovery.",
+      description:
+        "MerkabAware Sentinel runs the PHI/PSI dual-attestation coherence scan every 5 minutes across all active GEO programmes. When coherenceIndex drops below 0.72, it automatically triggers harmonic recalibration sequences and logs drift events to the canonical audit trail.",
+      category: "Agents",
+      price_cents: 0,
+      downloads: 1976,
+      rating_avg: 4.9,
+      developer_name: "Brains4Ai",
+      developer_verified: true,
+      type: "agent",
+      bundle_id: "com.brains4ai.merkaba-aware-sentinel",
+      entry_point: "/agents/merkaba-aware",
+      published_at: _d1,
+      updated_at: _d3,
+    },
+    {
+      id: 1003,
+      name: "Lattice Scout",
+      short_desc:
+        "Explores the D480 harmonic spectrum and surfaces undiscovered resonance nodes.",
+      description:
+        "Lattice Scout dispatches lightweight probe agents across all 480 harmonic nodes of the Merkaba lattice, cataloguing resonance patterns, identifying sparse coverage zones, and generating GEO programme recommendations to fill harmonic gaps. Reports include PHI-alignment scores and GeoQode coordinate envelopes.",
+      category: "Agents",
+      price_cents: 0,
+      downloads: 1342,
+      rating_avg: 4.7,
+      developer_name: "Brains4Ai",
+      developer_verified: true,
+      type: "agent",
+      bundle_id: "com.brains4ai.lattice-scout",
+      entry_point: "/agents/lattice-scout",
+      published_at: _d2,
+      updated_at: _d3,
+    },
   );
 
   // ── Codex ─────────────────────────────────────────────────────────────────
   PLAI_CODEX.push(
-    { id: 2001, name: "GeoQode Reference", short_desc: "Interactive reference for all GeoQode coordinate envelope fields and semantics.", description: "GeoQode Reference is the definitive interactive guide to building, validating, and debugging GeoQode coordinate envelopes. Browse the full semantic frequency map (ENTITY 396 Hz through HOLOGRAPHIC 72 Hz), explore lattice node assignments across D48 and D480, and generate valid envelope JSON for any Queen-Bee sector instantly.", category: "Codex", price_cents: 0, downloads: 3210, rating_avg: 4.9, developer_name: "Brains4Ai", developer_verified: true, type: "reference", bundle_id: "com.brains4ai.geoqode-reference", entry_point: "/codex/geoqode", published_at: _d1, updated_at: _d2 },
-    { id: 2002, name: "Merkaba Constant Lookup", short_desc: "Instant lookup for PHI, PSI, GOLDEN_BAND, and all 8,26,48:480 lattice constants.", description: "Every canonical constant in the Merkaba Dimensional OS in one searchable codex: PHI=1.618, PSI=1.414, GOLDEN_BAND=3.032, GOLDEN_DIFFERENTIAL=0.204, ALPHA_WEIGHT=0.5337, OMEGA_WEIGHT=0.4663, BASE_FREQUENCY_HZ=72, FOUNDATION_NODES=8, BOSONIC_ANCHOR_NODES=26, CANONICAL_LATTICE_NODES=48, HARMONIC_SPECTRUM_NODES=480. Includes derivation explanations and usage examples.", category: "Codex", price_cents: 0, downloads: 2187, rating_avg: 4.8, developer_name: "Brains4Ai", developer_verified: true, type: "reference", bundle_id: "com.brains4ai.merkaba-constants", entry_point: "/codex/constants", published_at: _d1, updated_at: _d1 },
-    { id: 2003, name: "D480 Harmonic Map", short_desc: "Visual explorer for all 480 harmonic nodes across the full spectrum.", description: "D480 Harmonic Map renders an interactive 3D lattice of all 480 harmonic nodes, colour-coded by semantic type (PHYSICS, ACTION, NARRATIVE, ENTITY, DIALOGUE, EMOTION, HOLOGRAPHIC). Click any node to inspect its PHI-alignment score, resident GEO programmes, and Queen-Bee sector assignment. Export subsets as JSON for offline analysis.", category: "Codex", price_cents: 0, downloads: 1654, rating_avg: 4.7, developer_name: "Brains4Ai", developer_verified: true, type: "reference", bundle_id: "com.brains4ai.d480-harmonic-map", entry_point: "/codex/d480", published_at: _d2, updated_at: _d3 }
+    {
+      id: 2001,
+      name: "GeoQode Reference",
+      short_desc:
+        "Interactive reference for all GeoQode coordinate envelope fields and semantics.",
+      description:
+        "GeoQode Reference is the definitive interactive guide to building, validating, and debugging GeoQode coordinate envelopes. Browse the full semantic frequency map (ENTITY 396 Hz through HOLOGRAPHIC 72 Hz), explore lattice node assignments across D48 and D480, and generate valid envelope JSON for any Queen-Bee sector instantly.",
+      category: "Codex",
+      price_cents: 0,
+      downloads: 3210,
+      rating_avg: 4.9,
+      developer_name: "Brains4Ai",
+      developer_verified: true,
+      type: "reference",
+      bundle_id: "com.brains4ai.geoqode-reference",
+      entry_point: "/codex/geoqode",
+      published_at: _d1,
+      updated_at: _d2,
+    },
+    {
+      id: 2002,
+      name: "Merkaba Constant Lookup",
+      short_desc:
+        "Instant lookup for PHI, PSI, GOLDEN_BAND, and all 8,26,48:480 lattice constants.",
+      description:
+        "Every canonical constant in the Merkaba Dimensional OS in one searchable codex: PHI=1.618, PSI=1.414, GOLDEN_BAND=3.032, GOLDEN_DIFFERENTIAL=0.204, ALPHA_WEIGHT=0.5337, OMEGA_WEIGHT=0.4663, BASE_FREQUENCY_HZ=72, FOUNDATION_NODES=8, BOSONIC_ANCHOR_NODES=26, CANONICAL_LATTICE_NODES=48, HARMONIC_SPECTRUM_NODES=480. Includes derivation explanations and usage examples.",
+      category: "Codex",
+      price_cents: 0,
+      downloads: 2187,
+      rating_avg: 4.8,
+      developer_name: "Brains4Ai",
+      developer_verified: true,
+      type: "reference",
+      bundle_id: "com.brains4ai.merkaba-constants",
+      entry_point: "/codex/constants",
+      published_at: _d1,
+      updated_at: _d1,
+    },
+    {
+      id: 2003,
+      name: "D480 Harmonic Map",
+      short_desc:
+        "Visual explorer for all 480 harmonic nodes across the full spectrum.",
+      description:
+        "D480 Harmonic Map renders an interactive 3D lattice of all 480 harmonic nodes, colour-coded by semantic type (PHYSICS, ACTION, NARRATIVE, ENTITY, DIALOGUE, EMOTION, HOLOGRAPHIC). Click any node to inspect its PHI-alignment score, resident GEO programmes, and Queen-Bee sector assignment. Export subsets as JSON for offline analysis.",
+      category: "Codex",
+      price_cents: 0,
+      downloads: 1654,
+      rating_avg: 4.7,
+      developer_name: "Brains4Ai",
+      developer_verified: true,
+      type: "reference",
+      bundle_id: "com.brains4ai.d480-harmonic-map",
+      entry_point: "/codex/d480",
+      published_at: _d2,
+      updated_at: _d3,
+    },
   );
 
   // ── Playbooks ─────────────────────────────────────────────────────────────
   PLAI_PLAYBOOKS.push(
-    { id: 3001, name: "Deploy Pipeline Playbook", short_desc: "Step-by-step automated deployment playbook for Storm services on Railway.", description: "Deploy Pipeline Playbook encodes the canonical zero-downtime deployment sequence for all Storm services: git push to main \u2192 Railway watchPattern detection \u2192 Docker build \u2192 health-check gate \u2192 traffic cut-over. Includes rollback procedures, environment isolation rules, and Railway project ID constants for both Develop and Production environments.", category: "Playbooks", price_cents: 0, downloads: 1820, rating_avg: 4.8, developer_name: "Brains4Ai", developer_verified: true, type: "playbook", bundle_id: "com.brains4ai.deploy-pipeline-playbook", entry_point: "/playbooks/deploy-pipeline", published_at: _d1, updated_at: _d2 },
-    { id: 3002, name: "Coherence Recovery Playbook", short_desc: "Automated recovery sequence when lattice coherenceIndex drops below threshold.", description: "Coherence Recovery Playbook defines the canonical 5-step response to coherenceIndex drift: (1) isolate affected harmonic nodes, (2) run PHI/PSI dual-attestation scan, (3) recalibrate resonanceFrequency embeddings, (4) re-evaluate with MerkabAware, (5) write recovery event to audit trail. Target: restore coherenceIndex to 0.95+ within 2 pulse cycles.", category: "Playbooks", price_cents: 0, downloads: 987, rating_avg: 4.9, developer_name: "Brains4Ai", developer_verified: true, type: "playbook", bundle_id: "com.brains4ai.coherence-recovery-playbook", entry_point: "/playbooks/coherence-recovery", published_at: _d2, updated_at: _d3 },
-    { id: 3003, name: "Agent Orchestration Playbook", short_desc: "Queen-Bee sector routing guide for autonomous agent task delegation.", description: "Agent Orchestration Playbook maps every task type to its canonical Queen-Bee sector handler: code changes to S2 code-eng (ACTION @ 528 Hz), architecture decisions to S3 systems-design (NARRATIVE @ 963 Hz), data operations to S4 data-structs (ENTITY @ 396 Hz), and security checks to S8 security-forge (PHYSICS @ 852 Hz). Includes escalation paths and PHI-weighted priority scoring.", category: "Playbooks", price_cents: 0, downloads: 743, rating_avg: 4.6, developer_name: "Brains4Ai", developer_verified: true, type: "playbook", bundle_id: "com.brains4ai.agent-orchestration-playbook", entry_point: "/playbooks/agent-orchestration", published_at: _d2, updated_at: _d3 }
+    {
+      id: 3001,
+      name: "Deploy Pipeline Playbook",
+      short_desc:
+        "Step-by-step automated deployment playbook for Storm services on Railway.",
+      description:
+        "Deploy Pipeline Playbook encodes the canonical zero-downtime deployment sequence for all Storm services: git push to main \u2192 Railway watchPattern detection \u2192 Docker build \u2192 health-check gate \u2192 traffic cut-over. Includes rollback procedures, environment isolation rules, and Railway project ID constants for both Develop and Production environments.",
+      category: "Playbooks",
+      price_cents: 0,
+      downloads: 1820,
+      rating_avg: 4.8,
+      developer_name: "Brains4Ai",
+      developer_verified: true,
+      type: "playbook",
+      bundle_id: "com.brains4ai.deploy-pipeline-playbook",
+      entry_point: "/playbooks/deploy-pipeline",
+      published_at: _d1,
+      updated_at: _d2,
+    },
+    {
+      id: 3002,
+      name: "Coherence Recovery Playbook",
+      short_desc:
+        "Automated recovery sequence when lattice coherenceIndex drops below threshold.",
+      description:
+        "Coherence Recovery Playbook defines the canonical 5-step response to coherenceIndex drift: (1) isolate affected harmonic nodes, (2) run PHI/PSI dual-attestation scan, (3) recalibrate resonanceFrequency embeddings, (4) re-evaluate with MerkabAware, (5) write recovery event to audit trail. Target: restore coherenceIndex to 0.95+ within 2 pulse cycles.",
+      category: "Playbooks",
+      price_cents: 0,
+      downloads: 987,
+      rating_avg: 4.9,
+      developer_name: "Brains4Ai",
+      developer_verified: true,
+      type: "playbook",
+      bundle_id: "com.brains4ai.coherence-recovery-playbook",
+      entry_point: "/playbooks/coherence-recovery",
+      published_at: _d2,
+      updated_at: _d3,
+    },
+    {
+      id: 3003,
+      name: "Agent Orchestration Playbook",
+      short_desc:
+        "Queen-Bee sector routing guide for autonomous agent task delegation.",
+      description:
+        "Agent Orchestration Playbook maps every task type to its canonical Queen-Bee sector handler: code changes to S2 code-eng (ACTION @ 528 Hz), architecture decisions to S3 systems-design (NARRATIVE @ 963 Hz), data operations to S4 data-structs (ENTITY @ 396 Hz), and security checks to S8 security-forge (PHYSICS @ 852 Hz). Includes escalation paths and PHI-weighted priority scoring.",
+      category: "Playbooks",
+      price_cents: 0,
+      downloads: 743,
+      rating_avg: 4.6,
+      developer_name: "Brains4Ai",
+      developer_verified: true,
+      type: "playbook",
+      bundle_id: "com.brains4ai.agent-orchestration-playbook",
+      entry_point: "/playbooks/agent-orchestration",
+      published_at: _d2,
+      updated_at: _d3,
+    },
   );
 
   // ── Analytics ─────────────────────────────────────────────────────────────
   PLAI_ANALYTICS.push(
-    { id: 4001, name: "Lattice Analytics", short_desc: "Real-time dashboard for Merkaba lattice coherence, harmonic coverage, and drift.", description: "Lattice Analytics streams live metrics from the MerkabAware pulse: coherenceIndex over time, harmonic coverage across D480, drift event frequency, PHI/PSI attestation scores, and per-sector activity heatmaps. Historical charts cover the last 100 pulse cycles. Export raw data as JSON or CSV for external analysis.", category: "Analytics", price_cents: 0, downloads: 2340, rating_avg: 4.8, developer_name: "Brains4Ai", developer_verified: true, type: "analytics", bundle_id: "com.brains4ai.lattice-analytics", entry_point: "/analytics/lattice", published_at: _d1, updated_at: _d3 },
-    { id: 4002, name: "GeoQode Telemetry", short_desc: "Per-programme telemetry: semantic frequency distribution and resonance heat.", description: "GeoQode Telemetry aggregates coordinate envelope data across all active GEO programmes, producing semantic type distribution charts (PHYSICS vs ACTION vs NARRATIVE etc.), resonance frequency heatmaps, lattice node utilisation graphs, and coherence histogram breakdowns. Invaluable for identifying underrepresented lattice zones.", category: "Analytics", price_cents: 0, downloads: 1560, rating_avg: 4.7, developer_name: "Brains4Ai", developer_verified: true, type: "analytics", bundle_id: "com.brains4ai.geoqode-telemetry", entry_point: "/analytics/geoqode", published_at: _d2, updated_at: _d3 }
+    {
+      id: 4001,
+      name: "Lattice Analytics",
+      short_desc:
+        "Real-time dashboard for Merkaba lattice coherence, harmonic coverage, and drift.",
+      description:
+        "Lattice Analytics streams live metrics from the MerkabAware pulse: coherenceIndex over time, harmonic coverage across D480, drift event frequency, PHI/PSI attestation scores, and per-sector activity heatmaps. Historical charts cover the last 100 pulse cycles. Export raw data as JSON or CSV for external analysis.",
+      category: "Analytics",
+      price_cents: 0,
+      downloads: 2340,
+      rating_avg: 4.8,
+      developer_name: "Brains4Ai",
+      developer_verified: true,
+      type: "analytics",
+      bundle_id: "com.brains4ai.lattice-analytics",
+      entry_point: "/analytics/lattice",
+      published_at: _d1,
+      updated_at: _d3,
+    },
+    {
+      id: 4002,
+      name: "GeoQode Telemetry",
+      short_desc:
+        "Per-programme telemetry: semantic frequency distribution and resonance heat.",
+      description:
+        "GeoQode Telemetry aggregates coordinate envelope data across all active GEO programmes, producing semantic type distribution charts (PHYSICS vs ACTION vs NARRATIVE etc.), resonance frequency heatmaps, lattice node utilisation graphs, and coherence histogram breakdowns. Invaluable for identifying underrepresented lattice zones.",
+      category: "Analytics",
+      price_cents: 0,
+      downloads: 1560,
+      rating_avg: 4.7,
+      developer_name: "Brains4Ai",
+      developer_verified: true,
+      type: "analytics",
+      bundle_id: "com.brains4ai.geoqode-telemetry",
+      entry_point: "/analytics/geoqode",
+      published_at: _d2,
+      updated_at: _d3,
+    },
   );
 
   // ── Integrations ──────────────────────────────────────────────────────────
   PLAI_INTEGRATIONS.push(
-    { id: 5001, name: "Merkaba API Bridge", short_desc: "Connect external services to the Merkaba lattice via GeoQode-tagged REST calls.", description: "Merkaba API Bridge provides a standards-compliant adapter layer that wraps any external REST or GraphQL API with canonical GeoQode coordinate envelopes before forwarding to the Storm knowledge base. Supports automatic semantic type inference, PHI-alignment scoring, and audit trail logging for every bridged call. Certified for Railway, Cloudflare, and OpenAI endpoints.", category: "Integrations", price_cents: 0, downloads: 1890, rating_avg: 4.8, developer_name: "Brains4Ai", developer_verified: true, type: "integration", bundle_id: "com.brains4ai.merkaba-api-bridge", entry_point: "/integrations/api-bridge", published_at: _d1, updated_at: _d2 },
-    { id: 5002, name: "Knowledge Base Connector", short_desc: "Bi-directional sync between AIOS GEO programmes and the Storm MLM knowledge graph.", description: "Knowledge Base Connector maintains a live sync between the AIOS GEO programme catalogue and the Storm MLM persistent memory store. New GEO programmes are automatically tagged with GeoQode envelopes and written to POST /api/knowledge/:key. Existing MLM entries surface as searchable GEO programmes inside the PLAIStore.", category: "Integrations", price_cents: 0, downloads: 1234, rating_avg: 4.6, developer_name: "Brains4Ai", developer_verified: true, type: "integration", bundle_id: "com.brains4ai.kb-connector", entry_point: "/integrations/kb-connector", published_at: _d2, updated_at: _d3 }
+    {
+      id: 5001,
+      name: "Merkaba API Bridge",
+      short_desc:
+        "Connect external services to the Merkaba lattice via GeoQode-tagged REST calls.",
+      description:
+        "Merkaba API Bridge provides a standards-compliant adapter layer that wraps any external REST or GraphQL API with canonical GeoQode coordinate envelopes before forwarding to the Storm knowledge base. Supports automatic semantic type inference, PHI-alignment scoring, and audit trail logging for every bridged call. Certified for Railway, Cloudflare, and OpenAI endpoints.",
+      category: "Integrations",
+      price_cents: 0,
+      downloads: 1890,
+      rating_avg: 4.8,
+      developer_name: "Brains4Ai",
+      developer_verified: true,
+      type: "integration",
+      bundle_id: "com.brains4ai.merkaba-api-bridge",
+      entry_point: "/integrations/api-bridge",
+      published_at: _d1,
+      updated_at: _d2,
+    },
+    {
+      id: 5002,
+      name: "Knowledge Base Connector",
+      short_desc:
+        "Bi-directional sync between AIOS GEO programmes and the Storm MLM knowledge graph.",
+      description:
+        "Knowledge Base Connector maintains a live sync between the AIOS GEO programme catalogue and the Storm MLM persistent memory store. New GEO programmes are automatically tagged with GeoQode envelopes and written to POST /api/knowledge/:key. Existing MLM entries surface as searchable GEO programmes inside the PLAIStore.",
+      category: "Integrations",
+      price_cents: 0,
+      downloads: 1234,
+      rating_avg: 4.6,
+      developer_name: "Brains4Ai",
+      developer_verified: true,
+      type: "integration",
+      bundle_id: "com.brains4ai.kb-connector",
+      entry_point: "/integrations/kb-connector",
+      published_at: _d2,
+      updated_at: _d3,
+    },
   );
 
   // ── Utilities ─────────────────────────────────────────────────────────────
   PLAI_UTILITIES.push(
-    { id: 6001, name: "PHI Calculator", short_desc: "Golden ratio arithmetic, PHI-harmonic frequency tables, and lattice node math.", description: "PHI Calculator is the essential utility for working with the Golden Root (PHI=1.618) and Silver Bridge (PSI=1.414) in Merkaba geometry. Features: PHI-harmonic frequency tables relative to any base Hz, GOLDEN_BAND and GOLDEN_DIFFERENTIAL computation, lattice node assignment formula (base + floor(confidence \u00d7 PHI \u00d7 2) % 6), and PHI-alignment deviation checker for arbitrary frequency inputs.", category: "Utilities", price_cents: 0, downloads: 3450, rating_avg: 4.9, developer_name: "Brains4Ai", developer_verified: true, type: "utility", bundle_id: "com.brains4ai.phi-calculator", entry_point: "/utilities/phi-calculator", published_at: _d1, updated_at: _d1 },
-    { id: 6002, name: "Frequency Tuner", short_desc: "Solfeggio frequency player and PHI-alignment visualiser for all 8 lattice Hz.", description: "Frequency Tuner plays and visualises all 8 canonical Merkaba solfeggio frequencies: 72 (HOLOGRAPHIC), 396 (ENTITY), 417 (LOCATION), 528 (ACTION), 639 (DIALOGUE), 741 (EMOTION), 852 (PHYSICS), 963 (NARRATIVE). Each tone includes a PHI-alignment score, GeoQode semantic type label, and Queen-Bee sector mapping. Includes binaural beat mixing for dual-frequency resonance.", category: "Utilities", price_cents: 0, downloads: 2670, rating_avg: 4.8, developer_name: "Brains4Ai", developer_verified: true, type: "utility", bundle_id: "com.brains4ai.frequency-tuner", entry_point: "/utilities/frequency-tuner", published_at: _d1, updated_at: _d2 },
-    { id: 6003, name: "Canonical Validator", short_desc: "Validate any JSON payload against the Merkaba canonical architecture invariants.", description: "Canonical Validator checks that any data object, GeoQode envelope, or configuration file conforms to the locked canonical invariants: architectureSignature === '8,26,48:480', PHI=1.618, PSI=1.414, no deprecated signatures (8,26,42:420:480 etc.), correct Unicode arrows (U+2192 \u2192 not ->), and valid lattice/harmonic node ranges. Returns a scored report with pass/fail per invariant.", category: "Utilities", price_cents: 0, downloads: 1987, rating_avg: 4.7, developer_name: "Brains4Ai", developer_verified: true, type: "utility", bundle_id: "com.brains4ai.canonical-validator", entry_point: "/utilities/canonical-validator", published_at: _d2, updated_at: _d3 }
+    {
+      id: 6001,
+      name: "PHI Calculator",
+      short_desc:
+        "Golden ratio arithmetic, PHI-harmonic frequency tables, and lattice node math.",
+      description:
+        "PHI Calculator is the essential utility for working with the Golden Root (PHI=1.618) and Silver Bridge (PSI=1.414) in Merkaba geometry. Features: PHI-harmonic frequency tables relative to any base Hz, GOLDEN_BAND and GOLDEN_DIFFERENTIAL computation, lattice node assignment formula (base + floor(confidence \u00d7 PHI \u00d7 2) % 6), and PHI-alignment deviation checker for arbitrary frequency inputs.",
+      category: "Utilities",
+      price_cents: 0,
+      downloads: 3450,
+      rating_avg: 4.9,
+      developer_name: "Brains4Ai",
+      developer_verified: true,
+      type: "utility",
+      bundle_id: "com.brains4ai.phi-calculator",
+      entry_point: "/utilities/phi-calculator",
+      published_at: _d1,
+      updated_at: _d1,
+    },
+    {
+      id: 6002,
+      name: "Frequency Tuner",
+      short_desc:
+        "Solfeggio frequency player and PHI-alignment visualiser for all 8 lattice Hz.",
+      description:
+        "Frequency Tuner plays and visualises all 8 canonical Merkaba solfeggio frequencies: 72 (HOLOGRAPHIC), 396 (ENTITY), 417 (LOCATION), 528 (ACTION), 639 (DIALOGUE), 741 (EMOTION), 852 (PHYSICS), 963 (NARRATIVE). Each tone includes a PHI-alignment score, GeoQode semantic type label, and Queen-Bee sector mapping. Includes binaural beat mixing for dual-frequency resonance.",
+      category: "Utilities",
+      price_cents: 0,
+      downloads: 2670,
+      rating_avg: 4.8,
+      developer_name: "Brains4Ai",
+      developer_verified: true,
+      type: "utility",
+      bundle_id: "com.brains4ai.frequency-tuner",
+      entry_point: "/utilities/frequency-tuner",
+      published_at: _d1,
+      updated_at: _d2,
+    },
+    {
+      id: 6003,
+      name: "Canonical Validator",
+      short_desc:
+        "Validate any JSON payload against the Merkaba canonical architecture invariants.",
+      description:
+        "Canonical Validator checks that any data object, GeoQode envelope, or configuration file conforms to the locked canonical invariants: architectureSignature === '8,26,48:480', PHI=1.618, PSI=1.414, no deprecated signatures (8,26,42:420:480 etc.), correct Unicode arrows (U+2192 \u2192 not ->), and valid lattice/harmonic node ranges. Returns a scored report with pass/fail per invariant.",
+      category: "Utilities",
+      price_cents: 0,
+      downloads: 1987,
+      rating_avg: 4.7,
+      developer_name: "Brains4Ai",
+      developer_verified: true,
+      type: "utility",
+      bundle_id: "com.brains4ai.canonical-validator",
+      entry_point: "/utilities/canonical-validator",
+      published_at: _d2,
+      updated_at: _d3,
+    },
   );
 
   // Push all into the flat extras array used by the app listing endpoint

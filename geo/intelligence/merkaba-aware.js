@@ -235,8 +235,12 @@ export class MerkabAware {
     // Blend in per-embedding coherence field (from geoqode envelope, 0.88-1.0)
     // to ensure canonical lattice programmes contribute their explicit coherence.
     const avgEmbedCoherence =
-      embeddings.reduce((s, e) => s + (e.coherence ?? 0.9), 0) / embeddings.length;
-    return Math.min(1, alignmentScore * 0.5 + varianceNorm * 0.15 + avgEmbedCoherence * 0.35);
+      embeddings.reduce((s, e) => s + (e.coherence ?? 0.9), 0) /
+      embeddings.length;
+    return Math.min(
+      1,
+      alignmentScore * 0.5 + varianceNorm * 0.15 + avgEmbedCoherence * 0.35,
+    );
   }
 
   /**
