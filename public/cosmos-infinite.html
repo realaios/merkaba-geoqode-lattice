@@ -1560,6 +1560,13 @@
           opacity: 0;
         }
       }
+      /* ── CLEAN-VIEW MODE: all HUD/overlay hidden — focus on the universe ── */
+      #freq-legend, #controls-hint, #scale-indicator,
+      #freq-hud, #systems-mapped, #briefing-toggle,
+      #nearby-hud, #galaxy-hud, #sector-brief,
+      #nav-reticle, #target-label, #vel-hud, #boost-vignette, #pilot-guide,
+      #dont-panic, #geo-tooltip, #discovery-feed, #explorer-badge,
+      #beacon-banner, #milestone-flash, #warp-bloom { display: none !important; }
     </style>
   </head>
   <body>
@@ -1953,7 +1960,7 @@
       <!-- Camera rig -->
       <a-entity id="cameraRig" position="0 5 72">
         <a-camera
-          wasd-controls="acceleration: 30"
+          wasd-controls="acceleration: 800"
           look-controls="pointerLockEnabled: false"
           fov="70"
         >
@@ -2408,15 +2415,12 @@
         setTimeout(function () {
           modal.style.display = "none";
         }, 920);
-        /* Start narrator after voices loaded */
-        if (window.speechSynthesis) {
+        /* Start narrator — disabled: clean-view mode */
+        /* if (window.speechSynthesis) {
           var v = window.speechSynthesis.getVoices();
-          if (v.length) {
-            startNarrator();
-          } else {
-            window.speechSynthesis.onvoiceschanged = startNarrator;
-          }
-        }
+          if (v.length) { startNarrator(); }
+          else { window.speechSynthesis.onvoiceschanged = startNarrator; }
+        } */
         /* Lattice pulse every 3.5 s */
         setInterval(firePulse, 3500);
       }
@@ -4073,7 +4077,10 @@
           };
           var pal = FREQ_PAL[gd.freq] || FREQ_PAL[528];
           var type = gd.isStation ? 5 : gd.latticeNode % 5;
-          var spread = gd.isStation ? 550 : 1400;
+          /* PHI-anchored spread: galaxy cloud size = distance / PHI^4 (6.854) */
+          /* Nearest galaxy r=900 → spread≈131  |  Far galaxy r=12000 → spread≈1751 */
+          var PHI_LOCAL = 1.618;
+          var spread = gd.isStation ? 550 : Math.max(50, gd.r / (PHI_LOCAL * PHI_LOCAL * PHI_LOCAL * PHI_LOCAL));
           for (var i = 0; i < COUNT; i++) {
             var x = 0,
               y = 0,
@@ -4620,8 +4627,8 @@
 
           /* ── WASD boost via Shift: dynamically changes wasd-controls accel ── */
           var camEl = document.querySelector("a-camera");
-          var ACCEL = 65,
-            ACCEL_BOOST = 300;
+          var ACCEL = 800,
+            ACCEL_BOOST = 4000;
           if (camEl)
             camEl.setAttribute("wasd-controls", "acceleration: " + ACCEL);
 
@@ -5019,10 +5026,10 @@
         },
 
         tick: function (time) {
-          if (this._bgPoints) this._bgPoints.rotation.y = time * 0.0000035;
-          if (this._localWorld) this._localWorld.rotation.y = time * 0.0000014;
+          if (this._bgPoints) this._bgPoints.rotation.y = time * 0.000025;
+          if (this._localWorld) this._localWorld.rotation.y = time * 0.00001;
           if (this._nebulaeGroup)
-            this._nebulaeGroup.rotation.y = time * 0.0000008;
+            this._nebulaeGroup.rotation.y = time * 0.000005;
           this._tickComets(time);
           this._tickTarget(time);
           /* Counter-rotating Merkaba: up-tri forward+left, down-tri back+right, 1:1 */
