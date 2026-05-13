@@ -436,67 +436,109 @@
       /* ── Sector Briefing Panel (arrival) ─────────────────────────────── */
       #sector-brief {
         position: fixed;
-        top: 0; left: 0;
-        width: 100%; height: 100%;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
         z-index: 9996;
         pointer-events: none;
         display: none;
         font-family: monospace;
       }
-      #sector-brief.visible { display: block; }
+      #sector-brief.visible {
+        display: block;
+      }
       .sb-frame {
         position: absolute;
-        top: 50%; left: 50%;
+        top: 50%;
+        left: 50%;
         transform: translate(-50%, -50%);
         width: min(580px, 90vw);
-        background: rgba(0,2,12,0.92);
-        border: 1px solid rgba(0,212,255,0.35);
+        background: rgba(0, 2, 12, 0.92);
+        border: 1px solid rgba(0, 212, 255, 0.35);
         border-radius: 4px;
         padding: 28px 34px 24px;
-        box-shadow: 0 0 44px rgba(0,212,255,0.18), inset 0 0 22px rgba(0,0,0,0.6);
-        animation: sb-in 0.55s cubic-bezier(0.22,1,0.36,1) both;
+        box-shadow:
+          0 0 44px rgba(0, 212, 255, 0.18),
+          inset 0 0 22px rgba(0, 0, 0, 0.6);
+        animation: sb-in 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
       }
       @keyframes sb-in {
-        from { opacity: 0; transform: translate(-50%, -48%) scaleY(0.88); }
-        to   { opacity: 1; transform: translate(-50%, -50%) scaleY(1); }
+        from {
+          opacity: 0;
+          transform: translate(-50%, -48%) scaleY(0.88);
+        }
+        to {
+          opacity: 1;
+          transform: translate(-50%, -50%) scaleY(1);
+        }
       }
       .sb-header {
-        font-size: 0.52rem; letter-spacing: 0.42em;
-        color: rgba(0,212,255,0.6); border-bottom: 1px solid rgba(0,212,255,0.2);
-        padding-bottom: 8px; margin-bottom: 14px;
+        font-size: 0.52rem;
+        letter-spacing: 0.42em;
+        color: rgba(0, 212, 255, 0.6);
+        border-bottom: 1px solid rgba(0, 212, 255, 0.2);
+        padding-bottom: 8px;
+        margin-bottom: 14px;
       }
       .sb-sector {
-        font-size: 1.55rem; font-weight: 900; color: #fff;
+        font-size: 1.55rem;
+        font-weight: 900;
+        color: #fff;
         letter-spacing: 0.18em;
-        text-shadow: 0 0 28px #00d4ff, 0 0 66px rgba(124,58,237,0.6);
+        text-shadow:
+          0 0 28px #00d4ff,
+          0 0 66px rgba(124, 58, 237, 0.6);
         margin-bottom: 4px;
       }
       .sb-coord {
-        font-size: 0.62rem; color: #7c3aed;
-        letter-spacing: 0.22em; margin-bottom: 16px;
+        font-size: 0.62rem;
+        color: #7c3aed;
+        letter-spacing: 0.22em;
+        margin-bottom: 16px;
       }
       .sb-row {
-        display: flex; justify-content: space-between;
-        font-size: 0.58rem; color: #94a3b8;
-        letter-spacing: 0.12em; margin-bottom: 6px;
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.58rem;
+        color: #94a3b8;
+        letter-spacing: 0.12em;
+        margin-bottom: 6px;
       }
-      .sb-row span:last-child { color: #e2e8f0; }
+      .sb-row span:last-child {
+        color: #e2e8f0;
+      }
       .sb-divider {
-        border: none; border-top: 1px solid rgba(255,255,255,0.07);
+        border: none;
+        border-top: 1px solid rgba(255, 255, 255, 0.07);
         margin: 12px 0;
       }
       .sb-transmission {
-        font-size: 0.72rem; color: #f59e0b;
-        font-style: italic; line-height: 1.6;
-        border-left: 2px solid rgba(245,158,11,0.4);
-        padding-left: 12px; margin-top: 12px;
+        font-size: 0.72rem;
+        color: #f59e0b;
+        font-style: italic;
+        line-height: 1.6;
+        border-left: 2px solid rgba(245, 158, 11, 0.4);
+        padding-left: 12px;
+        margin-top: 12px;
       }
       .sb-dismiss {
-        margin-top: 18px; text-align: center;
-        font-size: 0.5rem; color: rgba(0,212,255,0.38);
-        letter-spacing: 0.3em; animation: sb-blink 1.4s step-end infinite;
+        margin-top: 18px;
+        text-align: center;
+        font-size: 0.5rem;
+        color: rgba(0, 212, 255, 0.38);
+        letter-spacing: 0.3em;
+        animation: sb-blink 1.4s step-end infinite;
       }
-      @keyframes sb-blink { 0%,100%{opacity:0.38} 50%{opacity:0.9} }
+      @keyframes sb-blink {
+        0%,
+        100% {
+          opacity: 0.38;
+        }
+        50% {
+          opacity: 0.9;
+        }
+      }
       .geo-note {
         font-size: 0.82rem;
         color: #4ade80;
@@ -2741,7 +2783,7 @@
               if (e.buttons === 1) {
                 var dx = e.clientX - self._dragStart.x;
                 var dy = e.clientY - self._dragStart.y;
-                if (Math.sqrt(dx*dx + dy*dy) > 6) self._dragMoved = true;
+                if (Math.sqrt(dx * dx + dy * dy) > 6) self._dragMoved = true;
               }
               var now = Date.now();
               if (now - self._hoverTS < 55) return;
@@ -3272,39 +3314,65 @@
 
       /* ── PAN CONTROLS: Right-click drag or Middle-click drag to pan ──── */
       (function initPanControls() {
-        var panning = false, lastPX = 0, lastPY = 0;
-        window.addEventListener("contextmenu", function (e) { e.preventDefault(); }, { capture: true });
-        window.addEventListener("mousedown", function (e) {
-          if (e.button === 1 || e.button === 2) {
+        var panning = false,
+          lastPX = 0,
+          lastPY = 0;
+        window.addEventListener(
+          "contextmenu",
+          function (e) {
             e.preventDefault();
-            panning = true;
+          },
+          { capture: true },
+        );
+        window.addEventListener(
+          "mousedown",
+          function (e) {
+            if (e.button === 1 || e.button === 2) {
+              e.preventDefault();
+              panning = true;
+              lastPX = e.clientX;
+              lastPY = e.clientY;
+            }
+          },
+          { capture: true },
+        );
+        window.addEventListener(
+          "mouseup",
+          function (e) {
+            if (e.button === 1 || e.button === 2) panning = false;
+          },
+          { capture: true },
+        );
+        window.addEventListener(
+          "mousemove",
+          function (e) {
+            if (!panning) return;
+            var dx = e.clientX - lastPX,
+              dy = e.clientY - lastPY;
             lastPX = e.clientX;
             lastPY = e.clientY;
-          }
-        }, { capture: true });
-        window.addEventListener("mouseup", function (e) {
-          if (e.button === 1 || e.button === 2) panning = false;
-        }, { capture: true });
-        window.addEventListener("mousemove", function (e) {
-          if (!panning) return;
-          var dx = e.clientX - lastPX, dy = e.clientY - lastPY;
-          lastPX = e.clientX; lastPY = e.clientY;
-          if (!dx && !dy) return;
-          var rig = document.getElementById("cameraRig");
-          if (!rig || !rig.object3D) return;
-          var sceneEl = document.querySelector("a-scene");
-          if (!sceneEl || !sceneEl.camera) return;
-          var THREE = AFRAME.THREE;
-          var right = new THREE.Vector3();
-          right.setFromMatrixColumn(sceneEl.camera.matrixWorld, 0);
-          right.y = 0; right.normalize();
-          var up = new THREE.Vector3(0, 1, 0);
-          var pos = rig.object3D.position;
-          var dist = Math.max(2, Math.sqrt(pos.x*pos.x + pos.y*pos.y + pos.z*pos.z));
-          var spd = Math.max(0.08, dist * 0.004);
-          pos.addScaledVector(right, -dx * spd);
-          pos.addScaledVector(up, dy * spd);
-        }, { capture: true });
+            if (!dx && !dy) return;
+            var rig = document.getElementById("cameraRig");
+            if (!rig || !rig.object3D) return;
+            var sceneEl = document.querySelector("a-scene");
+            if (!sceneEl || !sceneEl.camera) return;
+            var THREE = AFRAME.THREE;
+            var right = new THREE.Vector3();
+            right.setFromMatrixColumn(sceneEl.camera.matrixWorld, 0);
+            right.y = 0;
+            right.normalize();
+            var up = new THREE.Vector3(0, 1, 0);
+            var pos = rig.object3D.position;
+            var dist = Math.max(
+              2,
+              Math.sqrt(pos.x * pos.x + pos.y * pos.y + pos.z * pos.z),
+            );
+            var spd = Math.max(0.08, dist * 0.004);
+            pos.addScaledVector(right, -dx * spd);
+            pos.addScaledVector(up, dy * spd);
+          },
+          { capture: true },
+        );
       })();
 
       /* ── SECTOR BRIEFING (Star Trek arrival panel) ──────────────────── */
@@ -3331,13 +3399,37 @@
           "Your position: confirmed. Your purpose: pending committee review.",
           "Red alert cancelled. It was just Tuesday again.",
         ];
-        var GAL_TYPES = ["SPIRAL","RING","ELLIPTICAL","BARRED SPIRAL","IRREGULAR","STATION"];
-        var ANOMALIES = [
-          "Dark matter filament","Temporal echo","Subspace harmonic","Null-space pocket",
-          "Gravitational lens","Ion storm remnant","Quantized void","Resonance cascade",
-          "Chromatic flux zone","Probability inversion","Standing wave anomaly","Phase boundary",
+        var GAL_TYPES = [
+          "SPIRAL",
+          "RING",
+          "ELLIPTICAL",
+          "BARRED SPIRAL",
+          "IRREGULAR",
+          "STATION",
         ];
-        var STATUSES = ["NOMINAL","STABLE","ANOMALOUS","FLUCTUATING","CLEAR","DEGRADED","OPTIMAL"];
+        var ANOMALIES = [
+          "Dark matter filament",
+          "Temporal echo",
+          "Subspace harmonic",
+          "Null-space pocket",
+          "Gravitational lens",
+          "Ion storm remnant",
+          "Quantized void",
+          "Resonance cascade",
+          "Chromatic flux zone",
+          "Probability inversion",
+          "Standing wave anomaly",
+          "Phase boundary",
+        ];
+        var STATUSES = [
+          "NOMINAL",
+          "STABLE",
+          "ANOMALOUS",
+          "FLUCTUATING",
+          "CLEAR",
+          "DEGRADED",
+          "OPTIMAL",
+        ];
         var brief = null;
         return function showSectorBrief(gd, isStation) {
           if (!brief) {
@@ -3349,36 +3441,65 @@
               brief.classList.remove("visible");
             });
             window.addEventListener("keydown", function (e) {
-              if (brief.classList.contains("visible") && (e.key === " " || e.key === "Enter" || e.key === "Escape")) {
+              if (
+                brief.classList.contains("visible") &&
+                (e.key === " " || e.key === "Enter" || e.key === "Escape")
+              ) {
                 brief.classList.remove("visible");
               }
             });
           }
           var frame = brief.querySelector(".sb-frame");
-          var ln = gd ? (gd.latticeNode || 0) : 0;
-          var hn = gd ? (gd.harmonicNode || 0) : 0;
-          var freq = gd ? (gd.freq || 528) : 528;
+          var ln = gd ? gd.latticeNode || 0 : 0;
+          var hn = gd ? gd.harmonicNode || 0 : 0;
+          var freq = gd ? gd.freq || 528 : 528;
           var galType = isStation ? "STATION" : GAL_TYPES[ln % 5];
-          var starCount = isStation ? 1400 : (2800 + ln * 137 + hn * 11);
+          var starCount = isStation ? 1400 : 2800 + ln * 137 + hn * 11;
           var anom1 = ANOMALIES[(ln * 3 + hn) % ANOMALIES.length];
           var anom2 = ANOMALIES[(ln * 7 + hn + 4) % ANOMALIES.length];
           var status = STATUSES[(ln + hn) % STATUSES.length];
           var msg = TRANSMISSIONS[(ln * 5 + hn) % TRANSMISSIONS.length];
           var dist = gd ? Math.round((gd.r || 1) * 4.1) : "?";
           frame.innerHTML =
-            '<div class="sb-header">' + (isStation ? "DOCKING CONFIRMATION" : "SECTOR ARRIVAL BRIEFING") + " \u00b7 MERKABA NAV-CORE</div>" +
-            '<div class="sb-sector">' + (gd ? gd.label : "UNKNOWN") + "</div>" +
-            '<div class="sb-coord">' + (gd ? gd.geoCode : "") + "</div>" +
-            '<div class="sb-row"><span>CLASSIFICATION</span><span>' + galType + "</span></div>" +
-            '<div class="sb-row"><span>LATTICE NODE</span><span>D48/' + ln + " \u00b7 H480/" + hn + "</span></div>" +
-            '<div class="sb-row"><span>RESONANCE FREQ</span><span>' + freq + " Hz</span></div>" +
-            '<div class="sb-row"><span>EST. DISTANCE</span><span>' + dist + " light-years</span></div>" +
-            '<div class="sb-row"><span>LOCAL BODIES</span><span>' + starCount.toLocaleString() + " detected</span></div>" +
-            '<div class="sb-row"><span>ANOMALY 1</span><span>' + anom1 + "</span></div>" +
-            '<div class="sb-row"><span>ANOMALY 2</span><span>' + anom2 + "</span></div>" +
-            '<div class="sb-row"><span>SECTOR STATUS</span><span>' + status + "</span></div>" +
+            '<div class="sb-header">' +
+            (isStation ? "DOCKING CONFIRMATION" : "SECTOR ARRIVAL BRIEFING") +
+            " \u00b7 MERKABA NAV-CORE</div>" +
+            '<div class="sb-sector">' +
+            (gd ? gd.label : "UNKNOWN") +
+            "</div>" +
+            '<div class="sb-coord">' +
+            (gd ? gd.geoCode : "") +
+            "</div>" +
+            '<div class="sb-row"><span>CLASSIFICATION</span><span>' +
+            galType +
+            "</span></div>" +
+            '<div class="sb-row"><span>LATTICE NODE</span><span>D48/' +
+            ln +
+            " \u00b7 H480/" +
+            hn +
+            "</span></div>" +
+            '<div class="sb-row"><span>RESONANCE FREQ</span><span>' +
+            freq +
+            " Hz</span></div>" +
+            '<div class="sb-row"><span>EST. DISTANCE</span><span>' +
+            dist +
+            " light-years</span></div>" +
+            '<div class="sb-row"><span>LOCAL BODIES</span><span>' +
+            starCount.toLocaleString() +
+            " detected</span></div>" +
+            '<div class="sb-row"><span>ANOMALY 1</span><span>' +
+            anom1 +
+            "</span></div>" +
+            '<div class="sb-row"><span>ANOMALY 2</span><span>' +
+            anom2 +
+            "</span></div>" +
+            '<div class="sb-row"><span>SECTOR STATUS</span><span>' +
+            status +
+            "</span></div>" +
             '<hr class="sb-divider">' +
-            '<div class="sb-transmission">\u201c' + msg + "\u201d</div>" +
+            '<div class="sb-transmission">\u201c' +
+            msg +
+            "\u201d</div>" +
             '<div class="sb-dismiss">[ CLICK ANYWHERE OR PRESS SPACE TO DISMISS ]</div>';
           brief.classList.add("visible");
         };

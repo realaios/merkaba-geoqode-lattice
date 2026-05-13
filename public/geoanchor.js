@@ -29,7 +29,6 @@
 "use strict";
 
 (function (global) {
-
   /* \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
      CANONICAL CONSTANTS
   \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 */
@@ -41,13 +40,13 @@
 
   /* Semantic frequency map */
   var FREQ_MAP = {
-    ENTITY:      396,
-    LOCATION:    417,
-    ACTION:      528,
-    DIALOGUE:    639,
-    EMOTION:     741,
-    PHYSICS:     852,
-    NARRATIVE:   963,
+    ENTITY: 396,
+    LOCATION: 417,
+    ACTION: 528,
+    DIALOGUE: 639,
+    EMOTION: 741,
+    PHYSICS: 852,
+    NARRATIVE: 963,
     HOLOGRAPHIC: 72,
   };
 
@@ -60,58 +59,63 @@
     741: 0x8b5cf6,
     852: 0xe879f9,
     963: 0xfbbf24,
-    72:  0x60a5fa,
+    72: 0x60a5fa,
   };
 
   /* Operator \u2192 semantic type */
   var OP_SEMANTIC = {
-    phi:    'ACTION',
-    otimes: 'PHYSICS',
-    delta:  'EMOTION',
-    wave:   'HOLOGRAPHIC',
+    phi: "ACTION",
+    otimes: "PHYSICS",
+    delta: "EMOTION",
+    wave: "HOLOGRAPHIC",
   };
 
   /* Operator \u2192 default frequency */
   var OP_DEFAULT_HZ = {
-    phi:    528,
+    phi: 528,
     otimes: 852,
-    delta:  741,
-    wave:   72,
+    delta: 741,
+    wave: 72,
   };
 
   /* Swarm radius: entities within this distance sympathetically pulse together */
   var SWARM_RADIUS = 60;
 
   /* ── SWARM registry ─────────────────────────────────────────────────────── */
-  var _swarm = [];  /* all active geoanchor component instances */
+  var _swarm = []; /* all active geoanchor component instances */
 
   /* ── GeoQode coordinate builder ─────────────────────────────────────────── */
   function buildCoordinate(operator, frequency, latticeNode, domain) {
     var hz = frequency || OP_DEFAULT_HZ[operator] || BASE_HZ;
-    var ln = (latticeNode === undefined) ? 0 : latticeNode;
+    var ln = latticeNode === undefined ? 0 : latticeNode;
     return {
       architectureSignature: CANONICAL_ARCHITECTURE,
-      semanticType: OP_SEMANTIC[operator] || 'ACTION',
-      frequency:    hz,
-      latticeNode:  ln,
+      semanticType: OP_SEMANTIC[operator] || "ACTION",
+      frequency: hz,
+      latticeNode: ln,
       harmonicNode: ln * 10,
       phiCoefficient: PHI,
       psiCoefficient: PSI,
-      coherence:    1.0,
-      domain:       domain || 'self-evolve',
-      source:       'geoanchor-mal-v1',
-      d48Expansion: 'CANONICAL',
-      d480Expansion:'FULL_HARMONIC',
-      operator:     operator,
+      coherence: 1.0,
+      domain: domain || "self-evolve",
+      source: "geoanchor-mal-v1",
+      d48Expansion: "CANONICAL",
+      d480Expansion: "FULL_HARMONIC",
+      operator: operator,
     };
   }
 
   /* ── SWARM event bus ────────────────────────────────────────────────────── */
   function swarmEmit(type, detail) {
     try {
-      var ev = new CustomEvent('geoanchor:' + type, { detail: detail, bubbles: true });
+      var ev = new CustomEvent("geoanchor:" + type, {
+        detail: detail,
+        bubbles: true,
+      });
       document.dispatchEvent(ev);
-    } catch (e) { /* silent */ }
+    } catch (e) {
+      /* silent */
+    }
   }
 
   function freqToColor(hz) {
@@ -121,15 +125,14 @@
   /* ══════════════════════════════════════════════════════════════════════════
      AFRAME COMPONENT: geoanchor
   ══════════════════════════════════════════════════════════════════════════ */
-  AFRAME.registerComponent('geoanchor', {
-
+  AFRAME.registerComponent("geoanchor", {
     schema: {
-      operator:        { type: 'string',  default: 'phi'   },
-      frequency:       { type: 'number',  default: 72      },
-      latticeNode:     { type: 'number',  default: 0       },
-      proximityRadius: { type: 'number',  default: 8       },
-      label:           { type: 'string',  default: ''      },
-      swarmSync:       { type: 'boolean', default: true    },
+      operator: { type: "string", default: "phi" },
+      frequency: { type: "number", default: 72 },
+      latticeNode: { type: "number", default: 0 },
+      proximityRadius: { type: "number", default: 8 },
+      label: { type: "string", default: "" },
+      swarmSync: { type: "boolean", default: true },
     },
 
     init: function () {
@@ -138,27 +141,27 @@
       this.THREE = THREE;
 
       /* Three.js working vectors */
-      this._camPos  = new THREE.Vector3();
-      this._entPos  = new THREE.Vector3();
+      this._camPos = new THREE.Vector3();
+      this._entPos = new THREE.Vector3();
 
       /* State */
-      this.inProximity  = false;
-      this.t            = 0;
-      this.overlays     = [];   /* Three.js objects we added */
-      this.orbitRings   = [];
-      this.pulseRings   = [];
+      this.inProximity = false;
+      this.t = 0;
+      this.overlays = []; /* Three.js objects we added */
+      this.orbitRings = [];
+      this.pulseRings = [];
       this._markerAngle = 0;
-      this._idleT       = 0;
-      this._deltaPhase  = 0;
-      this._wavePhase   = 0;
-      this._freqKeys    = [396, 528, 741, 852, 963, 72, 417, 639];
-      this._freqIdx     = 0;
-      this._freqTimer   = 0;
+      this._idleT = 0;
+      this._deltaPhase = 0;
+      this._wavePhase = 0;
+      this._freqKeys = [396, 528, 741, 852, 963, 72, 417, 639];
+      this._freqIdx = 0;
+      this._freqTimer = 0;
       this._childMeshes = [];
-      this._built       = false;
+      this._built = false;
 
       /* Fill default frequency from operator if not specified */
-      if (this.data.frequency === 72 && this.data.operator !== 'wave') {
+      if (this.data.frequency === 72 && this.data.operator !== "wave") {
         this.data.frequency = OP_DEFAULT_HZ[this.data.operator] || 72;
       }
 
@@ -166,7 +169,7 @@
       this.geoCoord = buildCoordinate(
         this.data.operator,
         this.data.frequency,
-        this.data.latticeNode
+        this.data.latticeNode,
       );
 
       /* Register in SWARM */
@@ -178,22 +181,28 @@
         if (ev.detail.entity === self.el) return;
         /* Sympathetic pulse if same operator and within SWARM_RADIUS */
         self.el.object3D.getWorldPosition(self._entPos);
-        ev.detail.entity.object3D.getWorldPosition(self._camPos); /* reuse as source pos */
+        ev.detail.entity.object3D.getWorldPosition(
+          self._camPos,
+        ); /* reuse as source pos */
         var d = self._entPos.distanceTo(self._camPos);
         if (d < SWARM_RADIUS && self.data.operator === ev.detail.operator) {
           self._triggerSwarmSympathy();
         }
       };
-      document.addEventListener('geoanchor:enter', this._onSwarmEnter);
+      document.addEventListener("geoanchor:enter", this._onSwarmEnter);
 
       /* Build operator overlays after model loads */
-      var modelComp = this.el.components['gltf-model'];
-      if (modelComp && !this.el.getObject3D('mesh')) {
-        this.el.addEventListener('model-loaded', function () {
-          setTimeout(function () { self._buildOperator(); }, 50);
+      var modelComp = this.el.components["gltf-model"];
+      if (modelComp && !this.el.getObject3D("mesh")) {
+        this.el.addEventListener("model-loaded", function () {
+          setTimeout(function () {
+            self._buildOperator();
+          }, 50);
         });
       } else {
-        setTimeout(function () { self._buildOperator(); }, 120);
+        setTimeout(function () {
+          self._buildOperator();
+        }, 120);
       }
     },
 
@@ -202,10 +211,10 @@
       if (this._built) return;
       this._built = true;
       var op = this.data.operator;
-      if (op === 'phi')    this._buildPhi();
-      if (op === 'otimes') this._buildOtimes();
-      if (op === 'delta')  this._buildDelta();
-      if (op === 'wave')   this._buildWave();
+      if (op === "phi") this._buildPhi();
+      if (op === "otimes") this._buildOtimes();
+      if (op === "delta") this._buildDelta();
+      if (op === "wave") this._buildWave();
     },
 
     /* ────────────────────────────────────────────────────────────────────
@@ -213,15 +222,18 @@
     ──────────────────────────────────────────────────────────────────── */
     _buildPhi: function () {
       var THREE = this.THREE;
-      var col   = freqToColor(this.data.frequency);
+      var col = freqToColor(this.data.frequency);
 
       /* Primary equatorial ring */
       var r1 = new THREE.Mesh(
         new THREE.TorusGeometry(4.2, 0.055, 8, 80),
         new THREE.MeshPhongMaterial({
-          color: col, emissive: col, emissiveIntensity: 1.1,
-          transparent: true, opacity: 0.48,
-        })
+          color: col,
+          emissive: col,
+          emissiveIntensity: 1.1,
+          transparent: true,
+          opacity: 0.48,
+        }),
       );
       r1.rotation.x = Math.PI / 2;
 
@@ -229,20 +241,26 @@
       var r2 = new THREE.Mesh(
         new THREE.TorusGeometry(3.6, 0.038, 8, 64),
         new THREE.MeshPhongMaterial({
-          color: col, emissive: col, emissiveIntensity: 0.7,
-          transparent: true, opacity: 0.3,
-        })
+          color: col,
+          emissive: col,
+          emissiveIntensity: 0.7,
+          transparent: true,
+          opacity: 0.3,
+        }),
       );
-      r2.rotation.x = Math.PI * PSI / 4;
+      r2.rotation.x = (Math.PI * PSI) / 4;
       r2.rotation.z = Math.PI / 6;
 
       /* Orbit marker sphere (small gold sphere riding the ring) */
       var mk = new THREE.Mesh(
         new THREE.SphereGeometry(0.22, 14, 14),
         new THREE.MeshPhongMaterial({
-          color: 0xfbbf24, emissive: 0xfbbf24,
-          emissiveIntensity: 2.2, transparent: true, opacity: 0.95,
-        })
+          color: 0xfbbf24,
+          emissive: 0xfbbf24,
+          emissiveIntensity: 2.2,
+          transparent: true,
+          opacity: 0.95,
+        }),
       );
       mk.position.set(4.2, 0, 0);
 
@@ -250,9 +268,13 @@
       var disc = new THREE.Mesh(
         new THREE.CircleGeometry(5.0, 32),
         new THREE.MeshPhongMaterial({
-          color: col, emissive: col, emissiveIntensity: 0.15,
-          transparent: true, opacity: 0.05, side: THREE.DoubleSide,
-        })
+          color: col,
+          emissive: col,
+          emissiveIntensity: 0.15,
+          transparent: true,
+          opacity: 0.05,
+          side: THREE.DoubleSide,
+        }),
       );
       disc.rotation.x = -Math.PI / 2;
 
@@ -262,7 +284,7 @@
       this.el.object3D.add(disc);
 
       this.orbitRings = [r1, r2];
-      this._marker    = mk;
+      this._marker = mk;
       this.overlays.push(r1, r2, mk, disc);
     },
 
@@ -276,10 +298,13 @@
       var aura = new THREE.Mesh(
         new THREE.SphereGeometry(5.5, 20, 20),
         new THREE.MeshPhongMaterial({
-          color: 0x00d4ff, emissive: 0x00d4ff,
-          emissiveIntensity: 0.6, side: THREE.BackSide,
-          transparent: true, opacity: 0.0,
-        })
+          color: 0x00d4ff,
+          emissive: 0x00d4ff,
+          emissiveIntensity: 0.6,
+          side: THREE.BackSide,
+          transparent: true,
+          opacity: 0.0,
+        }),
       );
       this._aura = aura;
       this.el.object3D.add(aura);
@@ -291,13 +316,16 @@
         var pr = new THREE.Mesh(
           new THREE.TorusGeometry(1.0, 0.07, 8, 72),
           new THREE.MeshPhongMaterial({
-            color: pColors[i], emissive: pColors[i],
-            emissiveIntensity: 2.5, transparent: true, opacity: 0.0,
-          })
+            color: pColors[i],
+            emissive: pColors[i],
+            emissiveIntensity: 2.5,
+            transparent: true,
+            opacity: 0.0,
+          }),
         );
-        pr.rotation.x = (i === 0) ? Math.PI / 2 : 0;
+        pr.rotation.x = i === 0 ? Math.PI / 2 : 0;
         pr._active = false;
-        pr._t      = 0;
+        pr._t = 0;
         this.el.object3D.add(pr);
         this.pulseRings.push(pr);
       }
@@ -306,15 +334,23 @@
       var standRing = new THREE.Mesh(
         new THREE.TorusGeometry(3.0, 0.042, 8, 56),
         new THREE.MeshPhongMaterial({
-          color: 0x00d4ff, emissive: 0x00d4ff,
-          emissiveIntensity: 0.8, transparent: true, opacity: 0.18,
-        })
+          color: 0x00d4ff,
+          emissive: 0x00d4ff,
+          emissiveIntensity: 0.8,
+          transparent: true,
+          opacity: 0.18,
+        }),
       );
       standRing.rotation.x = Math.PI / 2;
       this._standRing = standRing;
       this.el.object3D.add(standRing);
 
-      this.overlays.push(aura, this.pulseRings[0], this.pulseRings[1], standRing);
+      this.overlays.push(
+        aura,
+        this.pulseRings[0],
+        this.pulseRings[1],
+        standRing,
+      );
     },
 
     /* ────────────────────────────────────────────────────────────────────
@@ -322,18 +358,21 @@
     ──────────────────────────────────────────────────────────────────── */
     _buildDelta: function () {
       var THREE = this.THREE;
-      var col   = freqToColor(this.data.frequency);
+      var col = freqToColor(this.data.frequency);
 
       /* Compression aura sphere */
       var aura = new THREE.Mesh(
         new THREE.SphereGeometry(3.2, 22, 22),
         new THREE.MeshPhongMaterial({
-          color: col, emissive: col,
-          emissiveIntensity: 0.5, side: THREE.BackSide,
-          transparent: true, opacity: 0.08,
-        })
+          color: col,
+          emissive: col,
+          emissiveIntensity: 0.5,
+          side: THREE.BackSide,
+          transparent: true,
+          opacity: 0.08,
+        }),
       );
-      this._deltaAura  = aura;
+      this._deltaAura = aura;
       this._deltaPhase = 0;
       this.el.object3D.add(aura);
 
@@ -341,9 +380,12 @@
       var node = new THREE.Mesh(
         new THREE.OctahedronGeometry(0.55, 0),
         new THREE.MeshPhongMaterial({
-          color: col, emissive: col,
-          emissiveIntensity: 1.8, transparent: true, opacity: 0.82,
-        })
+          color: col,
+          emissive: col,
+          emissiveIntensity: 1.8,
+          transparent: true,
+          opacity: 0.82,
+        }),
       );
       node.position.set(0, 3.5, 0);
       this._deltaNode = node;
@@ -360,28 +402,34 @@
     ──────────────────────────────────────────────────────────────────── */
     _buildWave: function () {
       var THREE = this.THREE;
-      var col   = freqToColor(this.data.frequency);
+      var col = freqToColor(this.data.frequency);
 
       /* Outer wireframe shell — ripples */
       var shell = new THREE.Mesh(
         new THREE.IcosahedronGeometry(4.8, 2),
         new THREE.MeshPhongMaterial({
-          color: col, emissive: col,
-          emissiveIntensity: 0.4, wireframe: true,
-          transparent: true, opacity: 0.07,
-        })
+          color: col,
+          emissive: col,
+          emissiveIntensity: 0.4,
+          wireframe: true,
+          transparent: true,
+          opacity: 0.07,
+        }),
       );
-      this._waveShell  = shell;
-      this._wavePhase  = 0;
+      this._waveShell = shell;
+      this._wavePhase = 0;
       this.el.object3D.add(shell);
 
       /* Harmonic ring that pulses frequency */
       var hRing = new THREE.Mesh(
         new THREE.TorusGeometry(3.8, 0.038, 8, 60),
         new THREE.MeshPhongMaterial({
-          color: col, emissive: col,
-          emissiveIntensity: 1.2, transparent: true, opacity: 0.22,
-        })
+          color: col,
+          emissive: col,
+          emissiveIntensity: 1.2,
+          transparent: true,
+          opacity: 0.22,
+        }),
       );
       hRing.rotation.y = Math.PI / 4;
       this._hRing = hRing;
@@ -399,7 +447,9 @@
             o.material._geoCloned = true;
           }
           if (o.material) {
-            o._origEmissive          = o.material.emissive ? o.material.emissive.clone() : new THREE.Color(0);
+            o._origEmissive = o.material.emissive
+              ? o.material.emissive.clone()
+              : new THREE.Color(0);
             o._origEmissiveIntensity = o.material.emissiveIntensity || 0;
             self._childMeshes.push(o);
           }
@@ -411,8 +461,8 @@
        TICK — runs every frame
     ══════════════════════════════════════════════════════════════════════ */
     tick: function (time, delta) {
-      this.t  = time * 0.001;
-      var dt  = Math.min((delta || 16) * 0.001, 0.1); /* cap at 100ms */
+      this.t = time * 0.001;
+      var dt = Math.min((delta || 16) * 0.001, 0.1); /* cap at 100ms */
       var sceneEl = this.el.sceneEl;
       if (!sceneEl || !sceneEl.camera) return;
 
@@ -423,15 +473,15 @@
       var wasIn = this.inProximity;
       this.inProximity = dist <= this.data.proximityRadius;
 
-      if (!wasIn && this.inProximity)  this._onProximityEnter(dist);
-      if (wasIn  && !this.inProximity) this._onProximityExit();
+      if (!wasIn && this.inProximity) this._onProximityEnter(dist);
+      if (wasIn && !this.inProximity) this._onProximityExit();
 
       /* Tick operator */
       var op = this.data.operator;
-      if (op === 'phi')    this._tickPhi(dt);
-      if (op === 'otimes') this._tickOtimes(dt);
-      if (op === 'delta')  this._tickDelta(dt);
-      if (op === 'wave')   this._tickWave(dt);
+      if (op === "phi") this._tickPhi(dt);
+      if (op === "otimes") this._tickOtimes(dt);
+      if (op === "delta") this._tickDelta(dt);
+      if (op === "wave") this._tickWave(dt);
     },
 
     /* ── phi tick ──────────────────────────────────────────────────────── */
@@ -446,7 +496,9 @@
       var op1 = 0.18 + Math.sin(this.t * 2.3 + 1) * 0.1;
       this.orbitRings[0].material.opacity = this.inProximity ? op0 + 0.28 : op0;
       this.orbitRings[1].material.opacity = this.inProximity ? op1 + 0.18 : op1;
-      this.orbitRings[0].material.emissiveIntensity = this.inProximity ? 2.2 : 1.1;
+      this.orbitRings[0].material.emissiveIntensity = this.inProximity
+        ? 2.2
+        : 1.1;
 
       /* Marker rides the primary ring */
       if (this._marker) {
@@ -454,7 +506,7 @@
         this._marker.position.set(
           4.2 * Math.cos(this._markerAngle),
           0,
-          4.2 * Math.sin(this._markerAngle)
+          4.2 * Math.sin(this._markerAngle),
         );
         this._marker.material.emissiveIntensity = this.inProximity ? 3.8 : 2.2;
         var ms = 0.22 + Math.sin(this.t * 4.5) * 0.06;
@@ -469,9 +521,11 @@
       /* Idle aura breath */
       if (this._aura) {
         if (!this.inProximity) {
-          this._aura.material.opacity = 0.03 + Math.sin(this._idleT * 0.7) * 0.025;
+          this._aura.material.opacity =
+            0.03 + Math.sin(this._idleT * 0.7) * 0.025;
         } else {
-          this._aura.material.opacity = 0.38 + Math.sin(this._idleT * 2.8) * 0.18;
+          this._aura.material.opacity =
+            0.38 + Math.sin(this._idleT * 2.8) * 0.18;
         }
       }
 
@@ -481,7 +535,9 @@
         this._standRing.material.opacity = this.inProximity
           ? 0.55 + Math.sin(this._idleT * 3.2) * 0.3
           : 0.12 + Math.sin(this._idleT * 1.1) * 0.06;
-        this._standRing.material.emissiveIntensity = this.inProximity ? 2.8 : 0.8;
+        this._standRing.material.emissiveIntensity = this.inProximity
+          ? 2.8
+          : 0.8;
       }
 
       /* Expand active pulse rings */
@@ -492,7 +548,10 @@
         var sc = 1.0 + pr._t * 4.5;
         pr.scale.set(sc, sc, sc);
         pr.material.opacity = Math.max(0, 0.9 - pr._t * 0.95);
-        if (pr._t >= 0.95) { pr._active = false; pr.material.opacity = 0; }
+        if (pr._t >= 0.95) {
+          pr._active = false;
+          pr.material.opacity = 0;
+        }
       }
     },
 
@@ -502,8 +561,11 @@
       this._deltaPhase += dt * (this.inProximity ? 2.4 : 0.9);
 
       /* Aura breathe */
-      var breath  = 0.06 + Math.abs(Math.sin(this._deltaPhase * PHI * 0.5)) * 0.1;
-      this._deltaAura.material.opacity = this.inProximity ? breath * 2.2 : breath;
+      var breath =
+        0.06 + Math.abs(Math.sin(this._deltaPhase * PHI * 0.5)) * 0.1;
+      this._deltaAura.material.opacity = this.inProximity
+        ? breath * 2.2
+        : breath;
       var as = 1.0 + Math.sin(this._deltaPhase * 0.7) * 0.14;
       this._deltaAura.scale.setScalar(as);
       this._deltaAura.material.emissiveIntensity = this.inProximity ? 1.2 : 0.5;
@@ -514,7 +576,9 @@
         this._deltaNode.rotation.x += dt * 0.9;
         var ns = 0.55 + Math.sin(this._deltaPhase * 2.1) * 0.2;
         this._deltaNode.scale.setScalar(this.inProximity ? ns * 1.5 : ns);
-        this._deltaNode.material.emissiveIntensity = this.inProximity ? 3.5 : 1.8;
+        this._deltaNode.material.emissiveIntensity = this.inProximity
+          ? 3.5
+          : 1.8;
       }
 
       /* Breathe the entire entity scale when in proximity */
@@ -523,7 +587,7 @@
         this.el.object3D.scale.set(
           this._baseScale.x * bf,
           this._baseScale.y * bf,
-          this._baseScale.z * bf
+          this._baseScale.z * bf,
         );
       } else if (!this.inProximity && this._baseScale) {
         /* Restore base scale smoothly */
@@ -541,7 +605,7 @@
       var cycleTime = this.inProximity ? 0.55 : 2.0;
       if (this._freqTimer >= cycleTime) {
         this._freqTimer = 0;
-        this._freqIdx   = (this._freqIdx + 1) % this._freqKeys.length;
+        this._freqIdx = (this._freqIdx + 1) % this._freqKeys.length;
         var nc = freqToColor(this._freqKeys[this._freqIdx]);
         this._waveShell.material.color.setHex(nc);
         this._waveShell.material.emissive.setHex(nc);
@@ -552,23 +616,28 @@
       }
 
       /* Shell ripple */
-      var ws = 1.0 + Math.sin(this._wavePhase * 2.0) * (this.inProximity ? 0.16 : 0.055);
+      var ws =
+        1.0 +
+        Math.sin(this._wavePhase * 2.0) * (this.inProximity ? 0.16 : 0.055);
       this._waveShell.scale.setScalar(ws);
-      this._waveShell.material.opacity = 0.05 + Math.abs(Math.sin(this._wavePhase)) * (this.inProximity ? 0.16 : 0.055);
+      this._waveShell.material.opacity =
+        0.05 +
+        Math.abs(Math.sin(this._wavePhase)) * (this.inProximity ? 0.16 : 0.055);
       this._waveShell.rotation.y += dt * (this.inProximity ? 0.7 : 0.22);
       this._waveShell.rotation.x += dt * 0.14;
 
       /* Harmonic ring rotate */
       if (this._hRing) {
         this._hRing.rotation.z += dt * (this.inProximity ? 1.4 : 0.45);
-        this._hRing.material.opacity = 0.14 + Math.sin(this._wavePhase * 1.8) * 0.12;
+        this._hRing.material.opacity =
+          0.14 + Math.sin(this._wavePhase * 1.8) * 0.12;
         this._hRing.material.emissiveIntensity = this.inProximity ? 2.2 : 1.2;
       }
 
       /* Modulate child mesh emissive when in proximity */
       if (this._childMeshes.length) {
         var ci = this.inProximity;
-        var ei = ci ? (0.7 + Math.sin(this._wavePhase * 3.5) * 0.55) : 0;
+        var ei = ci ? 0.7 + Math.sin(this._wavePhase * 3.5) * 0.55 : 0;
         var ec = ci ? freqToColor(this._freqKeys[this._freqIdx]) : null;
         for (var i = 0; i < this._childMeshes.length; i++) {
           var m = this._childMeshes[i];
@@ -588,40 +657,43 @@
        PROXIMITY EVENTS
     ══════════════════════════════════════════════════════════════════════ */
     _onProximityEnter: function (dist) {
-      swarmEmit('enter', {
-        entity:      this.el,
-        operator:    this.data.operator,
-        frequency:   this.data.frequency,
+      swarmEmit("enter", {
+        entity: this.el,
+        operator: this.data.operator,
+        frequency: this.data.frequency,
         latticeNode: this.data.latticeNode,
-        distance:    dist,
-        geoCoord:    this.geoCoord,
-        label:       this.data.label,
+        distance: dist,
+        geoCoord: this.geoCoord,
+        label: this.data.label,
       });
 
       /* Operator entry effects */
-      if (this.data.operator === 'otimes') this._triggerHandshake();
-      if (this.data.operator === 'delta')  this._triggerCompressionBurst();
-      if (this.data.operator === 'phi')    this._triggerPhiBoost();
+      if (this.data.operator === "otimes") this._triggerHandshake();
+      if (this.data.operator === "delta") this._triggerCompressionBurst();
+      if (this.data.operator === "phi") this._triggerPhiBoost();
 
       /* Trigger audio pulse in cosmos-infinite */
-      if (typeof window.firePulse === 'function') window.firePulse();
+      if (typeof window.firePulse === "function") window.firePulse();
 
       /* Update scale HUD if present */
-      if (typeof window._updateScaleHUD === 'function') {
-        window._updateScaleHUD(null, this.data.label || this.data.operator.toUpperCase());
+      if (typeof window._updateScaleHUD === "function") {
+        window._updateScaleHUD(
+          null,
+          this.data.label || this.data.operator.toUpperCase(),
+        );
       }
     },
 
     _onProximityExit: function () {
-      swarmEmit('exit', {
-        entity:      this.el,
-        operator:    this.data.operator,
-        frequency:   this.data.frequency,
+      swarmEmit("exit", {
+        entity: this.el,
+        operator: this.data.operator,
+        frequency: this.data.frequency,
         latticeNode: this.data.latticeNode,
       });
 
       /* Restore wave child emissives */
-      if (this.data.operator === 'wave') {
+      if (this.data.operator === "wave") {
         for (var i = 0; i < this._childMeshes.length; i++) {
           var m = this._childMeshes[i];
           if (m._origEmissive && m.material && m.material.emissive) {
@@ -632,7 +704,7 @@
       }
 
       /* Restore delta scale */
-      if (this.data.operator === 'delta' && this._baseScale) {
+      if (this.data.operator === "delta" && this._baseScale) {
         this.el.object3D.scale.copy(this._baseScale);
       }
     },
@@ -644,14 +716,14 @@
         (function (ring, delay) {
           setTimeout(function () {
             ring._active = true;
-            ring._t      = 0;
+            ring._t = 0;
             ring.scale.set(1, 1, 1);
             ring.material.opacity = 0.92;
           }, delay);
         })(this.pulseRings[i], i * 320);
       }
       if (this._aura) {
-        this._aura.material.opacity         = 0.7;
+        this._aura.material.opacity = 0.7;
         this._aura.material.emissiveIntensity = 3.0;
       }
     },
@@ -673,22 +745,25 @@
       if (!this.orbitRings.length) return;
       var self = this;
       var rings = this.orbitRings;
-      rings.forEach(function (r) { r.material.emissiveIntensity = 4.0; });
+      rings.forEach(function (r) {
+        r.material.emissiveIntensity = 4.0;
+      });
       setTimeout(function () {
-        if (self.orbitRings.length) self.orbitRings.forEach(function (r) {
-          r.material.emissiveIntensity = 1.1;
-        });
+        if (self.orbitRings.length)
+          self.orbitRings.forEach(function (r) {
+            r.material.emissiveIntensity = 1.1;
+          });
       }, 900);
     },
 
     /* Sympathetic pulse from SWARM broadcast */
     _triggerSwarmSympathy: function () {
-      if (this.data.operator === 'otimes') {
+      if (this.data.operator === "otimes") {
         /* Half-intensity handshake */
         for (var i = 0; i < this.pulseRings.length; i++) {
           var pr = this.pulseRings[i];
           pr._active = true;
-          pr._t      = 0.3;  /* start mid-expansion */
+          pr._t = 0.3; /* start mid-expansion */
           pr.scale.set(2, 2, 2);
           pr.material.opacity = 0.45;
         }
@@ -699,7 +774,7 @@
       for (var i = 0; i < this.overlays.length; i++) {
         this.el.object3D.remove(this.overlays[i]);
       }
-      document.removeEventListener('geoanchor:enter', this._onSwarmEnter);
+      document.removeEventListener("geoanchor:enter", this._onSwarmEnter);
       var idx = _swarm.indexOf(this);
       if (idx !== -1) _swarm.splice(idx, 1);
     },
@@ -709,23 +784,27 @@
      PUBLIC NAMESPACE — window.GeoAnchor
   ══════════════════════════════════════════════════════════════════════════ */
   global.GeoAnchor = {
-    version:  '1.0.0',
-    PHI:       PHI,
-    PSI:       PSI,
-    BASE_HZ:   BASE_HZ,
+    version: "1.0.0",
+    PHI: PHI,
+    PSI: PSI,
+    BASE_HZ: BASE_HZ,
     GOLDEN_BAND: GOLDEN_BAND,
     CANONICAL_ARCHITECTURE: CANONICAL_ARCHITECTURE,
-    FREQ_MAP:  FREQ_MAP,
-    OPERATORS: ['phi', 'otimes', 'delta', 'wave'],
+    FREQ_MAP: FREQ_MAP,
+    OPERATORS: ["phi", "otimes", "delta", "wave"],
 
     /** Build a GeoQode coordinate envelope for any operator/frequency */
     buildCoordinate: buildCoordinate,
 
     /** All active geoanchor component instances (the VR SWARM) */
-    getSwarm: function () { return _swarm.slice(); },
+    getSwarm: function () {
+      return _swarm.slice();
+    },
 
     /** Notify zoom level to all SWARM entities */
-    notifyZoom: function (dist) { swarmEmit('zoom', { distance: dist }); },
+    notifyZoom: function (dist) {
+      swarmEmit("zoom", { distance: dist });
+    },
 
     /** Manually trigger a pulse on all entities with matching operator */
     pulseSector: function (operator) {
@@ -737,14 +816,24 @@
     },
 
     /** Listen for proximity enter events */
-    onEnter: function (fn) { document.addEventListener('geoanchor:enter', fn); return GeoAnchor; },
-    onExit:  function (fn) { document.addEventListener('geoanchor:exit',  fn); return GeoAnchor; },
-    onZoom:  function (fn) { document.addEventListener('geoanchor:zoom',  fn); return GeoAnchor; },
+    onEnter: function (fn) {
+      document.addEventListener("geoanchor:enter", fn);
+      return GeoAnchor;
+    },
+    onExit: function (fn) {
+      document.addEventListener("geoanchor:exit", fn);
+      return GeoAnchor;
+    },
+    onZoom: function (fn) {
+      document.addEventListener("geoanchor:zoom", fn);
+      return GeoAnchor;
+    },
   };
 
   /* Freeze canonical signature assertion */
-  if (CANONICAL_ARCHITECTURE !== '8,26,48:480') {
-    throw new Error('[GeoAnchor] Architecture invariant violated: ' + CANONICAL_ARCHITECTURE);
+  if (CANONICAL_ARCHITECTURE !== "8,26,48:480") {
+    throw new Error(
+      "[GeoAnchor] Architecture invariant violated: " + CANONICAL_ARCHITECTURE,
+    );
   }
-
 })(window);
