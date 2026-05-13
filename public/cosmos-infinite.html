@@ -1540,6 +1540,30 @@
       <!-- Distant Universe: 80k bg stars + 480 clickable GeoQode galaxy anchors -->
       <a-entity distant-universe></a-entity>
 
+      <!-- ── EARTH'S MOON SHELL ────────────────────────────────────────────────
+           Radius-80 semi-transparent sphere anchored at world origin.
+           Camera spawns inside it at (0,5,30).  Press S / joystick-back to
+           exit through the +Z wall — the Solar System is visible through
+           the Moon at z=-5000.  Press W to dive back in.
+      ──────────────────────────────────────────────────────────────────────── -->
+      <a-sphere
+        id="earth-moon-shell"
+        position="0 0 0"
+        radius="80"
+        segments-width="64"
+        segments-height="64"
+        material="color: #d0cfc4; opacity: 0.42; transparent: true; side: double; shader: flat; emissive: #8899aa; emissiveIntensity: 0.28"
+      ></a-sphere>
+      <!-- Moon label — visible from outside, floats above the sphere -->
+      <a-text
+        value="EARTH'S MOON"
+        position="0 86 0"
+        scale="9 9 9"
+        color="#e8e4d0"
+        align="center"
+        font="mozillavr"
+      ></a-text>
+
       <!-- ══════════════════════════════════════════════════════════════════
            OUR SOLAR SYSTEM — NASA-accuracy orbital positions (J2000 + live)
            All 8 planets + Pluto + major moons + asteroid belt + orbit paths
@@ -1547,7 +1571,7 @@
       ════════════════════════════════════════════════════════════════════ -->
       <a-entity
         id="solar-system"
-        position="0 -5 -200"
+        position="0 -5 -5000"
         scale="10 10 10"
         solar-system-realtime
       >
@@ -2034,8 +2058,8 @@
         </a-entity>
       </a-entity>
 
-      <!-- Camera rig -->
-      <a-entity id="cameraRig" position="0 5 72">
+      <!-- Camera rig — starts INSIDE Earth's Moon (radius-80 sphere at origin) -->
+      <a-entity id="cameraRig" position="0 5 30">
         <a-camera
           wasd-controls="acceleration: 800"
           look-controls="pointerLockEnabled: false; reverseMouseDrag: true; touchEnabled: true"
@@ -6315,7 +6339,7 @@
           if (earthEl) {
             earthEl.object3D.getWorldPosition(_hPos);
           } else {
-            _hPos.set(0, -5, -200); // solar system centre fallback
+            _hPos.set(0, -5, -5000); // solar system centre fallback
           }
 
           // Player (rig) world position
