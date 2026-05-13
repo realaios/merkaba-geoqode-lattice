@@ -2638,10 +2638,11 @@
           bgGeo.setAttribute("position", new THREE.BufferAttribute(bgP, 3));
           bgGeo.setAttribute("color", new THREE.BufferAttribute(bgC, 3));
           var bgMat = new THREE.PointsMaterial({
-            size: 1.15,
+            size: 3.8,
+            map: this._makeMerkabaTex(),
             vertexColors: true,
             transparent: true,
-            opacity: 0.66,
+            opacity: 0.72,
             blending: THREE.AdditiveBlending,
             depthWrite: false,
             sizeAttenuation: false,
@@ -3113,7 +3114,7 @@
           };
           var pal = FREQ_PAL[gd.freq] || FREQ_PAL[528];
           var type = gd.isStation ? 5 : gd.latticeNode % 5;
-          var spread = gd.isStation ? 55 : 140;
+          var spread = gd.isStation ? 550 : 1400;
           for (var i = 0; i < COUNT; i++) {
             var x = 0,
               y = 0,
@@ -3129,21 +3130,21 @@
               /* Spiral — 3 arms */
               arm = i % 3;
               t = (i / COUNT) * Math.PI * 9;
-              r = 4 + Math.pow(i / COUNT, 0.5) * spread * 0.94;
+              r = 40 + Math.pow(i / COUNT, 0.5) * spread * 0.94;
               theta = t + arm * ((Math.PI * 2) / 3);
-              x = Math.cos(theta) * r + (Math.random() - 0.5) * 17;
-              y = (Math.random() - 0.5) * 15 * (1 - (i / COUNT) * 0.55);
-              z = Math.sin(theta) * r + (Math.random() - 0.5) * 17;
+              x = Math.cos(theta) * r + (Math.random() - 0.5) * 170;
+              y = (Math.random() - 0.5) * 150 * (1 - (i / COUNT) * 0.55);
+              z = Math.sin(theta) * r + (Math.random() - 0.5) * 170;
             } else if (type === 1) {
               /* Ring galaxy */
               theta = Math.random() * Math.PI * 2;
-              r = spread * 0.32 + (Math.random() - 0.5) * 24;
-              x = Math.cos(theta) * r + (Math.random() - 0.5) * 11;
+              r = spread * 0.32 + (Math.random() - 0.5) * 240;
+              x = Math.cos(theta) * r + (Math.random() - 0.5) * 110;
               y =
                 Math.random() < 0.12
                   ? (Math.random() - 0.5) * spread * 0.42
-                  : (Math.random() - 0.5) * 9;
-              z = Math.sin(theta) * r + (Math.random() - 0.5) * 11;
+                  : (Math.random() - 0.5) * 90;
+              z = Math.sin(theta) * r + (Math.random() - 0.5) * 110;
             } else if (type === 2) {
               /* Elliptical — dense core */
               theta = Math.random() * Math.PI * 2;
@@ -3156,16 +3157,16 @@
               /* Barred spiral */
               if (Math.random() < 0.22) {
                 x = (Math.random() - 0.5) * spread * 0.56;
-                y = (Math.random() - 0.5) * 11;
-                z = (Math.random() - 0.5) * 17;
+                y = (Math.random() - 0.5) * 110;
+                z = (Math.random() - 0.5) * 170;
               } else {
                 arm2 = i % 2;
                 t2 = (i / COUNT) * Math.PI * 7;
-                r = 19 + Math.pow(i / COUNT, 0.58) * spread * 0.77;
+                r = 190 + Math.pow(i / COUNT, 0.58) * spread * 0.77;
                 theta = t2 + arm2 * Math.PI + (arm2 ? 0.52 : -0.52);
-                x = Math.cos(theta) * r + (Math.random() - 0.5) * 21;
-                y = (Math.random() - 0.5) * 13;
-                z = Math.sin(theta) * r + (Math.random() - 0.5) * 21;
+                x = Math.cos(theta) * r + (Math.random() - 0.5) * 210;
+                y = (Math.random() - 0.5) * 130;
+                z = Math.sin(theta) * r + (Math.random() - 0.5) * 210;
               }
             } else if (type === 4) {
               /* Irregular */
@@ -3266,6 +3267,35 @@
           return this.__starTex;
         },
 
+        _makeMerkabaTex: function () {
+          if (this.__merkabaTex) return this.__merkabaTex;
+          var c = document.createElement("canvas");
+          c.width = c.height = 32;
+          var ctx = c.getContext("2d");
+          ctx.clearRect(0, 0, 32, 32);
+          /* Soft radial glow behind the star */
+          var glow = ctx.createRadialGradient(16, 16, 0, 16, 16, 15);
+          glow.addColorStop(0, "rgba(255,255,255,0.45)");
+          glow.addColorStop(0.5, "rgba(255,255,255,0.12)");
+          glow.addColorStop(1, "rgba(255,255,255,0)");
+          ctx.fillStyle = glow;
+          ctx.fillRect(0, 0, 32, 32);
+          /* Hexagram / Merkaba 6-pointed star (12-vertex alternating outer/inner) */
+          ctx.fillStyle = "rgba(255,255,255,0.95)";
+          ctx.beginPath();
+          for (var mi = 0; mi < 12; mi++) {
+            var mAng = (mi * Math.PI) / 6 - Math.PI / 2;
+            var mR = (mi % 2 === 0) ? 14 : 7;
+            var mpx = 16 + Math.cos(mAng) * mR;
+            var mpy = 16 + Math.sin(mAng) * mR;
+            if (mi === 0) ctx.moveTo(mpx, mpy); else ctx.lineTo(mpx, mpy);
+          }
+          ctx.closePath();
+          ctx.fill();
+          this.__merkabaTex = new AFRAME.THREE.CanvasTexture(c);
+          return this.__merkabaTex;
+        },
+
         _spawnSun: function (gd) {
           var THREE = AFRAME.THREE;
           var p = gd.pos;
@@ -3326,7 +3356,7 @@
           this._planetData = [];
           this._PTS_PER = PTS_PER;
           for (var i = 0; i < numPlanets; i++) {
-            var orbitR = 11 + i * 8 + ((ln * 3) % 7);
+            var orbitR = 110 + i * 80 + ((ln * 3) % 7);
             var orbitSpeed = 0.000052 / Math.sqrt(orbitR * 0.1);
             var baseAngle =
               ((i / numPlanets) * Math.PI * 2 + ln * PHI) % (Math.PI * 2);
@@ -3334,9 +3364,9 @@
             var pcol = PCOLS[i % PCOLS.length];
             var jitters = new Float32Array(PTS_PER * 3);
             for (var j = 0; j < PTS_PER; j++) {
-              jitters[j * 3] = (Math.random() - 0.5) * 2.0;
-              jitters[j * 3 + 1] = (Math.random() - 0.5) * 2.0;
-              jitters[j * 3 + 2] = (Math.random() - 0.5) * 2.0;
+              jitters[j * 3] = (Math.random() - 0.5) * 20.0;
+              jitters[j * 3 + 1] = (Math.random() - 0.5) * 20.0;
+              jitters[j * 3 + 2] = (Math.random() - 0.5) * 20.0;
             }
             this._planetData.push({
               i: i,
