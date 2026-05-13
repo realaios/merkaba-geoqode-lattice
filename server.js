@@ -3,6 +3,7 @@
 // Exposes the GeoQode interpreter as a REST API for the Storm ecosystem.
 
 import { createServer } from "http";
+import { WebSocketServer } from "ws";
 import { readFileSync, existsSync, readdirSync } from "fs";
 import { extname, join, dirname, resolve, relative, sep } from "path";
 import { fileURLToPath } from "url";
@@ -703,7 +704,7 @@ const server = createServer(async (req, res) => {
   );
   res.setHeader(
     "Content-Security-Policy",
-    "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://www.googleadservices.com https://googleads.g.doubleclick.net https://aframe.io https://pagead2.googlesyndication.com; img-src 'self' data: https://www.google-analytics.com https://www.googletagmanager.com https://googleads.g.doubleclick.net https://www.google.com https://www.google.co.za https://www.google.co.uk https://www.google.com.au https://www.googleadservices.com https://pagead2.googlesyndication.com https://cdn.aframe.io; connect-src 'self' data: blob: https://www.googletagmanager.com https://www.google-analytics.com https://analytics.google.com https://www.google.com https://stats.g.doubleclick.net https://googleads.g.doubleclick.net https://www.googleadservices.com https://api.getbrains4ai.com https://aframe.io https://cdn.aframe.io; style-src 'self' 'unsafe-inline'; frame-src 'none'; object-src 'none'; base-uri 'self'; worker-src 'self' blob:",
+    "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://www.googleadservices.com https://googleads.g.doubleclick.net https://aframe.io https://pagead2.googlesyndication.com; img-src 'self' data: https://www.google-analytics.com https://www.googletagmanager.com https://googleads.g.doubleclick.net https://www.google.com https://www.google.co.za https://www.google.co.uk https://www.google.com.au https://www.googleadservices.com https://pagead2.googlesyndication.com https://cdn.aframe.io; connect-src 'self' data: blob: https://www.googletagmanager.com https://www.google-analytics.com https://analytics.google.com https://www.google.com https://stats.g.doubleclick.net https://googleads.g.doubleclick.net https://www.googleadservices.com https://api.getbrains4ai.com https://aframe.io https://cdn.aframe.io wss://realaios.com ws://localhost:*; style-src 'self' 'unsafe-inline'; frame-src 'none'; object-src 'none'; base-uri 'self'; worker-src 'self' blob:",
   );
 
   if (req.method === "OPTIONS") {
@@ -5221,6 +5222,201 @@ server.listen(PORT, () => {
       `[GeoQode OS] Pages MISSING (${missing.length}): ${missing.join(", ")}`,
     );
 });
+
+// ══════════════════════════════════════════════════════════════════════════════
+// ROUND 7 — AIOSmux Presence Layer (WebSocket)
+// Ghost explorers, discovery feed, convergence beacon, AIOSmux DeployAgent
+// ══════════════════════════════════════════════════════════════════════════════
+
+// Presence state: clientId -> { id, x, y, z, geoCode, freq, ts, isAgent, name }
+const _presenceMap = new Map();
+
+// 480 GeoQode galaxy positions (D48 lattice, scaled to cosmos space)
+// Same generation as cosmos-infinite.html _galaxyData
+const _GEO_GALAXIES = (function () {
+  const latticeNodes = 480;
+  const galaxies = [];
+  const SECTORS = [
+    { id: "S1", freq: 852,  label: "PHYSICS"    },
+    { id: "S2", freq: 528,  label: "ACTION"     },
+    { id: "S3", freq: 963,  label: "NARRATIVE"  },
+    { id: "S4", freq: 396,  label: "ENTITY"     },
+    { id: "S5", freq: 72,   label: "HOLOGRAPHIC"},
+    { id: "S6", freq: 741,  label: "EMOTION"    },
+    { id: "S7", freq: 528,  label: "PERF"       },
+    { id: "S8", freq: 852,  label: "SECURITY"   },
+  ];
+  const D48_RADII = { 0: 18, 1: 38, 2: 72, 3: 120, 4: 180, 5: 260 };
+  for (let i = 0; i < latticeNodes; i++) {
+    const ring = Math.floor(i / 80);
+    const R = D48_RADII[ring] || 260 + ring * 40;
+    const t = (i / latticeNodes) * Math.PI * 2;
+    const elevation = ((i % 17) - 8) * 8;
+    const sec = SECTORS[i % 8];
+    galaxies.push({
+      pos: [Math.cos(t) * R, elevation, Math.sin(t) * R],
+      freq: sec.freq,
+      geoCode: `geo://${sec.id}.D${(i % 48) + 1}.H${i + 1}`,
+      label: `${sec.label}-${i + 1}`,
+      harmonicNode: i,
+    });
+  }
+  return galaxies;
+}());
+
+// Current convergence beacon (galaxy index) — rotates every 30 min
+let _beaconIdx = Math.floor(Math.random() * _GEO_GALAXIES.length);
+let _beaconRotateTimer = setInterval(() => {
+  _beaconIdx = Math.floor(Math.random() * _GEO_GALAXIES.length);
+  const beacon = _GEO_GALAXIES[_beaconIdx];
+  _broadcast({
+    type: "beacon",
+    geoCode: beacon.geoCode,
+    label:   beacon.label,
+    freq:    beacon.freq,
+    pos:     beacon.pos,
+  });
+  console.log(`[AIOSmux] Convergence beacon rotated -> ${beacon.geoCode}`);
+}, 30 * 60 * 1000);
+
+// ── WebSocket Server ──────────────────────────────────────────────────────────
+const _wss = new WebSocketServer({ server, path: "/ws/presence" });
+
+function _broadcast(msg, skipId) {
+  const raw = JSON.stringify(msg);
+  _wss.clients.forEach((client) => {
+    if (client.readyState === 1 && client._presenceId !== skipId) {
+      client.send(raw);
+    }
+  });
+}
+
+_wss.on("connection", (ws) => {
+  const id = Math.random().toString(36).slice(2, 10);
+  ws._presenceId = id;
+
+  // Send welcome with own ID + current beacon + all present explorers
+  const beaconGalaxy = _GEO_GALAXIES[_beaconIdx];
+  ws.send(JSON.stringify({
+    type:    "welcome",
+    id,
+    beacon: {
+      geoCode: beaconGalaxy.geoCode,
+      label:   beaconGalaxy.label,
+      freq:    beaconGalaxy.freq,
+      pos:     beaconGalaxy.pos,
+    },
+    explorers: Array.from(_presenceMap.values()),
+  }));
+
+  // Announce arrival to others
+  _broadcast({ type: "joined", id, ts: Date.now() }, id);
+  console.log(`[AIOSmux] Explorer joined: ${id} (${_presenceMap.size + 1} total)`);
+
+  ws.on("message", (raw) => {
+    let msg;
+    try { msg = JSON.parse(raw); } catch (_) { return; }
+    if (!msg || typeof msg !== "object") return;
+
+    if (msg.type === "pos") {
+      const entry = {
+        id,
+        x:       typeof msg.x === "number" ? msg.x : 0,
+        y:       typeof msg.y === "number" ? msg.y : 0,
+        z:       typeof msg.z === "number" ? msg.z : 0,
+        geoCode: typeof msg.geoCode === "string" ? msg.geoCode.slice(0, 64) : "",
+        freq:    typeof msg.freq    === "number" ? msg.freq    : 528,
+        ts:      Date.now(),
+        isAgent: false,
+        name:    "EXPLORER",
+      };
+      _presenceMap.set(id, entry);
+      _broadcast({ type: "pos", ...entry }, id);
+    }
+  });
+
+  ws.on("close", () => {
+    _presenceMap.delete(id);
+    _broadcast({ type: "left", id });
+    console.log(`[AIOSmux] Explorer left: ${id} (${_presenceMap.size} remaining)`);
+  });
+
+  ws.on("error", () => {
+    _presenceMap.delete(id);
+  });
+});
+
+console.log("[AIOSmux] Presence WebSocket ready at /ws/presence");
+
+// ── AIOSmux DeployAgent — Autonomous Explorer ─────────────────────────────────
+// Orbits through the D480 lattice on a schedule. Appears as a gold orb to
+// human explorers. Posts discovery events to the feed every stop.
+(function _startAIOSmuxAgent() {
+  const AGENT_ID   = "aiosmux-1";
+  const AGENT_NAME = "AIOSmux";
+  let   _agentIdx  = 0;
+
+  // Register into presence map immediately
+  const _agentEntry = () => {
+    const g = _GEO_GALAXIES[_agentIdx];
+    return {
+      id:      AGENT_ID,
+      x:       g.pos[0],
+      y:       g.pos[1],
+      z:       g.pos[2],
+      geoCode: g.geoCode,
+      freq:    g.freq,
+      ts:      Date.now(),
+      isAgent: true,
+      name:    AGENT_NAME,
+    };
+  };
+
+  _presenceMap.set(AGENT_ID, _agentEntry());
+
+  const DISCOVERY_MSGS = [
+    "Harmonic resonance pattern detected",
+    "Lattice coherence nominal",
+    "D480 expansion event observed",
+    "PHI-sequence anchor confirmed",
+    "Bosonic field density elevated",
+    "Canonical geometry verified",
+    "Emergent node cluster forming",
+    "Merkaba pulse synchronized",
+    "Sector frequency locked",
+    "Golden differential stable",
+  ];
+
+  // Advance to next galaxy every 8 seconds
+  const _agentLoop = setInterval(() => {
+    _agentIdx = (_agentIdx + 1) % _GEO_GALAXIES.length;
+    const entry = _agentEntry();
+    _presenceMap.set(AGENT_ID, entry);
+
+    // Broadcast position update
+    _broadcast({ type: "pos", ...entry });
+
+    // Every 5th stop: broadcast a discovery event to the feed
+    if (_agentIdx % 5 === 0) {
+      const disc = DISCOVERY_MSGS[Math.floor(Math.random() * DISCOVERY_MSGS.length)];
+      _broadcast({
+        type:    "discovery",
+        from:    AGENT_NAME,
+        geoCode: entry.geoCode,
+        label:   _GEO_GALAXIES[_agentIdx].label,
+        freq:    entry.freq,
+        msg:     disc,
+        ts:      Date.now(),
+      });
+    }
+  }, 8_000);
+
+  // Graceful shutdown
+  process.on("SIGINT",  () => clearInterval(_agentLoop));
+  process.on("SIGTERM", () => clearInterval(_agentLoop));
+
+  console.log(`[AIOSmux] DeployAgent online — orbiting ${_GEO_GALAXIES.length} galaxies`);
+}());
 
 // ── AIOS VR Autonomous Mining Loop ───────────────────────────────────────────
 // Mines Sketchfab / PolyHaven / Poly Pizza / NASA 3D assets on a 3h cycle,
