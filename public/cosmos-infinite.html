@@ -551,7 +551,9 @@
         line-height: 1.4;
       }
       /* ── Briefing pointer fix + close button ─────────────────────────── */
-      .sb-frame { pointer-events: all; }
+      .sb-frame {
+        pointer-events: all;
+      }
       .sb-close-btn {
         position: absolute;
         top: 10px;
@@ -573,7 +575,10 @@
         padding: 0;
         transition: background 0.15s;
       }
-      .sb-close-btn:hover { background: rgba(0, 212, 255, 0.28); color: #fff; }
+      .sb-close-btn:hover {
+        background: rgba(0, 212, 255, 0.28);
+        color: #fff;
+      }
       /* ── Resonance Collection HUD ─────────────────────────────────────── */
       #freq-hud {
         position: fixed;
@@ -620,12 +625,19 @@
       .freq-badge.collected {
         color: var(--fc, #00d4ff);
         border-color: var(--fc, #00d4ff);
-        box-shadow: 0 0 7px var(--fc, #00d4ff), 0 0 18px rgba(0,212,255,0.18);
+        box-shadow:
+          0 0 7px var(--fc, #00d4ff),
+          0 0 18px rgba(0, 212, 255, 0.18);
         animation: fbadge-pulse 2.5s ease-in-out infinite;
       }
       @keyframes fbadge-pulse {
-        0%, 100% { opacity: 0.82; }
-        50% { opacity: 1; }
+        0%,
+        100% {
+          opacity: 0.82;
+        }
+        50% {
+          opacity: 1;
+        }
       }
       .fh-count {
         font-size: 7px;
@@ -691,15 +703,27 @@
         align-items: center;
         justify-content: center;
         pointer-events: none;
-        animation: mf-in 0.6s ease both, mf-out 0.8s 4.2s ease both;
+        animation:
+          mf-in 0.6s ease both,
+          mf-out 0.8s 4.2s ease both;
       }
       @keyframes mf-in {
-        from { opacity: 0; transform: scale(0.94); }
-        to   { opacity: 1; transform: scale(1); }
+        from {
+          opacity: 0;
+          transform: scale(0.94);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
       }
       @keyframes mf-out {
-        from { opacity: 1; }
-        to   { opacity: 0; }
+        from {
+          opacity: 1;
+        }
+        to {
+          opacity: 0;
+        }
       }
       .mf-inner {
         text-align: center;
@@ -708,19 +732,30 @@
         background: rgba(0, 2, 22, 0.93);
         padding: 30px 48px;
         border-radius: 4px;
-        box-shadow: 0 0 80px rgba(0, 212, 255, 0.28), 0 0 180px rgba(124, 58, 237, 0.22);
+        box-shadow:
+          0 0 80px rgba(0, 212, 255, 0.28),
+          0 0 180px rgba(124, 58, 237, 0.22);
         animation: mf-glow 2s ease-in-out infinite;
       }
       @keyframes mf-glow {
-        0%, 100% { box-shadow: 0 0 60px rgba(0, 212, 255, 0.2); }
-        50% { box-shadow: 0 0 110px rgba(0, 212, 255, 0.42), 0 0 200px rgba(124, 58, 237, 0.3); }
+        0%,
+        100% {
+          box-shadow: 0 0 60px rgba(0, 212, 255, 0.2);
+        }
+        50% {
+          box-shadow:
+            0 0 110px rgba(0, 212, 255, 0.42),
+            0 0 200px rgba(124, 58, 237, 0.3);
+        }
       }
       .mf-line1 {
         font-size: 1.1rem;
         font-weight: 900;
         letter-spacing: 0.22em;
         color: #fff;
-        text-shadow: 0 0 28px #00d4ff, 0 0 60px rgba(124, 58, 237, 0.7);
+        text-shadow:
+          0 0 28px #00d4ff,
+          0 0 60px rgba(124, 58, 237, 0.7);
         margin-bottom: 10px;
       }
       .mf-line2 {
@@ -815,6 +850,491 @@
             0 0 22px #ff6b35,
             0 0 55px rgba(255, 107, 53, 0.55);
         }
+      }
+
+      /* ═══════════════════════════════════════════════════════════════════
+         HOLOGRAPHIC DISPLAY OVERLAY — eye-bending 3-5% edge zone
+         All layers are pointer-events:none and sit above the 3D canvas.
+         ═══════════════════════════════════════════════════════════════════ */
+
+      /* Layer 1 — Primary dark vignette + cyan fringe at all 4 edges */
+      #holo-vignette {
+        position: fixed;
+        inset: 0;
+        z-index: 300;
+        pointer-events: none;
+        background:
+          radial-gradient(
+            ellipse 91% 89% at 50% 50%,
+            transparent 0%,
+            transparent 82%,
+            rgba(0, 10, 28, 0.3) 90%,
+            rgba(0, 4, 18, 0.8) 96%,
+            rgba(0, 1, 10, 0.96) 100%
+          ),
+          /* Cyan fringe glow at all 4 edges */
+          linear-gradient(
+              to bottom,
+              rgba(0, 212, 255, 0.11) 0%,
+              rgba(0, 212, 255, 0.03) 2.2%,
+              transparent 4.5%
+            ),
+          linear-gradient(
+            to top,
+            rgba(0, 212, 255, 0.11) 0%,
+            rgba(0, 212, 255, 0.03) 2.2%,
+            transparent 4.5%
+          ),
+          linear-gradient(
+            to right,
+            rgba(0, 180, 255, 0.09) 0%,
+            rgba(0, 180, 255, 0.02) 2.5%,
+            transparent 5%
+          ),
+          linear-gradient(
+            to left,
+            rgba(0, 180, 255, 0.09) 0%,
+            rgba(0, 180, 255, 0.02) 2.5%,
+            transparent 5%
+          );
+      }
+
+      /* Layer 2 — Chromatic aberration: RED channel drifts left/top edge */
+      #holo-ca-r {
+        position: fixed;
+        inset: 0;
+        z-index: 301;
+        pointer-events: none;
+        mix-blend-mode: screen;
+        background:
+          linear-gradient(
+            to right,
+            rgba(255, 20, 0, 0.14) 0%,
+            rgba(255, 20, 0, 0.04) 3.2%,
+            transparent 5.5%
+          ),
+          linear-gradient(
+            to left,
+            rgba(255, 20, 0, 0.1) 0%,
+            rgba(255, 20, 0, 0.02) 3%,
+            transparent 5.5%
+          ),
+          linear-gradient(
+            to bottom,
+            rgba(255, 20, 0, 0.1) 0%,
+            rgba(255, 20, 0, 0.02) 2.2%,
+            transparent 4.5%
+          ),
+          linear-gradient(
+            to top,
+            rgba(255, 20, 0, 0.1) 0%,
+            rgba(255, 20, 0, 0.02) 2.2%,
+            transparent 4.5%
+          );
+      }
+
+      /* Layer 3 — Chromatic aberration: BLUE channel drifts opposite edges */
+      #holo-ca-b {
+        position: fixed;
+        inset: 0;
+        z-index: 302;
+        pointer-events: none;
+        mix-blend-mode: screen;
+        background:
+          linear-gradient(
+            to left,
+            rgba(0, 40, 255, 0.14) 0%,
+            rgba(0, 40, 255, 0.04) 3.2%,
+            transparent 5.5%
+          ),
+          linear-gradient(
+            to right,
+            rgba(0, 40, 255, 0.1) 0%,
+            rgba(0, 40, 255, 0.02) 3%,
+            transparent 5.5%
+          ),
+          linear-gradient(
+            to top,
+            rgba(0, 40, 255, 0.1) 0%,
+            rgba(0, 40, 255, 0.02) 2.2%,
+            transparent 4.5%
+          ),
+          linear-gradient(
+            to bottom,
+            rgba(0, 40, 255, 0.1) 0%,
+            rgba(0, 40, 255, 0.02) 2.2%,
+            transparent 4.5%
+          );
+      }
+
+      /* Layer 4 — GREEN channel shifts diagonally (creates the split-RGB depth illusion) */
+      #holo-ca-g {
+        position: fixed;
+        inset: 0;
+        z-index: 303;
+        pointer-events: none;
+        mix-blend-mode: screen;
+        background:
+          linear-gradient(to right, rgba(0, 255, 80, 0.06) 0%, transparent 4%),
+          linear-gradient(to left, rgba(0, 255, 80, 0.06) 0%, transparent 4%),
+          linear-gradient(to bottom, rgba(0, 255, 80, 0.05) 0%, transparent 3%),
+          linear-gradient(to top, rgba(0, 255, 80, 0.05) 0%, transparent 3%);
+        animation: holo-g-drift 7s ease-in-out infinite alternate;
+        transform: translate(0, 0);
+      }
+      @keyframes holo-g-drift {
+        from {
+          transform: translate(0px, 0px);
+          opacity: 0.55;
+        }
+        to {
+          transform: translate(2px, 1px);
+          opacity: 0.95;
+        }
+      }
+
+      /* Layer 5 — Horizontal scanlines (holographic refresh lines) */
+      #holo-scan {
+        position: fixed;
+        inset: 0;
+        z-index: 304;
+        pointer-events: none;
+        mix-blend-mode: screen;
+        background: repeating-linear-gradient(
+          0deg,
+          transparent 0px,
+          transparent 3px,
+          rgba(0, 212, 255, 0.016) 3px,
+          rgba(0, 212, 255, 0.016) 4px
+        );
+        animation: holo-scan-move 12s linear infinite;
+      }
+      @keyframes holo-scan-move {
+        from {
+          background-position: 0 0;
+        }
+        to {
+          background-position: 0 80px;
+        }
+      }
+
+      /* Layer 6 — Fresnel interference rings at corners (concentric arcs) */
+      #holo-fresnel {
+        position: fixed;
+        inset: 0;
+        z-index: 305;
+        pointer-events: none;
+        background:
+          radial-gradient(
+            circle at 0% 0%,
+            transparent 4.5%,
+            rgba(0, 212, 255, 0.055) 5%,
+            transparent 5.5%,
+            transparent 8.5%,
+            rgba(0, 212, 255, 0.035) 9%,
+            transparent 9.5%,
+            transparent 13%,
+            rgba(0, 212, 255, 0.02) 13.5%,
+            transparent 14%
+          ),
+          radial-gradient(
+            circle at 100% 0%,
+            transparent 4.5%,
+            rgba(0, 212, 255, 0.055) 5%,
+            transparent 5.5%,
+            transparent 8.5%,
+            rgba(0, 212, 255, 0.035) 9%,
+            transparent 9.5%,
+            transparent 13%,
+            rgba(0, 212, 255, 0.02) 13.5%,
+            transparent 14%
+          ),
+          radial-gradient(
+            circle at 0% 100%,
+            transparent 4.5%,
+            rgba(0, 212, 255, 0.055) 5%,
+            transparent 5.5%,
+            transparent 8.5%,
+            rgba(0, 212, 255, 0.035) 9%,
+            transparent 9.5%
+          ),
+          radial-gradient(
+            circle at 100% 100%,
+            transparent 4.5%,
+            rgba(0, 212, 255, 0.055) 5%,
+            transparent 5.5%,
+            transparent 8.5%,
+            rgba(0, 212, 255, 0.035) 9%,
+            transparent 9.5%
+          );
+        animation: holo-fresnel-breathe 5s ease-in-out infinite;
+      }
+      @keyframes holo-fresnel-breathe {
+        0%,
+        100% {
+          opacity: 0.65;
+        }
+        50% {
+          opacity: 1;
+        }
+      }
+
+      /* Layer 7 — Breathing edge glow (thin inset box-shadow, the "projector rim") */
+      #holo-rim {
+        position: fixed;
+        inset: 0;
+        z-index: 306;
+        pointer-events: none;
+        box-shadow:
+          inset 0 0 0 1px rgba(0, 212, 255, 0.22),
+          inset 0 0 0 2px rgba(0, 212, 255, 0.07),
+          inset 0 0 16px rgba(0, 212, 255, 0.04);
+        animation: holo-rim-breathe 6s ease-in-out infinite;
+      }
+      @keyframes holo-rim-breathe {
+        0%,
+        100% {
+          box-shadow:
+            inset 0 0 0 1px rgba(0, 212, 255, 0.22),
+            inset 0 0 0 2px rgba(0, 212, 255, 0.07),
+            inset 0 0 16px rgba(0, 212, 255, 0.04);
+        }
+        50% {
+          box-shadow:
+            inset 0 0 0 1px rgba(0, 212, 255, 0.45),
+            inset 0 0 0 3px rgba(0, 212, 255, 0.14),
+            inset 0 0 28px rgba(0, 212, 255, 0.08),
+            inset 0 0 55px rgba(0, 212, 255, 0.03);
+        }
+      }
+
+      /* Layer 8 — Corner HUD brackets + dot nodes */
+      #holo-corners {
+        position: fixed;
+        inset: 0;
+        z-index: 307;
+        pointer-events: none;
+      }
+      .hc {
+        position: absolute;
+        width: 32px;
+        height: 32px;
+        border-color: rgba(0, 212, 255, 0.5);
+        border-style: solid;
+        animation: hc-pulse 4s ease-in-out infinite;
+      }
+      .hc.tl {
+        top: 10px;
+        left: 10px;
+        border-width: 1.5px 0 0 1.5px;
+      }
+      .hc.tr {
+        top: 10px;
+        right: 10px;
+        border-width: 1.5px 1.5px 0 0;
+        animation-delay: 1s;
+      }
+      .hc.bl {
+        bottom: 10px;
+        left: 10px;
+        border-width: 0 0 1.5px 1.5px;
+        animation-delay: 2s;
+      }
+      .hc.br {
+        bottom: 10px;
+        right: 10px;
+        border-width: 0 1.5px 1.5px 0;
+        animation-delay: 3s;
+      }
+      .hc::before,
+      .hc::after {
+        content: "";
+        position: absolute;
+      }
+      /* Corner tick marks — extend the bracket lines slightly */
+      .hc.tl::before {
+        top: -1px;
+        left: 8px;
+        width: 6px;
+        height: 0;
+        border-top: 1px solid rgba(0, 212, 255, 0.25);
+      }
+      .hc.tl::after {
+        top: 8px;
+        left: -1px;
+        width: 0;
+        height: 6px;
+        border-left: 1px solid rgba(0, 212, 255, 0.25);
+      }
+      .hc.tr::before {
+        top: -1px;
+        right: 8px;
+        width: 6px;
+        height: 0;
+        border-top: 1px solid rgba(0, 212, 255, 0.25);
+      }
+      .hc.tr::after {
+        top: 8px;
+        right: -1px;
+        width: 0;
+        height: 6px;
+        border-right: 1px solid rgba(0, 212, 255, 0.25);
+      }
+      .hc.bl::before {
+        bottom: -1px;
+        left: 8px;
+        width: 6px;
+        height: 0;
+        border-bottom: 1px solid rgba(0, 212, 255, 0.25);
+      }
+      .hc.bl::after {
+        bottom: 8px;
+        left: -1px;
+        width: 0;
+        height: 6px;
+        border-left: 1px solid rgba(0, 212, 255, 0.25);
+      }
+      .hc.br::before {
+        bottom: -1px;
+        right: 8px;
+        width: 6px;
+        height: 0;
+        border-bottom: 1px solid rgba(0, 212, 255, 0.25);
+      }
+      .hc.br::after {
+        bottom: 8px;
+        right: -1px;
+        width: 0;
+        height: 6px;
+        border-right: 1px solid rgba(0, 212, 255, 0.25);
+      }
+      @keyframes hc-pulse {
+        0%,
+        70%,
+        100% {
+          opacity: 0.55;
+        }
+        35% {
+          opacity: 1;
+          filter: drop-shadow(0 0 6px rgba(0, 212, 255, 0.5));
+        }
+      }
+
+      /* Layer 9 — Corner dot nodes (projector emitter points) */
+      .hc-dot {
+        position: absolute;
+        width: 5px;
+        height: 5px;
+        background: rgba(0, 212, 255, 0.75);
+        border-radius: 50%;
+        box-shadow:
+          0 0 7px rgba(0, 212, 255, 0.9),
+          0 0 14px rgba(0, 212, 255, 0.4);
+        animation: hc-dot-blink 4s ease-in-out infinite;
+      }
+      .hc-dot.tl {
+        top: 9px;
+        left: 9px;
+      }
+      .hc-dot.tr {
+        top: 9px;
+        right: 9px;
+        animation-delay: 1s;
+      }
+      .hc-dot.bl {
+        bottom: 9px;
+        left: 9px;
+        animation-delay: 2s;
+      }
+      .hc-dot.br {
+        bottom: 9px;
+        right: 9px;
+        animation-delay: 3s;
+      }
+      @keyframes hc-dot-blink {
+        0%,
+        60%,
+        100% {
+          opacity: 0.65;
+          transform: scale(1);
+        }
+        30% {
+          opacity: 1;
+          transform: scale(1.6);
+        }
+      }
+
+      /* Layer 10 — Iridescent shimmer strip (1px line at very edge, color-shifts) */
+      #holo-shimmer {
+        position: fixed;
+        inset: 0;
+        z-index: 308;
+        pointer-events: none;
+        box-shadow: inset 0 0 0 1px rgba(0, 212, 255, 0); /* invisible base */
+      }
+      #holo-shimmer::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border: 1.5px solid transparent;
+        border-image: linear-gradient(
+            135deg,
+            rgba(255, 40, 40, 0.55) 0%,
+            rgba(0, 212, 255, 0.8) 15%,
+            rgba(80, 255, 120, 0.6) 30%,
+            rgba(180, 80, 255, 0.7) 45%,
+            rgba(0, 212, 255, 0.8) 60%,
+            rgba(255, 200, 40, 0.55) 75%,
+            rgba(255, 40, 40, 0.55) 100%
+          )
+          1;
+        animation: holo-shimmer-rotate 8s linear infinite;
+        opacity: 0.45;
+      }
+      @keyframes holo-shimmer-rotate {
+        from {
+          filter: hue-rotate(0deg);
+        }
+        to {
+          filter: hue-rotate(360deg);
+        }
+      }
+
+      /* Layer 11 — Glitch bar (JS-driven) */
+      #holo-glitch {
+        position: fixed;
+        left: 0;
+        right: 0;
+        z-index: 309;
+        pointer-events: none;
+        height: 2px;
+        display: none;
+        mix-blend-mode: screen;
+        background: linear-gradient(
+          to right,
+          rgba(255, 20, 20, 0) 0%,
+          rgba(255, 20, 20, 0.55) 18%,
+          rgba(0, 212, 255, 0.45) 38%,
+          rgba(255, 255, 255, 0.6) 50%,
+          rgba(0, 212, 255, 0.45) 62%,
+          rgba(255, 20, 20, 0.55) 82%,
+          rgba(255, 20, 20, 0) 100%
+        );
+      }
+      /* Wide glitch variant */
+      #holo-glitch.wide {
+        height: 4px;
+        background: linear-gradient(
+          to right,
+          rgba(0, 212, 255, 0) 0%,
+          rgba(255, 20, 20, 0.4) 12%,
+          rgba(0, 212, 255, 0.5) 30%,
+          rgba(255, 255, 255, 0.35) 50%,
+          rgba(0, 212, 255, 0.5) 70%,
+          rgba(255, 20, 20, 0.4) 88%,
+          rgba(0, 212, 255, 0) 100%
+        );
+        box-shadow: 0 0 12px rgba(0, 212, 255, 0.3);
       }
     </style>
   </head>
@@ -3007,10 +3527,11 @@
             self._updateNearbyHUD();
           }, 3500);
 
-          /* Init nebulae, comets, resonance HUD */
+          /* Init nebulae, comets, resonance HUD, holographic frame */
           this._spawnNebulae();
           this._initFreqHUD();
           this._spawnComet(); /* seed one comet on load */
+          this._initHoloDisplay(); /* holographic display overlay */
 
           /* ── Input: click + hover ──────────────────────────────────── */
           this._warping = false;
@@ -3169,8 +3690,11 @@
             self._collectFreq(gd.freq);
           }
           try {
-            var _visCount = Object.keys(JSON.parse(localStorage.getItem("cosmos-visited") || "{}")).length;
-            if (typeof self._checkMilestones === "function") self._checkMilestones(_visCount);
+            var _visCount = Object.keys(
+              JSON.parse(localStorage.getItem("cosmos-visited") || "{}"),
+            ).length;
+            if (typeof self._checkMilestones === "function")
+              self._checkMilestones(_visCount);
             var _smEl = document.getElementById("sm-count");
             if (_smEl) _smEl.textContent = _visCount;
           } catch (_em) {}
@@ -3501,28 +4025,39 @@
         _spawnNebulae: function () {
           var THREE = AFRAME.THREE;
           var NCOLS = [
-            [0.78, 0.18, 1.0], [0.0, 0.95, 0.58], [0.28, 0.92, 1.0],
-            [1.0, 0.78, 0.18], [1.0, 0.32, 0.62], [0.45, 0.75, 1.0],
-            [0.95, 0.52, 1.0], [1.0, 1.0, 1.0],
+            [0.78, 0.18, 1.0],
+            [0.0, 0.95, 0.58],
+            [0.28, 0.92, 1.0],
+            [1.0, 0.78, 0.18],
+            [1.0, 0.32, 0.62],
+            [0.45, 0.75, 1.0],
+            [0.95, 0.52, 1.0],
+            [1.0, 1.0, 1.0],
           ];
           var group = new THREE.Group();
           for (var n = 0; n < 60; n++) {
             var col = NCOLS[(n * 3 + 5) % NCOLS.length];
-            var c = document.createElement("canvas"); c.width = c.height = 128;
+            var c = document.createElement("canvas");
+            c.width = c.height = 128;
             var ctx = c.getContext("2d");
             ctx.clearRect(0, 0, 128, 128);
-            var R = Math.round(col[0] * 255), G = Math.round(col[1] * 255), B = Math.round(col[2] * 255);
+            var R = Math.round(col[0] * 255),
+              G = Math.round(col[1] * 255),
+              B = Math.round(col[2] * 255);
             var grad = ctx.createRadialGradient(64, 64, 0, 64, 64, 64);
-            grad.addColorStop(0,    "rgba(" + R + "," + G + "," + B + ",0.30)");
-            grad.addColorStop(0.3,  "rgba(" + R + "," + G + "," + B + ",0.14)");
+            grad.addColorStop(0, "rgba(" + R + "," + G + "," + B + ",0.30)");
+            grad.addColorStop(0.3, "rgba(" + R + "," + G + "," + B + ",0.14)");
             grad.addColorStop(0.65, "rgba(" + R + "," + G + "," + B + ",0.04)");
-            grad.addColorStop(1,    "rgba(0,0,0,0)");
-            ctx.fillStyle = grad; ctx.fillRect(0, 0, 128, 128);
+            grad.addColorStop(1, "rgba(0,0,0,0)");
+            ctx.fillStyle = grad;
+            ctx.fillRect(0, 0, 128, 128);
             var tex = new THREE.CanvasTexture(c);
             var mat = new THREE.SpriteMaterial({
-              map: tex, transparent: true,
+              map: tex,
+              transparent: true,
               opacity: 0.16 + Math.random() * 0.22,
-              depthWrite: false, blending: THREE.AdditiveBlending,
+              depthWrite: false,
+              blending: THREE.AdditiveBlending,
             });
             var sprite = new THREE.Sprite(mat);
             var sz = 380 + Math.random() * 720;
@@ -3530,7 +4065,7 @@
             sprite.position.set(
               (Math.random() - 0.5) * 2600,
               (Math.random() - 0.5) * 620,
-              (Math.random() - 0.5) * 2600
+              (Math.random() - 0.5) * 2600,
             );
             group.add(sprite);
           }
@@ -3549,35 +4084,40 @@
           var dir = new THREE.Vector3(
             Math.cos(theta) * Math.cos(phi),
             Math.sin(phi),
-            Math.sin(theta) * Math.cos(phi)
+            Math.sin(theta) * Math.cos(phi),
           ).normalize();
           var sx = (Math.random() - 0.5) * 2200;
           var sy = (Math.random() - 0.5) * 520;
           var sz = (Math.random() - 0.5) * 2200;
           for (var i = 0; i < TAIL; i++) {
             var t = i / (TAIL - 1);
-            posArr[i * 3]     = sx - dir.x * i * 24;
+            posArr[i * 3] = sx - dir.x * i * 24;
             posArr[i * 3 + 1] = sy - dir.y * i * 24;
             posArr[i * 3 + 2] = sz - dir.z * i * 24;
-            colArr[i * 3]     = 1.0;
+            colArr[i * 3] = 1.0;
             colArr[i * 3 + 1] = 0.88 - t * 0.52;
-            colArr[i * 3 + 2] = 0.7  - t * 0.55;
+            colArr[i * 3 + 2] = 0.7 - t * 0.55;
           }
           var geo = new THREE.BufferGeometry();
           geo.setAttribute("position", new THREE.BufferAttribute(posArr, 3));
-          geo.setAttribute("color",    new THREE.BufferAttribute(colArr, 3));
+          geo.setAttribute("color", new THREE.BufferAttribute(colArr, 3));
           var mat = new THREE.PointsMaterial({
-            size: 6.0, vertexColors: true, map: this._makeStarTex(),
-            transparent: true, opacity: 0.92,
-            blending: THREE.AdditiveBlending, depthWrite: false, sizeAttenuation: false,
+            size: 6.0,
+            vertexColors: true,
+            map: this._makeStarTex(),
+            transparent: true,
+            opacity: 0.92,
+            blending: THREE.AdditiveBlending,
+            depthWrite: false,
+            sizeAttenuation: false,
           });
           var comet = new THREE.Points(geo, mat);
-          comet._dir   = dir;
+          comet._dir = dir;
           comet._speed = 4.5 + Math.random() * 5.5;
-          comet._life  = 1.0;
+          comet._life = 1.0;
           comet._decay = 0.00032 + Math.random() * 0.0003;
           comet._posArr = posArr;
-          comet._geo   = geo;
+          comet._geo = geo;
           this._cometIdx = (this._cometIdx || 0) + 1;
           comet._key = "comet-" + this._cometIdx;
           this.el.setObject3D(comet._key, comet);
@@ -3588,66 +4128,121 @@
         _tickComets: function (time) {
           if (!this._comets) this._comets = [];
           /* Spawn periodically */
-          if (!this._lastCometSpawn || time - this._lastCometSpawn > 9000 + Math.random() * 14000) {
+          if (
+            !this._lastCometSpawn ||
+            time - this._lastCometSpawn > 9000 + Math.random() * 14000
+          ) {
             this._lastCometSpawn = time;
             if (this._comets.length < 5) this._spawnComet();
           }
           var alive = [];
           for (var i = 0; i < this._comets.length; i++) {
             var cm = this._comets[i];
-            var pa = cm._posArr, TAIL = pa.length / 3;
+            var pa = cm._posArr,
+              TAIL = pa.length / 3;
             for (var j = 0; j < TAIL; j++) {
-              pa[j * 3]     += cm._dir.x * cm._speed;
+              pa[j * 3] += cm._dir.x * cm._speed;
               pa[j * 3 + 1] += cm._dir.y * cm._speed;
               pa[j * 3 + 2] += cm._dir.z * cm._speed;
             }
             cm._geo.attributes.position.needsUpdate = true;
             cm._life -= cm._decay;
             cm.material.opacity = Math.max(0, cm._life * 0.9);
-            if (cm._life > 0) { alive.push(cm); }
-            else { this.el.removeObject3D(cm._key); }
+            if (cm._life > 0) {
+              alive.push(cm);
+            } else {
+              this.el.removeObject3D(cm._key);
+            }
           }
           this._comets = alive;
         },
 
         /* ── Resonance collection HUD ──────────────────────────────────── */
         _initFreqHUD: function () {
-          var FREQS  = [396, 417, 528, 639, 741, 852, 963, 72];
-          var FNAMES = {396:"ROOT",417:"SPACE",528:"HEART",639:"VOICE",741:"VISION",852:"CROWN",963:"COSMOS",72:"CORE"};
-          var FCOLS  = {396:"#c045ff",417:"#ff9e14",528:"#24c95e",639:"#00d4ff",741:"#8f5cf8",852:"#e87af8",963:"#f8bf22",72:"#5fa8f8"};
+          var FREQS = [396, 417, 528, 639, 741, 852, 963, 72];
+          var FNAMES = {
+            396: "ROOT",
+            417: "SPACE",
+            528: "HEART",
+            639: "VOICE",
+            741: "VISION",
+            852: "CROWN",
+            963: "COSMOS",
+            72: "CORE",
+          };
+          var FCOLS = {
+            396: "#c045ff",
+            417: "#ff9e14",
+            528: "#24c95e",
+            639: "#00d4ff",
+            741: "#8f5cf8",
+            852: "#e87af8",
+            963: "#f8bf22",
+            72: "#5fa8f8",
+          };
           var collected = {};
-          try { collected = JSON.parse(localStorage.getItem("cosmos-freq") || "{}"); } catch (e) {}
+          try {
+            collected = JSON.parse(localStorage.getItem("cosmos-freq") || "{}");
+          } catch (e) {}
           this._freqCollected = collected;
 
           /* Resonance badge panel */
           var hud = document.createElement("div");
           hud.id = "freq-hud";
-          var html = '<div class="fh-title">RESONANCE LOG</div><div id="fh-badges">';
+          var html =
+            '<div class="fh-title">RESONANCE LOG</div><div id="fh-badges">';
           FREQS.forEach(function (f) {
             var cls = collected[f] ? " collected" : "";
-            html += '<div class="freq-badge' + cls + '" data-freq="' + f + '" style="--fc:' + FCOLS[f] + '" title="' + f + 'Hz \u2014 ' + FNAMES[f] + '">' + f + '</div>';
+            html +=
+              '<div class="freq-badge' +
+              cls +
+              '" data-freq="' +
+              f +
+              '" style="--fc:' +
+              FCOLS[f] +
+              '" title="' +
+              f +
+              "Hz \u2014 " +
+              FNAMES[f] +
+              '">' +
+              f +
+              "</div>";
           });
-          html += '</div><div class="fh-count"><span id="fh-count">' + Object.keys(collected).length + '</span>/8</div>';
+          html +=
+            '</div><div class="fh-count"><span id="fh-count">' +
+            Object.keys(collected).length +
+            "</span>/8</div>";
           hud.innerHTML = html;
           document.body.appendChild(hud);
 
           /* Systems-mapped counter */
           var totalVis = 0;
-          try { totalVis = Object.keys(JSON.parse(localStorage.getItem("cosmos-visited") || "{}")).length; } catch (e) {}
+          try {
+            totalVis = Object.keys(
+              JSON.parse(localStorage.getItem("cosmos-visited") || "{}"),
+            ).length;
+          } catch (e) {}
           var sm = document.createElement("div");
           sm.id = "systems-mapped";
-          sm.innerHTML = 'SYSTEMS MAPPED &nbsp;<strong id="sm-count">' + totalVis + '</strong>/480';
+          sm.innerHTML =
+            'SYSTEMS MAPPED &nbsp;<strong id="sm-count">' +
+            totalVis +
+            "</strong>/480";
           document.body.appendChild(sm);
 
           /* Briefing toggle button */
           var bt = document.createElement("button");
           bt.id = "briefing-toggle";
           bt.textContent = "[ BRIEFINGS ]";
-          var briefMuted = localStorage.getItem("cosmos-briefings-muted") === "1";
+          var briefMuted =
+            localStorage.getItem("cosmos-briefings-muted") === "1";
           if (briefMuted) bt.classList.add("muted");
           bt.addEventListener("click", function () {
             briefMuted = !briefMuted;
-            localStorage.setItem("cosmos-briefings-muted", briefMuted ? "1" : "0");
+            localStorage.setItem(
+              "cosmos-briefings-muted",
+              briefMuted ? "1" : "0",
+            );
             bt.classList.toggle("muted", briefMuted);
           });
           document.body.appendChild(bt);
@@ -3657,39 +4252,75 @@
           if (!this._freqCollected) this._freqCollected = {};
           if (this._freqCollected[freq]) return;
           this._freqCollected[freq] = true;
-          try { localStorage.setItem("cosmos-freq", JSON.stringify(this._freqCollected)); } catch (e) {}
-          var badge = document.querySelector('.freq-badge[data-freq="' + freq + '"]');
+          try {
+            localStorage.setItem(
+              "cosmos-freq",
+              JSON.stringify(this._freqCollected),
+            );
+          } catch (e) {}
+          var badge = document.querySelector(
+            '.freq-badge[data-freq="' + freq + '"]',
+          );
           if (badge) {
             badge.classList.add("collected");
             badge.style.transition = "all 0.1s";
             badge.style.transform = "scale(1.45)";
-            setTimeout(function () { badge.style.transform = ""; badge.style.transition = ""; }, 500);
+            setTimeout(function () {
+              badge.style.transform = "";
+              badge.style.transition = "";
+            }, 500);
           }
           var cnt = document.getElementById("fh-count");
           if (cnt) cnt.textContent = Object.keys(this._freqCollected).length;
           if (Object.keys(this._freqCollected).length === 8) {
-            this._showMilestone("ALL 8 RESONANCE FREQUENCIES ATTUNED", "MERKABA LATTICE FULLY ACTIVATED");
+            this._showMilestone(
+              "ALL 8 RESONANCE FREQUENCIES ATTUNED",
+              "MERKABA LATTICE FULLY ACTIVATED",
+            );
           }
         },
 
         /* ── Milestone achievements ─────────────────────────────────────── */
         _checkMilestones: function (count) {
           var MS = {
-             8: ["FOUNDATION RING COMPLETE \u2014 8 NODES CHARTED", "8\u219226\u219248:480 ALIGNMENT INITIATED"],
-            26: ["BOSONIC RING MAPPED \u2014 26 NODES CHARTED",     "QUANTUM ANCHOR NODES LOCKED"],
-            48: ["CANONICAL LATTICE COMPLETE \u2014 48 NODES",      "MERKABA 48D FULLY NAVIGATED"],
-           100: ["100 SYSTEMS EXPLORED",                             "YOU ARE BECOMING THE LATTICE"],
-           240: ["D480 MIDPOINT REACHED \u2014 240 NODES",          "HARMONIC HORIZON APPROACHING"],
-           480: ["D480 COMPLETE \u2014 ALL 480 GALAXIES",           "THE UNIVERSE BELONGS TO YOU"],
+            8: [
+              "FOUNDATION RING COMPLETE \u2014 8 NODES CHARTED",
+              "8\u219226\u219248:480 ALIGNMENT INITIATED",
+            ],
+            26: [
+              "BOSONIC RING MAPPED \u2014 26 NODES CHARTED",
+              "QUANTUM ANCHOR NODES LOCKED",
+            ],
+            48: [
+              "CANONICAL LATTICE COMPLETE \u2014 48 NODES",
+              "MERKABA 48D FULLY NAVIGATED",
+            ],
+            100: ["100 SYSTEMS EXPLORED", "YOU ARE BECOMING THE LATTICE"],
+            240: [
+              "D480 MIDPOINT REACHED \u2014 240 NODES",
+              "HARMONIC HORIZON APPROACHING",
+            ],
+            480: [
+              "D480 COMPLETE \u2014 ALL 480 GALAXIES",
+              "THE UNIVERSE BELONGS TO YOU",
+            ],
           };
           if (!MS[count]) return;
           var done = {};
-          try { done = JSON.parse(localStorage.getItem("cosmos-milestones") || "{}"); } catch (e) {}
+          try {
+            done = JSON.parse(
+              localStorage.getItem("cosmos-milestones") || "{}",
+            );
+          } catch (e) {}
           if (done[count]) return;
           done[count] = true;
-          try { localStorage.setItem("cosmos-milestones", JSON.stringify(done)); } catch (e) {}
+          try {
+            localStorage.setItem("cosmos-milestones", JSON.stringify(done));
+          } catch (e) {}
           var self = this;
-          setTimeout(function () { self._showMilestone(MS[count][0], MS[count][1]); }, 1400);
+          setTimeout(function () {
+            self._showMilestone(MS[count][0], MS[count][1]);
+          }, 1400);
         },
 
         _showMilestone: function (line1, line2) {
@@ -3697,10 +4328,94 @@
           if (old && old.parentNode) old.parentNode.removeChild(old);
           var el = document.createElement("div");
           el.id = "milestone-flash";
-          el.innerHTML = '<div class="mf-inner"><div class="mf-line1">' + line1 + '</div>' +
-            (line2 ? '<div class="mf-line2">' + line2 + '</div>' : '') + '</div>';
+          el.innerHTML =
+            '<div class="mf-inner"><div class="mf-line1">' +
+            line1 +
+            "</div>" +
+            (line2 ? '<div class="mf-line2">' + line2 + "</div>" : "") +
+            "</div>";
           document.body.appendChild(el);
-          setTimeout(function () { if (el.parentNode) el.parentNode.removeChild(el); }, 5000);
+          setTimeout(function () {
+            if (el.parentNode) el.parentNode.removeChild(el);
+          }, 5000);
+        },
+
+        /* ── Holographic display frame ─────────────────────────────────────
+           Injects 11 CSS overlay layers above the 3D canvas:
+           vignette, RGB chromatic aberration (3 channels), scanlines,
+           Fresnel corner rings, breathing rim, corner HUD brackets,
+           corner dot emitters, iridescent shimmer strip, glitch bar.
+        ──────────────────────────────────────────────────────────────────── */
+        _initHoloDisplay: function () {
+          var body = document.body;
+
+          /* Helper — create a div, append to body, return it */
+          function mk(id) {
+            var d = document.createElement("div");
+            d.id = id;
+            body.appendChild(d);
+            return d;
+          }
+
+          /* Layers 1-7 (pure CSS — just need the element in DOM) */
+          mk("holo-vignette");
+          mk("holo-ca-r");
+          mk("holo-ca-b");
+          mk("holo-ca-g");
+          mk("holo-scan");
+          mk("holo-fresnel");
+          mk("holo-rim");
+
+          /* Layer 8 + 9 — Corner brackets and dot emitters */
+          var cornersEl = mk("holo-corners");
+          ["tl", "tr", "bl", "br"].forEach(function (cls) {
+            var b = document.createElement("div");
+            b.className = "hc " + cls;
+            cornersEl.appendChild(b);
+            var dot = document.createElement("div");
+            dot.className = "hc-dot " + cls;
+            body.appendChild(dot);
+          });
+
+          /* Layer 10 — Iridescent shimmer */
+          mk("holo-shimmer");
+
+          /* Layer 11 — Glitch bar (JS driven, rare) */
+          var glitch = mk("holo-glitch");
+
+          /* Glitch bar spawner ─────────────────────────────────────────── */
+          function spawnGlitch() {
+            /* Pick a random vertical position (avoid top/bottom 8% so it
+               doesn't overlap corner brackets) */
+            var pct = 8 + Math.random() * 84;
+            glitch.style.top = pct + "vh";
+            glitch.className = Math.random() < 0.3 ? "wide" : "";
+            glitch.style.display = "block";
+
+            /* Hold for 100-220ms, then hide */
+            var holdMs = 100 + Math.random() * 120;
+            setTimeout(function () {
+              glitch.style.display = "none";
+
+              /* Rarely fire a second bar 80ms later (double-glitch) */
+              if (Math.random() < 0.35) {
+                setTimeout(function () {
+                  glitch.style.top = 8 + Math.random() * 84 + "vh";
+                  glitch.className = "";
+                  glitch.style.display = "block";
+                  setTimeout(function () {
+                    glitch.style.display = "none";
+                  }, 140);
+                }, 80);
+              }
+
+              /* Schedule next glitch: every 10-35 seconds */
+              setTimeout(spawnGlitch, 10000 + Math.random() * 25000);
+            }, holdMs);
+          }
+
+          /* First glitch fires after 4-12s so it feels organic */
+          setTimeout(spawnGlitch, 4000 + Math.random() * 8000);
         },
 
         _spawnSun: function (gd) {
@@ -3895,7 +4610,8 @@
         tick: function (time) {
           if (this._bgPoints) this._bgPoints.rotation.y = time * 0.0000035;
           if (this._localWorld) this._localWorld.rotation.y = time * 0.0000014;
-          if (this._nebulaeGroup) this._nebulaeGroup.rotation.y = time * 0.0000008;
+          if (this._nebulaeGroup)
+            this._nebulaeGroup.rotation.y = time * 0.0000008;
           this._tickComets(time);
           /* Counter-rotating Merkaba: up-tri forward+left, down-tri back+right, 1:1 */
           if (this._merkabaUp && this._merkabaDown) {
@@ -4481,7 +5197,9 @@
           brief.classList.add("visible");
           /* Auto-dismiss after 10 s */
           if (brief._autoTimer) clearTimeout(brief._autoTimer);
-          brief._autoTimer = setTimeout(function () { brief.classList.remove("visible"); }, 10000);
+          brief._autoTimer = setTimeout(function () {
+            brief.classList.remove("visible");
+          }, 10000);
         };
       })();
     </script>
