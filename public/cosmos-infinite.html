@@ -1435,31 +1435,7 @@
       <!-- ── STARFIELD ── -->
       <a-entity starfield></a-entity>
 
-      <!-- ── NEBULA CLOUDS (distant deep space) ── -->
-      <a-entity
-        nebula-cloud
-        position="480 160 -1400"
-        rotation="12 30 0"
-        scale="9 9 9"
-      ></a-entity>
-      <a-entity
-        nebula-cloud
-        position="-620 -220 -1100"
-        rotation="-8 -48 18"
-        scale="8 8 8"
-      ></a-entity>
-      <a-entity
-        nebula-cloud
-        position="380 -300 1800"
-        rotation="6 118 -12"
-        scale="10 10 10"
-      ></a-entity>
-      <a-entity
-        nebula-cloud
-        position="-500 280 2000"
-        rotation="-18 -122 8"
-        scale="11 11 11"
-      ></a-entity>
+      <!-- NEBULA CLOUDS REMOVED — clean deep space -->
 
       <!-- ── REAL 3D GLTF MODELS ───────────────────────────────────────────── -->
 
@@ -1569,7 +1545,7 @@
            All 8 planets + Pluto + major moons + asteroid belt + orbit paths
            Canvas textures applied by initPlanetTextures() at scene load
       ════════════════════════════════════════════════════════════════════ -->
-      <a-entity id="solar-system" position="0 -20 -350" solar-system-realtime>
+      <a-entity id="solar-system" position="0 -5 -200" scale="5 5 5" solar-system-realtime>
         <!-- ── ORBIT PATH RINGS (faint, flat on XZ plane) ───────────────── -->
         <a-ring
           radius-inner="21.8"
@@ -1893,13 +1869,7 @@
                 rotation="-90 0 0"
                 material="shader: flat; color: #E8D098; opacity: 0.82; transparent: true; side: double"
               ></a-ring>
-              <!-- Cassini Division (dark gap) -->
-              <a-ring
-                radius-inner="10.8"
-                radius-outer="11.4"
-                rotation="-90 0 0"
-                material="shader: flat; color: #060810; opacity: 0.92; transparent: true; side: double"
-              ></a-ring>
+              <!-- Cassini Division (empty gap — no visible ring) -->
               <!-- Ring A -->
               <a-ring
                 radius-inner="11.4"
@@ -2063,7 +2033,7 @@
       <a-entity id="cameraRig" position="0 5 72">
         <a-camera
           wasd-controls="acceleration: 800"
-          look-controls="pointerLockEnabled: false; reverseMouseDrag: true"
+          look-controls="pointerLockEnabled: false; reverseMouseDrag: true; touchEnabled: true"
           fov="70"
         >
         </a-camera>
@@ -3648,7 +3618,7 @@
           var self = this;
 
           /* ── 80,000 background stars ───────────────────────────────── */
-          var BG = 80000;
+          var BG = 8000;
           var bgP = new Float32Array(BG * 3);
           var bgC = new Float32Array(BG * 3);
           for (var i = 0; i < BG; i++) {
@@ -5311,41 +5281,50 @@
          HYPERSPACE WARP ENGINE
          Canvas streak animation  +  camera teleport  +  warp audio
       ═══════════════════════════════════════════════════════════════════ */
-      /* ── starlink-constellation — SpaceX Starlink ~6,200 active sats ── */
+      /* ── starlink-constellation — SpaceX Starlink sparse orbital planes ── */
       AFRAME.registerComponent("starlink-constellation", {
         init: function () {
           var THREE = AFRAME.THREE;
           var group = new THREE.Object3D();
-          /* 3 orbital shells matching real Starlink inclinations */
+          /* Real Starlink shells: spread sats across many orbital planes (RAAN) */
+          /* Each sat: random RAAN (ascending node) + evenly spaced true anomaly  */
           var shells = [
-            { count: 80, radius: 3.0, inclDeg: 53, speed: 0.0004 },
-            { count: 70, radius: 3.4, inclDeg: 70, speed: 0.00035 },
-            { count: 50, radius: 3.8, inclDeg: 97, speed: 0.0003 },
+            { count: 28, radius: 3.0, inclDeg: 53,  speed: 0.00038, planesPerShell: 7 },
+            { count: 20, radius: 3.4, inclDeg: 70,  speed: 0.00030, planesPerShell: 5 },
+            { count: 16, radius: 3.8, inclDeg: 97,  speed: 0.00024, planesPerShell: 4 },
           ];
           this._meshes = [];
           var self = this;
+          var PI = Math.PI, cos = Math.cos, sin = Math.sin;
           shells.forEach(function (shell) {
             var positions = new Float32Array(shell.count * 3);
-            for (var i = 0; i < shell.count; i++) {
-              var ang = (i / shell.count) * Math.PI * 2;
-              var inclRad = (shell.inclDeg * Math.PI) / 180;
-              positions[i * 3] = shell.radius * Math.cos(ang);
-              positions[i * 3 + 1] =
-                shell.radius * Math.sin(ang) * Math.sin(inclRad);
-              positions[i * 3 + 2] =
-                shell.radius * Math.sin(ang) * Math.cos(inclRad);
+            var satsPerPlane = Math.ceil(shell.count / shell.planesPerShell);
+            var inclRad = (shell.inclDeg * PI) / 180;
+            var si = 0;
+            for (var p = 0; p < shell.planesPerShell; p++) {
+              /* evenly distribute RAAN across 360 deg */
+              var raan = (p / shell.planesPerShell) * PI * 2;
+              var cr = cos(raan), sr = sin(raan);
+              for (var s = 0; s < satsPerPlane && si < shell.count; s++, si++) {
+                var nu = (s / satsPerPlane) * PI * 2;
+                /* position in orbital plane before RAAN rotation */
+                var xOrb = shell.radius * cos(nu);
+                var yOrb = shell.radius * sin(nu) * sin(inclRad);
+                var zOrb = shell.radius * sin(nu) * cos(inclRad);
+                /* rotate by RAAN around world-Y axis */
+                positions[si * 3]     = xOrb * cr - zOrb * sr;
+                positions[si * 3 + 1] = yOrb;
+                positions[si * 3 + 2] = xOrb * sr + zOrb * cr;
+              }
             }
             var geo = new THREE.BufferGeometry();
-            geo.setAttribute(
-              "position",
-              new THREE.BufferAttribute(positions, 3),
-            );
+            geo.setAttribute("position", new THREE.BufferAttribute(positions, 3));
             var mat = new THREE.PointsMaterial({
-              color: 0xc8deff,
-              size: 0.1,
+              color: 0xd0e8ff,
+              size: 0.14,
               sizeAttenuation: true,
               transparent: true,
-              opacity: 0.85,
+              opacity: 0.90,
               blending: THREE.AdditiveBlending,
               depthWrite: false,
             });
@@ -5359,9 +5338,7 @@
         },
         tick: function () {
           if (!this._meshes) return;
-          this._meshes.forEach(function (m) {
-            m.rotation.y += m.userData.speed;
-          });
+          this._meshes.forEach(function (m) { m.rotation.y += m.userData.speed; });
         },
       });
 
@@ -6307,7 +6284,7 @@
           if (earthEl) {
             earthEl.object3D.getWorldPosition(_hPos);
           } else {
-            _hPos.set(0, -20, -350); // solar system centre fallback
+            _hPos.set(0, -5, -200); // solar system centre fallback
           }
 
           // Player (rig) world position
@@ -7260,6 +7237,289 @@
         } else {
           window.addEventListener("load", _connect);
         }
+      })();
+    </script>
+
+    <!-- ════════════════════════════════════════════════════════════════════════
+         MOBILE NAVIGATION JOYSTICK + SKETCHFAB 3D PANEL
+    ════════════════════════════════════════════════════════════════════════ -->
+    <style>
+      /* ── Mobile virtual joystick ── */
+      #mobile-joy-wrap {
+        display: none;
+        position: fixed;
+        bottom: 28px;
+        left: 24px;
+        width: 110px;
+        height: 110px;
+        z-index: 3000;
+        touch-action: none;
+        -webkit-user-select: none;
+        user-select: none;
+      }
+      #mobile-joy-base {
+        width: 110px;
+        height: 110px;
+        border-radius: 50%;
+        background: rgba(0, 212, 255, 0.12);
+        border: 2px solid rgba(0, 212, 255, 0.45);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 0 18px rgba(0, 212, 255, 0.25);
+      }
+      #mobile-joy-stick {
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        background: radial-gradient(circle at 38% 36%, rgba(0,212,255,0.9), rgba(0,140,200,0.6));
+        box-shadow: 0 0 10px rgba(0, 212, 255, 0.6);
+        pointer-events: none;
+        transition: transform 0.05s linear;
+      }
+      /* ── Sketchfab toggle button ── */
+      #sketchfab-btn {
+        display: none;
+        position: fixed;
+        bottom: 28px;
+        right: 24px;
+        width: 52px;
+        height: 52px;
+        border-radius: 50%;
+        background: rgba(0, 180, 100, 0.2);
+        border: 2px solid rgba(0, 220, 120, 0.55);
+        color: #00dc78;
+        font-size: 22px;
+        cursor: pointer;
+        z-index: 3000;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 0 14px rgba(0, 220, 120, 0.3);
+        font-family: sans-serif;
+        line-height: 1;
+        text-align: center;
+      }
+      #sketchfab-btn:hover { background: rgba(0, 180, 100, 0.38); }
+      /* ── Sketchfab panel ── */
+      #sketchfab-panel {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: min(90vw, 680px);
+        height: min(80vh, 480px);
+        background: #06091a;
+        border: 2px solid rgba(0, 220, 120, 0.5);
+        border-radius: 12px;
+        overflow: hidden;
+        z-index: 4000;
+        box-shadow: 0 0 40px rgba(0, 220, 120, 0.25), 0 20px 80px rgba(0,0,0,0.8);
+      }
+      #sketchfab-panel iframe {
+        width: 100%;
+        height: calc(100% - 38px);
+        border: none;
+      }
+      #sketchfab-header {
+        height: 38px;
+        background: rgba(0, 220, 120, 0.12);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 14px;
+        border-bottom: 1px solid rgba(0, 220, 120, 0.3);
+        font-family: 'Courier New', monospace;
+        font-size: 13px;
+        color: #00dc78;
+      }
+      #sketchfab-close {
+        cursor: pointer;
+        font-size: 18px;
+        color: #00dc78;
+        background: none;
+        border: none;
+        padding: 0;
+        line-height: 1;
+      }
+    </style>
+
+    <!-- Mobile joystick -->
+    <div id="mobile-joy-wrap">
+      <div id="mobile-joy-base">
+        <div id="mobile-joy-stick"></div>
+      </div>
+    </div>
+
+    <!-- Sketchfab 3D Model button (shown on all screens) -->
+    <div id="sketchfab-btn" title="3D Model Viewer">&#x1F9CA;</div>
+
+    <!-- Sketchfab panel (ISS + spacecraft) -->
+    <div id="sketchfab-panel">
+      <div id="sketchfab-header">
+        <span>&#x2728; 3D MODEL — International Space Station</span>
+        <button id="sketchfab-close">&#x2715;</button>
+      </div>
+      <iframe
+        id="sketchfab-iframe"
+        src=""
+        allow="autoplay; fullscreen; xr-spatial-tracking"
+        allowfullscreen
+        title="Sketchfab 3D Viewer"
+      ></iframe>
+    </div>
+
+    <script>
+      /* ─── Mobile joystick + touch navigation ──────────────────────────── */
+      (function initMobileNav() {
+        var joyWrap = document.getElementById("mobile-joy-wrap");
+        var joyStick = document.getElementById("mobile-joy-stick");
+        if (!joyWrap || !joyStick) return;
+
+        /* Show joystick only on touch-capable devices */
+        var isTouch = ("ontouchstart" in window) || (navigator.maxTouchPoints > 0);
+        if (isTouch) {
+          joyWrap.style.display = "block";
+          /* Also show Sketchfab button on all devices */
+        }
+
+        var joyActive = false;
+        var joyDX = 0, joyDY = 0;
+        var baseRect = null;
+        var RADIUS = 55; /* half of 110px base */
+        var DEAD = 0.08; /* dead zone */
+
+        function clamp(v, lo, hi) { return v < lo ? lo : v > hi ? hi : v; }
+
+        joyWrap.addEventListener("touchstart", function (e) {
+          e.preventDefault();
+          joyActive = true;
+          baseRect = joyWrap.getBoundingClientRect();
+        }, { passive: false });
+
+        joyWrap.addEventListener("touchmove", function (e) {
+          if (!joyActive || !baseRect) return;
+          e.preventDefault();
+          var t = e.touches[0];
+          var cx = baseRect.left + baseRect.width / 2;
+          var cy = baseRect.top + baseRect.height / 2;
+          var rawX = (t.clientX - cx) / RADIUS;
+          var rawY = (t.clientY - cy) / RADIUS;
+          /* clamp to unit circle */
+          var mag = Math.sqrt(rawX * rawX + rawY * rawY);
+          if (mag > 1.0) { rawX /= mag; rawY /= mag; }
+          joyDX = rawX;
+          joyDY = rawY;
+          /* Move stick visual */
+          joyStick.style.transform = "translate(" + (joyDX * 32) + "px," + (joyDY * 32) + "px)";
+        }, { passive: false });
+
+        function resetJoy() {
+          joyActive = false;
+          joyDX = 0;
+          joyDY = 0;
+          joyStick.style.transform = "translate(0,0)";
+        }
+        joyWrap.addEventListener("touchend", resetJoy);
+        joyWrap.addEventListener("touchcancel", resetJoy);
+
+        /* ── RAF: apply joystick movement to cameraRig ── */
+        var SPEED = 1.5;
+        function mobileLoop() {
+          if (joyActive && (Math.abs(joyDX) > DEAD || Math.abs(joyDY) > DEAD)) {
+            var rig = document.getElementById("cameraRig");
+            var camEl = document.querySelector("[look-controls]");
+            if (rig && rig.object3D && camEl && camEl.object3D) {
+              var THREE = AFRAME.THREE;
+              var fwd = new THREE.Vector3();
+              var right = new THREE.Vector3();
+              var up = new THREE.Vector3(0, 1, 0);
+              camEl.object3D.getWorldDirection(fwd);
+              fwd.y = 0;
+              fwd.normalize();
+              right.crossVectors(fwd, up).normalize();
+              /* joystick Y (up) = fly forward, Y (down) = fly back */
+              /* joystick X = strafe left/right                       */
+              rig.object3D.position.addScaledVector(fwd, -joyDY * SPEED);
+              rig.object3D.position.addScaledVector(right, joyDX * SPEED);
+            }
+          }
+          requestAnimationFrame(mobileLoop);
+        }
+        requestAnimationFrame(mobileLoop);
+
+        /* ── Two-finger drag (pan/fly) — separate from pinch ── */
+        /* We intercept 2-touch events when NOT pinching         */
+        var _pan0X = 0, _pan0Y = 0, _panActive = false;
+        window.addEventListener("touchstart", function (e) {
+          if (e.touches.length === 2) {
+            var t0 = e.touches[0], t1 = e.touches[1];
+            var dist = Math.hypot(t1.clientX - t0.clientX, t1.clientY - t0.clientY);
+            _panStartDist = dist;
+            _pan0X = (t0.clientX + t1.clientX) / 2;
+            _pan0Y = (t0.clientY + t1.clientY) / 2;
+            _panActive = true;
+          } else {
+            _panActive = false;
+          }
+        }, { passive: true });
+
+        var _panStartDist = 0;
+        window.addEventListener("touchmove", function (e) {
+          if (!_panActive || e.touches.length !== 2) return;
+          var t0 = e.touches[0], t1 = e.touches[1];
+          var dist = Math.hypot(t1.clientX - t0.clientX, t1.clientY - t0.clientY);
+          var cx = (t0.clientX + t1.clientX) / 2;
+          var cy = (t0.clientY + t1.clientY) / 2;
+          var ddist = dist - _panStartDist;
+          /* pinch/spread = zoom (handled by original pinch handler) */
+          /* but we also add a small vertical fly for 2-finger swipe */
+          var ddY = cy - _pan0Y;
+          _pan0X = cx; _pan0Y = cy; _panStartDist = dist;
+          if (Math.abs(ddY) > 1) {
+            var rig = document.getElementById("cameraRig");
+            var camEl = document.querySelector("[look-controls]");
+            if (rig && rig.object3D && camEl && camEl.object3D) {
+              var THREE = AFRAME.THREE;
+              var fwd2 = new THREE.Vector3();
+              camEl.object3D.getWorldDirection(fwd2);
+              rig.object3D.position.addScaledVector(fwd2, ddY * 0.25);
+            }
+          }
+        }, { passive: true });
+      })();
+
+      /* ─── Sketchfab 3D panel ──────────────────────────────────────────── */
+      (function initSketchfab() {
+        var btn = document.getElementById("sketchfab-btn");
+        var panel = document.getElementById("sketchfab-panel");
+        var closeBtn = document.getElementById("sketchfab-close");
+        var iframe = document.getElementById("sketchfab-iframe");
+        if (!btn || !panel || !closeBtn || !iframe) return;
+
+        /* Always show the button */
+        btn.style.display = "flex";
+
+        var MODEL_URL = "https://sketchfab.com/models/23d23e9be6954de5a8d1e8be8ecf62e5/embed?autostart=1&ui_theme=dark&camera=0";
+        var open = false;
+
+        btn.addEventListener("click", function () {
+          open = !open;
+          if (open) {
+            iframe.src = MODEL_URL;
+            panel.style.display = "block";
+          } else {
+            panel.style.display = "none";
+            iframe.src = "";
+          }
+        });
+
+        closeBtn.addEventListener("click", function () {
+          open = false;
+          panel.style.display = "none";
+          iframe.src = "";
+        });
       })();
     </script>
   </body>
