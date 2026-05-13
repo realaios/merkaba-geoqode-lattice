@@ -3782,26 +3782,24 @@
           if (dtEl) dtEl.textContent = dist.toFixed(1) + " au";
         };
 
-        /* ---- Scroll zoom -------------------------------------------------- */
+        /* ---- Scroll zoom — moves forward/back along camera look direction -- */
         window.addEventListener(
           "wheel",
           function (e) {
             var rig = document.getElementById("cameraRig");
             if (!rig || !rig.object3D) return;
-            var pos = rig.object3D.position;
-            var dist = pos.length();
+            var camEl = document.querySelector("[look-controls]");
+            if (!camEl || !camEl.object3D) return;
+            var THREE = AFRAME.THREE;
+            var fwd = new THREE.Vector3();
+            camEl.object3D.getWorldDirection(fwd);
+            var dist = rig.object3D.position.length();
             if (dist < 0.001) dist = 72;
-            var nx = pos.x / dist,
-              ny = pos.y / dist,
-              nz = pos.z / dist;
-            var speed = Math.max(0.6, dist * 0.038);
-            var newDist = Math.max(
-              MIN_DIST,
-              Math.min(MAX_DIST, dist + (e.deltaY > 0 ? speed : -speed)),
-            );
-            pos.x = nx * newDist;
-            pos.y = ny * newDist;
-            pos.z = nz * newDist;
+            /* Speed scales with distance so it feels natural at all scales */
+            var speed = Math.max(1.5, dist * 0.06);
+            /* scroll down (deltaY > 0) = move forward; scroll up = move back */
+            rig.object3D.position.addScaledVector(fwd, e.deltaY > 0 ? speed : -speed);
+            var newDist = rig.object3D.position.length();
             window._updateScaleHUD(newDist, null);
             if (window.GeoAnchor) window.GeoAnchor.notifyZoom(newDist);
           },
