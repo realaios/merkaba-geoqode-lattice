@@ -3215,8 +3215,10 @@
           var MAX_PITCH = Math.PI * 0.499;
           window.addEventListener("mousemove", function (e) {
             if (!lc.mouseDown) return;
+            var movementX = e.movementX || e.mozMovementX || 0;
             var movementY = e.movementY || e.mozMovementY || 0;
-            /* yaw: use look-controls default (drag right = look right) — no correction needed */
+            /* invert yaw: look-controls applied yawObject.y -= movementX*0.002, add +0.004 → net +0.002 (reversed) */
+            lc.yawObject.rotation.y += movementX * 0.004;
             /* fix pitch: look-controls applied -movementY*0.002, add +0.004 → net +0.002 = natural down=down */
             lc.pitchObject.rotation.x += movementY * 0.004;
             lc.pitchObject.rotation.x = Math.max(
