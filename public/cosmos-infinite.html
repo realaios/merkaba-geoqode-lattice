@@ -1444,7 +1444,7 @@
       <a-light
         type="point"
         color="#fff8e8"
-        intensity="18.0"
+        intensity="9.0"
         distance="600"
         decay="1.5"
         position="0 0 0"
@@ -1515,11 +1515,11 @@
         ></a-gltf-model>
       </a-entity>
 
-      <!-- Quaternius Planet 1 — beyond D48 east (r=80) — CC0 low-poly -->
+      <!-- Quaternius Planet 1 — beyond D48 east (r=40) — CC0 low-poly -->
       <a-gltf-model
         src="/public/models/planet1.gltf"
-        position="80 5 0"
-        scale="4 4 4"
+        position="40 2.5 0"
+        scale="2 2 2"
         animation="property: rotation; to: 0 360 0; dur: 26000; loop: true; easing: linear"
         geoanchor="operator: phi; frequency: 528; latticeNode: 2; proximityRadius: 20; label: PLANET-1; swarmSync: true"
       ></a-gltf-model>
@@ -1548,9 +1548,9 @@
       >
         <a-gltf-model
           src="/public/models/spaceship_bee.gltf"
-          position="55 8 0"
+          position="28 4 0"
           rotation="0 180 0"
-          scale="2.5 2.5 2.5"
+          scale="1.25 1.25 1.25"
           geoanchor="operator: phi; frequency: 528; latticeNode: 6; proximityRadius: 8; label: BEE-SHIP; swarmSync: true"
         ></a-gltf-model>
       </a-entity>
@@ -1561,9 +1561,9 @@
       >
         <a-gltf-model
           src="/public/models/spaceship_red_panda.gltf"
-          position="0 -5 55"
+          position="0 -3 28"
           rotation="0 -100 0"
-          scale="2.5 2.5 2.5"
+          scale="1.25 1.25 1.25"
           geoanchor="operator: wave; frequency: 639; latticeNode: 38; proximityRadius: 8; label: RED-PANDA; swarmSync: true"
         ></a-gltf-model>
       </a-entity>
@@ -1572,7 +1572,7 @@
       <a-text
         value="D8 FOUNDATION"
         color="#f59e0b"
-        position="0 22.5 0"
+        position="0 15 0"
         scale="2.0 2.0 2.0"
         align="center"
         font="mozillavr"
@@ -1580,7 +1580,7 @@
       <a-text
         value="D26 BOSONIC"
         color="#7c3aed"
-        position="0 34.5 0"
+        position="0 23 0"
         scale="1.5 1.5 1.5"
         align="center"
         font="mozillavr"
@@ -1588,7 +1588,7 @@
       <a-text
         value="D48 CANONICAL"
         color="#00d4ff"
-        position="0 50.5 0"
+        position="0 33 0"
         scale="1.2 1.2 1.2"
         align="center"
         font="mozillavr"
@@ -1598,7 +1598,7 @@
       <a-entity distant-universe></a-entity>
 
       <!-- ── SPACE STATION (D26 bosonic ring • security-forge S8 • 852 Hz) ── -->
-      <a-entity space-station position="0 55 -30"></a-entity>
+      <a-entity space-station position="0 28 -15" scale="0.5 0.5 0.5"></a-entity>
 
       <!-- Solar system removed -->
       <!-- Camera rig -->
@@ -1646,9 +1646,9 @@
       }
 
       /* ── D-Ring radii ──────────────────────────────────────────────────────── */
-      const R8 = 18;
-      const R26 = 30;
-      const R48 = 46;
+      const R8 = 12;
+      const R26 = 20;
+      const R48 = 30;
 
       /* ── Sector definitions ────────────────────────────────────────────────── */
       const SECTORS = [
@@ -2168,7 +2168,7 @@
             ),
           );
 
-          /* 5. BackSide aura */
+          /* 5. BackSide aura — transparent so deep space shows through */
           group.add(
             new THREE.Mesh(
               new THREE.SphereGeometry(8.5, 16, 16),
@@ -2178,7 +2178,7 @@
                 emissiveIntensity: 0.5,
                 side: THREE.BackSide,
                 transparent: true,
-                opacity: 0.13,
+                opacity: 0.0,
               }),
             ),
           );
