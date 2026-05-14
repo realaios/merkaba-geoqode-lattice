@@ -1541,8 +1541,8 @@
       ════════════════════════════════════════════════════════════════════ -->
       <a-entity
         id="solar-system"
-        position="0 -5 -10000"
-        scale="50 50 50"
+        position="0 -5 -500000"
+        scale="2500 2500 2500"
         solar-system-realtime
       >
         <!-- ── ORBIT PATH RINGS (faint, flat on XZ plane) ───────────────── -->
@@ -2031,9 +2031,10 @@
       <!-- Camera rig -->
       <a-entity id="cameraRig" position="0 5 72">
         <a-camera
-          wasd-controls="acceleration: 800"
+          wasd-controls="acceleration: 80000"
           look-controls="pointerLockEnabled: false; reverseMouseDrag: true; touchEnabled: true"
           fov="70"
+          far="2000000"
         >
         </a-camera>
       </a-entity>
@@ -3112,23 +3113,31 @@
             var pos = rig.object3D.position;
 
             /* Orbit center: planet world-pos when hitchhiker is locked, else origin */
-            var ox = 0, oy = 0, oz = 0;
+            var ox = 0,
+              oy = 0,
+              oz = 0;
             var hitch = self.el.components["hitchhiker-mode"];
             if (hitch && hitch._locked && hitch._targetObj) {
               var ctr = new AFRAME.THREE.Vector3();
               hitch._targetObj.getWorldPosition(ctr);
-              ox = ctr.x; oy = ctr.y; oz = ctr.z;
+              ox = ctr.x;
+              oy = ctr.y;
+              oz = ctr.z;
             }
 
             /* Position relative to orbit center */
-            var rx = pos.x - ox, ry = pos.y - oy, rz = pos.z - oz;
+            var rx = pos.x - ox,
+              ry = pos.y - oy,
+              rz = pos.z - oz;
 
             /* Horizontal rotation around Y */
             var yAngle = -dx * S;
-            var cosY = Math.cos(yAngle), sinY = Math.sin(yAngle);
+            var cosY = Math.cos(yAngle),
+              sinY = Math.sin(yAngle);
             var nx = rx * cosY + rz * sinY;
             var nz = -rx * sinY + rz * cosY;
-            rx = nx; rz = nz;
+            rx = nx;
+            rz = nz;
 
             /* Vertical rotation — drag DOWN = camera goes UP (natural orbit) */
             var dist = Math.sqrt(rx * rx + ry * ry + rz * rz);
@@ -3141,7 +3150,9 @@
             rz = dist * Math.sin(phi) * Math.sin(theta);
 
             /* Write back to world position */
-            pos.x = rx + ox; pos.y = ry + oy; pos.z = rz + oz;
+            pos.x = rx + ox;
+            pos.y = ry + oy;
+            pos.z = rz + oz;
 
             /* Sync hitchhiker offset so its tick() doesn't fight this drag */
             if (hitch && hitch._locked) {
@@ -3242,9 +3253,9 @@
             if (!rig) return;
             var dir = rig.object3D.position.clone().sub(hitWorld);
             var d = dir.length();
-            /* Pull to comfortable viewing distance (~200 world units) */
-            if (d < 2) dir.set(0, 80, 200);
-            else if (d > 400) dir.normalize().multiplyScalar(200);
+            /* Pull to comfortable viewing distance — scale-aware for large solar system */
+            if (d < 5000) dir.set(0, 15000, 35000);
+            else if (d > 150000) dir.normalize().multiplyScalar(35000);
             self._offset.copy(dir);
 
             /* Teleport rig to viewing position near the planet */
@@ -3253,9 +3264,14 @@
             /* Point camera at the planet */
             var camEl = document.querySelector("[look-controls]");
             if (camEl) {
-              var toTarget = hitWorld.clone().sub(rig.object3D.position).normalize();
+              var toTarget = hitWorld
+                .clone()
+                .sub(rig.object3D.position)
+                .normalize();
               var yaw = Math.atan2(toTarget.x, -toTarget.z);
-              var hz2 = Math.sqrt(toTarget.x * toTarget.x + toTarget.z * toTarget.z);
+              var hz2 = Math.sqrt(
+                toTarget.x * toTarget.x + toTarget.z * toTarget.z,
+              );
               var pit = Math.atan2(toTarget.y, hz2);
               var lc = camEl.components["look-controls"];
               if (lc && lc.yawObject && lc.pitchObject) {
@@ -6524,7 +6540,7 @@
           if (earthEl) {
             earthEl.object3D.getWorldPosition(_hPos);
           } else {
-            _hPos.set(0, -5, -10000); // solar system centre fallback
+            _hPos.set(0, -5, -500000); // solar system centre fallback
           }
 
           // Player (rig) world position
