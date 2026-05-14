@@ -623,10 +623,12 @@
         Math.sin(this._wavePhase * 2.0) * (this.inProximity ? 0.16 : 0.055);
       this._waveShell.scale.setScalar(ws);
       this._waveShell.material.opacity =
-        0.10 +
-        Math.abs(Math.sin(this._wavePhase)) * (this.inProximity ? 0.22 : 0.10);
+        0.1 +
+        Math.abs(Math.sin(this._wavePhase)) * (this.inProximity ? 0.22 : 0.1);
       this._waveShell.material.emissiveIntensity =
-        0.2 + Math.abs(Math.sin(this._wavePhase * 0.7)) * (this.inProximity ? 0.6 : 0.3);
+        0.2 +
+        Math.abs(Math.sin(this._wavePhase * 0.7)) *
+          (this.inProximity ? 0.6 : 0.3);
       this._waveShell.rotation.y += dt * (this.inProximity ? 0.7 : 0.22);
       this._waveShell.rotation.x += dt * 0.14;
 
@@ -636,7 +638,9 @@
         this._hRing.material.opacity =
           0.18 + Math.abs(Math.sin(this._wavePhase * 1.8)) * 0.15;
         this._hRing.material.emissiveIntensity =
-          0.3 + Math.abs(Math.sin(this._wavePhase * 0.9)) * (this.inProximity ? 0.7 : 0.35);
+          0.3 +
+          Math.abs(Math.sin(this._wavePhase * 0.9)) *
+            (this.inProximity ? 0.7 : 0.35);
       }
 
       /* Modulate child mesh emissive when in proximity */
