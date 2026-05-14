@@ -2582,14 +2582,28 @@
             new THREE.TorusKnotGeometry(4.2, 0.32, 128, 16),
             new THREE.MeshPhongMaterial({
               color: 0xfbbf24,
-              emissive: 0xa06000,
-              emissiveIntensity: 1.3,
-              shininess: 160,
+              emissive: 0x0077cc,
+              emissiveIntensity: 1.8,
+              shininess: 220,
               transparent: true,
-              opacity: 0.8,
+              opacity: 0.82,
             }),
           );
           group.add(this.tknMesh);
+
+          /* 3b. Quantum superposition glyph — p=3 q=5 wireframe overlay */
+          this.tknWire = new THREE.Mesh(
+            new THREE.TorusKnotGeometry(4.2, 0.11, 128, 8, 3, 5),
+            new THREE.MeshBasicMaterial({
+              color: 0x00d4ff,
+              wireframe: true,
+              transparent: true,
+              opacity: 0.26,
+              blending: THREE.AdditiveBlending,
+              depthWrite: false,
+            }),
+          );
+          group.add(this.tknWire);
 
           /* 4. Deep-purple glow core sphere */
           group.add(
@@ -2665,6 +2679,13 @@
           if (this.tknMesh) {
             this.tknMesh.rotation.z = t * 0.2;
             this.tknMesh.rotation.x = t * 0.08;
+            this.tknMesh.material.opacity = 0.68 + Math.sin(t * 3.1) * 0.18;
+            this.tknMesh.material.emissiveIntensity = 1.4 + Math.sin(t * 2.7 + 1.0) * 0.55;
+          }
+          if (this.tknWire) {
+            this.tknWire.rotation.z = -t * 0.15;
+            this.tknWire.rotation.x = -t * 0.12;
+            this.tknWire.material.opacity = 0.14 + Math.sin(t * 4.2 + 0.5) * 0.12;
           }
           if (this.ringMesh) {
             this.ringMesh.rotation.z = t * 0.32;
