@@ -1565,8 +1565,8 @@
       ════════════════════════════════════════════════════════════════════ -->
       <a-entity
         id="solar-system"
-        position="0 -5 -50000"
-        scale="50 50 50"
+        position="0 -5 -5000"
+        scale="10 10 10"
         solar-system-realtime
       >
         <!-- ── ORBIT PATH RINGS (faint, flat on XZ plane) ───────────────── -->
@@ -2936,11 +2936,13 @@
             var ng = new THREE.Group();
             ng.position.set(pt.x, pt.y, pt.z);
 
+            /* Cycle through the 8 sector colors so bosonic ring feels alive */
+            var sc = SECTORS[i % 8];
             var mesh = new THREE.Mesh(
               new THREE.OctahedronGeometry(0.82, 0),
               new THREE.MeshPhongMaterial({
-                color: 0x7c3aed,
-                emissive: 0x4a00b8,
+                color: sc.color,
+                emissive: sc.emissive,
                 emissiveIntensity: 0.85,
                 shininess: 110,
                 transparent: true,
@@ -2954,8 +2956,8 @@
               new THREE.Mesh(
                 new THREE.SphereGeometry(2.2, 10, 10),
                 new THREE.MeshPhongMaterial({
-                  color: 0x7c3aed,
-                  emissive: 0x4a00b8,
+                  color: sc.color,
+                  emissive: sc.emissive,
                   emissiveIntensity: 0.4,
                   side: THREE.BackSide,
                   transparent: true,
@@ -6619,7 +6621,7 @@
           if (earthEl) {
             earthEl.object3D.getWorldPosition(_hPos);
           } else {
-            _hPos.set(0, -5, -50000); // solar system centre fallback
+            _hPos.set(0, -5, -5000); // solar system centre fallback
           }
 
           // Player (rig) world position
