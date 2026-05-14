@@ -2302,7 +2302,7 @@
           var mat1 = new THREE.LineBasicMaterial({
             color: 0x7c3aed,
             transparent: true,
-            opacity: 0.45,
+            opacity: 0.18,
           });
           d8pts.forEach(function (a) {
             var sorted = d26pts
@@ -2326,7 +2326,7 @@
           var mat2 = new THREE.LineBasicMaterial({
             color: 0x00d4ff,
             transparent: true,
-            opacity: 0.35,
+            opacity: 0.14,
           });
           d26pts.forEach(function (a, ai) {
             if (ai % 3 !== 0) return;
@@ -2350,7 +2350,7 @@
 
         tick: function (time) {
           this.t = time * 0.001;
-          var op = 0.42 + Math.sin(this.t * 0.85) * 0.22;
+          var op = 0.18 + Math.sin(this.t * 0.85) * 0.12;
           if (this.group) {
             this.group.children.forEach(function (c) {
               if (c.material) c.material.opacity = op;
