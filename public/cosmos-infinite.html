@@ -4686,26 +4686,7 @@
             }
           });
 
-          /* ── Scroll-to-zoom: dolly camera (no FOV fisheye) ─────────────── */
-          /* FOV is locked at 70 — zoom = camera rig moves forward/back      */
-          window.addEventListener(
-            "wheel",
-            function (e) {
-              var rig = document.getElementById("cameraRig");
-              if (!rig) return;
-              var cam =
-                rig.querySelector("a-camera") ||
-                document.querySelector("a-camera");
-              if (!cam) return;
-              var pos = rig.object3D.position;
-              var dir = new AFRAME.THREE.Vector3();
-              cam.object3D.getWorldDirection(dir);
-              var step = e.deltaY * -0.18;
-              pos.addScaledVector(dir, step);
-              e.preventDefault();
-            },
-            { passive: false },
-          );
+          /* Scroll-to-zoom handled globally by initGeoNav() */
 
           /* Targeting throttle state */
           this._targetTickT = 0;
