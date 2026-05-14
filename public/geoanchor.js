@@ -534,12 +534,12 @@
         this._marker.scale.setScalar(this.inProximity ? ms * 1.6 : ms);
       }
 
-      /* Child mesh emissive — GLTF model glows at all times, brightens on approach */
+      /* Child mesh emissive — subtle tint so texture colours show through */
       if (this._childMeshes.length) {
         var phiCol = freqToColor(this.data.frequency);
         var phiEi = this.inProximity
-          ? 3.0 + Math.sin(this.t * 3.5) * 0.8
-          : 1.8 + Math.sin(this.t * 0.9) * 0.4;
+          ? 0.65 + Math.sin(this.t * 3.5) * 0.15
+          : 0.25 + Math.sin(this.t * 0.9) * 0.08;
         for (var pi = 0; pi < this._childMeshes.length; pi++) {
           var pm = this._childMeshes[pi];
           if (!pm.material) continue;
@@ -678,13 +678,12 @@
             (this.inProximity ? 0.65 : 0.16);
       }
 
-      /* Child mesh emissive — model glows at idle, surges on proximity
-         Uses this entity's OWN frequency colour (not the cycling shell colour) */
+      /* Child mesh emissive — subtle tint so texture colours show through */
       if (this._childMeshes.length) {
         var ci = this.inProximity;
         var ei = ci
-          ? 2.8 + Math.sin(this._wavePhase * 3.5) * 0.7
-          : 1.5 + Math.sin(this._wavePhase * 0.8) * 0.4;
+          ? 0.65 + Math.sin(this._wavePhase * 3.5) * 0.15
+          : 0.25 + Math.sin(this._wavePhase * 0.8) * 0.08;
         var ec = freqToColor(this.data.frequency);
         for (var i = 0; i < this._childMeshes.length; i++) {
           var m = this._childMeshes[i];
