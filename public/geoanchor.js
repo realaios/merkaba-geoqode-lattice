@@ -428,9 +428,9 @@
         new THREE.MeshPhongMaterial({
           color: 0x39ff14,
           emissive: 0x39ff14,
-          emissiveIntensity: 0.20,
+          emissiveIntensity: 0.2,
           transparent: true,
-          opacity: 0.10,
+          opacity: 0.1,
         }),
       );
       hRing.rotation.y = Math.PI / 4;
@@ -638,7 +638,7 @@
         this._hRing.material.opacity =
           0.08 +
           Math.abs(Math.sin(this._wavePhase * 1.8)) *
-            (this.inProximity ? 0.22 : 0.10);
+            (this.inProximity ? 0.22 : 0.1);
         this._hRing.material.emissiveIntensity =
           0.16 +
           Math.abs(Math.sin(this._wavePhase * 0.9)) *
