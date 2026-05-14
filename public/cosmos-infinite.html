@@ -3689,10 +3689,14 @@
             var newDist = rig.object3D.position.length();
             /* Hard clamp — no Mobius wrap, no NaN. Just stop at the edges. */
             if (!isFinite(newDist) || newDist > MAX_DIST) {
-              rig.object3D.position.multiplyScalar(MAX_DIST / (newDist || MAX_DIST));
+              rig.object3D.position.multiplyScalar(
+                MAX_DIST / (newDist || MAX_DIST),
+              );
               newDist = MAX_DIST;
             } else if (newDist < MIN_DIST) {
-              rig.object3D.position.multiplyScalar(MIN_DIST / (newDist || MIN_DIST));
+              rig.object3D.position.multiplyScalar(
+                MIN_DIST / (newDist || MIN_DIST),
+              );
               newDist = MIN_DIST;
             }
             window._updateScaleHUD(newDist, null);
