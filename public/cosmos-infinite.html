@@ -3527,7 +3527,7 @@
           var t = this._t;
           /* Multi-frequency shimmer: genuine diamond-sparkle feel */
           this._sparkleMat.opacity = Math.max(
-            0.15,
+            1.5,
             0.5 +
               Math.sin(t * 2.3) * 0.28 +
               Math.sin(t * 7.1) * 0.12 +
@@ -3550,23 +3550,18 @@
           MAX_DIST = 16000;
 
         /* ── PHI-ANCHORED COSMIC SPIRAL SCALE MAP ────────────────────────────────
-           Canonical anchor: D480 = 480 au  (@alignment 8→26→48:480, NEVER change).
-           Inner zones:   480 / PHI^n  (n=11 down to 1)  — inward compression.
-           D480 lock:     480 au       (architecture boundary).
-           Universe:      480 × PHI    ≈ 776.6 au  (1.618 expansion beyond D480).
-           Portal edge:   480 × (PHI+PSI) ≈ 1454.6 au  (GOLDEN_BAND inversion).
+           Scene anchor: _D480 = 4800 au  (10× the canonical 480 lattice constant).
+           Inner zones:  4800 / PHI^n  (n=11 down to 1)  — inward compression.
+           D480 lock:    4800 au       (scene boundary).
+           Universe:     4800 × PHI    ≈ 7766 au  (1.618 expansion beyond D480).
+           Portal edge:  4800 × (PHI+PSI) ≈ 14546 au  (GOLDEN_BAND inversion).
 
-           Galaxy sits on the Silver Bridge:
-             480 / PHI² ≈ 183 au  ≈  D48 × PSI⁴  (PSI=Ω Witness anchor)
-           Sub-Quantum Core mirrors the Portal:
-             480 / PHI^11 ≈ 2.41 au — the inverse expansion seed.
-
-           All future entities (planets, solar systems, worlds) MUST be placed
-           at distances matching  480 / PHI^n  or  480 × PHI^m  for integer n,m.
+           Scale: 1.618 → 16.18 → 161.8 → 1618 → 4800 → 7766 → 14546 au.
+           All future entities MUST be placed at 4800/PHI^n or 4800×PHI^m.
            ─────────────────────────────────────────────────────────────────── */
         var _PHI = 1.6180339887;
         var _PSI = 1.4142135624;
-        var _D480 = 480; /* canonical D480 anchor — never change */
+        var _D480 = 4800; /* scene scale: 10 × canonical 480 lattice constant */
 
         var SCALE_LEVELS = [
           /* 480/PHI^11 ≈ 2.41 au — Sub-Quantum inverse expansion seed */
@@ -3643,6 +3638,7 @@
         function getScaleLevel(dist) {
           /* First call: initialise without hysteresis */
           if (_curLevelIdx === -1) {
+            if (!isFinite(dist)) return SCALE_LEVELS[0]; /* not ready yet */
             for (var i = 0; i < SCALE_LEVELS.length; i++) {
               if (dist <= SCALE_LEVELS[i].max) {
                 _curLevelIdx = i;
@@ -3652,13 +3648,12 @@
             if (_curLevelIdx === -1) _curLevelIdx = SCALE_LEVELS.length - 1;
             return SCALE_LEVELS[_curLevelIdx];
           }
-          /* Proportional deadband: 5% of current zone’s outer boundary,
-             clamped 0.15–15 au.  Tiny near the Sub-Quantum Core (≈05 au),
-             ~8-15 au through Galaxy and beyond — prevents all boundary flicker
-             while auto-scaling with the PHI zone widths. */
+          /* Proportional deadband: 5% of current zone outer boundary,
+             clamped 1.5–150 au (matches 4800 au scene anchor ×10 scale).
+             Prevents label flicker without over-constraining wide outer zones. */
           var BAND = Math.max(
-            0.15,
-            Math.min(15, SCALE_LEVELS[_curLevelIdx].max * 0.05),
+            1.5,
+            Math.min(150, SCALE_LEVELS[_curLevelIdx].max * 0.05),
           );
           while (
             _curLevelIdx < SCALE_LEVELS.length - 1 &&
@@ -3666,8 +3661,8 @@
           ) {
             _curLevelIdx++;
             BAND = Math.max(
-              0.15,
-              Math.min(15, SCALE_LEVELS[_curLevelIdx].max * 0.05),
+              1.5,
+              Math.min(150, SCALE_LEVELS[_curLevelIdx].max * 0.05),
             );
           }
           while (
@@ -3676,8 +3671,8 @@
           ) {
             _curLevelIdx--;
             BAND = Math.max(
-              0.15,
-              Math.min(15, SCALE_LEVELS[_curLevelIdx].max * 0.05),
+              1.5,
+              Math.min(150, SCALE_LEVELS[_curLevelIdx].max * 0.05),
             );
           }
           return SCALE_LEVELS[_curLevelIdx];
