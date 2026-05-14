@@ -1403,12 +1403,13 @@
       <!-- Lighting rig -->
       <!-- Ambient kept low so planets have a genuine dark side; merkaba objects use emissive instead -->
       <a-light type="ambient" color="#1a2535" intensity="0.22"></a-light>
+      <!-- Central sun — illuminates all planets/ships from the Merkaba core -->
       <a-light
         type="point"
-        color="#00d4ff"
-        intensity="3.0"
-        distance="90"
-        decay="2"
+        color="#fff8e8"
+        intensity="18.0"
+        distance="600"
+        decay="1.5"
         position="0 0 0"
       ></a-light>
       <a-light
@@ -2913,7 +2914,7 @@
           var col = new Float32Array(COUNT * 3);
 
           for (var i = 0; i < COUNT; i++) {
-            var r = 160 + Math.random() * 220;
+            var r = 600 + Math.random() * 900;
             var th = Math.random() * Math.PI * 2;
             var ph = Math.acos(2 * Math.random() - 1);
             pos[i * 3] = Math.sin(ph) * Math.cos(th) * r;
