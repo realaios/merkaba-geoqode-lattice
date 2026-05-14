@@ -257,6 +257,25 @@
         white-space: nowrap;
         backdrop-filter: blur(4px);
       }
+      #hitchhiker-badge {
+        display: none;
+        position: fixed;
+        bottom: 40px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(0, 212, 255, 0.22);
+        border: 1px solid rgba(0, 212, 255, 0.55);
+        border-radius: 4px;
+        padding: 5px 16px;
+        font-size: 0.54rem;
+        color: #00d4ff;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        font-family: monospace;
+        pointer-events: none;
+        z-index: 30;
+        transition: background 0.2s, border-color 0.2s, color 0.2s;
+      }
       /* ── Sector Ticker ───────────────────────────────────────────────────── */
       #sector-ticker {
         position: fixed;
@@ -1357,10 +1376,11 @@
     </div>
 
     <div id="controls-hint">
-      WASD / Arrow Keys &nbsp;&#x2022;&nbsp; Mouse Drag &nbsp;&#x2022;&nbsp;
+      WASD / Arrow Keys &nbsp;&#x2022;&nbsp; RMB Drag to Orbit &nbsp;&#x2022;&nbsp;
       Scroll to Zoom &nbsp;&#x2022;&nbsp; Double-Click to Teleport
-      &nbsp;&#x2022;&nbsp; Click VR button for headset
+      &nbsp;&#x2022;&nbsp; SPACE to arm Hitchhiker, click planet, SPACE to release
     </div>
+    <div id="hitchhiker-badge"></div>
 
     <div id="scale-indicator">
       <div class="scale-level">D480 SPECTRUM</div>
@@ -1541,8 +1561,8 @@
       ════════════════════════════════════════════════════════════════════ -->
       <a-entity
         id="solar-system"
-        position="0 -5 -500000"
-        scale="2500 2500 2500"
+        position="0 -5 -50000"
+        scale="250 250 250"
         solar-system-realtime
       >
         <!-- ── ORBIT PATH RINGS (faint, flat on XZ plane) ───────────────── -->
@@ -3188,15 +3208,32 @@
         },
       });
 
-      /* ── hitchhiker-mode — SPACE+LMB locks camera to clicked planet orbit ── */
+      /* ── hitchhiker-mode — SPACE toggles arm; LMB click planet to lock ──── */
       AFRAME.registerComponent("hitchhiker-mode", {
         init: function () {
           var self = this;
           this._locked = false;
+          this._armed = false;
           this._targetObj = null;
           this._offset = new AFRAME.THREE.Vector3();
           this._worldPos = new AFRAME.THREE.Vector3();
-          this._spaceHeld = false;
+
+          function setBadge(text, locked) {
+            var b = document.getElementById("hitchhiker-badge");
+            if (!b) return;
+            if (!text) { b.style.display = "none"; return; }
+            b.textContent = text;
+            if (locked) {
+              b.style.background = "rgba(0,255,128,0.22)";
+              b.style.borderColor = "rgba(0,255,128,0.55)";
+              b.style.color = "#00ff80";
+            } else {
+              b.style.background = "rgba(0,212,255,0.22)";
+              b.style.borderColor = "rgba(0,212,255,0.55)";
+              b.style.color = "#00d4ff";
+            }
+            b.style.display = "block";
+          }
 
           this._onKeyDown = function (e) {
             if (e.code !== "Space") return;
@@ -3205,18 +3242,18 @@
               /* SPACE again = release the hitchhike lock */
               self._locked = false;
               self._targetObj = null;
+              self._armed = false;
+              setBadge("");
             } else {
-              self._spaceHeld = true;
+              /* Toggle arm state — no hold required */
+              self._armed = !self._armed;
+              setBadge(self._armed ? "HITCHHIKER ARMED \u2014 click a planet" : "");
             }
           };
 
-          this._onKeyUp = function (e) {
-            if (e.code === "Space") self._spaceHeld = false;
-          };
-
           this._onClick = function (e) {
-            if (e.button !== 0 || !self._spaceHeld) return;
-            /* Intercept this click so look-controls doesn't activate */
+            if (e.button !== 0 || !self._armed) return;
+            /* Intercept so look-controls doesn't fire */
             e.stopPropagation();
 
             var canvas = document.querySelector("canvas");
@@ -3238,7 +3275,7 @@
             var hits = raycaster.intersectObjects(ssEl.object3D.children, true);
             if (hits.length === 0) return;
 
-            /* Walk up to a direct child of solar-system (planet group object) */
+            /* Walk up to a direct child of solar-system (the planet group) */
             var hitMesh = hits[0].object;
             var ssObj = ssEl.object3D;
             var trackObj = hitMesh;
@@ -3246,32 +3283,30 @@
               trackObj = trackObj.parent;
             }
 
-            /* Compute world-space hit position and ideal viewing offset */
+            /* World position of the clicked mesh */
             var hitWorld = new AFRAME.THREE.Vector3();
             hitMesh.getWorldPosition(hitWorld);
+
             var rig = document.getElementById("cameraRig");
             if (!rig) return;
+
+            /* Direction from hit-world to camera — always place camera on the
+               same side it was already on, at a fixed comfortable distance */
+            var VIEW_DIST = 3000;
             var dir = rig.object3D.position.clone().sub(hitWorld);
-            var d = dir.length();
-            /* Pull to comfortable viewing distance — scale-aware for large solar system */
-            if (d < 5000) dir.set(0, 15000, 35000);
-            else if (d > 150000) dir.normalize().multiplyScalar(35000);
+            if (dir.length() < 50) dir.set(0, VIEW_DIST * 0.4, VIEW_DIST);
+            dir.normalize().multiplyScalar(VIEW_DIST);
             self._offset.copy(dir);
 
-            /* Teleport rig to viewing position near the planet */
+            /* Teleport rig */
             rig.object3D.position.copy(hitWorld).add(self._offset);
 
             /* Point camera at the planet */
             var camEl = document.querySelector("[look-controls]");
             if (camEl) {
-              var toTarget = hitWorld
-                .clone()
-                .sub(rig.object3D.position)
-                .normalize();
+              var toTarget = hitWorld.clone().sub(rig.object3D.position).normalize();
               var yaw = Math.atan2(toTarget.x, -toTarget.z);
-              var hz2 = Math.sqrt(
-                toTarget.x * toTarget.x + toTarget.z * toTarget.z,
-              );
+              var hz2 = Math.sqrt(toTarget.x * toTarget.x + toTarget.z * toTarget.z);
               var pit = Math.atan2(toTarget.y, hz2);
               var lc = camEl.components["look-controls"];
               if (lc && lc.yawObject && lc.pitchObject) {
@@ -3282,11 +3317,11 @@
 
             self._targetObj = trackObj;
             self._locked = true;
-            self._spaceHeld = false;
+            self._armed = false;
+            setBadge("HITCHHIKER LOCKED \u2014 SPACE to release", true);
           };
 
           document.addEventListener("keydown", this._onKeyDown);
-          document.addEventListener("keyup", this._onKeyUp);
           document.addEventListener("mousedown", this._onClick, true);
         },
 
@@ -3300,7 +3335,6 @@
 
         remove: function () {
           document.removeEventListener("keydown", this._onKeyDown);
-          document.removeEventListener("keyup", this._onKeyUp);
           document.removeEventListener("mousedown", this._onClick, true);
         },
       });
@@ -6540,7 +6574,7 @@
           if (earthEl) {
             earthEl.object3D.getWorldPosition(_hPos);
           } else {
-            _hPos.set(0, -5, -500000); // solar system centre fallback
+            _hPos.set(0, -5, -50000); // solar system centre fallback
           }
 
           // Player (rig) world position
