@@ -1461,7 +1461,8 @@
       <!-- ── STARFIELD ── -->
       <a-entity starfield></a-entity>
 
-      <!-- NEBULA CLOUDS REMOVED — clean deep space -->
+      <!-- ── NEBULA CLOUD ── -->
+      <a-entity nebula-cloud></a-entity>
 
       <!-- ── REAL 3D GLTF MODELS ───────────────────────────────────────────── -->
 
@@ -1557,6 +1558,9 @@
 
       <!-- Distant Universe: 80k bg stars + 480 clickable GeoQode galaxy anchors -->
       <a-entity distant-universe></a-entity>
+
+      <!-- ── SPACE STATION (D26 bosonic ring • security-forge S8 • 852 Hz) ── -->
+      <a-entity space-station position="0 55 -30"></a-entity>
 
       <!-- ══════════════════════════════════════════════════════════════════
            OUR SOLAR SYSTEM — NASA-accuracy orbital positions (J2000 + live)
@@ -3107,7 +3111,7 @@
             opacity: 0.84,
             blending: THREE.AdditiveBlending,
             depthWrite: false,
-            sizeAttenuation: true,
+            sizeAttenuation: false,
           });
 
           this.points = new THREE.Points(geo, mat);
@@ -3519,11 +3523,11 @@
           this._t += delta * 0.001;
           var t = this._t;
           /* Multi-frequency shimmer: genuine diamond-sparkle feel */
-          this._sparkleMat.opacity =
+          this._sparkleMat.opacity = Math.max(0.15,
             0.5 +
             Math.sin(t * 2.3) * 0.28 +
             Math.sin(t * 7.1) * 0.12 +
-            Math.sin(t * 13.4) * 0.06;
+            Math.sin(t * 13.4) * 0.06);
           this._mat.opacity = 0.38 + Math.sin(t * 0.7) * 0.14;
           /* Slow drift rotation */
           this.el.object3D.rotation.y += this._rotSpd;
@@ -3534,7 +3538,7 @@
       /* ====================================================================
          GeoAnchor Navigation: Scroll Zoom + Pinch Zoom +
          Double-Click Teleport + Scale Drill-Down HUD
-         @alignment 8->26->48:480  (GeoQode canonical nav layer)
+         @alignment 8→26→48:480  (GeoQode canonical nav layer)
       ==================================================================== */
       (function initGeoNav() {
         var MIN_DIST = 1.2,
