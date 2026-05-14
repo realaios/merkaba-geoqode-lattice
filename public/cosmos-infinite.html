@@ -1372,6 +1372,7 @@
 ════════════════════════════════════════════════════════════════════════════ -->
     <a-scene
       right-click-orbit
+      hitchhiker-mode
       vr-mode-ui="enabled: true"
       loading-screen="dotsColor: #00d4ff; backgroundColor: #000005"
       renderer="antialias: true; colorManagement: true"
@@ -3073,7 +3074,7 @@
         },
       });
 
-      /* ── right-click-orbit — RMB drag orbits camera around scene center ── */
+      /* ── right-click-orbit — RMB drag orbits camera around scene/planet center ── */
       AFRAME.registerComponent("right-click-orbit", {
         init: function () {
           var self = this;
@@ -3110,37 +3111,48 @@
             if (!rig) return;
             var pos = rig.object3D.position;
 
-            /* Rotate rig position around Y axis (horizontal drag) */
+            /* Orbit center: planet world-pos when hitchhiker is locked, else origin */
+            var ox = 0, oy = 0, oz = 0;
+            var hitch = self.el.components["hitchhiker-mode"];
+            if (hitch && hitch._locked && hitch._targetObj) {
+              var ctr = new AFRAME.THREE.Vector3();
+              hitch._targetObj.getWorldPosition(ctr);
+              ox = ctr.x; oy = ctr.y; oz = ctr.z;
+            }
+
+            /* Position relative to orbit center */
+            var rx = pos.x - ox, ry = pos.y - oy, rz = pos.z - oz;
+
+            /* Horizontal rotation around Y */
             var yAngle = -dx * S;
-            var cosY = Math.cos(yAngle),
-              sinY = Math.sin(yAngle);
-            var nx = pos.x * cosY + pos.z * sinY;
-            var nz = -pos.x * sinY + pos.z * cosY;
-            pos.x = nx;
-            pos.z = nz;
+            var cosY = Math.cos(yAngle), sinY = Math.sin(yAngle);
+            var nx = rx * cosY + rz * sinY;
+            var nz = -rx * sinY + rz * cosY;
+            rx = nx; rz = nz;
 
-            /* Rotate rig position in elevation (vertical drag) */
-            var dist = Math.sqrt(pos.x * pos.x + pos.y * pos.y + pos.z * pos.z);
+            /* Vertical rotation — drag DOWN = camera goes UP (natural orbit) */
+            var dist = Math.sqrt(rx * rx + ry * ry + rz * rz);
             if (dist < 0.001) return;
-            var phi = Math.atan2(
-              Math.sqrt(pos.x * pos.x + pos.z * pos.z),
-              pos.y,
-            );
-            var theta = Math.atan2(pos.z, pos.x);
-            phi = Math.max(0.05, Math.min(Math.PI - 0.05, phi + dy * S));
-            pos.x = dist * Math.sin(phi) * Math.cos(theta);
-            pos.y = dist * Math.cos(phi);
-            pos.z = dist * Math.sin(phi) * Math.sin(theta);
+            var phi = Math.atan2(Math.sqrt(rx * rx + rz * rz), ry);
+            var theta = Math.atan2(rz, rx);
+            phi = Math.max(0.05, Math.min(Math.PI - 0.05, phi - dy * S));
+            rx = dist * Math.sin(phi) * Math.cos(theta);
+            ry = dist * Math.cos(phi);
+            rz = dist * Math.sin(phi) * Math.sin(theta);
 
-            /* Point camera toward origin using look-controls internals */
+            /* Write back to world position */
+            pos.x = rx + ox; pos.y = ry + oy; pos.z = rz + oz;
+
+            /* Sync hitchhiker offset so its tick() doesn't fight this drag */
+            if (hitch && hitch._locked) {
+              hitch._offset.set(rx, ry, rz);
+            }
+
+            /* Point camera toward orbit center (FIXED: -toO.z, not toO.z) */
             var camEl = document.querySelector("[look-controls]");
             if (!camEl) return;
-            var toO = new AFRAME.THREE.Vector3(
-              -pos.x,
-              -pos.y,
-              -pos.z,
-            ).normalize();
-            var yaw = Math.atan2(toO.x, toO.z);
+            var toO = new AFRAME.THREE.Vector3(-rx, -ry, -rz).normalize();
+            var yaw = Math.atan2(toO.x, -toO.z);
             var hz = Math.sqrt(toO.x * toO.x + toO.z * toO.z);
             var pitch = Math.atan2(toO.y, hz);
             var lc = camEl.components["look-controls"];
@@ -3162,6 +3174,118 @@
           document.removeEventListener("mousedown", this._onDown, true);
           document.removeEventListener("mouseup", this._onUp);
           document.removeEventListener("mousemove", this._onMove);
+        },
+      });
+
+      /* ── hitchhiker-mode — SPACE+LMB locks camera to clicked planet orbit ── */
+      AFRAME.registerComponent("hitchhiker-mode", {
+        init: function () {
+          var self = this;
+          this._locked = false;
+          this._targetObj = null;
+          this._offset = new AFRAME.THREE.Vector3();
+          this._worldPos = new AFRAME.THREE.Vector3();
+          this._spaceHeld = false;
+
+          this._onKeyDown = function (e) {
+            if (e.code !== "Space") return;
+            e.preventDefault();
+            if (self._locked) {
+              /* SPACE again = release the hitchhike lock */
+              self._locked = false;
+              self._targetObj = null;
+            } else {
+              self._spaceHeld = true;
+            }
+          };
+
+          this._onKeyUp = function (e) {
+            if (e.code === "Space") self._spaceHeld = false;
+          };
+
+          this._onClick = function (e) {
+            if (e.button !== 0 || !self._spaceHeld) return;
+            /* Intercept this click so look-controls doesn't activate */
+            e.stopPropagation();
+
+            var canvas = document.querySelector("canvas");
+            if (!canvas) return;
+            var rect = canvas.getBoundingClientRect();
+            var ndc = new AFRAME.THREE.Vector2(
+              ((e.clientX - rect.left) / rect.width) * 2 - 1,
+              -((e.clientY - rect.top) / rect.height) * 2 + 1,
+            );
+            var sceneEl = document.querySelector("a-scene");
+            var threeCamera = sceneEl && sceneEl.camera;
+            if (!threeCamera) return;
+
+            var raycaster = new AFRAME.THREE.Raycaster();
+            raycaster.setFromCamera(ndc, threeCamera);
+
+            var ssEl = document.getElementById("solar-system");
+            if (!ssEl) return;
+            var hits = raycaster.intersectObjects(ssEl.object3D.children, true);
+            if (hits.length === 0) return;
+
+            /* Walk up to a direct child of solar-system (planet group object) */
+            var hitMesh = hits[0].object;
+            var ssObj = ssEl.object3D;
+            var trackObj = hitMesh;
+            while (trackObj.parent && trackObj.parent !== ssObj) {
+              trackObj = trackObj.parent;
+            }
+
+            /* Compute world-space hit position and ideal viewing offset */
+            var hitWorld = new AFRAME.THREE.Vector3();
+            hitMesh.getWorldPosition(hitWorld);
+            var rig = document.getElementById("cameraRig");
+            if (!rig) return;
+            var dir = rig.object3D.position.clone().sub(hitWorld);
+            var d = dir.length();
+            /* Pull to comfortable viewing distance (~200 world units) */
+            if (d < 2) dir.set(0, 80, 200);
+            else if (d > 400) dir.normalize().multiplyScalar(200);
+            self._offset.copy(dir);
+
+            /* Teleport rig to viewing position near the planet */
+            rig.object3D.position.copy(hitWorld).add(self._offset);
+
+            /* Point camera at the planet */
+            var camEl = document.querySelector("[look-controls]");
+            if (camEl) {
+              var toTarget = hitWorld.clone().sub(rig.object3D.position).normalize();
+              var yaw = Math.atan2(toTarget.x, -toTarget.z);
+              var hz2 = Math.sqrt(toTarget.x * toTarget.x + toTarget.z * toTarget.z);
+              var pit = Math.atan2(toTarget.y, hz2);
+              var lc = camEl.components["look-controls"];
+              if (lc && lc.yawObject && lc.pitchObject) {
+                lc.yawObject.rotation.y = yaw;
+                lc.pitchObject.rotation.x = pit;
+              }
+            }
+
+            self._targetObj = trackObj;
+            self._locked = true;
+            self._spaceHeld = false;
+          };
+
+          document.addEventListener("keydown", this._onKeyDown);
+          document.addEventListener("keyup", this._onKeyUp);
+          document.addEventListener("mousedown", this._onClick, true);
+        },
+
+        tick: function () {
+          if (!this._locked || !this._targetObj) return;
+          var rig = document.getElementById("cameraRig");
+          if (!rig) return;
+          this._targetObj.getWorldPosition(this._worldPos);
+          rig.object3D.position.copy(this._worldPos).add(this._offset);
+        },
+
+        remove: function () {
+          document.removeEventListener("keydown", this._onKeyDown);
+          document.removeEventListener("keyup", this._onKeyUp);
+          document.removeEventListener("mousedown", this._onClick, true);
         },
       });
 
