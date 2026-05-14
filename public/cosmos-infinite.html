@@ -3050,8 +3050,8 @@
           var group = new THREE.Group();
 
           var ARMS = 6,
-            PER_ARM = 380,
-            CORE = 300;
+            PER_ARM = 700,
+            CORE = 600;
           var total = ARMS * PER_ARM + CORE;
           var positions = new Float32Array(total * 3);
           var colors = new Float32Array(total * 3);
@@ -3107,10 +3107,10 @@
           geo.setAttribute("color", new THREE.BufferAttribute(colors, 3));
 
           var mat = new THREE.PointsMaterial({
-            size: 0.35,
+            size: 0.58,
             vertexColors: true,
             transparent: true,
-            opacity: 0.84,
+            opacity: 0.92,
             blending: THREE.AdditiveBlending,
             depthWrite: false,
             sizeAttenuation: false,
@@ -4088,11 +4088,11 @@
           bgGeo.setAttribute("position", new THREE.BufferAttribute(bgP, 3));
           bgGeo.setAttribute("color", new THREE.BufferAttribute(bgC, 3));
           var bgMat = new THREE.PointsMaterial({
-            size: 1.8,
+            size: 0.35,
             map: this._makeMerkabaTex(),
             vertexColors: true,
             transparent: true,
-            opacity: 0.92,
+            opacity: 0.72,
             blending: THREE.AdditiveBlending,
             depthWrite: false,
             sizeAttenuation: false,
