@@ -533,20 +533,6 @@
         var ms = 0.22 + Math.sin(this.t * 4.5) * 0.06;
         this._marker.scale.setScalar(this.inProximity ? ms * 1.6 : ms);
       }
-
-      /* Child mesh emissive — subtle tint so texture colours show through */
-      if (this._childMeshes.length) {
-        var phiCol = freqToColor(this.data.frequency);
-        var phiEi = this.inProximity
-          ? 0.65 + Math.sin(this.t * 3.5) * 0.15
-          : 0.25 + Math.sin(this.t * 0.9) * 0.08;
-        for (var pi = 0; pi < this._childMeshes.length; pi++) {
-          var pm = this._childMeshes[pi];
-          if (!pm.material) continue;
-          if (pm.material.emissive) pm.material.emissive.setHex(phiCol);
-          pm.material.emissiveIntensity = phiEi;
-        }
-      }
     },
 
     /* ── otimes tick ───────────────────────────────────────────────────── */
@@ -676,21 +662,6 @@
           0.16 +
           Math.abs(Math.sin(this._wavePhase * 0.9)) *
             (this.inProximity ? 0.65 : 0.16);
-      }
-
-      /* Child mesh emissive — subtle tint so texture colours show through */
-      if (this._childMeshes.length) {
-        var ci = this.inProximity;
-        var ei = ci
-          ? 0.65 + Math.sin(this._wavePhase * 3.5) * 0.15
-          : 0.25 + Math.sin(this._wavePhase * 0.8) * 0.08;
-        var ec = freqToColor(this.data.frequency);
-        for (var i = 0; i < this._childMeshes.length; i++) {
-          var m = this._childMeshes[i];
-          if (!m.material || !m.material.emissive) continue;
-          m.material.emissive.setHex(ec);
-          m.material.emissiveIntensity = ei;
-        }
       }
     },
 
