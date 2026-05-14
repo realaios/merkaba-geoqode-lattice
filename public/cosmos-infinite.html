@@ -5510,10 +5510,10 @@
           }
         },
 
-        /* ── Constellation trail (visited nodes connected in order) ──── */
+        /* ── Constellation trail (disabled — removed per user request) ──── */
         _updateConstellation: function () {
-          var THREE = AFRAME.THREE;
           this.el.removeObject3D("constellation-trail");
+          return; /* trail lines removed */
           var vis;
           try {
             vis = JSON.parse(localStorage.getItem("cosmos-visited") || "{}");
@@ -5572,10 +5572,12 @@
           );
         },
 
-        /* ── Nearby systems HUD ──────────────────────────────────────── */
+        /* ── Nearby systems HUD (disabled — removed per user request) ── */
         _updateNearbyHUD: function () {
           var hud = document.getElementById("nearby-hud");
           if (!hud) return;
+          hud.style.display = "none";
+          return; /* nearby dots removed */
           var rig = document.getElementById("cameraRig");
           if (!rig || !rig.object3D) return;
           var cp = rig.object3D.position;
