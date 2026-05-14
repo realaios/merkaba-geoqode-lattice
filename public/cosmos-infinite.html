@@ -3523,11 +3523,13 @@
           this._t += delta * 0.001;
           var t = this._t;
           /* Multi-frequency shimmer: genuine diamond-sparkle feel */
-          this._sparkleMat.opacity = Math.max(0.15,
+          this._sparkleMat.opacity = Math.max(
+            0.15,
             0.5 +
-            Math.sin(t * 2.3) * 0.28 +
-            Math.sin(t * 7.1) * 0.12 +
-            Math.sin(t * 13.4) * 0.06);
+              Math.sin(t * 2.3) * 0.28 +
+              Math.sin(t * 7.1) * 0.12 +
+              Math.sin(t * 13.4) * 0.06,
+          );
           this._mat.opacity = 0.38 + Math.sin(t * 0.7) * 0.14;
           /* Slow drift rotation */
           this.el.object3D.rotation.y += this._rotSpd;
