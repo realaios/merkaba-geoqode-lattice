@@ -5108,7 +5108,7 @@
               var pos = rig.object3D.position;
               var dir = new AFRAME.THREE.Vector3(0, 0, -1);
               dir.applyQuaternion(rig.object3D.quaternion);
-              var step = e.deltaY * 0.18;
+              var step = e.deltaY * -0.18;
               pos.addScaledVector(dir, step);
               e.preventDefault();
             },
