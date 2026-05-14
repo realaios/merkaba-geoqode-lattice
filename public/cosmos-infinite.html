@@ -1403,7 +1403,8 @@
       background="color: #000000"
     >
       <!-- Lighting rig -->
-      <a-light type="ambient" color="#1a2535" intensity="0.85"></a-light>
+      <!-- Ambient kept low so planets have a genuine dark side; merkaba objects use emissive instead -->
+      <a-light type="ambient" color="#1a2535" intensity="0.22"></a-light>
       <a-light
         type="point"
         color="#00d4ff"
@@ -1647,11 +1648,12 @@
             radius="28"
             material="shader: flat; color: #FF4400; opacity: 0.025; transparent: true; side: back"
           ></a-sphere>
+          <!-- TRUE solar light source — no decay so all planets are correctly lit -->
           <a-light
             type="point"
-            color="#FFF0CC"
-            intensity="3.8"
-            distance="5000"
+            color="#FFF8E8"
+            intensity="6.0"
+            distance="8000"
             decay="1"
           ></a-light>
         </a-sphere>
@@ -2667,39 +2669,70 @@
 
           this.el.setObject3D("merkaba-core-group", group);
           this.t = 0;
+          /* proximity state (cached — no GC in tick) */
+          this._cam = null;
+          this._camPos = new THREE.Vector3();
+          this._myPos = new THREE.Vector3();
+          this._wasNear = false;
+          this._burstT = -999;
+          this._proximity = 0;
         },
 
         tick: function (time) {
           this.t = time * 0.001;
           var t = this.t;
+
+          /* ── Proximity detection (no alloc per frame) ────────────────────── */
+          if (!this._cam) this._cam = document.querySelector("a-camera");
+          if (this._cam) {
+            this._cam.object3D.getWorldPosition(this._camPos);
+            this.el.object3D.getWorldPosition(this._myPos);
+            var dist = this._camPos.distanceTo(this._myPos);
+            var near = dist < 20;
+            if (near && !this._wasNear)
+              this._burstT = t; /* activation burst! */
+            this._wasNear = near;
+            this._proximity = Math.max(0, 1 - dist / 24);
+          }
+          var px = this._proximity;
+          var burst = Math.max(0, 1 - (t - this._burstT) * 0.5); /* ~2 s fade */
+          var speedMult = 1 + px * PHI * 2.2 + burst * 6;
+          var glowMult = px * 5 + burst * 12;
+
           if (this.icoMesh) {
-            this.icoMesh.rotation.y = t * 0.26;
+            this.icoMesh.rotation.y = t * 0.26 * speedMult;
+            this.icoMesh.material.emissiveIntensity = 0.9 + glowMult * 0.8;
           }
           if (this.octMesh) {
-            this.octMesh.rotation.y = -t * 0.26 * PHI;
-            this.octMesh.rotation.x = t * 0.12;
+            this.octMesh.rotation.y = -t * 0.26 * PHI * speedMult;
+            this.octMesh.rotation.x = t * 0.12 * speedMult;
+            this.octMesh.material.emissiveIntensity = 1.5 + glowMult;
           }
           if (this.tknMesh) {
-            this.tknMesh.rotation.z = t * 0.2;
-            this.tknMesh.rotation.x = t * 0.08;
-            this.tknMesh.material.opacity = 0.68 + Math.sin(t * 3.1) * 0.18;
+            this.tknMesh.rotation.z = t * 0.2 * speedMult;
+            this.tknMesh.rotation.x = t * 0.08 * speedMult;
+            this.tknMesh.material.opacity =
+              0.68 + Math.sin(t * 3.1) * 0.18 + burst * 0.14;
             this.tknMesh.material.emissiveIntensity =
-              1.4 + Math.sin(t * 2.7 + 1.0) * 0.55;
+              1.4 + Math.sin(t * 2.7 + 1.0) * 0.55 + glowMult * 1.5;
           }
           if (this.tknWire) {
-            this.tknWire.rotation.z = -t * 0.15;
-            this.tknWire.rotation.x = -t * 0.12;
+            this.tknWire.rotation.z = -t * 0.15 * speedMult;
+            this.tknWire.rotation.x = -t * 0.12 * speedMult;
             this.tknWire.material.opacity =
-              0.14 + Math.sin(t * 4.2 + 0.5) * 0.12;
+              0.14 + Math.sin(t * 4.2 + 0.5) * 0.12 + burst * 0.7 + px * 0.5;
           }
           if (this.ringMesh) {
-            this.ringMesh.rotation.z = t * 0.32;
-            this.ringMesh.material.opacity = 0.38 + Math.sin(t * 2.2) * 0.18;
+            this.ringMesh.rotation.z = t * 0.32 * speedMult;
+            this.ringMesh.material.opacity =
+              0.38 + Math.sin(t * 2.2) * 0.18 + px * 0.5;
+            this.ringMesh.material.emissiveIntensity = 1.1 + glowMult * 0.9;
           }
           if (this.ring2Mesh) {
-            this.ring2Mesh.rotation.z = -t * 0.28;
+            this.ring2Mesh.rotation.z = -t * 0.28 * speedMult;
             this.ring2Mesh.material.opacity =
-              0.28 + Math.sin(t * 1.8 + 1) * 0.15;
+              0.28 + Math.sin(t * 1.8 + 1) * 0.15 + px * 0.4;
+            this.ring2Mesh.material.emissiveIntensity = 1.0 + glowMult * 0.8;
           }
         },
       });
@@ -2865,7 +2898,7 @@
             var mat = new THREE.MeshPhongMaterial({
               color: s.color,
               emissive: s.emissive,
-              emissiveIntensity: 0.8,
+              emissiveIntensity: 3.5,
               shininess: 100,
               transparent: true,
               opacity: 0.95,
@@ -2880,10 +2913,10 @@
                 new THREE.MeshPhongMaterial({
                   color: s.color,
                   emissive: s.color,
-                  emissiveIntensity: 0.35,
+                  emissiveIntensity: 1.5,
                   side: THREE.BackSide,
                   transparent: true,
-                  opacity: 0.1,
+                  opacity: 0.2,
                 }),
               ),
             );
@@ -2894,9 +2927,9 @@
               new THREE.MeshPhongMaterial({
                 color: s.color,
                 emissive: s.color,
-                emissiveIntensity: 0.9,
+                emissiveIntensity: 2.5,
                 transparent: true,
-                opacity: 0.58,
+                opacity: 0.75,
               }),
             );
             ring.rotation.x = Math.PI / 4 + i * 0.28;
@@ -2946,7 +2979,7 @@
               new THREE.MeshPhongMaterial({
                 color: sc.color,
                 emissive: sc.emissive,
-                emissiveIntensity: 0.85,
+                emissiveIntensity: 3.5,
                 shininess: 110,
                 transparent: true,
                 opacity: 0.9,
@@ -2961,10 +2994,10 @@
                 new THREE.MeshPhongMaterial({
                   color: sc.color,
                   emissive: sc.emissive,
-                  emissiveIntensity: 0.4,
+                  emissiveIntensity: 1.5,
                   side: THREE.BackSide,
                   transparent: true,
-                  opacity: 0.11,
+                  opacity: 0.2,
                 }),
               ),
             );
@@ -3015,7 +3048,7 @@
               new THREE.MeshPhongMaterial({
                 color: col,
                 emissive: em,
-                emissiveIntensity: 0.75,
+                emissiveIntensity: 3.0,
                 shininess: 90,
                 transparent: true,
                 opacity: 0.88,
@@ -3770,7 +3803,7 @@
           var hubMat = new THREE.MeshPhongMaterial({
             color: 0x8899bb,
             emissive: 0x223366,
-            emissiveIntensity: 0.6,
+            emissiveIntensity: 2.5,
             shininess: 200,
           });
           group.add(
@@ -3781,7 +3814,7 @@
           var capMat = new THREE.MeshPhongMaterial({
             color: 0x99aacc,
             emissive: 0x334477,
-            emissiveIntensity: 0.5,
+            emissiveIntensity: 2.0,
           });
           [-4.3, 4.3].forEach(function (y) {
             var cap = new THREE.Mesh(
@@ -3796,7 +3829,7 @@
           var armMat = new THREE.MeshPhongMaterial({
             color: 0x667799,
             emissive: 0x112244,
-            emissiveIntensity: 0.4,
+            emissiveIntensity: 1.8,
           });
           for (var a = 0; a < 4; a++) {
             var aAngle = (a / 4) * Math.PI * 2;
@@ -3814,7 +3847,7 @@
               new THREE.MeshPhongMaterial({
                 color: 0x1144aa,
                 emissive: 0x0033ff,
-                emissiveIntensity: 0.6,
+                emissiveIntensity: 2.5,
                 shininess: 220,
                 transparent: true,
                 opacity: 0.9,
@@ -5105,9 +5138,13 @@
             function (e) {
               var rig = document.getElementById("cameraRig");
               if (!rig) return;
+              var cam =
+                rig.querySelector("a-camera") ||
+                document.querySelector("a-camera");
+              if (!cam) return;
               var pos = rig.object3D.position;
-              var dir = new AFRAME.THREE.Vector3(0, 0, -1);
-              dir.applyQuaternion(rig.object3D.quaternion);
+              var dir = new AFRAME.THREE.Vector3();
+              cam.object3D.getWorldDirection(dir);
               var step = e.deltaY * -0.18;
               pos.addScaledVector(dir, step);
               e.preventDefault();
@@ -5876,10 +5913,11 @@
                   h * 0.5,
                   h * 0.62,
                 );
+                /* Keep edges warm-orange so back-face UV samples stay bright (no fake dark side) */
                 g.addColorStop(0, "#FFFDE8");
-                g.addColorStop(0.3, "#FFE860");
-                g.addColorStop(0.65, "#FF8800");
-                g.addColorStop(1, "#CC3300");
+                g.addColorStop(0.35, "#FFE840");
+                g.addColorStop(0.72, "#FFAA00");
+                g.addColorStop(1, "#FF7700");
                 c.fillStyle = g;
                 c.fillRect(0, 0, w, h);
                 /* granulation cells */
