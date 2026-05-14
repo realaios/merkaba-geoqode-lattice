@@ -1377,7 +1377,7 @@
     </div>
 
     <div id="controls-hint">
-      W/S Thrust &nbsp;&#x2022;&nbsp; A/D Strafe &nbsp;&#x2022;&nbsp; LMB Look
+      W/S Thrust &nbsp;&#x2022;&nbsp; A/D Look &nbsp;&#x2022;&nbsp; LMB Look
       &nbsp;&#x2022;&nbsp; RMB Pan &nbsp;&#x2022;&nbsp; Scroll Zoom
       &nbsp;&#x2022;&nbsp; Double-Click Teleport &nbsp;&#x2022;&nbsp; SPACE
       Hitchhiker
@@ -2060,7 +2060,7 @@
       <!-- Camera rig -->
       <a-entity id="cameraRig" position="0 0 0">
         <a-camera
-          wasd-controls="acceleration: 80000; fly: true"
+          wasd-controls="acceleration: 80000; fly: true; adEnabled: false"
           look-controls="pointerLockEnabled: false; touchEnabled: true"
           fov="70"
           far="2000000"
@@ -3224,6 +3224,28 @@
               Math.min(MAX_PITCH, lc.pitchObject.rotation.x),
             );
           });
+
+          /* ── A/D = look left / look right (yaw) ─────────────────────── */
+          var _adKeys = {};
+          var YAW_SPEED = 1.4; /* radians per second */
+          window.addEventListener("keydown", function (e) {
+            var k = e.key.toLowerCase();
+            if (k === "a" || k === "d") _adKeys[k] = true;
+          });
+          window.addEventListener("keyup", function (e) {
+            var k = e.key.toLowerCase();
+            if (k === "a" || k === "d") _adKeys[k] = false;
+          });
+          var _lastAD = performance.now();
+          function _adYawLoop() {
+            var now = performance.now();
+            var dt = Math.min((now - _lastAD) * 0.001, 0.05);
+            _lastAD = now;
+            if (_adKeys["a"]) lc.yawObject.rotation.y += YAW_SPEED * dt;
+            if (_adKeys["d"]) lc.yawObject.rotation.y -= YAW_SPEED * dt;
+            requestAnimationFrame(_adYawLoop);
+          }
+          requestAnimationFrame(_adYawLoop);
         }
         var _sc = document.querySelector("a-scene");
         if (_sc && _sc.hasLoaded) {
