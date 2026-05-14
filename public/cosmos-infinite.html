@@ -1500,7 +1500,7 @@
       <a-gltf-model
         src="/public/models/geodesic_dome.gltf"
         position="0 10 -110"
-        scale="3 3 3"
+        scale="0.6 0.6 0.6"
         animation="property: rotation; to: 0 360 0; dur: 18000; loop: true; easing: linear"
         geoanchor="operator: delta; frequency: 963; latticeNode: 12; proximityRadius: 18; label: GEODOME; swarmSync: true"
       ></a-gltf-model>
@@ -1566,7 +1566,7 @@
       <a-entity
         id="solar-system"
         position="0 -5 -50000"
-        scale="250 250 250"
+        scale="50 50 50"
         solar-system-realtime
       >
         <!-- ── ORBIT PATH RINGS (faint, flat on XZ plane) ───────────────── -->
@@ -1648,7 +1648,7 @@
             type="point"
             color="#FFF0CC"
             intensity="3.8"
-            distance="700"
+            distance="5000"
             decay="1"
           ></a-light>
         </a-sphere>
@@ -3136,10 +3136,10 @@
             if (!rig) return;
             var pos = rig.object3D.position;
 
-            /* Orbit center: planet world-pos when hitchhiker is locked, else origin */
-            var ox = 0,
-              oy = 0,
-              oz = 0;
+            /* Orbit center: planet world-pos when hitchhiker locked, else solar-system center */
+            var ox = 0, oy = -5, oz = -50000;
+            var ssEl2 = document.getElementById("solar-system");
+            if (ssEl2) { var _sc = new AFRAME.THREE.Vector3(); ssEl2.object3D.getWorldPosition(_sc); ox = _sc.x; oy = _sc.y; oz = _sc.z; }
             var hitch = self.el.components["hitchhiker-mode"];
             if (hitch && hitch._locked && hitch._targetObj) {
               var ctr = new AFRAME.THREE.Vector3();
