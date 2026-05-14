@@ -315,8 +315,7 @@
       .a-fullscreen #hud-left,
       .a-fullscreen #hud-right,
       .a-fullscreen #freq-legend,
-      .a-fullscreen #controls-hint,
-      .a-fullscreen #scale-indicator {
+      .a-fullscreen #controls-hint {
         display: none !important;
       }
       .a-enter-vr-button {
@@ -1512,7 +1511,7 @@
         <a-gltf-model
           src="/public/models/spaceship_bee.gltf"
           position="55 8 0"
-          rotation="0 90 0"
+          rotation="0 180 0"
           scale="2.5 2.5 2.5"
           geoanchor="operator: phi; frequency: 528; latticeNode: 6; proximityRadius: 8; label: BEE-SHIP; swarmSync: true"
         ></a-gltf-model>
@@ -1525,7 +1524,7 @@
         <a-gltf-model
           src="/public/models/spaceship_red_panda.gltf"
           position="0 -5 55"
-          rotation="0 90 0"
+          rotation="0 -90 0"
           scale="2.5 2.5 2.5"
           geoanchor="operator: wave; frequency: 639; latticeNode: 38; proximityRadius: 8; label: RED-PANDA; swarmSync: true"
         ></a-gltf-model>
@@ -3628,10 +3627,10 @@
             var normDelta =
               e.deltaMode === 1 ? rawDelta * 18 : rawDelta; /* line vs pixel */
             var speed = Math.max(0.4, dist * 0.12) * (normDelta / 100);
-            /* scroll down (deltaY > 0) = move forward; scroll up = move back */
+            /* scroll UP (deltaY < 0) = zoom in toward centre; DOWN = zoom out */
             rig.object3D.position.addScaledVector(
               fwd,
-              e.deltaY > 0 ? speed : -speed,
+              e.deltaY > 0 ? -speed : speed,
             );
             var newDist = rig.object3D.position.length();
             window._updateScaleHUD(newDist, null);
