@@ -6438,7 +6438,8 @@
         window.addEventListener(
           "mousedown",
           function (e) {
-            if (e.button === 1 || e.button === 2) {
+            if (e.button === 1) { e.preventDefault(); return; } /* MMB: kill autoscroll, do nothing */
+            if (e.button === 2) {
               e.preventDefault();
               panning = true;
               lastPX = e.clientX;
@@ -6450,7 +6451,7 @@
         window.addEventListener(
           "mouseup",
           function (e) {
-            if (e.button === 1 || e.button === 2) panning = false;
+            if (e.button === 2) panning = false;
           },
           { capture: true },
         );
