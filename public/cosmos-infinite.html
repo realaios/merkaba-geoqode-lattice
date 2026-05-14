@@ -2607,13 +2607,13 @@
 
           /* Core cluster */
           for (var c = 0; c < CORE; c++) {
-            var cr = Math.pow(Math.random(), 1.8) * 14;
+            var cr = Math.pow(Math.random(), 1.8) * 30;
             var cth = Math.random() * Math.PI * 2;
             var cphi = Math.acos(2 * Math.random() - 1);
             positions[idx * 3] = Math.sin(cphi) * Math.cos(cth) * cr;
-            positions[idx * 3 + 1] = Math.cos(cphi) * cr * 0.42;
+            positions[idx * 3 + 1] = Math.cos(cphi) * cr * 0.15;
             positions[idx * 3 + 2] = Math.sin(cphi) * Math.sin(cth) * cr;
-            var bright = 1 - cr / 14;
+            var bright = 1 - cr / 30;
             colors[idx * 3] = 0.96 * bright + 0.3 * (1 - bright);
             colors[idx * 3 + 1] = 0.8 * bright + 0.2 * (1 - bright);
             colors[idx * 3 + 2] = 0.18 * bright;
@@ -2634,12 +2634,12 @@
             var hp = armHuePairs[arm];
             for (var j = 0; j < PER_ARM; j++) {
               var t = j / PER_ARM;
-              var r = 12 + t * 80;
+              var r = 18 + t * 220;
               var ang = armOff + t * Math.PI * 4.8;
-              var sp = 4 + t * 18;
+              var sp = 5 + t * 30;
               positions[idx * 3] =
                 Math.cos(ang) * r + (Math.random() - 0.5) * sp;
-              positions[idx * 3 + 1] = (Math.random() - 0.5) * sp * 0.22;
+              positions[idx * 3 + 1] = (Math.random() - 0.5) * sp * 0.1;
               positions[idx * 3 + 2] =
                 Math.sin(ang) * r + (Math.random() - 0.5) * sp;
               var bri = 0.65 - t * 0.38 + Math.random() * 0.28;
