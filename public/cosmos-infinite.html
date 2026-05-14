@@ -2302,7 +2302,7 @@
           var mat1 = new THREE.LineBasicMaterial({
             color: 0x7c3aed,
             transparent: true,
-            opacity: 0.06,
+            opacity: 0.45,
           });
           d8pts.forEach(function (a) {
             var sorted = d26pts
@@ -2326,7 +2326,7 @@
           var mat2 = new THREE.LineBasicMaterial({
             color: 0x00d4ff,
             transparent: true,
-            opacity: 0.04,
+            opacity: 0.35,
           });
           d26pts.forEach(function (a, ai) {
             if (ai % 3 !== 0) return;
@@ -2350,7 +2350,7 @@
 
         tick: function (time) {
           this.t = time * 0.001;
-          var op = 0.1 + Math.sin(this.t * 0.85) * 0.09;
+          var op = 0.42 + Math.sin(this.t * 0.85) * 0.22;
           if (this.group) {
             this.group.children.forEach(function (c) {
               if (c.material) c.material.opacity = op;
@@ -3184,9 +3184,11 @@
               e.deltaMode === 1 ? rawDelta * 18 : rawDelta; /* line vs pixel */
             /* dist^1.5 × 0.00548 — smooth power curve: fine at close range,
                moderate through Nebula/Galaxy, fast at Universe edge.
-               (≈5 au/tick at D48, ≈11 au/tick at Nebula, ≈58 au/tick at Universe) */
+               (≈5 au/tick at D48, ≈11 au/tick at Nebula, ≈58 au/tick at Universe)
+               Within 20au floor raised to 1.0 so one scroll tick = ~1au. */
+            var _baseSp = Math.pow(dist, 1.5) * 0.00548;
             var speed =
-              Math.max(0.03, Math.pow(dist, 1.5) * 0.00548) * (normDelta / 100);
+              (dist < 20 ? Math.max(1.0, _baseSp) : Math.max(0.03, _baseSp)) * (normDelta / 100);
             /* scroll DOWN (deltaY > 0) = zoom in toward centre; UP = zoom out */
             rig.object3D.position.addScaledVector(
               fwd,
@@ -6438,7 +6440,10 @@
         window.addEventListener(
           "mousedown",
           function (e) {
-            if (e.button === 1) { e.preventDefault(); return; } /* MMB: kill autoscroll, do nothing */
+            if (e.button === 1) {
+              e.preventDefault();
+              return;
+            } /* MMB: kill autoscroll, do nothing */
             if (e.button === 2) {
               e.preventDefault();
               panning = true;
