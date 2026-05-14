@@ -3112,15 +3112,20 @@
 
             /* Rotate rig position around Y axis (horizontal drag) */
             var yAngle = -dx * S;
-            var cosY = Math.cos(yAngle), sinY = Math.sin(yAngle);
+            var cosY = Math.cos(yAngle),
+              sinY = Math.sin(yAngle);
             var nx = pos.x * cosY + pos.z * sinY;
             var nz = -pos.x * sinY + pos.z * cosY;
-            pos.x = nx; pos.z = nz;
+            pos.x = nx;
+            pos.z = nz;
 
             /* Rotate rig position in elevation (vertical drag) */
             var dist = Math.sqrt(pos.x * pos.x + pos.y * pos.y + pos.z * pos.z);
             if (dist < 0.001) return;
-            var phi = Math.atan2(Math.sqrt(pos.x * pos.x + pos.z * pos.z), pos.y);
+            var phi = Math.atan2(
+              Math.sqrt(pos.x * pos.x + pos.z * pos.z),
+              pos.y,
+            );
             var theta = Math.atan2(pos.z, pos.x);
             phi = Math.max(0.05, Math.min(Math.PI - 0.05, phi + dy * S));
             pos.x = dist * Math.sin(phi) * Math.cos(theta);
@@ -3130,7 +3135,11 @@
             /* Point camera toward origin using look-controls internals */
             var camEl = document.querySelector("[look-controls]");
             if (!camEl) return;
-            var toO = new AFRAME.THREE.Vector3(-pos.x, -pos.y, -pos.z).normalize();
+            var toO = new AFRAME.THREE.Vector3(
+              -pos.x,
+              -pos.y,
+              -pos.z,
+            ).normalize();
             var yaw = Math.atan2(toO.x, toO.z);
             var hz = Math.sqrt(toO.x * toO.x + toO.z * toO.z);
             var pitch = Math.atan2(toO.y, hz);
