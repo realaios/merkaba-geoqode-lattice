@@ -274,7 +274,10 @@
         font-family: monospace;
         pointer-events: none;
         z-index: 30;
-        transition: background 0.2s, border-color 0.2s, color 0.2s;
+        transition:
+          background 0.2s,
+          border-color 0.2s,
+          color 0.2s;
       }
       /* ── Sector Ticker ───────────────────────────────────────────────────── */
       #sector-ticker {
@@ -1376,9 +1379,10 @@
     </div>
 
     <div id="controls-hint">
-      WASD / Arrow Keys &nbsp;&#x2022;&nbsp; RMB Drag to Orbit &nbsp;&#x2022;&nbsp;
-      Scroll to Zoom &nbsp;&#x2022;&nbsp; Double-Click to Teleport
-      &nbsp;&#x2022;&nbsp; SPACE to arm Hitchhiker, click planet, SPACE to release
+      WASD / Arrow Keys &nbsp;&#x2022;&nbsp; RMB Drag to Orbit
+      &nbsp;&#x2022;&nbsp; Scroll to Zoom &nbsp;&#x2022;&nbsp; Double-Click to
+      Teleport &nbsp;&#x2022;&nbsp; SPACE to arm Hitchhiker, click planet, SPACE
+      to release
     </div>
     <div id="hitchhiker-badge"></div>
 
@@ -3221,7 +3225,10 @@
           function setBadge(text, locked) {
             var b = document.getElementById("hitchhiker-badge");
             if (!b) return;
-            if (!text) { b.style.display = "none"; return; }
+            if (!text) {
+              b.style.display = "none";
+              return;
+            }
             b.textContent = text;
             if (locked) {
               b.style.background = "rgba(0,255,128,0.22)";
@@ -3247,7 +3254,9 @@
             } else {
               /* Toggle arm state — no hold required */
               self._armed = !self._armed;
-              setBadge(self._armed ? "HITCHHIKER ARMED \u2014 click a planet" : "");
+              setBadge(
+                self._armed ? "HITCHHIKER ARMED \u2014 click a planet" : "",
+              );
             }
           };
 
@@ -3304,9 +3313,14 @@
             /* Point camera at the planet */
             var camEl = document.querySelector("[look-controls]");
             if (camEl) {
-              var toTarget = hitWorld.clone().sub(rig.object3D.position).normalize();
+              var toTarget = hitWorld
+                .clone()
+                .sub(rig.object3D.position)
+                .normalize();
               var yaw = Math.atan2(toTarget.x, -toTarget.z);
-              var hz2 = Math.sqrt(toTarget.x * toTarget.x + toTarget.z * toTarget.z);
+              var hz2 = Math.sqrt(
+                toTarget.x * toTarget.x + toTarget.z * toTarget.z,
+              );
               var pit = Math.atan2(toTarget.y, hz2);
               var lc = camEl.components["look-controls"];
               if (lc && lc.yawObject && lc.pitchObject) {
