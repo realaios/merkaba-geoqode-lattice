@@ -538,8 +538,8 @@
       if (this._childMeshes.length) {
         var phiCol = freqToColor(this.data.frequency);
         var phiEi = this.inProximity
-          ? 1.1 + Math.sin(this.t * 3.5) * 0.45
-          : 0.45 + Math.sin(this.t * 0.9) * 0.15;
+          ? 3.0 + Math.sin(this.t * 3.5) * 0.8
+          : 1.8 + Math.sin(this.t * 0.9) * 0.4;
         for (var pi = 0; pi < this._childMeshes.length; pi++) {
           var pm = this._childMeshes[pi];
           if (!pm.material) continue;
@@ -678,13 +678,14 @@
             (this.inProximity ? 0.65 : 0.16);
       }
 
-      /* Child mesh emissive — model glows at idle, surges on proximity */
+      /* Child mesh emissive — model glows at idle, surges on proximity
+         Uses this entity's OWN frequency colour (not the cycling shell colour) */
       if (this._childMeshes.length) {
         var ci = this.inProximity;
         var ei = ci
-          ? 0.7 + Math.sin(this._wavePhase * 3.5) * 0.55
-          : 0.4 + Math.sin(this._wavePhase * 0.8) * 0.12;
-        var ec = freqToColor(this._freqKeys[this._freqIdx]);
+          ? 2.8 + Math.sin(this._wavePhase * 3.5) * 0.7
+          : 1.5 + Math.sin(this._wavePhase * 0.8) * 0.4;
+        var ec = freqToColor(this.data.frequency);
         for (var i = 0; i < this._childMeshes.length; i++) {
           var m = this._childMeshes[i];
           if (!m.material || !m.material.emissive) continue;
