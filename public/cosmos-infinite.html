@@ -3188,7 +3188,7 @@
 
           this._onMove = function (e) {
             if (!self._active) return;
-            /* Prevent look-controls from fighting orbit yaw on RMB drag */
+            /* Prevent look-controls from fighting on RMB pan */
             var _lcEl = document.querySelector("[look-controls]");
             if (_lcEl && _lcEl.components["look-controls"]) {
               _lcEl.components["look-controls"].mouseDown = false;
@@ -3197,81 +3197,24 @@
             var dy = e.clientY - self._lastY;
             self._lastX = e.clientX;
             self._lastY = e.clientY;
+            if (dx === 0 && dy === 0) return;
 
             var rig = document.getElementById("cameraRig");
-            if (!rig) return;
-            var pos = rig.object3D.position;
-
-            /* Orbit center: planet world-pos when hitchhiker locked, else solar-system center */
-            var ox = 0,
-              oy = -5,
-              oz = -5000;
-            var ssEl2 = document.getElementById("solar-system");
-            if (ssEl2) {
-              var _sc = new AFRAME.THREE.Vector3();
-              ssEl2.object3D.getWorldPosition(_sc);
-              ox = _sc.x;
-              oy = _sc.y;
-              oz = _sc.z;
-            }
-            var hitch = self.el.components["hitchhiker-mode"];
-            if (hitch && hitch._locked && hitch._targetObj) {
-              var ctr = new AFRAME.THREE.Vector3();
-              hitch._targetObj.getWorldPosition(ctr);
-              ox = ctr.x;
-              oy = ctr.y;
-              oz = ctr.z;
-            }
-
-            /* Position relative to orbit center */
-            var rx = pos.x - ox,
-              ry = pos.y - oy,
-              rz = pos.z - oz;
-
-            /* Horizontal rotation around Y */
-            var yAngle = -dx * S;
-            var cosY = Math.cos(yAngle),
-              sinY = Math.sin(yAngle);
-            var nx = rx * cosY + rz * sinY;
-            var nz = -rx * sinY + rz * cosY;
-            rx = nx;
-            rz = nz;
-
-            /* Vertical rotation — drag DOWN = camera goes UP (natural orbit) */
-            var dist = Math.sqrt(rx * rx + ry * ry + rz * rz);
-            if (dist < 0.001) return;
-            var phi = Math.atan2(Math.sqrt(rx * rx + rz * rz), ry);
-            var theta = Math.atan2(rz, rx);
-            phi = Math.max(0.05, Math.min(Math.PI - 0.05, phi - dy * S));
-            rx = dist * Math.sin(phi) * Math.cos(theta);
-            ry = dist * Math.cos(phi);
-            rz = dist * Math.sin(phi) * Math.sin(theta);
-
-            /* Write back to world position */
-            pos.x = rx + ox;
-            pos.y = ry + oy;
-            pos.z = rz + oz;
-
-            /* Sync hitchhiker offset so its tick() doesn't fight this drag */
-            if (hitch && hitch._locked) {
-              hitch._offset.set(rx, ry, rz);
-            }
-
-            /* Point camera toward orbit center (FIXED: -toO.z, not toO.z) */
             var camEl = document.querySelector("[look-controls]");
-            if (!camEl) return;
-            var toO = new AFRAME.THREE.Vector3(-rx, -ry, -rz).normalize();
-            var yaw = Math.atan2(toO.x, -toO.z);
-            var hz = Math.sqrt(toO.x * toO.x + toO.z * toO.z);
-            var pitch = Math.atan2(toO.y, hz);
-            var lc = camEl.components["look-controls"];
-            if (lc && lc.yawObject && lc.pitchObject) {
-              lc.yawObject.rotation.y = yaw;
-              lc.pitchObject.rotation.x = pitch;
-            } else {
-              var eq = new AFRAME.THREE.Euler(pitch, yaw, 0, "YXZ");
-              camEl.object3D.quaternion.setFromEuler(eq);
-            }
+            if (!rig || !camEl) return;
+
+            /* Standard pan — translate rig in camera-space right/up axes */
+            var PAN_SPEED = 0.18;
+            var THREE = AFRAME.THREE;
+            var quat = new THREE.Quaternion();
+            camEl.object3D.getWorldQuaternion(quat);
+            var rightVec = new THREE.Vector3(1, 0, 0).applyQuaternion(quat);
+            var upVec    = new THREE.Vector3(0, 1, 0).applyQuaternion(quat);
+
+            /* Grab feel: drag right = scene moves right = rig moves left (-dx) */
+            /*            drag down  = scene moves down  = rig moves up  (+dy)  */
+            rig.object3D.position.addScaledVector(rightVec, -dx * PAN_SPEED);
+            rig.object3D.position.addScaledVector(upVec,     dy * PAN_SPEED);
           };
 
           document.addEventListener("mousedown", this._onDown, true);
@@ -3285,6 +3228,38 @@
           document.removeEventListener("mousemove", this._onMove);
         },
       });
+
+      /* ── invert-lmb-pitch — flips LMB drag up/down so up feels like up ─── */
+      (function () {
+        function _initPitchInvert() {
+          var camEl = document.querySelector("[look-controls]");
+          var lc = camEl && camEl.components["look-controls"];
+          if (!lc || !lc.pitchObject) {
+            setTimeout(_initPitchInvert, 250);
+            return;
+          }
+          /* This listener fires after look-controls' window listener (added first).
+             look-controls applied: pitchObject.x -= movementY * 0.002
+             We want:               pitchObject.x += movementY * 0.002
+             Net correction:                     += movementY * 0.004        */
+          var MAX_PITCH = Math.PI * 0.499;
+          window.addEventListener("mousemove", function (e) {
+            if (!lc.mouseDown) return;
+            var movementY = e.movementY || e.mozMovementY || 0;
+            lc.pitchObject.rotation.x += movementY * 0.004;
+            lc.pitchObject.rotation.x = Math.max(
+              -MAX_PITCH,
+              Math.min(MAX_PITCH, lc.pitchObject.rotation.x),
+            );
+          });
+        }
+        var _sc = document.querySelector("a-scene");
+        if (_sc && _sc.hasLoaded) {
+          _initPitchInvert();
+        } else if (_sc) {
+          _sc.addEventListener("loaded", _initPitchInvert, { once: true });
+        }
+      })();
 
       /* ── hitchhiker-mode — SPACE toggles arm; LMB click planet to lock ──── */
       AFRAME.registerComponent("hitchhiker-mode", {
