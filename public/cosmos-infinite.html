@@ -3566,37 +3566,77 @@
            ─────────────────────────────────────────────────────────────────── */
         var _PHI = 1.6180339887;
         var _PSI = 1.4142135624;
-        var _D480 = 480;   /* canonical D480 anchor — never change */
+        var _D480 = 480; /* canonical D480 anchor — never change */
 
         var SCALE_LEVELS = [
           /* 480/PHI^11 ≈ 2.41 au — Sub-Quantum inverse expansion seed */
-          { max: _D480 / Math.pow(_PHI, 11), label: "SUB-QUANTUM CORE",   color: "#ff6bff" },
+          {
+            max: _D480 / Math.pow(_PHI, 11),
+            label: "SUB-QUANTUM CORE",
+            color: "#ff6bff",
+          },
           /* 480/PHI^10 ≈ 3.90 au — Merkaba golden root origin */
-          { max: _D480 / Math.pow(_PHI, 10), label: "MERKABA CORE",        color: "#fbbf24" },
+          {
+            max: _D480 / Math.pow(_PHI, 10),
+            label: "MERKABA CORE",
+            color: "#fbbf24",
+          },
           /* 480/PHI^9  ≈ 6.32 au — Quantum Field */
-          { max: _D480 / Math.pow(_PHI,  9), label: "QUANTUM FIELD",       color: "#e879f9" },
+          {
+            max: _D480 / Math.pow(_PHI, 9),
+            label: "QUANTUM FIELD",
+            color: "#e879f9",
+          },
           /* 480/PHI^8  ≈ 10.22 au — Photon Shell */
-          { max: _D480 / Math.pow(_PHI,  8), label: "PHOTON SHELL",        color: "#60a5fa" },
+          {
+            max: _D480 / Math.pow(_PHI, 8),
+            label: "PHOTON SHELL",
+            color: "#60a5fa",
+          },
           /* 480/PHI^7  ≈ 16.53 au — D8 Foundation ring */
-          { max: _D480 / Math.pow(_PHI,  7), label: "D8 FOUNDATION",       color: "#f59e0b" },
+          {
+            max: _D480 / Math.pow(_PHI, 7),
+            label: "D8 FOUNDATION",
+            color: "#f59e0b",
+          },
           /* 480/PHI^6  ≈ 26.75 au — D26 Bosonic ring */
-          { max: _D480 / Math.pow(_PHI,  6), label: "D26 BOSONIC",         color: "#7c3aed" },
+          {
+            max: _D480 / Math.pow(_PHI, 6),
+            label: "D26 BOSONIC",
+            color: "#7c3aed",
+          },
           /* 480/PHI^5  ≈ 43.28 au — D48 Canonical lattice ring */
-          { max: _D480 / Math.pow(_PHI,  5), label: "D48 CANONICAL",       color: "#00d4ff" },
+          {
+            max: _D480 / Math.pow(_PHI, 5),
+            label: "D48 CANONICAL",
+            color: "#00d4ff",
+          },
           /* 480/PHI^4  ≈ 70.03 au — D480 Spectrum */
-          { max: _D480 / Math.pow(_PHI,  4), label: "D480 SPECTRUM",       color: "#7dd3fc" },
+          {
+            max: _D480 / Math.pow(_PHI, 4),
+            label: "D480 SPECTRUM",
+            color: "#7dd3fc",
+          },
           /* 480/PHI^3  ≈ 113.3 au — Nebula Field */
-          { max: _D480 / Math.pow(_PHI,  3), label: "NEBULA FIELD",        color: "#22c55e" },
+          {
+            max: _D480 / Math.pow(_PHI, 3),
+            label: "NEBULA FIELD",
+            color: "#22c55e",
+          },
           /* 480/PHI^2  ≈ 183.4 au — Galaxy (Silver Bridge: D48×PSI⁴) */
-          { max: _D480 / Math.pow(_PHI,  2), label: "GALAXY",              color: "#8b5cf6" },
+          { max: _D480 / Math.pow(_PHI, 2), label: "GALAXY", color: "#8b5cf6" },
           /* 480/PHI    ≈ 296.8 au — Outer Galaxy */
-          { max: _D480 / _PHI,               label: "OUTER GALAXY",        color: "#c084fc" },
+          { max: _D480 / _PHI, label: "OUTER GALAXY", color: "#c084fc" },
           /* 480 au     — D480 Universe (canonical architecture lock) */
-          { max: _D480,                      label: "D480 UNIVERSE",       color: "#e2e8f0" },
+          { max: _D480, label: "D480 UNIVERSE", color: "#e2e8f0" },
           /* 480×PHI   ≈ 776.6 au — Universe expansion (1.618 × D480) */
-          { max: _D480 * _PHI,               label: "UNIVERSE",            color: "#fde68a" },
+          { max: _D480 * _PHI, label: "UNIVERSE", color: "#fde68a" },
           /* 480×(PHI+PSI) ≈ 1454.6 au — Sub-Quantum Portal (GOLDEN_BAND boundary) */
-          { max: _D480 * (_PHI + _PSI),      label: "SUB-QUANTUM PORTAL",  color: "#ff6bff" },
+          {
+            max: _D480 * (_PHI + _PSI),
+            label: "SUB-QUANTUM PORTAL",
+            color: "#ff6bff",
+          },
         ];
 
         var _curLevelIdx = -1;
@@ -3604,7 +3644,10 @@
           /* First call: initialise without hysteresis */
           if (_curLevelIdx === -1) {
             for (var i = 0; i < SCALE_LEVELS.length; i++) {
-              if (dist <= SCALE_LEVELS[i].max) { _curLevelIdx = i; break; }
+              if (dist <= SCALE_LEVELS[i].max) {
+                _curLevelIdx = i;
+                break;
+              }
             }
             if (_curLevelIdx === -1) _curLevelIdx = SCALE_LEVELS.length - 1;
             return SCALE_LEVELS[_curLevelIdx];
@@ -3613,16 +3656,29 @@
              clamped 0.15–15 au.  Tiny near the Sub-Quantum Core (≈05 au),
              ~8-15 au through Galaxy and beyond — prevents all boundary flicker
              while auto-scaling with the PHI zone widths. */
-          var BAND = Math.max(0.15, Math.min(15, SCALE_LEVELS[_curLevelIdx].max * 0.05));
-          while (_curLevelIdx < SCALE_LEVELS.length - 1 &&
-                 dist > SCALE_LEVELS[_curLevelIdx].max + BAND) {
+          var BAND = Math.max(
+            0.15,
+            Math.min(15, SCALE_LEVELS[_curLevelIdx].max * 0.05),
+          );
+          while (
+            _curLevelIdx < SCALE_LEVELS.length - 1 &&
+            dist > SCALE_LEVELS[_curLevelIdx].max + BAND
+          ) {
             _curLevelIdx++;
-            BAND = Math.max(0.15, Math.min(15, SCALE_LEVELS[_curLevelIdx].max * 0.05));
+            BAND = Math.max(
+              0.15,
+              Math.min(15, SCALE_LEVELS[_curLevelIdx].max * 0.05),
+            );
           }
-          while (_curLevelIdx > 0 &&
-                 dist < SCALE_LEVELS[_curLevelIdx - 1].max - BAND) {
+          while (
+            _curLevelIdx > 0 &&
+            dist < SCALE_LEVELS[_curLevelIdx - 1].max - BAND
+          ) {
             _curLevelIdx--;
-            BAND = Math.max(0.15, Math.min(15, SCALE_LEVELS[_curLevelIdx].max * 0.05));
+            BAND = Math.max(
+              0.15,
+              Math.min(15, SCALE_LEVELS[_curLevelIdx].max * 0.05),
+            );
           }
           return SCALE_LEVELS[_curLevelIdx];
         }
