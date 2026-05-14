@@ -5099,18 +5099,18 @@
             }
           });
 
-          /* ── Scroll-to-zoom: mouse wheel adjusts camera FOV ───────────── */
-          var fov = 70;
+          /* ── Scroll-to-zoom: dolly camera (no FOV fisheye) ─────────────── */
+          /* FOV is locked at 70 — zoom = camera rig moves forward/back      */
           window.addEventListener(
             "wheel",
             function (e) {
-              fov = Math.max(28, Math.min(105, fov + e.deltaY * 0.045));
-              /* Update THREE.js camera directly for reliable FOV change */
-              var scEl = document.querySelector("a-scene");
-              if (scEl && scEl.camera) {
-                scEl.camera.fov = fov;
-                scEl.camera.updateProjectionMatrix();
-              }
+              var rig = document.getElementById("cameraRig");
+              if (!rig) return;
+              var pos = rig.object3D.position;
+              var dir = new AFRAME.THREE.Vector3(0, 0, -1);
+              dir.applyQuaternion(rig.object3D.quaternion);
+              var step = e.deltaY * 0.18;
+              pos.addScaledVector(dir, step);
               e.preventDefault();
             },
             { passive: false },
