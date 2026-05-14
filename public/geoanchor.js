@@ -406,29 +406,31 @@
 
       /* Outer wireframe shell — ripples */
       var shell = new THREE.Mesh(
-        new THREE.IcosahedronGeometry(4.8, 2),
+        new THREE.IcosahedronGeometry(9.0, 2),
         new THREE.MeshPhongMaterial({
-          color: col,
-          emissive: col,
-          emissiveIntensity: 0.4,
+          color: 0x00d4ff,
+          emissive: 0x00d4ff,
+          emissiveIntensity: 2.5,
           wireframe: true,
           transparent: true,
-          opacity: 0.07,
+          opacity: 0.72,
         }),
       );
       this._waveShell = shell;
       this._wavePhase = 0;
+      /* Cycle only neon blues and lime greens */
+      this._freqKeys = [528, 72, 639, 72, 528, 639, 528, 72];
       this.el.object3D.add(shell);
 
       /* Harmonic ring that pulses frequency */
       var hRing = new THREE.Mesh(
-        new THREE.TorusGeometry(3.8, 0.038, 8, 60),
+        new THREE.TorusGeometry(7.5, 0.07, 8, 60),
         new THREE.MeshPhongMaterial({
-          color: col,
-          emissive: col,
-          emissiveIntensity: 1.2,
+          color: 0x39ff14,
+          emissive: 0x39ff14,
+          emissiveIntensity: 2.8,
           transparent: true,
-          opacity: 0.22,
+          opacity: 0.82,
         }),
       );
       hRing.rotation.y = Math.PI / 4;
@@ -621,8 +623,8 @@
         Math.sin(this._wavePhase * 2.0) * (this.inProximity ? 0.16 : 0.055);
       this._waveShell.scale.setScalar(ws);
       this._waveShell.material.opacity =
-        0.05 +
-        Math.abs(Math.sin(this._wavePhase)) * (this.inProximity ? 0.16 : 0.055);
+        0.65 +
+        Math.abs(Math.sin(this._wavePhase)) * (this.inProximity ? 0.25 : 0.15);
       this._waveShell.rotation.y += dt * (this.inProximity ? 0.7 : 0.22);
       this._waveShell.rotation.x += dt * 0.14;
 
@@ -630,7 +632,7 @@
       if (this._hRing) {
         this._hRing.rotation.z += dt * (this.inProximity ? 1.4 : 0.45);
         this._hRing.material.opacity =
-          0.14 + Math.sin(this._wavePhase * 1.8) * 0.12;
+          0.72 + Math.sin(this._wavePhase * 1.8) * 0.2;
         this._hRing.material.emissiveIntensity = this.inProximity ? 2.2 : 1.2;
       }
 
