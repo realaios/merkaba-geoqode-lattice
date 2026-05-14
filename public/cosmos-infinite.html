@@ -3547,18 +3547,50 @@
           MAX_DIST = 16000;
         /* True Merkaba resonance: anchor D480=480, PHI-stepped zones.
            MERKABA CORE (0-183 au) = one inner zone -- everything is close. */
-        var _PHI  = 1.6180339887;
-        var _PSI  = 1.4142135624;
+        var _PHI = 1.6180339887;
+        var _PSI = 1.4142135624;
         var _D480 = 480;
         var SCALE_LEVELS = [
-          { max: _D480 / (_PHI * _PHI),                 label: "MERKABA CORE",   color: "#fbbf24" }, /* 0-183 au */
-          { max: _D480 / _PHI,                           label: "D8 FOUNDATION",  color: "#f59e0b" }, /* 183-297 au */
-          { max: _D480,                                  label: "D26 BOSONIC",    color: "#7c3aed" }, /* 297-480 au */
-          { max: _D480 * _PHI,                           label: "D48 CANONICAL",  color: "#00d4ff" }, /* 480-777 au */
-          { max: _D480 * _PHI * _PHI,                    label: "D480 SPECTRUM",  color: "#7dd3fc" }, /* 777-1257 au */
-          { max: _D480 * _PHI * _PHI * _PHI,             label: "GALAXY",         color: "#22c55e" }, /* 1257-2033 au */
-          { max: _D480 * Math.pow(_PHI, 4),              label: "OUTER GALAXY",   color: "#c084fc" }, /* 2033-3290 au */
-          { max: _D480 * Math.pow(_PHI, 5),              label: "UNIVERSE",       color: "#fde68a" }, /* 3290-5323 au */
+          {
+            max: _D480 / (_PHI * _PHI),
+            label: "MERKABA CORE",
+            color: "#fbbf24",
+          } /* 0-183 au */,
+          {
+            max: _D480 / _PHI,
+            label: "D8 FOUNDATION",
+            color: "#f59e0b",
+          } /* 183-297 au */,
+          {
+            max: _D480,
+            label: "D26 BOSONIC",
+            color: "#7c3aed",
+          } /* 297-480 au */,
+          {
+            max: _D480 * _PHI,
+            label: "D48 CANONICAL",
+            color: "#00d4ff",
+          } /* 480-777 au */,
+          {
+            max: _D480 * _PHI * _PHI,
+            label: "D480 SPECTRUM",
+            color: "#7dd3fc",
+          } /* 777-1257 au */,
+          {
+            max: _D480 * _PHI * _PHI * _PHI,
+            label: "GALAXY",
+            color: "#22c55e",
+          } /* 1257-2033 au */,
+          {
+            max: _D480 * Math.pow(_PHI, 4),
+            label: "OUTER GALAXY",
+            color: "#c084fc",
+          } /* 2033-3290 au */,
+          {
+            max: _D480 * Math.pow(_PHI, 5),
+            label: "UNIVERSE",
+            color: "#fde68a",
+          } /* 3290-5323 au */,
         ];
 
         var _curLevelIdx = -1;
@@ -3567,7 +3599,10 @@
           if (_curLevelIdx === -1) {
             if (!isFinite(dist)) return SCALE_LEVELS[0];
             for (var i = 0; i < SCALE_LEVELS.length; i++) {
-              if (dist <= SCALE_LEVELS[i].max) { _curLevelIdx = i; break; }
+              if (dist <= SCALE_LEVELS[i].max) {
+                _curLevelIdx = i;
+                break;
+              }
             }
             if (_curLevelIdx === -1) _curLevelIdx = SCALE_LEVELS.length - 1;
             return SCALE_LEVELS[_curLevelIdx];
@@ -3575,10 +3610,16 @@
           /* 5% of current distance -- proportional deadband, scales with PHI zones.
              ~9 au at inner boundary (183 au), ~24 au at D480 (480 au). No clamps. */
           var BAND = dist * 0.05;
-          while (_curLevelIdx < SCALE_LEVELS.length - 1 &&
-                 dist > SCALE_LEVELS[_curLevelIdx].max + BAND) _curLevelIdx++;
-          while (_curLevelIdx > 0 &&
-                 dist < SCALE_LEVELS[_curLevelIdx - 1].max - BAND) _curLevelIdx--;
+          while (
+            _curLevelIdx < SCALE_LEVELS.length - 1 &&
+            dist > SCALE_LEVELS[_curLevelIdx].max + BAND
+          )
+            _curLevelIdx++;
+          while (
+            _curLevelIdx > 0 &&
+            dist < SCALE_LEVELS[_curLevelIdx - 1].max - BAND
+          )
+            _curLevelIdx--;
           return SCALE_LEVELS[_curLevelIdx];
         }
 
@@ -3636,8 +3677,7 @@
                moderate through Nebula/Galaxy, fast at Universe edge.
                (≈5 au/tick at D48, ≈11 au/tick at Nebula, ≈58 au/tick at Universe) */
             var speed =
-              Math.max(0.03, Math.pow(dist, 1.5) * 0.00548) *
-              (normDelta / 100);
+              Math.max(0.03, Math.pow(dist, 1.5) * 0.00548) * (normDelta / 100);
             /* scroll DOWN (deltaY > 0) = zoom in toward centre; UP = zoom out */
             rig.object3D.position.addScaledVector(
               fwd,
