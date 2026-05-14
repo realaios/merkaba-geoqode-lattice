@@ -3619,10 +3619,10 @@
             var normDelta =
               e.deltaMode === 1 ? rawDelta * 18 : rawDelta; /* line vs pixel */
             var speed = Math.max(0.4, dist * 0.12) * (normDelta / 100);
-            /* scroll UP (deltaY < 0) = zoom in toward centre; DOWN = zoom out */
+            /* scroll DOWN (deltaY > 0) = zoom in toward centre; UP = zoom out */
             rig.object3D.position.addScaledVector(
               fwd,
-              e.deltaY > 0 ? -speed : speed,
+              e.deltaY > 0 ? speed : -speed,
             );
             var newDist = rig.object3D.position.length();
             window._updateScaleHUD(newDist, null);
