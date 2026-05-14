@@ -410,10 +410,10 @@
         new THREE.MeshPhongMaterial({
           color: 0x00d4ff,
           emissive: 0x00d4ff,
-          emissiveIntensity: 2.5,
+          emissiveIntensity: 0.5,
           wireframe: true,
           transparent: true,
-          opacity: 0.72,
+          opacity: 0.15,
         }),
       );
       this._waveShell = shell;
@@ -428,9 +428,9 @@
         new THREE.MeshPhongMaterial({
           color: 0x39ff14,
           emissive: 0x39ff14,
-          emissiveIntensity: 2.8,
+          emissiveIntensity: 0.7,
           transparent: true,
-          opacity: 0.82,
+          opacity: 0.22,
         }),
       );
       hRing.rotation.y = Math.PI / 4;
@@ -623,8 +623,10 @@
         Math.sin(this._wavePhase * 2.0) * (this.inProximity ? 0.16 : 0.055);
       this._waveShell.scale.setScalar(ws);
       this._waveShell.material.opacity =
-        0.65 +
-        Math.abs(Math.sin(this._wavePhase)) * (this.inProximity ? 0.25 : 0.15);
+        0.10 +
+        Math.abs(Math.sin(this._wavePhase)) * (this.inProximity ? 0.22 : 0.10);
+      this._waveShell.material.emissiveIntensity =
+        0.2 + Math.abs(Math.sin(this._wavePhase * 0.7)) * (this.inProximity ? 0.6 : 0.3);
       this._waveShell.rotation.y += dt * (this.inProximity ? 0.7 : 0.22);
       this._waveShell.rotation.x += dt * 0.14;
 
@@ -632,8 +634,9 @@
       if (this._hRing) {
         this._hRing.rotation.z += dt * (this.inProximity ? 1.4 : 0.45);
         this._hRing.material.opacity =
-          0.72 + Math.sin(this._wavePhase * 1.8) * 0.2;
-        this._hRing.material.emissiveIntensity = this.inProximity ? 2.2 : 1.2;
+          0.18 + Math.abs(Math.sin(this._wavePhase * 1.8)) * 0.15;
+        this._hRing.material.emissiveIntensity =
+          0.3 + Math.abs(Math.sin(this._wavePhase * 0.9)) * (this.inProximity ? 0.7 : 0.35);
       }
 
       /* Modulate child mesh emissive when in proximity */
