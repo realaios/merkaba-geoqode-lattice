@@ -683,7 +683,7 @@
         var ci = this.inProximity;
         var ei = ci
           ? 0.7 + Math.sin(this._wavePhase * 3.5) * 0.55
-          : 0.40 + Math.sin(this._wavePhase * 0.8) * 0.12;
+          : 0.4 + Math.sin(this._wavePhase * 0.8) * 0.12;
         var ec = freqToColor(this._freqKeys[this._freqIdx]);
         for (var i = 0; i < this._childMeshes.length; i++) {
           var m = this._childMeshes[i];
