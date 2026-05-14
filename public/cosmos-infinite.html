@@ -3611,14 +3611,14 @@
             camEl.object3D.getWorldDirection(fwd);
             var dist = rig.object3D.position.length();
             if (dist < 0.001) dist = 0.5;
-            /* Speed is purely proportional to distance so you can zoom smoothly
-               all the way into (and through) the lattice centre without hitting
-               a wall.  A large fixed floor caused overshoot + ping-pong.
-               Divide by 100 to normalise pixel-mode deltaY (typ. 100px/tick). */
+            /* Speed is quadratic (dist²×0.005) for close range (dist<24) — gives fine
+               control when inside the lattice.  At dist≥24 it smoothly transitions to
+               the same linear factor (dist×0.12) so mid/far/Universe speed is unchanged.
+               Floor at 0.03 prevents near-zero ping-pong. */
             var rawDelta = Math.abs(e.deltaY);
             var normDelta =
               e.deltaMode === 1 ? rawDelta * 18 : rawDelta; /* line vs pixel */
-            var speed = Math.max(0.4, dist * 0.12) * (normDelta / 100);
+            var speed = Math.max(0.03, dist * Math.min(0.12, dist * 0.005)) * (normDelta / 100);
             /* scroll DOWN (deltaY > 0) = zoom in toward centre; UP = zoom out */
             rig.object3D.position.addScaledVector(
               fwd,
