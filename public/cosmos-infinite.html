@@ -3209,12 +3209,12 @@
             var quat = new THREE.Quaternion();
             camEl.object3D.getWorldQuaternion(quat);
             var rightVec = new THREE.Vector3(1, 0, 0).applyQuaternion(quat);
-            var upVec    = new THREE.Vector3(0, 1, 0).applyQuaternion(quat);
+            var upVec = new THREE.Vector3(0, 1, 0).applyQuaternion(quat);
 
             /* Grab feel: drag right = scene moves right = rig moves left (-dx) */
             /*            drag down  = scene moves down  = rig moves up  (+dy)  */
             rig.object3D.position.addScaledVector(rightVec, -dx * PAN_SPEED);
-            rig.object3D.position.addScaledVector(upVec,     dy * PAN_SPEED);
+            rig.object3D.position.addScaledVector(upVec, dy * PAN_SPEED);
           };
 
           document.addEventListener("mousedown", this._onDown, true);
@@ -4663,22 +4663,20 @@
           return this.__merkabaTex;
         },
 
-        /* ── Nebulae: 60 large translucent gas clouds ──────────────────── */
+        /* ── Nebulae: 5 faint deep-space hints (barely visible) ─────────── */
         _spawnNebulae: function () {
           var THREE = AFRAME.THREE;
+          /* Near-neutral pale tints — no vivid colour in deep space */
           var NCOLS = [
-            [0.78, 0.18, 1.0],
-            [0.0, 0.95, 0.58],
-            [0.28, 0.92, 1.0],
-            [1.0, 0.78, 0.18],
-            [1.0, 0.32, 0.62],
-            [0.45, 0.75, 1.0],
-            [0.95, 0.52, 1.0],
-            [1.0, 1.0, 1.0],
+            [0.55, 0.58, 0.65],
+            [0.50, 0.52, 0.60],
+            [0.52, 0.55, 0.62],
+            [0.48, 0.50, 0.58],
+            [0.54, 0.56, 0.63],
           ];
           var group = new THREE.Group();
-          for (var n = 0; n < 60; n++) {
-            var col = NCOLS[(n * 3 + 5) % NCOLS.length];
+          for (var n = 0; n < 5; n++) {
+            var col = NCOLS[n % NCOLS.length];
             var c = document.createElement("canvas");
             c.width = c.height = 128;
             var ctx = c.getContext("2d");
@@ -4687,9 +4685,9 @@
               G = Math.round(col[1] * 255),
               B = Math.round(col[2] * 255);
             var grad = ctx.createRadialGradient(64, 64, 0, 64, 64, 64);
-            grad.addColorStop(0, "rgba(" + R + "," + G + "," + B + ",0.30)");
-            grad.addColorStop(0.3, "rgba(" + R + "," + G + "," + B + ",0.14)");
-            grad.addColorStop(0.65, "rgba(" + R + "," + G + "," + B + ",0.04)");
+            grad.addColorStop(0, "rgba(" + R + "," + G + "," + B + ",0.08)");
+            grad.addColorStop(0.4, "rgba(" + R + "," + G + "," + B + ",0.03)");
+            grad.addColorStop(0.75, "rgba(" + R + "," + G + "," + B + ",0.01)");
             grad.addColorStop(1, "rgba(0,0,0,0)");
             ctx.fillStyle = grad;
             ctx.fillRect(0, 0, 128, 128);
@@ -4697,17 +4695,17 @@
             var mat = new THREE.SpriteMaterial({
               map: tex,
               transparent: true,
-              opacity: 0.16 + Math.random() * 0.22,
+              opacity: 0.03 + Math.random() * 0.03,
               depthWrite: false,
               blending: THREE.AdditiveBlending,
             });
             var sprite = new THREE.Sprite(mat);
-            var sz = 380 + Math.random() * 720;
-            sprite.scale.set(sz, sz * (0.55 + Math.random() * 0.7), 1);
+            var sz = 1800 + Math.random() * 1400;
+            sprite.scale.set(sz, sz * (0.6 + Math.random() * 0.5), 1);
             sprite.position.set(
-              (Math.random() - 0.5) * 2600,
-              (Math.random() - 0.5) * 620,
-              (Math.random() - 0.5) * 2600,
+              (Math.random() - 0.5) * 5000,
+              (Math.random() - 0.5) * 800,
+              (Math.random() - 0.5) * 5000,
             );
             group.add(sprite);
           }
