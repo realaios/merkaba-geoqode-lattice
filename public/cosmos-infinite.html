@@ -3188,7 +3188,8 @@
                Within 20au floor raised to 1.0 so one scroll tick = ~1au. */
             var _baseSp = Math.pow(dist, 1.5) * 0.00548;
             var speed =
-              (dist < 20 ? Math.max(1.0, _baseSp) : Math.max(0.03, _baseSp)) * (normDelta / 100);
+              (dist < 20 ? Math.max(1.0, _baseSp) : Math.max(0.03, _baseSp)) *
+              (normDelta / 100);
             /* scroll DOWN (deltaY > 0) = zoom in toward centre; UP = zoom out */
             rig.object3D.position.addScaledVector(
               fwd,
