@@ -1371,6 +1371,7 @@
      A-FRAME SCENE
 ════════════════════════════════════════════════════════════════════════════ -->
     <a-scene
+      right-click-orbit
       vr-mode-ui="enabled: true"
       loading-screen="dotsColor: #00d4ff; backgroundColor: #000005"
       renderer="antialias: true; colorManagement: true"
@@ -1539,8 +1540,8 @@
       ════════════════════════════════════════════════════════════════════ -->
       <a-entity
         id="solar-system"
-        position="0 -5 -2000"
-        scale="10 10 10"
+        position="0 -5 -10000"
+        scale="50 50 50"
         solar-system-realtime
       >
         <!-- ── ORBIT PATH RINGS (faint, flat on XZ plane) ───────────────── -->
@@ -3072,6 +3073,89 @@
         },
       });
 
+      /* ── right-click-orbit — RMB drag orbits camera around scene center ── */
+      AFRAME.registerComponent("right-click-orbit", {
+        init: function () {
+          var self = this;
+          this._active = false;
+          this._lastX = 0;
+          this._lastY = 0;
+          var S = 0.003;
+
+          document.addEventListener("contextmenu", function (e) {
+            e.preventDefault();
+          });
+
+          this._onDown = function (e) {
+            if (e.button !== 2) return;
+            self._active = true;
+            self._lastX = e.clientX;
+            self._lastY = e.clientY;
+            e.preventDefault();
+            e.stopPropagation();
+          };
+
+          this._onUp = function (e) {
+            if (e.button === 2) self._active = false;
+          };
+
+          this._onMove = function (e) {
+            if (!self._active) return;
+            var dx = e.clientX - self._lastX;
+            var dy = e.clientY - self._lastY;
+            self._lastX = e.clientX;
+            self._lastY = e.clientY;
+
+            var rig = document.getElementById("cameraRig");
+            if (!rig) return;
+            var pos = rig.object3D.position;
+
+            /* Rotate rig position around Y axis (horizontal drag) */
+            var yAngle = -dx * S;
+            var cosY = Math.cos(yAngle), sinY = Math.sin(yAngle);
+            var nx = pos.x * cosY + pos.z * sinY;
+            var nz = -pos.x * sinY + pos.z * cosY;
+            pos.x = nx; pos.z = nz;
+
+            /* Rotate rig position in elevation (vertical drag) */
+            var dist = Math.sqrt(pos.x * pos.x + pos.y * pos.y + pos.z * pos.z);
+            if (dist < 0.001) return;
+            var phi = Math.atan2(Math.sqrt(pos.x * pos.x + pos.z * pos.z), pos.y);
+            var theta = Math.atan2(pos.z, pos.x);
+            phi = Math.max(0.05, Math.min(Math.PI - 0.05, phi + dy * S));
+            pos.x = dist * Math.sin(phi) * Math.cos(theta);
+            pos.y = dist * Math.cos(phi);
+            pos.z = dist * Math.sin(phi) * Math.sin(theta);
+
+            /* Point camera toward origin using look-controls internals */
+            var camEl = document.querySelector("[look-controls]");
+            if (!camEl) return;
+            var toO = new AFRAME.THREE.Vector3(-pos.x, -pos.y, -pos.z).normalize();
+            var yaw = Math.atan2(toO.x, toO.z);
+            var hz = Math.sqrt(toO.x * toO.x + toO.z * toO.z);
+            var pitch = Math.atan2(toO.y, hz);
+            var lc = camEl.components["look-controls"];
+            if (lc && lc.yawObject && lc.pitchObject) {
+              lc.yawObject.rotation.y = yaw;
+              lc.pitchObject.rotation.x = pitch;
+            } else {
+              var eq = new AFRAME.THREE.Euler(pitch, yaw, 0, "YXZ");
+              camEl.object3D.quaternion.setFromEuler(eq);
+            }
+          };
+
+          document.addEventListener("mousedown", this._onDown, true);
+          document.addEventListener("mouseup", this._onUp);
+          document.addEventListener("mousemove", this._onMove);
+        },
+
+        remove: function () {
+          document.removeEventListener("mousedown", this._onDown, true);
+          document.removeEventListener("mouseup", this._onUp);
+          document.removeEventListener("mousemove", this._onMove);
+        },
+      });
+
       /* ── starfield ───────────────────────────────────────────────────────── */
       AFRAME.registerComponent("starfield", {
         init: function () {
@@ -3103,7 +3187,7 @@
             new THREE.Points(
               geo,
               new THREE.PointsMaterial({
-                size: 0.42,
+                size: 0.22,
                 vertexColors: true,
                 transparent: true,
                 opacity: 0.88,
@@ -3635,7 +3719,7 @@
           bgGeo.setAttribute("position", new THREE.BufferAttribute(bgP, 3));
           bgGeo.setAttribute("color", new THREE.BufferAttribute(bgC, 3));
           var bgMat = new THREE.PointsMaterial({
-            size: 3.8,
+            size: 1.8,
             map: this._makeMerkabaTex(),
             vertexColors: true,
             transparent: true,
@@ -3806,7 +3890,7 @@
           gGeo.setAttribute("position", new THREE.BufferAttribute(gPos, 3));
           gGeo.setAttribute("color", new THREE.BufferAttribute(gCol, 3));
           var gMat = new THREE.PointsMaterial({
-            size: 3.2,
+            size: 1.8,
             vertexColors: true,
             transparent: true,
             opacity: 0.95,
@@ -5366,12 +5450,12 @@
       });
 
       /* ── solar-system-realtime — J2000 orbital mechanics + moon orbits ── */
-      /* EARTH_YEAR_MS = 60000 → 60 real seconds = 1 Earth year (time-warp)  */
+      /* EARTH_YEAR_MS = 600000 → 10 min real = 1 Earth year (10x slower time-warp) */
       /* Asteroid belt (320 rocks) procedurally placed at init               */
       AFRAME.registerComponent("solar-system-realtime", {
         init: function () {
           var J2000_MS = 946728000000;
-          var EARTH_YEAR_MS = 60000;
+          var EARTH_YEAR_MS = 600000;
           var dNow = (Date.now() - J2000_MS) / 86400000;
           this._startMs = Date.now();
           this._startDaysJ = dNow;
@@ -6307,7 +6391,7 @@
           if (earthEl) {
             earthEl.object3D.getWorldPosition(_hPos);
           } else {
-            _hPos.set(0, -5, -2000); // solar system centre fallback
+            _hPos.set(0, -5, -10000); // solar system centre fallback
           }
 
           // Player (rig) world position
