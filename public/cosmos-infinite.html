@@ -3619,8 +3619,12 @@
             camEl.object3D.getWorldDirection(fwd);
             var dist = rig.object3D.position.length();
             if (dist < 0.001) dist = 72;
-            /* Speed scales with distance so it feels natural at all scales */
-            var speed = Math.max(1.5, dist * 0.06);
+            /* Speed: proportional to distance but with a solid 12-unit floor
+               so scrolling near the origin never feels like hitting a wall.
+               Divide by 100 to normalise pixel-mode deltaY (typ. 100px/tick). */
+            var rawDelta = Math.abs(e.deltaY);
+            var normDelta = e.deltaMode === 1 ? rawDelta * 18 : rawDelta; /* line vs pixel */
+            var speed = Math.max(12, dist * 0.08) * (normDelta / 100);
             /* scroll down (deltaY > 0) = move forward; scroll up = move back */
             rig.object3D.position.addScaledVector(
               fwd,
