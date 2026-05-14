@@ -1377,10 +1377,9 @@
     </div>
 
     <div id="controls-hint">
-      WASD / Arrow Keys &nbsp;&#x2022;&nbsp; RMB Drag to Orbit
-      &nbsp;&#x2022;&nbsp; Scroll to Zoom &nbsp;&#x2022;&nbsp; Double-Click to
-      Teleport &nbsp;&#x2022;&nbsp; SPACE to arm Hitchhiker, click planet, SPACE
-      to release
+      W/S Thrust &nbsp;&#x2022;&nbsp; A/D Strafe &nbsp;&#x2022;&nbsp; LMB Look
+      &nbsp;&#x2022;&nbsp; RMB Pan &nbsp;&#x2022;&nbsp; Scroll Zoom
+      &nbsp;&#x2022;&nbsp; Double-Click Teleport &nbsp;&#x2022;&nbsp; SPACE Hitchhiker
     </div>
     <div id="hitchhiker-badge"></div>
 
@@ -2058,9 +2057,9 @@
       </a-entity>
 
       <!-- Camera rig -->
-      <a-entity id="cameraRig" position="0 5 72">
+      <a-entity id="cameraRig" position="0 0 0">
         <a-camera
-          wasd-controls="acceleration: 80000"
+          wasd-controls="acceleration: 80000; fly: true"
           look-controls="pointerLockEnabled: false; touchEnabled: true"
           fov="70"
           far="2000000"
@@ -3215,11 +3214,9 @@
           var MAX_PITCH = Math.PI * 0.499;
           window.addEventListener("mousemove", function (e) {
             if (!lc.mouseDown) return;
-            var movementX = e.movementX || e.mozMovementX || 0;
             var movementY = e.movementY || e.mozMovementY || 0;
-            /* reverse yaw: look-controls applied -movementX*0.002, add +0.004 → net +0.002 */
-            lc.yawObject.rotation.y += movementX * 0.004;
-            /* reverse pitch: look-controls applied -movementY*0.002, add +0.004 → net +0.002 */
+            /* yaw: use look-controls default (drag right = look right) — no correction needed */
+            /* fix pitch: look-controls applied -movementY*0.002, add +0.004 → net +0.002 = natural down=down */
             lc.pitchObject.rotation.x += movementY * 0.004;
             lc.pitchObject.rotation.x = Math.max(
               -MAX_PITCH,
