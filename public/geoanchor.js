@@ -286,6 +286,25 @@
       this.orbitRings = [r1, r2];
       this._marker = mk;
       this.overlays.push(r1, r2, mk, disc);
+
+      /* Gather child meshes so the GLTF model glows at idle */
+      var self = this;
+      var THREE = this.THREE;
+      this.el.object3D.traverse(function (o) {
+        if (o.isMesh && self.overlays.indexOf(o) === -1) {
+          if (o.material && !o.material._geoCloned) {
+            o.material = o.material.clone();
+            o.material._geoCloned = true;
+          }
+          if (o.material) {
+            o._origEmissive = o.material.emissive
+              ? o.material.emissive.clone()
+              : new THREE.Color(0);
+            o._origEmissiveIntensity = o.material.emissiveIntensity || 0;
+            self._childMeshes.push(o);
+          }
+        }
+      });
     },
 
     /* ────────────────────────────────────────────────────────────────────
@@ -514,6 +533,20 @@
         var ms = 0.22 + Math.sin(this.t * 4.5) * 0.06;
         this._marker.scale.setScalar(this.inProximity ? ms * 1.6 : ms);
       }
+
+      /* Child mesh emissive — GLTF model glows at all times, brightens on approach */
+      if (this._childMeshes.length) {
+        var phiCol = freqToColor(this.data.frequency);
+        var phiEi = this.inProximity
+          ? 1.1 + Math.sin(this.t * 3.5) * 0.45
+          : 0.45 + Math.sin(this.t * 0.9) * 0.15;
+        for (var pi = 0; pi < this._childMeshes.length; pi++) {
+          var pm = this._childMeshes[pi];
+          if (!pm.material) continue;
+          if (pm.material.emissive) pm.material.emissive.setHex(phiCol);
+          pm.material.emissiveIntensity = phiEi;
+        }
+      }
     },
 
     /* ── otimes tick ───────────────────────────────────────────────────── */
@@ -645,21 +678,18 @@
             (this.inProximity ? 0.65 : 0.16);
       }
 
-      /* Modulate child mesh emissive when in proximity */
+      /* Child mesh emissive — model glows at idle, surges on proximity */
       if (this._childMeshes.length) {
         var ci = this.inProximity;
-        var ei = ci ? 0.7 + Math.sin(this._wavePhase * 3.5) * 0.55 : 0;
-        var ec = ci ? freqToColor(this._freqKeys[this._freqIdx]) : null;
+        var ei = ci
+          ? 0.7 + Math.sin(this._wavePhase * 3.5) * 0.55
+          : 0.40 + Math.sin(this._wavePhase * 0.8) * 0.12;
+        var ec = freqToColor(this._freqKeys[this._freqIdx]);
         for (var i = 0; i < this._childMeshes.length; i++) {
           var m = this._childMeshes[i];
           if (!m.material || !m.material.emissive) continue;
-          if (ci && ec !== null) {
-            m.material.emissive.setHex(ec);
-            m.material.emissiveIntensity = ei;
-          } else if (!ci) {
-            m.material.emissive.copy(m._origEmissive);
-            m.material.emissiveIntensity = m._origEmissiveIntensity;
-          }
+          m.material.emissive.setHex(ec);
+          m.material.emissiveIntensity = ei;
         }
       }
     },
