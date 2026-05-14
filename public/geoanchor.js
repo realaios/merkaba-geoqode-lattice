@@ -636,7 +636,9 @@
       if (this._hRing) {
         this._hRing.rotation.z += dt * (this.inProximity ? 1.4 : 0.45);
         this._hRing.material.opacity =
-          0.03 + Math.abs(Math.sin(this._wavePhase * 1.8)) * (this.inProximity ? 0.15 : 0.03);
+          0.03 +
+          Math.abs(Math.sin(this._wavePhase * 1.8)) *
+            (this.inProximity ? 0.15 : 0.03);
         this._hRing.material.emissiveIntensity =
           0.06 +
           Math.abs(Math.sin(this._wavePhase * 0.9)) *
