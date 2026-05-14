@@ -2906,20 +2906,7 @@
             var mesh = new THREE.Mesh(geoFns[i](), mat);
             ng.add(mesh);
 
-            /* Glow aura — BackSide */
-            ng.add(
-              new THREE.Mesh(
-                new THREE.SphereGeometry(4.6, 14, 14),
-                new THREE.MeshPhongMaterial({
-                  color: s.color,
-                  emissive: s.color,
-                  emissiveIntensity: 1.5,
-                  side: THREE.BackSide,
-                  transparent: true,
-                  opacity: 0.2,
-                }),
-              ),
-            );
+
 
             /* Orbital ring */
             var ring = new THREE.Mesh(
@@ -2986,21 +2973,6 @@
               }),
             );
             ng.add(mesh);
-
-            /* Glow aura */
-            ng.add(
-              new THREE.Mesh(
-                new THREE.SphereGeometry(2.2, 10, 10),
-                new THREE.MeshPhongMaterial({
-                  color: sc.color,
-                  emissive: sc.emissive,
-                  emissiveIntensity: 1.5,
-                  side: THREE.BackSide,
-                  transparent: true,
-                  opacity: 0.2,
-                }),
-              ),
-            );
 
             group.add(ng);
             self.meshes.push({
