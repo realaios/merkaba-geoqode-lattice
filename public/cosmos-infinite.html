@@ -1403,7 +1403,7 @@
       background="color: #000000"
     >
       <!-- Lighting rig -->
-      <a-light type="ambient" color="#04080f" intensity="0.5"></a-light>
+      <a-light type="ambient" color="#1a2535" intensity="0.85"></a-light>
       <a-light
         type="point"
         color="#00d4ff"
@@ -3152,6 +3152,11 @@
 
           this._onMove = function (e) {
             if (!self._active) return;
+            /* Prevent look-controls from fighting orbit yaw on RMB drag */
+            var _lcEl = document.querySelector("[look-controls]");
+            if (_lcEl && _lcEl.components["look-controls"]) {
+              _lcEl.components["look-controls"].mouseDown = false;
+            }
             var dx = e.clientX - self._lastX;
             var dy = e.clientY - self._lastY;
             self._lastX = e.clientX;
@@ -3164,7 +3169,7 @@
             /* Orbit center: planet world-pos when hitchhiker locked, else solar-system center */
             var ox = 0,
               oy = -5,
-              oz = -50000;
+              oz = -5000;
             var ssEl2 = document.getElementById("solar-system");
             if (ssEl2) {
               var _sc = new AFRAME.THREE.Vector3();
@@ -3466,13 +3471,13 @@
           geo.setAttribute("position", new THREE.BufferAttribute(pos, 3));
           geo.setAttribute("color", new THREE.BufferAttribute(col, 3));
           this._mat = new THREE.PointsMaterial({
-            size: 2.8,
+            size: 1.4,
             vertexColors: true,
             transparent: true,
-            opacity: 0.5,
+            opacity: 0.42,
             blending: THREE.AdditiveBlending,
             depthWrite: false,
-            sizeAttenuation: true,
+            sizeAttenuation: false,
           });
           this.el.setObject3D("nebula", new THREE.Points(geo, this._mat));
 
@@ -3494,13 +3499,13 @@
           sGeo.setAttribute("position", new THREE.BufferAttribute(sPos, 3));
           sGeo.setAttribute("color", new THREE.BufferAttribute(sCol, 3));
           this._sparkleMat = new THREE.PointsMaterial({
-            size: 1.2,
+            size: 0.8,
             vertexColors: true,
             transparent: true,
             opacity: 0.9,
             blending: THREE.AdditiveBlending,
             depthWrite: false,
-            sizeAttenuation: true,
+            sizeAttenuation: false,
           });
           this.el.setObject3D(
             "sparkle",
