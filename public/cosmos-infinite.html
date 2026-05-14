@@ -3137,9 +3137,17 @@
             var pos = rig.object3D.position;
 
             /* Orbit center: planet world-pos when hitchhiker locked, else solar-system center */
-            var ox = 0, oy = -5, oz = -50000;
+            var ox = 0,
+              oy = -5,
+              oz = -50000;
             var ssEl2 = document.getElementById("solar-system");
-            if (ssEl2) { var _sc = new AFRAME.THREE.Vector3(); ssEl2.object3D.getWorldPosition(_sc); ox = _sc.x; oy = _sc.y; oz = _sc.z; }
+            if (ssEl2) {
+              var _sc = new AFRAME.THREE.Vector3();
+              ssEl2.object3D.getWorldPosition(_sc);
+              ox = _sc.x;
+              oy = _sc.y;
+              oz = _sc.z;
+            }
             var hitch = self.el.components["hitchhiker-mode"];
             if (hitch && hitch._locked && hitch._targetObj) {
               var ctr = new AFRAME.THREE.Vector3();
