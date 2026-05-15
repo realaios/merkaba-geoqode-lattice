@@ -2937,6 +2937,10 @@
       <a-entity aurora-world></a-entity>
       <!-- ── TIDAL DISRUPTION EVENT — star being shredded by hidden black hole ── -->
       <a-entity tidal-disruption></a-entity>
+      <!-- ── GALAXY MERGER — two galaxies colliding, tidal tails erupting ── -->
+      <a-entity galaxy-merger></a-entity>
+      <!-- ── COSMIC WEB FILAMENT — large-scale structure filament network ── -->
+      <a-entity cosmic-web-filament></a-entity>
 
       <!-- NEBULA CLOUD REMOVED — zero haze, clean black space -->
 
@@ -6896,6 +6900,193 @@
             this._tdPos[ti*3+2] = r * Math.sin(angle);
           }
           this._tdPosAttr.needsUpdate = true;
+        },
+      });
+
+      /* ==================================================================
+         GALAXY MERGER — two spiral galaxies in collision.
+         Position: (-200, -600, -300).
+         Galaxy A: 900 stars (blue-white spiral). Galaxy B: 700 stars (gold).
+         Collision phase: 16s cycle. Tidal tails erupt at midpoint.
+         Both galaxy cores orbit the common barycentre at r=60.
+         400-particle tidal tail streams thrown outward during merger.
+         @alignment 8→26→48:480  @frequency 963  @domain systems-design
+      ================================================================== */
+      AFRAME.registerComponent("galaxy-merger", {
+        init: function () {
+          var THREE = AFRAME.THREE;
+          var scene = this.el.sceneEl.object3D;
+          var PI = Math.PI;
+          this._gmRoot = new THREE.Group();
+          this._gmRoot.position.set(-200, -600, -300);
+          scene.add(this._gmRoot);
+
+          /* build a spiral galaxy with N stars */
+          var buildGalaxy = function(N, colorStart, colorEnd) {
+            var pos = new Float32Array(N * 3);
+            var col = new Float32Array(N * 3);
+            for (var gi = 0; gi < N; gi++) {
+              var arm = Math.floor(Math.random() * 3);
+              var r   = 8 + Math.random() * 120;
+              var ang = arm * PI * 0.667 + r * 0.04 + (Math.random() - 0.5) * 0.5;
+              pos[gi*3  ] = r * Math.cos(ang);
+              pos[gi*3+1] = (Math.random() - 0.5) * 10;
+              pos[gi*3+2] = r * Math.sin(ang);
+              var mix = r / 120;
+              col[gi*3  ] = colorStart[0] + (colorEnd[0] - colorStart[0]) * mix;
+              col[gi*3+1] = colorStart[1] + (colorEnd[1] - colorStart[1]) * mix;
+              col[gi*3+2] = colorStart[2] + (colorEnd[2] - colorStart[2]) * mix;
+            }
+            var geo = new THREE.BufferGeometry();
+            geo.setAttribute("position", new THREE.BufferAttribute(pos, 3));
+            geo.setAttribute("color", new THREE.BufferAttribute(col, 3));
+            return new THREE.Points(geo, new THREE.PointsMaterial({ size: 1.8, vertexColors: true, blending: THREE.AdditiveBlending, depthWrite: false, transparent: true, opacity: 0.9 }));
+          };
+
+          /* Galaxy A: blue-white */
+          this._gA = buildGalaxy(900, [0.5, 0.7, 1.0], [0.9, 0.9, 1.0]);
+          this._gAGroup = new THREE.Group();
+          this._gAGroup.add(this._gA);
+          this._gAGroup.add(new THREE.Mesh(
+            new THREE.SphereGeometry(6, 8, 6),
+            new THREE.MeshBasicMaterial({ color: 0x8888ff })
+          ));
+          this._gmRoot.add(this._gAGroup);
+
+          /* Galaxy B: gold-orange */
+          this._gB = buildGalaxy(700, [1.0, 0.7, 0.2], [1.0, 0.5, 0.1]);
+          this._gBGroup = new THREE.Group();
+          this._gBGroup.add(this._gB);
+          this._gBGroup.add(new THREE.Mesh(
+            new THREE.SphereGeometry(5, 8, 6),
+            new THREE.MeshBasicMaterial({ color: 0xffaa44 })
+          ));
+          this._gBGroup.rotation.z = 0.6;
+          this._gmRoot.add(this._gBGroup);
+
+          /* tidal tail particles */
+          var TN = 400;
+          this._ttN   = TN;
+          this._ttPos = new Float32Array(TN * 3);
+          for (var ti = 0; ti < TN; ti++) {
+            this._ttPos[ti*3  ] = (Math.random() - 0.5) * 10;
+            this._ttPos[ti*3+1] = (Math.random() - 0.5) * 10;
+            this._ttPos[ti*3+2] = (Math.random() - 0.5) * 10;
+          }
+          this._ttBaseAng = new Float32Array(TN);
+          this._ttBaseR   = new Float32Array(TN);
+          for (var ti = 0; ti < TN; ti++) {
+            this._ttBaseAng[ti] = Math.random() * PI * 2;
+            this._ttBaseR[ti]   = 120 + Math.random() * 80;
+          }
+          var ttGeo = new THREE.BufferGeometry();
+          this._ttPosAttr = new THREE.BufferAttribute(this._ttPos, 3);
+          ttGeo.setAttribute("position", this._ttPosAttr);
+          this._ttMat = new THREE.PointsMaterial({ color: 0xffcc88, size: 1.5, blending: THREE.AdditiveBlending, depthWrite: false, transparent: true, opacity: 0 });
+          this._gmRoot.add(new THREE.Points(ttGeo, this._ttMat));
+          this._gmTime = 0;
+          this._CYCLE  = 16;
+        },
+        tick: function (time, delta) {
+          var dt = Math.min(delta, 200) * 0.001;
+          this._gmTime += dt;
+          var t2 = this._gmTime;
+          var phase = (t2 % this._CYCLE) / this._CYCLE;  /* 0..1 */
+
+          /* orbital separation: 0 = merged, 1 = apart */
+          var sep = 60 + 60 * Math.cos(phase * Math.PI * 2);
+          var orbA =  phase * Math.PI * 2;
+          var orbB =  orbA + Math.PI;
+          this._gAGroup.position.set(sep * Math.cos(orbA), 0, sep * Math.sin(orbA));
+          this._gBGroup.position.set(sep * Math.cos(orbB), 0, sep * Math.sin(orbB));
+
+          /* spin each galaxy disk */
+          this._gA.rotation.y += 0.06 * dt;
+          this._gB.rotation.y -= 0.04 * dt;
+
+          /* tidal tails: peak at merger (phase ~0.5) */
+          var tail = Math.max(0, 1 - Math.abs(phase - 0.5) * 6);
+          this._ttMat.opacity = tail * 0.7;
+          if (tail > 0.01) {
+            for (var ti = 0; ti < this._ttN; ti++) {
+              var ang = this._ttBaseAng[ti] + t2 * 0.4;
+              var r   = this._ttBaseR[ti] * (0.6 + tail * 0.8);
+              this._ttPos[ti*3  ] = r * Math.cos(ang);
+              this._ttPos[ti*3+1] = 20 * (Math.random() - 0.5) * tail;
+              this._ttPos[ti*3+2] = r * Math.sin(ang);
+            }
+            this._ttPosAttr.needsUpdate = true;
+          }
+          this._gmRoot.rotation.y += 0.005 * dt;
+        },
+      });
+
+      /* ==================================================================
+         COSMIC WEB FILAMENT — large-scale structure filament network.
+         Position: distributed around (0, 0, 0) at large scales (r > 700).
+         120 filament nodes placed on sphere r=900−1400.
+         220 filament edges connecting nearest neighbours (<= 400 units).
+         Faint blue-white lines, pulsating opacity.
+         @alignment 8→26→48:480  @frequency 396  @domain data-structs
+      ================================================================== */
+      AFRAME.registerComponent("cosmic-web-filament", {
+        init: function () {
+          var THREE = AFRAME.THREE;
+          var scene = this.el.sceneEl.object3D;
+          var PI = Math.PI;
+          var NN = 120;  /* nodes */
+          var nodePos = [];
+          for (var ni = 0; ni < NN; ni++) {
+            var r   = 900 + Math.random() * 500;
+            var th  = Math.random() * PI * 2;
+            var ph  = Math.acos(2 * Math.random() - 1);
+            nodePos.push({
+              x: r * Math.sin(ph) * Math.cos(th),
+              y: r * Math.cos(ph),
+              z: r * Math.sin(ph) * Math.sin(th)
+            });
+          }
+
+          /* build edges for nearest-neighbour pairs */
+          var edgeVerts = [];
+          var CONNECT_DIST = 450;
+          for (var i = 0; i < NN; i++) {
+            var count = 0;
+            for (var j = i+1; j < NN && count < 4; j++) {
+              var dx = nodePos[i].x - nodePos[j].x;
+              var dy = nodePos[i].y - nodePos[j].y;
+              var dz = nodePos[i].z - nodePos[j].z;
+              if (Math.sqrt(dx*dx+dy*dy+dz*dz) < CONNECT_DIST) {
+                edgeVerts.push(nodePos[i].x, nodePos[i].y, nodePos[i].z);
+                edgeVerts.push(nodePos[j].x, nodePos[j].y, nodePos[j].z);
+                count++;
+              }
+            }
+          }
+          var eArr = new Float32Array(edgeVerts);
+          var eGeo = new THREE.BufferGeometry();
+          eGeo.setAttribute("position", new THREE.BufferAttribute(eArr, 3));
+          this._webMat = new THREE.LineBasicMaterial({ color: 0xaaccff, blending: THREE.AdditiveBlending, depthWrite: false, transparent: true, opacity: 0.08 });
+          scene.add(new THREE.LineSegments(eGeo, this._webMat));
+
+          /* node glow dots */
+          var nArr = new Float32Array(NN * 3);
+          for (var ni = 0; ni < NN; ni++) {
+            nArr[ni*3  ] = nodePos[ni].x;
+            nArr[ni*3+1] = nodePos[ni].y;
+            nArr[ni*3+2] = nodePos[ni].z;
+          }
+          var nGeo = new THREE.BufferGeometry();
+          nGeo.setAttribute("position", new THREE.BufferAttribute(nArr, 3));
+          this._nodeMat = new THREE.PointsMaterial({ color: 0xeeddff, size: 8, blending: THREE.AdditiveBlending, depthWrite: false, transparent: true, opacity: 0.18 });
+          scene.add(new THREE.Points(nGeo, this._nodeMat));
+          this._cwfTime = 0;
+        },
+        tick: function (time, delta) {
+          var dt = Math.min(delta, 200) * 0.001;
+          this._cwfTime += dt;
+          this._webMat.opacity  = 0.05 + 0.04 * Math.sin(this._cwfTime * 0.18);
+          this._nodeMat.opacity = 0.12 + 0.10 * Math.sin(this._cwfTime * 0.22 + 1.2);
         },
       });
 
