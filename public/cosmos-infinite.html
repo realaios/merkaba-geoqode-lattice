@@ -2899,6 +2899,8 @@
       <a-entity cosmic-pulsar></a-entity>
       <!-- ── BLACK HOLE — event horizon + accretion disk + lensing ring ── -->
       <a-entity cosmic-blackhole></a-entity>
+      <!-- ── SUPERNOVA REMNANT — expanding stellar debris shell ── -->
+      <a-entity supernova-remnant></a-entity>
 
       <!-- NEBULA CLOUD REMOVED — zero haze, clean black space -->
 
@@ -5063,6 +5065,99 @@
          Located at (-550, -60, 180) — encountered on leg 3 of the tour.
          @alignment 8→26→48:480  @frequency 852  @domain quantum-arch
       ==================================================================== */
+      /* ====================================================================
+         SUPERNOVA REMNANT — 500 glowing debris particles on an expanding
+         spherical shell. Colors: red/orange shock front, violet/magenta core
+         remnant, blue-white hotspots. Slow 3-axis rotation + gentle breathing.
+         Located at (120, -180, -480) — visible in the deep void section of tour.
+         @alignment 8→26→48:480  @frequency 963  @domain systems-design
+      ==================================================================== */
+      AFRAME.registerComponent("supernova-remnant", {
+        init: function () {
+          var THREE = AFRAME.THREE;
+          var scene = this.el.sceneEl.object3D;
+          var CENTER = new THREE.Vector3(120, -180, -480);
+          var N = 500;
+
+          this._group   = new THREE.Group();
+          this._group.position.copy(CENTER);
+          scene.add(this._group);
+
+          /* Particle shell — random points on sphere surface */
+          var posArr = new Float32Array(N * 3);
+          var colArr = new Float32Array(N * 3);
+          var RADIUS = 55;
+
+          for (var i = 0; i < N; i++) {
+            var theta = Math.random() * Math.PI * 2;
+            var phi   = Math.acos(2 * Math.random() - 1);
+            var spread = RADIUS * (0.82 + Math.random() * 0.36);
+            posArr[i*3]     = Math.sin(phi) * Math.cos(theta) * spread;
+            posArr[i*3 + 1] = Math.cos(phi) * spread;
+            posArr[i*3 + 2] = Math.sin(phi) * Math.sin(theta) * spread;
+
+            /* Color: 50% shock-front orange/red, 30% violet, 20% blue hotspot */
+            var v = 0.6 + Math.random() * 0.4;
+            var t = Math.random();
+            if (t < 0.50) {
+              /* shock front: orange-red */
+              colArr[i*3]     = v;
+              colArr[i*3 + 1] = v * (0.22 + Math.random() * 0.28);
+              colArr[i*3 + 2] = 0;
+            } else if (t < 0.80) {
+              /* core remnant: violet-magenta */
+              colArr[i*3]     = v * 0.72;
+              colArr[i*3 + 1] = 0;
+              colArr[i*3 + 2] = v;
+            } else {
+              /* hot spot: blue-white */
+              colArr[i*3]     = v * 0.70;
+              colArr[i*3 + 1] = v * 0.88;
+              colArr[i*3 + 2] = v;
+            }
+          }
+
+          var geo = new THREE.BufferGeometry();
+          geo.setAttribute("position", new THREE.BufferAttribute(posArr, 3));
+          geo.setAttribute("color",    new THREE.BufferAttribute(colArr, 3));
+          var mat = new THREE.PointsMaterial({
+            size: 1.4, vertexColors: true,
+            transparent: true, opacity: 0.68,
+            blending: THREE.AdditiveBlending, depthWrite: false,
+          });
+          this._group.add(new THREE.Points(geo, mat));
+
+          /* Inner nebula glow — large transparent sphere */
+          var innerGlow = new THREE.Mesh(
+            new THREE.SphereGeometry(42, 16, 16),
+            new THREE.MeshBasicMaterial({ color: 0x330011, transparent: true, opacity: 0.18 })
+          );
+          this._group.add(innerGlow);
+
+          /* Outer shock-front ring */
+          var ring = new THREE.Mesh(
+            new THREE.TorusGeometry(58, 1.8, 8, 60),
+            new THREE.MeshBasicMaterial({ color: 0xff4400, transparent: true, opacity: 0.40 })
+          );
+          ring.rotation.x = Math.PI * 0.28;
+          this._group.add(ring);
+
+          this._t = 0;
+        },
+
+        tick: function (time, delta) {
+          var dt = Math.min(delta, 200) * 0.001;
+          this._t += dt;
+          /* Very slow 3-axis tumble */
+          this._group.rotation.x = this._t * 0.022;
+          this._group.rotation.y = this._t * 0.034;
+          this._group.rotation.z = this._t * 0.017;
+          /* Gentle breathing: scale pulsates +/-2% over 8 seconds */
+          var breathe = 1 + 0.02 * Math.sin(this._t * 0.785);
+          this._group.scale.setScalar(breathe);
+        },
+      });
+
       AFRAME.registerComponent("cosmic-blackhole", {
         init: function () {
           var THREE = AFRAME.THREE;
