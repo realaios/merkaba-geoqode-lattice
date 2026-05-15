@@ -2919,6 +2919,8 @@
       <a-entity gamma-ray-burst></a-entity>
       <!-- ── COSMIC WORMHOLE — Einstein-Rosen bridge swirling throat ── -->
       <a-entity cosmic-wormhole></a-entity>
+      <!-- ── MAGNETAR — hyper-magnetic neutron star with dipole field arcs ── -->
+      <a-entity cosmic-magnetar></a-entity>
 
       <!-- NEBULA CLOUD REMOVED — zero haze, clean black space -->
 
@@ -5975,6 +5977,118 @@
 
           /* whole wormhole tilts gently */
           this._whRoot.rotation.z = 0.12 * Math.sin(this._whTime * 0.18);
+        },
+      });
+
+      /* ====================================================================
+         COSMIC MAGNETAR — ultra-magnetised neutron star.
+         Position: (450, 200, 220).
+         Components:
+           - Dense star core: SphereGeometry r=10, white-blue
+           - 8 dipole magnetic field arcs: quarter-circle TorusGeometry
+               arcs distributed at 45-deg intervals around the rotation axis
+               Colors: intense cyan→magenta cycling at 3s
+           - Magnetospheric haze: 200 particles on nested ellipsoids
+           - Spin: 4 rotations/s (5ms period analogue) around Y
+           - Twin polar beams: thin bright lines (cyan, 300-unit)
+         @alignment 8→26→48:480  @frequency 852  @domain quantum-arch
+      ==================================================================== */
+      AFRAME.registerComponent("cosmic-magnetar", {
+        init: function () {
+          var THREE = AFRAME.THREE;
+          var scene = this.el.sceneEl.object3D;
+          var PI = Math.PI;
+
+          this._mtRoot = new THREE.Group();
+          this._mtRoot.position.set(450, 200, 220);
+          scene.add(this._mtRoot);
+
+          /* ── core body ── */
+          this._mtCore = new THREE.Mesh(
+            new THREE.SphereGeometry(10, 14, 10),
+            new THREE.MeshBasicMaterial({ color: 0xaaddff })
+          );
+          this._mtRoot.add(this._mtCore);
+
+          /* ── glow sphere ── */
+          this._mtRoot.add(new THREE.Mesh(
+            new THREE.SphereGeometry(22, 10, 8),
+            new THREE.MeshBasicMaterial({ color: 0x44ddff, transparent: true, opacity: 0.08, depthWrite: false })
+          ));
+
+          /* ── 8 dipole field arcs ── */
+          /* Each arc = quarter-circle torus, half above, half below */
+          this._arcMats = [];
+          this._arcGroup = new THREE.Group();
+          this._mtRoot.add(this._arcGroup);
+          for (var ai = 0; ai < 8; ai++) {
+            var arcR = 35 + ai * 8;
+            var mat = new THREE.MeshBasicMaterial({ color: 0x00ffee, transparent: true, opacity: 0.55, depthWrite: false });
+            /* full torus — looks like a dipole arc ring */
+            var arc = new THREE.Mesh(new THREE.TorusGeometry(arcR, 0.55, 4, 48), mat);
+            arc.rotation.y = (ai / 8) * PI * 2;
+            arc.rotation.x = PI / 2;
+            this._arcGroup.add(arc);
+            this._arcMats.push(mat);
+          }
+
+          /* ── magnetospheric haze ── */
+          var HN = 220;
+          var hazPos = new Float32Array(HN * 3);
+          for (var hi = 0; hi < HN; hi++) {
+            var rh = 30 + Math.random() * 55;
+            var th = Math.random() * PI * 2;
+            var ph = Math.acos(2 * Math.random() - 1);
+            hazPos[hi*3  ] = rh * Math.sin(ph) * Math.cos(th);
+            hazPos[hi*3+1] = rh * Math.cos(ph);
+            hazPos[hi*3+2] = rh * Math.sin(ph) * Math.sin(th);
+          }
+          var hazGeo = new THREE.BufferGeometry();
+          hazGeo.setAttribute("position", new THREE.BufferAttribute(hazPos, 3));
+          this._hazMat = new THREE.PointsMaterial({ color: 0x00ccff, size: 1.6, blending: THREE.AdditiveBlending, depthWrite: false, transparent: true, opacity: 0.45 });
+          this._mtRoot.add(new THREE.Points(hazGeo, this._hazMat));
+
+          /* ── polar beam particles ── */
+          var BN = 80;
+          var bPos = new Float32Array(BN * 2 * 3);
+          for (var bi = 0; bi < BN; bi++) {
+            var by = 10 + (bi / BN) * 280;
+            var bx = (Math.random() - 0.5) * 3;
+            bPos[bi*3  ] = bx; bPos[bi*3+1] = by;  bPos[bi*3+2] = 0;
+            bPos[(BN+bi)*3  ] = bx; bPos[(BN+bi)*3+1] = -by; bPos[(BN+bi)*3+2] = 0;
+          }
+          var bGeo = new THREE.BufferGeometry();
+          bGeo.setAttribute("position", new THREE.BufferAttribute(bPos, 3));
+          this._beamMat = new THREE.PointsMaterial({ color: 0x00ffff, size: 2.0, blending: THREE.AdditiveBlending, depthWrite: false, transparent: true, opacity: 0.85 });
+          this._mtRoot.add(new THREE.Points(bGeo, this._beamMat));
+
+          this._mtTime = 0;
+          this._N_ARCS = 8;
+        },
+
+        tick: function (time, delta) {
+          var dt = Math.min(delta, 200) * 0.001;
+          var PI = Math.PI;
+          this._mtTime += dt;
+
+          /* fast spin */
+          this._mtCore.rotation.y += 4 * PI * dt;
+
+          /* arc color cycle cyan <-> magenta */
+          for (var i = 0; i < this._N_ARCS; i++) {
+            var ph = (this._mtTime * 2.1 + i * 0.5) % (PI * 2);
+            var r = 0.1 + 0.5 * Math.abs(Math.sin(ph));
+            var g = 0.8 + 0.2 * Math.cos(ph * 2);
+            var b = 0.9 - 0.4 * Math.abs(Math.sin(ph));
+            this._arcMats[i].color.setRGB(r, g, b);
+            this._arcMats[i].opacity = 0.35 + 0.3 * Math.sin(this._mtTime * 3 + i);
+          }
+
+          /* haze shimmer */
+          this._hazMat.opacity = 0.3 + 0.2 * Math.sin(this._mtTime * 5.5);
+
+          /* beam pulse */
+          this._beamMat.opacity = 0.5 + 0.45 * Math.abs(Math.sin(this._mtTime * 4));
         },
       });
 
