@@ -2961,6 +2961,10 @@
       <a-entity gravitational-wave></a-entity>
       <!-- ── MOLECULAR CLOUD — star-forming nebula with stellar birth flashes ── -->
       <a-entity molecular-cloud></a-entity>
+      <!-- ── PHOTON SPHERE — trapped photons orbiting black hole at 1.5Rs ── -->
+      <a-entity photon-sphere></a-entity>
+      <!-- ── BLUE STRAGGLER — cannibal star feeding on companion, glowing fierce blue ── -->
+      <a-entity blue-straggler></a-entity>
 
       <!-- NEBULA CLOUD REMOVED — zero haze, clean black space -->
 
@@ -8192,6 +8196,235 @@
             hs.jN.material.opacity = jFlash * 0.55;
             hs.jS.material.opacity = jFlash * 0.55;
             hs.mesh.scale.setScalar(1 + flash * 2);
+          }
+        },
+      });
+
+      /* ==================================================================
+         PHOTON SPHERE — photons trapped at exactly 1.5 Schwarzschild radii.
+         Position: (-800, -200, 500).
+         Central black hole: dark sphere with event horizon haze.
+         Photon ring: 360 bright photon points orbiting at r=55 (unstable orbit).
+         Each photon orbits at speed of light (c), ring shimmers and shifts.
+         Lensing arcs: multiple bent-light arcs crossing behind the BH.
+         Shadow region: dark circle blocking background on BH side.
+         Ring shifts colour from blue (approaching) to red (receding) as it turns.
+         @alignment 8→26→48:480  @frequency 852  @domain quantum-arch
+      ================================================================== */
+      AFRAME.registerComponent("photon-sphere", {
+        init: function () {
+          var THREE = AFRAME.THREE;
+          var scene = this.el.sceneEl.object3D;
+          var PI = Math.PI;
+          this._psRoot = new THREE.Group();
+          this._psRoot.position.set(-800, -200, 500);
+          scene.add(this._psRoot);
+
+          /* black hole body */
+          this._psRoot.add(new THREE.Mesh(
+            new THREE.SphereGeometry(30, 14, 10),
+            new THREE.MeshBasicMaterial({ color: 0x000011 })
+          ));
+          /* event horizon hot haze */
+          this._psRoot.add(new THREE.Mesh(
+            new THREE.SphereGeometry(37, 10, 8),
+            new THREE.MeshBasicMaterial({ color: 0xff4400, transparent: true, opacity: 0.18 })
+          ));
+
+          /* photon ring — 560 particles on a torus r=55, tube=2 */
+          var PN = 560;
+          var pPos = new Float32Array(PN * 3);
+          var pCol = new Float32Array(PN * 3);
+          this._pAngles = new Float32Array(PN);
+          this._pTilt   = new Float32Array(PN); /* inclination spread +-3 deg */
+          for (var pi = 0; pi < PN; pi++) {
+            var ang = (pi / PN) * PI * 2;
+            this._pAngles[pi] = ang;
+            var tilt = (Math.random() - 0.5) * 0.18; /* +-~10 deg spread */
+            this._pTilt[pi] = tilt;
+            pPos[pi*3  ] = 55 * Math.cos(ang);
+            pPos[pi*3+1] = 55 * Math.sin(ang) * Math.sin(tilt);
+            pPos[pi*3+2] = 55 * Math.sin(ang) * Math.cos(tilt);
+            /* blue (approaching) vs red (receding) based on position */
+            var cs = Math.cos(ang);
+            pCol[pi*3  ] = 0.4 + cs * 0.3;
+            pCol[pi*3+1] = 0.6 + cs * 0.1;
+            pCol[pi*3+2] = 1.0 - cs * 0.5;
+          }
+          var pGeo  = new THREE.BufferGeometry();
+          this._pPosAttr = new THREE.BufferAttribute(pPos, 3);
+          this._pColAttr = new THREE.BufferAttribute(pCol, 3);
+          pGeo.setAttribute("position", this._pPosAttr);
+          pGeo.setAttribute("color",    this._pColAttr);
+          this._psRoot.add(new THREE.Points(pGeo, new THREE.PointsMaterial({
+            size: 2.0, vertexColors: true,
+            blending: THREE.AdditiveBlending, depthWrite: false, transparent: true, opacity: 0.95
+          })));
+          this._pN = PN;
+
+          /* lensing arc bands — 5 bent-light tori at odd angles */
+          var arcColors = [0x4488ff, 0x99ccff, 0xffaa44, 0x44ffaa, 0xff88cc];
+          for (var ai = 0; ai < 5; ai++) {
+            var arcMesh = new THREE.Mesh(
+              new THREE.TorusGeometry(55 + ai * 3, 0.5, 4, 80),
+              new THREE.MeshBasicMaterial({ color: arcColors[ai], transparent: true, opacity: 0.12 })
+            );
+            arcMesh.rotation.set((ai * 0.5) % (Math.PI), ai * 0.4, ai * 0.7);
+            this._psRoot.add(arcMesh);
+          }
+
+          this._psTime = 0;
+          this._ORBIT_SPEED = 1.2; /* rad/s for photon ring */
+        },
+        tick: function (time, delta) {
+          var dt = Math.min(delta, 200) * 0.001;
+          this._psTime += dt;
+          var t2 = this._psTime;
+          var PI = Math.PI;
+          var dAng = this._ORBIT_SPEED * dt;
+          var arr = this._pPosAttr.array;
+          var col = this._pColAttr.array;
+          /* advance all photons + update Doppler colour */
+          for (var pi = 0; pi < this._pN; pi++) {
+            this._pAngles[pi] += dAng + 0.001 * Math.sin(pi * 0.7 + t2); /* slight chaotic shimmer */
+            var ang = this._pAngles[pi];
+            var tilt = this._pTilt[pi];
+            arr[pi*3  ] = 55 * Math.cos(ang);
+            arr[pi*3+1] = 55 * Math.sin(ang) * Math.sin(tilt);
+            arr[pi*3+2] = 55 * Math.sin(ang) * Math.cos(tilt);
+            var cs = Math.cos(ang);
+            col[pi*3  ] = 0.4 + cs * 0.3;
+            col[pi*3+1] = 0.6 + cs * 0.1;
+            col[pi*3+2] = 1.0 - cs * 0.5;
+          }
+          this._pPosAttr.needsUpdate = true;
+          this._pColAttr.needsUpdate = true;
+          this._psRoot.rotation.y += 0.04 * dt;
+        },
+      });
+
+      /* ==================================================================
+         BLUE STRAGGLER — mass-gaining star feeding from companion.
+         Position: (900, 200, 300).
+         Primary: large hot blue-white star r=28, fierce UV blaze.
+         Companion: smaller red/orange star r=14 being drained.
+         Mass-transfer stream: 200 bright blue particles flowing star-to-star.
+         Primary grows slowly and brightens; companion dims and shrinks.
+         Outburst: occasional shell-ejection flash every 12 seconds.
+         Both stars orbit shared barycentre.
+         @alignment 8→26→48:480  @frequency 528  @domain code-eng
+      ================================================================== */
+      AFRAME.registerComponent("blue-straggler", {
+        init: function () {
+          var THREE = AFRAME.THREE;
+          var scene = this.el.sceneEl.object3D;
+          var PI = Math.PI;
+          this._bsRoot = new THREE.Group();
+          this._bsRoot.position.set(900, 200, 300);
+          scene.add(this._bsRoot);
+
+          /* primary blue straggler */
+          this._pStar = new THREE.Mesh(
+            new THREE.SphereGeometry(28, 14, 10),
+            new THREE.MeshBasicMaterial({ color: 0x88ccff })
+          );
+          this._bsRoot.add(this._pStar);
+          this._pGlow = new THREE.Mesh(
+            new THREE.SphereGeometry(40, 10, 8),
+            new THREE.MeshBasicMaterial({ color: 0x4488ff, transparent: true, opacity: 0.22 })
+          );
+          this._bsRoot.add(this._pGlow);
+
+          /* companion red star */
+          this._cStar = new THREE.Mesh(
+            new THREE.SphereGeometry(14, 12, 8),
+            new THREE.MeshBasicMaterial({ color: 0xff6622 })
+          );
+          this._bsRoot.add(this._cStar);
+          this._cGlow = new THREE.Mesh(
+            new THREE.SphereGeometry(20, 8, 6),
+            new THREE.MeshBasicMaterial({ color: 0xff4400, transparent: true, opacity: 0.3 })
+          );
+          this._bsRoot.add(this._cGlow);
+
+          /* mass-transfer stream: 200 particles along Bezier curve */
+          var SN = 200;
+          var sPos = new Float32Array(SN * 3);
+          var sCol = new Float32Array(SN * 3);
+          this._streamT = new Float32Array(SN);
+          for (var si = 0; si < SN; si++) {
+            this._streamT[si] = si / SN;
+            sPos[si*3  ] = 0; sPos[si*3+1] = 0; sPos[si*3+2] = 0;
+            sCol[si*3  ] = 0.4 + 0.6*(si/SN); sCol[si*3+1] = 0.7; sCol[si*3+2] = 1.0;
+          }
+          var sGeo = new THREE.BufferGeometry();
+          this._sPosAttr = new THREE.BufferAttribute(sPos, 3);
+          sGeo.setAttribute("position", this._sPosAttr);
+          sGeo.setAttribute("color",    new THREE.BufferAttribute(sCol, 3));
+          this._bsRoot.add(new THREE.Points(sGeo, new THREE.PointsMaterial({
+            size: 1.5, vertexColors: true,
+            blending: THREE.AdditiveBlending, depthWrite: false, transparent: true, opacity: 0.85
+          })));
+          this._sN = SN;
+
+          /* shell-ejection mesh */
+          this._shell = new THREE.Mesh(
+            new THREE.SphereGeometry(30, 12, 8),
+            new THREE.MeshBasicMaterial({ color: 0x88ddff, transparent: true, opacity: 0.0, wireframe: true })
+          );
+          this._bsRoot.add(this._shell);
+
+          this._bsTime   = 0;
+          this._ORBIT_R  = 80;
+          this._ORBIT_P  = 5.5; /* orbital period seconds */
+          this._BURST    = 12.0;
+          this._pStarR   = 28;
+          this._cStarR   = 14;
+          this._shellR   = 30;
+        },
+        tick: function (time, delta) {
+          var dt = Math.min(delta, 200) * 0.001;
+          this._bsTime += dt;
+          var t2 = this._bsTime;
+          var PI = Math.PI;
+          /* orbital positions */
+          var orbAng = (t2 / this._ORBIT_P) * PI * 2;
+          var pX = this._ORBIT_R * 0.35 * Math.cos(orbAng);
+          var pZ = this._ORBIT_R * 0.35 * Math.sin(orbAng);
+          var cX = -this._ORBIT_R * 0.65 * Math.cos(orbAng);
+          var cZ = -this._ORBIT_R * 0.65 * Math.sin(orbAng);
+          this._pStar.position.set(pX, 0, pZ);
+          this._pGlow.position.set(pX, 0, pZ);
+          this._cStar.position.set(cX, 0, cZ);
+          this._cGlow.position.set(cX, 0, cZ);
+          /* mass transfer stream along Bezier from companion to primary */
+          var arr = this._sPosAttr.array;
+          var CTRL1 = { x: (cX + pX) * 0.5 + 30 * Math.sin(orbAng + 1), y: 18, z: (cZ + pZ) * 0.5 };
+          var CTRL2 = { x: (cX + pX) * 0.5 - 20 * Math.cos(orbAng + 1), y: -12, z: (cZ + pZ) * 0.5 };
+          for (var si = 0; si < this._sN; si++) {
+            var tt = (this._streamT[si] + t2 * 0.18) % 1;
+            var invT = 1 - tt;
+            var bx = invT*invT*invT*cX + 3*invT*invT*tt*CTRL1.x + 3*invT*tt*tt*CTRL2.x + tt*tt*tt*pX;
+            var by = 3*invT*invT*tt*CTRL1.y + 3*invT*tt*tt*CTRL2.y;
+            var bz = invT*invT*invT*cZ + 3*invT*invT*tt*CTRL1.z + 3*invT*tt*tt*CTRL2.z + tt*tt*tt*pZ;
+            arr[si*3  ] = bx; arr[si*3+1] = by; arr[si*3+2] = bz;
+          }
+          this._sPosAttr.needsUpdate = true;
+          /* slowly growing primary, shrinking companion */
+          var growFrac = (Math.sin(t2 * 0.03) + 1) * 0.5;
+          this._pStar.scale.setScalar(1 + growFrac * 0.25);
+          this._cStar.scale.setScalar(1 - growFrac * 0.2);
+          this._pGlow.material.opacity = 0.18 + growFrac * 0.1;
+          /* shell ejection burst every 12s */
+          var burstPhase = (t2 % this._BURST) / this._BURST;
+          if (burstPhase < 0.3) {
+            var bf = burstPhase / 0.3;
+            var sR = 30 + bf * 80;
+            this._shell.scale.setScalar(sR / 30);
+            this._shell.position.set(pX, 0, pZ);
+            this._shell.material.opacity = 0.4 * (1 - bf);
+          } else {
+            this._shell.material.opacity = 0;
           }
         },
       });
