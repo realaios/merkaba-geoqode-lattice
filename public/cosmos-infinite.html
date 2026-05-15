@@ -2987,6 +2987,8 @@
       <a-entity interstellar-shock></a-entity>
       <!-- ── MHD JET — bipolar helical magnetohydrodynamic jet from AGN ── -->
       <a-entity magnetohydrodynamic-jet></a-entity>
+      <!-- ── MERKABA STARSHIP — autonomous starship with hyperspace warp ── -->
+      <a-entity merkaba-starship></a-entity>
 
       <!-- NEBULA CLOUD REMOVED — zero haze, clean black space -->
 
@@ -9910,6 +9912,437 @@
 
           /* Slow whole-system precession */
           this._mhdRoot.rotation.z = 0.06 * Math.sin(t * 0.08);
+        }
+      });
+
+      /* ==================================================================
+         MERKABA STARSHIP — autonomous Enterprise-class starship.
+         Saucer r=30, secondary hull, twin warp nacelles, deflector dish.
+         Cruises 12 waypoints @ 85 u/s. Warps every 38-66 s:
+           PRE_WARP (2.2s) → WARP (1.4s, streak tunnel + teleport)
+           → POST_WARP (2.0s, cool-down emerge).
+         Ship forward = -Z. lookAt orients nose toward waypoint.
+         @alignment 8→26→48:480  @frequency 963  @domain systems-design
+      ================================================================== */
+      AFRAME.registerComponent("merkaba-starship", {
+        init: function () {
+          var THREE = AFRAME.THREE;
+          var scene  = this.el.sceneEl.object3D;
+          var PI     = Math.PI;
+          var self   = this;
+          this._t    = 0;
+
+          /* Root group — lives in world space */
+          this._ship = new THREE.Group();
+          this._ship.position.set(300, 200, -400);
+          scene.add(this._ship);
+
+          /* Materials */
+          var hullMat = new THREE.MeshBasicMaterial({ color: 0xbcc8d4 });
+          var darkMat = new THREE.MeshBasicMaterial({ color: 0x778899 });
+
+          /* ── SAUCER ───────────────────────────────────────────── */
+          /* Main disc */
+          this._ship.add(new THREE.Mesh(
+            new THREE.CylinderGeometry(30, 30, 7, 42), hullMat
+          ));
+          /* Bridge dome (top, forward) */
+          var topDome = new THREE.Mesh(
+            new THREE.SphereGeometry(10, 18, 8, 0, PI * 2, 0, PI / 2),
+            new THREE.MeshBasicMaterial({ color: 0xddeeff })
+          );
+          topDome.position.set(0, 5.5, -6);
+          this._ship.add(topDome);
+          /* Bottom sensor platform */
+          var botPlat = new THREE.Mesh(
+            new THREE.CylinderGeometry(10, 12, 3.5, 20), darkMat
+          );
+          botPlat.position.set(0, -5.5, 0);
+          this._ship.add(botPlat);
+
+          /* ── NECK ─────────────────────────────────────────────── */
+          var neck = new THREE.Mesh(
+            new THREE.CylinderGeometry(4.5, 5.5, 18, 14), darkMat
+          );
+          neck.position.set(0, -12, 16);
+          neck.rotation.x = PI * 0.14;
+          this._ship.add(neck);
+
+          /* ── SECONDARY HULL ───────────────────────────────────── */
+          /* Cylinder oriented along Z axis (forward = -Z) */
+          var secHull = new THREE.Mesh(
+            new THREE.CylinderGeometry(8, 10, 55, 20), hullMat
+          );
+          secHull.rotation.x = PI / 2;
+          secHull.position.set(0, -16, 20);
+          this._ship.add(secHull);
+          /* Front nose cap (faces -Z) */
+          var secNose = new THREE.Mesh(
+            new THREE.SphereGeometry(10, 14, 8, 0, PI * 2, 0, PI / 2), hullMat
+          );
+          secNose.rotation.x = PI;
+          secNose.position.set(0, -16, -7);
+          this._ship.add(secNose);
+          /* Rear cap */
+          var secRear = new THREE.Mesh(
+            new THREE.SphereGeometry(10, 14, 8, 0, PI * 2, 0, PI / 2), darkMat
+          );
+          secRear.position.set(0, -16, 47);
+          this._ship.add(secRear);
+
+          /* ── DEFLECTOR DISH ───────────────────────────────────── */
+          this._deflMat = new THREE.MeshBasicMaterial({
+            color: 0x0088ff, transparent: true, opacity: 0.92,
+            blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.DoubleSide
+          });
+          var defl = new THREE.Mesh(new THREE.CircleGeometry(9, 32), this._deflMat);
+          defl.position.set(0, -16, -8);
+          this._ship.add(defl);
+          this._deflRingMat = new THREE.MeshBasicMaterial({
+            color: 0x44ccff, transparent: true, opacity: 0.5,
+            blending: THREE.AdditiveBlending, depthWrite: false
+          });
+          var deflRing = new THREE.Mesh(
+            new THREE.TorusGeometry(9, 1.5, 7, 32), this._deflRingMat
+          );
+          deflRing.position.set(0, -16, -8);
+          this._ship.add(deflRing);
+
+          /* ── NACELLES ─────────────────────────────────────────── */
+          this._warpGlows    = [];
+          this._bussardMats  = [];
+          this._exhaustMats  = [];
+          [-1, 1].forEach(function (sx) {
+            var xOff = sx * 36;
+            /* Pylon */
+            var pylon = new THREE.Mesh(
+              new THREE.BoxGeometry(3, 19, 26), darkMat
+            );
+            pylon.position.set(xOff * 0.72, -10, 18);
+            pylon.rotation.z = sx * PI * 0.09;
+            pylon.rotation.x = -PI * 0.06;
+            self._ship.add(pylon);
+
+            /* Main nacelle cylinder */
+            var nacelle = new THREE.Mesh(
+              new THREE.CylinderGeometry(4.5, 4.5, 52, 18), hullMat
+            );
+            nacelle.rotation.x = PI / 2;
+            nacelle.position.set(xOff, -4, 18);
+            self._ship.add(nacelle);
+
+            /* Inner warp glow tube */
+            var wgMat = new THREE.MeshBasicMaterial({
+              color: 0x00ccff, transparent: true, opacity: 0.62,
+              blending: THREE.AdditiveBlending, depthWrite: false
+            });
+            var wgMesh = new THREE.Mesh(
+              new THREE.CylinderGeometry(2.8, 2.8, 48, 14), wgMat
+            );
+            wgMesh.rotation.x = PI / 2;
+            wgMesh.position.set(xOff, -4, 18);
+            self._ship.add(wgMesh);
+            self._warpGlows.push(wgMat);
+
+            /* Bussard collector — red dome, front of nacelle (z = 18-26 = -8) */
+            var bMat = new THREE.MeshBasicMaterial({
+              color: 0xff2200, transparent: true, opacity: 0.95,
+              blending: THREE.AdditiveBlending, depthWrite: false
+            });
+            var bMesh = new THREE.Mesh(new THREE.SphereGeometry(5, 14, 8), bMat);
+            bMesh.position.set(xOff, -4, -8);
+            self._ship.add(bMesh);
+            self._bussardMats.push(bMat);
+
+            /* Exhaust glow — cyan circle, rear of nacelle (z = 18+26 = 44) */
+            var eMat = new THREE.MeshBasicMaterial({
+              color: 0x88eeff, transparent: true, opacity: 0.9,
+              blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.DoubleSide
+            });
+            var eMesh = new THREE.Mesh(new THREE.CircleGeometry(4.5, 16), eMat);
+            eMesh.position.set(xOff, -4, 44);
+            self._ship.add(eMesh);
+            self._exhaustMats.push(eMat);
+
+            /* Outer exhaust halo */
+            var eHalo = new THREE.Mesh(
+              new THREE.CircleGeometry(11, 14),
+              new THREE.MeshBasicMaterial({
+                color: 0x003388, transparent: true, opacity: 0.22,
+                blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.DoubleSide
+              })
+            );
+            eHalo.position.set(xOff, -4, 44.5);
+            self._ship.add(eHalo);
+          });
+
+          /* ── RUNNING LIGHTS ───────────────────────────────────── */
+          this._runLights = [];
+          var lightDefs = [
+            { p: [-30,  0,   0], c: 0xff0000, f: 1.4 },
+            { p: [ 30,  0,   0], c: 0x00ff44, f: 1.4 },
+            { p: [  0,  6, -20], c: 0xffffff, f: 2.8 },
+            { p: [  0, -4,  -8], c: 0xffffff, f: 1.9 },
+          ];
+          lightDefs.forEach(function (ld) {
+            var m = new THREE.Mesh(
+              new THREE.SphereGeometry(1.9, 6, 5),
+              new THREE.MeshBasicMaterial({ color: ld.c, transparent: true })
+            );
+            m.position.set(ld.p[0], ld.p[1], ld.p[2]);
+            self._ship.add(m);
+            self._runLights.push({ mat: m.material, freq: ld.f, phase: Math.random() * PI * 2 });
+          });
+
+          /* ── WINDOW PARTICLES (saucer rim) ────────────────────── */
+          var WN = 90;
+          var wP  = new Float32Array(WN * 3);
+          var wC  = new Float32Array(WN * 3);
+          for (var wi = 0; wi < WN; wi++) {
+            var wa = (wi / WN) * PI * 2;
+            var wr = 26 + (Math.random() - 0.5) * 5;
+            var wl = Math.random() < 0.5 ? 2.5 : -2.5;
+            wP[wi * 3    ] = wr * Math.cos(wa);
+            wP[wi * 3 + 1] = wl;
+            wP[wi * 3 + 2] = wr * Math.sin(wa);
+            var brt = 0.82 + Math.random() * 0.18;
+            wC[wi * 3    ] = brt;
+            wC[wi * 3 + 1] = brt * 0.92;
+            wC[wi * 3 + 2] = brt * 0.45;
+          }
+          var wGeo = new THREE.BufferGeometry();
+          wGeo.setAttribute("position", new THREE.BufferAttribute(wP, 3));
+          wGeo.setAttribute("color",    new THREE.BufferAttribute(wC, 3));
+          this._ship.add(new THREE.Points(wGeo, new THREE.PointsMaterial({
+            size: 2.2, vertexColors: true, transparent: true, opacity: 0.9,
+            blending: THREE.AdditiveBlending, depthWrite: false, sizeAttenuation: true
+          })));
+
+          /* ── WARP STREAKS (180 line-segments, hidden until warp) ─ */
+          var SN = 180;
+          var sLP  = new Float32Array(SN * 6);
+          var sLC  = new Float32Array(SN * 6);
+          this._streakData = new Array(SN);
+          for (var si = 0; si < SN; si++) {
+            var sang = Math.random() * PI * 2;
+            var srad = 35 + Math.random() * 230;
+            var sx2  = srad * Math.cos(sang);
+            var sy2  = (Math.random() - 0.5) * 180;
+            var sz2  = (Math.random() - 0.5) * 900;
+            var slen = 28 + Math.random() * 95;
+            this._streakData[si] = { x: sx2, y: sy2, z: sz2, len: slen };
+            sLP[si * 6    ] = sx2; sLP[si * 6 + 1] = sy2; sLP[si * 6 + 2] = sz2;
+            sLP[si * 6 + 3] = sx2; sLP[si * 6 + 4] = sy2; sLP[si * 6 + 5] = sz2 + slen;
+            var bc = 0.68 + Math.random() * 0.32;
+            sLC[si * 6    ] = bc * 0.72; sLC[si * 6 + 1] = bc * 0.86; sLC[si * 6 + 2] = bc;
+            sLC[si * 6 + 3] = bc * 0.72; sLC[si * 6 + 4] = bc * 0.86; sLC[si * 6 + 5] = bc;
+          }
+          var sGeo = new THREE.BufferGeometry();
+          sGeo.setAttribute("position", new THREE.BufferAttribute(sLP, 3));
+          sGeo.setAttribute("color",    new THREE.BufferAttribute(sLC, 3));
+          this._streakMat = new THREE.LineBasicMaterial({
+            vertexColors: true, transparent: true, opacity: 0,
+            blending: THREE.AdditiveBlending, depthWrite: false
+          });
+          this._streakGeo = sGeo;
+          this._streakPos = sLP;
+          this._ship.add(new THREE.LineSegments(sGeo, this._streakMat));
+
+          /* Flash sphere — white bloom during warp jump */
+          this._flashMat = new THREE.MeshBasicMaterial({
+            color: 0xffffff, transparent: true, opacity: 0,
+            blending: THREE.AdditiveBlending, depthWrite: false
+          });
+          this._ship.add(new THREE.Mesh(
+            new THREE.SphereGeometry(380, 6, 5), this._flashMat
+          ));
+
+          /* ── FLIGHT STATE ─────────────────────────────────────── */
+          this._waypoints = [
+            new THREE.Vector3( 300,  200, -400),
+            new THREE.Vector3(-250,   50,  180),
+            new THREE.Vector3( 550,  -80,  280),
+            new THREE.Vector3(-420,  280, -180),
+            new THREE.Vector3(  50, -180, -550),
+            new THREE.Vector3( 650,  120, -180),
+            new THREE.Vector3(-520,  -80,  480),
+            new THREE.Vector3( 180,  380,   80),
+            new THREE.Vector3(-320,   20, -680),
+            new THREE.Vector3( 420, -280,  420),
+            new THREE.Vector3(-640,  180, -280),
+            new THREE.Vector3( 120, -380, -220),
+          ];
+          this._curWP      = 0;
+          this._speed      = 85;
+          this._warpState  = "CRUISE";
+          this._warpTimer  = 0;
+          this._nextWarpAt = 45 + Math.random() * 20;
+          this._warpPhase  = 0;
+          this._teleported = false;
+        },
+
+        tick: function (time, delta) {
+          var dt = Math.min(delta, 200) * 0.001;
+          this._t += dt;
+          var t  = this._t;
+          var PI = Math.PI;
+
+          /* Running lights blink */
+          for (var li = 0; li < this._runLights.length; li++) {
+            var rl = this._runLights[li];
+            rl.mat.opacity = 0.5 + 0.5 * (0.5 + 0.5 * Math.sin(t * rl.freq * PI * 2 + rl.phase));
+          }
+          /* Deflector dish pulse */
+          if (this._deflMat) {
+            var dp = 0.78 + 0.22 * Math.sin(t * 2.7);
+            this._deflMat.opacity     = dp;
+            this._deflRingMat.opacity = dp * 0.55;
+          }
+          /* Bussard collectors pulse + color-shift (simulate spinning red intake) */
+          var bTime = t * 3.8;
+          for (var bi = 0; bi < this._bussardMats.length; bi++) {
+            var bMat2 = this._bussardMats[bi];
+            bMat2.opacity = 0.78 + 0.22 * Math.sin(bTime + bi * PI);
+            bMat2.color.setHSL(0.02 + 0.04 * (0.5 + 0.5 * Math.sin(bTime + bi * PI)), 1, 0.5);
+          }
+
+          switch (this._warpState) {
+            case "CRUISE":    this._doCruise(dt, t);   break;
+            case "PRE_WARP":  this._doPreWarp(dt, t);  break;
+            case "WARP":      this._doWarp(dt, t);     break;
+            case "POST_WARP": this._doPostWarp(dt, t); break;
+          }
+        },
+
+        _doCruise: function (dt, t) {
+          var THREE = AFRAME.THREE;
+          this._warpTimer += dt;
+          /* Normal warp glow */
+          for (var gi = 0; gi < this._warpGlows.length; gi++) {
+            this._warpGlows[gi].opacity = 0.56 + 0.14 * Math.sin(t * 1.9 + gi * 1.2);
+            this._warpGlows[gi].color.setHex(0x00ccff);
+          }
+          for (var ei = 0; ei < this._exhaustMats.length; ei++) {
+            this._exhaustMats[ei].opacity = 0.80 + 0.12 * Math.sin(t * 2.3 + ei * 0.9);
+          }
+          /* Navigate toward current waypoint */
+          var wp   = this._waypoints[this._curWP];
+          var pos  = this._ship.position;
+          var dir  = new THREE.Vector3().subVectors(wp, pos);
+          var dist = dir.length();
+          if (dist < 25) {
+            this._curWP = (this._curWP + 1) % this._waypoints.length;
+          } else {
+            dir.normalize();
+            pos.addScaledVector(dir, this._speed * dt);
+            /* lookAt: makes ship -Z axis face the waypoint (nose = forward = -Z) */
+            this._ship.lookAt(wp);
+            /* Gentle banking roll around local Z */
+            this._ship.rotateZ(Math.sin(t * 0.22) * 0.07);
+          }
+          /* Time to warp? */
+          if (this._warpTimer >= this._nextWarpAt) {
+            this._warpState = "PRE_WARP";
+            this._warpTimer = 0;
+            this._warpPhase = 0;
+          }
+        },
+
+        _doPreWarp: function (dt, t) {
+          var THREE = AFRAME.THREE;
+          this._warpPhase += dt;
+          var prog = Math.min(this._warpPhase / 2.2, 1.0);
+          /* Nacelles ramp to white-hot */
+          for (var gi = 0; gi < this._warpGlows.length; gi++) {
+            this._warpGlows[gi].opacity = 0.62 + prog * 0.38;
+            this._warpGlows[gi].color.setHSL(0.55 - prog * 0.05, 1.0, 0.5 + prog * 0.28);
+          }
+          for (var ei = 0; ei < this._exhaustMats.length; ei++) {
+            this._exhaustMats[ei].opacity = 0.85 + prog * 0.15;
+          }
+          /* Accelerate toward waypoint */
+          var spd = 85 + prog * 260;
+          var wp  = this._waypoints[this._curWP];
+          var pos = this._ship.position;
+          var dir = new THREE.Vector3().subVectors(wp, pos);
+          if (dir.length() > 5) { dir.normalize(); pos.addScaledVector(dir, spd * dt); }
+          this._ship.lookAt(wp);
+          /* Transition to warp */
+          if (this._warpPhase >= 2.2) {
+            this._warpState  = "WARP";
+            this._warpPhase  = 0;
+            this._teleported = false;
+            /* Pick random new destination */
+            this._curWP = Math.floor(Math.random() * this._waypoints.length);
+          }
+        },
+
+        _doWarp: function (dt, t) {
+          this._warpPhase += dt;
+          var prog = this._warpPhase / 1.4; // 0→1 over 1.4 s
+          /* Flash arc: bell curve */
+          var flashArc = Math.sin(prog * Math.PI);
+          if (this._flashMat) this._flashMat.opacity = flashArc * 0.36;
+          /* Streak line-tunnel */
+          this._streakMat.opacity = flashArc * 0.92;
+          var warpSpd = 1800 + prog * 2200;
+          var SN = this._streakData.length;
+          for (var si = 0; si < SN; si++) {
+            var sd = this._streakData[si];
+            sd.z += warpSpd * dt;
+            if (sd.z > 550) sd.z -= 1100;
+            this._streakPos[si * 6 + 2] = sd.z;
+            this._streakPos[si * 6 + 5] = sd.z + sd.len;
+          }
+          this._streakGeo.attributes.position.needsUpdate = true;
+          /* Nacelles at peak brightness */
+          for (var gi = 0; gi < this._warpGlows.length; gi++) {
+            this._warpGlows[gi].opacity = 1.0;
+            this._warpGlows[gi].color.setHex(0xaaeeff);
+          }
+          /* Teleport at midpoint */
+          if (this._warpPhase >= 0.7 && !this._teleported) {
+            this._teleported = true;
+            this._ship.position.copy(this._waypoints[this._curWP]);
+            for (var si2 = 0; si2 < SN; si2++) {
+              this._streakData[si2].z = (Math.random() - 0.5) * 1100;
+            }
+          }
+          if (this._warpPhase >= 1.4) {
+            this._warpState  = "POST_WARP";
+            this._warpPhase  = 0;
+            this._teleported = false;
+          }
+        },
+
+        _doPostWarp: function (dt, t) {
+          var THREE = AFRAME.THREE;
+          this._warpPhase += dt;
+          var prog = this._warpPhase / 2.0; // 0→1 over 2.0 s
+          /* Streaks and flash fade out */
+          this._streakMat.opacity = Math.max(0, 0.88 * (1 - prog * 1.6));
+          if (this._flashMat) this._flashMat.opacity = Math.max(0, 0.22 * (1 - prog * 2.5));
+          /* Nacelles cool down */
+          for (var gi = 0; gi < this._warpGlows.length; gi++) {
+            this._warpGlows[gi].opacity = Math.max(0.58, 1.0 - prog * 0.42);
+            this._warpGlows[gi].color.setHex(0x00ccff);
+          }
+          /* Resume cruise toward waypoint */
+          var wp  = this._waypoints[this._curWP];
+          var pos = this._ship.position;
+          var dir = new THREE.Vector3().subVectors(wp, pos);
+          if (dir.length() > 15) {
+            dir.normalize();
+            pos.addScaledVector(dir, 85 * dt);
+            this._ship.lookAt(wp);
+          }
+          if (this._warpPhase >= 2.0) {
+            this._warpState = "CRUISE";
+            this._speed     = 85;
+            this._streakMat.opacity  = 0;
+            if (this._flashMat) this._flashMat.opacity = 0;
+            this._nextWarpAt = 38 + Math.random() * 28;
+          }
         }
       });
 
