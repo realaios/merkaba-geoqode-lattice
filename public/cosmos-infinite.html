@@ -1800,10 +1800,10 @@
     </div>
 
     <div id="controls-hint">
-      W/S Thrust &nbsp;&#x2022;&nbsp; A/D Strafe &nbsp;&#x2022;&nbsp; SHIFT
+      W/S Thrust &nbsp;&#x2022;&nbsp; A/D Strafe &nbsp;&#x2022;&nbsp; Q/E Turn &nbsp;&#x2022;&nbsp; Z/C Bank &nbsp;&#x2022;&nbsp; SHIFT
       Boost &nbsp;&#x2022;&nbsp; LMB Look &nbsp;&#x2022;&nbsp; RMB Pan
       &nbsp;&#x2022;&nbsp; Scroll Zoom &nbsp;&#x2022;&nbsp; Double-Click
-      Teleport &nbsp;&#x2022;&nbsp; SPACE Hitchhiker
+      Teleport &nbsp;&#x2022;&nbsp; SPACE Hitchhiker &nbsp;&#x2022;&nbsp; M Sound
     </div>
     <div id="hitchhiker-badge"></div>
 
@@ -2977,6 +2977,8 @@
       <a-entity dark-matter-halo></a-entity>
       <!-- ── VOID FILAMENT — cosmic web strand threading galaxies like pearls ── -->
       <a-entity void-filament></a-entity>
+      <a-entity cosmos-pilot-controls></a-entity>
+      <a-entity cosmos-audio></a-entity>
 
       <!-- NEBULA CLOUD REMOVED — zero haze, clean black space -->
 
@@ -6552,20 +6554,20 @@
           this._speed    = 0.55;  /* tour units/s fraction per second */
           this._inWarp   = false;
 
-          /* ── warp tunnel: 280 streaking lines ── */
-          var WN = 280;
+          /* ── warp tunnel: 110 peripheral streak-lines (softer, less blocking) ── */
+          var WN = 110;
           var wPos = new Float32Array(WN * 6); /* 2 verts/line */
           var wColArr = new Float32Array(WN * 6);
           for (var wi = 0; wi < WN; wi++) {
             var wth = Math.random() * PI * 2;
-            var wph = (Math.random() - 0.5) * PI * 0.55;
-            var wd  = 12 + Math.random() * 22;
+            var wph = (Math.random() - 0.5) * PI * 0.72;
+            var wd  = 30 + Math.random() * 40;
             var wx0 = wd * Math.cos(wph) * Math.cos(wth);
             var wy0 = wd * Math.sin(wph);
-            var wz0 = -(8 + Math.random() * 10);
-            var wx1 = wx0 + (Math.random() - 0.5) * 3;
-            var wy1 = wy0 + (Math.random() - 0.5) * 3;
-            var wz1 = wz0 - (20 + Math.random() * 35);
+            var wz0 = -(14 + Math.random() * 6);
+            var wx1 = wx0 + (Math.random() - 0.5) * 2;
+            var wy1 = wy0 + (Math.random() - 0.5) * 2;
+            var wz1 = wz0 - (8 + Math.random() * 12);
             wPos[wi*6  ] = wx0; wPos[wi*6+1] = wy0; wPos[wi*6+2] = wz0;
             wPos[wi*6+3] = wx1; wPos[wi*6+4] = wy1; wPos[wi*6+5] = wz1;
             var blue = 0.4 + 0.6 * Math.random();
@@ -6659,14 +6661,14 @@
             rig.rotation.set(pitch, yaw, 0, "YXZ");
           }
 
-          /* warp tunnel: mid-journey (t 0.15-0.85) */
-          var warpOn = t > 0.1 && t < 0.9;
-          var targetOp = warpOn ? 0.85 : 0;
-          this._warpMat.opacity += (targetOp - this._warpMat.opacity) * 4 * dt;
+          /* warp tunnel: brief mid-warp flash (t 0.32–0.68) with sine envelope */
+          var warpT = (t > 0.32 && t < 0.68) ? Math.sin((t - 0.32) / 0.36 * Math.PI) : 0;
+          var targetOp = warpT * 0.28;
+          this._warpMat.opacity += (targetOp - this._warpMat.opacity) * 8 * dt;
 
           /* pulsate tunnel scale */
-          if (warpOn) {
-            var sc = 1 + 0.18 * Math.sin(this._hsfTime * 14);
+          if (warpT > 0.05) {
+            var sc = 1 + 0.06 * Math.sin(this._hsfTime * 14);
             this._warpLines.scale.set(sc, sc, 1);
           }
         },
@@ -9030,7 +9032,212 @@
         },
       });
 
-      AFRAME.registerComponent("asteroid-belt", {
+      /* ==================================================================
+         COSMOS PILOT CONTROLS — keyboard rotation: Q/E yaw (turn), Z/C bank.
+         Attaches to the scene; manipulates cameraRig and camera independently.
+         Auto-levels bank when keys released.  Pauses during H/U auto-tours.
+         @alignment 8→26→48:480  @frequency 528  @domain code-eng
+      ================================================================== */
+      AFRAME.registerComponent("cosmos-pilot-controls", {
+        init: function () {
+          this._keys = {};
+          this._yaw  = 0;
+          this._roll = 0;
+          this._synced = false;
+          var self = this;
+          this._onKeyDown = function (e) { self._keys[e.code] = true; };
+          this._onKeyUp   = function (e) { self._keys[e.code] = false; };
+          document.addEventListener("keydown", this._onKeyDown);
+          document.addEventListener("keyup",   this._onKeyUp);
+        },
+        tick: function (time, delta) {
+          var dt = Math.min(delta, 200) * 0.001;
+          var k = this._keys;
+          var rigEl = document.getElementById("cameraRig");
+          var camEl = document.querySelector("a-camera");
+          if (!rigEl || !camEl) return;
+          var rigObj = rigEl.object3D;
+          var camObj = camEl.object3D;
+
+          /* Pause during H-hyperspeed tour or U-universe-tour */
+          var hsf = document.querySelector("[hyperspeed-flight]");
+          var hsfActive = hsf && hsf.components && hsf.components["hyperspeed-flight"] && hsf.components["hyperspeed-flight"]._active;
+          var utt = document.querySelector("[universe-tour]");
+          var uttActive = utt && utt.components && utt.components["universe-tour"] && utt.components["universe-tour"]._active;
+          if (hsfActive || uttActive) {
+            /* sync our yaw accumulator so we resume smoothly */
+            this._yaw = rigObj.rotation.y;
+            this._roll = 0;
+            return;
+          }
+
+          var YAW_SPEED  = 1.1;  /* rad/s */
+          var ROLL_SPEED = 0.9;  /* rad/s */
+          var ROLL_DECAY = 3.0;  /* auto-level speed when key released */
+
+          /* Q = turn left, E = turn right */
+          if (k["KeyQ"]) this._yaw += YAW_SPEED * dt;
+          if (k["KeyE"]) this._yaw -= YAW_SPEED * dt;
+
+          /* Z = bank left, C = bank right */
+          if (k["KeyZ"]) this._roll += ROLL_SPEED * dt;
+          if (k["KeyC"]) this._roll -= ROLL_SPEED * dt;
+          if (!k["KeyZ"] && !k["KeyC"]) {
+            this._roll *= Math.max(0, 1 - ROLL_DECAY * dt);
+            if (Math.abs(this._roll) < 0.001) this._roll = 0;
+          }
+          this._roll = Math.max(-1.1, Math.min(1.1, this._roll));
+
+          /* Apply: yaw on rig Y, bank on rig Z (look-controls handles camera pitch/yaw) */
+          rigObj.rotation.order = "YXZ";
+          rigObj.rotation.y = this._yaw;
+          rigObj.rotation.z = this._roll;
+        },
+        remove: function () {
+          document.removeEventListener("keydown", this._onKeyDown);
+          document.removeEventListener("keyup",   this._onKeyUp);
+        }
+      });
+
+      /* ==================================================================
+         COSMOS AUDIO — ambient cosmic soundtrack via Web Audio API.
+         Deep space drone (dual oscillators, slight beating), shimmer overtone.
+         H key = warp whoosh.  M key = mute/unmute.
+         Starts on first user interaction (browser policy).
+         @alignment 8→26→48:480  @frequency 741  @domain pain-removal
+      ================================================================== */
+      AFRAME.registerComponent("cosmos-audio", {
+        init: function () {
+          var self = this;
+          this._started = false;
+          this._muted   = false;
+          this._shTime  = 0;
+
+          var tryStart = function () {
+            if (!self._started) self._startAudio();
+          };
+          document.addEventListener("click",   tryStart, { once: true });
+          document.addEventListener("keydown", tryStart, { once: true });
+
+          document.addEventListener("keydown", function (e) {
+            if (e.key === "m" || e.key === "M") {
+              self._muted = !self._muted;
+              if (self._masterGain) {
+                self._masterGain.gain.setTargetAtTime(self._muted ? 0 : 0.35, self._ctx.currentTime, 0.6);
+                /* show brief mute indicator */
+                self._showMuteHint(self._muted ? "🔇 Sound OFF  (M)" : "🔊 Sound ON   (M)");
+              }
+            }
+            if ((e.key === "h" || e.key === "H") && self._started) {
+              self._playWarpWhoosh();
+            }
+          });
+        },
+
+        _showMuteHint: function (msg) {
+          var d = document.getElementById("cosmos-audio-hint");
+          if (!d) {
+            d = document.createElement("div");
+            d.id = "cosmos-audio-hint";
+            d.style.cssText = "position:fixed;top:60px;left:50%;transform:translateX(-50%);color:#aaddff;font:13px/1 monospace;background:rgba(0,0,30,0.7);padding:4px 12px;border-radius:4px;opacity:0;transition:opacity 0.4s;pointer-events:none;z-index:500";
+            document.body.appendChild(d);
+          }
+          d.textContent = msg;
+          d.style.opacity = "1";
+          clearTimeout(d._t);
+          d._t = setTimeout(function () { d.style.opacity = "0"; }, 2200);
+        },
+
+        _startAudio: function () {
+          if (this._started) return;
+          this._started = true;
+          var ctx = new (window.AudioContext || window.webkitAudioContext)();
+          this._ctx = ctx;
+
+          /* Master gain — fade in gently */
+          var master = ctx.createGain();
+          master.gain.value = 0;
+          master.connect(ctx.destination);
+          this._masterGain = master;
+          master.gain.setTargetAtTime(0.35, ctx.currentTime, 3.0);
+
+          /* Deep drone: two detuned oscillators (gentle beating at 3 Hz) */
+          var osc1 = ctx.createOscillator(); osc1.type = "sine"; osc1.frequency.value = 55;
+          var osc2 = ctx.createOscillator(); osc2.type = "sine"; osc2.frequency.value = 58;
+          var droneGain = ctx.createGain(); droneGain.gain.value = 0.55;
+          var lpf = ctx.createBiquadFilter(); lpf.type = "lowpass"; lpf.frequency.value = 220; lpf.Q.value = 1.2;
+          osc1.connect(droneGain); osc2.connect(droneGain);
+          droneGain.connect(lpf); lpf.connect(master);
+          osc1.start(); osc2.start();
+          this._osc1 = osc1; this._osc2 = osc2; this._lpf = lpf;
+
+          /* Mid shimmer: sawtooth, narrow bandpass, very quiet */
+          var shOsc = ctx.createOscillator(); shOsc.type = "sawtooth"; shOsc.frequency.value = 220;
+          var shBP  = ctx.createBiquadFilter(); shBP.type = "bandpass"; shBP.Q.value = 10;
+          shBP.frequency.value = 880;
+          var shGain = ctx.createGain(); shGain.gain.value = 0.022;
+          shOsc.connect(shBP); shBP.connect(shGain); shGain.connect(master);
+          shOsc.start();
+          this._shOsc = shOsc; this._shBP = shBP;
+
+          /* High cosmic hiss: white-noise-like via buffer */
+          var bufLen = ctx.sampleRate * 2;
+          var noiseBuf = ctx.createBuffer(1, bufLen, ctx.sampleRate);
+          var nd = noiseBuf.getChannelData(0);
+          for (var ni = 0; ni < bufLen; ni++) nd[ni] = Math.random() * 2 - 1;
+          var noiseSrc = ctx.createBufferSource();
+          noiseSrc.buffer = noiseBuf; noiseSrc.loop = true;
+          var noiseHP = ctx.createBiquadFilter(); noiseHP.type = "highpass"; noiseHP.frequency.value = 3000;
+          var noiseGain = ctx.createGain(); noiseGain.gain.value = 0.012;
+          noiseSrc.connect(noiseHP); noiseHP.connect(noiseGain); noiseGain.connect(master);
+          noiseSrc.start();
+          this._noiseGain = noiseGain;
+
+          this._showMuteHint("🔊 Cosmic audio ON  (M = mute)");
+        },
+
+        _playWarpWhoosh: function () {
+          if (!this._ctx || this._muted) return;
+          var ctx = this._ctx;
+          var now = ctx.currentTime;
+          /* Whoosh: sine sweep 1800→80 Hz */
+          var osc = ctx.createOscillator(); osc.type = "sine";
+          osc.frequency.setValueAtTime(1800, now);
+          osc.frequency.exponentialRampToValueAtTime(80, now + 1.4);
+          var g = ctx.createGain();
+          g.gain.setValueAtTime(0.55, now);
+          g.gain.exponentialRampToValueAtTime(0.001, now + 1.8);
+          osc.connect(g); g.connect(this._masterGain);
+          osc.start(now); osc.stop(now + 2.0);
+          /* Sub thud at the start */
+          var sub = ctx.createOscillator(); sub.type = "sine"; sub.frequency.value = 35;
+          var sg = ctx.createGain();
+          sg.gain.setValueAtTime(0.7, now); sg.gain.exponentialRampToValueAtTime(0.001, now + 0.5);
+          sub.connect(sg); sg.connect(this._masterGain);
+          sub.start(now); sub.stop(now + 0.5);
+        },
+
+        tick: function (time, delta) {
+          if (!this._started || !this._ctx) return;
+          var dt = Math.min(delta, 200) * 0.001;
+          this._shTime += dt;
+          var t = this._shTime;
+          /* Slowly sweep shimmer bandpass — evolving texture */
+          if (this._shBP) {
+            this._shBP.frequency.value = 600 + 700 * (0.5 + 0.5 * Math.sin(t * 0.11));
+          }
+          /* Slowly detune osc2 for living drone beat */
+          if (this._osc2) {
+            this._osc2.frequency.value = 57 + 4 * Math.sin(t * 0.07);
+          }
+          /* Very gentle noise swell */
+          if (this._noiseGain) {
+            this._noiseGain.gain.value = 0.008 + 0.006 * Math.sin(t * 0.05);
+          }
+        }
+      });
+
+            AFRAME.registerComponent("asteroid-belt", {
         init: function () {
           var THREE = AFRAME.THREE;
           var scene = this.el.sceneEl.object3D;
