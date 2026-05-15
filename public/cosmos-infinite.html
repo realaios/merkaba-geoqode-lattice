@@ -2941,6 +2941,10 @@
       <a-entity galaxy-merger></a-entity>
       <!-- ── COSMIC WEB FILAMENT — large-scale structure filament network ── -->
       <a-entity cosmic-web-filament></a-entity>
+      <!-- ── PULSAR WIND NEBULA — termination shock shell, spinning NS, polar jets ── -->
+      <a-entity pulsar-wind-nebula></a-entity>
+      <!-- ── COSMIC STRING — 1D topological defect with gravitational lensing streaks ── -->
+      <a-entity cosmic-string></a-entity>
 
       <!-- NEBULA CLOUD REMOVED — zero haze, clean black space -->
 
@@ -7087,6 +7091,188 @@
           this._cwfTime += dt;
           this._webMat.opacity  = 0.05 + 0.04 * Math.sin(this._cwfTime * 0.18);
           this._nodeMat.opacity = 0.12 + 0.10 * Math.sin(this._cwfTime * 0.22 + 1.2);
+        },
+      });
+
+      /* ==================================================================
+         PULSAR WIND NEBULA — fast-spinning neutron star driving a
+         glowing termination-shock shell of relativistic wind particles.
+         Position: (0, -800, 200).
+         500-particle green-blue shock shell at r=120, pulsating.
+         200-particle inner wind zone, flattened torus.
+         Twin cyan polar jets (cylinders, 200 units each).
+         Neutron star spins at 3 rot/s.
+         @alignment 8→26→48:480  @frequency 852  @domain quantum-arch
+      ================================================================== */
+      AFRAME.registerComponent("pulsar-wind-nebula", {
+        init: function () {
+          var THREE = AFRAME.THREE;
+          var scene = this.el.sceneEl.object3D;
+          var PI = Math.PI;
+          this._pwnRoot = new THREE.Group();
+          this._pwnRoot.position.set(0, -800, 200);
+          scene.add(this._pwnRoot);
+
+          /* neutron star core */
+          this._ns = new THREE.Mesh(
+            new THREE.SphereGeometry(4, 12, 8),
+            new THREE.MeshBasicMaterial({ color: 0xffffff })
+          );
+          this._pwnRoot.add(this._ns);
+          /* inner glow halo */
+          this._pwnRoot.add(new THREE.Mesh(
+            new THREE.SphereGeometry(9, 10, 6),
+            new THREE.MeshBasicMaterial({ color: 0x66aaff, transparent: true, opacity: 0.25 })
+          ));
+
+          /* termination shock shell — 500 particles on sphere r~120 */
+          var SN = 500;
+          var shellPos = new Float32Array(SN * 3);
+          var shellCol = new Float32Array(SN * 3);
+          for (var si = 0; si < SN; si++) {
+            var th = Math.random() * PI * 2;
+            var ph = Math.acos(2 * Math.random() - 1);
+            var r  = 110 + Math.random() * 25;
+            shellPos[si*3  ] = r * Math.sin(ph) * Math.cos(th);
+            shellPos[si*3+1] = r * Math.cos(ph);
+            shellPos[si*3+2] = r * Math.sin(ph) * Math.sin(th);
+            shellCol[si*3  ] = 0.1 + Math.random() * 0.3;
+            shellCol[si*3+1] = 0.55 + Math.random() * 0.45;
+            shellCol[si*3+2] = 0.7  + Math.random() * 0.3;
+          }
+          var shGeo = new THREE.BufferGeometry();
+          shGeo.setAttribute("position", new THREE.BufferAttribute(shellPos, 3));
+          shGeo.setAttribute("color", new THREE.BufferAttribute(shellCol, 3));
+          this._shellMat = new THREE.PointsMaterial({
+            size: 2.8, vertexColors: true,
+            blending: THREE.AdditiveBlending, depthWrite: false, transparent: true, opacity: 0.75
+          });
+          this._pwnRoot.add(new THREE.Points(shGeo, this._shellMat));
+
+          /* inner wind zone — 200 particles, slightly flattened torus */
+          var WN = 200;
+          var wPos = new Float32Array(WN * 3);
+          for (var wi = 0; wi < WN; wi++) {
+            var wr = 35 + Math.random() * 60;
+            var wa = Math.random() * PI * 2;
+            var wp = Math.acos(2 * Math.random() - 1);
+            wPos[wi*3  ] = wr * Math.sin(wp) * Math.cos(wa);
+            wPos[wi*3+1] = wr * Math.cos(wp) * 0.45;
+            wPos[wi*3+2] = wr * Math.sin(wp) * Math.sin(wa);
+          }
+          var wGeo = new THREE.BufferGeometry();
+          wGeo.setAttribute("position", new THREE.BufferAttribute(wPos, 3));
+          this._windMat = new THREE.PointsMaterial({
+            color: 0x22ffee, size: 1.8,
+            blending: THREE.AdditiveBlending, depthWrite: false, transparent: true, opacity: 0.85
+          });
+          this._pwnRoot.add(new THREE.Points(wGeo, this._windMat));
+
+          /* twin polar jets */
+          var jGeo = new THREE.CylinderGeometry(1.2, 0.3, 200, 6);
+          var jMat = new THREE.MeshBasicMaterial({ color: 0x44eeff, transparent: true, opacity: 0.65 });
+          var jetN = new THREE.Mesh(jGeo, jMat);
+          jetN.position.set(0, 100, 0);
+          this._pwnRoot.add(jetN);
+          var jetS = new THREE.Mesh(jGeo, jMat);
+          jetS.position.set(0, -100, 0);
+          jetS.rotation.z = PI;
+          this._pwnRoot.add(jetS);
+
+          this._pwnTime = 0;
+        },
+        tick: function (time, delta) {
+          var dt = Math.min(delta, 200) * 0.001;
+          this._pwnTime += dt;
+          var t2 = this._pwnTime;
+          /* super-fast NS spin */
+          this._ns.rotation.y += 3.0 * dt;
+          this._ns.rotation.x += 1.5 * dt;
+          /* pulse shell */
+          this._shellMat.opacity = 0.55 + 0.25 * Math.sin(t2 * 2.4);
+          /* pulse wind zone */
+          this._windMat.opacity  = 0.65 + 0.25 * Math.sin(t2 * 3.1 + 0.8);
+          /* slow nebula rotation */
+          this._pwnRoot.rotation.y += 0.018 * dt;
+        },
+      });
+
+      /* ==================================================================
+         COSMIC STRING — 1-dimensional topological defect from the early
+         universe. An ultra-thin glowing filament across the void.
+         Passes through (~850, -300, -500).
+         80 gravitational lensing streaks on both sides.
+         120-particle purple haze along the string.
+         Shimmers with quantum fluctuation flicker.
+         @alignment 8→26→48:480  @frequency 963  @domain systems-design
+      ================================================================== */
+      AFRAME.registerComponent("cosmic-string", {
+        init: function () {
+          var THREE = AFRAME.THREE;
+          var scene = this.el.sceneEl.object3D;
+
+          var start = new THREE.Vector3(400, -1400, -100);
+          var end   = new THREE.Vector3(1300,  800, -900);
+          var dir   = new THREE.Vector3().subVectors(end, start).normalize();
+          var perp  = new THREE.Vector3(-dir.z, 0, dir.x).normalize();
+
+          /* the string itself */
+          var sGeo = new THREE.BufferGeometry().setFromPoints([start, end]);
+          this._strMat = new THREE.LineBasicMaterial({
+            color: 0xddeeff, blending: THREE.AdditiveBlending, depthWrite: false, transparent: true, opacity: 0.95
+          });
+          scene.add(new THREE.Line(sGeo, this._strMat));
+
+          /* gravitational lensing streaks — 80 short arcs on either side */
+          var lVerts = [];
+          for (var li = 0; li < 80; li++) {
+            var t = (li / 80);
+            var cx = start.x + (end.x - start.x) * t;
+            var cy = start.y + (end.y - start.y) * t;
+            var cz = start.z + (end.z - start.z) * t;
+            var side = (li % 2 === 0 ? 1 : -1) * (25 + Math.random() * 80);
+            var ox = perp.x * side; var oz = perp.z * side;
+            var slen = 18 + Math.random() * 45;
+            lVerts.push(cx + ox - dir.x * slen, cy, cz + oz - dir.z * slen);
+            lVerts.push(cx + ox + dir.x * slen, cy, cz + oz + dir.z * slen);
+          }
+          var lArr = new Float32Array(lVerts);
+          var lGeo = new THREE.BufferGeometry();
+          lGeo.setAttribute("position", new THREE.BufferAttribute(lArr, 3));
+          this._lensMat = new THREE.LineBasicMaterial({
+            color: 0x99aaff, blending: THREE.AdditiveBlending, depthWrite: false, transparent: true, opacity: 0.22
+          });
+          scene.add(new THREE.LineSegments(lGeo, this._lensMat));
+
+          /* particle haze along string */
+          var PN = 120;
+          var pArr = new Float32Array(PN * 3);
+          for (var pi = 0; pi < PN; pi++) {
+            var tp = pi / PN;
+            var jx = (Math.random() - 0.5) * 35;
+            var jy = (Math.random() - 0.5) * 35;
+            var jz = (Math.random() - 0.5) * 35;
+            pArr[pi*3  ] = start.x + (end.x - start.x) * tp + jx;
+            pArr[pi*3+1] = start.y + (end.y - start.y) * tp + jy;
+            pArr[pi*3+2] = start.z + (end.z - start.z) * tp + jz;
+          }
+          var pGeo = new THREE.BufferGeometry();
+          pGeo.setAttribute("position", new THREE.BufferAttribute(pArr, 3));
+          this._hazeMat = new THREE.PointsMaterial({
+            color: 0xaa66ff, size: 5, blending: THREE.AdditiveBlending, depthWrite: false, transparent: true, opacity: 0.45
+          });
+          scene.add(new THREE.Points(pGeo, this._hazeMat));
+
+          this._csTime = 0;
+        },
+        tick: function (time, delta) {
+          var dt = Math.min(delta, 200) * 0.001;
+          this._csTime += dt;
+          var t2 = this._csTime;
+          /* quantum flicker */
+          this._strMat.opacity  = 0.7 + 0.3 * Math.sin(t2 * 4.2 + Math.sin(t2 * 7.3) * 0.5);
+          this._lensMat.opacity = 0.12 + 0.12 * Math.sin(t2 * 2.1 + 0.8);
+          this._hazeMat.opacity = 0.28 + 0.18 * Math.sin(t2 * 1.7 + 2.1);
         },
       });
 
