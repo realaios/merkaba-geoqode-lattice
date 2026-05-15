@@ -1477,6 +1477,41 @@
       <!-- ── MERKABA CORE ── -->
       <a-entity merkaba-core position="0 0 0"></a-entity>
 
+      <!-- ── MERKABA CORE PART LABELS ─────────────────────────────────── -->
+      <!-- ICO LATTICE: outer gold icosahedron, radius 5 -->
+      <a-entity look-at="a-camera" position="7 4.5 0">
+        <a-text value="ICO LATTICE" color="#f59e0b" scale="0.55 0.55 0.55" align="left" font="mozillavr"></a-text>
+      </a-entity>
+      <!-- OCT CORE: inner cyan octahedron, radius 3.5 -->
+      <a-entity look-at="a-camera" position="-6.5 3 0">
+        <a-text value="OCT CORE" color="#00d4ff" scale="0.55 0.55 0.55" align="left" font="mozillavr"></a-text>
+      </a-entity>
+      <!-- PHI KNOT: gold torus-knot, radius 4.2 -->
+      <a-entity look-at="a-camera" position="5.5 -4 0">
+        <a-text value="PHI KNOT" color="#fbbf24" scale="0.55 0.55 0.55" align="left" font="mozillavr"></a-text>
+      </a-entity>
+      <!-- QUANTUM VEIL: cyan wireframe overlay -->
+      <a-entity look-at="a-camera" position="-4.5 -4.5 0">
+        <a-text value="QUANTUM VEIL" color="#67e8f9" scale="0.45 0.45 0.45" align="left" font="mozillavr"></a-text>
+      </a-entity>
+      <!-- ORIGIN NODE: deep-purple glow sphere, radius 1.8 -->
+      <a-entity look-at="a-camera" position="2.5 2.8 0">
+        <a-text value="ORIGIN NODE" color="#818cf8" scale="0.48 0.48 0.48" align="left" font="mozillavr"></a-text>
+      </a-entity>
+      <!-- EQ RING: equatorial cyan torus, radius 7.4 -->
+      <a-entity look-at="a-camera" position="8.8 0.6 0">
+        <a-text value="EQ RING" color="#22d3ee" scale="0.50 0.50 0.50" align="left" font="mozillavr"></a-text>
+      </a-entity>
+      <!-- PSI RING: tilted purple torus, radius 6.8 -->
+      <a-entity look-at="a-camera" position="-8.2 -1.8 0">
+        <a-text value="PSI RING" color="#a78bfa" scale="0.50 0.50 0.50" align="left" font="mozillavr"></a-text>
+      </a-entity>
+      <!-- AURA FIELD: BackSide halo sphere, radius 8.5 -->
+      <a-entity look-at="a-camera" position="0 10.8 0">
+        <a-text value="AURA FIELD" color="#c084fc" scale="0.50 0.50 0.50" align="center" font="mozillavr"></a-text>
+      </a-entity>
+      <!-- /MERKABA CORE PART LABELS ─────────────────────────────────── -->
+
       <!-- ── QUEEN BEE CROWN (cylinder beams to D8) ── -->
       <a-entity queen-bee-crown position="0 0 0"></a-entity>
 
@@ -2172,17 +2207,19 @@
             ),
           );
 
-          /* 5. BackSide aura — transparent so deep space shows through */
+          /* 5. BackSide aura — additive glow so stars & cage bleed through */
           group.add(
             new THREE.Mesh(
               new THREE.SphereGeometry(8.5, 16, 16),
               new THREE.MeshPhongMaterial({
                 color: 0x4f46e5,
                 emissive: 0x4f46e5,
-                emissiveIntensity: 0.5,
+                emissiveIntensity: 1.2,
                 side: THREE.BackSide,
                 transparent: true,
-                opacity: 0.0,
+                opacity: 0.10,
+                blending: THREE.AdditiveBlending,
+                depthWrite: false,
               }),
             ),
           );
