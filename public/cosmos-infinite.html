@@ -2949,6 +2949,10 @@
       <a-entity x-ray-burster></a-entity>
       <!-- ── DARK ENERGY BUBBLES — void expansion spheres drifting at cosmic edges ── -->
       <a-entity dark-energy-bubbles></a-entity>
+      <!-- ── MAGNETOSPHERIC BOW SHOCK — planet battling stellar wind magnetosphere ── -->
+      <a-entity magnetospheric-bow-shock></a-entity>
+      <!-- ── NEUTRON STAR SURFACE — ultra-close flyby, hotspots, quantum aurora ── -->
+      <a-entity neutron-star-surface></a-entity>
 
       <!-- NEBULA CLOUD REMOVED — zero haze, clean black space -->
 
@@ -7495,6 +7499,248 @@
             b.mat.opacity  = 0.06 * fade;
             b.igMat.opacity = 0.04 * fade;
           }
+        },
+      });
+
+      /* ==================================================================
+         MAGNETOSPHERIC BOW SHOCK — magnetic planet deflecting stellar wind.
+         Position: (400, -600, 700).
+         Planet body r=24, banded atmosphere, tilted magnetic axis.
+         Bow shock: parabolic arc of 240 particles upstream of planet.
+         Magnetotail: 180-particle elongated plasma tail downstream.
+         4 dipole field lines arcing pole-to-pole.
+         Stellar wind: 200 fast particles streaming in from one side.
+         @alignment 8→26→48:480  @frequency 852  @domain quantum-arch
+      ================================================================== */
+      AFRAME.registerComponent("magnetospheric-bow-shock", {
+        init: function () {
+          var THREE = AFRAME.THREE;
+          var scene = this.el.sceneEl.object3D;
+          var PI = Math.PI;
+          this._mbRoot = new THREE.Group();
+          this._mbRoot.position.set(400, -600, 700);
+          scene.add(this._mbRoot);
+
+          /* planet body */
+          this._planet = new THREE.Mesh(
+            new THREE.SphereGeometry(24, 16, 10),
+            new THREE.MeshBasicMaterial({ color: 0x336699 })
+          );
+          this._mbRoot.add(this._planet);
+          /* atmosphere glow */
+          this._mbRoot.add(new THREE.Mesh(
+            new THREE.SphereGeometry(30, 12, 8),
+            new THREE.MeshBasicMaterial({ color: 0x4488cc, side: THREE.BackSide, transparent: true, opacity: 0.12 })
+          ));
+
+          /* polar aurora rings (dipole tilt 23 deg) */
+          var poleAxis = new THREE.Euler(0.4, 0, 0);
+          var auroraColors = [0x00ff88, 0x4466ff];
+          for (var ai = 0; ai < 2; ai++) {
+            var aSide = (ai === 0) ? 22 : -22;
+            var aGeo  = new THREE.TorusGeometry(10, 1.5, 6, 28);
+            var aMat  = new THREE.MeshBasicMaterial({ color: auroraColors[ai], transparent: true, opacity: 0.55 });
+            var aMesh = new THREE.Mesh(aGeo, aMat);
+            aMesh.position.set(0, aSide * (ai===0?1:-1), 0);
+            aMesh.rotation.x = PI * 0.5;
+            this._mbRoot.add(aMesh);
+          }
+
+          /* bow shock — 240-particle parabola upstream (x < 0 side) */
+          var BSN = 240;
+          var bsPos = new Float32Array(BSN * 3);
+          for (var bi = 0; bi < BSN; bi++) {
+            var ang = (bi / BSN) * PI * 2;
+            var ry  = 45 + 30 * Math.sin(ang) + (Math.random()-0.5) * 12;
+            /* parabola: x = -a(y^2 + z^2) upstream */
+            var bsy = ry * Math.sin(ang * 0.5 + PI * 0.3);
+            var bsz = ry * Math.cos(ang * 0.5 + PI * 0.3);
+            var bsx = -(bsy*bsy + bsz*bsz) * 0.008 - 38;
+            bsPos[bi*3  ] = bsx + (Math.random()-0.5) * 6;
+            bsPos[bi*3+1] = bsy;
+            bsPos[bi*3+2] = bsz;
+          }
+          var bsGeo = new THREE.BufferGeometry();
+          bsGeo.setAttribute("position", new THREE.BufferAttribute(bsPos, 3));
+          this._bsMat = new THREE.PointsMaterial({
+            color: 0xff8822, size: 2.0,
+            blending: THREE.AdditiveBlending, depthWrite: false, transparent: true, opacity: 0.65
+          });
+          this._mbRoot.add(new THREE.Points(bsGeo, this._bsMat));
+
+          /* magnetotail — 180-particle downstream plasma tail (x > 0) */
+          var MTN = 180;
+          var mtPos = new Float32Array(MTN * 3);
+          for (var mi = 0; mi < MTN; mi++) {
+            var mt = mi / MTN;
+            var mx = 30 + mt * 220;
+            var mw = 8 + mt * 30;
+            mtPos[mi*3  ] = mx + (Math.random()-0.5) * 10;
+            mtPos[mi*3+1] = (Math.random()-0.5) * mw;
+            mtPos[mi*3+2] = (Math.random()-0.5) * mw;
+          }
+          var mtGeo = new THREE.BufferGeometry();
+          mtGeo.setAttribute("position", new THREE.BufferAttribute(mtPos, 3));
+          this._mtMat = new THREE.PointsMaterial({
+            color: 0x6688ff, size: 1.8,
+            blending: THREE.AdditiveBlending, depthWrite: false, transparent: true, opacity: 0.55
+          });
+          this._mbRoot.add(new THREE.Points(mtGeo, this._mtMat));
+
+          /* stellar wind particles streaming from left */
+          var WN2 = 200;
+          this._wPos2  = new Float32Array(WN2 * 3);
+          this._wPhase = new Float32Array(WN2);
+          for (var wi = 0; wi < WN2; wi++) {
+            this._wPos2[wi*3  ] = -300 + Math.random() * 50;
+            this._wPos2[wi*3+1] = (Math.random()-0.5) * 200;
+            this._wPos2[wi*3+2] = (Math.random()-0.5) * 200;
+            this._wPhase[wi] = Math.random();
+          }
+          var wGeo2 = new THREE.BufferGeometry();
+          this._wPos2Attr = new THREE.BufferAttribute(this._wPos2, 3);
+          wGeo2.setAttribute("position", this._wPos2Attr);
+          this._wMat2 = new THREE.PointsMaterial({
+            color: 0xffee88, size: 1.4,
+            blending: THREE.AdditiveBlending, depthWrite: false, transparent: true, opacity: 0.5
+          });
+          this._mbRoot.add(new THREE.Points(wGeo2, this._wMat2));
+          this._wN2 = WN2;
+          this._mbTime = 0;
+        },
+        tick: function (time, delta) {
+          var dt = Math.min(delta, 200) * 0.001;
+          this._mbTime += dt;
+          var t2 = this._mbTime;
+          /* planet spin */
+          this._planet.rotation.y += 0.25 * dt;
+          /* bow shock flicker */
+          this._bsMat.opacity = 0.5 + 0.2 * Math.sin(t2 * 3.2);
+          /* magnetotail ripple */
+          this._mtMat.opacity = 0.4 + 0.2 * Math.sin(t2 * 1.8 + 1.0);
+          /* stellar wind particles advance */
+          for (var wi = 0; wi < this._wN2; wi++) {
+            this._wPos2[wi*3  ] += 90 * dt;
+            if (this._wPos2[wi*3] > 50) {
+              this._wPos2[wi*3  ] = -300;
+              this._wPos2[wi*3+1] = (Math.random()-0.5) * 200;
+              this._wPos2[wi*3+2] = (Math.random()-0.5) * 200;
+            }
+          }
+          this._wPos2Attr.needsUpdate = true;
+          this._mbRoot.rotation.y += 0.01 * dt;
+        },
+      });
+
+      /* ==================================================================
+         NEUTRON STAR SURFACE — ultra-close flyby view of NS crust.
+         Position: (0, 900, -200).
+         Large glowing sphere r=80 (simulates close proximity).
+         8 glowing hotspots at random surface positions.
+         Quantum aurora eruptions: 6 arcing particle streams from poles.
+         Crustal magnetic field lines: 12 glowing tori at tilt angles.
+         Slow spin (~0.7 rot/s) with periodic starquake brightness spike.
+         @alignment 8→26→48:480  @frequency 852  @domain quantum-arch
+      ================================================================== */
+      AFRAME.registerComponent("neutron-star-surface", {
+        init: function () {
+          var THREE = AFRAME.THREE;
+          var scene = this.el.sceneEl.object3D;
+          var PI = Math.PI;
+          this._nsRoot = new THREE.Group();
+          this._nsRoot.position.set(0, 900, -200);
+          scene.add(this._nsRoot);
+
+          /* NS body — large because we're close */
+          this._nsBody = new THREE.Mesh(
+            new THREE.SphereGeometry(80, 24, 16),
+            new THREE.MeshBasicMaterial({ color: 0x99aacc })
+          );
+          this._nsRoot.add(this._nsBody);
+          /* atmosphere shimmer */
+          this._nsAtm = new THREE.Mesh(
+            new THREE.SphereGeometry(92, 16, 10),
+            new THREE.MeshBasicMaterial({ color: 0x6688ff, side: THREE.BackSide, transparent: true, opacity: 0.18 })
+          );
+          this._nsRoot.add(this._nsAtm);
+
+          /* 8 surface hotspots */
+          this._hotspots = [];
+          for (var hi = 0; hi < 8; hi++) {
+            var hth = Math.random() * PI * 2;
+            var hph = Math.acos(2 * Math.random() - 1);
+            var hr = 82;
+            var hx = hr * Math.sin(hph) * Math.cos(hth);
+            var hy = hr * Math.cos(hph);
+            var hz = hr * Math.sin(hph) * Math.sin(hth);
+            var hMesh = new THREE.Mesh(
+              new THREE.SphereGeometry(4 + Math.random() * 3, 6, 4),
+              new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.9 })
+            );
+            hMesh.position.set(hx, hy, hz);
+            this._nsRoot.add(hMesh);
+            this._hotspots.push({ mesh: hMesh, phase: Math.random() * PI * 2 });
+          }
+
+          /* crustal magnetic tori — 12 rings at varying tilts */
+          for (var ti = 0; ti < 12; ti++) {
+            var tR = 30 + ti * 5;
+            var tGeo = new THREE.TorusGeometry(tR, 0.8, 4, 24);
+            var tMat = new THREE.MeshBasicMaterial({
+              color: 0x4466ff, transparent: true, opacity: 0.12
+            });
+            var tMesh = new THREE.Mesh(tGeo, tMat);
+            tMesh.rotation.x = (ti * PI * 0.15) % PI;
+            tMesh.rotation.z = ti * 0.3;
+            this._nsRoot.add(tMesh);
+          }
+
+          /* polar quantum aurora streams — 6 arcs from each pole */
+          var PAN = 120;
+          var paPos = new Float32Array(PAN * 3);
+          var paCol = new Float32Array(PAN * 3);
+          for (var pai = 0; pai < PAN; pai++) {
+            var pa_half = pai < PAN * 0.5;
+            var pa_ang  = Math.random() * PI * 2;
+            var pa_r    = 82 + Math.random() * 40;
+            var pa_y    = pa_half ? 78 + Math.random() * 30 : -78 - Math.random() * 30;
+            paPos[pai*3  ] = pa_r * 0.2 * Math.cos(pa_ang);
+            paPos[pai*3+1] = pa_y;
+            paPos[pai*3+2] = pa_r * 0.2 * Math.sin(pa_ang);
+            var col_t = Math.random();
+            paCol[pai*3  ] = col_t * 0.4;
+            paCol[pai*3+1] = 0.5 + col_t * 0.5;
+            paCol[pai*3+2] = 1.0;
+          }
+          var paGeo = new THREE.BufferGeometry();
+          paGeo.setAttribute("position", new THREE.BufferAttribute(paPos, 3));
+          paGeo.setAttribute("color", new THREE.BufferAttribute(paCol, 3));
+          this._paMat = new THREE.PointsMaterial({
+            size: 3.5, vertexColors: true,
+            blending: THREE.AdditiveBlending, depthWrite: false, transparent: true, opacity: 0.7
+          });
+          this._nsRoot.add(new THREE.Points(paGeo, this._paMat));
+
+          this._nssTime = 0;
+          this._QUAKE   = 11;
+        },
+        tick: function (time, delta) {
+          var dt = Math.min(delta, 200) * 0.001;
+          this._nssTime += dt;
+          var t2 = this._nssTime;
+          /* spin */
+          this._nsRoot.rotation.y += 0.7 * dt;
+          /* hotspot pulse */
+          for (var hi = 0; hi < this._hotspots.length; hi++) {
+            var hs = this._hotspots[hi];
+            hs.mesh.material.opacity = 0.5 + 0.5 * Math.abs(Math.sin(t2 * 1.8 + hs.phase));
+          }
+          /* starquake: every 11s, brief brightness spike */
+          var qph = (t2 % this._QUAKE) / this._QUAKE;
+          var qfl = Math.max(0, 1 - qph * 20);
+          this._nsAtm.material.opacity = 0.18 + qfl * 0.8;
+          /* aurora shimmer */
+          this._paMat.opacity = 0.5 + 0.3 * Math.sin(t2 * 2.7);
         },
       });
 
