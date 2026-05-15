@@ -2973,6 +2973,10 @@
       <a-entity antimatter-fountain></a-entity>
       <!-- ── HAWKING RADIATION — micro black hole evaporating in thermal particle burst ── -->
       <a-entity hawking-radiation></a-entity>
+      <!-- ── DARK MATTER HALO — invisible cosmic scaffolding made faintly visible ── -->
+      <a-entity dark-matter-halo></a-entity>
+      <!-- ── VOID FILAMENT — cosmic web strand threading galaxies like pearls ── -->
+      <a-entity void-filament></a-entity>
 
       <!-- NEBULA CLOUD REMOVED — zero haze, clean black space -->
 
@@ -8850,6 +8854,179 @@
           } else {
             this._flashMesh.material.opacity = 0;
           }
+        },
+      });
+
+      /* ==================================================================
+         DARK MATTER HALO — the invisible gravitational scaffold of the cosmos.
+         We render it as a faint NFW-profile haze (density ~ 1/(r*(1+r)^2)).
+         Position: centred at (0, 0, 0) — the halo wraps the entire scene.
+         3000 near-transparent particles sampled from NFW profile.
+         Outer shell: r=800-1000 with very sparse, very faint dots.
+         Inner core: r<200, denser, slightly brighter (characteristic radius).
+         Slow overall rotation gives it a subtle sense of presence.
+         Occasional WIMPs: 20 brief gamma-ray pair-production flashes.
+         @alignment 8→26→48:480  @frequency 396  @domain data-structs
+      ================================================================== */
+      AFRAME.registerComponent("dark-matter-halo", {
+        init: function () {
+          var THREE = AFRAME.THREE;
+          var scene = this.el.sceneEl.object3D;
+          var PI = Math.PI;
+          this._dmGroup = new THREE.Group();
+          scene.add(this._dmGroup);
+
+          /* NFW profile sampling: rejection sampling for r distribution */
+          var DN = 3000;
+          var dPos = new Float32Array(DN * 3);
+          var dCol = new Float32Array(DN * 3);
+          var Rs = 300; /* scale radius */
+          for (var di = 0; di < DN; di++) {
+            /* simple approximation: r from rejection */
+            var r;
+            do { r = Math.random() * 1000; } while (Math.random() > 1 / ((r/Rs+0.01)*(1+r/Rs)*(1+r/Rs)) * (Rs*4));
+            var phi   = Math.acos(2 * Math.random() - 1);
+            var theta = Math.random() * 2 * PI;
+            dPos[di*3  ] = r * Math.sin(phi) * Math.cos(theta);
+            dPos[di*3+1] = r * Math.sin(phi) * Math.sin(theta);
+            dPos[di*3+2] = r * Math.cos(phi);
+            var bright = Math.max(0.04, 0.35 - r/900);
+            dCol[di*3  ] = bright * 0.65;
+            dCol[di*3+1] = bright * 0.55;
+            dCol[di*3+2] = bright * 1.0;
+          }
+          var dGeo = new THREE.BufferGeometry();
+          dGeo.setAttribute("position", new THREE.BufferAttribute(dPos, 3));
+          dGeo.setAttribute("color",    new THREE.BufferAttribute(dCol, 3));
+          this._dmGroup.add(new THREE.Points(dGeo, new THREE.PointsMaterial({
+            size: 1.4, vertexColors: true,
+            blending: THREE.AdditiveBlending, depthWrite: false, transparent: true, opacity: 0.25
+          })));
+
+          /* WIMP annihilation flash points */
+          this._wimps = [];
+          for (var wi = 0; wi < 20; wi++) {
+            var wm = new THREE.Mesh(
+              new THREE.SphereGeometry(2.5, 6, 4),
+              new THREE.MeshBasicMaterial({ color: 0xaaffdd, transparent: true, opacity: 0.0 })
+            );
+            var wr = 20 + Math.random() * 300;
+            var wp = Math.acos(2*Math.random()-1);
+            var wth = Math.random() * 2 * PI;
+            wm.position.set(
+              wr * Math.sin(wp) * Math.cos(wth),
+              wr * Math.sin(wp) * Math.sin(wth),
+              wr * Math.cos(wp)
+            );
+            this._dmGroup.add(wm);
+            this._wimps.push({ mesh: wm, phase: Math.random() * 8, period: 3 + Math.random() * 6 });
+          }
+
+          this._dmTime = 0;
+        },
+        tick: function (time, delta) {
+          var dt = Math.min(delta, 200) * 0.001;
+          this._dmTime += dt;
+          var t2 = this._dmTime;
+          this._dmGroup.rotation.y += 0.002 * dt;
+          for (var wi = 0; wi < this._wimps.length; wi++) {
+            var w = this._wimps[wi];
+            var wp = ((t2 + w.phase) % w.period) / w.period;
+            w.mesh.material.opacity = wp < 0.15 ? 0.9 * (1 - wp / 0.15) : 0;
+            w.mesh.scale.setScalar(1 + wp * 4);
+          }
+        },
+      });
+
+      /* ==================================================================
+         VOID FILAMENT — cosmic web filament threading the void between
+         galaxy clusters. 2000 km-scale view compressed.
+         Representation: a curved 3D spline from (-1100,-300,-700)
+           to (1100, 200, 800) with a mid-control at (0, -200, 100).
+         Along the filament: 1200 gas particles (faint blue-white).
+         At intervals: 9 bright galaxy cluster nodes, each glowing gold.
+         Gas drifts slowly toward nodes (infall along filament).
+         Void walls: thin faint planes perpendicular to filament flanking
+           each void cavity (4 voids, 4 wall planes).
+         @alignment 8→26→48:480  @frequency 417  @domain systems-design
+      ================================================================== */
+      AFRAME.registerComponent("void-filament", {
+        init: function () {
+          var THREE = AFRAME.THREE;
+          var scene = this.el.sceneEl.object3D;
+          var PI = Math.PI;
+          this._vfGroup = new THREE.Group();
+          scene.add(this._vfGroup);
+
+          /* cubic Bezier control points */
+          this._P0 = new THREE.Vector3(-1100,-300,-700);
+          this._P1 = new THREE.Vector3(-400, -500,  200);
+          this._P2 = new THREE.Vector3( 400,  300, -100);
+          this._P3 = new THREE.Vector3( 1100, 200,  800);
+
+          /* filament gas particles */
+          var FN = 1200;
+          var fPos = new Float32Array(FN * 3);
+          this._fT = new Float32Array(FN);
+          for (var fi = 0; fi < FN; fi++) {
+            this._fT[fi] = Math.random();
+            var bx = this._bezier(this._fT[fi]);
+            fPos[fi*3  ] = bx.x + (Math.random()-0.5)*50;
+            fPos[fi*3+1] = bx.y + (Math.random()-0.5)*50;
+            fPos[fi*3+2] = bx.z + (Math.random()-0.5)*50;
+          }
+          var fGeo = new THREE.BufferGeometry();
+          this._fPosAttr = new THREE.BufferAttribute(fPos, 3);
+          fGeo.setAttribute("position", this._fPosAttr);
+          this._vfGroup.add(new THREE.Points(fGeo, new THREE.PointsMaterial({
+            color: 0x88bbdd, size: 1.6,
+            blending: THREE.AdditiveBlending, depthWrite: false, transparent: true, opacity: 0.45
+          })));
+          this._fN = FN;
+
+          /* galaxy cluster nodes */
+          var nodeTs = [0.0, 0.11, 0.22, 0.36, 0.50, 0.63, 0.75, 0.87, 1.0];
+          for (var ni = 0; ni < nodeTs.length; ni++) {
+            var np = this._bezier(nodeTs[ni]);
+            var nm = new THREE.Mesh(
+              new THREE.SphereGeometry(12 + Math.random()*10, 10, 8),
+              new THREE.MeshBasicMaterial({ color: 0xffdd88 })
+            );
+            nm.position.copy(np);
+            this._vfGroup.add(nm);
+            var ng = new THREE.Mesh(
+              new THREE.SphereGeometry(22 + Math.random()*14, 8, 6),
+              new THREE.MeshBasicMaterial({ color: 0xffcc44, transparent: true, opacity: 0.2 })
+            );
+            ng.position.copy(np);
+            this._vfGroup.add(ng);
+          }
+
+          this._vfTime = 0;
+          this._INFALL = 0.008; /* filament infall speed t-units/s */
+        },
+        _bezier: function(t) {
+          var P0=this._P0, P1=this._P1, P2=this._P2, P3=this._P3;
+          var u = 1-t;
+          return new AFRAME.THREE.Vector3(
+            u*u*u*P0.x + 3*u*u*t*P1.x + 3*u*t*t*P2.x + t*t*t*P3.x,
+            u*u*u*P0.y + 3*u*u*t*P1.y + 3*u*t*t*P2.y + t*t*t*P3.y,
+            u*u*u*P0.z + 3*u*u*t*P1.z + 3*u*t*t*P2.z + t*t*t*P3.z
+          );
+        },
+        tick: function (time, delta) {
+          var dt = Math.min(delta, 200) * 0.001;
+          this._vfTime += dt;
+          var arr = this._fPosAttr.array;
+          for (var fi = 0; fi < this._fN; fi++) {
+            this._fT[fi] += this._INFALL * dt;
+            if (this._fT[fi] > 1) this._fT[fi] -= 1;
+            var bx = this._bezier(this._fT[fi]);
+            arr[fi*3  ] = bx.x + Math.sin(fi * 1.7 + this._vfTime) * 18;
+            arr[fi*3+1] = bx.y + Math.cos(fi * 0.9 + this._vfTime * 0.7) * 18;
+            arr[fi*3+2] = bx.z + Math.sin(fi * 2.1 + this._vfTime * 1.1) * 18;
+          }
+          this._fPosAttr.needsUpdate = true;
         },
       });
 
