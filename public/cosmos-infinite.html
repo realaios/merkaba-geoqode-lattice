@@ -6554,20 +6554,20 @@
           this._speed    = 0.55;  /* tour units/s fraction per second */
           this._inWarp   = false;
 
-          /* ── warp tunnel: 110 peripheral streak-lines (softer, less blocking) ── */
-          var WN = 110;
+          /* ── warp tunnel: 22 subtle streaks (real star parallax does the work) ── */
+          var WN = 22;
           var wPos = new Float32Array(WN * 6); /* 2 verts/line */
           var wColArr = new Float32Array(WN * 6);
           for (var wi = 0; wi < WN; wi++) {
             var wth = Math.random() * PI * 2;
-            var wph = (Math.random() - 0.5) * PI * 0.72;
-            var wd  = 30 + Math.random() * 40;
+            var wph = (Math.random() - 0.5) * PI * 0.62;
+            var wd  = 28 + Math.random() * 36;
             var wx0 = wd * Math.cos(wph) * Math.cos(wth);
             var wy0 = wd * Math.sin(wph);
-            var wz0 = -(14 + Math.random() * 6);
-            var wx1 = wx0 + (Math.random() - 0.5) * 2;
-            var wy1 = wy0 + (Math.random() - 0.5) * 2;
-            var wz1 = wz0 - (8 + Math.random() * 12);
+            var wz0 = -(12 + Math.random() * 5);
+            var wx1 = wx0 + (Math.random() - 0.5) * 1.5;
+            var wy1 = wy0 + (Math.random() - 0.5) * 1.5;
+            var wz1 = wz0 - (4 + Math.random() * 6);
             wPos[wi*6  ] = wx0; wPos[wi*6+1] = wy0; wPos[wi*6+2] = wz0;
             wPos[wi*6+3] = wx1; wPos[wi*6+4] = wy1; wPos[wi*6+5] = wz1;
             var blue = 0.4 + 0.6 * Math.random();
@@ -6616,7 +6616,11 @@
           var dt = Math.min(delta, 200) * 0.001;
           this._hsfTime += dt;
           if (!this._active) {
-            this._warpMat.opacity = Math.max(0, this._warpMat.opacity - dt * 2);
+            /* subtle streak flash while pilot is SHIFT-boosting */
+            var boostOp = (window._cosmosPilotBoost === true)
+              ? 0.09 * Math.abs(Math.sin(this._hsfTime * 7))
+              : 0;
+            this._warpMat.opacity += (boostOp - this._warpMat.opacity) * Math.min(1, dt * 5);
             return;
           }
           var cam = this.el.sceneEl.camera;
@@ -6663,7 +6667,7 @@
 
           /* warp tunnel: brief mid-warp flash (t 0.32–0.68) with sine envelope */
           var warpT = (t > 0.32 && t < 0.68) ? Math.sin((t - 0.32) / 0.36 * Math.PI) : 0;
-          var targetOp = warpT * 0.28;
+          var targetOp = warpT * 0.13;
           this._warpMat.opacity += (targetOp - this._warpMat.opacity) * 8 * dt;
 
           /* pulsate tunnel scale */
@@ -9038,64 +9042,114 @@
          Auto-levels bank when keys released.  Pauses during H/U auto-tours.
          @alignment 8→26→48:480  @frequency 528  @domain code-eng
       ================================================================== */
+      /* ==================================================================
+         COSMOS PILOT CONTROLS — Space-fighter flight model.
+         W / Up    = forward thrust (toward camera facing direction).
+         S / Down  = reverse thrust / brake.
+         A / Left  = yaw left  (turn ship, banking enhances rate).
+         D / Right = yaw right.
+         Q         = roll left  (bank left).
+         E         = roll right (bank right).
+         Shift     = HYPERBOOST (4.5x speed, warp lines flash).
+         Space     = hard brake.
+         Mouse drag handled by look-controls (pitch + fine yaw).
+         Sets window._cosmosPilotBoost for hyperspeed-flight to read.
+         @alignment 8→26→48:480  @frequency 528  @domain code-eng
+      ================================================================== */
       AFRAME.registerComponent("cosmos-pilot-controls", {
         init: function () {
-          this._keys = {};
-          this._yaw  = 0;
-          this._roll = 0;
-          this._synced = false;
+          /* Disable default WASD — we own all movement */
+          var camEl = document.querySelector("a-camera");
+          if (camEl) camEl.setAttribute("wasd-controls", "enabled: false");
+
+          this._keys  = {};
+          this._speed = 0;     /* current speed (units/s, + = forward) */
+          this._roll  = 0;     /* bank angle (radians) */
+          window._cosmosPilotBoost = false; /* read by hyperspeed-flight */
+
           var self = this;
-          this._onKeyDown = function (e) { self._keys[e.code] = true; };
-          this._onKeyUp   = function (e) { self._keys[e.code] = false; };
-          document.addEventListener("keydown", this._onKeyDown);
-          document.addEventListener("keyup",   this._onKeyUp);
+          this._kd = function (e) { self._keys[e.code] = true; };
+          this._ku = function (e) { self._keys[e.code] = false; };
+          window.addEventListener("keydown", this._kd);
+          window.addEventListener("keyup",   this._ku);
         },
+
+        remove: function () {
+          window.removeEventListener("keydown", this._kd);
+          window.removeEventListener("keyup",   this._ku);
+        },
+
         tick: function (time, delta) {
-          var dt = Math.min(delta, 200) * 0.001;
-          var k = this._keys;
+          var dt    = Math.min(delta, 200) * 0.001;
+          var K     = this._keys;
+          var THREE = AFRAME.THREE;
+
           var rigEl = document.getElementById("cameraRig");
           var camEl = document.querySelector("a-camera");
           if (!rigEl || !camEl) return;
           var rigObj = rigEl.object3D;
           var camObj = camEl.object3D;
 
-          /* Pause during H-hyperspeed tour or U-universe-tour */
-          var hsf = document.querySelector("[hyperspeed-flight]");
-          var hsfActive = hsf && hsf.components && hsf.components["hyperspeed-flight"] && hsf.components["hyperspeed-flight"]._active;
-          var utt = document.querySelector("[universe-tour]");
-          var uttActive = utt && utt.components && utt.components["universe-tour"] && utt.components["universe-tour"]._active;
-          if (hsfActive || uttActive) {
-            /* sync our yaw accumulator so we resume smoothly */
-            this._yaw = rigObj.rotation.y;
-            this._roll = 0;
-            return;
+          /* Pause during universe-tour (H-tour moves rig automatically) */
+          var uttEl = document.querySelector("[universe-tour]");
+          var uttActive = uttEl && uttEl.components["universe-tour"] &&
+                          uttEl.components["universe-tour"]._active;
+
+          /* ── BOOST FLAG (shared with hyperspeed-flight for warp flash) ──── */
+          var boost = !!(K["ShiftLeft"] || K["ShiftRight"]);
+          window._cosmosPilotBoost = boost;
+
+          /* ── SPEED ───────────────────────────────────────────────────────── */
+          var BASE      = 1800;                 /* normal cruise limit (u/s) */
+          var LIMIT     = BASE * (boost ? 4.5 : 1);
+          var BACK_LIM  = BASE * 0.35;          /* reverse speed cap */
+
+          if (!uttActive) {
+            if (K["KeyW"] || K["ArrowUp"]) {
+              this._speed += LIMIT * 3.0 * dt;  /* accelerate forward */
+            } else if (K["KeyS"] || K["ArrowDown"]) {
+              this._speed -= BASE * 2.0 * dt;   /* decelerate / reverse */
+            } else if (K["Space"]) {
+              this._speed *= Math.max(0, 1 - dt * 9); /* hard brake */
+            } else {
+              this._speed *= Math.max(0, 1 - dt * 0.55); /* cruise drag */
+            }
+          } else {
+            this._speed *= Math.max(0, 1 - dt * 2.5); /* coast to stop on tour */
+          }
+          this._speed = Math.max(-BACK_LIM, Math.min(LIMIT, this._speed));
+
+          /* ── MOVE along camera-facing direction (pitch + yaw combined) ────── */
+          if (Math.abs(this._speed) > 0.5) {
+            var fwd = new THREE.Vector3(0, 0, -1);
+            fwd.applyQuaternion(camObj.getWorldQuaternion(new THREE.Quaternion()));
+            rigObj.position.addScaledVector(fwd, this._speed * dt);
           }
 
-          var YAW_SPEED  = 1.1;  /* rad/s */
-          var ROLL_SPEED = 0.9;  /* rad/s */
-          var ROLL_DECAY = 3.0;  /* auto-level speed when key released */
-
-          /* Q = turn left, E = turn right */
-          if (k["KeyQ"]) this._yaw += YAW_SPEED * dt;
-          if (k["KeyE"]) this._yaw -= YAW_SPEED * dt;
-
-          /* Z = bank left, C = bank right */
-          if (k["KeyZ"]) this._roll += ROLL_SPEED * dt;
-          if (k["KeyC"]) this._roll -= ROLL_SPEED * dt;
-          if (!k["KeyZ"] && !k["KeyC"]) {
-            this._roll *= Math.max(0, 1 - ROLL_DECAY * dt);
-            if (Math.abs(this._roll) < 0.001) this._roll = 0;
+          /* ── YAW (A/D) — rotate rig around world Y; bank enhances rate ───── */
+          if (!uttActive) {
+            var bankBoost   = 1.0 + Math.abs(Math.sin(this._roll)) * 1.3;
+            var speedFactor = Math.min(1.0, Math.abs(this._speed) / BASE);
+            var yawRate     = 0.85 * bankBoost * (0.25 + speedFactor * 0.75);
+            var UP = new THREE.Vector3(0, 1, 0);
+            if (K["KeyA"] || K["ArrowLeft"])  rigObj.rotateOnWorldAxis(UP,  yawRate * dt);
+            if (K["KeyD"] || K["ArrowRight"]) rigObj.rotateOnWorldAxis(UP, -yawRate * dt);
           }
-          this._roll = Math.max(-1.1, Math.min(1.1, this._roll));
 
-          /* Apply: yaw on rig Y, bank on rig Z (look-controls handles camera pitch/yaw) */
-          rigObj.rotation.order = "YXZ";
-          rigObj.rotation.y = this._yaw;
-          rigObj.rotation.z = this._roll;
-        },
-        remove: function () {
-          document.removeEventListener("keydown", this._onKeyDown);
-          document.removeEventListener("keyup",   this._onKeyUp);
+          /* ── ROLL (Q/E) — applied to camera Z (look-controls owns X/Y) ───── */
+          if (!uttActive) {
+            var rollRate = 1.5;
+            if (K["KeyQ"]) this._roll += rollRate * dt;
+            if (K["KeyE"]) this._roll -= rollRate * dt;
+            if (!K["KeyQ"] && !K["KeyE"]) {
+              this._roll *= Math.max(0, 1 - dt * 0.75); /* gradual auto-level */
+            }
+            this._roll = Math.max(-Math.PI * 0.88, Math.min(Math.PI * 0.88, this._roll));
+          } else {
+            this._roll *= Math.max(0, 1 - dt * 2);
+          }
+          /* camera Z not touched by look-controls — safe to own it for roll */
+          camObj.rotation.z = this._roll;
         }
       });
 
@@ -11327,8 +11381,7 @@
           /* Pilot guide (fades via CSS animation after 12 s) */
           var pg = mkDiv("pilot-guide");
           pg.textContent =
-            "WASD FLY  \u2022  SHIFT BOOST  \u2022  SCROLL ZOOM" +
-            "  \u2022  AIM + ENTER WARP  \u2022  DRAG LOOK";
+            "W=thrust  \u2022  A/D=turn  \u2022  Q/E=roll  \u2022  SHIFT=boost  \u2022  DRAG=aim  \u2022  ENTER=warp";
 
           /* ── WASD boost via Shift: dynamically changes wasd-controls accel ── */
           var camEl = document.querySelector("a-camera");
@@ -11437,22 +11490,7 @@
             );
           }, 250);
 
-          /* ── Banking roll: 20\u00b0 clockwise toward direction of motion ── */
-          /* A/D strafe  \u2192  roll \u00b120\u00b0 (clockwise = right side tilts down).         */
-          /* Smooth lerp at ~20fps; returns to level when keys released.        */
-          var _bankRig = document.getElementById("cameraRig");
-          var _bankAngle = 0; /* current roll in degrees */
-          var _DEG2RAD = Math.PI / 180;
-          setInterval(function () {
-            if (!_bankRig || !_bankRig.object3D) return;
-            var _right = heldKeys["KeyD"] || heldKeys["ArrowRight"] ? 1 : 0;
-            var _left = heldKeys["KeyA"] || heldKeys["ArrowLeft"] ? 1 : 0;
-            var _target =
-              (_right - _left) * -20; /* -20 = cw right, +20 = ccw left */
-            _bankAngle += (_target - _bankAngle) * 0.12;
-            if (Math.abs(_bankAngle) < 0.05) _bankAngle = 0;
-            _bankRig.object3D.rotation.z = _bankAngle * _DEG2RAD;
-          }, 50);
+          /* banking roll handled by cosmos-pilot-controls Q/E */
 
           /* Scroll-to-zoom handled globally by initGeoNav() */
 
