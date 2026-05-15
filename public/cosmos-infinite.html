@@ -2959,7 +2959,7 @@
             var th = Math.random() * Math.PI * 2;
             var ph = Math.acos(2 * Math.random() - 1);
             pos[i * 3] = Math.sin(ph) * Math.cos(th) * r;
-            pos[i * 3 + 1] = Math.cos(ph) * r;
+            pos[i * 3 + 1] = Math.cos(ph) * r * 0.12;
             pos[i * 3 + 2] = Math.sin(ph) * Math.sin(th) * r;
             var v = 0.55 + Math.random() * 0.45;
             var tk = Math.random();
