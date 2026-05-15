@@ -2921,6 +2921,8 @@
       <a-entity cosmic-wormhole></a-entity>
       <!-- ── MAGNETAR — hyper-magnetic neutron star with dipole field arcs ── -->
       <a-entity cosmic-magnetar></a-entity>
+      <!-- ── STELLAR NURSERY — molecular cloud with 5 proto-star cores ── -->
+      <a-entity stellar-nursery></a-entity>
 
       <!-- NEBULA CLOUD REMOVED — zero haze, clean black space -->
 
@@ -6089,6 +6091,121 @@
 
           /* beam pulse */
           this._beamMat.opacity = 0.5 + 0.45 * Math.abs(Math.sin(this._mtTime * 4));
+        },
+      });
+
+      /* ====================================================================
+         STELLAR NURSERY — dense star-forming molecular cloud.
+         Position: (-400, 150, -500).
+         Components:
+           - Outer molecular cloud: 3500 particles, dark rust-red/maroon
+               Irregular ellipsoid, densely packed.
+           - 5 proto-star cores: glowing yellow-orange spheres inside cloud
+               Each core has a compact protostellar disk (flat torus)
+           - Inner accretion jets: short 60-unit particle bursts from each proto-star
+           - Cloud slowly rotates and breathes (opacity 9s cycle)
+         @alignment 8→26→48:480  @frequency 963  @domain systems-design
+      ==================================================================== */
+      AFRAME.registerComponent("stellar-nursery", {
+        init: function () {
+          var THREE = AFRAME.THREE;
+          var scene = this.el.sceneEl.object3D;
+          var PI = Math.PI;
+
+          this._snRoot = new THREE.Group();
+          this._snRoot.position.set(-400, 150, -500);
+          scene.add(this._snRoot);
+
+          /* ── molecular cloud ── */
+          var CN = 3500;
+          var cPos = new Float32Array(CN * 3);
+          var cCol = new Float32Array(CN * 3);
+          for (var i = 0; i < CN; i++) {
+            var theta = Math.random() * PI * 2;
+            var phi   = Math.acos(2 * Math.random() - 1);
+            var r     = Math.pow(Math.random(), 0.6) * 150;
+            cPos[i*3  ] = r * 1.3 * Math.sin(phi) * Math.cos(theta);
+            cPos[i*3+1] = r * 0.8 * Math.cos(phi);
+            cPos[i*3+2] = r * Math.sin(phi) * Math.sin(theta);
+            var heat = Math.random();
+            cCol[i*3  ] = 0.45 + 0.2 * heat;
+            cCol[i*3+1] = 0.08 + 0.12 * heat;
+            cCol[i*3+2] = 0.15 + 0.1 * heat;
+          }
+          var cGeo = new THREE.BufferGeometry();
+          cGeo.setAttribute("position", new THREE.BufferAttribute(cPos, 3));
+          cGeo.setAttribute("color",    new THREE.BufferAttribute(cCol, 3));
+          this._cloudMat = new THREE.PointsMaterial({
+            size: 3.5, vertexColors: true,
+            blending: THREE.AdditiveBlending, depthWrite: false, transparent: true, opacity: 0.50
+          });
+          this._cloud = new THREE.Points(cGeo, this._cloudMat);
+          this._snRoot.add(this._cloud);
+
+          /* ── 5 proto-star cores with disk and jets ── */
+          var PROTO_POS = [
+            [ 30,  20, -10],
+            [-45, -15,  30],
+            [ 60, -30,  20],
+            [-20,  50, -40],
+            [ 10, -60,  55],
+          ];
+          this._protoStars = [];
+          for (var pi = 0; pi < PROTO_POS.length; pi++) {
+            var pg = new THREE.Group();
+            pg.position.set(PROTO_POS[pi][0], PROTO_POS[pi][1], PROTO_POS[pi][2]);
+            this._snRoot.add(pg);
+
+            /* core */
+            var starR = 4 + Math.random() * 4;
+            var coreMesh = new THREE.Mesh(
+              new THREE.SphereGeometry(starR, 10, 8),
+              new THREE.MeshBasicMaterial({ color: 0xffcc44 })
+            );
+            pg.add(coreMesh);
+
+            /* protostellar disk (flat torus, tilted) */
+            var diskR = starR * 3.5;
+            var disk = new THREE.Mesh(
+              new THREE.TorusGeometry(diskR, 1.0, 4, 36),
+              new THREE.MeshBasicMaterial({ color: 0xff8822, transparent: true, opacity: 0.55, depthWrite: false })
+            );
+            disk.rotation.x = PI / 2;
+            disk.rotation.z = (Math.random() - 0.5) * 0.8;
+            pg.add(disk);
+
+            /* accretion micro-jet (both poles, 28 particles each) */
+            for (var jdir = -1; jdir <= 1; jdir += 2) {
+              var JN = 28;
+              var jPos = new Float32Array(JN * 3);
+              for (var ji = 0; ji < JN; ji++) {
+                jPos[ji*3  ] = (Math.random() - 0.5) * 2;
+                jPos[ji*3+1] = jdir * (starR + (ji / JN) * 55);
+                jPos[ji*3+2] = (Math.random() - 0.5) * 2;
+              }
+              var jGeo = new THREE.BufferGeometry();
+              jGeo.setAttribute("position", new THREE.BufferAttribute(jPos, 3));
+              pg.add(new THREE.Points(jGeo, new THREE.PointsMaterial({ color: 0xffee88, size: 1.5, blending: THREE.AdditiveBlending, depthWrite: false, transparent: true, opacity: 0.75 })));
+            }
+
+            this._protoStars.push({ group: pg, disk: disk, speed: 0.08 + Math.random() * 0.12 });
+          }
+
+          this._snTime = 0;
+        },
+
+        tick: function (time, delta) {
+          var dt = Math.min(delta, 200) * 0.001;
+          this._snTime += dt;
+
+          /* cloud breathing + slow rotation */
+          this._cloudMat.opacity = 0.35 + 0.18 * Math.sin(this._snTime * 0.7);
+          this._cloud.rotation.y += 0.004 * dt;
+
+          /* proto-star disk spin */
+          for (var i = 0; i < this._protoStars.length; i++) {
+            this._protoStars[i].disk.rotation.z += this._protoStars[i].speed * dt;
+          }
         },
       });
 
