@@ -1,22 +1,22 @@
-'use strict';
+"use strict";
 // inject-w17.cjs — Wave 17: warp-tunnel + cosmic-heartbeat
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
-const FILE = path.join(__dirname, 'public', 'cosmos-infinite.html');
-let html = fs.readFileSync(FILE, 'utf8');
+const FILE = path.join(__dirname, "public", "cosmos-infinite.html");
+let html = fs.readFileSync(FILE, "utf8");
 
 // Idempotency check
 if (html.includes('AFRAME.registerComponent("warp-tunnel"')) {
-  console.log('Wave 17 already injected — skipping');
+  console.log("Wave 17 already injected — skipping");
   process.exit(0);
 }
 
-const usesCRLF = html.includes('\r\n');
-if (usesCRLF) html = html.replace(/\r\n/g, '\n');
+const usesCRLF = html.includes("\r\n");
+if (usesCRLF) html = html.replace(/\r\n/g, "\n");
 
 // ─── HTML entities (inject after magnetar-flare entity) ───────────────────
-const HTML_ANCHOR = '      <a-entity magnetar-flare></a-entity>';
+const HTML_ANCHOR = "      <a-entity magnetar-flare></a-entity>";
 const HTML_INSERT = `      <a-entity magnetar-flare></a-entity>
       <!-- ── WARP TUNNEL — hyperspace vortex corridor through folded space ── -->
       <a-entity warp-tunnel></a-entity>
@@ -248,7 +248,7 @@ const JS_INSERT = `
 
 html = html.replace(JS_ANCHOR, JS_INSERT);
 
-if (usesCRLF) html = html.replace(/\n/g, '\r\n');
-fs.writeFileSync(FILE, html, 'utf8');
-const lineCount = html.split(usesCRLF ? '\r\n' : '\n').length;
-console.log('Wave 17 injected! Lines:', lineCount);
+if (usesCRLF) html = html.replace(/\n/g, "\r\n");
+fs.writeFileSync(FILE, html, "utf8");
+const lineCount = html.split(usesCRLF ? "\r\n" : "\n").length;
+console.log("Wave 17 injected! Lines:", lineCount);

@@ -1,21 +1,21 @@
-'use strict';
+"use strict";
 // inject-w41.cjs — Wave 41: interstellar-comet-outburst + magnetar-atmosphere
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
-const FILE = path.join(__dirname, 'public', 'cosmos-infinite.html');
-let html = fs.readFileSync(FILE, 'utf8');
+const FILE = path.join(__dirname, "public", "cosmos-infinite.html");
+let html = fs.readFileSync(FILE, "utf8");
 
 if (html.includes('AFRAME.registerComponent("interstellar-comet-outburst"')) {
-  console.log('Wave 41 already injected — skipping');
+  console.log("Wave 41 already injected — skipping");
   process.exit(0);
 }
 
-const usesCRLF = html.includes('\r\n');
-if (usesCRLF) html = html.replace(/\r\n/g, '\n');
+const usesCRLF = html.includes("\r\n");
+if (usesCRLF) html = html.replace(/\r\n/g, "\n");
 
 // ─── HTML entities ────────────────────────────────────────────────────────
-const HTML_ANCHOR = '      <a-entity stellar-mass-bh-binary></a-entity>';
+const HTML_ANCHOR = "      <a-entity stellar-mass-bh-binary></a-entity>";
 const HTML_INSERT = `      <a-entity stellar-mass-bh-binary></a-entity>
       <!-- ── INTERSTELLAR COMET OUTBURST — 2I/Borisov-style visitor with outburst jets ── -->
       <a-entity interstellar-comet-outburst></a-entity>
@@ -310,7 +310,7 @@ const JS_INSERT = `
 
 html = html.replace(JS_ANCHOR, JS_INSERT);
 
-if (usesCRLF) html = html.replace(/\n/g, '\r\n');
-fs.writeFileSync(FILE, html, 'utf8');
-const lineCount = html.split(usesCRLF ? '\r\n' : '\n').length;
-console.log('Wave 41 injected! Lines:', lineCount);
+if (usesCRLF) html = html.replace(/\n/g, "\r\n");
+fs.writeFileSync(FILE, html, "utf8");
+const lineCount = html.split(usesCRLF ? "\r\n" : "\n").length;
+console.log("Wave 41 injected! Lines:", lineCount);

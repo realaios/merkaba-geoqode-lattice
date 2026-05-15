@@ -1,21 +1,21 @@
-'use strict';
+"use strict";
 // inject-w19.cjs — Wave 19: solar-prominence + cosmic-tsunami
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
-const FILE = path.join(__dirname, 'public', 'cosmos-infinite.html');
-let html = fs.readFileSync(FILE, 'utf8');
+const FILE = path.join(__dirname, "public", "cosmos-infinite.html");
+let html = fs.readFileSync(FILE, "utf8");
 
 if (html.includes('AFRAME.registerComponent("solar-prominence"')) {
-  console.log('Wave 19 already injected — skipping');
+  console.log("Wave 19 already injected — skipping");
   process.exit(0);
 }
 
-const usesCRLF = html.includes('\r\n');
-if (usesCRLF) html = html.replace(/\r\n/g, '\n');
+const usesCRLF = html.includes("\r\n");
+if (usesCRLF) html = html.replace(/\r\n/g, "\n");
 
 // ─── HTML entities ────────────────────────────────────────────────────────
-const HTML_ANCHOR = '      <a-entity plasma-vortex></a-entity>';
+const HTML_ANCHOR = "      <a-entity plasma-vortex></a-entity>";
 const HTML_INSERT = `      <a-entity plasma-vortex></a-entity>
       <!-- ── SOLAR PROMINENCE — vast arch of magnetised plasma above a star ── -->
       <a-entity solar-prominence></a-entity>
@@ -259,7 +259,7 @@ const JS_INSERT = `
 
 html = html.replace(JS_ANCHOR, JS_INSERT);
 
-if (usesCRLF) html = html.replace(/\n/g, '\r\n');
-fs.writeFileSync(FILE, html, 'utf8');
-const lineCount = html.split(usesCRLF ? '\r\n' : '\n').length;
-console.log('Wave 19 injected! Lines:', lineCount);
+if (usesCRLF) html = html.replace(/\n/g, "\r\n");
+fs.writeFileSync(FILE, html, "utf8");
+const lineCount = html.split(usesCRLF ? "\r\n" : "\n").length;
+console.log("Wave 19 injected! Lines:", lineCount);

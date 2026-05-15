@@ -1,21 +1,21 @@
-'use strict';
+"use strict";
 // inject-w31.cjs — Wave 31: magnetotail-current-sheet + superbubble-wall
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
-const FILE = path.join(__dirname, 'public', 'cosmos-infinite.html');
-let html = fs.readFileSync(FILE, 'utf8');
+const FILE = path.join(__dirname, "public", "cosmos-infinite.html");
+let html = fs.readFileSync(FILE, "utf8");
 
 if (html.includes('AFRAME.registerComponent("magnetotail-current-sheet"')) {
-  console.log('Wave 31 already injected — skipping');
+  console.log("Wave 31 already injected — skipping");
   process.exit(0);
 }
 
-const usesCRLF = html.includes('\r\n');
-if (usesCRLF) html = html.replace(/\r\n/g, '\n');
+const usesCRLF = html.includes("\r\n");
+if (usesCRLF) html = html.replace(/\r\n/g, "\n");
 
 // ─── HTML entities ────────────────────────────────────────────────────────
-const HTML_ANCHOR = '      <a-entity cosmic-shear-flow></a-entity>';
+const HTML_ANCHOR = "      <a-entity cosmic-shear-flow></a-entity>";
 const HTML_INSERT = `      <a-entity cosmic-shear-flow></a-entity>
       <!-- ── MAGNETOTAIL CURRENT SHEET — Earth's stretched night-side magnetotail ── -->
       <a-entity magnetotail-current-sheet></a-entity>
@@ -320,7 +320,7 @@ const JS_INSERT = `
 
 html = html.replace(JS_ANCHOR, JS_INSERT);
 
-if (usesCRLF) html = html.replace(/\n/g, '\r\n');
-fs.writeFileSync(FILE, html, 'utf8');
-const lineCount = html.split(usesCRLF ? '\r\n' : '\n').length;
-console.log('Wave 31 injected! Lines:', lineCount);
+if (usesCRLF) html = html.replace(/\n/g, "\r\n");
+fs.writeFileSync(FILE, html, "utf8");
+const lineCount = html.split(usesCRLF ? "\r\n" : "\n").length;
+console.log("Wave 31 injected! Lines:", lineCount);

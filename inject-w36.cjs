@@ -1,21 +1,21 @@
-'use strict';
+"use strict";
 // inject-w36.cjs — Wave 36: stellar-coronal-loop + planetary-nebula-halo
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
-const FILE = path.join(__dirname, 'public', 'cosmos-infinite.html');
-let html = fs.readFileSync(FILE, 'utf8');
+const FILE = path.join(__dirname, "public", "cosmos-infinite.html");
+let html = fs.readFileSync(FILE, "utf8");
 
 if (html.includes('AFRAME.registerComponent("stellar-coronal-loop"')) {
-  console.log('Wave 36 already injected — skipping');
+  console.log("Wave 36 already injected — skipping");
   process.exit(0);
 }
 
-const usesCRLF = html.includes('\r\n');
-if (usesCRLF) html = html.replace(/\r\n/g, '\n');
+const usesCRLF = html.includes("\r\n");
+if (usesCRLF) html = html.replace(/\r\n/g, "\n");
 
 // ─── HTML entities ────────────────────────────────────────────────────────
-const HTML_ANCHOR = '      <a-entity cometary-plasma-tail></a-entity>';
+const HTML_ANCHOR = "      <a-entity cometary-plasma-tail></a-entity>";
 const HTML_INSERT = `      <a-entity cometary-plasma-tail></a-entity>
       <!-- ── STELLAR CORONAL LOOP — hot plasma arc above an active star surface ── -->
       <a-entity stellar-coronal-loop></a-entity>
@@ -273,7 +273,7 @@ const JS_INSERT = `
 
 html = html.replace(JS_ANCHOR, JS_INSERT);
 
-if (usesCRLF) html = html.replace(/\n/g, '\r\n');
-fs.writeFileSync(FILE, html, 'utf8');
-const lineCount = html.split(usesCRLF ? '\r\n' : '\n').length;
-console.log('Wave 36 injected! Lines:', lineCount);
+if (usesCRLF) html = html.replace(/\n/g, "\r\n");
+fs.writeFileSync(FILE, html, "utf8");
+const lineCount = html.split(usesCRLF ? "\r\n" : "\n").length;
+console.log("Wave 36 injected! Lines:", lineCount);

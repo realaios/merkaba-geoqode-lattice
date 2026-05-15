@@ -1,21 +1,21 @@
-'use strict';
+"use strict";
 // inject-w44.cjs — Wave 44: cosmic-string-network + starburst-superwind
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
-const FILE = path.join(__dirname, 'public', 'cosmos-infinite.html');
-let html = fs.readFileSync(FILE, 'utf8');
+const FILE = path.join(__dirname, "public", "cosmos-infinite.html");
+let html = fs.readFileSync(FILE, "utf8");
 
 if (html.includes('AFRAME.registerComponent("cosmic-string-network"')) {
-  console.log('Wave 44 already injected — skipping');
+  console.log("Wave 44 already injected — skipping");
   process.exit(0);
 }
 
-const usesCRLF = html.includes('\r\n');
-if (usesCRLF) html = html.replace(/\r\n/g, '\n');
+const usesCRLF = html.includes("\r\n");
+if (usesCRLF) html = html.replace(/\r\n/g, "\n");
 
 // ─── HTML entities ────────────────────────────────────────────────────────
-const HTML_ANCHOR = '      <a-entity galactic-center-minispiral></a-entity>';
+const HTML_ANCHOR = "      <a-entity galactic-center-minispiral></a-entity>";
 const HTML_INSERT = `      <a-entity galactic-center-minispiral></a-entity>
       <!-- ── COSMIC STRING NETWORK — topological defect network from phase transition ── -->
       <a-entity cosmic-string-network></a-entity>
@@ -277,7 +277,7 @@ const JS_INSERT = `
 
 html = html.replace(JS_ANCHOR, JS_INSERT);
 
-if (usesCRLF) html = html.replace(/\n/g, '\r\n');
-fs.writeFileSync(FILE, html, 'utf8');
-const lineCount = html.split(usesCRLF ? '\r\n' : '\n').length;
-console.log('Wave 44 injected! Lines:', lineCount);
+if (usesCRLF) html = html.replace(/\n/g, "\r\n");
+fs.writeFileSync(FILE, html, "utf8");
+const lineCount = html.split(usesCRLF ? "\r\n" : "\n").length;
+console.log("Wave 44 injected! Lines:", lineCount);

@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 /**
  * inject-w15.cjs — wave 15: pulsar-beacon + dark-matter-web
  *
@@ -17,58 +17,70 @@
  *   Position: centred near (0, 0, 0) but spans ~±600 units.
  *   The nodes pulse with a subtle Merkaba resonance frequency (72 Hz visual).
  */
-const fs   = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
-const FILE = path.join(__dirname, 'public', 'cosmos-infinite.html');
-let html = fs.readFileSync(FILE, 'utf8');
-const usesCRLF = html.includes('\r\n');
-if (usesCRLF) html = html.replace(/\r\n/g, '\n');
+const FILE = path.join(__dirname, "public", "cosmos-infinite.html");
+let html = fs.readFileSync(FILE, "utf8");
+const usesCRLF = html.includes("\r\n");
+if (usesCRLF) html = html.replace(/\r\n/g, "\n");
 
 let ok = 0;
 const errors = [];
 
 /* ── 1. HTML ENTITIES ───────────────────────────────────────────────────── */
-const HTML_ANCHOR = '      <a-entity rogue-planet></a-entity>';
+const HTML_ANCHOR = "      <a-entity rogue-planet></a-entity>";
 
-if (html.includes('<a-entity pulsar-beacon>')) {
-  console.log('[1/2] HTML entities already present'); ok++;
+if (html.includes("<a-entity pulsar-beacon>")) {
+  console.log("[1/2] HTML entities already present");
+  ok++;
 } else if (html.includes(HTML_ANCHOR)) {
   html = html.replace(
     HTML_ANCHOR,
-    HTML_ANCHOR + '\n' +
-    '      <!-- \u2500\u2500 PULSAR BEACON \u2014 neutron star rotating gamma-ray beam \u2500\u2500 -->\n' +
-    '      <a-entity pulsar-beacon></a-entity>\n' +
-    '      <!-- \u2500\u2500 DARK MATTER WEB \u2014 cosmic large-scale structure filaments \u2500\u2500 -->\n' +
-    '      <a-entity dark-matter-web></a-entity>',
+    HTML_ANCHOR +
+      "\n" +
+      "      <!-- \u2500\u2500 PULSAR BEACON \u2014 neutron star rotating gamma-ray beam \u2500\u2500 -->\n" +
+      "      <a-entity pulsar-beacon></a-entity>\n" +
+      "      <!-- \u2500\u2500 DARK MATTER WEB \u2014 cosmic large-scale structure filaments \u2500\u2500 -->\n" +
+      "      <a-entity dark-matter-web></a-entity>",
   );
-  ok++; console.log('[1/2] HTML entities injected');
+  ok++;
+  console.log("[1/2] HTML entities injected");
 } else {
-  errors.push('[1/2] FAIL \u2014 HTML anchor not found (rogue-planet)');
+  errors.push("[1/2] FAIL \u2014 HTML anchor not found (rogue-planet)");
 }
 
 /* ── 2. JS COMPONENTS ───────────────────────────────────────────────────── */
 const JS_ANCHOR = '      AFRAME.registerComponent("asteroid-belt", {';
 
 if (html.includes('AFRAME.registerComponent("pulsar-beacon",')) {
-  console.log('[2/2] JS already present'); ok++;
+  console.log("[2/2] JS already present");
+  ok++;
 } else if (html.includes(JS_ANCHOR)) {
   html = html.replace(JS_ANCHOR, buildComponents() + JS_ANCHOR);
-  ok++; console.log('[2/2] pulsar-beacon + dark-matter-web JS injected');
+  ok++;
+  console.log("[2/2] pulsar-beacon + dark-matter-web JS injected");
 } else {
-  errors.push('[2/2] FAIL \u2014 JS anchor not found (asteroid-belt)');
+  errors.push("[2/2] FAIL \u2014 JS anchor not found (asteroid-belt)");
 }
 
 /* ── summary ────────────────────────────────────────────────────────────── */
-console.log('\nDone! ok=' + ok + '/2, errors=' + errors.length);
-if (errors.length) { errors.forEach(function(e){ console.error(e); }); process.exit(1); }
-const lineCount = html.split('\n').length;
-if (usesCRLF) html = html.replace(/\n/g, '\r\n');
-fs.writeFileSync(FILE, html, 'utf8');
-console.log('File written: ' + lineCount + ' lines');
+console.log("\nDone! ok=" + ok + "/2, errors=" + errors.length);
+if (errors.length) {
+  errors.forEach(function (e) {
+    console.error(e);
+  });
+  process.exit(1);
+}
+const lineCount = html.split("\n").length;
+if (usesCRLF) html = html.replace(/\n/g, "\r\n");
+fs.writeFileSync(FILE, html, "utf8");
+console.log("File written: " + lineCount + " lines");
 
 /* ══════════════════════════════════════════════════════════════════════════ */
-function buildComponents() { return pulsarBeacon() + darkMatterWeb(); }
+function buildComponents() {
+  return pulsarBeacon() + darkMatterWeb();
+}
 
 function pulsarBeacon() {
   return `      /* ==================================================================

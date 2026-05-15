@@ -1,21 +1,21 @@
-'use strict';
+"use strict";
 // inject-w30.cjs — Wave 30: globular-cluster-core + cosmic-shear-flow
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
-const FILE = path.join(__dirname, 'public', 'cosmos-infinite.html');
-let html = fs.readFileSync(FILE, 'utf8');
+const FILE = path.join(__dirname, "public", "cosmos-infinite.html");
+let html = fs.readFileSync(FILE, "utf8");
 
 if (html.includes('AFRAME.registerComponent("globular-cluster-core"')) {
-  console.log('Wave 30 already injected — skipping');
+  console.log("Wave 30 already injected — skipping");
   process.exit(0);
 }
 
-const usesCRLF = html.includes('\r\n');
-if (usesCRLF) html = html.replace(/\r\n/g, '\n');
+const usesCRLF = html.includes("\r\n");
+if (usesCRLF) html = html.replace(/\r\n/g, "\n");
 
 // ─── HTML entities ────────────────────────────────────────────────────────
-const HTML_ANCHOR = '      <a-entity plasma-double-layer></a-entity>';
+const HTML_ANCHOR = "      <a-entity plasma-double-layer></a-entity>";
 const HTML_INSERT = `      <a-entity plasma-double-layer></a-entity>
       <!-- ── GLOBULAR CLUSTER CORE — ancient dense stellar sphere with core-collapse dynamics ── -->
       <a-entity globular-cluster-core></a-entity>
@@ -261,7 +261,7 @@ const JS_INSERT = `
 
 html = html.replace(JS_ANCHOR, JS_INSERT);
 
-if (usesCRLF) html = html.replace(/\n/g, '\r\n');
-fs.writeFileSync(FILE, html, 'utf8');
-const lineCount = html.split(usesCRLF ? '\r\n' : '\n').length;
-console.log('Wave 30 injected! Lines:', lineCount);
+if (usesCRLF) html = html.replace(/\n/g, "\r\n");
+fs.writeFileSync(FILE, html, "utf8");
+const lineCount = html.split(usesCRLF ? "\r\n" : "\n").length;
+console.log("Wave 30 injected! Lines:", lineCount);

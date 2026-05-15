@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 /**
  * inject-w12.cjs — wave 12: interstellar-shock + magnetohydrodynamic-jet
  *
@@ -12,59 +12,64 @@
  *   Helix: 300 pts per pole (neon blue-violet, rotating). Flux rings: 5 per pole.
  *   Hot spot knots at jet termination points (shock diamond structure).
  */
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
-const FILE = path.join(__dirname, 'public', 'cosmos-infinite.html');
-let html = fs.readFileSync(FILE, 'utf8');
-const usesCRLF = html.includes('\r\n');
-if (usesCRLF) html = html.replace(/\r\n/g, '\n');
+const FILE = path.join(__dirname, "public", "cosmos-infinite.html");
+let html = fs.readFileSync(FILE, "utf8");
+const usesCRLF = html.includes("\r\n");
+if (usesCRLF) html = html.replace(/\r\n/g, "\n");
 
 let ok = 0;
 const errors = [];
 
 /* ── 1. HTML ENTITIES ──────────────────────────────────────────────────────── */
-const HTML_ANCHOR = '      <a-entity cosmic-tornado></a-entity>';
+const HTML_ANCHOR = "      <a-entity cosmic-tornado></a-entity>";
 
-if (html.includes('<a-entity interstellar-shock>')) {
-  console.log('[1/2] HTML entities already present');
+if (html.includes("<a-entity interstellar-shock>")) {
+  console.log("[1/2] HTML entities already present");
   ok++;
 } else if (html.includes(HTML_ANCHOR)) {
   html = html.replace(
     HTML_ANCHOR,
     HTML_ANCHOR +
-      '\n      <!-- \u2500\u2500 INTERSTELLAR SHOCK \u2014 runaway O/B star bow shock + turbulent wake \u2500\u2500 -->' +
-      '\n      <a-entity interstellar-shock></a-entity>' +
-      '\n      <!-- \u2500\u2500 MHD JET \u2014 bipolar helical magnetohydrodynamic jet from AGN \u2500\u2500 -->' +
-      '\n      <a-entity magnetohydrodynamic-jet></a-entity>',
+      "\n      <!-- \u2500\u2500 INTERSTELLAR SHOCK \u2014 runaway O/B star bow shock + turbulent wake \u2500\u2500 -->" +
+      "\n      <a-entity interstellar-shock></a-entity>" +
+      "\n      <!-- \u2500\u2500 MHD JET \u2014 bipolar helical magnetohydrodynamic jet from AGN \u2500\u2500 -->" +
+      "\n      <a-entity magnetohydrodynamic-jet></a-entity>",
   );
   ok++;
-  console.log('[1/2] HTML entities injected');
+  console.log("[1/2] HTML entities injected");
 } else {
-  errors.push('[1/2] FAIL \u2014 HTML anchor not found (cosmic-tornado entity)');
+  errors.push(
+    "[1/2] FAIL \u2014 HTML anchor not found (cosmic-tornado entity)",
+  );
 }
 
 /* ── 2. JS COMPONENTS ──────────────────────────────────────────────────────── */
 const JS_ANCHOR = '      AFRAME.registerComponent("asteroid-belt", {';
 
 if (html.includes('AFRAME.registerComponent("interstellar-shock",')) {
-  console.log('[2/2] JS components already present');
+  console.log("[2/2] JS components already present");
   ok++;
 } else if (html.includes(JS_ANCHOR)) {
   html = html.replace(JS_ANCHOR, buildComponents() + JS_ANCHOR);
   ok++;
-  console.log('[2/2] interstellar-shock + magnetohydrodynamic-jet JS injected');
+  console.log("[2/2] interstellar-shock + magnetohydrodynamic-jet JS injected");
 } else {
-  errors.push('[2/2] FAIL \u2014 JS anchor not found (asteroid-belt)');
+  errors.push("[2/2] FAIL \u2014 JS anchor not found (asteroid-belt)");
 }
 
 /* ── summary ───────────────────────────────────────────────────────────────── */
-console.log('\nDone! ok=' + ok + '/2, errors=' + errors.length);
-if (errors.length) { errors.forEach(e => console.error(e)); process.exit(1); }
-const lineCount = html.split('\n').length;
-if (usesCRLF) html = html.replace(/\n/g, '\r\n');
-fs.writeFileSync(FILE, html, 'utf8');
-console.log('File written: ' + lineCount + ' lines');
+console.log("\nDone! ok=" + ok + "/2, errors=" + errors.length);
+if (errors.length) {
+  errors.forEach((e) => console.error(e));
+  process.exit(1);
+}
+const lineCount = html.split("\n").length;
+if (usesCRLF) html = html.replace(/\n/g, "\r\n");
+fs.writeFileSync(FILE, html, "utf8");
+console.log("File written: " + lineCount + " lines");
 
 /* ══════════════════════════════════════════════════════════════════════════ */
 function buildComponents() {

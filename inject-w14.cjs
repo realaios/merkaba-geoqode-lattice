@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 /**
  * inject-w14.cjs — wave 14: quasar-lens + rogue-planet
  *
@@ -16,55 +16,65 @@
  *   Trailing heat plume (200 IR particles slowly drifting).
  *   Slowly tumbling as it drifts.
  */
-const fs   = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
-const FILE = path.join(__dirname, 'public', 'cosmos-infinite.html');
-let html = fs.readFileSync(FILE, 'utf8');
-const usesCRLF = html.includes('\r\n');
-if (usesCRLF) html = html.replace(/\r\n/g, '\n');
+const FILE = path.join(__dirname, "public", "cosmos-infinite.html");
+let html = fs.readFileSync(FILE, "utf8");
+const usesCRLF = html.includes("\r\n");
+if (usesCRLF) html = html.replace(/\r\n/g, "\n");
 
 let ok = 0;
 const errors = [];
 
 /* ── 1. HTML ENTITIES ──────────────────────────────────────────────────────── */
-const HTML_ANCHOR = '      <a-entity merkaba-starship></a-entity>';
+const HTML_ANCHOR = "      <a-entity merkaba-starship></a-entity>";
 
-if (html.includes('<a-entity quasar-lens>')) {
-  console.log('[1/2] HTML entities already present'); ok++;
+if (html.includes("<a-entity quasar-lens>")) {
+  console.log("[1/2] HTML entities already present");
+  ok++;
 } else if (html.includes(HTML_ANCHOR)) {
   html = html.replace(
     HTML_ANCHOR,
-    HTML_ANCHOR + '\n' +
-    '      <!-- \u2500\u2500 QUASAR LENS \u2014 blazing quasar with gravitational Einstein-ring lensing \u2500\u2500 -->\n' +
-    '      <a-entity quasar-lens></a-entity>\n' +
-    '      <!-- \u2500\u2500 ROGUE PLANET \u2014 lightless drifting world with IR glow + micro-moon \u2500\u2500 -->\n' +
-    '      <a-entity rogue-planet></a-entity>',
+    HTML_ANCHOR +
+      "\n" +
+      "      <!-- \u2500\u2500 QUASAR LENS \u2014 blazing quasar with gravitational Einstein-ring lensing \u2500\u2500 -->\n" +
+      "      <a-entity quasar-lens></a-entity>\n" +
+      "      <!-- \u2500\u2500 ROGUE PLANET \u2014 lightless drifting world with IR glow + micro-moon \u2500\u2500 -->\n" +
+      "      <a-entity rogue-planet></a-entity>",
   );
-  ok++; console.log('[1/2] HTML entities injected');
+  ok++;
+  console.log("[1/2] HTML entities injected");
 } else {
-  errors.push('[1/2] FAIL \u2014 HTML anchor not found (merkaba-starship)');
+  errors.push("[1/2] FAIL \u2014 HTML anchor not found (merkaba-starship)");
 }
 
 /* ── 2. JS COMPONENTS ──────────────────────────────────────────────────────── */
 const JS_ANCHOR = '      AFRAME.registerComponent("asteroid-belt", {';
 
 if (html.includes('AFRAME.registerComponent("quasar-lens",')) {
-  console.log('[2/2] JS already present'); ok++;
+  console.log("[2/2] JS already present");
+  ok++;
 } else if (html.includes(JS_ANCHOR)) {
   html = html.replace(JS_ANCHOR, buildComponents() + JS_ANCHOR);
-  ok++; console.log('[2/2] quasar-lens + rogue-planet JS injected');
+  ok++;
+  console.log("[2/2] quasar-lens + rogue-planet JS injected");
 } else {
-  errors.push('[2/2] FAIL \u2014 JS anchor not found (asteroid-belt)');
+  errors.push("[2/2] FAIL \u2014 JS anchor not found (asteroid-belt)");
 }
 
 /* ── summary ─────────────────────────────────────────────────────────────── */
-console.log('\nDone! ok=' + ok + '/2, errors=' + errors.length);
-if (errors.length) { errors.forEach(function(e){ console.error(e); }); process.exit(1); }
-const lineCount = html.split('\n').length;
-if (usesCRLF) html = html.replace(/\n/g, '\r\n');
-fs.writeFileSync(FILE, html, 'utf8');
-console.log('File written: ' + lineCount + ' lines');
+console.log("\nDone! ok=" + ok + "/2, errors=" + errors.length);
+if (errors.length) {
+  errors.forEach(function (e) {
+    console.error(e);
+  });
+  process.exit(1);
+}
+const lineCount = html.split("\n").length;
+if (usesCRLF) html = html.replace(/\n/g, "\r\n");
+fs.writeFileSync(FILE, html, "utf8");
+console.log("File written: " + lineCount + " lines");
 
 /* ═══════════════════════════════════════════════════════════════════════════ */
 function buildComponents() {

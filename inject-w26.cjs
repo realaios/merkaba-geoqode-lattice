@@ -1,21 +1,21 @@
-'use strict';
+"use strict";
 // inject-w26.cjs — Wave 26: einstein-ring + cosmic-dust-lane
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
-const FILE = path.join(__dirname, 'public', 'cosmos-infinite.html');
-let html = fs.readFileSync(FILE, 'utf8');
+const FILE = path.join(__dirname, "public", "cosmos-infinite.html");
+let html = fs.readFileSync(FILE, "utf8");
 
 if (html.includes('AFRAME.registerComponent("einstein-ring"')) {
-  console.log('Wave 26 already injected — skipping');
+  console.log("Wave 26 already injected — skipping");
   process.exit(0);
 }
 
-const usesCRLF = html.includes('\r\n');
-if (usesCRLF) html = html.replace(/\r\n/g, '\n');
+const usesCRLF = html.includes("\r\n");
+if (usesCRLF) html = html.replace(/\r\n/g, "\n");
 
 // ─── HTML entities ────────────────────────────────────────────────────────
-const HTML_ANCHOR = '      <a-entity stellar-bow-shock></a-entity>';
+const HTML_ANCHOR = "      <a-entity stellar-bow-shock></a-entity>";
 const HTML_INSERT = `      <a-entity stellar-bow-shock></a-entity>
       <!-- ── EINSTEIN RING — perfect gravitational lensing arc around a massive lens ── -->
       <a-entity einstein-ring></a-entity>
@@ -283,7 +283,7 @@ const JS_INSERT = `
 
 html = html.replace(JS_ANCHOR, JS_INSERT);
 
-if (usesCRLF) html = html.replace(/\n/g, '\r\n');
-fs.writeFileSync(FILE, html, 'utf8');
-const lineCount = html.split(usesCRLF ? '\r\n' : '\n').length;
-console.log('Wave 26 injected! Lines:', lineCount);
+if (usesCRLF) html = html.replace(/\n/g, "\r\n");
+fs.writeFileSync(FILE, html, "utf8");
+const lineCount = html.split(usesCRLF ? "\r\n" : "\n").length;
+console.log("Wave 26 injected! Lines:", lineCount);
