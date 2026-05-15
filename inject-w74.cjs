@@ -1,20 +1,20 @@
-'use strict';
+"use strict";
 // inject-w74.cjs — Wave 74: cosmic-lensing-caustic-web + stellar-chromosphere-spicule-forest
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
-const FILE = path.join(__dirname, 'public', 'cosmos-infinite.html');
-let html = fs.readFileSync(FILE, 'utf8');
+const FILE = path.join(__dirname, "public", "cosmos-infinite.html");
+let html = fs.readFileSync(FILE, "utf8");
 
 if (html.includes('AFRAME.registerComponent("cosmic-lensing-caustic-web"')) {
-  console.log('Wave 74 already injected — skipping');
+  console.log("Wave 74 already injected — skipping");
   process.exit(0);
 }
 
-const usesCRLF = html.includes('\r\n');
-if (usesCRLF) html = html.replace(/\r\n/g, '\n');
+const usesCRLF = html.includes("\r\n");
+if (usesCRLF) html = html.replace(/\r\n/g, "\n");
 
-const HTML_ANCHOR = '      <a-entity cosmic-dust-devil-tower></a-entity>';
+const HTML_ANCHOR = "      <a-entity cosmic-dust-devil-tower></a-entity>";
 const HTML_INSERT = `      <a-entity cosmic-dust-devil-tower></a-entity>
       <!-- ── COSMIC LENSING CAUSTIC WEB — gravitational focusing ridges ── -->
       <a-entity cosmic-lensing-caustic-web></a-entity>
@@ -225,7 +225,7 @@ const JS_INSERT = `
 
 html = html.replace(JS_ANCHOR, JS_INSERT);
 
-if (usesCRLF) html = html.replace(/\n/g, '\r\n');
-fs.writeFileSync(FILE, html, 'utf8');
-const lineCount = html.split(usesCRLF ? '\r\n' : '\n').length;
-console.log('Wave 74 injected! Lines:', lineCount);
+if (usesCRLF) html = html.replace(/\n/g, "\r\n");
+fs.writeFileSync(FILE, html, "utf8");
+const lineCount = html.split(usesCRLF ? "\r\n" : "\n").length;
+console.log("Wave 74 injected! Lines:", lineCount);

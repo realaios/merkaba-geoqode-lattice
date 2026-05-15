@@ -1,20 +1,23 @@
-'use strict';
+"use strict";
 // inject-w122.cjs — Wave 122: cosmic-z-pinch-sausage-instability + stellar-flare-ribbon-sweep
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
-const FILE = path.join(__dirname, 'public', 'cosmos-infinite.html');
-let html = fs.readFileSync(FILE, 'utf8');
+const FILE = path.join(__dirname, "public", "cosmos-infinite.html");
+let html = fs.readFileSync(FILE, "utf8");
 
-if (html.includes('AFRAME.registerComponent("cosmic-z-pinch-sausage-instability"')) {
-  console.log('Wave 122 already injected — skipping');
+if (
+  html.includes('AFRAME.registerComponent("cosmic-z-pinch-sausage-instability"')
+) {
+  console.log("Wave 122 already injected — skipping");
   process.exit(0);
 }
 
-const usesCRLF = html.includes('\r\n');
-if (usesCRLF) html = html.replace(/\r\n/g, '\n');
+const usesCRLF = html.includes("\r\n");
+if (usesCRLF) html = html.replace(/\r\n/g, "\n");
 
-const HTML_ANCHOR = '      <a-entity stellar-post-flare-loop-arcade></a-entity>';
+const HTML_ANCHOR =
+  "      <a-entity stellar-post-flare-loop-arcade></a-entity>";
 const HTML_INSERT = `      <a-entity stellar-post-flare-loop-arcade></a-entity>
       <!-- ── COSMIC Z-PINCH SAUSAGE INSTABILITY — m=0 pinch mode necking a current-carrying plasma column ── -->
       <a-entity cosmic-z-pinch-sausage-instability></a-entity>
@@ -157,7 +160,7 @@ const JS_INSERT = `
 
 html = html.replace(JS_ANCHOR, JS_INSERT);
 
-if (usesCRLF) html = html.replace(/\n/g, '\r\n');
-fs.writeFileSync(FILE, html, 'utf8');
-const lineCount = html.split(usesCRLF ? '\r\n' : '\n').length;
-console.log('Wave 122 injected! Lines:', lineCount);
+if (usesCRLF) html = html.replace(/\n/g, "\r\n");
+fs.writeFileSync(FILE, html, "utf8");
+const lineCount = html.split(usesCRLF ? "\r\n" : "\n").length;
+console.log("Wave 122 injected! Lines:", lineCount);

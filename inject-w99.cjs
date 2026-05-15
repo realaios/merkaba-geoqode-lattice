@@ -1,20 +1,21 @@
-'use strict';
+"use strict";
 // inject-w99.cjs — Wave 99: cosmic-gyrosynchrotron-arc + stellar-acoustic-running-wave
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
-const FILE = path.join(__dirname, 'public', 'cosmos-infinite.html');
-let html = fs.readFileSync(FILE, 'utf8');
+const FILE = path.join(__dirname, "public", "cosmos-infinite.html");
+let html = fs.readFileSync(FILE, "utf8");
 
 if (html.includes('AFRAME.registerComponent("cosmic-gyrosynchrotron-arc"')) {
-  console.log('Wave 99 already injected — skipping');
+  console.log("Wave 99 already injected — skipping");
   process.exit(0);
 }
 
-const usesCRLF = html.includes('\r\n');
-if (usesCRLF) html = html.replace(/\r\n/g, '\n');
+const usesCRLF = html.includes("\r\n");
+if (usesCRLF) html = html.replace(/\r\n/g, "\n");
 
-const HTML_ANCHOR = '      <a-entity stellar-photospheric-granule-mosaic></a-entity>';
+const HTML_ANCHOR =
+  "      <a-entity stellar-photospheric-granule-mosaic></a-entity>";
 const HTML_INSERT = `      <a-entity stellar-photospheric-granule-mosaic></a-entity>
       <!-- ── COSMIC GYROSYNCHROTRON ARC — mildly relativistic gyrosynchrotron radiation arc ── -->
       <a-entity cosmic-gyrosynchrotron-arc></a-entity>
@@ -159,7 +160,7 @@ const JS_INSERT = `
 
 html = html.replace(JS_ANCHOR, JS_INSERT);
 
-if (usesCRLF) html = html.replace(/\n/g, '\r\n');
-fs.writeFileSync(FILE, html, 'utf8');
-const lineCount = html.split(usesCRLF ? '\r\n' : '\n').length;
-console.log('Wave 99 injected! Lines:', lineCount);
+if (usesCRLF) html = html.replace(/\n/g, "\r\n");
+fs.writeFileSync(FILE, html, "utf8");
+const lineCount = html.split(usesCRLF ? "\r\n" : "\n").length;
+console.log("Wave 99 injected! Lines:", lineCount);

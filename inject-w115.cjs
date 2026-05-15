@@ -1,20 +1,21 @@
-'use strict';
+"use strict";
 // inject-w115.cjs — Wave 115: cosmic-firehose-plasma-wave + stellar-ellerman-bomb-burst
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
-const FILE = path.join(__dirname, 'public', 'cosmos-infinite.html');
-let html = fs.readFileSync(FILE, 'utf8');
+const FILE = path.join(__dirname, "public", "cosmos-infinite.html");
+let html = fs.readFileSync(FILE, "utf8");
 
 if (html.includes('AFRAME.registerComponent("cosmic-firehose-plasma-wave"')) {
-  console.log('Wave 115 already injected — skipping');
+  console.log("Wave 115 already injected — skipping");
   process.exit(0);
 }
 
-const usesCRLF = html.includes('\r\n');
-if (usesCRLF) html = html.replace(/\r\n/g, '\n');
+const usesCRLF = html.includes("\r\n");
+if (usesCRLF) html = html.replace(/\r\n/g, "\n");
 
-const HTML_ANCHOR = '      <a-entity stellar-prominence-tornado-vortex></a-entity>';
+const HTML_ANCHOR =
+  "      <a-entity stellar-prominence-tornado-vortex></a-entity>";
 const HTML_INSERT = `      <a-entity stellar-prominence-tornado-vortex></a-entity>
       <!-- ── COSMIC FIREHOSE PLASMA WAVE — kinetic firehose instability waves on a hot magnetized beam ── -->
       <a-entity cosmic-firehose-plasma-wave></a-entity>
@@ -165,7 +166,7 @@ const JS_INSERT = `
 
 html = html.replace(JS_ANCHOR, JS_INSERT);
 
-if (usesCRLF) html = html.replace(/\n/g, '\r\n');
-fs.writeFileSync(FILE, html, 'utf8');
-const lineCount = html.split(usesCRLF ? '\r\n' : '\n').length;
-console.log('Wave 115 injected! Lines:', lineCount);
+if (usesCRLF) html = html.replace(/\n/g, "\r\n");
+fs.writeFileSync(FILE, html, "utf8");
+const lineCount = html.split(usesCRLF ? "\r\n" : "\n").length;
+console.log("Wave 115 injected! Lines:", lineCount);

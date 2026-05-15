@@ -1,20 +1,23 @@
-'use strict';
+"use strict";
 // inject-w110.cjs — Wave 110: cosmic-kelvin-helmholtz-cat-eye + stellar-sunspot-umbra-darkening
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
-const FILE = path.join(__dirname, 'public', 'cosmos-infinite.html');
-let html = fs.readFileSync(FILE, 'utf8');
+const FILE = path.join(__dirname, "public", "cosmos-infinite.html");
+let html = fs.readFileSync(FILE, "utf8");
 
-if (html.includes('AFRAME.registerComponent("cosmic-kelvin-helmholtz-cat-eye"')) {
-  console.log('Wave 110 already injected — skipping');
+if (
+  html.includes('AFRAME.registerComponent("cosmic-kelvin-helmholtz-cat-eye"')
+) {
+  console.log("Wave 110 already injected — skipping");
   process.exit(0);
 }
 
-const usesCRLF = html.includes('\r\n');
-if (usesCRLF) html = html.replace(/\r\n/g, '\n');
+const usesCRLF = html.includes("\r\n");
+if (usesCRLF) html = html.replace(/\r\n/g, "\n");
 
-const HTML_ANCHOR = '      <a-entity stellar-magnetoconvection-flux-sheet></a-entity>';
+const HTML_ANCHOR =
+  "      <a-entity stellar-magnetoconvection-flux-sheet></a-entity>";
 const HTML_INSERT = `      <a-entity stellar-magnetoconvection-flux-sheet></a-entity>
       <!-- ── COSMIC KELVIN-HELMHOLTZ CAT-EYE — KH billow cat-eye vortex roll-up at a shear interface ── -->
       <a-entity cosmic-kelvin-helmholtz-cat-eye></a-entity>
@@ -156,7 +159,7 @@ const JS_INSERT = `
 
 html = html.replace(JS_ANCHOR, JS_INSERT);
 
-if (usesCRLF) html = html.replace(/\n/g, '\r\n');
-fs.writeFileSync(FILE, html, 'utf8');
-const lineCount = html.split(usesCRLF ? '\r\n' : '\n').length;
-console.log('Wave 110 injected! Lines:', lineCount);
+if (usesCRLF) html = html.replace(/\n/g, "\r\n");
+fs.writeFileSync(FILE, html, "utf8");
+const lineCount = html.split(usesCRLF ? "\r\n" : "\n").length;
+console.log("Wave 110 injected! Lines:", lineCount);

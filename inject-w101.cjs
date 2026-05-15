@@ -1,20 +1,23 @@
-'use strict';
+"use strict";
 // inject-w101.cjs — Wave 101: cosmic-pinch-instability-column + stellar-oscillatory-convection-plume
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
-const FILE = path.join(__dirname, 'public', 'cosmos-infinite.html');
-let html = fs.readFileSync(FILE, 'utf8');
+const FILE = path.join(__dirname, "public", "cosmos-infinite.html");
+let html = fs.readFileSync(FILE, "utf8");
 
-if (html.includes('AFRAME.registerComponent("cosmic-pinch-instability-column"')) {
-  console.log('Wave 101 already injected — skipping');
+if (
+  html.includes('AFRAME.registerComponent("cosmic-pinch-instability-column"')
+) {
+  console.log("Wave 101 already injected — skipping");
   process.exit(0);
 }
 
-const usesCRLF = html.includes('\r\n');
-if (usesCRLF) html = html.replace(/\r\n/g, '\n');
+const usesCRLF = html.includes("\r\n");
+if (usesCRLF) html = html.replace(/\r\n/g, "\n");
 
-const HTML_ANCHOR = '      <a-entity stellar-turbulent-cascade-plume></a-entity>';
+const HTML_ANCHOR =
+  "      <a-entity stellar-turbulent-cascade-plume></a-entity>";
 const HTML_INSERT = `      <a-entity stellar-turbulent-cascade-plume></a-entity>
       <!-- ── COSMIC PINCH INSTABILITY COLUMN — Z-pinch column with sausage kink modes ── -->
       <a-entity cosmic-pinch-instability-column></a-entity>
@@ -149,7 +152,7 @@ const JS_INSERT = `
 
 html = html.replace(JS_ANCHOR, JS_INSERT);
 
-if (usesCRLF) html = html.replace(/\n/g, '\r\n');
-fs.writeFileSync(FILE, html, 'utf8');
-const lineCount = html.split(usesCRLF ? '\r\n' : '\n').length;
-console.log('Wave 101 injected! Lines:', lineCount);
+if (usesCRLF) html = html.replace(/\n/g, "\r\n");
+fs.writeFileSync(FILE, html, "utf8");
+const lineCount = html.split(usesCRLF ? "\r\n" : "\n").length;
+console.log("Wave 101 injected! Lines:", lineCount);

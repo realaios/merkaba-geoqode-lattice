@@ -1,20 +1,20 @@
-'use strict';
+"use strict";
 // inject-w65.cjs — Wave 65: cosmic-dust-spiral-arm + binary-pulsar-periastron-advance
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
-const FILE = path.join(__dirname, 'public', 'cosmos-infinite.html');
-let html = fs.readFileSync(FILE, 'utf8');
+const FILE = path.join(__dirname, "public", "cosmos-infinite.html");
+let html = fs.readFileSync(FILE, "utf8");
 
 if (html.includes('AFRAME.registerComponent("cosmic-dust-spiral-arm"')) {
-  console.log('Wave 65 already injected — skipping');
+  console.log("Wave 65 already injected — skipping");
   process.exit(0);
 }
 
-const usesCRLF = html.includes('\r\n');
-if (usesCRLF) html = html.replace(/\r\n/g, '\n');
+const usesCRLF = html.includes("\r\n");
+if (usesCRLF) html = html.replace(/\r\n/g, "\n");
 
-const HTML_ANCHOR = '      <a-entity stellar-tidal-oscillation></a-entity>';
+const HTML_ANCHOR = "      <a-entity stellar-tidal-oscillation></a-entity>";
 const HTML_INSERT = `      <a-entity stellar-tidal-oscillation></a-entity>
       <!-- ── COSMIC DUST SPIRAL ARM — interstellar dust lanes in a spiral arm ── -->
       <a-entity cosmic-dust-spiral-arm></a-entity>
@@ -230,7 +230,7 @@ const JS_INSERT = `
 
 html = html.replace(JS_ANCHOR, JS_INSERT);
 
-if (usesCRLF) html = html.replace(/\n/g, '\r\n');
-fs.writeFileSync(FILE, html, 'utf8');
-const lineCount = html.split(usesCRLF ? '\r\n' : '\n').length;
-console.log('Wave 65 injected! Lines:', lineCount);
+if (usesCRLF) html = html.replace(/\n/g, "\r\n");
+fs.writeFileSync(FILE, html, "utf8");
+const lineCount = html.split(usesCRLF ? "\r\n" : "\n").length;
+console.log("Wave 65 injected! Lines:", lineCount);

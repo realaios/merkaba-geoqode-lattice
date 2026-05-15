@@ -1,20 +1,25 @@
-'use strict';
+"use strict";
 // inject-w102.cjs — Wave 102: cosmic-anisotropic-diffusion-filament + stellar-subsurface-shear-band
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
-const FILE = path.join(__dirname, 'public', 'cosmos-infinite.html');
-let html = fs.readFileSync(FILE, 'utf8');
+const FILE = path.join(__dirname, "public", "cosmos-infinite.html");
+let html = fs.readFileSync(FILE, "utf8");
 
-if (html.includes('AFRAME.registerComponent("cosmic-anisotropic-diffusion-filament"')) {
-  console.log('Wave 102 already injected — skipping');
+if (
+  html.includes(
+    'AFRAME.registerComponent("cosmic-anisotropic-diffusion-filament"',
+  )
+) {
+  console.log("Wave 102 already injected — skipping");
   process.exit(0);
 }
 
-const usesCRLF = html.includes('\r\n');
-if (usesCRLF) html = html.replace(/\r\n/g, '\n');
+const usesCRLF = html.includes("\r\n");
+if (usesCRLF) html = html.replace(/\r\n/g, "\n");
 
-const HTML_ANCHOR = '      <a-entity stellar-oscillatory-convection-plume></a-entity>';
+const HTML_ANCHOR =
+  "      <a-entity stellar-oscillatory-convection-plume></a-entity>";
 const HTML_INSERT = `      <a-entity stellar-oscillatory-convection-plume></a-entity>
       <!-- ── COSMIC ANISOTROPIC DIFFUSION FILAMENT — field-aligned cosmic-ray diffusion streamer ── -->
       <a-entity cosmic-anisotropic-diffusion-filament></a-entity>
@@ -156,7 +161,7 @@ const JS_INSERT = `
 
 html = html.replace(JS_ANCHOR, JS_INSERT);
 
-if (usesCRLF) html = html.replace(/\n/g, '\r\n');
-fs.writeFileSync(FILE, html, 'utf8');
-const lineCount = html.split(usesCRLF ? '\r\n' : '\n').length;
-console.log('Wave 102 injected! Lines:', lineCount);
+if (usesCRLF) html = html.replace(/\n/g, "\r\n");
+fs.writeFileSync(FILE, html, "utf8");
+const lineCount = html.split(usesCRLF ? "\r\n" : "\n").length;
+console.log("Wave 102 injected! Lines:", lineCount);

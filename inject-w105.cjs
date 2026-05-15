@@ -1,20 +1,25 @@
-'use strict';
+"use strict";
 // inject-w105.cjs — Wave 105: cosmic-electromagnetic-drift-surface + stellar-thermohaline-mixing-layer
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
-const FILE = path.join(__dirname, 'public', 'cosmos-infinite.html');
-let html = fs.readFileSync(FILE, 'utf8');
+const FILE = path.join(__dirname, "public", "cosmos-infinite.html");
+let html = fs.readFileSync(FILE, "utf8");
 
-if (html.includes('AFRAME.registerComponent("cosmic-electromagnetic-drift-surface"')) {
-  console.log('Wave 105 already injected — skipping');
+if (
+  html.includes(
+    'AFRAME.registerComponent("cosmic-electromagnetic-drift-surface"',
+  )
+) {
+  console.log("Wave 105 already injected — skipping");
   process.exit(0);
 }
 
-const usesCRLF = html.includes('\r\n');
-if (usesCRLF) html = html.replace(/\r\n/g, '\n');
+const usesCRLF = html.includes("\r\n");
+if (usesCRLF) html = html.replace(/\r\n/g, "\n");
 
-const HTML_ANCHOR = '      <a-entity stellar-rossby-wave-vortex-lattice></a-entity>';
+const HTML_ANCHOR =
+  "      <a-entity stellar-rossby-wave-vortex-lattice></a-entity>";
 const HTML_INSERT = `      <a-entity stellar-rossby-wave-vortex-lattice></a-entity>
       <!-- ── COSMIC ELECTROMAGNETIC DRIFT SURFACE — E×B drift shell around a magnetized body ── -->
       <a-entity cosmic-electromagnetic-drift-surface></a-entity>
@@ -146,7 +151,7 @@ const JS_INSERT = `
 
 html = html.replace(JS_ANCHOR, JS_INSERT);
 
-if (usesCRLF) html = html.replace(/\n/g, '\r\n');
-fs.writeFileSync(FILE, html, 'utf8');
-const lineCount = html.split(usesCRLF ? '\r\n' : '\n').length;
-console.log('Wave 105 injected! Lines:', lineCount);
+if (usesCRLF) html = html.replace(/\n/g, "\r\n");
+fs.writeFileSync(FILE, html, "utf8");
+const lineCount = html.split(usesCRLF ? "\r\n" : "\n").length;
+console.log("Wave 105 injected! Lines:", lineCount);

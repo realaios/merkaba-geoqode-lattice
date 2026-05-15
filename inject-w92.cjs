@@ -1,20 +1,23 @@
-'use strict';
+"use strict";
 // inject-w92.cjs — Wave 92: protostellar-bipolar-cavity-wall + cosmic-collider-bar-shock
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
-const FILE = path.join(__dirname, 'public', 'cosmos-infinite.html');
-let html = fs.readFileSync(FILE, 'utf8');
+const FILE = path.join(__dirname, "public", "cosmos-infinite.html");
+let html = fs.readFileSync(FILE, "utf8");
 
-if (html.includes('AFRAME.registerComponent("protostellar-bipolar-cavity-wall"')) {
-  console.log('Wave 92 already injected — skipping');
+if (
+  html.includes('AFRAME.registerComponent("protostellar-bipolar-cavity-wall"')
+) {
+  console.log("Wave 92 already injected — skipping");
   process.exit(0);
 }
 
-const usesCRLF = html.includes('\r\n');
-if (usesCRLF) html = html.replace(/\r\n/g, '\n');
+const usesCRLF = html.includes("\r\n");
+if (usesCRLF) html = html.replace(/\r\n/g, "\n");
 
-const HTML_ANCHOR = '      <a-entity cosmic-anisotropic-synchrotron-ridge></a-entity>';
+const HTML_ANCHOR =
+  "      <a-entity cosmic-anisotropic-synchrotron-ridge></a-entity>";
 const HTML_INSERT = `      <a-entity cosmic-anisotropic-synchrotron-ridge></a-entity>
       <!-- ── PROTOSTELLAR BIPOLAR CAVITY WALL — outflow-carved cavity wall with scattered light ── -->
       <a-entity protostellar-bipolar-cavity-wall></a-entity>
@@ -188,7 +191,7 @@ const JS_INSERT = `
 
 html = html.replace(JS_ANCHOR, JS_INSERT);
 
-if (usesCRLF) html = html.replace(/\n/g, '\r\n');
-fs.writeFileSync(FILE, html, 'utf8');
-const lineCount = html.split(usesCRLF ? '\r\n' : '\n').length;
-console.log('Wave 92 injected! Lines:', lineCount);
+if (usesCRLF) html = html.replace(/\n/g, "\r\n");
+fs.writeFileSync(FILE, html, "utf8");
+const lineCount = html.split(usesCRLF ? "\r\n" : "\n").length;
+console.log("Wave 92 injected! Lines:", lineCount);

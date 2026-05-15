@@ -1,20 +1,20 @@
-'use strict';
+"use strict";
 // inject-w116.cjs — Wave 116: cosmic-ion-acoustic-shocklet + stellar-supergranule-network
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
-const FILE = path.join(__dirname, 'public', 'cosmos-infinite.html');
-let html = fs.readFileSync(FILE, 'utf8');
+const FILE = path.join(__dirname, "public", "cosmos-infinite.html");
+let html = fs.readFileSync(FILE, "utf8");
 
 if (html.includes('AFRAME.registerComponent("cosmic-ion-acoustic-shocklet"')) {
-  console.log('Wave 116 already injected — skipping');
+  console.log("Wave 116 already injected — skipping");
   process.exit(0);
 }
 
-const usesCRLF = html.includes('\r\n');
-if (usesCRLF) html = html.replace(/\r\n/g, '\n');
+const usesCRLF = html.includes("\r\n");
+if (usesCRLF) html = html.replace(/\r\n/g, "\n");
 
-const HTML_ANCHOR = '      <a-entity stellar-ellerman-bomb-burst></a-entity>';
+const HTML_ANCHOR = "      <a-entity stellar-ellerman-bomb-burst></a-entity>";
 const HTML_INSERT = `      <a-entity stellar-ellerman-bomb-burst></a-entity>
       <!-- ── COSMIC ION ACOUSTIC SHOCKLET — small amplitude ion-acoustic shocklets in solar wind ── -->
       <a-entity cosmic-ion-acoustic-shocklet></a-entity>
@@ -147,7 +147,7 @@ const JS_INSERT = `
 
 html = html.replace(JS_ANCHOR, JS_INSERT);
 
-if (usesCRLF) html = html.replace(/\n/g, '\r\n');
-fs.writeFileSync(FILE, html, 'utf8');
-const lineCount = html.split(usesCRLF ? '\r\n' : '\n').length;
-console.log('Wave 116 injected! Lines:', lineCount);
+if (usesCRLF) html = html.replace(/\n/g, "\r\n");
+fs.writeFileSync(FILE, html, "utf8");
+const lineCount = html.split(usesCRLF ? "\r\n" : "\n").length;
+console.log("Wave 116 injected! Lines:", lineCount);

@@ -1,20 +1,23 @@
-'use strict';
+"use strict";
 // inject-w80.cjs — Wave 80: cosmic-spaghettification-funnel + galactic-wind-outflow
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
-const FILE = path.join(__dirname, 'public', 'cosmos-infinite.html');
-let html = fs.readFileSync(FILE, 'utf8');
+const FILE = path.join(__dirname, "public", "cosmos-infinite.html");
+let html = fs.readFileSync(FILE, "utf8");
 
-if (html.includes('AFRAME.registerComponent("cosmic-spaghettification-funnel"')) {
-  console.log('Wave 80 already injected — skipping');
+if (
+  html.includes('AFRAME.registerComponent("cosmic-spaghettification-funnel"')
+) {
+  console.log("Wave 80 already injected — skipping");
   process.exit(0);
 }
 
-const usesCRLF = html.includes('\r\n');
-if (usesCRLF) html = html.replace(/\r\n/g, '\n');
+const usesCRLF = html.includes("\r\n");
+if (usesCRLF) html = html.replace(/\r\n/g, "\n");
 
-const HTML_ANCHOR = '      <a-entity stellar-debris-stream-fallback></a-entity>';
+const HTML_ANCHOR =
+  "      <a-entity stellar-debris-stream-fallback></a-entity>";
 const HTML_INSERT = `      <a-entity stellar-debris-stream-fallback></a-entity>
       <!-- ── COSMIC SPAGHETTIFICATION FUNNEL — tidal stretching near BH event horizon ── -->
       <a-entity cosmic-spaghettification-funnel></a-entity>
@@ -241,7 +244,7 @@ const JS_INSERT = `
 
 html = html.replace(JS_ANCHOR, JS_INSERT);
 
-if (usesCRLF) html = html.replace(/\n/g, '\r\n');
-fs.writeFileSync(FILE, html, 'utf8');
-const lineCount = html.split(usesCRLF ? '\r\n' : '\n').length;
-console.log('Wave 80 injected! Lines:', lineCount);
+if (usesCRLF) html = html.replace(/\n/g, "\r\n");
+fs.writeFileSync(FILE, html, "utf8");
+const lineCount = html.split(usesCRLF ? "\r\n" : "\n").length;
+console.log("Wave 80 injected! Lines:", lineCount);

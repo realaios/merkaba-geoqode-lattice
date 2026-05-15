@@ -1,20 +1,20 @@
-'use strict';
+"use strict";
 // inject-w93.cjs — Wave 93: cosmic-gyrokinetic-drift-wave + stellar-cepheid-pulsation-shell
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
-const FILE = path.join(__dirname, 'public', 'cosmos-infinite.html');
-let html = fs.readFileSync(FILE, 'utf8');
+const FILE = path.join(__dirname, "public", "cosmos-infinite.html");
+let html = fs.readFileSync(FILE, "utf8");
 
 if (html.includes('AFRAME.registerComponent("cosmic-gyrokinetic-drift-wave"')) {
-  console.log('Wave 93 already injected — skipping');
+  console.log("Wave 93 already injected — skipping");
   process.exit(0);
 }
 
-const usesCRLF = html.includes('\r\n');
-if (usesCRLF) html = html.replace(/\r\n/g, '\n');
+const usesCRLF = html.includes("\r\n");
+if (usesCRLF) html = html.replace(/\r\n/g, "\n");
 
-const HTML_ANCHOR = '      <a-entity cosmic-collider-bar-shock></a-entity>';
+const HTML_ANCHOR = "      <a-entity cosmic-collider-bar-shock></a-entity>";
 const HTML_INSERT = `      <a-entity cosmic-collider-bar-shock></a-entity>
       <!-- ── COSMIC GYROKINETIC DRIFT WAVE — drift-wave turbulence in magnetized plasma ── -->
       <a-entity cosmic-gyrokinetic-drift-wave></a-entity>
@@ -165,7 +165,7 @@ const JS_INSERT = `
 
 html = html.replace(JS_ANCHOR, JS_INSERT);
 
-if (usesCRLF) html = html.replace(/\n/g, '\r\n');
-fs.writeFileSync(FILE, html, 'utf8');
-const lineCount = html.split(usesCRLF ? '\r\n' : '\n').length;
-console.log('Wave 93 injected! Lines:', lineCount);
+if (usesCRLF) html = html.replace(/\n/g, "\r\n");
+fs.writeFileSync(FILE, html, "utf8");
+const lineCount = html.split(usesCRLF ? "\r\n" : "\n").length;
+console.log("Wave 93 injected! Lines:", lineCount);

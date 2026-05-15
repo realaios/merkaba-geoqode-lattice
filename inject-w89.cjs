@@ -1,20 +1,22 @@
-'use strict';
+"use strict";
 // inject-w89.cjs — Wave 89: circumgalactic-hot-halo-sloshing + stellar-polycyclic-aromatic-haze
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
-const FILE = path.join(__dirname, 'public', 'cosmos-infinite.html');
-let html = fs.readFileSync(FILE, 'utf8');
+const FILE = path.join(__dirname, "public", "cosmos-infinite.html");
+let html = fs.readFileSync(FILE, "utf8");
 
-if (html.includes('AFRAME.registerComponent("circumgalactic-hot-halo-sloshing"')) {
-  console.log('Wave 89 already injected — skipping');
+if (
+  html.includes('AFRAME.registerComponent("circumgalactic-hot-halo-sloshing"')
+) {
+  console.log("Wave 89 already injected — skipping");
   process.exit(0);
 }
 
-const usesCRLF = html.includes('\r\n');
-if (usesCRLF) html = html.replace(/\r\n/g, '\n');
+const usesCRLF = html.includes("\r\n");
+if (usesCRLF) html = html.replace(/\r\n/g, "\n");
 
-const HTML_ANCHOR = '      <a-entity cosmic-electron-whistler-wave></a-entity>';
+const HTML_ANCHOR = "      <a-entity cosmic-electron-whistler-wave></a-entity>";
 const HTML_INSERT = `      <a-entity cosmic-electron-whistler-wave></a-entity>
       <!-- ── CIRCUMGALACTIC HOT HALO SLOSHING — off-center hot halo sloshing after a merger ── -->
       <a-entity circumgalactic-hot-halo-sloshing></a-entity>
@@ -180,7 +182,7 @@ const JS_INSERT = `
 
 html = html.replace(JS_ANCHOR, JS_INSERT);
 
-if (usesCRLF) html = html.replace(/\n/g, '\r\n');
-fs.writeFileSync(FILE, html, 'utf8');
-const lineCount = html.split(usesCRLF ? '\r\n' : '\n').length;
-console.log('Wave 89 injected! Lines:', lineCount);
+if (usesCRLF) html = html.replace(/\n/g, "\r\n");
+fs.writeFileSync(FILE, html, "utf8");
+const lineCount = html.split(usesCRLF ? "\r\n" : "\n").length;
+console.log("Wave 89 injected! Lines:", lineCount);

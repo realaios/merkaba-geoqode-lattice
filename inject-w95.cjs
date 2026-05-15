@@ -1,20 +1,21 @@
-'use strict';
+"use strict";
 // inject-w95.cjs — Wave 95: cosmic-flux-tube-wave-packet + stellar-opacity-ionization-front
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
-const FILE = path.join(__dirname, 'public', 'cosmos-infinite.html');
-let html = fs.readFileSync(FILE, 'utf8');
+const FILE = path.join(__dirname, "public", "cosmos-infinite.html");
+let html = fs.readFileSync(FILE, "utf8");
 
 if (html.includes('AFRAME.registerComponent("cosmic-flux-tube-wave-packet"')) {
-  console.log('Wave 95 already injected — skipping');
+  console.log("Wave 95 already injected — skipping");
   process.exit(0);
 }
 
-const usesCRLF = html.includes('\r\n');
-if (usesCRLF) html = html.replace(/\r\n/g, '\n');
+const usesCRLF = html.includes("\r\n");
+if (usesCRLF) html = html.replace(/\r\n/g, "\n");
 
-const HTML_ANCHOR = '      <a-entity interstellar-alf-speed-mach-cone></a-entity>';
+const HTML_ANCHOR =
+  "      <a-entity interstellar-alf-speed-mach-cone></a-entity>";
 const HTML_INSERT = `      <a-entity interstellar-alf-speed-mach-cone></a-entity>
       <!-- ── COSMIC FLUX TUBE WAVE PACKET — wave packet propagating along flux tube ── -->
       <a-entity cosmic-flux-tube-wave-packet></a-entity>
@@ -170,7 +171,7 @@ const JS_INSERT = `
 
 html = html.replace(JS_ANCHOR, JS_INSERT);
 
-if (usesCRLF) html = html.replace(/\n/g, '\r\n');
-fs.writeFileSync(FILE, html, 'utf8');
-const lineCount = html.split(usesCRLF ? '\r\n' : '\n').length;
-console.log('Wave 95 injected! Lines:', lineCount);
+if (usesCRLF) html = html.replace(/\n/g, "\r\n");
+fs.writeFileSync(FILE, html, "utf8");
+const lineCount = html.split(usesCRLF ? "\r\n" : "\n").length;
+console.log("Wave 95 injected! Lines:", lineCount);

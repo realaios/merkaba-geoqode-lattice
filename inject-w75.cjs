@@ -1,20 +1,23 @@
-'use strict';
+"use strict";
 // inject-w75.cjs — Wave 75: interplanetary-dust-zodiacal-band + galactic-synchrotron-radio-haze
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
-const FILE = path.join(__dirname, 'public', 'cosmos-infinite.html');
-let html = fs.readFileSync(FILE, 'utf8');
+const FILE = path.join(__dirname, "public", "cosmos-infinite.html");
+let html = fs.readFileSync(FILE, "utf8");
 
-if (html.includes('AFRAME.registerComponent("interplanetary-dust-zodiacal-band"')) {
-  console.log('Wave 75 already injected — skipping');
+if (
+  html.includes('AFRAME.registerComponent("interplanetary-dust-zodiacal-band"')
+) {
+  console.log("Wave 75 already injected — skipping");
   process.exit(0);
 }
 
-const usesCRLF = html.includes('\r\n');
-if (usesCRLF) html = html.replace(/\r\n/g, '\n');
+const usesCRLF = html.includes("\r\n");
+if (usesCRLF) html = html.replace(/\r\n/g, "\n");
 
-const HTML_ANCHOR = '      <a-entity stellar-chromosphere-spicule-forest></a-entity>';
+const HTML_ANCHOR =
+  "      <a-entity stellar-chromosphere-spicule-forest></a-entity>";
 const HTML_INSERT = `      <a-entity stellar-chromosphere-spicule-forest></a-entity>
       <!-- ── INTERPLANETARY DUST ZODIACAL BAND — disc of sunlight-scattered dust ── -->
       <a-entity interplanetary-dust-zodiacal-band></a-entity>
@@ -189,7 +192,7 @@ const JS_INSERT = `
 
 html = html.replace(JS_ANCHOR, JS_INSERT);
 
-if (usesCRLF) html = html.replace(/\n/g, '\r\n');
-fs.writeFileSync(FILE, html, 'utf8');
-const lineCount = html.split(usesCRLF ? '\r\n' : '\n').length;
-console.log('Wave 75 injected! Lines:', lineCount);
+if (usesCRLF) html = html.replace(/\n/g, "\r\n");
+fs.writeFileSync(FILE, html, "utf8");
+const lineCount = html.split(usesCRLF ? "\r\n" : "\n").length;
+console.log("Wave 75 injected! Lines:", lineCount);

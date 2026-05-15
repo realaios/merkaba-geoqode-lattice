@@ -1,20 +1,22 @@
-'use strict';
+"use strict";
 // inject-w70.cjs — Wave 70: magnetar-quasi-periodic-eruption + interstellar-bow-shock-nebula
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
-const FILE = path.join(__dirname, 'public', 'cosmos-infinite.html');
-let html = fs.readFileSync(FILE, 'utf8');
+const FILE = path.join(__dirname, "public", "cosmos-infinite.html");
+let html = fs.readFileSync(FILE, "utf8");
 
-if (html.includes('AFRAME.registerComponent("magnetar-quasi-periodic-eruption"')) {
-  console.log('Wave 70 already injected — skipping');
+if (
+  html.includes('AFRAME.registerComponent("magnetar-quasi-periodic-eruption"')
+) {
+  console.log("Wave 70 already injected — skipping");
   process.exit(0);
 }
 
-const usesCRLF = html.includes('\r\n');
-if (usesCRLF) html = html.replace(/\r\n/g, '\n');
+const usesCRLF = html.includes("\r\n");
+if (usesCRLF) html = html.replace(/\r\n/g, "\n");
 
-const HTML_ANCHOR = '      <a-entity cosmic-ram-pressure-stripping></a-entity>';
+const HTML_ANCHOR = "      <a-entity cosmic-ram-pressure-stripping></a-entity>";
 const HTML_INSERT = `      <a-entity cosmic-ram-pressure-stripping></a-entity>
       <!-- ── MAGNETAR QUASI-PERIODIC ERUPTION — crustal fractures firing periodically ── -->
       <a-entity magnetar-quasi-periodic-eruption></a-entity>
@@ -264,7 +266,7 @@ const JS_INSERT = `
 
 html = html.replace(JS_ANCHOR, JS_INSERT);
 
-if (usesCRLF) html = html.replace(/\n/g, '\r\n');
-fs.writeFileSync(FILE, html, 'utf8');
-const lineCount = html.split(usesCRLF ? '\r\n' : '\n').length;
-console.log('Wave 70 injected! Lines:', lineCount);
+if (usesCRLF) html = html.replace(/\n/g, "\r\n");
+fs.writeFileSync(FILE, html, "utf8");
+const lineCount = html.split(usesCRLF ? "\r\n" : "\n").length;
+console.log("Wave 70 injected! Lines:", lineCount);

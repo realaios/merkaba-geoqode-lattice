@@ -1,20 +1,22 @@
-'use strict';
+"use strict";
 // inject-w72.cjs — Wave 72: stellar-opacity-photosphere-pulse + cosmic-topology-wormhole-lattice
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
-const FILE = path.join(__dirname, 'public', 'cosmos-infinite.html');
-let html = fs.readFileSync(FILE, 'utf8');
+const FILE = path.join(__dirname, "public", "cosmos-infinite.html");
+let html = fs.readFileSync(FILE, "utf8");
 
-if (html.includes('AFRAME.registerComponent("stellar-opacity-photosphere-pulse"')) {
-  console.log('Wave 72 already injected — skipping');
+if (
+  html.includes('AFRAME.registerComponent("stellar-opacity-photosphere-pulse"')
+) {
+  console.log("Wave 72 already injected — skipping");
   process.exit(0);
 }
 
-const usesCRLF = html.includes('\r\n');
-if (usesCRLF) html = html.replace(/\r\n/g, '\n');
+const usesCRLF = html.includes("\r\n");
+if (usesCRLF) html = html.replace(/\r\n/g, "\n");
 
-const HTML_ANCHOR = '      <a-entity galactic-fountain-flow></a-entity>';
+const HTML_ANCHOR = "      <a-entity galactic-fountain-flow></a-entity>";
 const HTML_INSERT = `      <a-entity galactic-fountain-flow></a-entity>
       <!-- ── STELLAR OPACITY PHOTOSPHERE PULSE — cepheid-like radial oscillation ── -->
       <a-entity stellar-opacity-photosphere-pulse></a-entity>
@@ -249,7 +251,7 @@ const JS_INSERT = `
 
 html = html.replace(JS_ANCHOR, JS_INSERT);
 
-if (usesCRLF) html = html.replace(/\n/g, '\r\n');
-fs.writeFileSync(FILE, html, 'utf8');
-const lineCount = html.split(usesCRLF ? '\r\n' : '\n').length;
-console.log('Wave 72 injected! Lines:', lineCount);
+if (usesCRLF) html = html.replace(/\n/g, "\r\n");
+fs.writeFileSync(FILE, html, "utf8");
+const lineCount = html.split(usesCRLF ? "\r\n" : "\n").length;
+console.log("Wave 72 injected! Lines:", lineCount);

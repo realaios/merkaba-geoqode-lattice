@@ -1,20 +1,23 @@
-'use strict';
+"use strict";
 // inject-w121.cjs — Wave 121: cosmic-cyclotron-maser-emission + stellar-post-flare-loop-arcade
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
-const FILE = path.join(__dirname, 'public', 'cosmos-infinite.html');
-let html = fs.readFileSync(FILE, 'utf8');
+const FILE = path.join(__dirname, "public", "cosmos-infinite.html");
+let html = fs.readFileSync(FILE, "utf8");
 
-if (html.includes('AFRAME.registerComponent("cosmic-cyclotron-maser-emission"')) {
-  console.log('Wave 121 already injected — skipping');
+if (
+  html.includes('AFRAME.registerComponent("cosmic-cyclotron-maser-emission"')
+) {
+  console.log("Wave 121 already injected — skipping");
   process.exit(0);
 }
 
-const usesCRLF = html.includes('\r\n');
-if (usesCRLF) html = html.replace(/\r\n/g, '\n');
+const usesCRLF = html.includes("\r\n");
+if (usesCRLF) html = html.replace(/\r\n/g, "\n");
 
-const HTML_ANCHOR = '      <a-entity stellar-coronal-fan-spine-topology></a-entity>';
+const HTML_ANCHOR =
+  "      <a-entity stellar-coronal-fan-spine-topology></a-entity>";
 const HTML_INSERT = `      <a-entity stellar-coronal-fan-spine-topology></a-entity>
       <!-- ── COSMIC CYCLOTRON MASER EMISSION — coherent radio bursts from electron cyclotron resonance in stellar/planetary magnetospheres ── -->
       <a-entity cosmic-cyclotron-maser-emission></a-entity>
@@ -147,7 +150,7 @@ const JS_INSERT = `
 
 html = html.replace(JS_ANCHOR, JS_INSERT);
 
-if (usesCRLF) html = html.replace(/\n/g, '\r\n');
-fs.writeFileSync(FILE, html, 'utf8');
-const lineCount = html.split(usesCRLF ? '\r\n' : '\n').length;
-console.log('Wave 121 injected! Lines:', lineCount);
+if (usesCRLF) html = html.replace(/\n/g, "\r\n");
+fs.writeFileSync(FILE, html, "utf8");
+const lineCount = html.split(usesCRLF ? "\r\n" : "\n").length;
+console.log("Wave 121 injected! Lines:", lineCount);

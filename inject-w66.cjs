@@ -1,20 +1,23 @@
-'use strict';
+"use strict";
 // inject-w66.cjs — Wave 66: supercooled-neutron-superfluid + cosmic-vortex-sheet
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
-const FILE = path.join(__dirname, 'public', 'cosmos-infinite.html');
-let html = fs.readFileSync(FILE, 'utf8');
+const FILE = path.join(__dirname, "public", "cosmos-infinite.html");
+let html = fs.readFileSync(FILE, "utf8");
 
-if (html.includes('AFRAME.registerComponent("supercooled-neutron-superfluid"')) {
-  console.log('Wave 66 already injected — skipping');
+if (
+  html.includes('AFRAME.registerComponent("supercooled-neutron-superfluid"')
+) {
+  console.log("Wave 66 already injected — skipping");
   process.exit(0);
 }
 
-const usesCRLF = html.includes('\r\n');
-if (usesCRLF) html = html.replace(/\r\n/g, '\n');
+const usesCRLF = html.includes("\r\n");
+if (usesCRLF) html = html.replace(/\r\n/g, "\n");
 
-const HTML_ANCHOR = '      <a-entity binary-pulsar-periastron-advance></a-entity>';
+const HTML_ANCHOR =
+  "      <a-entity binary-pulsar-periastron-advance></a-entity>";
 const HTML_INSERT = `      <a-entity binary-pulsar-periastron-advance></a-entity>
       <!-- ── SUPERCOOLED NEUTRON SUPERFLUID — quantized vortex array in NS core ── -->
       <a-entity supercooled-neutron-superfluid></a-entity>
@@ -230,7 +233,7 @@ const JS_INSERT = `
 
 html = html.replace(JS_ANCHOR, JS_INSERT);
 
-if (usesCRLF) html = html.replace(/\n/g, '\r\n');
-fs.writeFileSync(FILE, html, 'utf8');
-const lineCount = html.split(usesCRLF ? '\r\n' : '\n').length;
-console.log('Wave 66 injected! Lines:', lineCount);
+if (usesCRLF) html = html.replace(/\n/g, "\r\n");
+fs.writeFileSync(FILE, html, "utf8");
+const lineCount = html.split(usesCRLF ? "\r\n" : "\n").length;
+console.log("Wave 66 injected! Lines:", lineCount);

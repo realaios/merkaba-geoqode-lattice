@@ -1,20 +1,21 @@
-'use strict';
+"use strict";
 // inject-w87.cjs — Wave 87: galactic-tidal-shock-ridge + cosmic-beta-decay-nebula
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
-const FILE = path.join(__dirname, 'public', 'cosmos-infinite.html');
-let html = fs.readFileSync(FILE, 'utf8');
+const FILE = path.join(__dirname, "public", "cosmos-infinite.html");
+let html = fs.readFileSync(FILE, "utf8");
 
 if (html.includes('AFRAME.registerComponent("galactic-tidal-shock-ridge"')) {
-  console.log('Wave 87 already injected — skipping');
+  console.log("Wave 87 already injected — skipping");
   process.exit(0);
 }
 
-const usesCRLF = html.includes('\r\n');
-if (usesCRLF) html = html.replace(/\r\n/g, '\n');
+const usesCRLF = html.includes("\r\n");
+if (usesCRLF) html = html.replace(/\r\n/g, "\n");
 
-const HTML_ANCHOR = '      <a-entity cosmic-mirror-instability-patch></a-entity>';
+const HTML_ANCHOR =
+  "      <a-entity cosmic-mirror-instability-patch></a-entity>";
 const HTML_INSERT = `      <a-entity cosmic-mirror-instability-patch></a-entity>
       <!-- ── GALACTIC TIDAL SHOCK RIDGE — tidal compression triggers a star-formation ridge ── -->
       <a-entity galactic-tidal-shock-ridge></a-entity>
@@ -201,7 +202,7 @@ const JS_INSERT = `
 
 html = html.replace(JS_ANCHOR, JS_INSERT);
 
-if (usesCRLF) html = html.replace(/\n/g, '\r\n');
-fs.writeFileSync(FILE, html, 'utf8');
-const lineCount = html.split(usesCRLF ? '\r\n' : '\n').length;
-console.log('Wave 87 injected! Lines:', lineCount);
+if (usesCRLF) html = html.replace(/\n/g, "\r\n");
+fs.writeFileSync(FILE, html, "utf8");
+const lineCount = html.split(usesCRLF ? "\r\n" : "\n").length;
+console.log("Wave 87 injected! Lines:", lineCount);

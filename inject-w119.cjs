@@ -1,20 +1,21 @@
-'use strict';
+"use strict";
 // inject-w119.cjs — Wave 119: cosmic-langmuir-wave-collapse + stellar-sunspot-light-bridge
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
-const FILE = path.join(__dirname, 'public', 'cosmos-infinite.html');
-let html = fs.readFileSync(FILE, 'utf8');
+const FILE = path.join(__dirname, "public", "cosmos-infinite.html");
+let html = fs.readFileSync(FILE, "utf8");
 
 if (html.includes('AFRAME.registerComponent("cosmic-langmuir-wave-collapse"')) {
-  console.log('Wave 119 already injected — skipping');
+  console.log("Wave 119 already injected — skipping");
   process.exit(0);
 }
 
-const usesCRLF = html.includes('\r\n');
-if (usesCRLF) html = html.replace(/\r\n/g, '\n');
+const usesCRLF = html.includes("\r\n");
+if (usesCRLF) html = html.replace(/\r\n/g, "\n");
 
-const HTML_ANCHOR = '      <a-entity stellar-chromospheric-evaporation-jet></a-entity>';
+const HTML_ANCHOR =
+  "      <a-entity stellar-chromospheric-evaporation-jet></a-entity>";
 const HTML_INSERT = `      <a-entity stellar-chromospheric-evaporation-jet></a-entity>
       <!-- ── COSMIC LANGMUIR WAVE COLLAPSE — modulational collapse of Langmuir turbulence into cavitons ── -->
       <a-entity cosmic-langmuir-wave-collapse></a-entity>
@@ -155,7 +156,7 @@ const JS_INSERT = `
 
 html = html.replace(JS_ANCHOR, JS_INSERT);
 
-if (usesCRLF) html = html.replace(/\n/g, '\r\n');
-fs.writeFileSync(FILE, html, 'utf8');
-const lineCount = html.split(usesCRLF ? '\r\n' : '\n').length;
-console.log('Wave 119 injected! Lines:', lineCount);
+if (usesCRLF) html = html.replace(/\n/g, "\r\n");
+fs.writeFileSync(FILE, html, "utf8");
+const lineCount = html.split(usesCRLF ? "\r\n" : "\n").length;
+console.log("Wave 119 injected! Lines:", lineCount);

@@ -1,20 +1,23 @@
-'use strict';
+"use strict";
 // inject-w114.cjs — Wave 114: cosmic-rayleigh-taylor-mushroom + stellar-prominence-tornado-vortex
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
-const FILE = path.join(__dirname, 'public', 'cosmos-infinite.html');
-let html = fs.readFileSync(FILE, 'utf8');
+const FILE = path.join(__dirname, "public", "cosmos-infinite.html");
+let html = fs.readFileSync(FILE, "utf8");
 
-if (html.includes('AFRAME.registerComponent("cosmic-rayleigh-taylor-mushroom"')) {
-  console.log('Wave 114 already injected — skipping');
+if (
+  html.includes('AFRAME.registerComponent("cosmic-rayleigh-taylor-mushroom"')
+) {
+  console.log("Wave 114 already injected — skipping");
   process.exit(0);
 }
 
-const usesCRLF = html.includes('\r\n');
-if (usesCRLF) html = html.replace(/\r\n/g, '\n');
+const usesCRLF = html.includes("\r\n");
+if (usesCRLF) html = html.replace(/\r\n/g, "\n");
 
-const HTML_ANCHOR = '      <a-entity stellar-tachocline-shear-layer></a-entity>';
+const HTML_ANCHOR =
+  "      <a-entity stellar-tachocline-shear-layer></a-entity>";
 const HTML_INSERT = `      <a-entity stellar-tachocline-shear-layer></a-entity>
       <!-- ── COSMIC RAYLEIGH-TAYLOR MUSHROOM — RT mushroom caps from heavy fluid falling into lighter ── -->
       <a-entity cosmic-rayleigh-taylor-mushroom></a-entity>
@@ -170,7 +173,7 @@ const JS_INSERT = `
 
 html = html.replace(JS_ANCHOR, JS_INSERT);
 
-if (usesCRLF) html = html.replace(/\n/g, '\r\n');
-fs.writeFileSync(FILE, html, 'utf8');
-const lineCount = html.split(usesCRLF ? '\r\n' : '\n').length;
-console.log('Wave 114 injected! Lines:', lineCount);
+if (usesCRLF) html = html.replace(/\n/g, "\r\n");
+fs.writeFileSync(FILE, html, "utf8");
+const lineCount = html.split(usesCRLF ? "\r\n" : "\n").length;
+console.log("Wave 114 injected! Lines:", lineCount);

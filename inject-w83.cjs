@@ -1,20 +1,21 @@
-'use strict';
+"use strict";
 // inject-w83.cjs — Wave 83: cosmic-runaway-star-trail + magnetospheric-substorm-aurora
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
-const FILE = path.join(__dirname, 'public', 'cosmos-infinite.html');
-let html = fs.readFileSync(FILE, 'utf8');
+const FILE = path.join(__dirname, "public", "cosmos-infinite.html");
+let html = fs.readFileSync(FILE, "utf8");
 
 if (html.includes('AFRAME.registerComponent("cosmic-runaway-star-trail"')) {
-  console.log('Wave 83 already injected — skipping');
+  console.log("Wave 83 already injected — skipping");
   process.exit(0);
 }
 
-const usesCRLF = html.includes('\r\n');
-if (usesCRLF) html = html.replace(/\r\n/g, '\n');
+const usesCRLF = html.includes("\r\n");
+if (usesCRLF) html = html.replace(/\r\n/g, "\n");
 
-const HTML_ANCHOR = '      <a-entity quasar-proximity-zone-fluorescence></a-entity>';
+const HTML_ANCHOR =
+  "      <a-entity quasar-proximity-zone-fluorescence></a-entity>";
 const HTML_INSERT = `      <a-entity quasar-proximity-zone-fluorescence></a-entity>
       <!-- ── COSMIC RUNAWAY STAR TRAIL — hypervelocity OB star trailing wake through ISM ── -->
       <a-entity cosmic-runaway-star-trail></a-entity>
@@ -178,7 +179,7 @@ const JS_INSERT = `
 
 html = html.replace(JS_ANCHOR, JS_INSERT);
 
-if (usesCRLF) html = html.replace(/\n/g, '\r\n');
-fs.writeFileSync(FILE, html, 'utf8');
-const lineCount = html.split(usesCRLF ? '\r\n' : '\n').length;
-console.log('Wave 83 injected! Lines:', lineCount);
+if (usesCRLF) html = html.replace(/\n/g, "\r\n");
+fs.writeFileSync(FILE, html, "utf8");
+const lineCount = html.split(usesCRLF ? "\r\n" : "\n").length;
+console.log("Wave 83 injected! Lines:", lineCount);

@@ -1,20 +1,25 @@
-'use strict';
+"use strict";
 // inject-w96.cjs — Wave 96: cosmic-magnetorotational-vortex-ring + stellar-p-mode-oscillation-web
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
-const FILE = path.join(__dirname, 'public', 'cosmos-infinite.html');
-let html = fs.readFileSync(FILE, 'utf8');
+const FILE = path.join(__dirname, "public", "cosmos-infinite.html");
+let html = fs.readFileSync(FILE, "utf8");
 
-if (html.includes('AFRAME.registerComponent("cosmic-magnetorotational-vortex-ring"')) {
-  console.log('Wave 96 already injected — skipping');
+if (
+  html.includes(
+    'AFRAME.registerComponent("cosmic-magnetorotational-vortex-ring"',
+  )
+) {
+  console.log("Wave 96 already injected — skipping");
   process.exit(0);
 }
 
-const usesCRLF = html.includes('\r\n');
-if (usesCRLF) html = html.replace(/\r\n/g, '\n');
+const usesCRLF = html.includes("\r\n");
+if (usesCRLF) html = html.replace(/\r\n/g, "\n");
 
-const HTML_ANCHOR = '      <a-entity stellar-opacity-ionization-front></a-entity>';
+const HTML_ANCHOR =
+  "      <a-entity stellar-opacity-ionization-front></a-entity>";
 const HTML_INSERT = `      <a-entity stellar-opacity-ionization-front></a-entity>
       <!-- ── COSMIC MAGNETOROTATIONAL VORTEX RING — MRI-driven vortex rings ── -->
       <a-entity cosmic-magnetorotational-vortex-ring></a-entity>
@@ -151,7 +156,7 @@ const JS_INSERT = `
 
 html = html.replace(JS_ANCHOR, JS_INSERT);
 
-if (usesCRLF) html = html.replace(/\n/g, '\r\n');
-fs.writeFileSync(FILE, html, 'utf8');
-const lineCount = html.split(usesCRLF ? '\r\n' : '\n').length;
-console.log('Wave 96 injected! Lines:', lineCount);
+if (usesCRLF) html = html.replace(/\n/g, "\r\n");
+fs.writeFileSync(FILE, html, "utf8");
+const lineCount = html.split(usesCRLF ? "\r\n" : "\n").length;
+console.log("Wave 96 injected! Lines:", lineCount);

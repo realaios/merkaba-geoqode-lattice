@@ -1,20 +1,21 @@
-'use strict';
+"use strict";
 // inject-w108.cjs — Wave 108: cosmic-weibel-beam-filament + stellar-flux-emergence-serpentine
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
-const FILE = path.join(__dirname, 'public', 'cosmos-infinite.html');
-let html = fs.readFileSync(FILE, 'utf8');
+const FILE = path.join(__dirname, "public", "cosmos-infinite.html");
+let html = fs.readFileSync(FILE, "utf8");
 
 if (html.includes('AFRAME.registerComponent("cosmic-weibel-beam-filament"')) {
-  console.log('Wave 108 already injected — skipping');
+  console.log("Wave 108 already injected — skipping");
   process.exit(0);
 }
 
-const usesCRLF = html.includes('\r\n');
-if (usesCRLF) html = html.replace(/\r\n/g, '\n');
+const usesCRLF = html.includes("\r\n");
+if (usesCRLF) html = html.replace(/\r\n/g, "\n");
 
-const HTML_ANCHOR = '      <a-entity stellar-turbulent-convection-downdraft></a-entity>';
+const HTML_ANCHOR =
+  "      <a-entity stellar-turbulent-convection-downdraft></a-entity>";
 const HTML_INSERT = `      <a-entity stellar-turbulent-convection-downdraft></a-entity>
       <!-- ── COSMIC WEIBEL BEAM FILAMENT — current filamentation via Weibel instability in relativistic beams ── -->
       <a-entity cosmic-weibel-beam-filament></a-entity>
@@ -146,7 +147,7 @@ const JS_INSERT = `
 
 html = html.replace(JS_ANCHOR, JS_INSERT);
 
-if (usesCRLF) html = html.replace(/\n/g, '\r\n');
-fs.writeFileSync(FILE, html, 'utf8');
-const lineCount = html.split(usesCRLF ? '\r\n' : '\n').length;
-console.log('Wave 108 injected! Lines:', lineCount);
+if (usesCRLF) html = html.replace(/\n/g, "\r\n");
+fs.writeFileSync(FILE, html, "utf8");
+const lineCount = html.split(usesCRLF ? "\r\n" : "\n").length;
+console.log("Wave 108 injected! Lines:", lineCount);

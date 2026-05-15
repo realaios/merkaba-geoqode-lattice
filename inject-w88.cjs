@@ -1,20 +1,24 @@
-'use strict';
+"use strict";
 // inject-w88.cjs — Wave 88: interstellar-magnetic-draping-layer + cosmic-electron-whistler-wave
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
-const FILE = path.join(__dirname, 'public', 'cosmos-infinite.html');
-let html = fs.readFileSync(FILE, 'utf8');
+const FILE = path.join(__dirname, "public", "cosmos-infinite.html");
+let html = fs.readFileSync(FILE, "utf8");
 
-if (html.includes('AFRAME.registerComponent("interstellar-magnetic-draping-layer"')) {
-  console.log('Wave 88 already injected — skipping');
+if (
+  html.includes(
+    'AFRAME.registerComponent("interstellar-magnetic-draping-layer"',
+  )
+) {
+  console.log("Wave 88 already injected — skipping");
   process.exit(0);
 }
 
-const usesCRLF = html.includes('\r\n');
-if (usesCRLF) html = html.replace(/\r\n/g, '\n');
+const usesCRLF = html.includes("\r\n");
+if (usesCRLF) html = html.replace(/\r\n/g, "\n");
 
-const HTML_ANCHOR = '      <a-entity cosmic-beta-decay-nebula></a-entity>';
+const HTML_ANCHOR = "      <a-entity cosmic-beta-decay-nebula></a-entity>";
 const HTML_INSERT = `      <a-entity cosmic-beta-decay-nebula></a-entity>
       <!-- ── INTERSTELLAR MAGNETIC DRAPING LAYER — ISM field draping over a moving obstacle ── -->
       <a-entity interstellar-magnetic-draping-layer></a-entity>
@@ -197,7 +201,7 @@ const JS_INSERT = `
 
 html = html.replace(JS_ANCHOR, JS_INSERT);
 
-if (usesCRLF) html = html.replace(/\n/g, '\r\n');
-fs.writeFileSync(FILE, html, 'utf8');
-const lineCount = html.split(usesCRLF ? '\r\n' : '\n').length;
-console.log('Wave 88 injected! Lines:', lineCount);
+if (usesCRLF) html = html.replace(/\n/g, "\r\n");
+fs.writeFileSync(FILE, html, "utf8");
+const lineCount = html.split(usesCRLF ? "\r\n" : "\n").length;
+console.log("Wave 88 injected! Lines:", lineCount);

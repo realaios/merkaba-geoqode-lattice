@@ -1,20 +1,22 @@
-'use strict';
+"use strict";
 // inject-w100.cjs — Wave 100 (CENTURY): cosmic-omega-magnetic-null-point + stellar-turbulent-cascade-plume
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
-const FILE = path.join(__dirname, 'public', 'cosmos-infinite.html');
-let html = fs.readFileSync(FILE, 'utf8');
+const FILE = path.join(__dirname, "public", "cosmos-infinite.html");
+let html = fs.readFileSync(FILE, "utf8");
 
-if (html.includes('AFRAME.registerComponent("cosmic-omega-magnetic-null-point"')) {
-  console.log('Wave 100 already injected — skipping');
+if (
+  html.includes('AFRAME.registerComponent("cosmic-omega-magnetic-null-point"')
+) {
+  console.log("Wave 100 already injected — skipping");
   process.exit(0);
 }
 
-const usesCRLF = html.includes('\r\n');
-if (usesCRLF) html = html.replace(/\r\n/g, '\n');
+const usesCRLF = html.includes("\r\n");
+if (usesCRLF) html = html.replace(/\r\n/g, "\n");
 
-const HTML_ANCHOR = '      <a-entity stellar-acoustic-running-wave></a-entity>';
+const HTML_ANCHOR = "      <a-entity stellar-acoustic-running-wave></a-entity>";
 const HTML_INSERT = `      <a-entity stellar-acoustic-running-wave></a-entity>
       <!-- ── COSMIC OMEGA MAGNETIC NULL POINT — 3-D magnetic null X-point reconnection ── -->
       <a-entity cosmic-omega-magnetic-null-point></a-entity>
@@ -167,7 +169,7 @@ const JS_INSERT = `
 
 html = html.replace(JS_ANCHOR, JS_INSERT);
 
-if (usesCRLF) html = html.replace(/\n/g, '\r\n');
-fs.writeFileSync(FILE, html, 'utf8');
-const lineCount = html.split(usesCRLF ? '\r\n' : '\n').length;
-console.log('Wave 100 CENTURY injected! Lines:', lineCount);
+if (usesCRLF) html = html.replace(/\n/g, "\r\n");
+fs.writeFileSync(FILE, html, "utf8");
+const lineCount = html.split(usesCRLF ? "\r\n" : "\n").length;
+console.log("Wave 100 CENTURY injected! Lines:", lineCount);

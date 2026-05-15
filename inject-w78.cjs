@@ -1,20 +1,21 @@
-'use strict';
+"use strict";
 // inject-w78.cjs — Wave 78: cosmic-vortex-ring-jet + protostellar-accretion-burst
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
-const FILE = path.join(__dirname, 'public', 'cosmos-infinite.html');
-let html = fs.readFileSync(FILE, 'utf8');
+const FILE = path.join(__dirname, "public", "cosmos-infinite.html");
+let html = fs.readFileSync(FILE, "utf8");
 
 if (html.includes('AFRAME.registerComponent("cosmic-vortex-ring-jet"')) {
-  console.log('Wave 78 already injected — skipping');
+  console.log("Wave 78 already injected — skipping");
   process.exit(0);
 }
 
-const usesCRLF = html.includes('\r\n');
-if (usesCRLF) html = html.replace(/\r\n/g, '\n');
+const usesCRLF = html.includes("\r\n");
+if (usesCRLF) html = html.replace(/\r\n/g, "\n");
 
-const HTML_ANCHOR = '      <a-entity cosmic-pair-instability-remnant></a-entity>';
+const HTML_ANCHOR =
+  "      <a-entity cosmic-pair-instability-remnant></a-entity>";
 const HTML_INSERT = `      <a-entity cosmic-pair-instability-remnant></a-entity>
       <!-- ── COSMIC VORTEX RING JET — toroidal vortex rings in AGN jet ── -->
       <a-entity cosmic-vortex-ring-jet></a-entity>
@@ -249,7 +250,7 @@ const JS_INSERT = `
 
 html = html.replace(JS_ANCHOR, JS_INSERT);
 
-if (usesCRLF) html = html.replace(/\n/g, '\r\n');
-fs.writeFileSync(FILE, html, 'utf8');
-const lineCount = html.split(usesCRLF ? '\r\n' : '\n').length;
-console.log('Wave 78 injected! Lines:', lineCount);
+if (usesCRLF) html = html.replace(/\n/g, "\r\n");
+fs.writeFileSync(FILE, html, "utf8");
+const lineCount = html.split(usesCRLF ? "\r\n" : "\n").length;
+console.log("Wave 78 injected! Lines:", lineCount);

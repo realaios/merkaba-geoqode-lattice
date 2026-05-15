@@ -1,20 +1,22 @@
-'use strict';
+"use strict";
 // inject-w123.cjs — Wave 123: cosmic-alf-speed-resonance-cavity + stellar-granule-supergranule-boundary
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
-const FILE = path.join(__dirname, 'public', 'cosmos-infinite.html');
-let html = fs.readFileSync(FILE, 'utf8');
+const FILE = path.join(__dirname, "public", "cosmos-infinite.html");
+let html = fs.readFileSync(FILE, "utf8");
 
-if (html.includes('AFRAME.registerComponent("cosmic-alf-speed-resonance-cavity"')) {
-  console.log('Wave 123 already injected — skipping');
+if (
+  html.includes('AFRAME.registerComponent("cosmic-alf-speed-resonance-cavity"')
+) {
+  console.log("Wave 123 already injected — skipping");
   process.exit(0);
 }
 
-const usesCRLF = html.includes('\r\n');
-if (usesCRLF) html = html.replace(/\r\n/g, '\n');
+const usesCRLF = html.includes("\r\n");
+if (usesCRLF) html = html.replace(/\r\n/g, "\n");
 
-const HTML_ANCHOR = '      <a-entity stellar-flare-ribbon-sweep></a-entity>';
+const HTML_ANCHOR = "      <a-entity stellar-flare-ribbon-sweep></a-entity>";
 const HTML_INSERT = `      <a-entity stellar-flare-ribbon-sweep></a-entity>
       <!-- ── COSMIC ALF-SPEED RESONANCE CAVITY — standing Alfven-wave resonance bouncing between plasma boundaries ── -->
       <a-entity cosmic-alf-speed-resonance-cavity></a-entity>
@@ -152,7 +154,7 @@ const JS_INSERT = `
 
 html = html.replace(JS_ANCHOR, JS_INSERT);
 
-if (usesCRLF) html = html.replace(/\n/g, '\r\n');
-fs.writeFileSync(FILE, html, 'utf8');
-const lineCount = html.split(usesCRLF ? '\r\n' : '\n').length;
-console.log('Wave 123 injected! Lines:', lineCount);
+if (usesCRLF) html = html.replace(/\n/g, "\r\n");
+fs.writeFileSync(FILE, html, "utf8");
+const lineCount = html.split(usesCRLF ? "\r\n" : "\n").length;
+console.log("Wave 123 injected! Lines:", lineCount);

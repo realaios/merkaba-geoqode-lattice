@@ -1,20 +1,20 @@
-'use strict';
+"use strict";
 // inject-w118.cjs — Wave 118: cosmic-debye-shielding-sphere + stellar-chromospheric-evaporation-jet
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
-const FILE = path.join(__dirname, 'public', 'cosmos-infinite.html');
-let html = fs.readFileSync(FILE, 'utf8');
+const FILE = path.join(__dirname, "public", "cosmos-infinite.html");
+let html = fs.readFileSync(FILE, "utf8");
 
 if (html.includes('AFRAME.registerComponent("cosmic-debye-shielding-sphere"')) {
-  console.log('Wave 118 already injected — skipping');
+  console.log("Wave 118 already injected — skipping");
   process.exit(0);
 }
 
-const usesCRLF = html.includes('\r\n');
-if (usesCRLF) html = html.replace(/\r\n/g, '\n');
+const usesCRLF = html.includes("\r\n");
+if (usesCRLF) html = html.replace(/\r\n/g, "\n");
 
-const HTML_ANCHOR = '      <a-entity stellar-helioseismic-ridge></a-entity>';
+const HTML_ANCHOR = "      <a-entity stellar-helioseismic-ridge></a-entity>";
 const HTML_INSERT = `      <a-entity stellar-helioseismic-ridge></a-entity>
       <!-- ── COSMIC DEBYE SHIELDING SPHERE — exponential charge screening cloud around a test charge ── -->
       <a-entity cosmic-debye-shielding-sphere></a-entity>
@@ -163,7 +163,7 @@ const JS_INSERT = `
 
 html = html.replace(JS_ANCHOR, JS_INSERT);
 
-if (usesCRLF) html = html.replace(/\n/g, '\r\n');
-fs.writeFileSync(FILE, html, 'utf8');
-const lineCount = html.split(usesCRLF ? '\r\n' : '\n').length;
-console.log('Wave 118 injected! Lines:', lineCount);
+if (usesCRLF) html = html.replace(/\n/g, "\r\n");
+fs.writeFileSync(FILE, html, "utf8");
+const lineCount = html.split(usesCRLF ? "\r\n" : "\n").length;
+console.log("Wave 118 injected! Lines:", lineCount);

@@ -1,20 +1,25 @@
-'use strict';
+"use strict";
 // inject-w73.cjs — Wave 73: relativistic-periastron-shift-binary + cosmic-dust-devil-tower
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
-const FILE = path.join(__dirname, 'public', 'cosmos-infinite.html');
-let html = fs.readFileSync(FILE, 'utf8');
+const FILE = path.join(__dirname, "public", "cosmos-infinite.html");
+let html = fs.readFileSync(FILE, "utf8");
 
-if (html.includes('AFRAME.registerComponent("relativistic-periastron-shift-binary"')) {
-  console.log('Wave 73 already injected — skipping');
+if (
+  html.includes(
+    'AFRAME.registerComponent("relativistic-periastron-shift-binary"',
+  )
+) {
+  console.log("Wave 73 already injected — skipping");
   process.exit(0);
 }
 
-const usesCRLF = html.includes('\r\n');
-if (usesCRLF) html = html.replace(/\r\n/g, '\n');
+const usesCRLF = html.includes("\r\n");
+if (usesCRLF) html = html.replace(/\r\n/g, "\n");
 
-const HTML_ANCHOR = '      <a-entity cosmic-topology-wormhole-lattice></a-entity>';
+const HTML_ANCHOR =
+  "      <a-entity cosmic-topology-wormhole-lattice></a-entity>";
 const HTML_INSERT = `      <a-entity cosmic-topology-wormhole-lattice></a-entity>
       <!-- ── RELATIVISTIC PERIASTRON SHIFT BINARY — GR precessing ellipse ── -->
       <a-entity relativistic-periastron-shift-binary></a-entity>
@@ -274,7 +279,7 @@ const JS_INSERT = `
 
 html = html.replace(JS_ANCHOR, JS_INSERT);
 
-if (usesCRLF) html = html.replace(/\n/g, '\r\n');
-fs.writeFileSync(FILE, html, 'utf8');
-const lineCount = html.split(usesCRLF ? '\r\n' : '\n').length;
-console.log('Wave 73 injected! Lines:', lineCount);
+if (usesCRLF) html = html.replace(/\n/g, "\r\n");
+fs.writeFileSync(FILE, html, "utf8");
+const lineCount = html.split(usesCRLF ? "\r\n" : "\n").length;
+console.log("Wave 73 injected! Lines:", lineCount);

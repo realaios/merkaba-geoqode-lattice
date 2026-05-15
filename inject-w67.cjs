@@ -1,20 +1,20 @@
-'use strict';
+"use strict";
 // inject-w67.cjs — Wave 67: stellar-flare-loop-arcade + cosmic-accretion-shock
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
-const FILE = path.join(__dirname, 'public', 'cosmos-infinite.html');
-let html = fs.readFileSync(FILE, 'utf8');
+const FILE = path.join(__dirname, "public", "cosmos-infinite.html");
+let html = fs.readFileSync(FILE, "utf8");
 
 if (html.includes('AFRAME.registerComponent("stellar-flare-loop-arcade"')) {
-  console.log('Wave 67 already injected — skipping');
+  console.log("Wave 67 already injected — skipping");
   process.exit(0);
 }
 
-const usesCRLF = html.includes('\r\n');
-if (usesCRLF) html = html.replace(/\r\n/g, '\n');
+const usesCRLF = html.includes("\r\n");
+if (usesCRLF) html = html.replace(/\r\n/g, "\n");
 
-const HTML_ANCHOR = '      <a-entity cosmic-vortex-sheet></a-entity>';
+const HTML_ANCHOR = "      <a-entity cosmic-vortex-sheet></a-entity>";
 const HTML_INSERT = `      <a-entity cosmic-vortex-sheet></a-entity>
       <!-- ── STELLAR FLARE LOOP ARCADE — post-flare coronal loop arcade on active star ── -->
       <a-entity stellar-flare-loop-arcade></a-entity>
@@ -251,7 +251,7 @@ const JS_INSERT = `
 
 html = html.replace(JS_ANCHOR, JS_INSERT);
 
-if (usesCRLF) html = html.replace(/\n/g, '\r\n');
-fs.writeFileSync(FILE, html, 'utf8');
-const lineCount = html.split(usesCRLF ? '\r\n' : '\n').length;
-console.log('Wave 67 injected! Lines:', lineCount);
+if (usesCRLF) html = html.replace(/\n/g, "\r\n");
+fs.writeFileSync(FILE, html, "utf8");
+const lineCount = html.split(usesCRLF ? "\r\n" : "\n").length;
+console.log("Wave 67 injected! Lines:", lineCount);

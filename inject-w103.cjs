@@ -1,20 +1,22 @@
-'use strict';
+"use strict";
 // inject-w103.cjs — Wave 103: cosmic-tearing-mode-island-chain + stellar-differential-rotation-cone
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
-const FILE = path.join(__dirname, 'public', 'cosmos-infinite.html');
-let html = fs.readFileSync(FILE, 'utf8');
+const FILE = path.join(__dirname, "public", "cosmos-infinite.html");
+let html = fs.readFileSync(FILE, "utf8");
 
-if (html.includes('AFRAME.registerComponent("cosmic-tearing-mode-island-chain"')) {
-  console.log('Wave 103 already injected — skipping');
+if (
+  html.includes('AFRAME.registerComponent("cosmic-tearing-mode-island-chain"')
+) {
+  console.log("Wave 103 already injected — skipping");
   process.exit(0);
 }
 
-const usesCRLF = html.includes('\r\n');
-if (usesCRLF) html = html.replace(/\r\n/g, '\n');
+const usesCRLF = html.includes("\r\n");
+if (usesCRLF) html = html.replace(/\r\n/g, "\n");
 
-const HTML_ANCHOR = '      <a-entity stellar-subsurface-shear-band></a-entity>';
+const HTML_ANCHOR = "      <a-entity stellar-subsurface-shear-band></a-entity>";
 const HTML_INSERT = `      <a-entity stellar-subsurface-shear-band></a-entity>
       <!-- ── COSMIC TEARING MODE ISLAND CHAIN — magnetic island chain from tearing instability ── -->
       <a-entity cosmic-tearing-mode-island-chain></a-entity>
@@ -161,7 +163,7 @@ const JS_INSERT = `
 
 html = html.replace(JS_ANCHOR, JS_INSERT);
 
-if (usesCRLF) html = html.replace(/\n/g, '\r\n');
-fs.writeFileSync(FILE, html, 'utf8');
-const lineCount = html.split(usesCRLF ? '\r\n' : '\n').length;
-console.log('Wave 103 injected! Lines:', lineCount);
+if (usesCRLF) html = html.replace(/\n/g, "\r\n");
+fs.writeFileSync(FILE, html, "utf8");
+const lineCount = html.split(usesCRLF ? "\r\n" : "\n").length;
+console.log("Wave 103 injected! Lines:", lineCount);
