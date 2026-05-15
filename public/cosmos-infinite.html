@@ -279,6 +279,91 @@
           border-color 0.2s,
           color 0.2s;
       }
+      /* ── Mobile D-pad controls — LOOK + MOVE pads, touch devices only ─── */
+      #mobile-dpad {
+        display: none;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 172px;
+        z-index: 3000;
+        pointer-events: none;
+        user-select: none;
+        -webkit-user-select: none;
+      }
+      @media (hover: none) and (pointer: coarse) {
+        #mobile-dpad {
+          display: flex;
+          align-items: flex-end;
+          padding: 14px 18px;
+        }
+        #controls-hint {
+          display: none !important;
+        }
+      }
+      .mb-pad {
+        pointer-events: all;
+        position: relative;
+        width: 144px;
+        height: 144px;
+        flex-shrink: 0;
+      }
+      .mb-pad.look-pad {
+        margin-left: auto;
+      }
+      .mb-btn {
+        position: absolute;
+        width: 50px;
+        height: 50px;
+        background: rgba(0, 212, 255, 0.13);
+        border: 1px solid rgba(0, 212, 255, 0.42);
+        border-radius: 10px;
+        color: rgba(0, 212, 255, 0.88);
+        font-size: 1.35rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        -webkit-tap-highlight-color: transparent;
+        touch-action: none;
+        transition: background 0.08s;
+      }
+      .mb-btn.pressed {
+        background: rgba(0, 212, 255, 0.38);
+      }
+      .mb-up {
+        top: 0;
+        left: 47px;
+      }
+      .mb-down {
+        top: 94px;
+        left: 47px;
+      }
+      .mb-left {
+        top: 47px;
+        left: 0;
+      }
+      .mb-right {
+        top: 47px;
+        left: 94px;
+      }
+      .mb-pad-label {
+        position: absolute;
+        bottom: -18px;
+        left: 0;
+        right: 0;
+        text-align: center;
+        font-size: 0.44rem;
+        color: rgba(0, 212, 255, 0.38);
+        font-family: monospace;
+        letter-spacing: 0.1em;
+        pointer-events: none;
+      }
+      .a-fullscreen #mobile-dpad {
+        display: none !important;
+      }
+
       /* ── Sector Ticker ───────────────────────────────────────────────────── */
       #sector-ticker {
         position: fixed;
@@ -1747,11 +1832,30 @@
     </div>
 
     <div id="controls-hint">
-      W/S Thrust &nbsp;&#x2022;&nbsp; A/D Strafe &nbsp;&#x2022;&nbsp; SHIFT Boost
-      &nbsp;&#x2022;&nbsp; LMB Look &nbsp;&#x2022;&nbsp; RMB Pan &nbsp;&#x2022;&nbsp; Scroll Zoom
-      &nbsp;&#x2022;&nbsp; Double-Click Teleport &nbsp;&#x2022;&nbsp; SPACE Hitchhiker
+      W/S Thrust &nbsp;&#x2022;&nbsp; A/D Strafe &nbsp;&#x2022;&nbsp; SHIFT
+      Boost &nbsp;&#x2022;&nbsp; LMB Look &nbsp;&#x2022;&nbsp; RMB Pan
+      &nbsp;&#x2022;&nbsp; Scroll Zoom &nbsp;&#x2022;&nbsp; Double-Click
+      Teleport &nbsp;&#x2022;&nbsp; SPACE Hitchhiker
     </div>
     <div id="hitchhiker-badge"></div>
+
+    <!-- Mobile D-pad: MOVE (left) + LOOK (right) — visible only on touch devices -->
+    <div id="mobile-dpad">
+      <div class="mb-pad" id="move-pad">
+        <div class="mb-btn mb-up" data-mact="move-fwd">&#x25B2;</div>
+        <div class="mb-btn mb-down" data-mact="move-back">&#x25BC;</div>
+        <div class="mb-btn mb-left" data-mact="move-left">&#x25C4;</div>
+        <div class="mb-btn mb-right" data-mact="move-right">&#x25BA;</div>
+        <div class="mb-pad-label">MOVE</div>
+      </div>
+      <div class="mb-pad look-pad" id="look-pad">
+        <div class="mb-btn mb-up" data-mact="look-up">&#x25B2;</div>
+        <div class="mb-btn mb-down" data-mact="look-down">&#x25BC;</div>
+        <div class="mb-btn mb-left" data-mact="look-left">&#x25C4;</div>
+        <div class="mb-btn mb-right" data-mact="look-right">&#x25BA;</div>
+        <div class="mb-pad-label">LOOK</div>
+      </div>
+    </div>
 
     <div id="scale-indicator">
       <div class="scale-level">MERKABA CORE</div>
@@ -4117,24 +4221,74 @@
           }
           requestAnimationFrame(_adYawLoop);
 
-          /* ── Mobile touch pitch/yaw: patch A-Frame onTouchMove so up/down look works ── */
-          /* A-Frame's native touch handler may be blocked by device-orientation or       */
-          /* touch-count checks; this override ensures pitch is always applied.            */
-          lc.onTouchMove = function (evt) {
-            if (!this.touchStarted) return;
-            var touch = evt.touches[0];
-            if (!touch) return;
-            var dx = this.touchStart.touchX - touch.screenX;
-            var dy = this.touchStart.touchY - touch.screenY;
-            this.touchStart = { touchX: touch.screenX, touchY: touch.screenY };
-            /* yaw: left/right */
-            this.yawObject.rotation.y -= dx * 0.005;
-            /* pitch: up/down — positive dy (swipe up on screen) = look up */
-            this.pitchObject.rotation.x = Math.max(
-              -MAX_PITCH,
-              Math.min(MAX_PITCH, this.pitchObject.rotation.x + dy * 0.005),
-            );
-          }.bind(lc);
+          /* ── Mobile D-pad: buttons drive look pitch/yaw + rig movement ──── */
+          /* Single-finger drag still controls yaw (A-Frame native).            */
+          /* D-pad LOOK ↑↓ applies pitch; D-pad MOVE ↑↓←→ flies the rig.       */
+          var _mk = {}; /* active button flags */
+          var LOOK_SPD = 1.4; /* rad/s — matches desktop YAW_SPEED */
+          var MOVE_SPD = 120; /* units/s cruise */
+          document.querySelectorAll(".mb-btn").forEach(function (btn) {
+            function _on(e) {
+              _mk[btn.dataset.mact] = true;
+              btn.classList.add("pressed");
+              e.preventDefault();
+            }
+            function _off() {
+              _mk[btn.dataset.mact] = false;
+              btn.classList.remove("pressed");
+            }
+            btn.addEventListener("touchstart", _on, { passive: false });
+            btn.addEventListener("touchend", _off);
+            btn.addEventListener("touchcancel", _off);
+          });
+          var _lastMob = performance.now();
+          function _mobileDpadLoop() {
+            var now = performance.now();
+            var dt = Math.min((now - _lastMob) * 0.001, 0.05);
+            _lastMob = now;
+            /* Look pitch — D-pad ↑↓ */
+            if (_mk["look-up"])
+              lc.pitchObject.rotation.x = Math.max(
+                -MAX_PITCH,
+                lc.pitchObject.rotation.x - LOOK_SPD * dt,
+              );
+            if (_mk["look-down"])
+              lc.pitchObject.rotation.x = Math.min(
+                MAX_PITCH,
+                lc.pitchObject.rotation.x + LOOK_SPD * dt,
+              );
+            /* Look yaw — D-pad ←→ (supplements drag) */
+            if (_mk["look-left"]) lc.yawObject.rotation.y += LOOK_SPD * dt;
+            if (_mk["look-right"]) lc.yawObject.rotation.y -= LOOK_SPD * dt;
+            /* Move rig along camera axes — D-pad on left pad */
+            if (
+              _mk["move-fwd"] ||
+              _mk["move-back"] ||
+              _mk["move-left"] ||
+              _mk["move-right"]
+            ) {
+              var _rig = document.getElementById("cameraRig");
+              var _cam = document.querySelector("[look-controls]");
+              if (_rig && _rig.object3D && _cam && _cam.object3D) {
+                var _fwd = new AFRAME.THREE.Vector3();
+                _cam.object3D.getWorldDirection(_fwd);
+                var _right = new AFRAME.THREE.Vector3()
+                  .crossVectors(_fwd, new AFRAME.THREE.Vector3(0, 1, 0))
+                  .normalize();
+                var _step = MOVE_SPD * dt;
+                if (_mk["move-fwd"])
+                  _rig.object3D.position.addScaledVector(_fwd, _step);
+                if (_mk["move-back"])
+                  _rig.object3D.position.addScaledVector(_fwd, -_step);
+                if (_mk["move-left"])
+                  _rig.object3D.position.addScaledVector(_right, -_step);
+                if (_mk["move-right"])
+                  _rig.object3D.position.addScaledVector(_right, _step);
+              }
+            }
+            requestAnimationFrame(_mobileDpadLoop);
+          }
+          requestAnimationFrame(_mobileDpadLoop);
         }
         var _sc = document.querySelector("a-scene");
         if (_sc && _sc.hasLoaded) {
@@ -4213,7 +4367,10 @@
             raycaster.setFromCamera(ndc, threeCamera);
 
             /* Raycast against whole scene — no solar-system dependency */
-            var hits = raycaster.intersectObjects(sceneEl.object3D.children, true);
+            var hits = raycaster.intersectObjects(
+              sceneEl.object3D.children,
+              true,
+            );
             if (hits.length === 0) return;
 
             /* Track the exact mesh hit — getWorldPosition follows any animation */
@@ -4597,48 +4754,6 @@
             }
             window._updateScaleHUD(newDist, null);
             if (window.GeoAnchor) window.GeoAnchor.notifyZoom(newDist);
-          },
-          { passive: true },
-        );
-
-        /* ---- Pinch zoom --------------------------------------------------- */
-        var _pinch0 = 0;
-        window.addEventListener(
-          "touchstart",
-          function (e) {
-            if (e.touches.length === 2)
-              _pinch0 = Math.hypot(
-                e.touches[1].clientX - e.touches[0].clientX,
-                e.touches[1].clientY - e.touches[0].clientY,
-              );
-          },
-          { passive: true },
-        );
-        window.addEventListener(
-          "touchmove",
-          function (e) {
-            if (e.touches.length !== 2 || _pinch0 === 0) return;
-            var d = Math.hypot(
-              e.touches[1].clientX - e.touches[0].clientX,
-              e.touches[1].clientY - e.touches[0].clientY,
-            );
-            var rig = document.getElementById("cameraRig");
-            if (!rig || !rig.object3D) return;
-            var pos = rig.object3D.position;
-            var dist = pos.length();
-            if (dist < 0.001) dist = 72;
-            var nx = pos.x / dist,
-              ny = pos.y / dist,
-              nz = pos.z / dist;
-            var newDist = Math.max(
-              MIN_DIST,
-              Math.min(MAX_DIST, dist + (_pinch0 - d) * 0.12),
-            );
-            _pinch0 = d;
-            pos.x = nx * newDist;
-            pos.y = ny * newDist;
-            pos.z = nz * newDist;
-            window._updateScaleHUD(newDist, null);
           },
           { passive: true },
         );
@@ -6011,7 +6126,10 @@
           var ACCEL = 20000,
             ACCEL_BOOST = 100000;
           if (camEl)
-            camEl.setAttribute("wasd-controls", "fly: true; adEnabled: true; acceleration: " + ACCEL);
+            camEl.setAttribute(
+              "wasd-controls",
+              "fly: true; adEnabled: true; acceleration: " + ACCEL,
+            );
 
           var shiftOn = false;
           var heldKeys = {};
@@ -6079,7 +6197,10 @@
             if (e.code === "ShiftLeft" || e.code === "ShiftRight") {
               shiftOn = false;
               if (camEl)
-                camEl.setAttribute("wasd-controls", "fly: true; adEnabled: true; acceleration: " + ACCEL);
+                camEl.setAttribute(
+                  "wasd-controls",
+                  "fly: true; adEnabled: true; acceleration: " + ACCEL,
+                );
               if (self._boostVig) self._boostVig.classList.remove("active");
               if (wasdMoving && self._velHud)
                 self._velHud.textContent = "CRUISE";
