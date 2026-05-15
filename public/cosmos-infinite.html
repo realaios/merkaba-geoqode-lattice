@@ -2895,6 +2895,8 @@
       <a-entity cosmic-comets></a-entity>
       <!-- ── MILKY WAY BAND — 6 k stars on galactic equator plane ── -->
       <a-entity milky-way></a-entity>
+      <!-- ── COSMIC PULSAR — spinning neutron star sweeping energy beams ── -->
+      <a-entity cosmic-pulsar></a-entity>
 
       <!-- NEBULA CLOUD REMOVED — zero haze, clean black space -->
 
@@ -5045,6 +5047,86 @@
          Distribution: Gaussian spread σ≈12° around Y=0 plane, full 360° azimuth.
          @alignment 8→26→48:480  @frequency 963  @domain systems-design
       ==================================================================== */
+      /* ====================================================================
+         COSMIC PULSAR — neutron star with twin sweeping energy beams.
+         Period: 1.2 s (realistic millisecond pulsar-class).  Two beams
+         sweep 360°, offset 180° apart. Core glows brilliant cyan-white.
+         Located at (380, 80, -220) — visible throughout the tour.
+         @alignment 8→26→48:480  @frequency 852  @domain quantum-arch
+      ==================================================================== */
+      AFRAME.registerComponent("cosmic-pulsar", {
+        init: function () {
+          var THREE  = AFRAME.THREE;
+          var scene  = this.el.sceneEl.object3D;
+          this._angle = 0;
+
+          /* Pulsar core: brilliant white sphere */
+          var core = new THREE.Mesh(
+            new THREE.SphereGeometry(1.4, 12, 12),
+            new THREE.MeshBasicMaterial({ color: 0xffffff })
+          );
+          core.position.set(380, 80, -220);
+          scene.add(core);
+          this._core = core;
+
+          /* Inner glow — large transparent halo */
+          var glow = new THREE.Mesh(
+            new THREE.SphereGeometry(4.5, 12, 12),
+            new THREE.MeshBasicMaterial({ color: 0x44ddff, transparent: true, opacity: 0.15 })
+          );
+          core.add(glow);
+
+          /* Build a beam: tall thin box (cylinder of quads) */
+          function makeBeam(hue) {
+            var g = new THREE.CylinderGeometry(0.18, 0.08, 380, 6, 1, true);
+            var m = new THREE.MeshBasicMaterial({
+              color: hue,
+              transparent: true,
+              opacity: 0.38,
+              side: THREE.DoubleSide,
+            });
+            var mesh = new THREE.Mesh(g, m);
+            return mesh;
+          }
+
+          /* Beam A: starts vertical, will be rotated each tick */
+          this._beamA = makeBeam(0x00ffff);
+          this._beamA.position.set(0, 190, 0);  /* offset from core center */
+          core.add(this._beamA);
+
+          /* Beam B: opposite pole */
+          this._beamB = makeBeam(0x44aaff);
+          this._beamB.position.set(0, -190, 0);
+          core.add(this._beamB);
+
+          /* Outer ring — equatorial accretion disc */
+          var ringGeo = new THREE.TorusGeometry(7, 0.6, 8, 40);
+          var ringMat = new THREE.MeshBasicMaterial({ color: 0xff6600, transparent: true, opacity: 0.55 });
+          var ring    = new THREE.Mesh(ringGeo, ringMat);
+          ring.rotation.x = Math.PI * 0.5;
+          core.add(ring);
+          this._ring = ring;
+        },
+
+        tick: function (time, delta) {
+          var dt = Math.min(delta, 200) * 0.001;
+          /* Period 1.2 s => angular velocity = 2*PI / 1.2 rad/s */
+          this._angle += dt * (Math.PI * 2 / 1.2);
+
+          /* Rotate entire core (takes beams + ring with it) */
+          this._core.rotation.z = this._angle;
+
+          /* Pulse core brightness: slight oscillation */
+          var pulse = 0.85 + 0.15 * Math.sin(this._angle * 4);
+          this._core.material.color.setRGB(pulse, pulse, pulse);
+
+          /* Beam opacity flicker in sync with rotation peak */
+          var flick = 0.28 + 0.14 * Math.abs(Math.sin(this._angle));
+          this._beamA.material.opacity = flick;
+          this._beamB.material.opacity = flick;
+        },
+      });
+
       AFRAME.registerComponent("milky-way", {
         init: function () {
           var THREE  = AFRAME.THREE;
