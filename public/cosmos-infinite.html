@@ -1609,7 +1609,7 @@
       <a-entity id="cameraRig" position="0 0 0">
         <a-camera
           wasd-controls="acceleration: 80000; fly: true; adEnabled: false"
-          look-controls="pointerLockEnabled: false; touchEnabled: true"
+          look-controls="pointerLockEnabled: false; touchEnabled: true; magicWindowTrackingEnabled: false"
           fov="60"
           far="2000000"
         >
@@ -2796,6 +2796,25 @@
             requestAnimationFrame(_adYawLoop);
           }
           requestAnimationFrame(_adYawLoop);
+
+          /* ── Mobile touch pitch/yaw: patch A-Frame onTouchMove so up/down look works ── */
+          /* A-Frame's native touch handler may be blocked by device-orientation or       */
+          /* touch-count checks; this override ensures pitch is always applied.            */
+          lc.onTouchMove = function (evt) {
+            if (!this.touchStarted) return;
+            var touch = evt.touches[0];
+            if (!touch) return;
+            var dx = this.touchStart.touchX - touch.screenX;
+            var dy = this.touchStart.touchY - touch.screenY;
+            this.touchStart = { touchX: touch.screenX, touchY: touch.screenY };
+            /* yaw: left/right */
+            this.yawObject.rotation.y -= dx * 0.005;
+            /* pitch: up/down — positive dy (swipe up on screen) = look up */
+            this.pitchObject.rotation.x = Math.max(
+              -MAX_PITCH,
+              Math.min(MAX_PITCH, this.pitchObject.rotation.x + dy * 0.005),
+            );
+          }.bind(lc);
         }
         var _sc = document.querySelector("a-scene");
         if (_sc && _sc.hasLoaded) {
@@ -7421,12 +7440,14 @@
         joyWrap.addEventListener("touchcancel", resetJoy);
 
         /* ── RAF: apply joystick movement to cameraRig ── */
-        var SPEED = 1.5;
         function mobileLoop() {
           if (joyActive && (Math.abs(joyDX) > DEAD || Math.abs(joyDY) > DEAD)) {
             var rig = document.getElementById("cameraRig");
             var camEl = document.querySelector("[look-controls]");
             if (rig && rig.object3D && camEl && camEl.object3D) {
+              /* distance-based speed: ~1000au/s at 8000+, ~500 at 3000+, 1.5 close in */
+              var dist = rig.object3D.position.length();
+              var SPEED = dist >= 8000 ? 17 : dist >= 3000 ? 8.5 : 1.5;
               var THREE = AFRAME.THREE;
               var fwd = new THREE.Vector3();
               var right = new THREE.Vector3();
@@ -7435,10 +7456,10 @@
               fwd.y = 0;
               fwd.normalize();
               right.crossVectors(fwd, up).normalize();
-              /* joystick Y (up) = fly forward, Y (down) = fly back */
-              /* joystick X = strafe left/right                       */
-              rig.object3D.position.addScaledVector(fwd, -joyDY * SPEED);
-              rig.object3D.position.addScaledVector(right, joyDX * SPEED);
+              /* INVERTED: stick up = fly back, stick down = fly forward */
+              /* INVERTED: stick right = strafe left                      */
+              rig.object3D.position.addScaledVector(fwd, joyDY * SPEED);
+              rig.object3D.position.addScaledVector(right, -joyDX * SPEED);
             }
           }
           requestAnimationFrame(mobileLoop);
