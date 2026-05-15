@@ -2911,6 +2911,8 @@
       <a-entity dark-matter-web></a-entity>
       <!-- ── NEBULA — emission cloud of ionized gas in teal, rose & gold ── -->
       <a-entity cosmic-nebula></a-entity>
+      <!-- ── QUASAR — active galactic nucleus with relativistic twin jets ── -->
+      <a-entity cosmic-quasar></a-entity>
 
       <!-- NEBULA CLOUD REMOVED — zero haze, clean black space -->
 
@@ -5499,6 +5501,113 @@
           this._nebPivot.rotation.z += 0.003 * dt;
           /* opacity flicker 0.42 -> 0.65 over 12s */
           this._nebMat.opacity = 0.535 + 0.115 * Math.sin(this._nebTime * Math.PI / 6);
+        },
+      });
+
+      /* ====================================================================
+         COSMIC QUASAR — Active galactic nucleus at (60, 380, -900).
+         Components:
+           - Ultra-bright core: white SphereGeometry r=8, MeshBasicMaterial
+           - Accretion disk: 300-particle toroidal ring, blue-white, r 18-36
+           - North jet: 200-particle tapered cone, length 520, white→cyan
+           - South jet: 200-particle mirror, white→magenta
+           - Outer glow: SphereGeometry r=22, yellow, opacity 0.08
+         Core pulses (0.8-1.2 scale) at 4s cycle.
+         Jets slowly spin around Y at 0.08 rad/s.
+         @alignment 8→26→48:480  @frequency 852  @domain quantum-arch
+      ==================================================================== */
+      AFRAME.registerComponent("cosmic-quasar", {
+        init: function () {
+          var THREE = AFRAME.THREE;
+          var scene = this.el.sceneEl.object3D;
+
+          this._qPivot = new THREE.Group();
+          this._qPivot.position.set(60, 380, -900);
+          scene.add(this._qPivot);
+
+          /* ── core ── */
+          this._qCore = new THREE.Mesh(
+            new THREE.SphereGeometry(8, 16, 12),
+            new THREE.MeshBasicMaterial({ color: 0xffffff })
+          );
+          this._qPivot.add(this._qCore);
+
+          /* ── outer glow ── */
+          this._qPivot.add(new THREE.Mesh(
+            new THREE.SphereGeometry(22, 12, 8),
+            new THREE.MeshBasicMaterial({ color: 0xffee44, transparent: true, opacity: 0.08, depthWrite: false })
+          ));
+
+          /* ── accretion disk ring ── */
+          var DISK_N = 300;
+          var dPos = new Float32Array(DISK_N * 3);
+          var dCol = new Float32Array(DISK_N * 3);
+          for (var i = 0; i < DISK_N; i++) {
+            var angle = (i / DISK_N) * Math.PI * 2;
+            var r = 18 + Math.random() * 18;
+            dPos[i * 3    ] = Math.cos(angle) * r;
+            dPos[i * 3 + 1] = (Math.random() - 0.5) * 4;
+            dPos[i * 3 + 2] = Math.sin(angle) * r;
+            var hot = Math.pow(1 - (r - 18) / 18, 2);
+            dCol[i * 3    ] = 0.8 + 0.2 * hot;
+            dCol[i * 3 + 1] = 0.7 + 0.3 * hot;
+            dCol[i * 3 + 2] = 0.9 + 0.1 * hot;
+          }
+          var diskGeo = new THREE.BufferGeometry();
+          diskGeo.setAttribute("position", new THREE.BufferAttribute(dPos, 3));
+          diskGeo.setAttribute("color",    new THREE.BufferAttribute(dCol, 3));
+          this._diskPts = new THREE.Points(diskGeo, new THREE.PointsMaterial({
+            size: 2.0, vertexColors: true,
+            blending: THREE.AdditiveBlending, depthWrite: false, transparent: true, opacity: 0.9
+          }));
+          this._qPivot.add(this._diskPts);
+
+          /* ── helper to build a jet (north or south) ── */
+          var buildJet = function (dir, colFar) {
+            var JET_N = 200;
+            var JET_LEN = 520;
+            var jPos = new Float32Array(JET_N * 3);
+            var jCol = new Float32Array(JET_N * 3);
+            for (var j = 0; j < JET_N; j++) {
+              var t = Math.pow(Math.random(), 0.6);
+              var y = dir * t * JET_LEN;
+              var spread = t * 22;
+              var a = Math.random() * Math.PI * 2;
+              jPos[j * 3    ] = Math.cos(a) * spread * Math.random();
+              jPos[j * 3 + 1] = y;
+              jPos[j * 3 + 2] = Math.sin(a) * spread * Math.random();
+              var fade = 1 - t;
+              jCol[j * 3    ] = fade + colFar[0] * t;
+              jCol[j * 3 + 1] = fade + colFar[1] * t;
+              jCol[j * 3 + 2] = fade + colFar[2] * t;
+            }
+            var jg = new THREE.BufferGeometry();
+            jg.setAttribute("position", new THREE.BufferAttribute(jPos, 3));
+            jg.setAttribute("color",    new THREE.BufferAttribute(jCol, 3));
+            return new THREE.Points(jg, new THREE.PointsMaterial({
+              size: 2.5, vertexColors: true,
+              blending: THREE.AdditiveBlending, depthWrite: false, transparent: true, opacity: 0.80
+            }));
+          };
+
+          this._jetPivot = new THREE.Group();
+          this._jetPivot.add(buildJet( 1, [0.0, 1.0, 1.0]));
+          this._jetPivot.add(buildJet(-1, [1.0, 0.0, 1.0]));
+          this._qPivot.add(this._jetPivot);
+
+          this._qTime = 0;
+        },
+
+        tick: function (time, delta) {
+          var dt = Math.min(delta, 200) * 0.001;
+          this._qTime += dt;
+          /* core pulse */
+          var pulse = 1.0 + 0.2 * Math.sin(this._qTime * Math.PI / 2);
+          this._qCore.scale.setScalar(pulse);
+          /* disk slow spin */
+          this._diskPts.rotation.y += 0.12 * dt;
+          /* jet rotation */
+          this._jetPivot.rotation.y += 0.08 * dt;
         },
       });
 
