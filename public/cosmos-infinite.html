@@ -2965,6 +2965,10 @@
       <a-entity photon-sphere></a-entity>
       <!-- ── BLUE STRAGGLER — cannibal star feeding on companion, glowing fierce blue ── -->
       <a-entity blue-straggler></a-entity>
+      <!-- ── COSMIC FIREWALL — primordial phase-transition domain wall ── -->
+      <a-entity cosmic-firewall></a-entity>
+      <!-- ── ALIEN MEGASTRUCTURE — Dyson swarm: thousands of orbital collectors ── -->
+      <a-entity alien-megastructure></a-entity>
 
       <!-- NEBULA CLOUD REMOVED — zero haze, clean black space -->
 
@@ -8426,6 +8430,198 @@
           } else {
             this._shell.material.opacity = 0;
           }
+        },
+      });
+
+      /* ==================================================================
+         COSMIC FIREWALL — primordial phase-transition domain wall from
+         the electroweak epoch. An infinite planar boundary separating
+         two vacuum states with different physics.
+         Representation: large shimmering plane at x=-500 (YZ), 2000 pts.
+         Wall thickness: 30 units of quantum foam (randomly displaced).
+         'False vacuum' side (x<-500): dark, occasional bubble nucleations.
+         'True vacuum' side (x>-500): normal cosmos (all other objects).
+         Bubbles: 8 expanding spheres nucleate from wall, each collapses.
+         Wall surface shimmers with electroweak plasma patterns.
+         @alignment 8→26→48:480  @frequency 852  @domain quantum-arch
+      ================================================================== */
+      AFRAME.registerComponent("cosmic-firewall", {
+        init: function () {
+          var THREE = AFRAME.THREE;
+          var scene = this.el.sceneEl.object3D;
+          var PI = Math.PI;
+          this._cfTime = 0;
+
+          /* wall plane — 2000 particles in YZ plane at x=-500 */
+          var WN = 2000;
+          var wPos = new Float32Array(WN * 3);
+          var wCol = new Float32Array(WN * 3);
+          this._wBase = new Float32Array(WN * 3);
+          for (var wi = 0; wi < WN; wi++) {
+            var wy = (Math.random() - 0.5) * 1400;
+            var wz = (Math.random() - 0.5) * 1400;
+            this._wBase[wi*3  ] = -500;
+            this._wBase[wi*3+1] = wy;
+            this._wBase[wi*3+2] = wz;
+            wPos[wi*3  ] = -500 + (Math.random()-0.5)*30;
+            wPos[wi*3+1] = wy;
+            wPos[wi*3+2] = wz;
+            /* electroweak colour: purple-pink spectrum */
+            var t = Math.random();
+            wCol[wi*3  ] = 0.6 + t * 0.35;
+            wCol[wi*3+1] = 0.1 + t * 0.3;
+            wCol[wi*3+2] = 0.8 + t * 0.15;
+          }
+          var wGeo = new THREE.BufferGeometry();
+          this._wAttr = new THREE.BufferAttribute(wPos, 3);
+          wGeo.setAttribute("position", this._wAttr);
+          wGeo.setAttribute("color",    new THREE.BufferAttribute(wCol, 3));
+          scene.add(new THREE.Points(wGeo, new THREE.PointsMaterial({
+            size: 2.5, vertexColors: true,
+            blending: THREE.AdditiveBlending, depthWrite: false, transparent: true, opacity: 0.7
+          })));
+          this._wN = WN;
+
+          /* 8 vacuum bubble nucleation spheres */
+          this._bubbles = [];
+          for (var bi = 0; bi < 8; bi++) {
+            var bMesh = new THREE.Mesh(
+              new THREE.SphereGeometry(1, 10, 8),
+              new THREE.MeshBasicMaterial({ color: 0xff88ff, transparent: true, opacity: 0.0, wireframe: false })
+            );
+            var bx = -500 - Math.random() * 80;
+            var by = (Math.random()-0.5)*600;
+            var bz = (Math.random()-0.5)*600;
+            bMesh.position.set(bx, by, bz);
+            scene.add(bMesh);
+            this._bubbles.push({ mesh: bMesh, phase: Math.random() * 7, period: 5 + Math.random() * 5 });
+          }
+        },
+        tick: function (time, delta) {
+          var dt = Math.min(delta, 200) * 0.001;
+          this._cfTime += dt;
+          var t2 = this._cfTime;
+          /* shimmer wall particles */
+          var arr = this._wAttr.array;
+          for (var wi = 0; wi < this._wN; wi++) {
+            arr[wi*3  ] = this._wBase[wi*3  ] + Math.sin(wi * 1.3 + t2 * 2.1) * 12 + Math.cos(wi * 0.7 + t2) * 8;
+          }
+          this._wAttr.needsUpdate = true;
+          /* bubble nucleation cycles */
+          for (var bi = 0; bi < this._bubbles.length; bi++) {
+            var bbl = this._bubbles[bi];
+            var bp  = ((t2 + bbl.phase) % bbl.period) / bbl.period;
+            if (bp < 0.5) {
+              var bf = bp / 0.5;
+              bbl.mesh.scale.setScalar(1 + bf * 60);
+              bbl.mesh.material.opacity = 0.35 * (1 - bf);
+            } else {
+              bbl.mesh.material.opacity = 0;
+            }
+          }
+        },
+      });
+
+      /* ==================================================================
+         ALIEN MEGASTRUCTURE — Dyson swarm: thousands of collectors orbiting
+         a captured star. Multiple orbital shells at different inclinations.
+         Position: (300, 400, -800).
+         Central star: yellow G-type, r=20.
+         3 collector shells: shell-1 (200 collectors, r=80), shell-2 (350, r=130),
+           shell-3 (500, r=190). Each shell has unique orbital inclination.
+         Each collector: tiny reflective plate-like mesh.
+         Microwave beam: each collector fires beam back toward common focal point.
+         Focal station: large receiving dish at (300, 400, -600).
+         @alignment 8→26→48:480  @frequency 72  @domain self-evolve
+      ================================================================== */
+      AFRAME.registerComponent("alien-megastructure", {
+        init: function () {
+          var THREE = AFRAME.THREE;
+          var scene = this.el.sceneEl.object3D;
+          var PI = Math.PI;
+          this._amRoot = new THREE.Group();
+          this._amRoot.position.set(300, 400, -800);
+          scene.add(this._amRoot);
+
+          /* central star */
+          this._amRoot.add(new THREE.Mesh(
+            new THREE.SphereGeometry(20, 14, 10),
+            new THREE.MeshBasicMaterial({ color: 0xffee77 })
+          ));
+          this._amRoot.add(new THREE.Mesh(
+            new THREE.SphereGeometry(28, 10, 8),
+            new THREE.MeshBasicMaterial({ color: 0xffcc44, transparent: true, opacity: 0.18 })
+          ));
+
+          /* focal receiving station */
+          var sta = new THREE.Mesh(
+            new THREE.TorusGeometry(12, 2, 8, 20),
+            new THREE.MeshBasicMaterial({ color: 0x88aacc })
+          );
+          sta.position.set(0, 0, 200); /* 200 units away from star in local space */
+          this._amRoot.add(sta);
+
+          /* collector shells */
+          var shellDefs = [
+            { N: 200, r: 80,  speed: 0.22, incl: 0.3,  color: 0x88ccff },
+            { N: 350, r: 130, speed: 0.15, incl: 1.1,  color: 0x99ddaa },
+            { N: 500, r: 190, speed: 0.10, incl: 2.0,  color: 0xffcc88 },
+          ];
+          this._shells = [];
+          for (var shi = 0; shi < shellDefs.length; shi++) {
+            var sd = shellDefs[shi];
+            var aN = sd.N;
+            var aPos = new Float32Array(aN * 3);
+            var aAngles = new Float32Array(aN);
+            var aInclinations = new Float32Array(aN);
+            for (var ai = 0; ai < aN; ai++) {
+              var aa = (ai / aN) * PI * 2 + Math.random() * 0.15;
+              var inc = sd.incl + (Math.random()-0.5) * 0.4;
+              aAngles[ai] = aa;
+              aInclinations[ai] = inc;
+              aPos[ai*3  ] = sd.r * Math.cos(aa);
+              aPos[ai*3+1] = sd.r * Math.sin(aa) * Math.sin(inc);
+              aPos[ai*3+2] = sd.r * Math.sin(aa) * Math.cos(inc);
+            }
+            var aGeo = new THREE.BufferGeometry();
+            var aPosAttr = new THREE.BufferAttribute(aPos, 3);
+            aGeo.setAttribute("position", aPosAttr);
+            var aMat = new THREE.PointsMaterial({
+              color: sd.color, size: 1.6,
+              blending: THREE.AdditiveBlending, depthWrite: false, transparent: true, opacity: 0.80
+            });
+            this._amRoot.add(new THREE.Points(aGeo, aMat));
+            this._shells.push({ aPosAttr: aPosAttr, aAngles: aAngles, aInclinations: aInclinations, r: sd.r, speed: sd.speed, N: aN });
+          }
+
+          /* microwave beam — a faint line from star to focal station */
+          var bVerts = [new THREE.Vector3(0,0,0), new THREE.Vector3(0,0,200)];
+          var bGeo = new THREE.BufferGeometry().setFromPoints(bVerts);
+          this._amRoot.add(new THREE.Line(bGeo, new THREE.LineBasicMaterial({
+            color: 0x88ffcc, blending: THREE.AdditiveBlending, depthWrite: false, transparent: true, opacity: 0.12
+          })));
+
+          this._amTime = 0;
+        },
+        tick: function (time, delta) {
+          var dt = Math.min(delta, 200) * 0.001;
+          this._amTime += dt;
+          /* orbit all shells */
+          for (var shi = 0; shi < this._shells.length; shi++) {
+            var sh  = this._shells[shi];
+            var arr = sh.aPosAttr.array;
+            var dA  = sh.speed * dt;
+            for (var ai = 0; ai < sh.N; ai++) {
+              sh.aAngles[ai] += dA;
+              var aa  = sh.aAngles[ai];
+              var inc = sh.aInclinations[ai];
+              arr[ai*3  ] = sh.r * Math.cos(aa);
+              arr[ai*3+1] = sh.r * Math.sin(aa) * Math.sin(inc);
+              arr[ai*3+2] = sh.r * Math.sin(aa) * Math.cos(inc);
+            }
+            sh.aPosAttr.needsUpdate = true;
+          }
+          this._amRoot.rotation.y += 0.01 * dt;
         },
       });
 
