@@ -2888,6 +2888,9 @@
       <a-entity cosmic-storm></a-entity>
       <a-entity cosmic-lightning></a-entity>
 
+      <!-- ── UNIVERSE GRAND TOUR — U key auto-pilot warp flight ── -->
+      <a-entity universe-tour></a-entity>
+
       <!-- NEBULA CLOUD REMOVED — zero haze, clean black space -->
 
       <!-- ── REAL 3D GLTF MODELS ───────────────────────────────────────────── -->
@@ -4796,6 +4799,238 @@
             }
           }
           this._bolts = alive;
+        },
+      });
+
+      /* ====================================================================
+         Universe Grand Tour — press U or click the GRAND TOUR button to
+         launch an auto-pilot warp flight through 10 D480 landmarks.
+         Warp-streak canvas: 180 radial speed-lines, sin-curve intensity.
+         Camera path: cubic ease-in-out lerp between waypoints.
+         @alignment 8→26→48:480  (S2 code-eng ACTION @ 528 Hz)
+      ==================================================================== */
+      AFRAME.registerComponent("universe-tour", {
+        init: function () {
+          var self = this;
+          var V3   = AFRAME.THREE.Vector3;
+
+          /* Waypoints: pos + label shown on ARRIVAL + segDur ms to reach from prev */
+          this._waypoints = [
+            { pos: new V3(0, 12, 75),        label: "UNIVERSE TOUR • GRAND DEPARTURE",           segDur: 0 },
+            { pos: new V3(0, 55, -35),       label: "STATION-ALPHA • ORBITAL DOCK",               segDur: 3200 },
+            { pos: new V3(320, -40, -180),   label: "STORM VORTEX ALPHA • ELECTRIC CHAOS",        segDur: 5200 },
+            { pos: new V3(-480, 60, 220),    label: "STORM VORTEX BETA • VIOLET TEMPEST",          segDur: 6800 },
+            { pos: new V3(180, 80, 450),     label: "STORM VORTEX GAMMA • CYAN MAELSTROM",         segDur: 5500 },
+            { pos: new V3(0, 600, 0),        label: "GALACTIC ZENITH • 600 AU ABOVE THE PLANE",    segDur: 6800 },
+            { pos: new V3(900, 200, 0),      label: "D480 FRONTIER • HARMONIC OUTER EDGE",         segDur: 8000 },
+            { pos: new V3(-260, -30, -420),  label: "STORM VORTEX DELTA • MAGENTA SINGULARITY",    segDur: 7500 },
+            { pos: new V3(0, -400, -800),    label: "SOUTHERN ABYSS • DEEP VOID",                  segDur: 7200 },
+            { pos: new V3(0, 12, 75),        label: "RETURN TO ORIGIN • MERKABA CORE",             segDur: 7000 },
+          ];
+
+          this._active      = false;
+          this._wpIdx       = 0;
+          this._segElapsed  = 0;
+
+          /* ── Warp-streak canvas ── */
+          var cv = document.createElement("canvas");
+          cv.id = "tour-streak-cv";
+          cv.style.cssText =
+            "position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9998;opacity:0;transition:opacity 0.9s";
+          document.body.appendChild(cv);
+          this._cv = cv;
+
+          /* Pre-generate 180 streaks with fixed geometry — only intensity varies */
+          this._streaks = [];
+          for (var i = 0; i < 180; i++) {
+            this._streaks.push({
+              a:    (i / 180) * Math.PI * 2 + (Math.random() - 0.5) * 0.04,
+              w:    0.5 + Math.random() * 1.4,
+              minR: 12 + Math.random() * 50,
+              lenM: 0.6 + Math.random() * 1.4,
+              h:    195 + Math.random() * 115,
+            });
+          }
+
+          /* ── Tour arrival banner ── */
+          var ban = document.createElement("div");
+          ban.id = "tour-banner";
+          ban.style.cssText =
+            "position:fixed;bottom:105px;left:50%;transform:translateX(-50%);pointer-events:none;z-index:9999;opacity:0;transition:opacity 0.55s;text-align:center;font-family:monospace;background:rgba(0,5,18,0.74);border:1px solid rgba(0,212,255,0.22);border-radius:4px;padding:8px 28px;white-space:nowrap";
+          document.body.appendChild(ban);
+          this._ban = ban;
+
+          /* ── GRAND TOUR toggle button ── */
+          var btn = document.createElement("button");
+          btn.id  = "tour-btn";
+          btn.textContent = "[ U ] GRAND TOUR";
+          btn.style.cssText =
+            "position:fixed;bottom:58px;left:50%;transform:translateX(-50%);z-index:9999;cursor:pointer;padding:5px 20px;background:rgba(0,10,30,0.78);border:1px solid rgba(0,212,255,0.32);border-radius:3px;color:#00d4ff;font-family:monospace;font-size:0.62rem;letter-spacing:0.22em;outline:none";
+          btn.addEventListener("click", function () {
+            if (self._active) self._stopTour(); else self._startTour();
+          });
+          btn.addEventListener("mouseenter", function () {
+            btn.style.background = "rgba(0,212,255,0.11)";
+            btn.style.borderColor = "rgba(0,212,255,0.72)";
+          });
+          btn.addEventListener("mouseleave", function () {
+            btn.style.background = self._active
+              ? "rgba(30,0,15,0.78)" : "rgba(0,10,30,0.78)";
+            btn.style.borderColor = self._active
+              ? "rgba(255,107,157,0.45)" : "rgba(0,212,255,0.32)";
+          });
+          document.body.appendChild(btn);
+          this._btn = btn;
+
+          /* U = start / stop   Escape = stop */
+          window.addEventListener("keydown", function (e) {
+            if (e.target && (e.target.tagName === "INPUT" ||
+                             e.target.tagName === "TEXTAREA")) return;
+            if (e.code === "KeyU") {
+              if (self._active) self._stopTour(); else self._startTour();
+            }
+            if (e.code === "Escape" && self._active) self._stopTour();
+          });
+        },
+
+        _startTour: function () {
+          /* Snap waypoint[0] to current rig position so tour starts from here */
+          var rig = document.getElementById("cameraRig");
+          if (rig && rig.object3D) {
+            var p = rig.object3D.position;
+            this._waypoints[0].pos.set(p.x, p.y, p.z);
+          }
+          this._active     = true;
+          this._wpIdx      = 0;
+          this._segElapsed = 0;
+          this._cv.style.opacity  = "1";
+          this._showBanner(this._waypoints[0].label, 0, this._waypoints.length);
+          var b = this._btn;
+          if (b) {
+            b.textContent     = "[ U ] STOP TOUR";
+            b.style.color       = "#ff6b9d";
+            b.style.borderColor = "rgba(255,107,157,0.45)";
+            b.style.background  = "rgba(30,0,15,0.78)";
+          }
+        },
+
+        _stopTour: function () {
+          this._active = false;
+          this._cv.style.opacity = "0";
+          this._ban.style.opacity = "0";
+          var b = this._btn;
+          if (b) {
+            b.textContent     = "[ U ] GRAND TOUR";
+            b.style.color       = "#00d4ff";
+            b.style.borderColor = "rgba(0,212,255,0.32)";
+            b.style.background  = "rgba(0,10,30,0.78)";
+          }
+        },
+
+        _showBanner: function (label, wpIdx, total) {
+          var sub = wpIdx === 0
+            ? "GRAND TOUR INITIATED"
+            : ("ARRIVING AT • WAYPOINT " + wpIdx + " / " + (total - 1));
+          this._ban.innerHTML =
+            '<div style="font-size:0.44rem;letter-spacing:0.32em;color:#475569;margin-bottom:3px">' +
+            sub + '</div>' +
+            '<div style="font-size:0.82rem;letter-spacing:0.17em;color:#00d4ff;' +
+            'text-shadow:0 0 18px #00d4ff">' + label + '</div>';
+          this._ban.style.opacity = "1";
+        },
+
+        _drawStreaks: function (intensity) {
+          var cv  = this._cv;
+          var W   = window.innerWidth;
+          var H   = window.innerHeight;
+          if (cv.width  !== W) cv.width  = W;
+          if (cv.height !== H) cv.height = H;
+          var ctx = cv.getContext("2d");
+          ctx.clearRect(0, 0, W, H);
+          if (intensity < 0.015) return;
+          var cx = W * 0.5;
+          var cy = H * 0.5;
+          var mL = Math.sqrt(cx * cx + cy * cy);
+          var ss = this._streaks;
+          for (var i = 0; i < ss.length; i++) {
+            var s   = ss[i];
+            var len = s.lenM * mL * intensity;
+            var sx  = cx + Math.cos(s.a) * s.minR;
+            var sy  = cy + Math.sin(s.a) * s.minR;
+            var ex  = cx + Math.cos(s.a) * (s.minR + len);
+            var ey  = cy + Math.sin(s.a) * (s.minR + len);
+            var g   = ctx.createLinearGradient(sx, sy, ex, ey);
+            g.addColorStop(0, "hsla(" + s.h + ",100%,80%," + (intensity * 0.72) + ")");
+            g.addColorStop(1, "hsla(" + s.h + ",90%,55%,0)");
+            ctx.beginPath();
+            ctx.moveTo(sx, sy);
+            ctx.lineTo(ex, ey);
+            ctx.strokeStyle = g;
+            ctx.lineWidth   = s.w;
+            ctx.stroke();
+          }
+        },
+
+        tick: function (time, delta) {
+          if (!this._active) return;
+          var self = this;
+          var wps  = this._waypoints;
+          var dt   = Math.min(delta, 200); /* cap delta — tab-switch guard */
+          this._segElapsed += dt;
+
+          /* ── Advance through waypoints if elapsed >= segDur ── */
+          while (this._wpIdx < wps.length - 1) {
+            var dest   = wps[this._wpIdx + 1];
+            var segDur = dest.segDur;
+            if (this._segElapsed >= segDur) {
+              this._segElapsed -= segDur;
+              this._wpIdx++;
+              if (this._wpIdx >= wps.length - 1) {
+                /* Tour complete — snap to final position and stop */
+                var fp   = wps[wps.length - 1].pos;
+                var rigF = document.getElementById("cameraRig");
+                if (rigF && rigF.object3D) rigF.object3D.position.copy(fp);
+                this._showBanner(wps[wps.length - 1].label,
+                                 this._wpIdx, wps.length);
+                this._drawStreaks(0);
+                setTimeout(function () { self._stopTour(); }, 3200);
+                return;
+              }
+              this._showBanner(wps[this._wpIdx].label,
+                               this._wpIdx, wps.length);
+            } else {
+              break;
+            }
+          }
+
+          if (this._wpIdx >= wps.length - 1) return;
+
+          /* ── Cubic ease-in-out lerp between current and next waypoint ── */
+          var from   = wps[this._wpIdx].pos;
+          var to     = wps[this._wpIdx + 1].pos;
+          var dur    = wps[this._wpIdx + 1].segDur;
+          var t      = dur > 0 ? Math.min(1, this._segElapsed / dur) : 1;
+          var ease   = t < 0.5
+            ? 4 * t * t * t
+            : 1 - Math.pow(-2 * t + 2, 3) / 2;
+
+          var px = from.x + (to.x - from.x) * ease;
+          var py = from.y + (to.y - from.y) * ease;
+          var pz = from.z + (to.z - from.z) * ease;
+
+          var rig = document.getElementById("cameraRig");
+          if (rig && rig.object3D) rig.object3D.position.set(px, py, pz);
+
+          /* Warp streak intensity: sin curve — 0 at takeoff/landing, 1 at midpoint */
+          var speed = Math.sin(t * Math.PI);
+          this._drawStreaks(speed * 0.86);
+
+          /* Update distance / scale HUD */
+          var dist = Math.sqrt(px * px + py * py + pz * pz);
+          if (typeof window._updateScaleHUD === "function") {
+            var destLabel = (wps[this._wpIdx + 1].label || "").split(" •")[0];
+            window._updateScaleHUD(dist, destLabel);
+          }
         },
       });
 
