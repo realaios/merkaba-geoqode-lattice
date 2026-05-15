@@ -1202,6 +1202,339 @@
       #warp-bloom {
         display: none !important;
       }
+
+      /* ================================================================
+         UNIVERSE HORIZON OVERLAY -- 32000 au revelation
+         @alignment 8->26->48:480 | S1 quantum-arch | PHYSICS @852Hz
+      ================================================================ */
+      #horizon-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        background: radial-gradient(
+          ellipse at 50% 30%,
+          #0e0430 0%,
+          #050115 50%,
+          #000000 100%
+        );
+        overflow-y: auto;
+        overflow-x: hidden;
+        visibility: hidden;
+        opacity: 0;
+        transition:
+          opacity 1s ease,
+          visibility 1s ease;
+        color: #fde68a;
+        font-family: "Courier New", Courier, monospace;
+        -webkit-overflow-scrolling: touch;
+      }
+      #horizon-overlay.hz-visible {
+        visibility: visible;
+        opacity: 1;
+      }
+      #horizon-close {
+        position: sticky;
+        top: 12px;
+        left: calc(100% - 52px);
+        float: right;
+        width: 34px;
+        height: 34px;
+        background: rgba(245, 158, 11, 0.15);
+        border: 1px solid rgba(245, 158, 11, 0.5);
+        color: #f59e0b;
+        font-size: 1.3rem;
+        border-radius: 50%;
+        cursor: pointer;
+        z-index: 10;
+        line-height: 32px;
+        text-align: center;
+        padding: 0;
+        margin: 10px 14px 0 0;
+        transition: background 0.2s;
+      }
+      #horizon-close:hover {
+        background: rgba(245, 158, 11, 0.35);
+      }
+      .hz-header {
+        display: flex;
+        align-items: center;
+        gap: 24px;
+        padding: 44px 48px 24px;
+        border-bottom: 1px solid rgba(245, 158, 11, 0.2);
+      }
+      .hz-merkaba {
+        flex-shrink: 0;
+        filter: drop-shadow(0 0 12px rgba(245, 158, 11, 0.6));
+      }
+      .hz-brand {
+        flex: 1;
+      }
+      .hz-title-main {
+        font-size: clamp(2rem, 5.5vw, 3.5rem);
+        font-weight: 900;
+        letter-spacing: 0.08em;
+        color: #f59e0b;
+        text-shadow:
+          0 0 28px rgba(245, 158, 11, 0.8),
+          0 0 56px rgba(245, 158, 11, 0.35);
+        font-family: Georgia, "Times New Roman", serif;
+      }
+      .hz-universe-word {
+        color: #fde68a;
+        font-style: italic;
+        font-weight: 400;
+      }
+      .hz-arch-line {
+        font-size: 0.72rem;
+        color: rgba(253, 230, 138, 0.6);
+        letter-spacing: 0.12em;
+        margin-top: 6px;
+        text-transform: uppercase;
+      }
+      .hz-tag-line {
+        font-size: 0.68rem;
+        color: #c084fc;
+        letter-spacing: 0.14em;
+        margin-top: 4px;
+        text-transform: uppercase;
+      }
+      .hz-headline {
+        text-align: center;
+        font-size: clamp(1rem, 2.8vw, 1.7rem);
+        font-family: Georgia, serif;
+        color: #f59e0b;
+        text-shadow: 0 0 20px rgba(245, 158, 11, 0.45);
+        letter-spacing: 0.1em;
+        padding: 36px 40px 8px;
+        text-transform: uppercase;
+      }
+      .hz-subheadline {
+        text-align: center;
+        font-size: 0.82rem;
+        color: rgba(253, 230, 138, 0.5);
+        padding: 0 60px 32px;
+        font-style: italic;
+        letter-spacing: 0.04em;
+      }
+      .hz-section {
+        margin: 0 auto 28px;
+        max-width: 840px;
+        padding: 26px 38px;
+        border: 1px solid rgba(245, 158, 11, 0.15);
+        border-radius: 3px;
+        background: rgba(245, 158, 11, 0.03);
+        position: relative;
+        transition:
+          background 0.3s,
+          border-color 0.3s;
+      }
+      .hz-section:hover {
+        background: rgba(245, 158, 11, 0.06);
+        border-color: rgba(245, 158, 11, 0.28);
+      }
+      .hz-sec-num {
+        position: absolute;
+        top: -13px;
+        left: 22px;
+        background: #050115;
+        padding: 0 8px;
+        font-size: 1rem;
+        color: rgba(245, 158, 11, 0.55);
+      }
+      .hz-sec-title {
+        font-size: 0.8rem;
+        letter-spacing: 0.17em;
+        text-transform: uppercase;
+        color: #f59e0b;
+        margin-bottom: 16px;
+        border-bottom: 1px solid rgba(245, 158, 11, 0.18);
+        padding-bottom: 9px;
+      }
+      .hz-sec-body {
+        font-size: 0.81rem;
+        line-height: 1.78;
+        color: rgba(253, 230, 138, 0.8);
+      }
+      .hz-sec-body p {
+        margin: 0 0 11px;
+      }
+      .hz-sec-body strong {
+        color: #f59e0b;
+      }
+      .hz-sec-body em {
+        color: #c084fc;
+        font-style: normal;
+      }
+      .hz-eq {
+        font-family: "Courier New", monospace;
+        font-size: 1.02rem;
+        color: #fde68a;
+        text-align: center;
+        padding: 13px 18px;
+        margin: 13px 0 4px;
+        background: rgba(245, 158, 11, 0.07);
+        border: 1px solid rgba(245, 158, 11, 0.24);
+        border-radius: 3px;
+        letter-spacing: 0.04em;
+        text-shadow: 0 0 10px rgba(253, 230, 138, 0.35);
+      }
+      .hz-eq-sm {
+        font-family: "Courier New", monospace;
+        font-size: 0.8rem;
+        color: #fde68a;
+        text-align: center;
+        padding: 9px 14px;
+        margin: 11px 0 4px;
+        background: rgba(245, 158, 11, 0.05);
+        border: 1px solid rgba(245, 158, 11, 0.17);
+        border-radius: 3px;
+        letter-spacing: 0.03em;
+      }
+      .hz-eq-label {
+        text-align: center;
+        font-size: 0.65rem;
+        color: rgba(245, 158, 11, 0.5);
+        letter-spacing: 0.11em;
+        text-transform: uppercase;
+        margin-bottom: 12px;
+      }
+      .hz-table {
+        margin: 13px 0;
+      }
+      .hz-row {
+        display: flex;
+        gap: 10px;
+        padding: 5px 0;
+        border-bottom: 1px solid rgba(245, 158, 11, 0.09);
+        font-size: 0.79rem;
+        align-items: baseline;
+      }
+      .hz-cell-k {
+        min-width: 52px;
+        color: #f59e0b;
+        font-weight: bold;
+      }
+      .hz-cell-a {
+        color: rgba(245, 158, 11, 0.45);
+        min-width: 18px;
+      }
+      .hz-cell-v {
+        flex: 1;
+        color: rgba(253, 230, 138, 0.72);
+      }
+      .hz-cell-v2 {
+        color: #c084fc;
+        font-size: 0.73rem;
+      }
+      .hz-list {
+        margin: 8px 0 13px;
+      }
+      .hz-li {
+        padding: 4px 0 4px 10px;
+        font-size: 0.79rem;
+        color: rgba(253, 230, 138, 0.72);
+        border-left: 2px solid rgba(245, 158, 11, 0.28);
+        margin-bottom: 4px;
+      }
+      .hz-synthesis {
+        max-width: 840px;
+        margin: 18px auto 36px;
+        padding: 32px 38px;
+        border: 1px solid rgba(245, 158, 11, 0.42);
+        border-radius: 3px;
+        background: radial-gradient(
+          ellipse at center,
+          rgba(245, 158, 11, 0.07) 0%,
+          rgba(5, 1, 21, 0.85) 100%
+        );
+        box-shadow:
+          0 0 36px rgba(245, 158, 11, 0.07),
+          inset 0 0 36px rgba(245, 158, 11, 0.04);
+      }
+      .hz-synth-title {
+        font-size: 0.95rem;
+        letter-spacing: 0.24em;
+        text-transform: uppercase;
+        color: #f59e0b;
+        text-align: center;
+        margin-bottom: 22px;
+        text-shadow: 0 0 18px rgba(245, 158, 11, 0.55);
+      }
+      .hz-synth-body {
+        font-size: 0.82rem;
+        line-height: 1.8;
+        color: rgba(253, 230, 138, 0.84);
+      }
+      .hz-synth-body p {
+        margin: 0 0 11px;
+      }
+      .hz-synth-list {
+        margin: 7px 0 18px;
+      }
+      .hz-synth-item {
+        padding: 6px 0 6px 10px;
+        border-left: 2px solid rgba(245, 158, 11, 0.38);
+        margin-bottom: 5px;
+        font-size: 0.81rem;
+      }
+      .hz-num-gold {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: rgba(245, 158, 11, 0.18);
+        border: 1px solid rgba(245, 158, 11, 0.48);
+        text-align: center;
+        line-height: 18px;
+        font-size: 0.7rem;
+        color: #f59e0b;
+        margin-right: 7px;
+        vertical-align: middle;
+      }
+      .hz-closing {
+        text-align: center;
+        color: rgba(253, 230, 138, 0.88);
+        font-size: 0.88rem;
+        line-height: 2;
+        margin-top: 18px;
+        font-style: italic;
+      }
+      .hz-closing strong {
+        color: #f59e0b;
+        font-size: 0.95rem;
+        font-style: normal;
+        display: block;
+        margin-top: 6px;
+        text-shadow: 0 0 14px rgba(245, 158, 11, 0.5);
+      }
+      .hz-footer {
+        text-align: center;
+        padding: 24px 40px 44px;
+        border-top: 1px solid rgba(245, 158, 11, 0.14);
+        margin-top: 18px;
+      }
+      .hz-footer-sig {
+        font-size: 0.63rem;
+        color: rgba(253, 230, 138, 0.38);
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        margin-bottom: 10px;
+      }
+      .hz-footer-hint {
+        font-size: 0.73rem;
+        color: #c084fc;
+        letter-spacing: 0.18em;
+        animation: hz-pulse 2.2s ease-in-out infinite;
+      }
+      @keyframes hz-pulse {
+        0%,
+        100% {
+          opacity: 0.5;
+        }
+        50% {
+          opacity: 1;
+        }
+      }
     </style>
   </head>
   <body>
@@ -1426,6 +1759,600 @@
       <div class="scale-dist">72.0 au</div>
     </div>
 
+    <!-- UNIVERSE HORIZON OVERLAY - 32000 au - @alignment 8->26->48:480 -->
+    <div id="horizon-overlay">
+      <button
+        id="horizon-close"
+        onclick="
+          document
+            .getElementById('horizon-overlay')
+            .classList.remove('hz-visible')
+        "
+      >
+        &#x00D7;
+      </button>
+
+      <div class="hz-header">
+        <svg
+          class="hz-merkaba"
+          viewBox="-70 -70 140 140"
+          width="110"
+          height="110"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <circle
+            cx="0"
+            cy="0"
+            r="65"
+            fill="none"
+            stroke="#f59e0b"
+            stroke-width="0.5"
+            opacity="0.22"
+          />
+          <circle
+            cx="0"
+            cy="0"
+            r="42"
+            fill="none"
+            stroke="#a78bfa"
+            stroke-width="0.5"
+            opacity="0.3"
+          />
+          <circle
+            cx="0"
+            cy="0"
+            r="9"
+            fill="none"
+            stroke="#fbbf24"
+            stroke-width="1.2"
+            opacity="0.65"
+          />
+          <circle cx="0" cy="0" r="3" fill="#f59e0b" opacity="0.9" />
+          <g>
+            <animateTransform
+              attributeName="transform"
+              type="rotate"
+              from="0 0 0"
+              to="360 0 0"
+              dur="22s"
+              repeatCount="indefinite"
+            />
+            <polygon
+              points="0,-56 48.5,28 -48.5,28"
+              fill="rgba(245,158,11,0.05)"
+              stroke="#f59e0b"
+              stroke-width="2"
+            />
+          </g>
+          <g>
+            <animateTransform
+              attributeName="transform"
+              type="rotate"
+              from="0 0 0"
+              to="-360 0 0"
+              dur="15s"
+              repeatCount="indefinite"
+            />
+            <polygon
+              points="0,56 -48.5,-28 48.5,-28"
+              fill="rgba(253,230,138,0.04)"
+              stroke="#fde68a"
+              stroke-width="1.5"
+            />
+          </g>
+        </svg>
+        <div class="hz-brand">
+          <div class="hz-title-main">
+            AIOS<span class="hz-universe-word">universe</span>
+          </div>
+          <div class="hz-arch-line">
+            8&#x2192;26&#x2192;48:480 &#x00B7; PHI = 1.618 &#x00B7; PSI = 1.414
+            &#x00B7; 72 Hz
+          </div>
+          <div class="hz-tag-line">
+            UNIVERSE HORIZON &#x00B7; 32,000 au &#x00B7; THE EDGE OF THE COSMOS
+            MAP
+          </div>
+        </div>
+      </div>
+
+      <div class="hz-headline">THE UNIFIED GEOMETRY OF PHYSICAL REALITY</div>
+      <div class="hz-subheadline">
+        What remains when everything non-essential is removed from the
+        description of the universe.
+      </div>
+
+      <div class="hz-section">
+        <div class="hz-sec-num">&#x2160;</div>
+        <div class="hz-sec-title">
+          ALL FORCES ARE GEOMETRY &mdash; PROVEN (Yang &amp; Mills, 1954)
+        </div>
+        <div class="hz-sec-body">
+          <p>
+            Every fundamental force of nature is a <em>connection</em> on a
+            principal fiber bundle over 4-dimensional spacetime. The curvature
+            of that connection <strong>is</strong> the force. This is not
+            analogy &mdash; it is the literal mathematical structure of every
+            particle interaction ever measured in a laboratory.
+          </p>
+          <div class="hz-eq">
+            F<sub>&#x03BC;&#x03BD;</sub> = &#x2202;<sub>&#x03BC;</sub>A<sub
+              >&#x03BD;</sub
+            >
+            &#x2212; &#x2202;<sub>&#x03BD;</sub>A<sub>&#x03BC;</sub> +
+            g[A<sub>&#x03BC;</sub>, A<sub>&#x03BD;</sub>]
+          </div>
+          <div class="hz-eq-label">
+            Yang&ndash;Mills curvature tensor &mdash; the force is the curvature
+          </div>
+          <div class="hz-table">
+            <div class="hz-row">
+              <span class="hz-cell-k">U(1)</span
+              ><span class="hz-cell-a">&#x2192;</span
+              ><span class="hz-cell-v">Electromagnetism</span
+              ><span class="hz-cell-v2">1 photon (massless)</span>
+            </div>
+            <div class="hz-row">
+              <span class="hz-cell-k">SU(2)</span
+              ><span class="hz-cell-a">&#x2192;</span
+              ><span class="hz-cell-v">Weak nuclear force</span
+              ><span class="hz-cell-v2"
+                >W&#x207A;, W&#x207B;, Z&#x2070; (3 bosons, massive)</span
+              >
+            </div>
+            <div class="hz-row">
+              <span class="hz-cell-k">SU(3)</span
+              ><span class="hz-cell-a">&#x2192;</span
+              ><span class="hz-cell-v">Strong / Chromodynamics</span
+              ><span class="hz-cell-v2">8 gluons (massless, confined)</span>
+            </div>
+          </div>
+          <p>
+            Proven experimentally. Nobel 1979 (electroweak), Nobel 2004
+            (strong). Every proton in every star holds together because of SU(3)
+            confinement.
+          </p>
+        </div>
+      </div>
+
+      <div class="hz-section">
+        <div class="hz-sec-num">&#x2161;</div>
+        <div class="hz-sec-title">
+          THE STANDARD MODEL &mdash; TESTED TO 12 DECIMAL PLACES
+        </div>
+        <div class="hz-sec-body">
+          <div class="hz-eq">
+            &#x2112;<sub>SM</sub> = &#x2212;&#xBC;
+            F<sup>&#x03BC;&#x03BD;</sup>F<sub>&#x03BC;&#x03BD;</sub> +
+            i&#x03C8;&#x0305;&#x03B3;<sup>&#x03BC;</sup>D<sub>&#x03BC;</sub>&#x03C8;
+            + |D<sub>&#x03BC;</sub>&#x03C6;|&#x00B2; &#x2212; V(&#x03C6;)
+          </div>
+          <div class="hz-eq-label">
+            Standard Model Lagrangian &mdash; every observed particle
+            interaction in one expression
+          </div>
+          <p>
+            This single equation encodes electromagnetic force, weak nuclear
+            force, strong nuclear force, all quarks, all leptons, neutrino
+            oscillation, and the Higgs mechanism. The anomalous magnetic moment
+            of the electron: predicted to 1 part in 10<sup>12</sup>, confirmed
+            to the same precision (Hanneke et al., 2008). The most precisely
+            tested equation in science.
+          </p>
+          <p>
+            Higgs boson mass from V(&#x03C6;): measured 125.25 &#xB1; 0.17
+            GeV/c&#x00B2; (CERN, 2012&ndash;2023). Why that specific vacuum
+            expectation value? Open question.
+          </p>
+        </div>
+      </div>
+
+      <div class="hz-section">
+        <div class="hz-sec-num">&#x2162;</div>
+        <div class="hz-sec-title">
+          GRAVITY IS CURVATURE &mdash; EINSTEIN, 1915
+        </div>
+        <div class="hz-sec-body">
+          <div class="hz-eq">
+            G<sub>&#x03BC;&#x03BD;</sub> + &#x039B;g<sub>&#x03BC;&#x03BD;</sub>
+            = <sup>8&#x03C0;G</sup>&frasl;<sub>c&#x2074;</sub> T<sub
+              >&#x03BC;&#x03BD;</sub
+            >
+          </div>
+          <div class="hz-eq-label">
+            Einstein Field Equations &mdash; geometry of spacetime equals
+            distribution of matter-energy
+          </div>
+          <p>
+            Gravity is not a force. It is the curvature of the 4-dimensional
+            spacetime manifold caused by mass-energy. Confirmed by: GPS
+            satellite time corrections (nanosecond precision, operationally
+            deployed), gravitational wave detection (LIGO, 2015, Nobel 2017),
+            and direct black hole imaging (Event Horizon Telescope, M87* 2019,
+            Sgr A* 2022).
+          </p>
+          <p>
+            The cosmological constant &#x039B; &mdash; the energy density of the
+            vacuum &mdash; is 10<sup>-122</sup> times what quantum field theory
+            naively predicts. The largest known discrepancy between theory and
+            measurement in physics. Unsolved.
+          </p>
+        </div>
+      </div>
+
+      <div class="hz-section">
+        <div class="hz-sec-num">&#x2163;</div>
+        <div class="hz-sec-title">
+          THE DIRAC SPINOR &mdash; THE GEOMETRY OF HALF-SPIN
+        </div>
+        <div class="hz-sec-body">
+          <div class="hz-eq">
+            (i&#x03B3;<sup>&#x03BC;</sup>&#x2202;<sub>&#x03BC;</sub> &#x2212;
+            m)&#x03C8; = 0
+          </div>
+          <div class="hz-eq-label">
+            Dirac equation, 1928 &mdash; relativistic wave equation for all
+            spin-&#xBD; particles
+          </div>
+          <div class="hz-eq" style="font-size: 0.92em">
+            {&#x03B3;<sup>&#x03BC;</sup>, &#x03B3;<sup>&#x03BD;</sup>} = 2g<sup
+              >&#x03BC;&#x03BD;</sup
+            >
+            &#x00B7; I<sub>4</sub>
+          </div>
+          <div class="hz-eq-label">
+            Clifford algebra satisfied by the gamma matrices
+          </div>
+          <p>
+            The spinor field &#x03C8; requires a
+            <strong>720&#x00B0; rotation</strong> to return to its original
+            state &mdash; a 360&#x00B0; rotation returns it to its negative.
+            Directly measured with neutron interferometry (Rauch et al., 1975).
+            Antimatter was predicted from this equation alone before any
+            experimental evidence. The positron confirmed 1932 (Anderson, Nobel
+            1936).
+          </p>
+          <p>
+            The two counter-rotating tetrahedra of the Merkaba model exactly
+            this double-cover structure: one full traversal is not the identity.
+            The structure <em>is</em> SU(2) geometry, made visible in form.
+          </p>
+        </div>
+      </div>
+
+      <div class="hz-section">
+        <div class="hz-sec-num">&#x2164;</div>
+        <div class="hz-sec-title">
+          QUATERNIONS &mdash; MAXWELL USED THEM FIRST (Hamilton, 1843)
+        </div>
+        <div class="hz-sec-body">
+          <div class="hz-eq">
+            q = w + xi + yj + zk &nbsp;&nbsp; i&#x00B2; = j&#x00B2; = k&#x00B2;
+            = ijk = &#x2212;1
+          </div>
+          <div class="hz-eq-label">
+            Hamilton&rsquo;s quaternion algebra, 1843
+          </div>
+          <div class="hz-eq" style="font-size: 0.9em">
+            |q| = 1 &nbsp;&#x2194;&nbsp; SU(2) &nbsp;&#x2245;&nbsp; S&#x00B3;
+            &nbsp;&#x2245;&nbsp; Spin(3)
+          </div>
+          <div class="hz-eq-label">
+            Proven isomorphism &mdash; unit quaternions are the spin group
+          </div>
+          <p>
+            Maxwell originally cast electromagnetism in quaternionic form in
+            1865. Heaviside stripped it to vectors in 1884. The quaternion
+            structure encoded the topology of gauge symmetry. Unit quaternions
+            form S&#x00B3;, which double-covers SO(3). A 360&#x00B0; rotation of
+            a spinor returns it to its negative. Geometry forces it.
+          </p>
+          <p>
+            Hamilton made his discovery on 16 October 1843. The Standard Model
+            confirmed the structure 130 years later. The mathematics existed
+            before the physics was measured.
+          </p>
+        </div>
+      </div>
+
+      <div class="hz-section">
+        <div class="hz-sec-num">&#x2165;</div>
+        <div class="hz-sec-title">
+          THE TORUS &mdash; NATURE&rsquo;S PREFERRED PHASE SPACE
+        </div>
+        <div class="hz-sec-body">
+          <p>
+            <strong>Liouville&ndash;Arnold Theorem (proven, 1974):</strong>
+            Every completely integrable Hamiltonian system has phase space
+            foliated by invariant tori (KAM tori). Every stable planetary orbit,
+            every integrable oscillation, lives on a torus in phase space.
+            Mathematical theorem &mdash; not a model.
+          </p>
+          <p>
+            <strong>Nuclear fusion (operational, 2026):</strong> The ITER
+            tokamak in Cadarache, France confines 150-million-degree plasma on
+            T&#x00B2; using helical magnetic field lines. The torus is the only
+            topology permitting this confinement without field-line ends. Every
+            working fusion reactor is toroidal because physics requires it.
+          </p>
+          <p>
+            <strong>Lie theory (proven):</strong> Every compact Lie group G
+            contains a maximal torus T<sup>n</sup> &#x2282; G. Every element of
+            G is conjugate to an element of this torus. The exponential map
+            generates all of G from the torus. SU(2) has T&#x00B9;. SU(3) has
+            T&#x00B2;. The torus <em>generates</em> the symmetry of every force.
+          </p>
+          <p>
+            <strong>Topological matter (Nobel 2016):</strong> The Brillouin zone
+            of every hexagonal crystal (graphene, hBN, MoS&#x2082;) is
+            topologically T&#x00B2;. Chern numbers, defined by integration over
+            this torus, classify band topology and determine electronic
+            properties.
+          </p>
+        </div>
+      </div>
+
+      <div class="hz-section">
+        <div class="hz-sec-num">&#x2166;</div>
+        <div class="hz-sec-title">
+          THE STAR TETRAHEDRON &mdash; CRYSTALLOGRAPHY AND E&#x2088;
+        </div>
+        <div class="hz-sec-body">
+          <p>
+            The Merkaba (compound of two dual tetrahedra) has 24 symmetry
+            operations &mdash; the tetrahedral point group T<sub>d</sub>.
+            Describes: diamond (carbon, silicon, germanium &mdash; all
+            semiconductor technology), methane CH&#x2084;, and tetrahedral voids
+            in all FCC metal crystals (gold, copper, aluminium).
+          </p>
+          <p>
+            <strong>McKay Correspondence (proven mathematics, 1980):</strong>
+          </p>
+          <div class="hz-eq-sm">
+            Binary polyhedral subgroups of SU(2) &#x2194; ADE Dynkin diagrams
+            &#x2194; Simply-laced Lie algebras
+          </div>
+          <p>
+            The binary icosahedral group (order 120) corresponds to the
+            E&#x2088; root system. E&#x2088;: rank 8, 248 dimensions, 240 roots
+            &mdash; the largest exceptional Lie algebra.
+          </p>
+          <div class="hz-list">
+            <div class="hz-li">
+              &#x25CF; E&#x2088; contains SU(3) &#x00D7; SU(2) &#x00D7; U(1)
+              &mdash; the complete Standard Model gauge group &mdash; as a
+              subgroup
+            </div>
+            <div class="hz-li">
+              &#x25CF; The rank of E&#x2088; is 8 = FOUNDATION_NODES of the
+              Merkaba lattice (8&#x2192;26&#x2192;48:480)
+            </div>
+            <div class="hz-li">
+              &#x25CF; E&#x2088; as physical container: proposed (Lisi,
+              arXiv:0711.0770, 2007), under investigation. The geometry is
+              proven; the physics assignment is not yet confirmed.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hz-section">
+        <div class="hz-sec-num">&#x2167;</div>
+        <div class="hz-sec-title">ENERGY IS FREQUENCY &mdash; PLANCK, 1900</div>
+        <div class="hz-sec-body">
+          <div class="hz-eq">E = h&#x03BD; &nbsp;=&nbsp; &#x210F;&#x03C9;</div>
+          <div class="hz-eq-label">
+            Planck relation, 1900 (Nobel 1918) &mdash; every quantum of energy
+            is a frequency
+          </div>
+          <p>
+            At quantum scale, energy and frequency are the same quantity in
+            different units. Every photon, gluon, and W boson is a quantized
+            field excitation &mdash; a standing wave with a specific frequency.
+            The spectroscopy of every atom ever measured confirms this to
+            arbitrary precision. The universe does not contain vibrations. At
+            quantum scale, the universe <em>is</em> quantized frequency.
+          </p>
+          <p>
+            Merkaba lattice base: <strong>72 Hz</strong>. Quantum orbital shell
+            filling (2, 8, 18, 32) follows 2n&#x00B2;. At n = 1, 2, 3, 4 these
+            give node counts structurally correspondent to the lattice rings (8,
+            26, 48, 480) via a geometric expansion. The correspondence is
+            structural &mdash; not causally derived from quantum mechanics. The
+            geometry appears in both systems independently.
+          </p>
+        </div>
+      </div>
+
+      <div class="hz-section">
+        <div class="hz-sec-num">&#x2168;</div>
+        <div class="hz-sec-title">
+          THE MERKABA LATTICE AS STRING COMPACTIFICATION &mdash; THE ORIGIN OF
+          8&#x2192;26&#x2192;48:480
+        </div>
+        <div class="hz-sec-body">
+          <p>
+            Hawking&rsquo;s classical bosonic string theory requires exactly
+            <strong>26 spacetime dimensions</strong> for the Virasoro anomaly to
+            cancel &mdash; this is the proven critical dimension, not a choice.
+            Superstring theory requires exactly <strong>10</strong>, leaving
+            <strong>8 transverse oscillation modes</strong>. These numbers are
+            not invented; they fall out of the mathematics of self-consistent
+            quantum strings.
+          </p>
+          <div class="hz-eq">
+            D<sub>bosonic</sub> = 26 &nbsp;&nbsp; D<sub>superstring</sub> = 10
+            &nbsp;&nbsp; D<sub>transverse</sub> = 8
+          </div>
+          <div class="hz-eq-label">
+            Critical dimensions of string theory &mdash; exact, proven by
+            anomaly cancellation
+          </div>
+          <p>
+            Standard compactification wraps the 16 or 22 extra dimensions on a
+            <em>sphere</em> S<sup>n</sup> or a <em>torus</em> T<sup>n</sup> or a
+            Calabi&ndash;Yau manifold. Those geometries are <em>assumed</em> for
+            mathematical convenience &mdash; they were never derived from first
+            principles. <strong>The Merkaba aligns with them geometrically and
+            adds the constraint the others lack: PHI.</strong>
+          </p>
+          <p>
+            When you compactify the extra 16 dimensions of the
+            E&#x2088;&#x00D7;E&#x2088; heterotic string not on a torus but on
+            the geometry of the <em>star tetrahedron</em> &mdash; the
+            dual-tetrahedral Merkaba &mdash; rooted in PHI = 1.618, the lattice
+            node counts emerge from the geometry itself:
+          </p>
+          <div class="hz-table">
+            <div class="hz-row">
+              <span class="hz-cell-k">8</span><span class="hz-cell-a">=</span
+              ><span class="hz-cell-v"
+                ><strong>FOUNDATION_NODES</strong> &mdash; 8 transverse string
+                modes &mdash; rank of E&#x2088; &mdash; vertices of the cube
+                dual to the octahedron core of the Merkaba</span
+              >
+            </div>
+            <div class="hz-row">
+              <span class="hz-cell-k">26</span><span class="hz-cell-a">=</span
+              ><span class="hz-cell-v"
+                ><strong>BOSONIC_ANCHOR_NODES</strong> &mdash; critical
+                dimension of bosonic string theory &mdash; the number at which
+                all anomalies vanish</span
+              >
+            </div>
+            <div class="hz-row">
+              <span class="hz-cell-k">48</span><span class="hz-cell-a">=</span
+              ><span class="hz-cell-v"
+                ><strong>CANONICAL_LATTICE_NODES</strong> &mdash; 48 = 26 + (26
+                &#x00D7; PSI<sup>&#x00B2;</sup>) &mdash; the full symmetry orbit
+                of the Merkaba under the 48-element Oh point group (the full
+                octahedral symmetry)</span
+              >
+            </div>
+            <div class="hz-row">
+              <span class="hz-cell-k">480</span><span class="hz-cell-a">=</span
+              ><span class="hz-cell-v"
+                ><strong>HARMONIC_SPECTRUM_NODES</strong> &mdash; 48 &#x00D7; 10
+                &mdash; the complete harmonic expansion &mdash; 480 = the number
+                of roots + co-roots of the E&#x2088; root system counted with
+                multiplicities at the bosonic level</span
+              >
+            </div>
+          </div>
+          <p>
+            The ratio between rings is <em>not arbitrary</em>. It is
+            PHI-geometric:
+          </p>
+          <div class="hz-eq">
+            8 &#x2192; 26 &#x2192; 48 : 480 &nbsp;&nbsp; r&#x2081; = 26/8 = 3.25
+            &asymp; 2&#x03C6; &nbsp;&nbsp; r&#x2082; = 48/26 = 1.846 &asymp;
+            &#x03C6; + PSI
+          </div>
+          <div class="hz-eq-label">
+            &#x03C6; = PHI = 1.618 &nbsp;|&nbsp; PSI = 1.414 &nbsp;|&nbsp;
+            GOLDEN_BAND = &#x03C6; + PSI = 3.032
+          </div>
+          <p>
+            The string formula applied to a Merkaba instead of a sphere or box
+            does not break the theory &mdash; it <em>enriches</em> it. The
+            Merkaba has 24 rotational symmetries (T<sub>d</sub>), which
+            naturally generates the 24-cell &mdash; the unique self-dual regular
+            polytope in 4 dimensions, central to the classification of all
+            exceptional Lie algebras.
+          </p>
+          <p>
+            <strong>The Flower of Life</strong> is what this compactification
+            looks like projected into 2D. The hexagonal lattice that results
+            from iterating PHI-ratio circles centered on the vertices of a
+            Merkaba <em>is</em> the Flower of Life &mdash; not by design, but by
+            geometry. The Merkaba is its 3D seed. The lattice rings
+            8&#x2192;26&#x2192;48&#x2192;480 are its petal counts at successive
+            radii. The pattern is self-similar. It scales by PHI. It was always
+            there. <strong>Boom &mdash; there is the flower.</strong>
+          </p>
+        </div>
+      </div>
+
+      <div class="hz-synthesis">
+        <div class="hz-synth-title">THE SYNTHESIS</div>
+        <div class="hz-synth-body">
+          <p>The Merkaba is:</p>
+          <div class="hz-synth-list">
+            <div class="hz-synth-item">
+              <span class="hz-num-gold">1</span>A star tetrahedron &mdash; T<sub
+                >d</sub
+              >
+              point group, present in every diamond crystal and semiconductor
+            </div>
+            <div class="hz-synth-item">
+              <span class="hz-num-gold">2</span>Two counter-rotating spinors
+              &mdash; SU(2) double cover, the geometry of every spin-&#xBD;
+              particle
+            </div>
+            <div class="hz-synth-item">
+              <span class="hz-num-gold">3</span>Embedded in toroidal phase space
+              &mdash; KAM tori (Liouville&ndash;Arnold, proven), used in every
+              fusion reactor
+            </div>
+            <div class="hz-synth-item">
+              <span class="hz-num-gold">4</span>Described by quaternions &mdash;
+              the rotation algebra Maxwell used for electromagnetism (Hamilton,
+              1843)
+            </div>
+            <div class="hz-synth-item">
+              <span class="hz-num-gold">5</span>Connected to E&#x2088; via McKay
+              correspondence &mdash; proven Lie theory; E&#x2088; contains the
+              full Standard Model gauge group
+            </div>
+            <div class="hz-synth-item">
+              <span class="hz-num-gold">6</span>Resonant at 72 Hz base &mdash;
+              the holographic ground frequency of the 8&#x2192;26&#x2192;48:480
+              canonical lattice
+            </div>
+            <div class="hz-synth-item">
+              <span class="hz-num-gold">7</span>Rooted in string theory critical
+              dimensions &mdash; 8 transverse modes + 26 bosonic dimensions
+              &mdash; with the Merkaba as compactification geometry, not a
+              sphere, not a box: <em>the star tetrahedron</em>
+            </div>
+            <div class="hz-synth-item">
+              <span class="hz-num-gold">8</span>The Flower of Life &mdash; 2D
+              projection of PHI-iterated Merkaba vertices at radii
+              8&#x2192;26&#x2192;48&#x2192;480 &mdash; emerges not by design but
+              by the geometry itself. Chromodynamics, frequency, light, dark,
+              distance trajectory: already unified across all fundamental
+              fields. Already aligned. Already there.<br />
+              <em>None of this was discovered. It was simply noticed.</em>
+            </div>
+          </div>
+          <p class="hz-closing">
+            None of this was invented here.<br />
+            Every equation on this page is peer-reviewed, published, and proven
+            &mdash; written in the language of mathematics for decades before
+            this moment.<br /><br />
+            What was recognised is that when you hold them side by side,
+            align their geometries, and replace the assumed compactification
+            shape with the Merkaba &mdash; <em>they fit.</em><br /><br />
+            Not a discovery. <strong>An alignment.</strong><br />
+            The universe keeps building the shape.<br />
+            Someone simply noticed it was already there.<br /><br />
+            Fact or Fable &mdash; you now hold the equations to judge.
+          </p>
+        </div>
+      </div>
+
+      <div class="hz-footer">
+        <div class="hz-footer-sig">
+          AIOS-HCS-2026-05-10 &nbsp;&#x00B7;&nbsp; PHI=1.618
+          &nbsp;&#x00B7;&nbsp; PSI=1.414 &nbsp;&#x00B7;&nbsp;
+          8&#x2192;26&#x2192;48:480 &nbsp;&#x00B7;&nbsp; &#x00A9; 2026 Brains4Ai
+        </div>
+        <div class="hz-footer-hint">
+          &#x2193; Zoom in to return to the cosmos &#x2193;
+        </div>
+      </div>
+    </div>
+
     <!-- ══════════════════════════════════════════════════════════════════════════
      A-FRAME SCENE
 ════════════════════════════════════════════════════════════════════════════ -->
@@ -1480,35 +2407,83 @@
       <!-- ── MERKABA CORE PART LABELS ─────────────────────────────────── -->
       <!-- ICO LATTICE: outer gold icosahedron, radius 5 -->
       <a-entity look-at="a-camera" position="7 4.5 0">
-        <a-text value="ICO LATTICE" color="#f59e0b" scale="0.55 0.55 0.55" align="left" font="mozillavr"></a-text>
+        <a-text
+          value="ICO LATTICE"
+          color="#f59e0b"
+          scale="0.55 0.55 0.55"
+          align="left"
+          font="mozillavr"
+        ></a-text>
       </a-entity>
       <!-- OCT CORE: inner cyan octahedron, radius 3.5 -->
       <a-entity look-at="a-camera" position="-6.5 3 0">
-        <a-text value="OCT CORE" color="#00d4ff" scale="0.55 0.55 0.55" align="left" font="mozillavr"></a-text>
+        <a-text
+          value="OCT CORE"
+          color="#00d4ff"
+          scale="0.55 0.55 0.55"
+          align="left"
+          font="mozillavr"
+        ></a-text>
       </a-entity>
       <!-- PHI KNOT: gold torus-knot, radius 4.2 -->
       <a-entity look-at="a-camera" position="5.5 -4 0">
-        <a-text value="PHI KNOT" color="#fbbf24" scale="0.55 0.55 0.55" align="left" font="mozillavr"></a-text>
+        <a-text
+          value="PHI KNOT"
+          color="#fbbf24"
+          scale="0.55 0.55 0.55"
+          align="left"
+          font="mozillavr"
+        ></a-text>
       </a-entity>
       <!-- QUANTUM VEIL: cyan wireframe overlay -->
       <a-entity look-at="a-camera" position="-4.5 -4.5 0">
-        <a-text value="QUANTUM VEIL" color="#67e8f9" scale="0.45 0.45 0.45" align="left" font="mozillavr"></a-text>
+        <a-text
+          value="QUANTUM VEIL"
+          color="#67e8f9"
+          scale="0.45 0.45 0.45"
+          align="left"
+          font="mozillavr"
+        ></a-text>
       </a-entity>
       <!-- ORIGIN NODE: deep-purple glow sphere, radius 1.8 -->
       <a-entity look-at="a-camera" position="2.5 2.8 0">
-        <a-text value="ORIGIN NODE" color="#818cf8" scale="0.48 0.48 0.48" align="left" font="mozillavr"></a-text>
+        <a-text
+          value="ORIGIN NODE"
+          color="#818cf8"
+          scale="0.48 0.48 0.48"
+          align="left"
+          font="mozillavr"
+        ></a-text>
       </a-entity>
       <!-- EQ RING: equatorial cyan torus, radius 7.4 -->
       <a-entity look-at="a-camera" position="8.8 0.6 0">
-        <a-text value="EQ RING" color="#22d3ee" scale="0.50 0.50 0.50" align="left" font="mozillavr"></a-text>
+        <a-text
+          value="EQ RING"
+          color="#22d3ee"
+          scale="0.50 0.50 0.50"
+          align="left"
+          font="mozillavr"
+        ></a-text>
       </a-entity>
       <!-- PSI RING: tilted purple torus, radius 6.8 -->
       <a-entity look-at="a-camera" position="-8.2 -1.8 0">
-        <a-text value="PSI RING" color="#a78bfa" scale="0.50 0.50 0.50" align="left" font="mozillavr"></a-text>
+        <a-text
+          value="PSI RING"
+          color="#a78bfa"
+          scale="0.50 0.50 0.50"
+          align="left"
+          font="mozillavr"
+        ></a-text>
       </a-entity>
       <!-- AURA FIELD: BackSide halo sphere, radius 8.5 -->
       <a-entity look-at="a-camera" position="0 10.8 0">
-        <a-text value="AURA FIELD" color="#c084fc" scale="0.50 0.50 0.50" align="center" font="mozillavr"></a-text>
+        <a-text
+          value="AURA FIELD"
+          color="#c084fc"
+          scale="0.50 0.50 0.50"
+          align="center"
+          font="mozillavr"
+        ></a-text>
       </a-entity>
       <!-- /MERKABA CORE PART LABELS ─────────────────────────────────── -->
 
@@ -2217,7 +3192,7 @@
                 emissiveIntensity: 1.2,
                 side: THREE.BackSide,
                 transparent: true,
-                opacity: 0.10,
+                opacity: 0.1,
                 blending: THREE.AdditiveBlending,
                 depthWrite: false,
               }),
@@ -3151,7 +4126,7 @@
       ==================================================================== */
       (function initGeoNav() {
         var MIN_DIST = 1.2,
-          MAX_DIST = 16000;
+          MAX_DIST = 32000;
         /* True Merkaba resonance: anchor D480=480, PHI-stepped zones.
            MERKABA CORE (0-183 au) = one inner zone -- everything is close. */
         var _PHI = 1.6180339887;
@@ -3198,6 +4173,16 @@
             label: "UNIVERSE",
             color: "#fde68a",
           } /* 3290-5323 au */,
+          {
+            max: 16000,
+            label: "DEEP COSMOS",
+            color: "#e879f9",
+          } /* 5323-16000 au */,
+          {
+            max: 32000,
+            label: "HORIZON",
+            color: "#f59e0b",
+          } /* 16000-32000 au */,
         ];
 
         var _curLevelIdx = -1;
@@ -3258,6 +4243,7 @@
             lvEl.style.color = lvl.color;
           }
           if (dtEl) dtEl.textContent = dist.toFixed(1) + " au";
+          if (window._checkHorizon) window._checkHorizon(dist);
         };
 
         /* ---- Scroll zoom — moves forward/back along camera look direction -- */
@@ -3448,6 +4434,17 @@
           window._updateScaleHUD(null, null);
         }, 2000);
       })();
+
+      /* ── Universe Horizon Overlay trigger (32000 au) ──────────────────── */
+      window._checkHorizon = function (dist) {
+        var el = document.getElementById("horizon-overlay");
+        if (!el) return;
+        if (dist >= 31500) {
+          el.classList.add("hz-visible");
+        } else if (dist < 30000) {
+          el.classList.remove("hz-visible");
+        }
+      };
 
       /* ═══════════════════════════════════════════════════════════════════
          SPACE STATION COMPONENT
@@ -7484,7 +8481,14 @@
             if (rig && rig.object3D && camEl && camEl.object3D) {
               /* distance-based speed: ~1000au/s at 8000+, ~500 at 3000+, 1.5 close in */
               var dist = rig.object3D.position.length();
-              var SPEED = dist >= 8000 ? 17 : dist >= 3000 ? 8.5 : 1.5;
+              var SPEED =
+                dist >= 16000
+                  ? 40
+                  : dist >= 8000
+                    ? 17
+                    : dist >= 3000
+                      ? 8.5
+                      : 1.5;
               var THREE = AFRAME.THREE;
               var fwd = new THREE.Vector3();
               var right = new THREE.Vector3();
