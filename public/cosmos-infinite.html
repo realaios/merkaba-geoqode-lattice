@@ -291,7 +291,9 @@
         z-index: 3000;
       }
       @media (hover: none) and (pointer: coarse) {
-        #mob-invert { display: flex; }
+        #mob-invert {
+          display: flex;
+        }
       }
       .mb-inv-btn {
         width: 44px;
@@ -323,8 +325,12 @@
         border-color: rgba(0, 212, 255, 0.72);
         color: #00d4ff;
       }
-      .mb-inv-btn.on .lb { color: rgba(0, 212, 255, 0.65); }
-      .a-fullscreen #mob-invert { display: none !important; }
+      .mb-inv-btn.on .lb {
+        color: rgba(0, 212, 255, 0.65);
+      }
+      .a-fullscreen #mob-invert {
+        display: none !important;
+      }
 
       /* ── Sector Ticker ───────────────────────────────────────────────────── */
       #sector-ticker {
@@ -1803,8 +1809,12 @@
 
     <!-- Mobile look-invert toggles: tap &#x2195; to flip pitch, &#x2194; to flip yaw -->
     <div id="mob-invert">
-      <button class="mb-inv-btn" id="mb-inv-y" title="Invert up/down look">&#x2195;<span class="lb">PITCH</span></button>
-      <button class="mb-inv-btn" id="mb-inv-x" title="Invert left/right look">&#x2194;<span class="lb">YAW</span></button>
+      <button class="mb-inv-btn" id="mb-inv-y" title="Invert up/down look">
+        &#x2195;<span class="lb">PITCH</span>
+      </button>
+      <button class="mb-inv-btn" id="mb-inv-x" title="Invert left/right look">
+        &#x2194;<span class="lb">YAW</span>
+      </button>
     </div>
 
     <div id="scale-indicator">
@@ -4228,15 +4238,13 @@
           if (_aCanvas) {
             _bindTouchPitch(_aCanvas);
           } else {
-            document
-              .querySelector("a-scene")
-              .addEventListener(
-                "loaded",
-                function () {
-                  _bindTouchPitch(document.querySelector("canvas.a-canvas"));
-                },
-                { once: true },
-              );
+            document.querySelector("a-scene").addEventListener(
+              "loaded",
+              function () {
+                _bindTouchPitch(document.querySelector("canvas.a-canvas"));
+              },
+              { once: true },
+            );
           }
 
           /* Yaw inversion: detect A-Frame’s touch-driven yaw change and flip it */
