@@ -5120,7 +5120,8 @@
             var destLabel = (wps[this._wpIdx + 1].label || "").split(" •")[0];
             window._updateScaleHUD(dist, destLabel);
           }
-        },
+        }
+      }); /* universe-tour CLOSED */
 
 
       /* ====================================================================
@@ -9838,9 +9839,7 @@
             c.tailGeom.attributes.position.needsUpdate = true;
           }
         },
-      });
-
-      });
+      }); /* orphan-closer REMOVED */
 
       /* ====================================================================
          GeoAnchor Navigation: Scroll Zoom + Pinch Zoom +
