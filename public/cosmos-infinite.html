@@ -2969,6 +2969,10 @@
       <a-entity cosmic-firewall></a-entity>
       <!-- ── ALIEN MEGASTRUCTURE — Dyson swarm: thousands of orbital collectors ── -->
       <a-entity alien-megastructure></a-entity>
+      <!-- ── ANTIMATTER FOUNTAIN — galactic positron jet from centre annihilation ── -->
+      <a-entity antimatter-fountain></a-entity>
+      <!-- ── HAWKING RADIATION — micro black hole evaporating in thermal particle burst ── -->
+      <a-entity hawking-radiation></a-entity>
 
       <!-- NEBULA CLOUD REMOVED — zero haze, clean black space -->
 
@@ -8622,6 +8626,230 @@
             sh.aPosAttr.needsUpdate = true;
           }
           this._amRoot.rotation.y += 0.01 * dt;
+        },
+      });
+
+      /* ==================================================================
+         ANTIMATTER FOUNTAIN — galactic centre 511 keV positron fountain.
+         Position: (-300, -800, 600).
+         Central dense region: gamma-ray production zone, bright white core.
+         Positron jets: twin collimated beams of anti-electrons shooting upward
+           and downward, 500 particles per beam.
+         Annihilation halos: rings of 511 keV gamma photons (blue-white circles)
+           appearing at random heights as e+/e- pairs annihilate.
+         Fountain spread: jets fan out into spray at max height.
+         @alignment 8→26→48:480  @frequency 852  @domain quantum-arch
+      ================================================================== */
+      AFRAME.registerComponent("antimatter-fountain", {
+        init: function () {
+          var THREE = AFRAME.THREE;
+          var scene = this.el.sceneEl.object3D;
+          var PI = Math.PI;
+          this._afRoot = new THREE.Group();
+          this._afRoot.position.set(-300, -800, 600);
+          scene.add(this._afRoot);
+
+          /* core annihilation zone */
+          this._afRoot.add(new THREE.Mesh(
+            new THREE.SphereGeometry(18, 10, 8),
+            new THREE.MeshBasicMaterial({ color: 0xffffff })
+          ));
+          this._afRoot.add(new THREE.Mesh(
+            new THREE.SphereGeometry(28, 10, 8),
+            new THREE.MeshBasicMaterial({ color: 0xaaddff, transparent: true, opacity: 0.3 })
+          ));
+
+          /* positron jets — two beams N and S */
+          var JN = 500;
+          this._jets = [];
+          for (var ji = 0; ji < 2; ji++) {
+            var jSign = ji === 0 ? 1 : -1;
+            var jPos = new Float32Array(JN * 3);
+            var jT   = new Float32Array(JN);
+            for (var pi = 0; pi < JN; pi++) {
+              jT[pi] = Math.random();
+              var tt = jT[pi];
+              var jy = jSign * tt * 350;
+              var spread = tt * tt * 60;
+              var ang = Math.random() * 2 * Math.PI;
+              jPos[pi*3  ] = Math.cos(ang) * spread;
+              jPos[pi*3+1] = jy;
+              jPos[pi*3+2] = Math.sin(ang) * spread;
+            }
+            var jGeo = new THREE.BufferGeometry();
+            var jPosAttr = new THREE.BufferAttribute(jPos, 3);
+            jGeo.setAttribute("position", jPosAttr);
+            this._afRoot.add(new THREE.Points(jGeo, new THREE.PointsMaterial({
+              color: 0x88ccff, size: 1.8,
+              blending: THREE.AdditiveBlending, depthWrite: false, transparent: true, opacity: 0.85
+            })));
+            this._jets.push({ jPosAttr: jPosAttr, jT: jT, jSign: jSign, N: JN });
+          }
+
+          /* annihilation halo rings — 12 tori at varying heights */
+          this._halos = [];
+          for (var hi = 0; hi < 12; hi++) {
+            var hr = new THREE.Mesh(
+              new THREE.TorusGeometry(6 + Math.random() * 14, 0.8, 4, 24),
+              new THREE.MeshBasicMaterial({ color: 0x88eeff, transparent: true, opacity: 0.0 })
+            );
+            var hy = (Math.random() - 0.5) * 300;
+            hr.position.set((Math.random()-0.5)*30, hy, (Math.random()-0.5)*30);
+            this._afRoot.add(hr);
+            this._halos.push({ mesh: hr, phase: Math.random() * 3.5, period: 1.0 + Math.random() * 2.5 });
+          }
+
+          this._afTime = 0;
+          this._JET_SPEED = 140; /* units/s */
+        },
+        tick: function (time, delta) {
+          var dt = Math.min(delta, 200) * 0.001;
+          this._afTime += dt;
+          var t2 = this._afTime;
+          /* advance jet particles */
+          for (var ji = 0; ji < this._jets.length; ji++) {
+            var jet = this._jets[ji];
+            var arr = jet.jPosAttr.array;
+            for (var pi = 0; pi < jet.N; pi++) {
+              jet.jT[pi] += dt * 0.35;
+              if (jet.jT[pi] > 1) jet.jT[pi] -= 1;
+              var tt = jet.jT[pi];
+              var jy = jet.jSign * tt * 350;
+              var spread = tt * tt * 60;
+              var ang = pi * 2.399963; /* golden angle */
+              arr[pi*3  ] = Math.cos(ang + t2 * 0.5) * spread;
+              arr[pi*3+1] = jy;
+              arr[pi*3+2] = Math.sin(ang + t2 * 0.5) * spread;
+            }
+            jet.jPosAttr.needsUpdate = true;
+          }
+          /* flash halos */
+          for (var hi = 0; hi < this._halos.length; hi++) {
+            var hl = this._halos[hi];
+            var hp = ((t2 + hl.phase) % hl.period) / hl.period;
+            hl.mesh.material.opacity = hp < 0.3 ? 0.7 * (1 - hp/0.3) : 0;
+            hl.mesh.scale.setScalar(1 + hp * 2);
+          }
+        },
+      });
+
+      /* ==================================================================
+         HAWKING RADIATION — micro black hole near end of evaporation.
+         Position: (600, -700, -400).
+         Micro BH: tiny dark sphere r=8, Hawking temperature so high it's
+           white-hot — glows brilliant white.
+         Particle pairs: 400 virtual particle pairs continuously emitted,
+           one falls in (annihilated), one escapes outward.
+         The escaping particles form a thermal BB spectrum (mixed colours).
+         As time progresses the BH shrinks (scale 1 -> 0 over 20s then resets).
+         Final flash: near end of evaporation, blinding white explosion.
+         @alignment 8→26→48:480  @frequency 963  @domain systems-design
+      ================================================================== */
+      AFRAME.registerComponent("hawking-radiation", {
+        init: function () {
+          var THREE = AFRAME.THREE;
+          var scene = this.el.sceneEl.object3D;
+          var PI = Math.PI;
+          this._hrRoot = new THREE.Group();
+          this._hrRoot.position.set(600, -700, -400);
+          scene.add(this._hrRoot);
+
+          /* micro BH core */
+          this._bhMesh = new THREE.Mesh(
+            new THREE.SphereGeometry(8, 10, 8),
+            new THREE.MeshBasicMaterial({ color: 0x000000 })
+          );
+          this._hrRoot.add(this._bhMesh);
+          this._bhHaze = new THREE.Mesh(
+            new THREE.SphereGeometry(15, 10, 8),
+            new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.35 })
+          );
+          this._hrRoot.add(this._bhHaze);
+
+          /* escaping radiation particles */
+          var HN = 400;
+          var hPos = new Float32Array(HN * 3);
+          var hCol = new Float32Array(HN * 3);
+          this._hT     = new Float32Array(HN);
+          this._hDir   = [];
+          var bbColors = [0xffffff, 0xffddaa, 0xaaddff, 0xffaacc, 0x88ffee, 0xffff88];
+          for (var hi = 0; hi < HN; hi++) {
+            this._hT[hi] = Math.random();
+            var phi = Math.acos(2 * Math.random() - 1);
+            var theta = Math.random() * 2 * Math.PI;
+            this._hDir.push([
+              Math.sin(phi) * Math.cos(theta),
+              Math.sin(phi) * Math.sin(theta),
+              Math.cos(phi)
+            ]);
+            var r = this._hT[hi] * 60;
+            hPos[hi*3  ] = this._hDir[hi][0] * r;
+            hPos[hi*3+1] = this._hDir[hi][1] * r;
+            hPos[hi*3+2] = this._hDir[hi][2] * r;
+            var c = bbColors[hi % bbColors.length];
+            hCol[hi*3  ] = ((c >> 16) & 0xff) / 255;
+            hCol[hi*3+1] = ((c >> 8)  & 0xff) / 255;
+            hCol[hi*3+2] = (c & 0xff)         / 255;
+          }
+          var hGeo = new THREE.BufferGeometry();
+          this._hPosAttr = new THREE.BufferAttribute(hPos, 3);
+          hGeo.setAttribute("position", this._hPosAttr);
+          hGeo.setAttribute("color",    new THREE.BufferAttribute(hCol, 3));
+          this._hrRoot.add(new THREE.Points(hGeo, new THREE.PointsMaterial({
+            size: 2.0, vertexColors: true,
+            blending: THREE.AdditiveBlending, depthWrite: false, transparent: true, opacity: 0.9
+          })));
+          this._hN = HN;
+
+          /* final-evaporation flash shell */
+          this._flashMesh = new THREE.Mesh(
+            new THREE.SphereGeometry(8, 8, 6),
+            new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.0 })
+          );
+          this._hrRoot.add(this._flashMesh);
+
+          this._hrTime = 0;
+          this._EVAP   = 20.0; /* seconds to evaporate cycle */
+          this._ESCAPE = 80;   /* max escape radius */
+        },
+        tick: function (time, delta) {
+          var dt = Math.min(delta, 200) * 0.001;
+          this._hrTime += dt;
+          var t2   = this._hrTime;
+          var evap = (t2 % this._EVAP) / this._EVAP; /* 0->1 per cycle */
+          /* BH shrinks */
+          var bhScale = 1.0 - evap * 0.85;
+          this._bhMesh.scale.setScalar(bhScale);
+          this._bhHaze.scale.setScalar(bhScale);
+          this._bhHaze.material.opacity = 0.35 + evap * 0.5;
+          /* escape particles speed up as BH heats up */
+          var escapeSpeed = 0.04 + evap * 0.08;
+          var arr = this._hPosAttr.array;
+          for (var hi = 0; hi < this._hN; hi++) {
+            this._hT[hi] += escapeSpeed * dt;
+            if (this._hT[hi] > 1) {
+              this._hT[hi] -= 1;
+              /* re-emit from new random direction */
+              var phi = Math.acos(2 * Math.random() - 1);
+              var theta = Math.random() * 2 * Math.PI;
+              this._hDir[hi][0] = Math.sin(phi) * Math.cos(theta);
+              this._hDir[hi][1] = Math.sin(phi) * Math.sin(theta);
+              this._hDir[hi][2] = Math.cos(phi);
+            }
+            var r = this._hT[hi] * this._ESCAPE;
+            arr[hi*3  ] = this._hDir[hi][0] * r;
+            arr[hi*3+1] = this._hDir[hi][1] * r;
+            arr[hi*3+2] = this._hDir[hi][2] * r;
+          }
+          this._hPosAttr.needsUpdate = true;
+          /* final evaporation flash */
+          if (evap > 0.85) {
+            var ff = (evap - 0.85) / 0.15;
+            this._flashMesh.scale.setScalar(1 + ff * 12);
+            this._flashMesh.material.opacity = 0.9 * ff;
+          } else {
+            this._flashMesh.material.opacity = 0;
+          }
         },
       });
 
