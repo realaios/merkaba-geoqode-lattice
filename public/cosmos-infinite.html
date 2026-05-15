@@ -2927,6 +2927,8 @@
       <a-entity rogue-planet></a-entity>
       <!-- ── KILONOVA — neutron star merger with gravitational wave rings ── -->
       <a-entity cosmic-kilonova></a-entity>
+      <!-- ── HYPERSPEED FLIGHT — high-speed tour with warp tunnel ── -->
+      <a-entity hyperspeed-flight></a-entity>
 
       <!-- NEBULA CLOUD REMOVED — zero haze, clean black space -->
 
@@ -6443,6 +6445,181 @@
             var rr = this._gwRingR[ri];
             this._gwRings[ri].scale.set(rr / 55, rr / 55, 1);
             this._gwMats[ri].opacity = Math.max(0, 0.5 - rr / 900);
+          }
+        },
+      });
+
+      /* ====================================================================
+         HYPERSPEED FLIGHT — ultra-fast Universe grand tour.
+         Press H to toggle. Warp speed 5x faster than universe-tour.
+         30 waypoints visiting every cosmic object in the scene.
+         Warp tunnel: 280 streaking star-lines during transit.
+         Blue-shift: colour of tunnel lines shifts to cyan/blue at speed.
+         @alignment 8→26→48:480  @frequency 528  @domain code-eng
+      ==================================================================== */
+      AFRAME.registerComponent("hyperspeed-flight", {
+        init: function () {
+          var THREE = AFRAME.THREE;
+          var scene  = this.el.sceneEl.object3D;
+          var camera = this.el.sceneEl.camera;
+          var PI = Math.PI;
+
+          /* 30-waypoint tour: every cosmic object + empty-space sweeps */
+          this._waypoints = [
+            {x:   0, y:   0, z:   0},   /* origin */
+            {x: 380, y:  80, z:-220},   /* pulsar */
+            {x:-550, y: -60, z: 180},   /* black hole */
+            {x: 500, y: 120, z:-350},   /* binary star */
+            {x: 120, y:-180, z:-480},   /* supernova remnant */
+            {x:-300, y: 200, z:-600},   /* nebula */
+            {x:-400, y: 150, z:-500},   /* stellar nursery */
+            {x:  60, y: 380, z:-900},   /* quasar */
+            {x:-180, y: -60, z:-780},   /* wormhole */
+            {x: 450, y: 200, z: 220},   /* magnetar */
+            {x:-180, y:  60, z: 380},   /* gas giant */
+            {x: 320, y:-180, z: 450},   /* ice giant */
+            {x:-500, y:  60, z:-280},   /* gamma-ray burst */
+            {x: 620, y: -80, z: 500},   /* rogue planet */
+            {x:-280, y: 320, z:-650},   /* kilonova */
+            {x:-800, y: 400, z:-200},   /* deep space */
+            {x: 100, y:-600, z: 100},   /* below galactic plane */
+            {x:-200, y: 700, z:-300},   /* above galactic plane */
+            {x: 900, y:   0, z:-900},   /* far corner */
+            {x:-700, y:-200, z: 700},   /* opposite corner */
+            {x: 200, y: 200, z:-1200},  /* deep quasar approach */
+            {x:-100, y:-400, z:-600},   /* mid-south sweep */
+            {x: 600, y: 300, z: 100},   /* magnetar flyby */
+            {x:-400, y:  50, z: 200},   /* asteroid belt sweep */
+            {x: 250, y:-120, z:-350},   /* dark matter web */
+            {x:-600, y: 100, z:-100},   /* spiral approach */
+            {x:   0, y: 500, z: 500},   /* high arc */
+            {x: 300, y:-500, z:-300},   /* deep descent */
+            {x:-300, y: 300, z: 600},   /* northern reach */
+            {x:   0, y:   0, z:   0},   /* return to origin */
+          ];
+
+          this._active   = false;
+          this._wpIndex  = 0;
+          this._progress = 0;
+          this._speed    = 0.55;  /* tour units/s fraction per second */
+          this._inWarp   = false;
+
+          /* ── warp tunnel: 280 streaking lines ── */
+          var WN = 280;
+          var wPos = new Float32Array(WN * 6); /* 2 verts/line */
+          var wColArr = new Float32Array(WN * 6);
+          for (var wi = 0; wi < WN; wi++) {
+            var wth = Math.random() * PI * 2;
+            var wph = (Math.random() - 0.5) * PI * 0.55;
+            var wd  = 12 + Math.random() * 22;
+            var wx0 = wd * Math.cos(wph) * Math.cos(wth);
+            var wy0 = wd * Math.sin(wph);
+            var wz0 = -(8 + Math.random() * 10);
+            var wx1 = wx0 + (Math.random() - 0.5) * 3;
+            var wy1 = wy0 + (Math.random() - 0.5) * 3;
+            var wz1 = wz0 - (20 + Math.random() * 35);
+            wPos[wi*6  ] = wx0; wPos[wi*6+1] = wy0; wPos[wi*6+2] = wz0;
+            wPos[wi*6+3] = wx1; wPos[wi*6+4] = wy1; wPos[wi*6+5] = wz1;
+            var blue = 0.4 + 0.6 * Math.random();
+            wColArr[wi*6  ] = 0.4; wColArr[wi*6+1] = 0.6 + 0.4*blue; wColArr[wi*6+2] = 1.0;
+            wColArr[wi*6+3] = 0.6; wColArr[wi*6+4] = 0.8;            wColArr[wi*6+5] = 1.0;
+          }
+          var wGeo = new THREE.BufferGeometry();
+          wGeo.setAttribute("position", new THREE.BufferAttribute(wPos, 3));
+          wGeo.setAttribute("color",    new THREE.BufferAttribute(wColArr, 3));
+          this._warpMat = new THREE.LineBasicMaterial({ vertexColors: true, blending: THREE.AdditiveBlending, depthWrite: false, transparent: true, opacity: 0 });
+          this._warpLines = new THREE.LineSegments(wGeo, this._warpMat);
+          if (camera) camera.add(this._warpLines);
+          else this.el.sceneEl.camera && this.el.sceneEl.camera.add(this._warpLines);
+
+          /* ── HUD label ── */
+          var self = this;
+          this._dest = document.getElementById("hsf-dest");
+          if (!this._dest) {
+            this._dest = document.createElement("div");
+            this._dest.id = "hsf-dest";
+            this._dest.style.cssText = "position:fixed;bottom:44px;left:50%;transform:translateX(-50%);color:#88ccff;font:11px/1 monospace;opacity:0;transition:opacity 0.4s;pointer-events:none;z-index:200";
+            document.body.appendChild(this._dest);
+          }
+
+          /* ── key binding ── */
+          document.addEventListener("keydown", function(e) {
+            if (e.key === "h" || e.key === "H") {
+              self._active = !self._active;
+              if (self._active) { self._wpIndex = 0; self._progress = 0; }
+              self._dest.style.opacity = self._active ? "1" : "0";
+            }
+          });
+
+          this._hsfTime = 0;
+          this._NAMES = [
+            "ORIGIN","PULSAR","BLACK HOLE","BINARY STAR","SUPERNOVA",
+            "NEBULA","STELLAR NURSERY","QUASAR","WORMHOLE","MAGNETAR",
+            "GAS GIANT","ICE GIANT","GAMMA-RAY BURST","ROGUE PLANET","KILONOVA",
+            "DEEP SPACE","BELOW PLANE","ABOVE PLANE","FAR CORNER","OPPOSITE CORNER",
+            "DEEP QUASAR","MID-SOUTH","MAGNETAR FLYBY","ASTEROID BELT","DARK MATTER WEB",
+            "SPIRAL APPROACH","HIGH ARC","DEEP DESCENT","NORTHERN REACH","ORIGIN",
+          ];
+        },
+
+        tick: function (time, delta) {
+          var dt = Math.min(delta, 200) * 0.001;
+          this._hsfTime += dt;
+          if (!this._active) {
+            this._warpMat.opacity = Math.max(0, this._warpMat.opacity - dt * 2);
+            return;
+          }
+          var cam = this.el.sceneEl.camera;
+          if (!cam) return;
+          var wps = this._waypoints;
+          var cur = wps[this._wpIndex];
+          var nxt = wps[(this._wpIndex + 1) % wps.length];
+
+          /* advance progress */
+          this._progress += this._speed * dt;
+          if (this._progress >= 1) {
+            this._progress = 0;
+            this._wpIndex = (this._wpIndex + 1) % wps.length;
+            this._inWarp = false;
+            /* update destination label */
+            var ni = (this._wpIndex + 1) % wps.length;
+            if (this._dest) this._dest.textContent = "\u25B6 " + this._NAMES[ni];
+            cur = wps[this._wpIndex];
+            nxt = wps[(this._wpIndex + 1) % wps.length];
+          }
+
+          /* smooth step interpolation */
+          var t  = this._progress;
+          var t2 = t * t * (3 - 2 * t);
+          var rx = cur.x + (nxt.x - cur.x) * t2;
+          var ry = cur.y + (nxt.y - cur.y) * t2;
+          var rz = cur.z + (nxt.z - cur.z) * t2;
+
+          /* move camera rig */
+          var rig = cam.parent && cam.parent !== this.el.sceneEl.object3D ? cam.parent : cam;
+          rig.position.set(rx, ry, rz);
+
+          /* look toward next waypoint */
+          var ahead = { x: cur.x + (nxt.x - cur.x) * Math.min(t + 0.15, 1),
+                        y: cur.y + (nxt.y - cur.y) * Math.min(t + 0.15, 1),
+                        z: cur.z + (nxt.z - cur.z) * Math.min(t + 0.15, 1) };
+          var dx = ahead.x - rx, dy = ahead.y - ry, dz = ahead.z - rz;
+          var dist = Math.sqrt(dx*dx + dy*dy + dz*dz);
+          if (dist > 0.1) {
+            var yaw   = Math.atan2(dx, dz);
+            var pitch = -Math.atan2(dy, Math.sqrt(dx*dx + dz*dz));
+            rig.rotation.set(pitch, yaw, 0, "YXZ");
+          }
+
+          /* warp tunnel: mid-journey (t 0.15-0.85) */
+          var warpOn = t > 0.1 && t < 0.9;
+          var targetOp = warpOn ? 0.85 : 0;
+          this._warpMat.opacity += (targetOp - this._warpMat.opacity) * 4 * dt;
+
+          /* pulsate tunnel scale */
+          if (warpOn) {
+            var sc = 1 + 0.18 * Math.sin(this._hsfTime * 14);
+            this._warpLines.scale.set(sc, sc, 1);
           }
         },
       });
