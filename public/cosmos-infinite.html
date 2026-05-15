@@ -1747,10 +1747,9 @@
     </div>
 
     <div id="controls-hint">
-      W/S Thrust &nbsp;&#x2022;&nbsp; A/D Strafe &nbsp;&#x2022;&nbsp; LMB Look
-      &nbsp;&#x2022;&nbsp; RMB Pan &nbsp;&#x2022;&nbsp; Scroll Zoom
-      &nbsp;&#x2022;&nbsp; Double-Click Teleport &nbsp;&#x2022;&nbsp; SPACE
-      Hitchhiker
+      W/S Thrust &nbsp;&#x2022;&nbsp; A/D Strafe &nbsp;&#x2022;&nbsp; SHIFT Boost
+      &nbsp;&#x2022;&nbsp; LMB Look &nbsp;&#x2022;&nbsp; RMB Pan &nbsp;&#x2022;&nbsp; Scroll Zoom
+      &nbsp;&#x2022;&nbsp; Double-Click Teleport &nbsp;&#x2022;&nbsp; SPACE Hitchhiker
     </div>
     <div id="hitchhiker-badge"></div>
 
@@ -2927,7 +2926,7 @@
       <!-- Camera rig -->
       <a-entity id="cameraRig" position="0 12 75">
         <a-camera
-          wasd-controls="acceleration: 20000; fly: true; adEnabled: false"
+          wasd-controls="acceleration: 20000; fly: true"
           look-controls="pointerLockEnabled: false; touchEnabled: true; magicWindowTrackingEnabled: false"
           fov="60"
           far="2000000"
@@ -4210,40 +4209,34 @@
             if (!threeCamera) return;
 
             var raycaster = new AFRAME.THREE.Raycaster();
+            raycaster.far = 500;
             raycaster.setFromCamera(ndc, threeCamera);
 
-            var ssEl = document.getElementById("solar-system");
-            if (!ssEl) return;
-            var hits = raycaster.intersectObjects(ssEl.object3D.children, true);
+            /* Raycast against whole scene — no solar-system dependency */
+            var hits = raycaster.intersectObjects(sceneEl.object3D.children, true);
             if (hits.length === 0) return;
 
-            /* Walk up to a direct child of solar-system (the planet group) */
-            var hitMesh = hits[0].object;
-            var ssObj = ssEl.object3D;
-            var trackObj = hitMesh;
-            while (trackObj.parent && trackObj.parent !== ssObj) {
-              trackObj = trackObj.parent;
-            }
+            /* Track the exact mesh hit — getWorldPosition follows any animation */
+            var trackObj = hits[0].object;
 
             /* World position of the clicked mesh */
             var hitWorld = new AFRAME.THREE.Vector3();
-            hitMesh.getWorldPosition(hitWorld);
+            trackObj.getWorldPosition(hitWorld);
 
             var rig = document.getElementById("cameraRig");
             if (!rig) return;
 
-            /* Direction from hit-world to camera — always place camera on the
-               same side it was already on, at a fixed comfortable distance */
-            var VIEW_DIST = 3000;
+            /* Place camera 20 units from clicked object on the side already on */
+            var VIEW_DIST = 20;
             var dir = rig.object3D.position.clone().sub(hitWorld);
-            if (dir.length() < 50) dir.set(0, VIEW_DIST * 0.4, VIEW_DIST);
+            if (dir.length() < 1) dir.set(0, VIEW_DIST * 0.4, VIEW_DIST);
             dir.normalize().multiplyScalar(VIEW_DIST);
             self._offset.copy(dir);
 
             /* Teleport rig */
             rig.object3D.position.copy(hitWorld).add(self._offset);
 
-            /* Point camera at the planet */
+            /* Point camera at the object */
             var camEl = document.querySelector("[look-controls]");
             if (camEl) {
               var toTarget = hitWorld
@@ -6015,10 +6008,10 @@
 
           /* ── WASD boost via Shift: dynamically changes wasd-controls accel ── */
           var camEl = document.querySelector("a-camera");
-          var ACCEL = 800,
-            ACCEL_BOOST = 4000;
+          var ACCEL = 20000,
+            ACCEL_BOOST = 100000;
           if (camEl)
-            camEl.setAttribute("wasd-controls", "acceleration: " + ACCEL);
+            camEl.setAttribute("wasd-controls", "fly: true; adEnabled: true; acceleration: " + ACCEL);
 
           var shiftOn = false;
           var heldKeys = {};
@@ -6051,7 +6044,7 @@
               if (camEl)
                 camEl.setAttribute(
                   "wasd-controls",
-                  "acceleration: " + ACCEL_BOOST,
+                  "fly: true; adEnabled: true; acceleration: " + ACCEL_BOOST,
                 );
               if (self._boostVig) self._boostVig.classList.add("active");
               if (self._velHud && wasdMoving)
@@ -6086,7 +6079,7 @@
             if (e.code === "ShiftLeft" || e.code === "ShiftRight") {
               shiftOn = false;
               if (camEl)
-                camEl.setAttribute("wasd-controls", "acceleration: " + ACCEL);
+                camEl.setAttribute("wasd-controls", "fly: true; adEnabled: true; acceleration: " + ACCEL);
               if (self._boostVig) self._boostVig.classList.remove("active");
               if (wasdMoving && self._velHud)
                 self._velHud.textContent = "CRUISE";
