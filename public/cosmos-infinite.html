@@ -2884,6 +2884,10 @@
       <!-- ── STARFIELD ── -->
       <a-entity starfield></a-entity>
 
+      <!-- ── COSMIC WEATHER: storm vortices + lightning ── -->
+      <a-entity cosmic-storm></a-entity>
+      <a-entity cosmic-lightning></a-entity>
+
       <!-- NEBULA CLOUD REMOVED — zero haze, clean black space -->
 
       <!-- ── REAL 3D GLTF MODELS ───────────────────────────────────────────── -->
@@ -4564,6 +4568,234 @@
           /* Slow drift rotation */
           this.el.object3D.rotation.y += this._rotSpd;
           this.el.object3D.rotation.x += this._rotSpd * 0.4;
+        },
+      });
+
+      /* ── cosmic-storm ─────────────────────────────────────────────────────── */
+      /* 4 localized vortex storms: swirling disc particles scattered through  */
+      /* the galaxy. Differential rotation (inner faster), gentle turbulence.  */
+      AFRAME.registerComponent("cosmic-storm", {
+        init: function () {
+          var THREE = AFRAME.THREE;
+          var group = new THREE.Group();
+          /* Storm cluster world positions (matching lightning clusters) */
+          var CLUSTER_POSITIONS = [
+            [ 320, -40, -180],
+            [-480,  60,  220],
+            [ 180,  80,  450],
+            [-260, -30, -420],
+          ];
+          var PALETTES = [
+            [0.22, 0.58, 1.00], /* electric blue */
+            [0.50, 0.22, 1.00], /* deep violet   */
+            [0.00, 0.88, 0.82], /* cyan-teal plasma */
+            [0.82, 0.28, 1.00], /* magenta-purple */
+          ];
+          var N = 600;
+          this._storms = [];
+          for (var s = 0; s < 4; s++) {
+            var pal = PALETTES[s];
+            var cp  = CLUSTER_POSITIONS[s];
+            var R   = 38 + Math.random() * 22;
+            var posArr = new Float32Array(N * 3);
+            var velArr = new Float32Array(N * 3); /* [angle, radius, height] */
+            var colArr = new Float32Array(N * 3);
+            for (var i = 0; i < N; i++) {
+              var ang = Math.random() * Math.PI * 2;
+              var r2  = Math.pow(Math.random(), 0.55) * R;
+              var h2  = (Math.random() - 0.5) * R * 0.36 * (1.0 - r2 / R);
+              posArr[i * 3]     = Math.cos(ang) * r2;
+              posArr[i * 3 + 1] = h2;
+              posArr[i * 3 + 2] = Math.sin(ang) * r2;
+              velArr[i * 3]     = ang; /* current angle */
+              velArr[i * 3 + 1] = r2;  /* orbital radius */
+              velArr[i * 3 + 2] = h2;  /* height (fixed) */
+              var bright = 0.28 + Math.random() * 0.72;
+              var core   = 1.0 - r2 / R; /* 1=eye centre, 0=edge */
+              colArr[i * 3]     = Math.min(1, pal[0] * bright * (1.0 + core * 0.6));
+              colArr[i * 3 + 1] = Math.min(1, pal[1] * bright * (1.0 + core * 0.6));
+              colArr[i * 3 + 2] = Math.min(1, pal[2] * bright * (1.0 + core * 0.6));
+            }
+            var geo = new THREE.BufferGeometry();
+            geo.setAttribute("position", new THREE.BufferAttribute(posArr, 3));
+            geo.setAttribute("color",    new THREE.BufferAttribute(colArr, 3));
+            var mat = new THREE.PointsMaterial({
+              size: 1.4,
+              vertexColors: true,
+              transparent: true,
+              opacity: 0.20 + Math.random() * 0.10,
+              blending: THREE.AdditiveBlending,
+              depthWrite: false,
+              sizeAttenuation: true,
+            });
+            var pts = new THREE.Points(geo, mat);
+            pts.position.set(cp[0], cp[1], cp[2]);
+            var rotSign = Math.random() < 0.5 ? 1 : -1;
+            this._storms.push({
+              pts: pts, geo: geo, mat: mat,
+              posArr: posArr, velArr: velArr, count: N,
+              stormRadius: R,
+              rotSpeed: rotSign * (0.00007 + Math.random() * 0.00011),
+              tOffset: Math.random() * 100,
+            });
+            group.add(pts);
+          }
+          this.el.setObject3D("cosmic-storms", group);
+          this._t = 0;
+        },
+        tick: function (time, delta) {
+          var dt  = Math.min(delta, 100) * 0.001;
+          this._t += dt;
+          var t   = this._t;
+          for (var s = 0; s < this._storms.length; s++) {
+            var st  = this._storms[s];
+            var pa  = st.posArr;
+            var va  = st.velArr;
+            var rs  = st.rotSpeed;
+            var R   = st.stormRadius;
+            var off = st.tOffset;
+            for (var i = 0; i < st.count; i++) {
+              var r2  = va[i * 3 + 1];
+              /* Differential rotation: inner orbits faster */
+              var angV = rs * (1.0 + (R - r2) / R * 1.8);
+              va[i * 3] += angV;
+              var ang = va[i * 3];
+              var h2  = va[i * 3 + 2];
+              var trb = 0.14 * Math.sin(t * 0.9 + off + i * 0.06);
+              pa[i * 3]     = Math.cos(ang) * r2 + trb;
+              pa[i * 3 + 1] = h2 + 0.35 * Math.sin(t * 1.2 + off + i * 0.04);
+              pa[i * 3 + 2] = Math.sin(ang) * r2 + trb * 0.7;
+            }
+            st.geo.attributes.position.needsUpdate = true;
+            /* Gentle breathing opacity */
+            st.mat.opacity = 0.16 + 0.09 * Math.sin(t * 0.55 + s * 1.4);
+          }
+        },
+      });
+
+      /* ── cosmic-lightning ────────────────────────────────────────────── */
+      /* Branching electric discharge bolts near the storm clusters.           */
+      /* Each bolt has a white-blue core + magenta glow, fades in ~300ms.      */
+      AFRAME.registerComponent("cosmic-lightning", {
+        init: function () {
+          this._THREE    = AFRAME.THREE;
+          this._bolts    = [];
+          this._elapsed  = 0;
+          this._nextBolt = 2500 + Math.random() * 5000;
+          /* Same cluster positions as cosmic-storm */
+          this._clusters = [
+            new AFRAME.THREE.Vector3( 320, -40, -180),
+            new AFRAME.THREE.Vector3(-480,  60,  220),
+            new AFRAME.THREE.Vector3( 180,  80,  450),
+            new AFRAME.THREE.Vector3(-260, -30, -420),
+          ];
+        },
+
+        /* Build one bolt branch recursively; push Line objects into accumBolts */
+        _branch: function (start, dir, length, depth, accumBolts) {
+          var THREE = this._THREE;
+          if (depth <= 0 || length < 3) return;
+          var SEGS = 5 + Math.floor(Math.random() * 5);
+          var pts  = [start.clone()];
+          var cur  = start.clone();
+          var segL = length / SEGS;
+          /* Two perpendicular jag axes */
+          var up    = (Math.abs(dir.y) < 0.9)
+                        ? new THREE.Vector3(0, 1, 0)
+                        : new THREE.Vector3(1, 0, 0);
+          var perp  = new THREE.Vector3().crossVectors(dir, up).normalize();
+          var perp2 = new THREE.Vector3().crossVectors(dir, perp).normalize();
+          for (var i = 0; i < SEGS; i++) {
+            var j1 = (Math.random() - 0.5) * segL * 0.9;
+            var j2 = (Math.random() - 0.5) * segL * 0.55;
+            cur = cur.clone()
+              .addScaledVector(dir,   segL)
+              .addScaledVector(perp,  j1)
+              .addScaledVector(perp2, j2);
+            pts.push(cur.clone());
+            if (depth > 1 && Math.random() < 0.30) {
+              var bDir = dir.clone()
+                .addScaledVector(perp,  (Math.random() - 0.5) * 1.4)
+                .addScaledVector(perp2, (Math.random() - 0.5) * 0.9)
+                .normalize();
+              this._branch(cur.clone(), bDir, length * 0.48, depth - 1, accumBolts);
+            }
+          }
+          var posArr = new Float32Array(pts.length * 3);
+          for (var j = 0; j < pts.length; j++) {
+            posArr[j * 3]     = pts[j].x;
+            posArr[j * 3 + 1] = pts[j].y;
+            posArr[j * 3 + 2] = pts[j].z;
+          }
+          var geo = new THREE.BufferGeometry();
+          geo.setAttribute("position", new THREE.BufferAttribute(posArr, 3));
+          /* White-blue core line */
+          var coreMat = new THREE.LineBasicMaterial({
+            color: 0xbbddff,
+            transparent: true, opacity: 1.0,
+            blending: THREE.AdditiveBlending, depthWrite: false,
+          });
+          var coreLine = new THREE.Line(geo, coreMat);
+          this.el.object3D.add(coreLine);
+          accumBolts.push({
+            line: coreLine, mat: coreMat,
+            life: 1.0, decay: 0.038 + Math.random() * 0.055,
+          });
+          /* Magenta-purple glow halo */
+          var glowMat = new THREE.LineBasicMaterial({
+            color: 0xbb44ff,
+            transparent: true, opacity: 0.50,
+            blending: THREE.AdditiveBlending, depthWrite: false,
+          });
+          var glowLine = new THREE.Line(geo.clone(), glowMat);
+          this.el.object3D.add(glowLine);
+          accumBolts.push({
+            line: glowLine, mat: glowMat,
+            life: 0.90, decay: 0.030 + Math.random() * 0.040,
+          });
+        },
+
+        _spawnStrike: function () {
+          var THREE = this._THREE;
+          var cl    = this._clusters[Math.floor(Math.random() * this._clusters.length)];
+          var ox    = cl.x + (Math.random() - 0.5) * 130;
+          var oy    = cl.y + 45 + Math.random() * 30;
+          var oz    = cl.z + (Math.random() - 0.5) * 130;
+          var start = new THREE.Vector3(ox, oy, oz);
+          var dir   = new THREE.Vector3(
+            (Math.random() - 0.5) * 0.5,
+            -(0.55 + Math.random() * 0.45),
+            (Math.random() - 0.5) * 0.5
+          ).normalize();
+          var len = 30 + Math.random() * 65;
+          this._branch(start, dir, len, 3, this._bolts);
+        },
+
+        tick: function (time, delta) {
+          this._elapsed += delta;
+          if (this._elapsed >= this._nextBolt) {
+            this._elapsed = 0;
+            /* 25% chance: storm burst = 2-4 rapid strikes */
+            var n = Math.random() < 0.25 ? 2 + Math.floor(Math.random() * 3) : 1;
+            for (var b = 0; b < n; b++) this._spawnStrike();
+            /* Next bolt in 3-18 seconds */
+            this._nextBolt = 3000 + Math.random() * 15000;
+          }
+          /* Fade all active bolts */
+          var alive = [];
+          for (var i = 0; i < this._bolts.length; i++) {
+            var bolt = this._bolts[i];
+            bolt.life -= bolt.decay;
+            bolt.mat.opacity = Math.max(0, bolt.life);
+            if (bolt.life > 0) {
+              alive.push(bolt);
+            } else {
+              this.el.object3D.remove(bolt.line);
+              bolt.line.geometry.dispose();
+              bolt.mat.dispose();
+            }
+          }
+          this._bolts = alive;
         },
       });
 
