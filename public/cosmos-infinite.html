@@ -2915,6 +2915,8 @@
       <a-entity cosmic-quasar></a-entity>
       <!-- ── ICE GIANT — cryo-world with tilted rings and polar aurora ── -->
       <a-entity ice-giant></a-entity>
+      <!-- ── GAMMA-RAY BURST — universe's most energetic transient explosion ── -->
+      <a-entity gamma-ray-burst></a-entity>
 
       <!-- NEBULA CLOUD REMOVED — zero haze, clean black space -->
 
@@ -5724,6 +5726,136 @@
           for (var i = 0; i < this._igMoons.length; i++) {
             this._igMoons[i].piv.rotation.y += this._igMoons[i].speed * dt;
           }
+        },
+      });
+
+      /* ====================================================================
+         GAMMA-RAY BURST — Most energetic explosion in the Universe.
+         Position: (-500, 60, -280).
+         Components:
+           - Collimated jet pair: 250 particles each, brilliant white→yellow
+               700-unit length, narrow cone (5-deg half-angle)
+           - Expanding afterglow ring: TorusGeometry growing outward over 6s
+               Resets to r=0 and re-expands cyclically.
+           - Central fireball core: SphereGeometry r 4-8, flashing white
+           - Outer shockwave: 400-particle sphere, orange-red, r 40-120
+         Pulses on an 8s cycle (burst → fade → burst).
+         @alignment 8→26→48:480  @frequency 852  @domain security-forge
+      ==================================================================== */
+      AFRAME.registerComponent("gamma-ray-burst", {
+        init: function () {
+          var THREE = AFRAME.THREE;
+          var scene = this.el.sceneEl.object3D;
+          var PI = Math.PI;
+
+          this._grbRoot = new THREE.Group();
+          this._grbRoot.position.set(-500, 60, -280);
+          scene.add(this._grbRoot);
+
+          /* ── fireball core ── */
+          this._core = new THREE.Mesh(
+            new THREE.SphereGeometry(6, 12, 8),
+            new THREE.MeshBasicMaterial({ color: 0xffffff })
+          );
+          this._grbRoot.add(this._core);
+
+          /* ── collimated jet builder ── */
+          var buildJet = function (dir) {
+            var JN = 250, JL = 700, HALF_ANG = 0.088; /* ~5 deg */
+            var pos = new Float32Array(JN * 3);
+            var col = new Float32Array(JN * 3);
+            for (var i = 0; i < JN; i++) {
+              var t = Math.pow(Math.random(), 0.5);
+              var y = dir * t * JL;
+              var cone = t * HALF_ANG;
+              var a = Math.random() * PI * 2;
+              pos[i*3  ] = Math.cos(a) * cone * (t * 80);
+              pos[i*3+1] = y;
+              pos[i*3+2] = Math.sin(a) * cone * (t * 80);
+              var hot = 1 - t;
+              col[i*3  ] = 0.9 + 0.1 * hot;
+              col[i*3+1] = 0.7 * hot + 0.3 * (1 - hot);
+              col[i*3+2] = 0.1 * hot;
+            }
+            var g = new THREE.BufferGeometry();
+            g.setAttribute("position", new THREE.BufferAttribute(pos, 3));
+            g.setAttribute("color",    new THREE.BufferAttribute(col, 3));
+            return new THREE.Points(g, new THREE.PointsMaterial({
+              size: 2.8, vertexColors: true,
+              blending: THREE.AdditiveBlending, depthWrite: false,
+              transparent: true, opacity: 0.9
+            }));
+          };
+
+          this._jetN = buildJet( 1);
+          this._jetS = buildJet(-1);
+          this._grbRoot.add(this._jetN);
+          this._grbRoot.add(this._jetS);
+
+          /* ── outer shockwave sphere ── */
+          var SW = 400;
+          var swPos = new Float32Array(SW * 3);
+          var swCol = new Float32Array(SW * 3);
+          for (var i = 0; i < SW; i++) {
+            var theta = Math.random() * PI * 2;
+            var phi   = Math.acos(2 * Math.random() - 1);
+            var r     = 60 + Math.random() * 60;
+            swPos[i*3  ] = r * Math.sin(phi) * Math.cos(theta);
+            swPos[i*3+1] = r * Math.cos(phi);
+            swPos[i*3+2] = r * Math.sin(phi) * Math.sin(theta);
+            swCol[i*3  ] = 1.0;
+            swCol[i*3+1] = 0.3 + Math.random() * 0.3;
+            swCol[i*3+2] = 0.05;
+          }
+          var swGeo = new THREE.BufferGeometry();
+          swGeo.setAttribute("position", new THREE.BufferAttribute(swPos, 3));
+          swGeo.setAttribute("color",    new THREE.BufferAttribute(swCol, 3));
+          this._swMat = new THREE.PointsMaterial({
+            size: 2.5, vertexColors: true,
+            blending: THREE.AdditiveBlending, depthWrite: false,
+            transparent: true, opacity: 0.7
+          });
+          this._swPts = new THREE.Points(swGeo, this._swMat);
+          this._grbRoot.add(this._swPts);
+
+          /* ── afterglow expanding ring ── */
+          this._glowRingGeo = new THREE.TorusGeometry(1, 2.5, 5, 60);
+          this._glowRing = new THREE.Mesh(
+            this._glowRingGeo,
+            new THREE.MeshBasicMaterial({ color: 0xff9900, transparent: true, opacity: 0.55, depthWrite: false })
+          );
+          this._glowRing.rotation.x = PI / 2;
+          this._grbRoot.add(this._glowRing);
+          this._ringR = 5;
+
+          this._grbTime = 0;
+          this._CYCLE = 8;
+        },
+
+        tick: function (time, delta) {
+          var dt = Math.min(delta, 200) * 0.001;
+          this._grbTime += dt;
+          var phase = (this._grbTime % this._CYCLE) / this._CYCLE;
+          var burst = Math.sin(phase * Math.PI);
+
+          /* core flicker */
+          var cScale = 0.6 + 1.2 * burst;
+          this._core.scale.setScalar(cScale);
+
+          /* jet opacity */
+          this._jetN.material.opacity = 0.3 + 0.7 * burst;
+          this._jetS.material.opacity = 0.3 + 0.7 * burst;
+
+          /* shockwave pulse */
+          this._swMat.opacity = 0.2 + 0.55 * burst;
+          var swScale = 0.8 + 0.5 * burst;
+          this._swPts.scale.setScalar(swScale);
+
+          /* expanding afterglow ring */
+          this._ringR += dt * 18;
+          if (this._ringR > 220) this._ringR = 5;
+          this._glowRing.scale.setScalar(this._ringR);
+          this._glowRing.material.opacity = Math.max(0, 0.55 * (1 - this._ringR / 220));
         },
       });
 
