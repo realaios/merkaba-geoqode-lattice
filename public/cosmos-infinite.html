@@ -2929,6 +2929,10 @@
       <a-entity cosmic-kilonova></a-entity>
       <!-- ── HYPERSPEED FLIGHT — high-speed tour with warp tunnel ── -->
       <a-entity hyperspeed-flight></a-entity>
+      <!-- ── COSMIC VOID — dark energy shimmer in the Great Void ── -->
+      <a-entity cosmic-void></a-entity>
+      <!-- ── PLASMA RIBBON — arc connecting two mass concentrations ── -->
+      <a-entity plasma-ribbon></a-entity>
 
       <!-- NEBULA CLOUD REMOVED — zero haze, clean black space -->
 
@@ -6621,6 +6625,100 @@
             var sc = 1 + 0.18 * Math.sin(this._hsfTime * 14);
             this._warpLines.scale.set(sc, sc, 1);
           }
+        },
+      });
+
+      /* ==================================================================
+         COSMIC VOID — Great Void dark energy shimmer.
+         Position: (200, -350, 300).
+         200 low-opacity particles forming a vast sparse sphere.
+         Dark indigo with very slow opacity flicker (dark energy pulsation).
+         @alignment 8→26→48:480  @frequency 963  @domain systems-design
+      ================================================================== */
+      AFRAME.registerComponent("cosmic-void", {
+        init: function () {
+          var THREE = AFRAME.THREE;
+          var scene = this.el.sceneEl.object3D;
+          var PI = Math.PI;
+          this._cvRoot = new THREE.Group();
+          this._cvRoot.position.set(200, -350, 300);
+          scene.add(this._cvRoot);
+
+          var VN = 200;
+          var vPos = new Float32Array(VN * 3);
+          for (var vi = 0; vi < VN; vi++) {
+            var vr  = 80 + Math.random() * 200;
+            var vth = Math.random() * PI * 2;
+            var vph = Math.acos(2 * Math.random() - 1);
+            vPos[vi*3  ] = vr * Math.sin(vph) * Math.cos(vth);
+            vPos[vi*3+1] = vr * Math.cos(vph);
+            vPos[vi*3+2] = vr * Math.sin(vph) * Math.sin(vth);
+          }
+          var vGeo = new THREE.BufferGeometry();
+          vGeo.setAttribute("position", new THREE.BufferAttribute(vPos, 3));
+          this._voidMat = new THREE.PointsMaterial({ color: 0x0a0022, size: 4.5, blending: THREE.AdditiveBlending, depthWrite: false, transparent: true, opacity: 0.18 });
+          this._cvRoot.add(new THREE.Points(vGeo, this._voidMat));
+          this._cvTime = 0;
+        },
+        tick: function (time, delta) {
+          var dt = Math.min(delta, 200) * 0.001;
+          this._cvTime += dt;
+          this._voidMat.opacity = 0.12 + 0.08 * Math.sin(this._cvTime * 0.3);
+          this._cvRoot.rotation.y += 0.002 * dt;
+        },
+      });
+
+      /* ==================================================================
+         PLASMA RIBBON — hot plasma arc between two mass concentrations.
+         Position: arc from (800,100,-100) to (1000,-200,400).
+         280 particles tracing a curved Bezier arc.
+         Hot-pink/magenta with sinusoidal width oscillation.
+         @alignment 8→26→48:480  @frequency 528  @domain code-eng
+      ================================================================== */
+      AFRAME.registerComponent("plasma-ribbon", {
+        init: function () {
+          var THREE = AFRAME.THREE;
+          var scene = this.el.sceneEl.object3D;
+          var PN = 300;
+          this._prPos = new Float32Array(PN * 3);
+          this._prPhase = new Float32Array(PN);
+
+          /* Bezier arc: P0->(800,100,-100), P1->(900,350,150), P2->(1000,-200,400) */
+          var P0 = { x:800,  y: 100, z:-100 };
+          var P1 = { x:880,  y: 360, z: 180 };
+          var P2 = { x:1000, y:-200, z: 400 };
+          this._basePos = new Float32Array(PN * 3);
+          for (var pi = 0; pi < PN; pi++) {
+            var t = pi / (PN - 1);
+            var t1 = 1 - t;
+            this._basePos[pi*3  ] = t1*t1*P0.x + 2*t1*t*P1.x + t*t*P2.x;
+            this._basePos[pi*3+1] = t1*t1*P0.y + 2*t1*t*P1.y + t*t*P2.y;
+            this._basePos[pi*3+2] = t1*t1*P0.z + 2*t1*t*P1.z + t*t*P2.z;
+            this._prPhase[pi] = Math.random() * Math.PI * 2;
+            this._prPos[pi*3  ] = this._basePos[pi*3  ];
+            this._prPos[pi*3+1] = this._basePos[pi*3+1];
+            this._prPos[pi*3+2] = this._basePos[pi*3+2];
+          }
+          var prGeo = new THREE.BufferGeometry();
+          this._prPosAttr = new THREE.BufferAttribute(this._prPos, 3);
+          prGeo.setAttribute("position", this._prPosAttr);
+          this._prMat = new THREE.PointsMaterial({ color: 0xff33cc, size: 3.2, blending: THREE.AdditiveBlending, depthWrite: false, transparent: true, opacity: 0.72 });
+          scene.add(new THREE.Points(prGeo, this._prMat));
+          this._prTime = 0;
+          this._PN = PN;
+        },
+        tick: function (time, delta) {
+          var dt = Math.min(delta, 200) * 0.001;
+          this._prTime += dt;
+          var t2 = this._prTime;
+          for (var pi = 0; pi < this._PN; pi++) {
+            var spread = 4 + 3 * Math.sin(t2 * 1.8 + pi * 0.07);
+            this._prPos[pi*3  ] = this._basePos[pi*3  ] + spread * Math.cos(this._prPhase[pi] + t2 * 2.2);
+            this._prPos[pi*3+1] = this._basePos[pi*3+1] + spread * Math.sin(this._prPhase[pi] + t2 * 1.7);
+            this._prPos[pi*3+2] = this._basePos[pi*3+2] + spread * Math.cos(this._prPhase[pi] + t2 * 2.5);
+          }
+          this._prPosAttr.needsUpdate = true;
+          this._prMat.opacity = 0.55 + 0.2 * Math.sin(t2 * 2.4);
         },
       });
 
