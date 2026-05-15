@@ -3226,9 +3226,13 @@
               e.deltaMode === 1 ? rawDelta * 18 : rawDelta; /* line vs pixel */
             /* dist^1.5 × 0.00548 — smooth power curve: fine at close range,
                moderate through Nebula/Galaxy, fast at Universe edge.
-               (≈5 au/tick at D48, ≈11 au/tick at Nebula, ≈58 au/tick at Universe)
-               Within 20au floor raised to 1.0 so one scroll tick = ~1au. */
-            var _baseSp = Math.pow(dist, 1.5) * 0.00548;
+               Capped at 4% of current distance per tick so that far-out zooming
+               (e.g. from 16000au) decelerates smoothly rather than jumping thousands
+               of au at once.  Within 20au floor raised to 1.0 so one tick = ~1au. */
+            var _baseSp = Math.min(
+              Math.pow(dist, 1.5) * 0.00548,
+              dist * 0.04
+            );
             var speed =
               (dist < 20 ? Math.max(1.0, _baseSp) : Math.max(0.03, _baseSp)) *
               (normDelta / 100);
