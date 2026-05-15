@@ -2933,6 +2933,10 @@
       <a-entity cosmic-void></a-entity>
       <!-- ── PLASMA RIBBON — arc connecting two mass concentrations ── -->
       <a-entity plasma-ribbon></a-entity>
+      <!-- ── AURORA WORLD — polar aurora and ring system ── -->
+      <a-entity aurora-world></a-entity>
+      <!-- ── TIDAL DISRUPTION EVENT — star being shredded by hidden black hole ── -->
+      <a-entity tidal-disruption></a-entity>
 
       <!-- NEBULA CLOUD REMOVED — zero haze, clean black space -->
 
@@ -6719,6 +6723,179 @@
           }
           this._prPosAttr.needsUpdate = true;
           this._prMat.opacity = 0.55 + 0.2 * Math.sin(t2 * 2.4);
+        },
+      });
+
+      /* ==================================================================
+         AURORA WORLD — gas planet with shimmering polar auroras.
+         Position: (-700, 80, 300).
+         Planet body r=28, deep teal-blue.
+         4-ring system, tilted 30deg.
+         North + south aurora curtains: 180-particle fan each, green-violet.
+         Aurora particles animate upward with sinusoidal shimmer.
+         @alignment 8→26→48:480  @frequency 741  @domain pain-removal
+      ================================================================== */
+      AFRAME.registerComponent("aurora-world", {
+        init: function () {
+          var THREE = AFRAME.THREE;
+          var scene = this.el.sceneEl.object3D;
+          var PI = Math.PI;
+          this._awRoot = new THREE.Group();
+          this._awRoot.position.set(-700, 80, 300);
+          scene.add(this._awRoot);
+
+          /* planet body */
+          this._awPlanet = new THREE.Mesh(
+            new THREE.SphereGeometry(28, 16, 12),
+            new THREE.MeshBasicMaterial({ color: 0x0d2244 })
+          );
+          this._awRoot.add(this._awPlanet);
+
+          /* atmosphere glow */
+          this._awRoot.add(new THREE.Mesh(
+            new THREE.SphereGeometry(36, 10, 8),
+            new THREE.MeshBasicMaterial({ color: 0x113366, transparent: true, opacity: 0.15, side: THREE.BackSide, depthWrite: false })
+          ));
+
+          /* 4 rings */
+          var ringData = [{r:42,w:4},{r:54,w:3},{r:64,w:5},{r:78,w:2}];
+          var rGroup = new THREE.Group();
+          rGroup.rotation.x = PI * 0.17;
+          rGroup.rotation.z = 0.2;
+          for (var ri = 0; ri < ringData.length; ri++) {
+            var rd = ringData[ri];
+            rGroup.add(new THREE.Mesh(
+              new THREE.TorusGeometry(rd.r, rd.w * 0.4, 3, 72),
+              new THREE.MeshBasicMaterial({ color: 0x336699, transparent: true, opacity: 0.35, depthWrite: false })
+            ));
+          }
+          this._awRoot.add(rGroup);
+
+          /* aurora curtain builder */
+          var buildAurora = function(pole, count) {
+            var aPos = new Float32Array(count * 3);
+            var aCol = new Float32Array(count * 3);
+            for (var ai = 0; ai < count; ai++) {
+              var angle = (ai / count) * PI * 2;
+              var spreadR = 18 + Math.random() * 14;
+              aPos[ai*3  ] = spreadR * Math.cos(angle);
+              aPos[ai*3+1] = pole * (32 + Math.random() * 28);
+              aPos[ai*3+2] = spreadR * Math.sin(angle);
+              var mix = Math.random();
+              aCol[ai*3  ] = 0.0 + 0.3 * (1-mix);
+              aCol[ai*3+1] = 0.8 - 0.2 * mix;
+              aCol[ai*3+2] = 0.2 + 0.8 * mix;
+            }
+            var aGeo = new THREE.BufferGeometry();
+            aGeo.setAttribute("position", new THREE.BufferAttribute(aPos, 3));
+            aGeo.setAttribute("color", new THREE.BufferAttribute(aCol, 3));
+            return new THREE.Points(aGeo, new THREE.PointsMaterial({ size: 2.8, vertexColors: true, blending: THREE.AdditiveBlending, depthWrite: false, transparent: true, opacity: 0.8 }));
+          };
+          this._northAurora = buildAurora( 1, 180);
+          this._southAurora = buildAurora(-1, 180);
+          this._northAurora._basePos = this._northAurora.geometry.attributes.position.array.slice();
+          this._southAurora._basePos = this._southAurora.geometry.attributes.position.array.slice();
+          this._awRoot.add(this._northAurora);
+          this._awRoot.add(this._southAurora);
+          this._awTime = 0;
+        },
+        tick: function (time, delta) {
+          var dt = Math.min(delta, 200) * 0.001;
+          this._awTime += dt;
+          this._awPlanet.rotation.y += 0.015 * dt;
+
+          /* shimmer aurora particles */
+          var t2 = this._awTime;
+          var animAurora = function(aurora) {
+            var pos = aurora.geometry.attributes.position.array;
+            var base = aurora._basePos;
+            var N = pos.length / 3;
+            for (var i = 0; i < N; i++) {
+              pos[i*3  ] = base[i*3  ] + 3 * Math.sin(t2 * 2.2 + i * 0.14);
+              pos[i*3+1] = base[i*3+1] + 5 * Math.sin(t2 * 1.6 + i * 0.09);
+              pos[i*3+2] = base[i*3+2] + 3 * Math.cos(t2 * 2.5 + i * 0.11);
+            }
+            aurora.geometry.attributes.position.needsUpdate = true;
+            aurora.material.opacity = 0.6 + 0.25 * Math.sin(t2 * 1.2 + aurora._basePos[0]);
+          };
+          animAurora(this._northAurora);
+          animAurora(this._southAurora);
+        },
+      });
+
+      /* ==================================================================
+         TIDAL DISRUPTION EVENT — star shredded by hidden black hole.
+         Position: (-100, 220, 650).
+         'Star' starts as sphere, streams outward in accretion tail.
+         450-particle tidal stream: bright orange→yellow, spiralling inward.
+         Invisible singularity; stream animates as matter flows.
+         @alignment 8→26→48:480  @frequency 852  @domain quantum-arch
+      ================================================================== */
+      AFRAME.registerComponent("tidal-disruption", {
+        init: function () {
+          var THREE = AFRAME.THREE;
+          var scene = this.el.sceneEl.object3D;
+          var PI = Math.PI;
+          this._tdRoot = new THREE.Group();
+          this._tdRoot.position.set(-100, 220, 650);
+          scene.add(this._tdRoot);
+
+          /* victim star remnant */
+          this._tdStar = new THREE.Mesh(
+            new THREE.SphereGeometry(10, 8, 6),
+            new THREE.MeshBasicMaterial({ color: 0xffdd88 })
+          );
+          this._tdStar.position.set(120, 0, 0);
+          this._tdRoot.add(this._tdStar);
+
+          /* tidal stream */
+          var TN = 450;
+          this._tdN  = TN;
+          this._tdPos = new Float32Array(TN * 3);
+          var tdCol = new Float32Array(TN * 3);
+          for (var ti = 0; ti < TN; ti++) {
+            var t = ti / TN;
+            /* logarithmic spiral inward */
+            var angle = t * PI * 5;
+            var r = 120 * (1 - t * 0.9);
+            this._tdPos[ti*3  ] = r * Math.cos(angle);
+            this._tdPos[ti*3+1] = 4 * Math.sin(angle * 3) * t;
+            this._tdPos[ti*3+2] = r * Math.sin(angle);
+            tdCol[ti*3  ] = 1.0 - 0.5 * t;
+            tdCol[ti*3+1] = 0.6 - 0.4 * t;
+            tdCol[ti*3+2] = 0.1;
+          }
+          var tdGeo = new THREE.BufferGeometry();
+          this._tdPosAttr = new THREE.BufferAttribute(this._tdPos, 3);
+          tdGeo.setAttribute("position", this._tdPosAttr);
+          tdGeo.setAttribute("color", new THREE.BufferAttribute(tdCol, 3));
+          this._tdMat = new THREE.PointsMaterial({ size: 2.2, vertexColors: true, blending: THREE.AdditiveBlending, depthWrite: false, transparent: true, opacity: 0.85 });
+          this._tdRoot.add(new THREE.Points(tdGeo, this._tdMat));
+          this._tdTime = 0;
+        },
+        tick: function (time, delta) {
+          var dt = Math.min(delta, 200) * 0.001;
+          this._tdTime += dt;
+          var t2 = this._tdTime;
+
+          /* rotate entire event */
+          this._tdRoot.rotation.y += 0.18 * dt;
+
+          /* star shrinks as it's torn apart */
+          var sc = 0.6 + 0.4 * Math.abs(Math.sin(t2 * 0.3));
+          this._tdStar.scale.setScalar(sc);
+
+          /* animate stream flow: shift phase so matter appears to move inward */
+          var PI = Math.PI;
+          for (var ti = 0; ti < this._tdN; ti++) {
+            var t = (ti / this._tdN + t2 * 0.08) % 1;
+            var angle = t * PI * 5;
+            var r = 120 * (1 - t * 0.9);
+            this._tdPos[ti*3  ] = r * Math.cos(angle);
+            this._tdPos[ti*3+1] = 4 * Math.sin(angle * 3) * t;
+            this._tdPos[ti*3+2] = r * Math.sin(angle);
+          }
+          this._tdPosAttr.needsUpdate = true;
         },
       });
 
