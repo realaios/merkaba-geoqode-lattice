@@ -2913,6 +2913,8 @@
       <a-entity cosmic-nebula></a-entity>
       <!-- ── QUASAR — active galactic nucleus with relativistic twin jets ── -->
       <a-entity cosmic-quasar></a-entity>
+      <!-- ── ICE GIANT — cryo-world with tilted rings and polar aurora ── -->
+      <a-entity ice-giant></a-entity>
 
       <!-- NEBULA CLOUD REMOVED — zero haze, clean black space -->
 
@@ -5608,6 +5610,120 @@
           this._diskPts.rotation.y += 0.12 * dt;
           /* jet rotation */
           this._jetPivot.rotation.y += 0.08 * dt;
+        },
+      });
+
+      /* ====================================================================
+         ICE GIANT — Uranus/Neptune analogue at (320, -180, 450).
+         Components:
+           - Body: SphereGeometry r=40, deep-cyan banded atmosphere
+               3 translucent band shells (r 41,43,45), blue tones
+           - Cryo rings: 4 thin TorusGeometry bands, icy blue-white
+               Ring plane tilted 97 deg (like Uranus) around X axis
+           - Polar aurora: 80-particle arc caps, cyan→white
+           - 3 moons: tiny spheres orbiting at r 80, 105, 130
+         Slow spin: 0.009 rad/s Y. Aurora shimmers per tick.
+         @alignment 8→26→48:480  @frequency 528  @domain code-eng
+      ==================================================================== */
+      AFRAME.registerComponent("ice-giant", {
+        init: function () {
+          var THREE = AFRAME.THREE;
+          var scene = this.el.sceneEl.object3D;
+          var PI = Math.PI;
+
+          this._igRoot = new THREE.Group();
+          this._igRoot.position.set(320, -180, 450);
+          scene.add(this._igRoot);
+
+          /* ── planet body ── */
+          this._igBody = new THREE.Mesh(
+            new THREE.SphereGeometry(40, 28, 20),
+            new THREE.MeshBasicMaterial({ color: 0x1199bb })
+          );
+          this._igRoot.add(this._igBody);
+
+          /* ── atmospheric band shells ── */
+          var BAND_COLS = [0x1aaad4, 0x0e88b4, 0x08638a];
+          var BAND_R    = [41, 43, 45];
+          for (var b = 0; b < 3; b++) {
+            this._igRoot.add(new THREE.Mesh(
+              new THREE.SphereGeometry(BAND_R[b], 24, 6),
+              new THREE.MeshBasicMaterial({
+                color: BAND_COLS[b], transparent: true, opacity: 0.07 - b * 0.015,
+                depthWrite: false, side: THREE.BackSide
+              })
+            ));
+          }
+
+          /* ── tilted ring group (97 deg like Uranus) ── */
+          this._ringGroup = new THREE.Group();
+          this._ringGroup.rotation.x = 97 * PI / 180;
+          this._igRoot.add(this._ringGroup);
+
+          var RING_DEFS = [
+            { r: 55, tube: 0.6, col: 0xaaeeff, op: 0.55 },
+            { r: 63, tube: 0.4, col: 0x88ddff, op: 0.45 },
+            { r: 70, tube: 0.5, col: 0x66ccee, op: 0.38 },
+            { r: 76, tube: 0.3, col: 0x44aabb, op: 0.30 },
+          ];
+          for (var ri = 0; ri < RING_DEFS.length; ri++) {
+            var rd = RING_DEFS[ri];
+            this._ringGroup.add(new THREE.Mesh(
+              new THREE.TorusGeometry(rd.r, rd.tube, 4, 90),
+              new THREE.MeshBasicMaterial({ color: rd.col, transparent: true, opacity: rd.op, depthWrite: false })
+            ));
+          }
+
+          /* ── polar aurora (north cap) ── */
+          var AUR_N = 80;
+          var aurPos = new Float32Array(AUR_N * 3);
+          var aurCol = new Float32Array(AUR_N * 3);
+          for (var ai = 0; ai < AUR_N; ai++) {
+            var phi = (0.05 + Math.random() * 0.25) * PI;
+            var th  = Math.random() * 2 * PI;
+            var r   = 41.5 + Math.random() * 6;
+            aurPos[ai * 3    ] = r * Math.sin(phi) * Math.cos(th);
+            aurPos[ai * 3 + 1] = r * Math.cos(phi);
+            aurPos[ai * 3 + 2] = r * Math.sin(phi) * Math.sin(th);
+            aurCol[ai * 3    ] = 0.1 + 0.3 * Math.random();
+            aurCol[ai * 3 + 1] = 0.9 + 0.1 * Math.random();
+            aurCol[ai * 3 + 2] = 0.8 + 0.2 * Math.random();
+          }
+          var aurGeo = new THREE.BufferGeometry();
+          aurGeo.setAttribute("position", new THREE.BufferAttribute(aurPos, 3));
+          aurGeo.setAttribute("color",    new THREE.BufferAttribute(aurCol, 3));
+          this._aurMat = new THREE.PointsMaterial({
+            size: 3.0, vertexColors: true,
+            blending: THREE.AdditiveBlending, depthWrite: false, transparent: true, opacity: 0.75
+          });
+          this._igRoot.add(new THREE.Points(aurGeo, this._aurMat));
+
+          /* ── 3 moons ── */
+          var moonDefs = [{ r: 80, size: 2.5, col: 0xaabbcc, speed: 0.6 }, { r: 105, size: 3.5, col: 0x99aacc, speed: 0.38 }, { r: 130, size: 2.0, col: 0x778899, speed: 0.22 }];
+          this._igMoons = [];
+          for (var mi = 0; mi < moonDefs.length; mi++) {
+            var md = moonDefs[mi];
+            var mpiv = new THREE.Group();
+            var moon = new THREE.Mesh(new THREE.SphereGeometry(md.size, 8, 6), new THREE.MeshBasicMaterial({ color: md.col }));
+            moon.position.x = md.r;
+            mpiv.add(moon);
+            this._igRoot.add(mpiv);
+            this._igMoons.push({ piv: mpiv, speed: md.speed });
+          }
+
+          this._igTime = 0;
+        },
+
+        tick: function (time, delta) {
+          var dt = Math.min(delta, 200) * 0.001;
+          this._igTime += dt;
+          this._igBody.rotation.y += 0.009 * dt;
+          /* aurora shimmer */
+          this._aurMat.opacity = 0.55 + 0.25 * Math.sin(this._igTime * 3.1);
+          /* moon orbits */
+          for (var i = 0; i < this._igMoons.length; i++) {
+            this._igMoons[i].piv.rotation.y += this._igMoons[i].speed * dt;
+          }
         },
       });
 
