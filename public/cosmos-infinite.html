@@ -6216,6 +6216,22 @@
             );
           }, 250);
 
+          /* ── Banking roll: 20\u00b0 clockwise toward direction of motion ── */
+          /* A/D strafe  \u2192  roll \u00b120\u00b0 (clockwise = right side tilts down).         */
+          /* Smooth lerp at ~20fps; returns to level when keys released.        */
+          var _bankRig = document.getElementById("cameraRig");
+          var _bankAngle = 0; /* current roll in degrees */
+          var _DEG2RAD = Math.PI / 180;
+          setInterval(function () {
+            if (!_bankRig || !_bankRig.object3D) return;
+            var _right = (heldKeys["KeyD"] || heldKeys["ArrowRight"]) ? 1 : 0;
+            var _left  = (heldKeys["KeyA"] || heldKeys["ArrowLeft"])  ? 1 : 0;
+            var _target = (_right - _left) * -20; /* -20 = cw right, +20 = ccw left */
+            _bankAngle += (_target - _bankAngle) * 0.12;
+            if (Math.abs(_bankAngle) < 0.05) _bankAngle = 0;
+            _bankRig.object3D.rotation.z = _bankAngle * _DEG2RAD;
+          }, 50);
+
           /* Scroll-to-zoom handled globally by initGeoNav() */
 
           /* Targeting throttle state */
