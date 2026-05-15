@@ -2953,6 +2953,10 @@
       <a-entity magnetospheric-bow-shock></a-entity>
       <!-- ── NEUTRON STAR SURFACE — ultra-close flyby, hotspots, quantum aurora ── -->
       <a-entity neutron-star-surface></a-entity>
+      <!-- ── PROTOPLANETARY DISK — young star, spinning disk, proto-planet clumps ── -->
+      <a-entity protoplanetary-disk></a-entity>
+      <!-- ── COSMIC RAY SHOWER — high-energy particle cascade through atmosphere ── -->
+      <a-entity cosmic-ray-shower></a-entity>
 
       <!-- NEBULA CLOUD REMOVED — zero haze, clean black space -->
 
@@ -7741,6 +7745,259 @@
           this._nsAtm.material.opacity = 0.18 + qfl * 0.8;
           /* aurora shimmer */
           this._paMat.opacity = 0.5 + 0.3 * Math.sin(t2 * 2.7);
+        },
+      });
+
+      /* ==================================================================
+         PROTOPLANETARY DISK — T-Tauri star surrounded by planet-forming disk.
+         Position: (-600, -400, -700).
+         Central young star: orange-yellow, pulsating.
+         Disk: 2400 particles in flat rotating disk r=40-180.
+           Inner hot zone orange, mid cool zone amber, outer icy blue.
+         5 proto-planet clumps orbiting at different radii.
+         Twin protostellar outflow jets (perpendicular to disk).
+         Gap in disk where largest proto-planet cleared its orbit.
+         @alignment 8→26→48:480  @frequency 963  @domain systems-design
+      ================================================================== */
+      AFRAME.registerComponent("protoplanetary-disk", {
+        init: function () {
+          var THREE = AFRAME.THREE;
+          var scene = this.el.sceneEl.object3D;
+          var PI = Math.PI;
+          this._pdRoot = new THREE.Group();
+          this._pdRoot.position.set(-600, -400, -700);
+          scene.add(this._pdRoot);
+
+          /* central young star */
+          this._yStar = new THREE.Mesh(
+            new THREE.SphereGeometry(14, 14, 10),
+            new THREE.MeshBasicMaterial({ color: 0xffcc44 })
+          );
+          this._pdRoot.add(this._yStar);
+          this._starGlow = new THREE.Mesh(
+            new THREE.SphereGeometry(22, 10, 6),
+            new THREE.MeshBasicMaterial({ color: 0xff8833, transparent: true, opacity: 0.25 })
+          );
+          this._pdRoot.add(this._starGlow);
+
+          /* accretion disk — 2400 particles, flat, temperature gradient */
+          var DN = 2400;
+          var dPos = new Float32Array(DN * 3);
+          var dCol = new Float32Array(DN * 3);
+          this._diskAngles = new Float32Array(DN);
+          this._diskRadii  = new Float32Array(DN);
+          var GAP_INNER = 95, GAP_OUTER = 110; /* cleared gap */
+          for (var di = 0; di < DN; di++) {
+            var dr, attempts = 0;
+            do {
+              dr = 40 + Math.random() * 140;
+              attempts++;
+            } while (dr > GAP_INNER && dr < GAP_OUTER && attempts < 20);
+            var da = Math.random() * PI * 2;
+            this._diskAngles[di] = da;
+            this._diskRadii[di]  = dr;
+            dPos[di*3  ] = dr * Math.cos(da);
+            dPos[di*3+1] = (Math.random()-0.5) * (2 + dr * 0.04);
+            dPos[di*3+2] = dr * Math.sin(da);
+            /* temperature colour */
+            var tc = (dr - 40) / 140;
+            if (tc < 0.35) { /* hot inner — orange-red */
+              dCol[di*3  ] = 1.0; dCol[di*3+1] = 0.45 + tc; dCol[di*3+2] = 0.1;
+            } else if (tc < 0.7) { /* warm mid — amber */
+              dCol[di*3  ] = 0.9; dCol[di*3+1] = 0.7;         dCol[di*3+2] = 0.2;
+            } else { /* cool outer — icy blue */
+              dCol[di*3  ] = 0.4; dCol[di*3+1] = 0.6;         dCol[di*3+2] = 1.0;
+            }
+          }
+          var dGeo = new THREE.BufferGeometry();
+          this._dPosAttr = new THREE.BufferAttribute(dPos, 3);
+          dGeo.setAttribute("position", this._dPosAttr);
+          dGeo.setAttribute("color", new THREE.BufferAttribute(dCol, 3));
+          this._pdRoot.add(new THREE.Points(dGeo, new THREE.PointsMaterial({
+            size: 1.8, vertexColors: true,
+            blending: THREE.AdditiveBlending, depthWrite: false, transparent: true, opacity: 0.75
+          })));
+          this._diskN = DN;
+
+          /* 5 proto-planet clumps */
+          this._protos = [];
+          var protoRadii = [55, 75, 102, 130, 158];
+          var protoColors = [0xff6622, 0xffaa33, 0xffddaa, 0xaaccff, 0x99aaee];
+          var protoSizes  = [4, 6, 8, 5, 3];
+          for (var pi2 = 0; pi2 < 5; pi2++) {
+            var pmesh = new THREE.Mesh(
+              new THREE.SphereGeometry(protoSizes[pi2], 8, 6),
+              new THREE.MeshBasicMaterial({ color: protoColors[pi2] })
+            );
+            this._pdRoot.add(pmesh);
+            this._protos.push({ mesh: pmesh, r: protoRadii[pi2], ang: Math.random()*PI*2, speed: 0.08 / Math.sqrt(protoRadii[pi2]/55) });
+          }
+
+          /* outflow jets */
+          var jMat = new THREE.MeshBasicMaterial({ color: 0x88aaff, transparent: true, opacity: 0.5 });
+          var jN = new THREE.Mesh(new THREE.CylinderGeometry(0.8, 3, 160, 6), jMat);
+          jN.position.set(0, 80, 0);
+          this._pdRoot.add(jN);
+          var jS = new THREE.Mesh(new THREE.CylinderGeometry(0.8, 3, 160, 6), jMat);
+          jS.position.set(0, -80, 0);
+          jS.rotation.z = Math.PI;
+          this._pdRoot.add(jS);
+
+          this._pdTime = 0;
+        },
+        tick: function (time, delta) {
+          var dt = Math.min(delta, 200) * 0.001;
+          this._pdTime += dt;
+          var t2 = this._pdTime;
+          /* star pulse */
+          this._starGlow.material.opacity = 0.18 + 0.1 * Math.sin(t2 * 2.3);
+          /* disk rotation — each particle advances by Keplerian speed */
+          var dArr = this._dPosAttr.array;
+          for (var di = 0; di < this._diskN; di++) {
+            var dr = this._diskRadii[di];
+            this._diskAngles[di] += (0.6 / Math.sqrt(dr / 40)) * dt;
+            var da = this._diskAngles[di];
+            dArr[di*3  ] = dr * Math.cos(da);
+            dArr[di*3+2] = dr * Math.sin(da);
+          }
+          this._dPosAttr.needsUpdate = true;
+          /* proto-planets orbit */
+          for (var pi2 = 0; pi2 < this._protos.length; pi2++) {
+            var pp = this._protos[pi2];
+            pp.ang += pp.speed * dt;
+            pp.mesh.position.set(pp.r * Math.cos(pp.ang), 0, pp.r * Math.sin(pp.ang));
+          }
+        },
+      });
+
+      /* ==================================================================
+         COSMIC RAY SHOWER — ultra-high-energy cosmic ray entering atmosphere.
+         Position: (700, 500, 600).
+         Primary ray: bright streak from high above.
+         Cascade: 12 secondary sub-showers branching on contact.
+         Each secondary: 8 tertiary streaks fanning out further.
+         Atmosphere: blue-white glowing ellipsoid below impact point.
+         Cycle: new shower fires every 5 seconds from random angles.
+         @alignment 8→26→48:480  @frequency 528  @domain code-eng
+      ================================================================== */
+      AFRAME.registerComponent("cosmic-ray-shower", {
+        init: function () {
+          var THREE = AFRAME.THREE;
+          var scene = this.el.sceneEl.object3D;
+          var PI = Math.PI;
+          this._crRoot = new THREE.Group();
+          this._crRoot.position.set(700, 500, 600);
+          scene.add(this._crRoot);
+
+          /* atmosphere ellipsoid below */
+          var atm = new THREE.Mesh(
+            new THREE.SphereGeometry(60, 14, 8),
+            new THREE.MeshBasicMaterial({ color: 0x2244aa, transparent: true, opacity: 0.12 })
+          );
+          atm.scale.y = 0.35;
+          atm.position.y = -60;
+          this._crRoot.add(atm);
+
+          /* pre-build streak pool — primary + secondary + tertiary */
+          this._streaks = [];
+          var strColors = [0xffffff, 0x88ddff, 0x44aaff];
+          var strCounts = [1, 12, 96]; /* primary, secondary, tertiary */
+          for (var tier = 0; tier < 3; tier++) {
+            for (var si = 0; si < strCounts[tier]; si++) {
+              var verts = [new THREE.Vector3(), new THREE.Vector3()];
+              var sGeo = new THREE.BufferGeometry().setFromPoints(verts);
+              var sMat = new THREE.LineBasicMaterial({
+                color: strColors[tier], blending: THREE.AdditiveBlending,
+                depthWrite: false, transparent: true, opacity: 0
+              });
+              var sLine = new THREE.Line(sGeo, sMat);
+              this._crRoot.add(sLine);
+              this._streaks.push({ line: sLine, mat: sMat, geo: sGeo, tier: tier, index: si });
+            }
+          }
+
+          this._crTime   = 0;
+          this._CYCLE    = 5;
+          this._crPhase  = -1;
+          this._crDir    = new THREE.Vector3();
+        },
+        _fireCascade: function () {
+          var PI = Math.PI;
+          /* random incoming direction (mostly from above) */
+          var th = (Math.random() - 0.5) * PI * 0.5;
+          var ph = Math.random() * PI * 2;
+          this._crDir.set(Math.sin(th) * Math.cos(ph), -Math.cos(th), Math.sin(th) * Math.sin(ph));
+          /* impact point somewhere in atmosphere */
+          var ix = (Math.random()-0.5) * 40;
+          var iz = (Math.random()-0.5) * 40;
+          var iy = -30;
+          var pLen = 120;
+          var pStart = new AFRAME.THREE.Vector3(ix - this._crDir.x * pLen, iy - this._crDir.y * pLen, iz - this._crDir.z * pLen);
+          var pEnd   = new AFRAME.THREE.Vector3(ix, iy, iz);
+          var sk = this._streaks;
+          /* primary */
+          var ps = sk.find(function(s2){return s2.tier===0;});
+          if (ps) {
+            var pa = ps.geo.attributes.position;
+            pa.setXYZ(0, pStart.x, pStart.y, pStart.z);
+            pa.setXYZ(1, pEnd.x, pEnd.y, pEnd.z);
+            pa.needsUpdate = true;
+            ps.mat.opacity = 1.0;
+          }
+          /* secondaries — fan out from impact point */
+          var secondaries = sk.filter(function(s2){return s2.tier===1;});
+          for (var si = 0; si < secondaries.length; si++) {
+            var sph = (si / secondaries.length) * PI * 2;
+            var sth = 0.3 + Math.random() * 0.6;
+            var sLen = 30 + Math.random() * 50;
+            var sd = new AFRAME.THREE.Vector3(Math.sin(sth)*Math.cos(sph), -Math.cos(sth)*0.5, Math.sin(sth)*Math.sin(sph)).normalize();
+            var se = new AFRAME.THREE.Vector3(ix + sd.x*sLen, iy + sd.y*sLen, iz + sd.z*sLen);
+            var sa = secondaries[si].geo.attributes.position;
+            sa.setXYZ(0, ix, iy, iz);
+            sa.setXYZ(1, se.x, se.y, se.z);
+            sa.needsUpdate = true;
+            secondaries[si].mat.opacity = 0.7;
+            secondaries[si]._endPt = se;
+          }
+          /* tertiaries — fan from each secondary end */
+          var tertiaries = sk.filter(function(s2){return s2.tier===2;});
+          for (var ti = 0; ti < tertiaries.length; ti++) {
+            var sIdx = Math.floor(ti / 8);
+            var sec  = secondaries[sIdx];
+            var sp   = sec && sec._endPt ? sec._endPt : new AFRAME.THREE.Vector3(ix, iy, iz);
+            var tph  = (ti * 2.7) % (PI * 2);
+            var tth  = 0.6 + Math.random() * 0.7;
+            var tLen = 12 + Math.random() * 25;
+            var td   = new AFRAME.THREE.Vector3(Math.sin(tth)*Math.cos(tph), -0.6, Math.sin(tth)*Math.sin(tph)).normalize();
+            var te   = new AFRAME.THREE.Vector3(sp.x+td.x*tLen, sp.y+td.y*tLen, sp.z+td.z*tLen);
+            var ta   = tertiaries[ti].geo.attributes.position;
+            ta.setXYZ(0, sp.x, sp.y, sp.z);
+            ta.setXYZ(1, te.x, te.y, te.z);
+            ta.needsUpdate = true;
+            tertiaries[ti].mat.opacity = 0.35;
+          }
+        },
+        tick: function (time, delta) {
+          var dt = Math.min(delta, 200) * 0.001;
+          this._crTime += dt;
+          var t2 = this._crTime;
+          var cyclePos = t2 % this._CYCLE;
+          /* fire new cascade */
+          if (cyclePos < 0.08 && this._crPhase < 0) {
+            this._fireCascade();
+            this._crPhase = 0;
+          }
+          if (cyclePos > 0.5) this._crPhase = -1;
+          /* fade out streaks */
+          if (this._crPhase >= 0) {
+            this._crPhase += dt;
+            var fade = Math.max(0, 1 - this._crPhase * 2.5);
+            for (var si = 0; si < this._streaks.length; si++) {
+              var sk2 = this._streaks[si];
+              var baseFade = sk2.tier === 0 ? 1.0 : sk2.tier === 1 ? 0.7 : 0.35;
+              sk2.mat.opacity = baseFade * fade;
+            }
+          }
         },
       });
 
