@@ -2903,6 +2903,8 @@
       <a-entity supernova-remnant></a-entity>
       <!-- ── ASTEROID BELT — 120 tumbling rocks in an orbital ring ── -->
       <a-entity asteroid-belt></a-entity>
+      <!-- ── GAS GIANT — banded planet with glowing ring system ── -->
+      <a-entity gas-giant></a-entity>
 
       <!-- NEBULA CLOUD REMOVED — zero haze, clean black space -->
 
@@ -5081,6 +5083,121 @@
          occasional pale ice-blue. Ring tilted 18° off the ecliptic.
          @alignment 8→26→48:480  @frequency 396  @domain data-structs
       ==================================================================== */
+      /* ====================================================================
+         GAS GIANT — A Jupiter-scale planet at (-180, 60, 380).
+         Layered bands simulated with stacked semi-transparent sphere shells.
+         Ring system: 3 concentric torus bands tilted 28° off horizontal.
+         Storm eye (Great Red Spot analog) orbits the equatorial band.
+         Slow 90-second axial rotation. Moon pair orbits at different speeds.
+         @alignment 8→26→48:480  @frequency 963  @domain systems-design
+      ==================================================================== */
+      AFRAME.registerComponent("gas-giant", {
+        init: function () {
+          var THREE = AFRAME.THREE;
+          var scene = this.el.sceneEl.object3D;
+
+          /* ── root pivot ── */
+          this._pivot = new THREE.Group();
+          this._pivot.position.set(-180, 60, 380);
+          scene.add(this._pivot);
+
+          var pivot = this._pivot;
+
+          /* ── planet body (core) ── */
+          var core = new THREE.Mesh(
+            new THREE.SphereGeometry(18, 36, 24),
+            new THREE.MeshBasicMaterial({ color: 0xd4995a })
+          );
+          pivot.add(core);
+          this._core = core;
+
+          /* ── atmospheric band shells (equatorial bands) ── */
+          var BANDS = [
+            { r: 18.25, color: 0xc4823d, opacity: 0.55 },
+            { r: 18.55, color: 0xe8b87c, opacity: 0.35 },
+            { r: 18.82, color: 0xb86c2a, opacity: 0.28 },
+            { r: 19.15, color: 0xf2d5a0, opacity: 0.20 },
+            { r: 19.50, color: 0x4a3c28, opacity: 0.15 },
+          ];
+          for (var b = 0; b < BANDS.length; b++) {
+            var bd = BANDS[b];
+            var shell = new THREE.Mesh(
+              new THREE.SphereGeometry(bd.r, 28, 18),
+              new THREE.MeshBasicMaterial({
+                color: bd.color, transparent: true, opacity: bd.opacity,
+                depthWrite: false,
+              })
+            );
+            pivot.add(shell);
+          }
+
+          /* ── Great Storm Spot (orbits equatorial) ── */
+          this._stormPivot = new THREE.Group();
+          pivot.add(this._stormPivot);
+          var spot = new THREE.Mesh(
+            new THREE.SphereGeometry(2.8, 12, 8),
+            new THREE.MeshBasicMaterial({ color: 0xcc4422, transparent: true, opacity: 0.75 })
+          );
+          spot.position.set(19, 1.5, 0);
+          this._stormPivot.add(spot);
+          this._stormAngle = 0;
+
+          /* ── ring system (3 torus bands) ── */
+          var RINGS = [
+            { r: 30, tube: 2.2, color: 0xd4c4a8, opacity: 0.35 },
+            { r: 38, tube: 3.4, color: 0xb8a880, opacity: 0.25 },
+            { r: 48, tube: 2.0, color: 0xc8b488, opacity: 0.18 },
+          ];
+          var ringTilt = -28 * Math.PI / 180;
+          for (var ri = 0; ri < RINGS.length; ri++) {
+            var rn = RINGS[ri];
+            var ring = new THREE.Mesh(
+              new THREE.TorusGeometry(rn.r, rn.tube, 6, 90),
+              new THREE.MeshBasicMaterial({
+                color: rn.color, transparent: true, opacity: rn.opacity,
+                side: THREE.DoubleSide, depthWrite: false,
+              })
+            );
+            ring.rotation.x = Math.PI / 2 + ringTilt;
+            pivot.add(ring);
+          }
+
+          /* ── two moons ── */
+          this._moonPivots = [];
+          var MOONS = [
+            { orbitR: 70, size: 2.4, color: 0x8899aa, speed: 0.18 },
+            { orbitR: 110, size: 3.8, color: 0x667755, speed: 0.09 },
+          ];
+          for (var mi = 0; mi < MOONS.length; mi++) {
+            var mn = MOONS[mi];
+            var mp = new THREE.Group();
+            pivot.add(mp);
+            var moon = new THREE.Mesh(
+              new THREE.SphereGeometry(mn.size, 10, 7),
+              new THREE.MeshBasicMaterial({ color: mn.color })
+            );
+            moon.position.set(mn.orbitR, 0, 0);
+            mp.add(moon);
+            this._moonPivots.push({ pivot: mp, speed: mn.speed, angle: mi * Math.PI });
+          }
+        },
+
+        tick: function (time, delta) {
+          var dt = Math.min(delta, 200) * 0.001;
+          /* slow axial spin */
+          this._core.rotation.y += dt * (2 * Math.PI / 90);
+          /* storm spot orbits */
+          this._stormAngle += dt * 0.55;
+          this._stormPivot.rotation.y = this._stormAngle;
+          /* moons orbit */
+          var mps = this._moonPivots;
+          for (var i = 0; i < mps.length; i++) {
+            mps[i].angle += dt * mps[i].speed;
+            mps[i].pivot.rotation.y = mps[i].angle;
+          }
+        },
+      });
+
       AFRAME.registerComponent("asteroid-belt", {
         init: function () {
           var THREE = AFRAME.THREE;
