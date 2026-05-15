@@ -1257,7 +1257,7 @@
       }
 
       /* ================================================================
-         UNIVERSE HORIZON OVERLAY -- 32000 au revelation
+         UNIVERSE HORIZON OVERLAY -- 48000 au revelation
          @alignment 8->26->48:480 | S1 quantum-arch | PHYSICS @852Hz
       ================================================================ */
       #horizon-overlay {
@@ -1822,7 +1822,7 @@
       <div class="scale-dist">72.0 au</div>
     </div>
 
-    <!-- UNIVERSE HORIZON OVERLAY - 32000 au - @alignment 8->26->48:480 -->
+    <!-- UNIVERSE HORIZON OVERLAY - 48000 au - @alignment 8->26->48:480 -->
     <div id="horizon-overlay">
       <button
         id="horizon-close"
@@ -1913,7 +1913,7 @@
             &#x00B7; 72 Hz
           </div>
           <div class="hz-tag-line">
-            UNIVERSE HORIZON &#x00B7; 32,000 au &#x00B7; THE EDGE OF THE COSMOS
+            UNIVERSE HORIZON &#x00B7; 48,000 au &#x00B7; THE EDGE OF THE COSMOS
             MAP
           </div>
         </div>
@@ -4570,7 +4570,7 @@
       ==================================================================== */
       (function initGeoNav() {
         var MIN_DIST = 1.2,
-          MAX_DIST = 32000;
+          MAX_DIST = 48000;
         /* True Merkaba resonance: anchor D480=480, PHI-stepped zones.
            MERKABA CORE (0-183 au) = one inner zone -- everything is close. */
         var _PHI = 1.6180339887;
@@ -4623,10 +4623,10 @@
             color: "#e879f9",
           } /* 5323-16000 au */,
           {
-            max: 32000,
+            max: 48000,
             label: "HORIZON",
             color: "#f59e0b",
-          } /* 16000-32000 au */,
+          } /* 16000-48000 au */
         ];
 
         var _curLevelIdx = -1;
@@ -4837,13 +4837,12 @@
         }, 2000);
       })();
 
-      /* ── Universe Horizon Overlay trigger (32000 au) ──────────────────── */
       window._checkHorizon = function (dist) {
         var el = document.getElementById("horizon-overlay");
         if (!el) return;
-        if (dist >= 31500) {
+        if (dist >= 47500) {
           el.classList.add("hz-visible");
-        } else if (dist < 30000) {
+        } else if (dist < 46000) {
           el.classList.remove("hz-visible");
         }
       };
