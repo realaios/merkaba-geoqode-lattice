@@ -279,90 +279,52 @@
           border-color 0.2s,
           color 0.2s;
       }
-      /* ── Mobile D-pad controls — LOOK + MOVE pads, touch devices only ─── */
-      #mobile-dpad {
+      /* ── Mobile look-invert toggles (touch devices only) ────────────────── */
+      /* Two small buttons: ↕ flips up/down look (pitch), ↔ flips left/right (yaw) */
+      #mob-invert {
         display: none;
         position: fixed;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        height: 172px;
+        bottom: 62px;
+        right: 14px;
+        flex-direction: column;
+        gap: 8px;
         z-index: 3000;
-        pointer-events: none;
-        user-select: none;
-        -webkit-user-select: none;
       }
       @media (hover: none) and (pointer: coarse) {
-        #mobile-dpad {
-          display: flex;
-          align-items: flex-end;
-          padding: 14px 18px;
-        }
-        #controls-hint {
-          display: none !important;
-        }
+        #mob-invert { display: flex; }
       }
-      .mb-pad {
-        pointer-events: all;
-        position: relative;
-        width: 144px;
-        height: 144px;
-        flex-shrink: 0;
-      }
-      .mb-pad.look-pad {
-        margin-left: auto;
-      }
-      .mb-btn {
-        position: absolute;
-        width: 50px;
-        height: 50px;
-        background: rgba(0, 212, 255, 0.13);
-        border: 1px solid rgba(0, 212, 255, 0.42);
+      .mb-inv-btn {
+        width: 44px;
+        height: 44px;
+        background: rgba(4, 8, 15, 0.72);
+        border: 1px solid rgba(0, 212, 255, 0.28);
         border-radius: 10px;
-        color: rgba(0, 212, 255, 0.88);
-        font-size: 1.35rem;
+        color: rgba(0, 212, 255, 0.5);
+        font-size: 1.15rem;
         display: flex;
+        flex-direction: column;
         align-items: center;
         justify-content: center;
-        cursor: pointer;
+        gap: 1px;
         -webkit-tap-highlight-color: transparent;
-        touch-action: none;
-        transition: background 0.08s;
-      }
-      .mb-btn.pressed {
-        background: rgba(0, 212, 255, 0.38);
-      }
-      .mb-up {
-        top: 0;
-        left: 47px;
-      }
-      .mb-down {
-        top: 94px;
-        left: 47px;
-      }
-      .mb-left {
-        top: 47px;
-        left: 0;
-      }
-      .mb-right {
-        top: 47px;
-        left: 94px;
-      }
-      .mb-pad-label {
-        position: absolute;
-        bottom: -18px;
-        left: 0;
-        right: 0;
-        text-align: center;
-        font-size: 0.44rem;
-        color: rgba(0, 212, 255, 0.38);
+        touch-action: manipulation;
+        cursor: pointer;
+        transition: all 0.15s;
         font-family: monospace;
-        letter-spacing: 0.1em;
-        pointer-events: none;
+        line-height: 1;
       }
-      .a-fullscreen #mobile-dpad {
-        display: none !important;
+      .mb-inv-btn .lb {
+        font-size: 0.36rem;
+        color: rgba(0, 212, 255, 0.35);
+        letter-spacing: 0.08em;
       }
+      .mb-inv-btn.on {
+        background: rgba(0, 212, 255, 0.18);
+        border-color: rgba(0, 212, 255, 0.72);
+        color: #00d4ff;
+      }
+      .mb-inv-btn.on .lb { color: rgba(0, 212, 255, 0.65); }
+      .a-fullscreen #mob-invert { display: none !important; }
 
       /* ── Sector Ticker ───────────────────────────────────────────────────── */
       #sector-ticker {
@@ -1839,22 +1801,10 @@
     </div>
     <div id="hitchhiker-badge"></div>
 
-    <!-- Mobile D-pad: MOVE (left) + LOOK (right) — visible only on touch devices -->
-    <div id="mobile-dpad">
-      <div class="mb-pad" id="move-pad">
-        <div class="mb-btn mb-up" data-mact="move-fwd">&#x25B2;</div>
-        <div class="mb-btn mb-down" data-mact="move-back">&#x25BC;</div>
-        <div class="mb-btn mb-left" data-mact="move-left">&#x25C4;</div>
-        <div class="mb-btn mb-right" data-mact="move-right">&#x25BA;</div>
-        <div class="mb-pad-label">MOVE</div>
-      </div>
-      <div class="mb-pad look-pad" id="look-pad">
-        <div class="mb-btn mb-up" data-mact="look-up">&#x25B2;</div>
-        <div class="mb-btn mb-down" data-mact="look-down">&#x25BC;</div>
-        <div class="mb-btn mb-left" data-mact="look-left">&#x25C4;</div>
-        <div class="mb-btn mb-right" data-mact="look-right">&#x25BA;</div>
-        <div class="mb-pad-label">LOOK</div>
-      </div>
+    <!-- Mobile look-invert toggles: tap &#x2195; to flip pitch, &#x2194; to flip yaw -->
+    <div id="mob-invert">
+      <button class="mb-inv-btn" id="mb-inv-y" title="Invert up/down look">&#x2195;<span class="lb">PITCH</span></button>
+      <button class="mb-inv-btn" id="mb-inv-x" title="Invert left/right look">&#x2194;<span class="lb">YAW</span></button>
     </div>
 
     <div id="scale-indicator">
@@ -4221,74 +4171,101 @@
           }
           requestAnimationFrame(_adYawLoop);
 
-          /* ── Mobile D-pad: buttons drive look pitch/yaw + rig movement ──── */
-          /* Single-finger drag still controls yaw (A-Frame native).            */
-          /* D-pad LOOK ↑↓ applies pitch; D-pad MOVE ↑↓←→ flies the rig.       */
-          var _mk = {}; /* active button flags */
-          var LOOK_SPD = 1.4; /* rad/s — matches desktop YAW_SPEED */
-          var MOVE_SPD = 120; /* units/s cruise */
-          document.querySelectorAll(".mb-btn").forEach(function (btn) {
-            function _on(e) {
-              _mk[btn.dataset.mact] = true;
-              btn.classList.add("pressed");
-              e.preventDefault();
-            }
-            function _off() {
-              _mk[btn.dataset.mact] = false;
-              btn.classList.remove("pressed");
-            }
-            btn.addEventListener("touchstart", _on, { passive: false });
-            btn.addEventListener("touchend", _off);
-            btn.addEventListener("touchcancel", _off);
-          });
-          var _lastMob = performance.now();
-          function _mobileDpadLoop() {
-            var now = performance.now();
-            var dt = Math.min((now - _lastMob) * 0.001, 0.05);
-            _lastMob = now;
-            /* Look pitch — D-pad ↑↓ */
-            if (_mk["look-up"])
-              lc.pitchObject.rotation.x = Math.max(
-                -MAX_PITCH,
-                lc.pitchObject.rotation.x - LOOK_SPD * dt,
+          /* ── Mobile touch pitch fix + look-invert toggles ───────────────── */
+          /* A-Frame's native touchmove only applies yaw (left/right drag).     */
+          /* We add our own canvas touchmove listener to also apply pitch.      */
+          /* Two toggle buttons (↕↔) let users flip each axis to taste.         */
+          var _invY = false; /* invert pitch: drag up = look down when ON */
+          var _invX = false; /* invert yaw:  drag right = look left when ON */
+          var _touching = false;
+          var _ty0 = null;
+
+          function _bindTouchPitch(canvas) {
+            canvas.addEventListener(
+              "touchstart",
+              function (e) {
+                if (e.touches.length === 1) {
+                  _touching = true;
+                  _ty0 = e.touches[0].screenY;
+                }
+              },
+              { passive: true },
+            );
+            canvas.addEventListener(
+              "touchmove",
+              function (e) {
+                if (e.touches.length !== 1 || _ty0 === null) return;
+                var dy = e.touches[0].screenY - _ty0;
+                _ty0 = e.touches[0].screenY;
+                /* Apply pitch — A-Frame doesn’t do this on mobile */
+                var delta = dy * 0.003 * (_invY ? -1 : 1);
+                lc.pitchObject.rotation.x = Math.max(
+                  -MAX_PITCH,
+                  Math.min(MAX_PITCH, lc.pitchObject.rotation.x + delta),
+                );
+              },
+              { passive: true },
+            );
+            canvas.addEventListener(
+              "touchend",
+              function () {
+                _touching = false;
+                _ty0 = null;
+              },
+              { passive: true },
+            );
+            canvas.addEventListener(
+              "touchcancel",
+              function () {
+                _touching = false;
+                _ty0 = null;
+              },
+              { passive: true },
+            );
+          }
+
+          var _aCanvas = document.querySelector("canvas.a-canvas");
+          if (_aCanvas) {
+            _bindTouchPitch(_aCanvas);
+          } else {
+            document
+              .querySelector("a-scene")
+              .addEventListener(
+                "loaded",
+                function () {
+                  _bindTouchPitch(document.querySelector("canvas.a-canvas"));
+                },
+                { once: true },
               );
-            if (_mk["look-down"])
-              lc.pitchObject.rotation.x = Math.min(
-                MAX_PITCH,
-                lc.pitchObject.rotation.x + LOOK_SPD * dt,
-              );
-            /* Look yaw — D-pad ←→ (supplements drag) */
-            if (_mk["look-left"]) lc.yawObject.rotation.y += LOOK_SPD * dt;
-            if (_mk["look-right"]) lc.yawObject.rotation.y -= LOOK_SPD * dt;
-            /* Move rig along camera axes — D-pad on left pad */
-            if (
-              _mk["move-fwd"] ||
-              _mk["move-back"] ||
-              _mk["move-left"] ||
-              _mk["move-right"]
-            ) {
-              var _rig = document.getElementById("cameraRig");
-              var _cam = document.querySelector("[look-controls]");
-              if (_rig && _rig.object3D && _cam && _cam.object3D) {
-                var _fwd = new AFRAME.THREE.Vector3();
-                _cam.object3D.getWorldDirection(_fwd);
-                var _right = new AFRAME.THREE.Vector3()
-                  .crossVectors(_fwd, new AFRAME.THREE.Vector3(0, 1, 0))
-                  .normalize();
-                var _step = MOVE_SPD * dt;
-                if (_mk["move-fwd"])
-                  _rig.object3D.position.addScaledVector(_fwd, _step);
-                if (_mk["move-back"])
-                  _rig.object3D.position.addScaledVector(_fwd, -_step);
-                if (_mk["move-left"])
-                  _rig.object3D.position.addScaledVector(_right, -_step);
-                if (_mk["move-right"])
-                  _rig.object3D.position.addScaledVector(_right, _step);
+          }
+
+          /* Yaw inversion: detect A-Frame’s touch-driven yaw change and flip it */
+          var _prevYaw = lc.yawObject.rotation.y;
+          function _yawInvertLoop() {
+            if (_invX && _touching) {
+              var _d = lc.yawObject.rotation.y - _prevYaw;
+              if (Math.abs(_d) > 1e-5) {
+                lc.yawObject.rotation.y = _prevYaw - _d;
               }
             }
-            requestAnimationFrame(_mobileDpadLoop);
+            _prevYaw = lc.yawObject.rotation.y;
+            requestAnimationFrame(_yawInvertLoop);
           }
-          requestAnimationFrame(_mobileDpadLoop);
+          requestAnimationFrame(_yawInvertLoop);
+
+          /* Toggle buttons */
+          var _btnY = document.getElementById("mb-inv-y");
+          var _btnX = document.getElementById("mb-inv-x");
+          if (_btnY)
+            _btnY.addEventListener("click", function () {
+              _invY = !_invY;
+              _btnY.classList.toggle("on", _invY);
+            });
+          if (_btnX)
+            _btnX.addEventListener("click", function () {
+              _invX = !_invX;
+              _btnX.classList.toggle("on", _invX);
+            });
         }
         var _sc = document.querySelector("a-scene");
         if (_sc && _sc.hasLoaded) {
