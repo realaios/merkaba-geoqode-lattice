@@ -2925,6 +2925,8 @@
       <a-entity stellar-nursery></a-entity>
       <!-- ── ROGUE PLANET — dark wanderer, faint magenta glow, slowly drifting ── -->
       <a-entity rogue-planet></a-entity>
+      <!-- ── KILONOVA — neutron star merger with gravitational wave rings ── -->
+      <a-entity cosmic-kilonova></a-entity>
 
       <!-- NEBULA CLOUD REMOVED — zero haze, clean black space -->
 
@@ -6302,6 +6304,146 @@
           /* gentle drift — oscillates around origin */
           this._rgRoot.position.x = this._rgOrigin.x + 12 * Math.sin(this._rgTime * 0.04);
           this._rgRoot.position.y = this._rgOrigin.y + 5  * Math.cos(this._rgTime * 0.07);
+        },
+      });
+
+      /* ====================================================================
+         COSMIC KILONOVA — neutron star merger GW event.
+         Position: (-280, 320, -650).
+         Components:
+           - Twin neutron stars spiralling inward (r=6 each, white)
+               Separation decreases then resets every 8s (merger cycle)
+           - Gold/magenta kilonova cloud: 900 particles, r-process nucleosynthesis
+               burst outward on merger, fade, reset
+           - 6 gravitational wave rings: flat tori expanding outward
+               blue-white, opacity fades as they expand, resets at r=400
+           - Remnant core: deep-red compact sphere after merger
+         @alignment 8→26→48:480  @frequency 852  @domain quantum-arch
+      ==================================================================== */
+      AFRAME.registerComponent("cosmic-kilonova", {
+        init: function () {
+          var THREE = AFRAME.THREE;
+          var scene = this.el.sceneEl.object3D;
+          var PI = Math.PI;
+
+          this._kvRoot = new THREE.Group();
+          this._kvRoot.position.set(-280, 320, -650);
+          scene.add(this._kvRoot);
+
+          /* ── twin neutron stars ── */
+          var nsMat = new THREE.MeshBasicMaterial({ color: 0xeeeeff });
+          this._nsA = new THREE.Mesh(new THREE.SphereGeometry(6, 8, 6), nsMat);
+          this._nsB = new THREE.Mesh(new THREE.SphereGeometry(6, 8, 6), nsMat.clone());
+          this._kvRoot.add(this._nsA);
+          this._kvRoot.add(this._nsB);
+
+          /* ── remnant core ── */
+          this._remnant = new THREE.Mesh(
+            new THREE.SphereGeometry(9, 8, 6),
+            new THREE.MeshBasicMaterial({ color: 0x880011, transparent: true, opacity: 0 })
+          );
+          this._kvRoot.add(this._remnant);
+
+          /* ── kilonova cloud ── */
+          var KN = 900;
+          this._kvPos = new Float32Array(KN * 3);
+          this._kvVel = new Float32Array(KN * 3);
+          var kvCol = new Float32Array(KN * 3);
+          this._resetCloud = function() {
+            for (var i = 0; i < KN; i++) {
+              var th = Math.random() * PI * 2;
+              var ph = Math.acos(2 * Math.random() - 1);
+              var spd = 8 + Math.random() * 28;
+              this._kvVel[i*3  ] = spd * Math.sin(ph) * Math.cos(th);
+              this._kvVel[i*3+1] = spd * Math.cos(ph);
+              this._kvVel[i*3+2] = spd * Math.sin(ph) * Math.sin(th);
+              this._kvPos[i*3  ] = this._kvVel[i*3  ] * 0.1;
+              this._kvPos[i*3+1] = this._kvVel[i*3+1] * 0.1;
+              this._kvPos[i*3+2] = this._kvVel[i*3+2] * 0.1;
+              var gold = Math.random();
+              kvCol[i*3  ] = 0.9 - 0.4 * gold;
+              kvCol[i*3+1] = 0.6 * gold;
+              kvCol[i*3+2] = 0.5 + 0.4 * (1 - gold);
+            }
+            this._kvPosAttr.needsUpdate = true;
+          }.bind(this);
+          for (var i = 0; i < KN; i++) {
+            kvCol[i*3  ] = 0.9; kvCol[i*3+1] = 0.7; kvCol[i*3+2] = 0.3;
+            this._kvPos[i*3  ] = 0; this._kvPos[i*3+1] = 0; this._kvPos[i*3+2] = 0;
+          }
+          var kvGeo = new THREE.BufferGeometry();
+          this._kvPosAttr = new THREE.BufferAttribute(this._kvPos, 3);
+          kvGeo.setAttribute("position", this._kvPosAttr);
+          kvGeo.setAttribute("color", new THREE.BufferAttribute(kvCol, 3));
+          this._kvMat = new THREE.PointsMaterial({ size: 2.5, vertexColors: true, blending: THREE.AdditiveBlending, depthWrite: false, transparent: true, opacity: 0 });
+          this._kvRoot.add(new THREE.Points(kvGeo, this._kvMat));
+
+          /* ── gravitational wave rings ── */
+          this._gwRings = [];
+          this._gwRingR = [];
+          this._gwMats  = [];
+          for (var ri = 0; ri < 6; ri++) {
+            var initialR = ri * 55;
+            var gwMat = new THREE.MeshBasicMaterial({ color: 0x88bbff, transparent: true, opacity: 0.55 - ri * 0.07, depthWrite: false });
+            var gwRing = new THREE.Mesh(new THREE.TorusGeometry(initialR + 1, 0.9, 4, 64), gwMat);
+            gwRing.rotation.x = PI / 2;
+            this._kvRoot.add(gwRing);
+            this._gwRings.push(gwRing);
+            this._gwRingR.push(initialR);
+            this._gwMats.push(gwMat);
+          }
+
+          this._kvTime = 0;
+          this._KN = KN;
+          this._CYCLE = 8; /* 8s merger cycle */
+          this._merged = false;
+        },
+
+        tick: function (time, delta) {
+          var dt = Math.min(delta, 200) * 0.001;
+          var PI = Math.PI;
+          this._kvTime += dt;
+          var phase = (this._kvTime % this._CYCLE) / this._CYCLE; /* 0..1 */
+          var premerge = phase < 0.6;
+
+          /* spiral inward */
+          var sep = premerge ? 60 * (1 - phase / 0.6) + 8 : 0;
+          var orbitAngle = this._kvTime * 3.5;
+          if (premerge) {
+            this._nsA.position.set(sep * Math.cos(orbitAngle), 0, sep * Math.sin(orbitAngle));
+            this._nsB.position.set(-sep * Math.cos(orbitAngle), 0, -sep * Math.sin(orbitAngle));
+            this._nsA.visible = true; this._nsB.visible = true;
+            this._remnant.material.opacity = 0;
+            /* cloud silent before merger */
+            this._kvMat.opacity = 0;
+          } else {
+            /* post-merger: release kilonova cloud */
+            var postPh = (phase - 0.6) / 0.4; /* 0..1 post-merge */
+            if (!this._merged) { this._resetCloud(); this._merged = true; }
+            this._nsA.visible = false; this._nsB.visible = false;
+            /* remnant fades in */
+            this._remnant.material.opacity = Math.min(postPh * 3, 1);
+            /* expand cloud */
+            for (var i = 0; i < this._KN; i++) {
+              this._kvPos[i*3  ] += this._kvVel[i*3  ] * dt;
+              this._kvPos[i*3+1] += this._kvVel[i*3+1] * dt;
+              this._kvPos[i*3+2] += this._kvVel[i*3+2] * dt;
+            }
+            this._kvPosAttr.needsUpdate = true;
+            this._kvMat.opacity = 0.75 * (1 - postPh);
+            if (phase < 0.005) { this._merged = false; }
+          }
+
+          if (phase < 0.002) { this._merged = false; }
+
+          /* gravitational wave rings expand */
+          for (var ri = 0; ri < 6; ri++) {
+            this._gwRingR[ri] += 28 * dt;
+            if (this._gwRingR[ri] > 420) this._gwRingR[ri] = ri * 45;
+            var rr = this._gwRingR[ri];
+            this._gwRings[ri].scale.set(rr / 55, rr / 55, 1);
+            this._gwMats[ri].opacity = Math.max(0, 0.5 - rr / 900);
+          }
         },
       });
 
