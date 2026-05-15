@@ -2907,6 +2907,8 @@
       <a-entity gas-giant></a-entity>
       <!-- ── BINARY STAR — twin suns orbiting each other with plasma bridge ── -->
       <a-entity binary-star></a-entity>
+      <!-- ── DARK MATTER WEB — cosmic filament network spanning the void ── -->
+      <a-entity dark-matter-web></a-entity>
 
       <!-- NEBULA CLOUD REMOVED — zero haze, clean black space -->
 
@@ -5324,6 +5326,95 @@
             pos[i * 3 + 2] = cz + (Math.random() - 0.5) * 1.5;
           }
           this._bridgeGeo.attributes.position.needsUpdate = true;
+        },
+      });
+
+      /* ====================================================================
+         DARK MATTER WEB — Cosmic large-scale structure visualized as
+         80 glowing filament strands connecting 40 node clusters.
+         Nodes are randomly scattered in a 1200-au cube around origin.
+         Each filament is a Points-based line (20 particles along edge).
+         Colour: deep violet → indigo (0x220033 → 0x110022), opacity 0.12-0.25.
+         Slowly breathes (opacity pulse) at 18-second cycle.
+         @alignment 8→26→48:480  @frequency 72  @domain self-evolve
+      ==================================================================== */
+      AFRAME.registerComponent("dark-matter-web", {
+        init: function () {
+          var THREE = AFRAME.THREE;
+          var scene = this.el.sceneEl.object3D;
+          var SPAN = 650;
+
+          /* ── 40 node positions (random in cube) ── */
+          var NODES = 40;
+          var nodePos = [];
+          for (var n = 0; n < NODES; n++) {
+            nodePos.push(new THREE.Vector3(
+              (Math.random() - 0.5) * SPAN * 2,
+              (Math.random() - 0.5) * SPAN * 0.6,
+              (Math.random() - 0.5) * SPAN * 2
+            ));
+          }
+
+          /* ── connect nearby nodes with filament strands ── */
+          var DIST_MAX2 = 420 * 420;
+          var PARTS_PER_STRAND = 20;
+          this._filamentMats = [];
+          var addedStrands = 0;
+
+          for (var i = 0; i < NODES; i++) {
+            for (var j = i + 1; j < NODES; j++) {
+              var d2 = nodePos[i].distanceToSquared(nodePos[j]);
+              if (d2 > DIST_MAX2 || addedStrands >= 85) continue;
+              addedStrands++;
+
+              var pts = new Float32Array(PARTS_PER_STRAND * 3);
+              for (var k = 0; k < PARTS_PER_STRAND; k++) {
+                var t = k / (PARTS_PER_STRAND - 1);
+                pts[k * 3    ] = nodePos[i].x + (nodePos[j].x - nodePos[i].x) * t + (Math.random() - 0.5) * 18;
+                pts[k * 3 + 1] = nodePos[i].y + (nodePos[j].y - nodePos[i].y) * t + (Math.random() - 0.5) * 14;
+                pts[k * 3 + 2] = nodePos[i].z + (nodePos[j].z - nodePos[i].z) * t + (Math.random() - 0.5) * 18;
+              }
+
+              var geo = new THREE.BufferGeometry();
+              geo.setAttribute("position", new THREE.BufferAttribute(pts, 3));
+
+              var baseOp = 0.10 + Math.random() * 0.15;
+              var mat = new THREE.PointsMaterial({
+                color: 0x5533aa, transparent: true, opacity: baseOp,
+                size: 1.8,
+                blending: THREE.AdditiveBlending, depthWrite: false,
+              });
+              this._filamentMats.push({ mat: mat, baseOp: baseOp });
+
+              scene.add(new THREE.Points(geo, mat));
+            }
+          }
+
+          /* ── bright nodes (small glowing spheres at each cluster) ── */
+          for (var ni = 0; ni < NODES; ni++) {
+            var nd = new THREE.Mesh(
+              new THREE.SphereGeometry(1.5 + Math.random() * 3, 6, 5),
+              new THREE.MeshBasicMaterial({
+                color: 0x8844cc, transparent: true, opacity: 0.18 + Math.random() * 0.12,
+                depthWrite: false,
+              })
+            );
+            nd.position.copy(nodePos[ni]);
+            scene.add(nd);
+          }
+
+          this._webTime = 0;
+          console.log("[dark-matter-web] " + addedStrands + " filaments spanning " + NODES + " nodes");
+        },
+
+        tick: function (time, delta) {
+          var dt = Math.min(delta, 200) * 0.001;
+          this._webTime += dt;
+          var breath = 0.5 + 0.5 * Math.sin(this._webTime * 2 * Math.PI / 18);
+          var mats = this._filamentMats;
+          for (var i = 0; i < mats.length; i++) {
+            mats[i].mat.opacity = mats[i].baseOp * (0.65 + 0.35 * breath);
+          }
         },
       });
 
