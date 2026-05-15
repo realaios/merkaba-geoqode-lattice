@@ -2923,6 +2923,8 @@
       <a-entity cosmic-magnetar></a-entity>
       <!-- ── STELLAR NURSERY — molecular cloud with 5 proto-star cores ── -->
       <a-entity stellar-nursery></a-entity>
+      <!-- ── ROGUE PLANET — dark wanderer, faint magenta glow, slowly drifting ── -->
+      <a-entity rogue-planet></a-entity>
 
       <!-- NEBULA CLOUD REMOVED — zero haze, clean black space -->
 
@@ -6206,6 +6208,100 @@
           for (var i = 0; i < this._protoStars.length; i++) {
             this._protoStars[i].disk.rotation.z += this._protoStars[i].speed * dt;
           }
+        },
+      });
+
+      /* ====================================================================
+         ROGUE PLANET — an ejected world drifting through the void.
+         Position: (620, -80, 500).
+         Components:
+           - Body: SphereGeometry r=35, very dark grey-blue surface
+           - Atmospheric haze: two nested semi-transparent shells
+               Faint magenta→purple (geothermal heat slowly leaking)
+           - Debris trail: 150 particles trailing behind drift direction
+               scattered micro-rocks, velocity falls off with distance
+           - Slow drift: root moves gently along +X path, cycling
+           - Rotation: slow tumble 0.008 rad/s on tilted axis
+           - A frozen moon: r=8 at r=75, orbiting slowly
+         @alignment 8→26→48:480  @frequency 396  @domain data-structs
+      ==================================================================== */
+      AFRAME.registerComponent("rogue-planet", {
+        init: function () {
+          var THREE = AFRAME.THREE;
+          var scene = this.el.sceneEl.object3D;
+          var PI = Math.PI;
+
+          this._rgRoot = new THREE.Group();
+          this._rgRoot.position.set(620, -80, 500);
+          scene.add(this._rgRoot);
+          this._rgOrigin = this._rgRoot.position.clone();
+
+          /* ── planet body ── */
+          this._rgBody = new THREE.Mesh(
+            new THREE.SphereGeometry(35, 18, 14),
+            new THREE.MeshBasicMaterial({ color: 0x111122 })
+          );
+          this._rgBody.rotation.z = 0.3;
+          this._rgRoot.add(this._rgBody);
+
+          /* ── geothermal magenta haze (2 shells) ── */
+          this._haze1 = new THREE.Mesh(
+            new THREE.SphereGeometry(42, 12, 10),
+            new THREE.MeshBasicMaterial({ color: 0x440033, transparent: true, opacity: 0.22, depthWrite: false })
+          );
+          this._rgRoot.add(this._haze1);
+
+          this._haze2 = new THREE.Mesh(
+            new THREE.SphereGeometry(56, 12, 10),
+            new THREE.MeshBasicMaterial({ color: 0x220022, transparent: true, opacity: 0.10, depthWrite: false, side: THREE.BackSide })
+          );
+          this._rgRoot.add(this._haze2);
+
+          /* ── debris trail ── */
+          var DN = 160;
+          var dPos = new Float32Array(DN * 3);
+          for (var di = 0; di < DN; di++) {
+            var dist = 40 + Math.pow(Math.random(), 0.5) * 200;
+            dPos[di*3  ] = -dist + (Math.random() - 0.5) * 20;
+            dPos[di*3+1] = (Math.random() - 0.5) * 30;
+            dPos[di*3+2] = (Math.random() - 0.5) * 30;
+          }
+          var dGeo = new THREE.BufferGeometry();
+          dGeo.setAttribute("position", new THREE.BufferAttribute(dPos, 3));
+          this._debrisMat = new THREE.PointsMaterial({ color: 0x556677, size: 2.0, depthWrite: false, transparent: true, opacity: 0.55 });
+          this._rgRoot.add(new THREE.Points(dGeo, this._debrisMat));
+
+          /* ── frozen moon ── */
+          this._moon = new THREE.Mesh(
+            new THREE.SphereGeometry(8, 8, 6),
+            new THREE.MeshBasicMaterial({ color: 0x334455 })
+          );
+          this._moon.position.set(75, 0, 0);
+          this._rgRoot.add(this._moon);
+
+          this._rgTime = 0;
+        },
+
+        tick: function (time, delta) {
+          var dt = Math.min(delta, 200) * 0.001;
+          this._rgTime += dt;
+
+          /* slow tumble */
+          this._rgBody.rotation.y += 0.008 * dt;
+
+          /* geothermal pulse */
+          var pulse = 0.15 + 0.08 * Math.sin(this._rgTime * 0.6);
+          this._haze1.material.opacity = pulse;
+          this._haze2.material.opacity = pulse * 0.45;
+
+          /* moon orbit */
+          var ma = this._rgTime * 0.12;
+          this._moon.position.x = 75 * Math.cos(ma);
+          this._moon.position.z = 75 * Math.sin(ma);
+
+          /* gentle drift — oscillates around origin */
+          this._rgRoot.position.x = this._rgOrigin.x + 12 * Math.sin(this._rgTime * 0.04);
+          this._rgRoot.position.y = this._rgOrigin.y + 5  * Math.cos(this._rgTime * 0.07);
         },
       });
 
