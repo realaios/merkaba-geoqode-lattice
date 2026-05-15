@@ -2,16 +2,16 @@
  * inject-w143.cjs  — Wave 143
  * cosmic-van-allen-proton-belt  + stellar-penumbra-counter-evershed
  */
-'use strict';
-const fs = require('fs');
-const FILE = 'public/cosmos-infinite.html';
+"use strict";
+const fs = require("fs");
+const FILE = "public/cosmos-infinite.html";
 
-let html = fs.readFileSync(FILE, 'utf8');
-const usesCRLF = html.includes('\r\n');
-if (usesCRLF) html = html.replace(/\r\n/g, '\n');
+let html = fs.readFileSync(FILE, "utf8");
+const usesCRLF = html.includes("\r\n");
+if (usesCRLF) html = html.replace(/\r\n/g, "\n");
 
 if (html.includes('registerComponent("cosmic-van-allen-proton-belt"')) {
-  console.log('Wave 143 already injected.');
+  console.log("Wave 143 already injected.");
   process.exit(0);
 }
 
@@ -204,18 +204,24 @@ const NEW_JS = `      AFRAME.registerComponent("cosmic-van-allen-proton-belt", {
 
 ${JS_ANCHOR}`;
 
-if (!html.includes(JS_ANCHOR)) { console.error('JS anchor not found!'); process.exit(1); }
+if (!html.includes(JS_ANCHOR)) {
+  console.error("JS anchor not found!");
+  process.exit(1);
+}
 html = html.replace(JS_ANCHOR, NEW_JS);
 
-const HTML_ANCHOR = '      <a-entity stellar-umbral-dot-emergence></a-entity>';
+const HTML_ANCHOR = "      <a-entity stellar-umbral-dot-emergence></a-entity>";
 const NEW_HTML = `${HTML_ANCHOR}
       <a-entity cosmic-van-allen-proton-belt></a-entity>
       <a-entity stellar-penumbra-counter-evershed></a-entity>`;
 
-if (!html.includes(HTML_ANCHOR)) { console.error('HTML anchor not found!'); process.exit(1); }
+if (!html.includes(HTML_ANCHOR)) {
+  console.error("HTML anchor not found!");
+  process.exit(1);
+}
 html = html.replace(HTML_ANCHOR, NEW_HTML);
 
-if (usesCRLF) html = html.replace(/\n/g, '\r\n');
-fs.writeFileSync(FILE, html, 'utf8');
-const lines = html.split(usesCRLF ? '\r\n' : '\n').length;
-console.log('Wave 143 injected! Lines: ' + lines);
+if (usesCRLF) html = html.replace(/\n/g, "\r\n");
+fs.writeFileSync(FILE, html, "utf8");
+const lines = html.split(usesCRLF ? "\r\n" : "\n").length;
+console.log("Wave 143 injected! Lines: " + lines);

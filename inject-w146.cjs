@@ -2,16 +2,16 @@
  * inject-w146.cjs  — Wave 146
  * cosmic-flux-transfer-event-vortex  + stellar-umbral-oscillation-beacon
  */
-'use strict';
-const fs = require('fs');
-const FILE = 'public/cosmos-infinite.html';
+"use strict";
+const fs = require("fs");
+const FILE = "public/cosmos-infinite.html";
 
-let html = fs.readFileSync(FILE, 'utf8');
-const usesCRLF = html.includes('\r\n');
-if (usesCRLF) html = html.replace(/\r\n/g, '\n');
+let html = fs.readFileSync(FILE, "utf8");
+const usesCRLF = html.includes("\r\n");
+if (usesCRLF) html = html.replace(/\r\n/g, "\n");
 
 if (html.includes('registerComponent("cosmic-flux-transfer-event-vortex"')) {
-  console.log('Wave 146 already injected.');
+  console.log("Wave 146 already injected.");
   process.exit(0);
 }
 
@@ -217,18 +217,24 @@ const NEW_JS = `      AFRAME.registerComponent("cosmic-flux-transfer-event-vorte
 
 ${JS_ANCHOR}`;
 
-if (!html.includes(JS_ANCHOR)) { console.error('JS anchor not found!'); process.exit(1); }
+if (!html.includes(JS_ANCHOR)) {
+  console.error("JS anchor not found!");
+  process.exit(1);
+}
 html = html.replace(JS_ANCHOR, NEW_JS);
 
-const HTML_ANCHOR = '      <a-entity stellar-crochet-sfe-wave></a-entity>';
+const HTML_ANCHOR = "      <a-entity stellar-crochet-sfe-wave></a-entity>";
 const NEW_HTML = `${HTML_ANCHOR}
       <a-entity cosmic-flux-transfer-event-vortex></a-entity>
       <a-entity stellar-umbral-oscillation-beacon></a-entity>`;
 
-if (!html.includes(HTML_ANCHOR)) { console.error('HTML anchor not found!'); process.exit(1); }
+if (!html.includes(HTML_ANCHOR)) {
+  console.error("HTML anchor not found!");
+  process.exit(1);
+}
 html = html.replace(HTML_ANCHOR, NEW_HTML);
 
-if (usesCRLF) html = html.replace(/\n/g, '\r\n');
-fs.writeFileSync(FILE, html, 'utf8');
-const lines = html.split(usesCRLF ? '\r\n' : '\n').length;
-console.log('Wave 146 injected! Lines: ' + lines);
+if (usesCRLF) html = html.replace(/\n/g, "\r\n");
+fs.writeFileSync(FILE, html, "utf8");
+const lines = html.split(usesCRLF ? "\r\n" : "\n").length;
+console.log("Wave 146 injected! Lines: " + lines);

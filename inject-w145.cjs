@@ -2,16 +2,18 @@
  * inject-w145.cjs  — Wave 145
  * cosmic-interstellar-bow-shock-termination  + stellar-crochet-sfe-wave
  */
-'use strict';
-const fs = require('fs');
-const FILE = 'public/cosmos-infinite.html';
+"use strict";
+const fs = require("fs");
+const FILE = "public/cosmos-infinite.html";
 
-let html = fs.readFileSync(FILE, 'utf8');
-const usesCRLF = html.includes('\r\n');
-if (usesCRLF) html = html.replace(/\r\n/g, '\n');
+let html = fs.readFileSync(FILE, "utf8");
+const usesCRLF = html.includes("\r\n");
+if (usesCRLF) html = html.replace(/\r\n/g, "\n");
 
-if (html.includes('registerComponent("cosmic-interstellar-bow-shock-termination"')) {
-  console.log('Wave 145 already injected.');
+if (
+  html.includes('registerComponent("cosmic-interstellar-bow-shock-termination"')
+) {
+  console.log("Wave 145 already injected.");
   process.exit(0);
 }
 
@@ -228,18 +230,25 @@ const NEW_JS = `      AFRAME.registerComponent("cosmic-interstellar-bow-shock-te
 
 ${JS_ANCHOR}`;
 
-if (!html.includes(JS_ANCHOR)) { console.error('JS anchor not found!'); process.exit(1); }
+if (!html.includes(JS_ANCHOR)) {
+  console.error("JS anchor not found!");
+  process.exit(1);
+}
 html = html.replace(JS_ANCHOR, NEW_JS);
 
-const HTML_ANCHOR = '      <a-entity stellar-magnetic-carpet-emergence></a-entity>';
+const HTML_ANCHOR =
+  "      <a-entity stellar-magnetic-carpet-emergence></a-entity>";
 const NEW_HTML = `${HTML_ANCHOR}
       <a-entity cosmic-interstellar-bow-shock-termination></a-entity>
       <a-entity stellar-crochet-sfe-wave></a-entity>`;
 
-if (!html.includes(HTML_ANCHOR)) { console.error('HTML anchor not found!'); process.exit(1); }
+if (!html.includes(HTML_ANCHOR)) {
+  console.error("HTML anchor not found!");
+  process.exit(1);
+}
 html = html.replace(HTML_ANCHOR, NEW_HTML);
 
-if (usesCRLF) html = html.replace(/\n/g, '\r\n');
-fs.writeFileSync(FILE, html, 'utf8');
-const lines = html.split(usesCRLF ? '\r\n' : '\n').length;
-console.log('Wave 145 injected! Lines: ' + lines);
+if (usesCRLF) html = html.replace(/\n/g, "\r\n");
+fs.writeFileSync(FILE, html, "utf8");
+const lines = html.split(usesCRLF ? "\r\n" : "\n").length;
+console.log("Wave 145 injected! Lines: " + lines);
