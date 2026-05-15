@@ -2905,6 +2905,8 @@
       <a-entity asteroid-belt></a-entity>
       <!-- ── GAS GIANT — banded planet with glowing ring system ── -->
       <a-entity gas-giant></a-entity>
+      <!-- ── BINARY STAR — twin suns orbiting each other with plasma bridge ── -->
+      <a-entity binary-star></a-entity>
 
       <!-- NEBULA CLOUD REMOVED — zero haze, clean black space -->
 
@@ -5195,6 +5197,133 @@
             mps[i].angle += dt * mps[i].speed;
             mps[i].pivot.rotation.y = mps[i].angle;
           }
+        },
+      });
+
+      /* ====================================================================
+         BINARY STAR — Two stars at (500, 120, -350) orbiting a shared
+         barycentre. Star A: hot blue-white (r=6, 0x88ccff).
+         Star B: cooler yellow-orange (r=9, 0xffbb44). Separation 55 au.
+         Plasma bridge: 200-particle BufferGeometry arc bridging the two.
+         Each star has a corona glow halo + flare spikes.
+         Orbital period: 22 seconds. Bridge particles drift per tick.
+         @alignment 8→26→48:480  @frequency 528  @domain code-eng
+      ==================================================================== */
+      AFRAME.registerComponent("binary-star", {
+        init: function () {
+          var THREE = AFRAME.THREE;
+          var scene = this.el.sceneEl.object3D;
+
+          this._barycentre = new THREE.Group();
+          this._barycentre.position.set(500, 120, -350);
+          scene.add(this._barycentre);
+
+          var bc = this._barycentre;
+          var SEP = 28; /* half-separation from barycentre */
+
+          /* ── Star A: blue-white hot ── */
+          this._pivA = new THREE.Group();
+          bc.add(this._pivA);
+          var starA = new THREE.Mesh(
+            new THREE.SphereGeometry(6, 20, 14),
+            new THREE.MeshBasicMaterial({ color: 0xaaddff })
+          );
+          starA.position.set(SEP, 0, 0);
+          this._pivA.add(starA);
+          this._starAPos = starA.position; /* world-space reference */
+
+          /* corona A */
+          var coronaA = new THREE.Mesh(
+            new THREE.SphereGeometry(10, 16, 10),
+            new THREE.MeshBasicMaterial({ color: 0x88ccff, transparent: true, opacity: 0.12, depthWrite: false })
+          );
+          coronaA.position.copy(starA.position);
+          this._pivA.add(coronaA);
+
+          /* ── Star B: yellow-orange cool ── */
+          this._pivB = new THREE.Group();
+          bc.add(this._pivB);
+          var starB = new THREE.Mesh(
+            new THREE.SphereGeometry(9, 22, 15),
+            new THREE.MeshBasicMaterial({ color: 0xffcc55 })
+          );
+          starB.position.set(-SEP, 0, 0);
+          this._pivB.add(starB);
+
+          /* corona B */
+          var coronaB = new THREE.Mesh(
+            new THREE.SphereGeometry(15, 16, 10),
+            new THREE.MeshBasicMaterial({ color: 0xff9933, transparent: true, opacity: 0.10, depthWrite: false })
+          );
+          coronaB.position.copy(starB.position);
+          this._pivB.add(coronaB);
+
+          /* ── plasma bridge (200 particles) ── */
+          var N = 200;
+          var bPos = new Float32Array(N * 3);
+          this._bridgeT = new Float32Array(N);
+          for (var i = 0; i < N; i++) {
+            this._bridgeT[i] = i / (N - 1);
+            /* start on bridge line */
+            var t = this._bridgeT[i];
+            bPos[i * 3    ] = SEP - t * SEP * 2;
+            bPos[i * 3 + 1] = (Math.sin(t * Math.PI) * 4) * (Math.random() - 0.5);
+            bPos[i * 3 + 2] = (Math.random() - 0.5) * 3;
+          }
+          var bGeo = new THREE.BufferGeometry();
+          bGeo.setAttribute("position", new THREE.BufferAttribute(bPos, 3));
+          var bridgeColors = new Float32Array(N * 3);
+          for (var j = 0; j < N; j++) {
+            var t2 = j / (N - 1);
+            bridgeColors[j * 3    ] = 1.0 - t2 * 0.4; /* r: white -> orange */
+            bridgeColors[j * 3 + 1] = 0.7 + t2 * 0.1;
+            bridgeColors[j * 3 + 2] = 1.0 - t2 * 0.7; /* b: blue -> low */
+          }
+          bGeo.setAttribute("color", new THREE.BufferAttribute(bridgeColors, 3));
+          this._bridgeGeo = bGeo;
+          this._bridgePos = bPos;
+          var bridge = new THREE.Points(bGeo, new THREE.PointsMaterial({
+            size: 0.8, vertexColors: true,
+            blending: THREE.AdditiveBlending, depthWrite: false, transparent: true, opacity: 0.7,
+          }));
+          bc.add(bridge);
+          this._bridge = bridge;
+
+          this._angle = 0;
+          this._time = 0;
+        },
+
+        tick: function (time, delta) {
+          var dt = Math.min(delta, 200) * 0.001;
+          this._time += dt;
+          var PERIOD = 22;
+          this._angle += dt * (2 * Math.PI / PERIOD);
+          var ang = this._angle;
+
+          /* orbit both stars around barycentre */
+          this._pivA.rotation.y = ang;
+          this._pivB.rotation.y = ang + Math.PI;
+
+          /* update bridge — arc between current star positions (local space) */
+          var SEP = 28;
+          var pos = this._bridgePos;
+          var T = this._bridgeT;
+          var N = T.length;
+          for (var i = 0; i < N; i++) {
+            var t = T[i];
+            /* A at angle, B at angle+PI; bridge in local barycentre space */
+            var ax = Math.cos(ang) * SEP;
+            var az = Math.sin(ang) * SEP;
+            var bx = Math.cos(ang + Math.PI) * SEP;
+            var bz = Math.sin(ang + Math.PI) * SEP;
+            var cx = ax * (1 - t) + bx * t;
+            var cz = az * (1 - t) + bz * t;
+            var arc = Math.sin(t * Math.PI) * 6;
+            pos[i * 3    ] = cx + (Math.random() - 0.5) * 1.5;
+            pos[i * 3 + 1] = arc + (Math.random() - 0.5) * 1.5;
+            pos[i * 3 + 2] = cz + (Math.random() - 0.5) * 1.5;
+          }
+          this._bridgeGeo.attributes.position.needsUpdate = true;
         },
       });
 
