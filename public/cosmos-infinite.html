@@ -2891,6 +2891,9 @@
       <!-- ── UNIVERSE GRAND TOUR — U key auto-pilot warp flight ── -->
       <a-entity universe-tour></a-entity>
 
+      <!-- ── COSMIC COMETS — 8 glowing comet orbs with particle tails ── -->
+      <a-entity cosmic-comets></a-entity>
+
       <!-- NEBULA CLOUD REMOVED — zero haze, clean black space -->
 
       <!-- ── REAL 3D GLTF MODELS ───────────────────────────────────────────── -->
@@ -5032,6 +5035,159 @@
             window._updateScaleHUD(dist, destLabel);
           }
         },
+
+
+      /* ====================================================================
+         COSMIC COMETS — 8 glowing orbs with speed-proportional particle tails
+         Each comet flies inward through the cosmos, respawns on exit
+         Colors: ice-blue, white, violet, gold, cyan, pink, green, orange
+         @alignment 8→26→48:480  @frequency 528  @domain code-eng
+      ==================================================================== */
+      AFRAME.registerComponent("cosmic-comets", {
+        init: function () {
+          var self    = this;
+          var scene   = this.el.sceneEl.object3D;
+          var V3      = AFRAME.THREE.Vector3;
+          var SphGeo  = AFRAME.THREE.SphereGeometry;
+          var MeshBas = AFRAME.THREE.MeshBasicMaterial;
+          var Mesh    = AFRAME.THREE.Mesh;
+          var BufGeo  = AFRAME.THREE.BufferGeometry;
+          var BufAttr = AFRAME.THREE.BufferAttribute;
+          var PtsMat  = AFRAME.THREE.PointsMaterial;
+          var Points  = AFRAME.THREE.Points;
+
+          var PALETTE = [
+            { head: 0x00d4ff, tail: 0x0077bb },
+            { head: 0xffffff, tail: 0xaaccff },
+            { head: 0xaa44ff, tail: 0x6600cc },
+            { head: 0xffaa00, tail: 0xff6600 },
+            { head: 0x00ffcc, tail: 0x00aa88 },
+            { head: 0xff44aa, tail: 0xcc0066 },
+            { head: 0x44ff88, tail: 0x00aa44 },
+            { head: 0xff7722, tail: 0xcc3300 },
+          ];
+          var SPAWN_R  = 220;
+          var TAIL_N   = 32;
+          this._comets = [];
+
+          for (var i = 0; i < 8; i++) {
+            var pal = PALETTE[i];
+
+            /* Random position on flattened sphere */
+            var theta = Math.random() * Math.PI * 2;
+            var phi   = Math.acos(2 * Math.random() - 1);
+            var r     = SPAWN_R * (0.45 + Math.random() * 0.8);
+            var px = r * Math.sin(phi) * Math.cos(theta);
+            var py = r * Math.sin(phi) * Math.sin(theta) * 0.35;
+            var pz = r * Math.cos(phi);
+            var pos = new V3(px, py, pz);
+
+            /* Velocity: inward toward origin with slight spread */
+            var speed = 6 + Math.random() * 16;
+            var mag   = Math.sqrt(px*px + py*py + pz*pz);
+            var vx = (-px/mag + (Math.random()-0.5)*0.35) * speed;
+            var vy = (-py/mag + (Math.random()-0.5)*0.18) * speed;
+            var vz = (-pz/mag + (Math.random()-0.5)*0.35) * speed;
+
+            /* Head sphere */
+            var headMesh = new Mesh(
+              new SphGeo(0.38, 8, 8),
+              new MeshBas({ color: pal.head })
+            );
+            headMesh.position.copy(pos);
+            scene.add(headMesh);
+
+            /* Glow halo around head */
+            var glowMesh = new Mesh(
+              new SphGeo(1.1, 8, 8),
+              new MeshBas({ color: pal.head, transparent: true, opacity: 0.14 })
+            );
+            headMesh.add(glowMesh);
+
+            /* Particle tail */
+            var tailArr  = new Float32Array(TAIL_N * 3);
+            var tailGeom = new BufGeo();
+            tailGeom.setAttribute("position", new BufAttr(tailArr, 3));
+            var tailMat  = new PtsMat({
+              color: pal.tail,
+              size: 0.42,
+              transparent: true,
+              opacity: 0.6,
+              sizeAttenuation: true
+            });
+            var tailPts = new Points(tailGeom, tailMat);
+            scene.add(tailPts);
+
+            this._comets.push({
+              px: px, py: py, pz: pz,
+              vx: vx, vy: vy, vz: vz,
+              headMesh: headMesh,
+              tailPts:  tailPts,
+              tailArr:  tailArr,
+              tailGeom: tailGeom,
+            });
+          }
+        },
+
+        _respawn: function (c) {
+          var SPAWN_R = 220;
+          var theta = Math.random() * Math.PI * 2;
+          var phi   = Math.acos(2 * Math.random() - 1);
+          var r     = SPAWN_R * (0.5 + Math.random() * 0.7);
+          var px = r * Math.sin(phi) * Math.cos(theta);
+          var py = r * Math.sin(phi) * Math.sin(theta) * 0.35;
+          var pz = r * Math.cos(phi);
+          var speed = 6 + Math.random() * 16;
+          var mag   = Math.sqrt(px*px + py*py + pz*pz);
+          c.px = px; c.py = py; c.pz = pz;
+          c.vx = (-px/mag + (Math.random()-0.5)*0.35) * speed;
+          c.vy = (-py/mag + (Math.random()-0.5)*0.18) * speed;
+          c.vz = (-pz/mag + (Math.random()-0.5)*0.35) * speed;
+          c.headMesh.position.set(px, py, pz);
+        },
+
+        tick: function (time, delta) {
+          var dt      = Math.min(delta, 200) * 0.001;
+          var BOUNDS2 = 380 * 380;
+          var TAIL_N  = 32;
+
+          for (var i = 0; i < this._comets.length; i++) {
+            var c = this._comets[i];
+
+            /* Advance position */
+            c.px += c.vx * dt;
+            c.py += c.vy * dt;
+            c.pz += c.vz * dt;
+
+            /* Respawn if outside bounds */
+            if (c.px*c.px + c.py*c.py + c.pz*c.pz > BOUNDS2) {
+              this._respawn(c);
+              continue;
+            }
+
+            /* Update head */
+            c.headMesh.position.set(c.px, c.py, c.pz);
+
+            /* Compute speed and reverse-direction unit vector for tail */
+            var spd = Math.sqrt(c.vx*c.vx + c.vy*c.vy + c.vz*c.vz);
+            if (spd < 0.001) continue;
+            var nx = -c.vx / spd;
+            var ny = -c.vy / spd;
+            var nz = -c.vz / spd;
+            var spacing = 0.9 + spd * 0.12;
+
+            /* Place tail particles trailing behind head */
+            for (var j = 0; j < TAIL_N; j++) {
+              var d = (j + 1) * spacing;
+              c.tailArr[j*3]     = c.px + nx * d;
+              c.tailArr[j*3 + 1] = c.py + ny * d;
+              c.tailArr[j*3 + 2] = c.pz + nz * d;
+            }
+            c.tailGeom.attributes.position.needsUpdate = true;
+          }
+        },
+      });
+
       });
 
       /* ====================================================================
