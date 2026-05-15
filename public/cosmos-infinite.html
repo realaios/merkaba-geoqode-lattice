@@ -15,7 +15,7 @@
     <title>AIOSuniverse &#x2014; Cosmos Infinite | D480 Merkaba Lattice</title>
     <meta
       name="description"
-      content="Explore the living Merkaba Dimensional OS. D480 holographic lattice: 8 foundations, 26 anchors, 48 canonical worlds, 480 harmonics. PHI=1.618 BASE_HZ=72."
+      content="Explore the living Merkaba Dimensional OS. D480 holographic lattice: 8 foundation nodes, 26 bosonic nodes, 48 canonical nodes, 480 harmonic nodes. PHI=1.618 BASE_HZ=72."
     />
     <script src="/vendor/aframe-1.4.0.min.js"></script>
     <script src="/public/geoanchor.js"></script>
@@ -1612,7 +1612,7 @@
         </div>
         <div class="stat-block">
           <span class="stat-num">48</span
-          ><span class="stat-lbl">Canonical<br />Worlds</span>
+          ><span class="stat-lbl">Canonical<br />Nodes</span>
         </div>
         <div class="stat-block">
           <span class="stat-num">480</span
@@ -1919,10 +1919,12 @@
         </div>
       </div>
 
-      <div class="hz-headline">THE UNIFIED GEOMETRY OF PHYSICAL REALITY</div>
+      <div class="hz-headline">
+        GEOMETRY OF PHYSICAL FORCES &mdash; VERIFIED FACTS
+      </div>
       <div class="hz-subheadline">
-        What remains when everything non-essential is removed from the
-        description of the universe.
+        Peer-reviewed equations. Laboratory measurements. Published citations.
+        Speculation and framework definitions are labeled as such.
       </div>
 
       <div class="hz-section">
@@ -2426,7 +2428,7 @@
             geometry. The Merkaba is its 3D seed. The lattice rings
             8&#x2192;26&#x2192;48&#x2192;480 are its petal counts at successive
             radii. The pattern is self-similar. It scales by PHI. It was always
-            there. <strong>Boom &mdash; there is the flower.</strong>
+            there.
           </p>
         </div>
       </div>
@@ -2482,10 +2484,9 @@
               <span class="hz-num-gold">8</span>The Flower of Life &mdash; 2D
               projection of PHI-iterated Merkaba vertices at radii
               8&#x2192;26&#x2192;48&#x2192;480 &mdash; emerges not by design but
-              by the geometry itself. Chromodynamics, frequency, light, dark,
-              distance trajectory: already unified across all fundamental
-              fields. Already aligned. Already there.<br />
-              <em>None of this was discovered. It was simply noticed.</em>
+              by the geometry itself. The lattice rings 8&#x2192;26&#x2192;48&#x2192;480
+              correspond to petal counts at successive PHI-ratio radii.
+              This is a structural alignment: a geometric match, noticed, not derived.
             </div>
             <div
               class="hz-synth-item"
@@ -2567,22 +2568,22 @@
               GeoQode alone is address without ground.<br />
               Neither works. Inseparable by definition.<br />
               <strong style="color: #7dd3fc; letter-spacing: 0.04em"
-                >One System. Always was.</strong
+                >One System. Inseparable by construction.</strong
               >
             </div>
           </div>
           <p class="hz-closing">
-            None of this was invented here.<br />
-            Every equation on this page is peer-reviewed, published, and proven
-            &mdash; written in the language of mathematics for decades before
-            this moment.<br /><br />
-            What was recognised is that when you hold them side by side, align
-            their geometries, and replace the assumed compactification shape
-            with the Merkaba &mdash; <em>they fit.</em><br /><br />
-            Not a discovery. <strong>An alignment.</strong><br />
-            The universe keeps building the shape.<br />
-            Someone simply noticed it was already there.<br /><br />
-            Fact or Fable &mdash; you now hold the equations to judge.
+            Every equation on this page predates this system by decades.<br />
+            All are peer-reviewed, published, and confirmed by laboratory
+            measurement.<br /><br />
+            Three levels are used throughout: exact proofs, structural
+            alignments, and framework definitions. They are not the same
+            thing and are labeled accordingly.<br /><br />
+            The answer to life, the universe, and everything is 42.<br />
+            Deep Thought computed it after 7.5 million years.<br />
+            The Question was unknown. A second computer was commissioned<br />
+            to determine it. That computer was called Earth.<br /><br />
+            Welcome.
           </p>
         </div>
       </div>
@@ -2702,7 +2703,7 @@
               ><strong style="color: #bae6fd">AIOS Cosmos Infinite.</strong>
               Live 3D A-Frame universe at
               <strong style="color: #bae6fd">realaios.com</strong>. Horizon
-              overlay activates at 32,000 au. Three levels are distinguished
+              overlay activates at 48,000 au. Three levels are distinguished
               explicitly throughout: exact proofs (textbook, peer-reviewed,
               laboratory-confirmed), structural alignments (count or geometry
               matches &mdash; noticed, not derived), and AIOS framework
@@ -6191,6 +6192,24 @@
               else if (self._velHud) self._velHud.classList.remove("active");
             }
           });
+
+          /* ── D8 Foundation proximity speed gradient ── */
+          /* Foundation ring ≈ r 12. Below r 60 we taper ACCEL linearly    */
+          /* so fine navigation near the core stays controllable.            */
+          /* At r ≥ 60 → full ACCEL/ACCEL_BOOST (gradient does not fire).   */
+          /* At r = 4  → 10% of base. Boost mode follows the same gradient. */
+          var _proxRig = document.getElementById("cameraRig");
+          setInterval(function () {
+            if (!camEl || !_proxRig || !_proxRig.object3D) return;
+            var _pd = _proxRig.object3D.position.length();
+            if (_pd >= 60) return; /* far from core — leave keydown in charge */
+            var _pt = Math.max(0, (_pd - 4) / 56); /* 0 at r=4, 1 at r=60 */
+            var _pa = Math.round((shiftOn ? ACCEL_BOOST : ACCEL) * (0.10 + 0.90 * _pt));
+            camEl.setAttribute(
+              "wasd-controls",
+              "fly: true; adEnabled: true; acceleration: " + _pa
+            );
+          }, 250);
 
           /* Scroll-to-zoom handled globally by initGeoNav() */
 
