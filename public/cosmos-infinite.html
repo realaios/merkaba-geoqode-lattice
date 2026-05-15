@@ -2484,9 +2484,10 @@
               <span class="hz-num-gold">8</span>The Flower of Life &mdash; 2D
               projection of PHI-iterated Merkaba vertices at radii
               8&#x2192;26&#x2192;48&#x2192;480 &mdash; emerges not by design but
-              by the geometry itself. The lattice rings 8&#x2192;26&#x2192;48&#x2192;480
-              correspond to petal counts at successive PHI-ratio radii.
-              This is a structural alignment: a geometric match, noticed, not derived.
+              by the geometry itself. The lattice rings
+              8&#x2192;26&#x2192;48&#x2192;480 correspond to petal counts at
+              successive PHI-ratio radii. This is a structural alignment: a
+              geometric match, noticed, not derived.
             </div>
             <div
               class="hz-synth-item"
@@ -2577,8 +2578,8 @@
             All are peer-reviewed, published, and confirmed by laboratory
             measurement.<br /><br />
             Three levels are used throughout: exact proofs, structural
-            alignments, and framework definitions. They are not the same
-            thing and are labeled accordingly.<br /><br />
+            alignments, and framework definitions. They are not the same thing
+            and are labeled accordingly.<br /><br />
             The answer to life, the universe, and everything is 42.<br />
             Deep Thought computed it after 7.5 million years.<br />
             The Question was unknown. A second computer was commissioned<br />
@@ -6204,10 +6205,12 @@
             var _pd = _proxRig.object3D.position.length();
             if (_pd >= 60) return; /* far from core — leave keydown in charge */
             var _pt = Math.max(0, (_pd - 4) / 56); /* 0 at r=4, 1 at r=60 */
-            var _pa = Math.round((shiftOn ? ACCEL_BOOST : ACCEL) * (0.10 + 0.90 * _pt));
+            var _pa = Math.round(
+              (shiftOn ? ACCEL_BOOST : ACCEL) * (0.1 + 0.9 * _pt),
+            );
             camEl.setAttribute(
               "wasd-controls",
-              "fly: true; adEnabled: true; acceleration: " + _pa
+              "fly: true; adEnabled: true; acceleration: " + _pa,
             );
           }, 250);
 
