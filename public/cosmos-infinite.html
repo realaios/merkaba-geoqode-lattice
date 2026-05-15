@@ -2945,6 +2945,10 @@
       <a-entity pulsar-wind-nebula></a-entity>
       <!-- ── COSMIC STRING — 1D topological defect with gravitational lensing streaks ── -->
       <a-entity cosmic-string></a-entity>
+      <!-- ── X-RAY BURSTER — neutron star with thermonuclear flash cycle ── -->
+      <a-entity x-ray-burster></a-entity>
+      <!-- ── DARK ENERGY BUBBLES — void expansion spheres drifting at cosmic edges ── -->
+      <a-entity dark-energy-bubbles></a-entity>
 
       <!-- NEBULA CLOUD REMOVED — zero haze, clean black space -->
 
@@ -7273,6 +7277,224 @@
           this._strMat.opacity  = 0.7 + 0.3 * Math.sin(t2 * 4.2 + Math.sin(t2 * 7.3) * 0.5);
           this._lensMat.opacity = 0.12 + 0.12 * Math.sin(t2 * 2.1 + 0.8);
           this._hazeMat.opacity = 0.28 + 0.18 * Math.sin(t2 * 1.7 + 2.1);
+        },
+      });
+
+      /* ==================================================================
+         X-RAY BURSTER — accreting neutron star with thermonuclear flash.
+         Position: (-800, 600, -100).
+         Accreting companion star + NS core + accretion disk.
+         Every 8s: thermonuclear burst fires — expanding X-ray ring
+         + bright flash on NS surface + 300-particle ejecta cloud.
+         Accretion stream flows from companion toward NS.
+         @alignment 8→26→48:480  @frequency 528  @domain code-eng
+      ================================================================== */
+      AFRAME.registerComponent("x-ray-burster", {
+        init: function () {
+          var THREE = AFRAME.THREE;
+          var scene = this.el.sceneEl.object3D;
+          var PI = Math.PI;
+          this._xRoot = new THREE.Group();
+          this._xRoot.position.set(-800, 600, -100);
+          scene.add(this._xRoot);
+
+          /* companion star (swollen donor) */
+          this._companion = new THREE.Mesh(
+            new THREE.SphereGeometry(18, 10, 7),
+            new THREE.MeshBasicMaterial({ color: 0xff8833 })
+          );
+          this._companion.position.set(90, 0, 0);
+          this._xRoot.add(this._companion);
+
+          /* neutron star */
+          this._nsCore = new THREE.Mesh(
+            new THREE.SphereGeometry(5, 12, 8),
+            new THREE.MeshBasicMaterial({ color: 0xeeeeff })
+          );
+          this._xRoot.add(this._nsCore);
+          /* NS glow */
+          this._nsGlow = new THREE.Mesh(
+            new THREE.SphereGeometry(8, 10, 6),
+            new THREE.MeshBasicMaterial({ color: 0x88bbff, transparent: true, opacity: 0.3 })
+          );
+          this._xRoot.add(this._nsGlow);
+
+          /* accretion disk around NS (torus ring) */
+          var diskGeo = new THREE.TorusGeometry(30, 5, 6, 32);
+          this._xRoot.add(new THREE.Mesh(
+            diskGeo,
+            new THREE.MeshBasicMaterial({ color: 0xff4400, transparent: true, opacity: 0.55 })
+          ));
+
+          /* accretion stream — 80-particle flow from companion to NS */
+          var ASN = 80;
+          this._asPos = new Float32Array(ASN * 3);
+          for (var ai = 0; ai < ASN; ai++) {
+            var ft = ai / ASN;
+            this._asPos[ai*3  ] = 90 * (1 - ft) + (Math.random()-0.5) * 8;
+            this._asPos[ai*3+1] = Math.sin(ft * PI) * 20 * (1 - ft);
+            this._asPos[ai*3+2] = Math.cos(ft * PI) * 15 * ft * (1-ft);
+          }
+          var asGeo = new THREE.BufferGeometry();
+          this._asPosAttr = new THREE.BufferAttribute(this._asPos, 3);
+          asGeo.setAttribute("position", this._asPosAttr);
+          this._xRoot.add(new THREE.Points(asGeo, new THREE.PointsMaterial({
+            color: 0xffaa44, size: 2.2,
+            blending: THREE.AdditiveBlending, depthWrite: false, transparent: true, opacity: 0.8
+          })));
+
+          /* burst ring (hidden until burst) */
+          this._burstRing = new THREE.Mesh(
+            new THREE.TorusGeometry(1, 2, 6, 40),
+            new THREE.MeshBasicMaterial({ color: 0x88eeff, transparent: true, opacity: 0 })
+          );
+          this._xRoot.add(this._burstRing);
+
+          /* ejecta cloud — 300 particles, hidden until burst */
+          var EN = 300;
+          this._ejN = EN;
+          this._ejPos  = new Float32Array(EN * 3);
+          this._ejVel  = [];
+          for (var ei = 0; ei < EN; ei++) {
+            this._ejPos[ei*3] = this._ejPos[ei*3+1] = this._ejPos[ei*3+2] = 0;
+            var ath = Math.random() * PI * 2;
+            var aph = Math.acos(2 * Math.random() - 1);
+            var spd = 30 + Math.random() * 80;
+            this._ejVel.push(
+              spd * Math.sin(aph) * Math.cos(ath),
+              spd * Math.cos(aph),
+              spd * Math.sin(aph) * Math.sin(ath)
+            );
+          }
+          var ejGeo = new THREE.BufferGeometry();
+          this._ejPosAttr = new THREE.BufferAttribute(this._ejPos, 3);
+          ejGeo.setAttribute("position", this._ejPosAttr);
+          this._ejMat = new THREE.PointsMaterial({
+            color: 0xaaeeff, size: 2.5,
+            blending: THREE.AdditiveBlending, depthWrite: false, transparent: true, opacity: 0
+          });
+          this._xRoot.add(new THREE.Points(ejGeo, this._ejMat));
+
+          this._xTime   = 0;
+          this._BURST   = 8;
+          this._burstPh = -1; /* inactive */
+          this._ejActive= false;
+        },
+        tick: function (time, delta) {
+          var dt = Math.min(delta, 200) * 0.001;
+          this._xTime += dt;
+          var t2 = this._xTime;
+
+          /* orbit companion + disk around NS */
+          var orb = t2 * 0.35;
+          this._companion.position.set(90 * Math.cos(orb), 0, 90 * Math.sin(orb));
+          this._xRoot.getObjectByName && void 0;
+
+          /* burst trigger */
+          var cyclePos = t2 % this._BURST;
+          if (cyclePos < 0.08 && this._burstPh < 0) {
+            /* fire burst */
+            this._burstPh = 0;
+            this._ejActive = true;
+            /* reset ejecta to origin */
+            for (var ei = 0; ei < this._ejN; ei++) {
+              this._ejPos[ei*3] = this._ejPos[ei*3+1] = this._ejPos[ei*3+2] = 0;
+            }
+            this._ejPosAttr.needsUpdate = true;
+          }
+          if (cyclePos > 0.5) this._burstPh = -1;
+
+          /* burst animation */
+          if (this._burstPh >= 0) {
+            this._burstPh += dt;
+            var bp = Math.min(this._burstPh / 3.5, 1);
+            /* expand ring */
+            var rs = 1 + bp * 80;
+            this._burstRing.scale.set(rs, rs, rs);
+            this._burstRing.material.opacity = (1 - bp) * 0.8;
+            /* NS flash */
+            var fl = Math.max(0, 1 - bp * 3);
+            this._nsGlow.material.opacity = 0.3 + fl * 1.2;
+            /* ejecta spread */
+            this._ejMat.opacity = (1 - bp * 0.9) * 0.7;
+            for (var ei = 0; ei < this._ejN; ei++) {
+              this._ejPos[ei*3  ] += this._ejVel[ei*3  ] * dt * (1 - bp);
+              this._ejPos[ei*3+1] += this._ejVel[ei*3+1] * dt * (1 - bp);
+              this._ejPos[ei*3+2] += this._ejVel[ei*3+2] * dt * (1 - bp);
+            }
+            this._ejPosAttr.needsUpdate = true;
+          } else {
+            this._nsGlow.material.opacity = 0.3;
+            this._ejMat.opacity = 0;
+          }
+          this._xRoot.rotation.y += 0.012 * dt;
+        },
+      });
+
+      /* ==================================================================
+         DARK ENERGY BUBBLES — de Sitter void-expansion spheres.
+         12 bubbles scattered at large r (700-1200) around the scene.
+         Each bubble: faint wireframe sphere that slowly expands then
+         resets, simulating the accelerating expansion of the universe.
+         Eerie electric-violet glow, barely visible, uncanny.
+         @alignment 8→26→48:480  @frequency 72  @domain self-evolve
+      ================================================================== */
+      AFRAME.registerComponent("dark-energy-bubbles", {
+        init: function () {
+          var THREE = AFRAME.THREE;
+          var scene = this.el.sceneEl.object3D;
+          var PI = Math.PI;
+          var NB = 12;
+          this._bubbles = [];
+          for (var bi = 0; bi < NB; bi++) {
+            var r = 700 + Math.random() * 500;
+            var th = Math.random() * PI * 2;
+            var ph = Math.acos(2 * Math.random() - 1);
+            var bx = r * Math.sin(ph) * Math.cos(th);
+            var by = r * Math.cos(ph);
+            var bz = r * Math.sin(ph) * Math.sin(th);
+            var initR = 40 + Math.random() * 80;
+            var bGeo = new THREE.SphereGeometry(initR, 8, 5);
+            var bMat = new THREE.MeshBasicMaterial({
+              color: 0x9933ff, wireframe: true, transparent: true, opacity: 0.06
+            });
+            var bMesh = new THREE.Mesh(bGeo, bMat);
+            bMesh.position.set(bx, by, bz);
+            scene.add(bMesh);
+            /* inner glow */
+            var igGeo = new THREE.SphereGeometry(initR * 0.6, 6, 4);
+            var igMat = new THREE.MeshBasicMaterial({
+              color: 0xcc55ff, transparent: true, opacity: 0.04
+            });
+            var igMesh = new THREE.Mesh(igGeo, igMat);
+            igMesh.position.set(bx, by, bz);
+            scene.add(igMesh);
+            this._bubbles.push({
+              mesh: bMesh, ig: igMesh,
+              mat: bMat, igMat: igMat,
+              phase: Math.random() * 20, /* stagger */
+              period: 12 + Math.random() * 16,
+              baseR: initR
+            });
+          }
+          this._debTime = 0;
+        },
+        tick: function (time, delta) {
+          var dt = Math.min(delta, 200) * 0.001;
+          this._debTime += dt;
+          var t2 = this._debTime;
+          for (var bi = 0; bi < this._bubbles.length; bi++) {
+            var b  = this._bubbles[bi];
+            var ph = ((t2 + b.phase) % b.period) / b.period; /* 0..1 */
+            /* expand from baseR to 3x, then reset */
+            var sc = 1 + ph * 2.5;
+            b.mesh.scale.set(sc, sc, sc);
+            b.ig.scale.set(sc * 0.55, sc * 0.55, sc * 0.55);
+            /* fade out as it expands */
+            var fade = Math.max(0, 1 - ph * 1.2);
+            b.mat.opacity  = 0.06 * fade;
+            b.igMat.opacity = 0.04 * fade;
+          }
         },
       });
 
