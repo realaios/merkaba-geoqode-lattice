@@ -2917,6 +2917,8 @@
       <a-entity ice-giant></a-entity>
       <!-- ── GAMMA-RAY BURST — universe's most energetic transient explosion ── -->
       <a-entity gamma-ray-burst></a-entity>
+      <!-- ── COSMIC WORMHOLE — Einstein-Rosen bridge swirling throat ── -->
+      <a-entity cosmic-wormhole></a-entity>
 
       <!-- NEBULA CLOUD REMOVED — zero haze, clean black space -->
 
@@ -5856,6 +5858,123 @@
           if (this._ringR > 220) this._ringR = 5;
           this._glowRing.scale.setScalar(this._ringR);
           this._glowRing.material.opacity = Math.max(0, 0.55 * (1 - this._ringR / 220));
+        },
+      });
+
+      /* ====================================================================
+         COSMIC WORMHOLE — Einstein-Rosen bridge.
+         Position: (-180, -60, -780).
+         Components:
+           - Throat rings: 12 stacked tori narrowing at centre
+               Colors cycle violet→cyan through a 6s UV shift
+           - Spiral particle stream: 300 particles wound around the tunnel
+               Continuously replenish from one end to the other
+           - Event-horizon cap: SphereGeometry, dark-blue mirror-like
+           - Gravitational lensing haze: outer transparent sphere r=90
+         @alignment 8→26→48:480  @frequency 963  @domain systems-design
+      ==================================================================== */
+      AFRAME.registerComponent("cosmic-wormhole", {
+        init: function () {
+          var THREE = AFRAME.THREE;
+          var scene = this.el.sceneEl.object3D;
+          var PI = Math.PI;
+
+          this._whRoot = new THREE.Group();
+          this._whRoot.position.set(-180, -60, -780);
+          scene.add(this._whRoot);
+
+          /* ── throat rings ── */
+          /* radii narrow at throat centre, widen at both ends */
+          var N_RINGS = 14;
+          this._rings = [];
+          this._ringMats = [];
+          for (var ri = 0; ri < N_RINGS; ri++) {
+            var t = ri / (N_RINGS - 1);     /* 0..1 throat position */
+            var r = 55 * (1 - 0.5 * Math.sin(t * PI)); /* 55 at ends, 27.5 at middle */
+            var y = (ri - N_RINGS * 0.5) * 12;
+            var mat = new THREE.MeshBasicMaterial({
+              color: 0x8833ff, transparent: true, opacity: 0.35, depthWrite: false
+            });
+            var ring = new THREE.Mesh(new THREE.TorusGeometry(r, 1.2, 4, 64), mat);
+            ring.position.y = y;
+            ring.rotation.x = PI / 2;
+            this._whRoot.add(ring);
+            this._rings.push(ring);
+            this._ringMats.push(mat);
+          }
+
+          /* ── event-horizon caps ── */
+          var capMat = new THREE.MeshBasicMaterial({ color: 0x0a0030, transparent: true, opacity: 0.88, depthWrite: false });
+          var capN = new THREE.Mesh(new THREE.SphereGeometry(24, 16, 10), capMat);
+          capN.position.y = -78; this._whRoot.add(capN);
+          var capS = capN.clone(); capS.position.y = 78; this._whRoot.add(capS);
+
+          /* ── gravitational lensing haze ── */
+          this._whRoot.add(new THREE.Mesh(
+            new THREE.SphereGeometry(95, 16, 10),
+            new THREE.MeshBasicMaterial({ color: 0x3311aa, transparent: true, opacity: 0.04, depthWrite: false, side: THREE.BackSide })
+          ));
+
+          /* ── spiral particle stream ── */
+          var PN = 320;
+          this._spPos = new Float32Array(PN * 3);
+          this._spPhi = new Float32Array(PN);  /* angular phase per particle */
+          this._spT   = new Float32Array(PN);  /* 0..1 position along tunnel */
+          var spCol = new Float32Array(PN * 3);
+          for (var i = 0; i < PN; i++) {
+            this._spT[i]   = Math.random();
+            this._spPhi[i] = Math.random() * PI * 2;
+            spCol[i*3  ] = 0.4 + 0.6 * Math.random();
+            spCol[i*3+1] = 0.2 + 0.3 * Math.random();
+            spCol[i*3+2] = 1.0;
+          }
+          var spGeo = new THREE.BufferGeometry();
+          this._spPosAttr = new THREE.BufferAttribute(this._spPos, 3);
+          spGeo.setAttribute("position", this._spPosAttr);
+          spGeo.setAttribute("color",    new THREE.BufferAttribute(spCol, 3));
+          this._spMat = new THREE.PointsMaterial({
+            size: 2.2, vertexColors: true,
+            blending: THREE.AdditiveBlending, depthWrite: false, transparent: true, opacity: 0.8
+          });
+          this._whRoot.add(new THREE.Points(spGeo, this._spMat));
+
+          this._whTime = 0;
+          this._N_RINGS = N_RINGS;
+          this._PN = PN;
+        },
+
+        tick: function (time, delta) {
+          var dt = Math.min(delta, 200) * 0.001;
+          var PI = Math.PI;
+          this._whTime += dt;
+
+          /* ring color UV shift + slow spin */
+          for (var ri = 0; ri < this._N_RINGS; ri++) {
+            var phase = (this._whTime * 1.5 + ri * 0.4) % (PI * 2);
+            var r = 0.4 + 0.5 * Math.abs(Math.sin(phase));
+            var g = 0.05;
+            var b = 0.5 + 0.5 * Math.abs(Math.cos(phase));
+            this._ringMats[ri].color.setRGB(r, g, b);
+            this._rings[ri].rotation.z += 0.006 * dt * (ri % 2 === 0 ? 1 : -1);
+          }
+
+          /* advance particle stream */
+          var TUNNEL_H = 84;  /* half-height of tunnel */
+          var SPEED = 0.22;
+          for (var i = 0; i < this._PN; i++) {
+            this._spT[i] = (this._spT[i] + dt * SPEED) % 1;
+            this._spPhi[i] += dt * 1.8;
+            var t = this._spT[i];
+            var y = (t - 0.5) * 2 * TUNNEL_H;
+            var r = 50 * (1 - 0.5 * Math.sin(t * PI));
+            this._spPos[i*3  ] = r * Math.cos(this._spPhi[i]);
+            this._spPos[i*3+1] = y;
+            this._spPos[i*3+2] = r * Math.sin(this._spPhi[i]);
+          }
+          this._spPosAttr.needsUpdate = true;
+
+          /* whole wormhole tilts gently */
+          this._whRoot.rotation.z = 0.12 * Math.sin(this._whTime * 0.18);
         },
       });
 
