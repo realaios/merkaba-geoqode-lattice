@@ -1747,7 +1747,7 @@
     </div>
 
     <div id="controls-hint">
-      W/S Thrust &nbsp;&#x2022;&nbsp; A/D Look &nbsp;&#x2022;&nbsp; LMB Look
+      W/S Thrust &nbsp;&#x2022;&nbsp; A/D Strafe &nbsp;&#x2022;&nbsp; LMB Look
       &nbsp;&#x2022;&nbsp; RMB Pan &nbsp;&#x2022;&nbsp; Scroll Zoom
       &nbsp;&#x2022;&nbsp; Double-Click Teleport &nbsp;&#x2022;&nbsp; SPACE
       Hitchhiker
@@ -2925,9 +2925,9 @@
 
       <!-- Solar system removed -->
       <!-- Camera rig -->
-      <a-entity id="cameraRig" position="0 0 0">
+      <a-entity id="cameraRig" position="0 12 75">
         <a-camera
-          wasd-controls="acceleration: 80000; fly: true; adEnabled: false"
+          wasd-controls="acceleration: 20000; fly: true; adEnabled: false"
           look-controls="pointerLockEnabled: false; touchEnabled: true; magicWindowTrackingEnabled: false"
           fov="60"
           far="2000000"
@@ -8343,8 +8343,8 @@
 
           /* Outer slow ring */
           var r1 = document.createElement("a-torus");
-          r1.setAttribute("radius", "18");
-          r1.setAttribute("radius-tubular", "0.6");
+          r1.setAttribute("radius", "10");
+          r1.setAttribute("radius-tubular", "0.4");
           r1.setAttribute("color", "#ffc83c");
           r1.setAttribute("opacity", "0.35");
           r1.setAttribute(
@@ -8355,8 +8355,8 @@
 
           /* Inner fast ring */
           var r2 = document.createElement("a-torus");
-          r2.setAttribute("radius", "10");
-          r2.setAttribute("radius-tubular", "0.4");
+          r2.setAttribute("radius", "6");
+          r2.setAttribute("radius-tubular", "0.25");
           r2.setAttribute("color", "#ff9f00");
           r2.setAttribute("opacity", "0.5");
           r2.setAttribute(
@@ -8367,7 +8367,7 @@
 
           /* Central beacon sphere */
           var core = document.createElement("a-sphere");
-          core.setAttribute("radius", "5");
+          core.setAttribute("radius", "3");
           core.setAttribute("color", "#ffc83c");
           core.setAttribute("opacity", "0.25");
           core.setAttribute("emissive", "#ffc83c");
@@ -8383,8 +8383,8 @@
           lbl.setAttribute("value", "\u26a1 CONVERGENCE\n" + beaconData.label);
           lbl.setAttribute("align", "center");
           lbl.setAttribute("color", "#ffc83c");
-          lbl.setAttribute("scale", "16 16 16");
-          lbl.setAttribute("position", "0 22 0");
+          lbl.setAttribute("scale", "10 10 10");
+          lbl.setAttribute("position", "0 14 0");
           lbl.setAttribute("look-at", "[camera]");
           container.appendChild(lbl);
 
