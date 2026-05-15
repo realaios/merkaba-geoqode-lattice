@@ -1,21 +1,21 @@
-'use strict';
+"use strict";
 // inject-w50.cjs — Wave 50: protostellar-disk-gap + heliopause-boundary
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
-const FILE = path.join(__dirname, 'public', 'cosmos-infinite.html');
-let html = fs.readFileSync(FILE, 'utf8');
+const FILE = path.join(__dirname, "public", "cosmos-infinite.html");
+let html = fs.readFileSync(FILE, "utf8");
 
 if (html.includes('AFRAME.registerComponent("protostellar-disk-gap"')) {
-  console.log('Wave 50 already injected — skipping');
+  console.log("Wave 50 already injected — skipping");
   process.exit(0);
 }
 
-const usesCRLF = html.includes('\r\n');
-if (usesCRLF) html = html.replace(/\r\n/g, '\n');
+const usesCRLF = html.includes("\r\n");
+if (usesCRLF) html = html.replace(/\r\n/g, "\n");
 
 // ─── HTML entities ────────────────────────────────────────────────────────
-const HTML_ANCHOR = '      <a-entity cosmic-neutrino-haze></a-entity>';
+const HTML_ANCHOR = "      <a-entity cosmic-neutrino-haze></a-entity>";
 const HTML_INSERT = `      <a-entity cosmic-neutrino-haze></a-entity>
       <!-- ── PROTOSTELLAR DISK GAP — ALMA ring-gap carved by a forming planet ── -->
       <a-entity protostellar-disk-gap></a-entity>
@@ -188,7 +188,7 @@ const JS_INSERT = `
 
 html = html.replace(JS_ANCHOR, JS_INSERT);
 
-if (usesCRLF) html = html.replace(/\n/g, '\r\n');
-fs.writeFileSync(FILE, html, 'utf8');
-const lineCount = html.split(usesCRLF ? '\r\n' : '\n').length;
-console.log('Wave 50 injected! Lines:', lineCount);
+if (usesCRLF) html = html.replace(/\n/g, "\r\n");
+fs.writeFileSync(FILE, html, "utf8");
+const lineCount = html.split(usesCRLF ? "\r\n" : "\n").length;
+console.log("Wave 50 injected! Lines:", lineCount);

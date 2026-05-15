@@ -1,21 +1,21 @@
-'use strict';
+"use strict";
 // inject-w58.cjs — Wave 58: dark-matter-caustic-fold + circumstellar-maser-shell
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
-const FILE = path.join(__dirname, 'public', 'cosmos-infinite.html');
-let html = fs.readFileSync(FILE, 'utf8');
+const FILE = path.join(__dirname, "public", "cosmos-infinite.html");
+let html = fs.readFileSync(FILE, "utf8");
 
 if (html.includes('AFRAME.registerComponent("dark-matter-caustic-fold"')) {
-  console.log('Wave 58 already injected — skipping');
+  console.log("Wave 58 already injected — skipping");
   process.exit(0);
 }
 
-const usesCRLF = html.includes('\r\n');
-if (usesCRLF) html = html.replace(/\r\n/g, '\n');
+const usesCRLF = html.includes("\r\n");
+if (usesCRLF) html = html.replace(/\r\n/g, "\n");
 
 // ─── HTML entities ────────────────────────────────────────────────────────
-const HTML_ANCHOR = '      <a-entity stellar-wind-bow-nebula></a-entity>';
+const HTML_ANCHOR = "      <a-entity stellar-wind-bow-nebula></a-entity>";
 const HTML_INSERT = `      <a-entity stellar-wind-bow-nebula></a-entity>
       <!-- ── DARK MATTER CAUSTIC FOLD — shell-like caustic rings from DM collapse ── -->
       <a-entity dark-matter-caustic-fold></a-entity>
@@ -202,7 +202,7 @@ const JS_INSERT = `
 
 html = html.replace(JS_ANCHOR, JS_INSERT);
 
-if (usesCRLF) html = html.replace(/\n/g, '\r\n');
-fs.writeFileSync(FILE, html, 'utf8');
-const lineCount = html.split(usesCRLF ? '\r\n' : '\n').length;
-console.log('Wave 58 injected! Lines:', lineCount);
+if (usesCRLF) html = html.replace(/\n/g, "\r\n");
+fs.writeFileSync(FILE, html, "utf8");
+const lineCount = html.split(usesCRLF ? "\r\n" : "\n").length;
+console.log("Wave 58 injected! Lines:", lineCount);

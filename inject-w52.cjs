@@ -1,21 +1,24 @@
-'use strict';
+"use strict";
 // inject-w52.cjs — Wave 52: cosmic-baryon-acoustic-feature + polar-ring-galaxy
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
-const FILE = path.join(__dirname, 'public', 'cosmos-infinite.html');
-let html = fs.readFileSync(FILE, 'utf8');
+const FILE = path.join(__dirname, "public", "cosmos-infinite.html");
+let html = fs.readFileSync(FILE, "utf8");
 
-if (html.includes('AFRAME.registerComponent("cosmic-baryon-acoustic-feature"')) {
-  console.log('Wave 52 already injected — skipping');
+if (
+  html.includes('AFRAME.registerComponent("cosmic-baryon-acoustic-feature"')
+) {
+  console.log("Wave 52 already injected — skipping");
   process.exit(0);
 }
 
-const usesCRLF = html.includes('\r\n');
-if (usesCRLF) html = html.replace(/\r\n/g, '\n');
+const usesCRLF = html.includes("\r\n");
+if (usesCRLF) html = html.replace(/\r\n/g, "\n");
 
 // ─── HTML entities ────────────────────────────────────────────────────────
-const HTML_ANCHOR = '      <a-entity magnetar-wind-termination-shock></a-entity>';
+const HTML_ANCHOR =
+  "      <a-entity magnetar-wind-termination-shock></a-entity>";
 const HTML_INSERT = `      <a-entity magnetar-wind-termination-shock></a-entity>
       <!-- ── COSMIC BARYON ACOUSTIC FEATURE — BAO shell at ~150 Mpc ── -->
       <a-entity cosmic-baryon-acoustic-feature></a-entity>
@@ -175,7 +178,7 @@ const JS_INSERT = `
 
 html = html.replace(JS_ANCHOR, JS_INSERT);
 
-if (usesCRLF) html = html.replace(/\n/g, '\r\n');
-fs.writeFileSync(FILE, html, 'utf8');
-const lineCount = html.split(usesCRLF ? '\r\n' : '\n').length;
-console.log('Wave 52 injected! Lines:', lineCount);
+if (usesCRLF) html = html.replace(/\n/g, "\r\n");
+fs.writeFileSync(FILE, html, "utf8");
+const lineCount = html.split(usesCRLF ? "\r\n" : "\n").length;
+console.log("Wave 52 injected! Lines:", lineCount);

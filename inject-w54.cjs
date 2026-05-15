@@ -1,21 +1,21 @@
-'use strict';
+"use strict";
 // inject-w54.cjs — Wave 54: stellar-bh-jet-precession + cosmic-void-watershed
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
-const FILE = path.join(__dirname, 'public', 'cosmos-infinite.html');
-let html = fs.readFileSync(FILE, 'utf8');
+const FILE = path.join(__dirname, "public", "cosmos-infinite.html");
+let html = fs.readFileSync(FILE, "utf8");
 
 if (html.includes('AFRAME.registerComponent("stellar-bh-jet-precession"')) {
-  console.log('Wave 54 already injected — skipping');
+  console.log("Wave 54 already injected — skipping");
   process.exit(0);
 }
 
-const usesCRLF = html.includes('\r\n');
-if (usesCRLF) html = html.replace(/\r\n/g, '\n');
+const usesCRLF = html.includes("\r\n");
+if (usesCRLF) html = html.replace(/\r\n/g, "\n");
 
 // ─── HTML entities ────────────────────────────────────────────────────────
-const HTML_ANCHOR = '      <a-entity cosmic-sheet-supercluster></a-entity>';
+const HTML_ANCHOR = "      <a-entity cosmic-sheet-supercluster></a-entity>";
 const HTML_INSERT = `      <a-entity cosmic-sheet-supercluster></a-entity>
       <!-- ── STELLAR BH JET PRECESSION — X-ray binary with precessing jet ── -->
       <a-entity stellar-bh-jet-precession></a-entity>
@@ -207,7 +207,7 @@ const JS_INSERT = `
 
 html = html.replace(JS_ANCHOR, JS_INSERT);
 
-if (usesCRLF) html = html.replace(/\n/g, '\r\n');
-fs.writeFileSync(FILE, html, 'utf8');
-const lineCount = html.split(usesCRLF ? '\r\n' : '\n').length;
-console.log('Wave 54 injected! Lines:', lineCount);
+if (usesCRLF) html = html.replace(/\n/g, "\r\n");
+fs.writeFileSync(FILE, html, "utf8");
+const lineCount = html.split(usesCRLF ? "\r\n" : "\n").length;
+console.log("Wave 54 injected! Lines:", lineCount);
