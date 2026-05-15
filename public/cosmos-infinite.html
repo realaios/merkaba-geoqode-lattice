@@ -36823,16 +36823,16 @@
             var rig = document.getElementById("cameraRig");
             var camEl = document.querySelector("[look-controls]");
             if (rig && rig.object3D && camEl && camEl.object3D) {
-              /* distance-based speed: ~1000au/s at 8000+, ~500 at 3000+, 1.5 close in */
+              /* distance-based speed — MOBILE FAST: ~400 far out, ~20 close in */
               var dist = rig.object3D.position.length();
               var SPEED =
                 dist >= 16000
-                  ? 40
+                  ? 400
                   : dist >= 8000
-                    ? 17
+                    ? 200
                     : dist >= 3000
-                      ? 8.5
-                      : 1.5;
+                      ? 80
+                      : 20;
               var THREE = AFRAME.THREE;
               var fwd = new THREE.Vector3();
               var right = new THREE.Vector3();
@@ -36904,7 +36904,7 @@
                 var THREE = AFRAME.THREE;
                 var fwd2 = new THREE.Vector3();
                 camEl.object3D.getWorldDirection(fwd2);
-                rig.object3D.position.addScaledVector(fwd2, ddY * 0.25);
+                rig.object3D.position.addScaledVector(fwd2, ddY * 3.0);
               }
             }
           },
