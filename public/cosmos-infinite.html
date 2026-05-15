@@ -2901,6 +2901,8 @@
       <a-entity cosmic-blackhole></a-entity>
       <!-- ── SUPERNOVA REMNANT — expanding stellar debris shell ── -->
       <a-entity supernova-remnant></a-entity>
+      <!-- ── ASTEROID BELT — 120 tumbling rocks in an orbital ring ── -->
+      <a-entity asteroid-belt></a-entity>
 
       <!-- NEBULA CLOUD REMOVED — zero haze, clean black space -->
 
@@ -5072,6 +5074,86 @@
          Located at (120, -180, -480) — visible in the deep void section of tour.
          @alignment 8→26→48:480  @frequency 963  @domain systems-design
       ==================================================================== */
+      /* ====================================================================
+         ASTEROID BELT — 120 low-poly IcosahedronGeometry rocks orbiting in
+         a tilted ring at radius 260-330 au from origin. Each rock tumbles on
+         its own random rotation axis. Colors: grey, charcoal, dark-umber,
+         occasional pale ice-blue. Ring tilted 18° off the ecliptic.
+         @alignment 8→26→48:480  @frequency 396  @domain data-structs
+      ==================================================================== */
+      AFRAME.registerComponent("asteroid-belt", {
+        init: function () {
+          var THREE = AFRAME.THREE;
+          var scene = this.el.sceneEl.object3D;
+          var N     = 120;
+          this._rocks = [];
+
+          var COLOURS = [
+            0x8a7f78, 0x6b6460, 0x504848, 0x3d3832, 0x988d84,
+            0xb5a99e, 0x5c6672, 0x7a8a96, /* ice-blue variants */
+          ];
+
+          for (var i = 0; i < N; i++) {
+            /* Random orbital parameters */
+            var orbitR   = 260 + Math.random() * 70;
+            var orbitAng = (i / N) * Math.PI * 2 + (Math.random() - 0.5) * 0.3;
+            var tilt     = (Math.random() - 0.5) * 28;  /* deg off-ecliptic */
+            var scale    = 0.6 + Math.random() * 3.2;
+            var detail   = Math.random() < 0.5 ? 0 : 1;  /* 20 or 80-face icosahedron */
+            var color    = COLOURS[Math.floor(Math.random() * COLOURS.length)];
+
+            var geo  = new THREE.IcosahedronGeometry(scale, detail);
+            var mat  = new THREE.MeshBasicMaterial({ color: color });
+            var mesh = new THREE.Mesh(geo, mat);
+
+            /* Position on ring */
+            var tiltRad = tilt * Math.PI / 180;
+            mesh.position.set(
+              Math.cos(orbitAng) * orbitR,
+              Math.sin(tiltRad) * orbitR * 0.12,
+              Math.sin(orbitAng) * orbitR
+            );
+
+            /* Random initial rotation */
+            mesh.rotation.set(
+              Math.random() * Math.PI * 2,
+              Math.random() * Math.PI * 2,
+              Math.random() * Math.PI * 2
+            );
+
+            scene.add(mesh);
+
+            /* Store tumble axis and speed */
+            this._rocks.push({
+              mesh: mesh,
+              orbitAng: orbitAng,
+              orbitR:   orbitR,
+              orbitSpd: (0.006 + Math.random() * 0.010) * (Math.random() < 0.5 ? 1 : -1),
+              tiltFactor: Math.sin(tiltRad) * 0.12,
+              rotX: (Math.random() - 0.5) * 0.8,
+              rotY: (Math.random() - 0.5) * 0.8,
+              rotZ: (Math.random() - 0.5) * 0.8,
+            });
+          }
+        },
+
+        tick: function (time, delta) {
+          var dt = Math.min(delta, 200) * 0.001;
+          var rocks = this._rocks;
+          for (var i = 0; i < rocks.length; i++) {
+            var r = rocks[i];
+            /* Orbit */
+            r.orbitAng += r.orbitSpd * dt;
+            r.mesh.position.x = Math.cos(r.orbitAng) * r.orbitR;
+            r.mesh.position.z = Math.sin(r.orbitAng) * r.orbitR;
+            /* Tumble */
+            r.mesh.rotation.x += r.rotX * dt;
+            r.mesh.rotation.y += r.rotY * dt;
+            r.mesh.rotation.z += r.rotZ * dt;
+          }
+        },
+      });
+
       AFRAME.registerComponent("supernova-remnant", {
         init: function () {
           var THREE = AFRAME.THREE;
