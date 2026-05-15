@@ -423,23 +423,9 @@
       var THREE = this.THREE;
       var col = freqToColor(this.data.frequency);
 
-      /* Outer wireframe shell — ripples */
-      var shell = new THREE.Mesh(
-        new THREE.IcosahedronGeometry(9.0, 2),
-        new THREE.MeshPhongMaterial({
-          color: 0x00d4ff,
-          emissive: 0x00d4ff,
-          emissiveIntensity: 0.18,
-          wireframe: true,
-          transparent: true,
-          opacity: 0.09,
-        }),
-      );
-      this._waveShell = shell;
       this._wavePhase = 0;
       /* Cycle only neon blues and lime greens */
       this._freqKeys = [528, 72, 639, 72, 528, 639, 528, 72];
-      this.el.object3D.add(shell);
 
       /* Harmonic ring that pulses frequency */
       var hRing = new THREE.Mesh(
@@ -456,7 +442,7 @@
       this._hRing = hRing;
       this.el.object3D.add(hRing);
 
-      this.overlays.push(shell, hRing);
+      this.overlays.push(hRing);
 
       /* Gather child meshes for emissive modulation */
       var self = this;
@@ -618,38 +604,20 @@
 
     /* ── wave tick ─────────────────────────────────────────────────────── */
     _tickWave: function (dt) {
-      if (!this._waveShell) return;
       this._wavePhase += dt * (this.inProximity ? 2.8 : 1.2);
 
-      /* Cycle frequency color */
+      /* Cycle frequency color for hRing */
       this._freqTimer += dt;
       var cycleTime = this.inProximity ? 0.55 : 2.0;
       if (this._freqTimer >= cycleTime) {
         this._freqTimer = 0;
         this._freqIdx = (this._freqIdx + 1) % this._freqKeys.length;
         var nc = freqToColor(this._freqKeys[this._freqIdx]);
-        this._waveShell.material.color.setHex(nc);
-        this._waveShell.material.emissive.setHex(nc);
         if (this._hRing) {
           this._hRing.material.color.setHex(nc);
           this._hRing.material.emissive.setHex(nc);
         }
       }
-
-      /* Shell ripple */
-      var ws =
-        1.0 +
-        Math.sin(this._wavePhase * 2.0) * (this.inProximity ? 0.16 : 0.055);
-      this._waveShell.scale.setScalar(ws);
-      this._waveShell.material.opacity =
-        0.07 +
-        Math.abs(Math.sin(this._wavePhase)) * (this.inProximity ? 0.28 : 0.09);
-      this._waveShell.material.emissiveIntensity =
-        0.14 +
-        Math.abs(Math.sin(this._wavePhase * 0.7)) *
-          (this.inProximity ? 0.55 : 0.14);
-      this._waveShell.rotation.y += dt * (this.inProximity ? 0.7 : 0.22);
-      this._waveShell.rotation.x += dt * 0.14;
 
       /* Harmonic ring rotate */
       if (this._hRing) {
