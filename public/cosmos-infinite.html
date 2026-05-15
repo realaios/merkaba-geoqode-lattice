@@ -2957,6 +2957,10 @@
       <a-entity protoplanetary-disk></a-entity>
       <!-- ── COSMIC RAY SHOWER — high-energy particle cascade through atmosphere ── -->
       <a-entity cosmic-ray-shower></a-entity>
+      <!-- ── GRAVITATIONAL WAVE — spacetime ripple from distant binary merger ── -->
+      <a-entity gravitational-wave></a-entity>
+      <!-- ── MOLECULAR CLOUD — star-forming nebula with stellar birth flashes ── -->
+      <a-entity molecular-cloud></a-entity>
 
       <!-- NEBULA CLOUD REMOVED — zero haze, clean black space -->
 
@@ -7997,6 +8001,197 @@
               var baseFade = sk2.tier === 0 ? 1.0 : sk2.tier === 1 ? 0.7 : 0.35;
               sk2.mat.opacity = baseFade * fade;
             }
+          }
+        },
+      });
+
+      /* ==================================================================
+         GRAVITATIONAL WAVE — spacetime ripple from a binary neutron star merger.
+         Origin: (0, 0, 0) expanding in all directions.
+         Representation: 3 concentric expanding ring-shells of bright points.
+         Each ring fades as it expands to ~800 units, then resets.
+         Stars near the wavefront are sinusoidally displaced (tidal stretch).
+         Rings are staggered in phase by 1.2 seconds each.
+         A central merger flash fires every 8 seconds (chirp brightening).
+         @alignment 8→26→48:480  @frequency 852  @domain quantum-arch
+      ================================================================== */
+      AFRAME.registerComponent("gravitational-wave", {
+        init: function () {
+          var THREE = AFRAME.THREE;
+          var scene = this.el.sceneEl.object3D;
+          var PI = Math.PI;
+          this._gwTime = 0;
+          this._MERGE_CYCLE = 9.0;
+
+          /* merger site marker */
+          this._mergerMesh = new THREE.Mesh(
+            new THREE.SphereGeometry(6, 10, 8),
+            new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.0 })
+          );
+          this._mergerMesh.position.set(0, -100, 0);
+          scene.add(this._mergerMesh);
+
+          /* 3 ring shells — each shell is 900 points on a sphere */
+          this._rings = [];
+          var RING_N = 900;
+          var ringPhases = [0, 1.2, 2.4];
+          for (var ri = 0; ri < 3; ri++) {
+            var rPos  = new Float32Array(RING_N * 3);
+            var rDir  = new Float32Array(RING_N * 3);
+            var rBase = new Float32Array(RING_N * 3);
+            for (var vi = 0; vi < RING_N; vi++) {
+              var th  = Math.random() * PI * 2;
+              var ph  = Math.acos(2 * Math.random() - 1);
+              var dx  = Math.sin(ph) * Math.cos(th);
+              var dy  = Math.cos(ph);
+              var dz  = Math.sin(ph) * Math.sin(th);
+              rDir[vi*3  ] = dx; rDir[vi*3+1] = dy; rDir[vi*3+2] = dz;
+              rBase[vi*3  ] = 0; rBase[vi*3+1] = -100; rBase[vi*3+2] = 0;
+              rPos[vi*3  ] = dx; rPos[vi*3+1] = dy - 100; rPos[vi*3+2] = dz;
+            }
+            var rGeo  = new THREE.BufferGeometry();
+            var rAttr = new THREE.BufferAttribute(rPos, 3);
+            rGeo.setAttribute("position", rAttr);
+            var rMat  = new THREE.PointsMaterial({
+              color: 0x88ccff, size: 2.2,
+              blending: THREE.AdditiveBlending, depthWrite: false, transparent: true, opacity: 0.0
+            });
+            var ring  = new THREE.Points(rGeo, rMat);
+            scene.add(ring);
+            this._rings.push({ pts: ring, mat: rMat, attr: rAttr, dir: rDir, base: rBase, phase: ringPhases[ri] });
+          }
+        },
+        tick: function (time, delta) {
+          var dt  = Math.min(delta, 200) * 0.001;
+          this._gwTime += dt;
+          var t2  = this._gwTime;
+          var MAX_R = 800, SPEED = 95;
+
+          /* merger flash */
+          var mPhase = (t2 % this._MERGE_CYCLE) / this._MERGE_CYCLE;
+          this._mergerMesh.material.opacity = Math.max(0, 1 - mPhase * 10) * 0.9;
+
+          for (var ri = 0; ri < this._rings.length; ri++) {
+            var rg = this._rings[ri];
+            /* per-ring time with phase offset */
+            var rt   = (t2 + rg.phase) % this._MERGE_CYCLE;
+            var radius = rt * SPEED;
+            if (radius > MAX_R) { rg.mat.opacity = 0; continue; }
+            /* opacity: bright near 0, fades to 0 near MAX_R */
+            var progress = radius / MAX_R;
+            rg.mat.opacity = (1 - progress) * 0.65 + 0.05 * Math.sin(t2 * 12);
+            /* update positions: base + dir * radius with tidal ripple */
+            var arr = rg.attr.array;
+            var N   = arr.length / 3;
+            for (var vi = 0; vi < N; vi++) {
+              var bx = rg.base[vi*3  ], by = rg.base[vi*3+1], bz = rg.base[vi*3+2];
+              var dx = rg.dir[vi*3  ],  dy = rg.dir[vi*3+1],  dz = rg.dir[vi*3+2];
+              /* tidal ripple: perturb perpendicular to radius */
+              var tidal = 3 * Math.sin(radius * 0.08 + vi * 0.5);
+              arr[vi*3  ] = bx + dx * (radius + tidal * (1 - dy * dy));
+              arr[vi*3+1] = by + dy * radius + tidal * dy;
+              arr[vi*3+2] = bz + dz * (radius + tidal * (1 - dz * dz));
+            }
+            rg.attr.needsUpdate = true;
+          }
+        },
+      });
+
+      /* ==================================================================
+         MOLECULAR CLOUD — dense star-forming nebula with stellar birth flashes.
+         Position: (-900, 200, 300).
+         Cloud body: 3500 red/brown/dark particles in fractal clumps.
+         7 star-birth hotspots: each flashes brilliantly every 4-14s.
+         Protostellar jets fire from each hotspot at birth moment.
+         Overall cloud slowly rotates and drifts.
+         @alignment 8→26→48:480  @frequency 963  @domain systems-design
+      ================================================================== */
+      AFRAME.registerComponent("molecular-cloud", {
+        init: function () {
+          var THREE = AFRAME.THREE;
+          var scene = this.el.sceneEl.object3D;
+          var PI = Math.PI;
+          this._mcRoot = new THREE.Group();
+          this._mcRoot.position.set(-900, 200, 300);
+          scene.add(this._mcRoot);
+
+          /* cloud body — fractal clump distribution */
+          var CN = 3500;
+          var cPos = new Float32Array(CN * 3);
+          var cCol = new Float32Array(CN * 3);
+          var CLUMPS = [
+            [0,0,0,100], [-80,30,-40,60], [60,-50,20,70], [20,60,-60,55],
+            [-40,-40,80,50], [90,0,60,45], [-60,70,30,40]
+          ];
+          for (var ci = 0; ci < CN; ci++) {
+            var clump = CLUMPS[Math.floor(Math.random() * CLUMPS.length)];
+            var cr = clump[3] * (0.3 + Math.random() * 0.7);
+            var th = Math.random() * PI * 2;
+            var ph = Math.acos(2 * Math.random() - 1);
+            cPos[ci*3  ] = clump[0] + cr * Math.sin(ph) * Math.cos(th);
+            cPos[ci*3+1] = clump[1] + cr * Math.cos(ph) * 0.6;
+            cPos[ci*3+2] = clump[2] + cr * Math.sin(ph) * Math.sin(th);
+            /* colour: deep red to dark burgundy */
+            cCol[ci*3  ] = 0.4 + Math.random() * 0.35;
+            cCol[ci*3+1] = 0.05 + Math.random() * 0.12;
+            cCol[ci*3+2] = 0.02 + Math.random() * 0.06;
+          }
+          var cGeo = new THREE.BufferGeometry();
+          cGeo.setAttribute("position", new THREE.BufferAttribute(cPos, 3));
+          cGeo.setAttribute("color",    new THREE.BufferAttribute(cCol, 3));
+          this._mcRoot.add(new THREE.Points(cGeo, new THREE.PointsMaterial({
+            size: 3.5, vertexColors: true,
+            blending: THREE.AdditiveBlending, depthWrite: false, transparent: true, opacity: 0.6
+          })));
+
+          /* 7 star-birth hotspots */
+          this._hotspots = [];
+          var hsData = [
+            { pos: [-80,30,-40], period: 6.5 },
+            { pos: [60,-50,20],  period: 9.0 },
+            { pos: [20,60,-60],  period: 4.8 },
+            { pos: [-40,-40,80], period: 12.0 },
+            { pos: [90,0,60],    period: 7.3 },
+            { pos: [-60,70,30],  period: 5.5 },
+            { pos: [0,-20,0],    period: 10.5 }
+          ];
+          for (var hi = 0; hi < hsData.length; hi++) {
+            var hd = hsData[hi];
+            var hMesh = new THREE.Mesh(
+              new THREE.SphereGeometry(5, 8, 6),
+              new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0 })
+            );
+            hMesh.position.set(hd.pos[0], hd.pos[1], hd.pos[2]);
+            this._mcRoot.add(hMesh);
+            /* twin jet lines */
+            var jMat = new THREE.MeshBasicMaterial({ color: 0x88aaff, transparent: true, opacity: 0 });
+            var jN = new THREE.Mesh(new THREE.CylinderGeometry(0.5, 2, 80, 5), jMat);
+            jN.position.set(hd.pos[0], hd.pos[1] + 40, hd.pos[2]);
+            this._mcRoot.add(jN);
+            var jS = new THREE.Mesh(new THREE.CylinderGeometry(0.5, 2, 80, 5), jMat.clone());
+            jS.position.set(hd.pos[0], hd.pos[1] - 40, hd.pos[2]);
+            jS.rotation.z = Math.PI;
+            this._mcRoot.add(jS);
+            this._hotspots.push({ mesh: hMesh, jN: jN, jS: jS, jMat: jMat, period: hd.period, phase: Math.random() * hd.period });
+          }
+
+          this._mcTime = 0;
+        },
+        tick: function (time, delta) {
+          var dt = Math.min(delta, 200) * 0.001;
+          this._mcTime += dt;
+          var t2 = this._mcTime;
+          this._mcRoot.rotation.y += 0.006 * dt;
+          for (var hi = 0; hi < this._hotspots.length; hi++) {
+            var hs = this._hotspots[hi];
+            var phase = ((t2 + hs.phase) % hs.period) / hs.period;
+            /* flash at start of each period */
+            var flash = Math.max(0, 1 - phase * 12);
+            hs.mesh.material.opacity  = flash * 0.95;
+            var jFlash = Math.max(0, 1 - phase * 6);
+            hs.jN.material.opacity = jFlash * 0.55;
+            hs.jS.material.opacity = jFlash * 0.55;
+            hs.mesh.scale.setScalar(1 + flash * 2);
           }
         },
       });
