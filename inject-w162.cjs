@@ -2,16 +2,20 @@
  * inject-w162.cjs  — Wave 162
  * cosmic-interplanetary-coronal-mass-ejection-sheath + stellar-penumbral-intrusion-umbra-brightening
  */
-'use strict';
-const fs = require('fs');
-const FILE = 'public/cosmos-infinite.html';
+"use strict";
+const fs = require("fs");
+const FILE = "public/cosmos-infinite.html";
 
-let html = fs.readFileSync(FILE, 'utf8');
-const usesCRLF = html.includes('\r\n');
-if (usesCRLF) html = html.replace(/\r\n/g, '\n');
+let html = fs.readFileSync(FILE, "utf8");
+const usesCRLF = html.includes("\r\n");
+if (usesCRLF) html = html.replace(/\r\n/g, "\n");
 
-if (html.includes('registerComponent("cosmic-interplanetary-coronal-mass-ejection-sheath"')) {
-  console.log('Wave 162 already injected.');
+if (
+  html.includes(
+    'registerComponent("cosmic-interplanetary-coronal-mass-ejection-sheath"',
+  )
+) {
+  console.log("Wave 162 already injected.");
   process.exit(0);
 }
 
@@ -198,18 +202,25 @@ const NEW_JS = `      AFRAME.registerComponent("cosmic-interplanetary-coronal-ma
 
 ${JS_ANCHOR}`;
 
-if (!html.includes(JS_ANCHOR)) { console.error('JS anchor not found!'); process.exit(1); }
+if (!html.includes(JS_ANCHOR)) {
+  console.error("JS anchor not found!");
+  process.exit(1);
+}
 html = html.replace(JS_ANCHOR, NEW_JS);
 
-const HTML_ANCHOR = '      <a-entity stellar-chromospheric-moreton-wave></a-entity>';
+const HTML_ANCHOR =
+  "      <a-entity stellar-chromospheric-moreton-wave></a-entity>";
 const NEW_HTML = `${HTML_ANCHOR}
       <a-entity cosmic-interplanetary-coronal-mass-ejection-sheath></a-entity>
       <a-entity stellar-penumbral-intrusion-umbra-brightening></a-entity>`;
 
-if (!html.includes(HTML_ANCHOR)) { console.error('HTML anchor not found!'); process.exit(1); }
+if (!html.includes(HTML_ANCHOR)) {
+  console.error("HTML anchor not found!");
+  process.exit(1);
+}
 html = html.replace(HTML_ANCHOR, NEW_HTML);
 
-if (usesCRLF) html = html.replace(/\n/g, '\r\n');
-fs.writeFileSync(FILE, html, 'utf8');
-const lines = html.split(usesCRLF ? '\r\n' : '\n').length;
-console.log('Wave 162 injected! Lines: ' + lines);
+if (usesCRLF) html = html.replace(/\n/g, "\r\n");
+fs.writeFileSync(FILE, html, "utf8");
+const lines = html.split(usesCRLF ? "\r\n" : "\n").length;
+console.log("Wave 162 injected! Lines: " + lines);
