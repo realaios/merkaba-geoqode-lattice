@@ -1,6 +1,6 @@
 /**
  * aios-vr-autonomous-loop.mjs
- * @alignment 8->26->48:480
+ * @alignment 8→26→48:480
  *
  * Autonomous VR asset pipeline orchestrator.
  * Runs on a configurable interval and executes:

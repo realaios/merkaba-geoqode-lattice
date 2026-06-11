@@ -1,6 +1,6 @@
 /**
  * aios-vr-scene-generator.mjs
- * @alignment 8->26->48:480
+ * @alignment 8→26→48:480
  * Reads mined-assets.json and auto-generates:
  *   1. New vr-taxonomy.json entries (ENTITY @ 396 Hz)
  *   2. Individual A-Frame scene HTML files under public/geo-experiences/

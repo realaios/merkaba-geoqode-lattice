@@ -1,6 +1,6 @@
 /**
  * aios-mal-injector.mjs
- * @alignment 8->26->48:480
+ * @alignment 8→26→48:480
  * Reads mined-assets.json and injects qualifying 3D model assets
  * into data/mal/props-warehouse.json (MAL — Merkaba Asset Loader).
  *
