@@ -54840,6 +54840,110 @@
       .dashboard-content::-webkit-scrollbar-thumb:hover {
         background: rgba(0, 212, 255, 0.5);
       }
+      /* ── Options button ── */
+      #opts-btn {
+        position: fixed;
+        top: 12px;
+        left: 12px;
+        width: 40px;
+        height: 40px;
+        border-radius: 8px;
+        background: rgba(0, 0, 0, 0.55);
+        border: 1.5px solid rgba(0, 212, 255, 0.5);
+        color: #00d4ff;
+        font-size: 18px;
+        cursor: pointer;
+        z-index: 5000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 0 10px rgba(0, 212, 255, 0.2);
+        transition: background 0.2s, border-color 0.2s;
+        font-family: sans-serif;
+        user-select: none;
+      }
+      #opts-btn:hover { background: rgba(0, 212, 255, 0.15); border-color: rgba(0, 212, 255, 0.85); }
+      #opts-btn.active { background: rgba(0, 212, 255, 0.2); border-color: #00d4ff; }
+      /* ── Options panel ── */
+      #opts-panel {
+        display: none;
+        position: fixed;
+        top: 60px;
+        left: 12px;
+        width: 290px;
+        max-height: calc(100vh - 80px);
+        overflow-y: auto;
+        background: rgba(4, 8, 28, 0.97);
+        border: 1.5px solid rgba(0, 212, 255, 0.4);
+        border-radius: 12px;
+        z-index: 5000;
+        box-shadow: 0 0 30px rgba(0, 212, 255, 0.15), 0 10px 40px rgba(0, 0, 0, 0.85);
+        padding: 14px;
+        font-family: 'Courier New', monospace;
+        color: #c8e6ff;
+        font-size: 13px;
+      }
+      #opts-panel.open { display: block; }
+      #opts-panel h3 {
+        color: #00d4ff;
+        font-size: 11px;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        margin: 12px 0 5px;
+        padding-bottom: 4px;
+        border-bottom: 1px solid rgba(0, 212, 255, 0.22);
+      }
+      #opts-panel h3:first-child { margin-top: 0; }
+      .opts-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 3px 0;
+      }
+      .opts-label { color: #a8cfee; font-size: 12px; cursor: pointer; flex: 1; }
+      .opts-toggle { position: relative; width: 36px; height: 20px; flex-shrink: 0; }
+      .opts-toggle input { opacity: 0; width: 0; height: 0; }
+      .opts-slider {
+        position: absolute;
+        cursor: pointer;
+        inset: 0;
+        background: rgba(255, 255, 255, 0.07);
+        border-radius: 20px;
+        border: 1px solid rgba(0, 212, 255, 0.22);
+        transition: background 0.2s;
+      }
+      .opts-slider:before {
+        content: '';
+        position: absolute;
+        width: 14px;
+        height: 14px;
+        left: 2px;
+        top: 2px;
+        background: rgba(0, 212, 255, 0.35);
+        border-radius: 50%;
+        transition: transform 0.2s;
+      }
+      .opts-toggle input:checked + .opts-slider { background: rgba(0, 212, 255, 0.22); border-color: #00d4ff; }
+      .opts-toggle input:checked + .opts-slider:before { transform: translateX(16px); background: #00d4ff; }
+      #opts-dash-type { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
+      .dash-type-btn {
+        padding: 3px 8px;
+        background: rgba(0, 212, 255, 0.05);
+        border: 1px solid rgba(0, 212, 255, 0.22);
+        border-radius: 4px;
+        color: #7ab8e8;
+        font-size: 10px;
+        cursor: pointer;
+        font-family: 'Courier New', monospace;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        transition: background 0.15s;
+      }
+      .dash-type-btn:hover { background: rgba(0, 212, 255, 0.15); }
+      .dash-type-btn.active { background: rgba(0, 212, 255, 0.2); border-color: #00d4ff; color: #00d4ff; }
+      #opts-panel::-webkit-scrollbar { width: 4px; }
+      #opts-panel::-webkit-scrollbar-track { background: transparent; }
+      #opts-panel::-webkit-scrollbar-thumb { background: rgba(0, 212, 255, 0.3); border-radius: 4px; }
     </style>
 
     <!-- Mobile joystick -->
@@ -54858,6 +54962,109 @@
 
     <!-- Centre crosshair -->
     <div id="crosshair"><div id="crosshair-dot"></div></div>
+
+    <!-- Options button -->
+    <button id="opts-btn" title="Options">&#9881;</button>
+
+    <!-- Options panel -->
+    <div id="opts-panel">
+      <h3>HUDs</h3>
+      <div class="opts-row">
+        <label class="opts-label" for="opt-controls-hint">Controls Hint</label>
+        <label class="opts-toggle"><input type="checkbox" id="opt-controls-hint" data-target="controls-hint" data-show="block"><span class="opts-slider"></span></label>
+      </div>
+      <div class="opts-row">
+        <label class="opts-label" for="opt-freq-hud">Frequency HUD</label>
+        <label class="opts-toggle"><input type="checkbox" id="opt-freq-hud" data-target="freq-hud" data-show="flex"><span class="opts-slider"></span></label>
+      </div>
+      <div class="opts-row">
+        <label class="opts-label" for="opt-freq-legend">Frequency Legend</label>
+        <label class="opts-toggle"><input type="checkbox" id="opt-freq-legend" data-target="freq-legend" data-show="block"><span class="opts-slider"></span></label>
+      </div>
+      <div class="opts-row">
+        <label class="opts-label" for="opt-vel-hud">Velocity HUD</label>
+        <label class="opts-toggle"><input type="checkbox" id="opt-vel-hud" data-target="vel-hud" data-show="block"><span class="opts-slider"></span></label>
+      </div>
+      <div class="opts-row">
+        <label class="opts-label" for="opt-nearby-hud">Nearby Objects HUD</label>
+        <label class="opts-toggle"><input type="checkbox" id="opt-nearby-hud" data-target="nearby-hud" data-show="block"><span class="opts-slider"></span></label>
+      </div>
+      <div class="opts-row">
+        <label class="opts-label" for="opt-compass-hud">Compass</label>
+        <label class="opts-toggle"><input type="checkbox" id="opt-compass-hud" data-target="compass-hud" data-show="block"><span class="opts-slider"></span></label>
+      </div>
+      <div class="opts-row">
+        <label class="opts-label" for="opt-minimap-hud">Minimap</label>
+        <label class="opts-toggle"><input type="checkbox" id="opt-minimap-hud" data-target="minimap-hud" data-show="block"><span class="opts-slider"></span></label>
+      </div>
+      <div class="opts-row">
+        <label class="opts-label" for="opt-nav-reticle">Nav Reticle</label>
+        <label class="opts-toggle"><input type="checkbox" id="opt-nav-reticle" data-target="nav-reticle" data-show="block"><span class="opts-slider"></span></label>
+      </div>
+      <div class="opts-row">
+        <label class="opts-label" for="opt-target-label">Target Label</label>
+        <label class="opts-toggle"><input type="checkbox" id="opt-target-label" data-target="target-label" data-show="block"><span class="opts-slider"></span></label>
+      </div>
+      <div class="opts-row">
+        <label class="opts-label" for="opt-pilot-guide">Pilot Guide</label>
+        <label class="opts-toggle"><input type="checkbox" id="opt-pilot-guide" data-target="pilot-guide" data-show="block"><span class="opts-slider"></span></label>
+      </div>
+      <div class="opts-row">
+        <label class="opts-label" for="opt-discovery-feed">Discovery Feed</label>
+        <label class="opts-toggle"><input type="checkbox" id="opt-discovery-feed" data-target="discovery-feed" data-show="block"><span class="opts-slider"></span></label>
+      </div>
+      <div class="opts-row">
+        <label class="opts-label" for="opt-systems-mapped">Systems Mapped</label>
+        <label class="opts-toggle"><input type="checkbox" id="opt-systems-mapped" data-target="systems-mapped" data-show="block"><span class="opts-slider"></span></label>
+      </div>
+      <div class="opts-row">
+        <label class="opts-label" for="opt-explorer-badge">Explorer Badge</label>
+        <label class="opts-toggle"><input type="checkbox" id="opt-explorer-badge" data-target="explorer-badge" data-show="block"><span class="opts-slider"></span></label>
+      </div>
+      <div class="opts-row">
+        <label class="opts-label" for="opt-horizon-overlay">Horizon Overlay (Physics)</label>
+        <label class="opts-toggle"><input type="checkbox" id="opt-horizon-overlay"><span class="opts-slider"></span></label>
+      </div>
+      <div class="opts-row">
+        <label class="opts-label" for="opt-sketchfab">3D Model Viewer</label>
+        <label class="opts-toggle"><input type="checkbox" id="opt-sketchfab" data-target="sketchfab-btn" data-show="flex"><span class="opts-slider"></span></label>
+      </div>
+      <h3>Object Info</h3>
+      <div class="opts-row">
+        <label class="opts-label" for="opt-hover-name">Show name on pointer hover</label>
+        <label class="opts-toggle"><input type="checkbox" id="opt-hover-name" checked><span class="opts-slider"></span></label>
+      </div>
+      <h3>Dashboard</h3>
+      <div class="opts-row">
+        <label class="opts-label" for="opt-dashboard">Show Dashboard</label>
+        <label class="opts-toggle"><input type="checkbox" id="opt-dashboard"><span class="opts-slider"></span></label>
+      </div>
+      <div id="opts-dash-type">
+        <button class="dash-type-btn active" data-dash="cars">Cars</button>
+        <button class="dash-type-btn" data-dash="aircraft">Aircraft</button>
+        <button class="dash-type-btn" data-dash="medical">Medical</button>
+        <button class="dash-type-btn" data-dash="machine">Machine</button>
+        <button class="dash-type-btn" data-dash="remote">Remote</button>
+        <button class="dash-type-btn" data-dash="crane">Crane</button>
+      </div>
+      <h3>Controls</h3>
+      <div class="opts-row">
+        <label class="opts-label" for="opt-inv-pitch">Invert Pitch (up/down)</label>
+        <label class="opts-toggle"><input type="checkbox" id="opt-inv-pitch"><span class="opts-slider"></span></label>
+      </div>
+      <div class="opts-row">
+        <label class="opts-label" for="opt-inv-roll">Invert Roll (bank)</label>
+        <label class="opts-toggle"><input type="checkbox" id="opt-inv-roll"><span class="opts-slider"></span></label>
+      </div>
+      <div class="opts-row">
+        <label class="opts-label" for="opt-inv-thrust">Invert Thrust (fwd/back)</label>
+        <label class="opts-toggle"><input type="checkbox" id="opt-inv-thrust"><span class="opts-slider"></span></label>
+      </div>
+      <div class="opts-row">
+        <label class="opts-label" for="opt-inv-yaw">Invert Yaw (turn)</label>
+        <label class="opts-toggle"><input type="checkbox" id="opt-inv-yaw"><span class="opts-slider"></span></label>
+      </div>
+    </div>
 
     <!-- Sketchfab 3D Model button (shown on all screens) -->
     <div id="sketchfab-btn" title="3D Model Viewer">&#x1F9CA;</div>
@@ -55031,10 +55238,12 @@
               camEl.object3D.getWorldDirection(fwd);
               fwd.normalize();
               /* push up (joyDY < 0 on screen) = fly forward */
-              rig.object3D.position.addScaledVector(fwd, -joyDY * SPEED);
+              var _thr = (window._inv_thrust ? joyDY : -joyDY);
+              rig.object3D.position.addScaledVector(fwd, _thr * SPEED);
               /* left/right = yaw around world Y */
               if (Math.abs(joyDX) > DEAD) {
-                rig.object3D.rotateOnWorldAxis(worldUp, -joyDX * 0.032);
+                var _yw = (window._inv_yaw ? joyDX : -joyDX);
+                rig.object3D.rotateOnWorldAxis(worldUp, _yw * 0.032);
               }
             }
 
@@ -55044,12 +55253,14 @@
             if (joy2Active && (Math.abs(joy2DX) > DEAD || Math.abs(joy2DY) > DEAD)) {
               /* pull back (joy2DY < 0) = pitch nose up */
               if (lc && lc.pitchObject) {
+                var _pit = (window._inv_pitch ? joy2DY : -joy2DY);
                 lc.pitchObject.rotation.x = Math.max(
                   -MAX_PITCH, Math.min(MAX_PITCH,
-                    lc.pitchObject.rotation.x - joy2DY * 0.035));
+                    lc.pitchObject.rotation.x + _pit * 0.035));
               }
               /* left/right = bank/roll */
-              camEl.object3D.rotation.z -= joy2DX * 0.04;
+              var _rl = (window._inv_roll ? -joy2DX : joy2DX);
+              camEl.object3D.rotation.z -= _rl * 0.04;
             }
             /* auto-level roll when right stick centred */
             if (!joy2Active || Math.abs(joy2DX) <= DEAD) {
@@ -55704,6 +55915,98 @@
 
         /* Start updating at 10 fps (fine for minimap) */
         setInterval(draw, 100);
+      })();
+
+      /* ─── Options panel ──────────────────────────────────────────────── */
+      (function initOptionsPanel() {
+        var optsBtn   = document.getElementById("opts-btn");
+        var optsPanel = document.getElementById("opts-panel");
+        if (!optsBtn || !optsPanel) return;
+
+        /* Toggle panel open/close */
+        optsBtn.addEventListener("click", function (e) {
+          e.stopPropagation();
+          optsPanel.classList.toggle("open");
+          optsBtn.classList.toggle("active");
+        });
+        document.addEventListener("click", function (e) {
+          if (!optsPanel.contains(e.target) && e.target !== optsBtn) {
+            optsPanel.classList.remove("open");
+            optsBtn.classList.remove("active");
+          }
+        });
+
+        /* Override !important CSS rules from JS */
+        function showEl(id, show, displayVal) {
+          var el = document.getElementById(id);
+          if (!el) return;
+          el.style.setProperty("display", show ? (displayVal || "block") : "none", "important");
+        }
+
+        /* Wire all data-target checkboxes */
+        optsPanel.querySelectorAll("input[data-target]").forEach(function (cb) {
+          cb.addEventListener("change", function () {
+            showEl(cb.dataset.target, cb.checked, cb.dataset.show || "block");
+          });
+        });
+
+        /* Horizon overlay — uses visibility/opacity class, not display */
+        var optHorizon = document.getElementById("opt-horizon-overlay");
+        if (optHorizon) {
+          optHorizon.addEventListener("change", function () {
+            var el = document.getElementById("horizon-overlay");
+            if (!el) return;
+            el.classList.toggle("hz-visible", optHorizon.checked);
+          });
+        }
+
+        /* Object hover name (geo-tooltip) */
+        var optHover = document.getElementById("opt-hover-name");
+        if (optHover) {
+          optHover.addEventListener("change", function () {
+            var tt = document.getElementById("geo-tooltip");
+            if (tt) tt.style.display = optHover.checked ? "" : "none";
+          });
+        }
+
+        /* Dashboard show/hide */
+        var optDash = document.getElementById("opt-dashboard");
+        if (optDash) {
+          optDash.addEventListener("change", function () {
+            var dc = document.getElementById("dashboardContainer");
+            if (!dc) return;
+            if (optDash.checked) {
+              dc.classList.add("active");
+              dc.style.setProperty("display", "flex", "important");
+            } else {
+              dc.classList.remove("active");
+              dc.style.setProperty("display", "none", "important");
+            }
+          });
+        }
+
+        /* Dashboard type buttons */
+        optsPanel.querySelectorAll(".dash-type-btn").forEach(function (btn) {
+          btn.addEventListener("click", function () {
+            optsPanel.querySelectorAll(".dash-type-btn").forEach(function (b) { b.classList.remove("active"); });
+            btn.classList.add("active");
+            if (typeof rotateDashboard === "function") rotateDashboard(btn.dataset.dash);
+            /* also auto-show dashboard if hidden */
+            if (optDash && !optDash.checked) {
+              optDash.checked = true;
+              optDash.dispatchEvent(new Event("change"));
+            }
+          });
+        });
+
+        /* Controls inversion flags — read by mobileLoop via window globals */
+        ["pitch", "roll", "thrust", "yaw"].forEach(function (axis) {
+          var cb = document.getElementById("opt-inv-" + axis);
+          if (!cb) return;
+          cb.addEventListener("change", function () {
+            window["_inv_" + axis] = cb.checked;
+          });
+        });
       })();
     </script>
   </body>
