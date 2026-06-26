@@ -1691,8 +1691,15 @@
         <a href="/start">Experiences</a>
         <a href="/vr-hub">VR Hub</a>
         <a href="/plaistore">PLAIStore</a>
-        <a href="https://aios-mesh.realaios.com" target="_blank" rel="noopener">&#x1F52E; AIOS-Mesh</a>
-        <a href="https://cosmos-flight.realaios.com" target="_blank" rel="noopener">&#x1F6E9; Cosmos Flight</a>
+        <a href="https://aios-mesh.realaios.com" target="_blank" rel="noopener"
+          >&#x1F52E; AIOS-Mesh</a
+        >
+        <a
+          href="https://cosmos-flight.realaios.com"
+          target="_blank"
+          rel="noopener"
+          >&#x1F6E9; Cosmos Flight</a
+        >
         <a href="/">Home</a>
       </div>
     </div>
@@ -10581,7 +10588,7 @@
           /* ── ALTITUDE (R/F) — direct world-Y ascend/descend ─────────────── */
           if (!uttActive) {
             var altSpeed = (boost ? BASE * 2.5 : BASE) * dt;
-            if (K["KeyR"] || K["PageUp"])   rigObj.position.y += altSpeed;
+            if (K["KeyR"] || K["PageUp"]) rigObj.position.y += altSpeed;
             if (K["KeyF"] || K["PageDown"]) rigObj.position.y -= altSpeed;
           }
         },
@@ -54871,9 +54878,9 @@
     <script>
       /* ─── Mobile drone joysticks + touch navigation ───────────────────── */
       (function initMobileNav() {
-        var joyWrap  = document.getElementById("mobile-joy-wrap");
+        var joyWrap = document.getElementById("mobile-joy-wrap");
         var joyStick = document.getElementById("mobile-joy-stick");
-        var joyWrap2  = document.getElementById("mobile-joy-wrap2");
+        var joyWrap2 = document.getElementById("mobile-joy-wrap2");
         var joyStick2 = document.getElementById("mobile-joy-stick2");
         var crosshair = document.getElementById("crosshair");
         if (!joyWrap || !joyStick) return;
@@ -54889,41 +54896,60 @@
 
         /* ── Left stick state (forward/back + strafe) ── */
         var joyActive = false;
-        var joyDX = 0, joyDY = 0;
+        var joyDX = 0,
+          joyDY = 0;
         var baseRect = null;
         var RADIUS = 55;
         var DEAD = 0.08;
 
         /* ── Right stick state (altitude + yaw) ── */
         var joy2Active = false;
-        var joy2DX = 0, joy2DY = 0;
+        var joy2DX = 0,
+          joy2DY = 0;
         var base2Rect = null;
 
-        function clamp(v, lo, hi) { return v < lo ? lo : v > hi ? hi : v; }
+        function clamp(v, lo, hi) {
+          return v < lo ? lo : v > hi ? hi : v;
+        }
 
         /* ── Left stick touch handlers ── */
-        joyWrap.addEventListener("touchstart", function (e) {
-          e.preventDefault();
-          joyActive = true;
-          baseRect = joyWrap.getBoundingClientRect();
-        }, { passive: false });
+        joyWrap.addEventListener(
+          "touchstart",
+          function (e) {
+            e.preventDefault();
+            joyActive = true;
+            baseRect = joyWrap.getBoundingClientRect();
+          },
+          { passive: false },
+        );
 
-        joyWrap.addEventListener("touchmove", function (e) {
-          if (!joyActive || !baseRect) return;
-          e.preventDefault();
-          var t = e.touches[0];
-          var cx = baseRect.left + baseRect.width / 2;
-          var cy = baseRect.top  + baseRect.height / 2;
-          var rawX = (t.clientX - cx) / RADIUS;
-          var rawY = (t.clientY - cy) / RADIUS;
-          var mag = Math.sqrt(rawX * rawX + rawY * rawY);
-          if (mag > 1.0) { rawX /= mag; rawY /= mag; }
-          joyDX = rawX; joyDY = rawY;
-          joyStick.style.transform = "translate(" + joyDX * 32 + "px," + joyDY * 32 + "px)";
-        }, { passive: false });
+        joyWrap.addEventListener(
+          "touchmove",
+          function (e) {
+            if (!joyActive || !baseRect) return;
+            e.preventDefault();
+            var t = e.touches[0];
+            var cx = baseRect.left + baseRect.width / 2;
+            var cy = baseRect.top + baseRect.height / 2;
+            var rawX = (t.clientX - cx) / RADIUS;
+            var rawY = (t.clientY - cy) / RADIUS;
+            var mag = Math.sqrt(rawX * rawX + rawY * rawY);
+            if (mag > 1.0) {
+              rawX /= mag;
+              rawY /= mag;
+            }
+            joyDX = rawX;
+            joyDY = rawY;
+            joyStick.style.transform =
+              "translate(" + joyDX * 32 + "px," + joyDY * 32 + "px)";
+          },
+          { passive: false },
+        );
 
         function resetJoy() {
-          joyActive = false; joyDX = 0; joyDY = 0;
+          joyActive = false;
+          joyDX = 0;
+          joyDY = 0;
           joyStick.style.transform = "translate(0,0)";
         }
         joyWrap.addEventListener("touchend", resetJoy);
@@ -54931,28 +54957,43 @@
 
         /* ── Right stick touch handlers ── */
         if (joyWrap2 && joyStick2) {
-          joyWrap2.addEventListener("touchstart", function (e) {
-            e.preventDefault();
-            joy2Active = true;
-            base2Rect = joyWrap2.getBoundingClientRect();
-          }, { passive: false });
+          joyWrap2.addEventListener(
+            "touchstart",
+            function (e) {
+              e.preventDefault();
+              joy2Active = true;
+              base2Rect = joyWrap2.getBoundingClientRect();
+            },
+            { passive: false },
+          );
 
-          joyWrap2.addEventListener("touchmove", function (e) {
-            if (!joy2Active || !base2Rect) return;
-            e.preventDefault();
-            var t = e.touches[0];
-            var cx = base2Rect.left + base2Rect.width / 2;
-            var cy = base2Rect.top  + base2Rect.height / 2;
-            var rawX = (t.clientX - cx) / RADIUS;
-            var rawY = (t.clientY - cy) / RADIUS;
-            var mag = Math.sqrt(rawX * rawX + rawY * rawY);
-            if (mag > 1.0) { rawX /= mag; rawY /= mag; }
-            joy2DX = rawX; joy2DY = rawY;
-            joyStick2.style.transform = "translate(" + joy2DX * 32 + "px," + joy2DY * 32 + "px)";
-          }, { passive: false });
+          joyWrap2.addEventListener(
+            "touchmove",
+            function (e) {
+              if (!joy2Active || !base2Rect) return;
+              e.preventDefault();
+              var t = e.touches[0];
+              var cx = base2Rect.left + base2Rect.width / 2;
+              var cy = base2Rect.top + base2Rect.height / 2;
+              var rawX = (t.clientX - cx) / RADIUS;
+              var rawY = (t.clientY - cy) / RADIUS;
+              var mag = Math.sqrt(rawX * rawX + rawY * rawY);
+              if (mag > 1.0) {
+                rawX /= mag;
+                rawY /= mag;
+              }
+              joy2DX = rawX;
+              joy2DY = rawY;
+              joyStick2.style.transform =
+                "translate(" + joy2DX * 32 + "px," + joy2DY * 32 + "px)";
+            },
+            { passive: false },
+          );
 
           function resetJoy2() {
-            joy2Active = false; joy2DX = 0; joy2DY = 0;
+            joy2Active = false;
+            joy2DX = 0;
+            joy2DY = 0;
             joyStick2.style.transform = "translate(0,0)";
           }
           joyWrap2.addEventListener("touchend", resetJoy2);
@@ -54961,17 +55002,21 @@
 
         /* ── RAF: apply both joysticks to cameraRig ── */
         function mobileLoop() {
-          var rig   = document.getElementById("cameraRig");
+          var rig = document.getElementById("cameraRig");
           var camEl = document.querySelector("[look-controls]");
 
           if (rig && rig.object3D && camEl && camEl.object3D) {
-            var dist  = rig.object3D.position.length();
-            var SPEED = dist >= 16000 ? 400 : dist >= 8000 ? 200 : dist >= 3000 ? 80 : 20;
+            var dist = rig.object3D.position.length();
+            var SPEED =
+              dist >= 16000 ? 400 : dist >= 8000 ? 200 : dist >= 3000 ? 80 : 20;
             var THREE = AFRAME.THREE;
 
             /* ── Left stick: forward/backward + strafe ── */
-            if (joyActive && (Math.abs(joyDX) > DEAD || Math.abs(joyDY) > DEAD)) {
-              var fwd   = new THREE.Vector3();
+            if (
+              joyActive &&
+              (Math.abs(joyDX) > DEAD || Math.abs(joyDY) > DEAD)
+            ) {
+              var fwd = new THREE.Vector3();
               var right = new THREE.Vector3();
               var worldUp = new THREE.Vector3(0, 1, 0);
               /* Full camera direction — fly where you look (including pitch) */
@@ -54979,12 +55024,15 @@
               fwd.normalize();
               right.crossVectors(fwd, worldUp).normalize();
               /* joyDY up = push stick up = fly forward (positive fwd) */
-              rig.object3D.position.addScaledVector(fwd,  -joyDY * SPEED);
+              rig.object3D.position.addScaledVector(fwd, -joyDY * SPEED);
               rig.object3D.position.addScaledVector(right, joyDX * SPEED);
             }
 
             /* ── Right stick: altitude (Y) + yaw ── */
-            if (joy2Active && (Math.abs(joy2DX) > DEAD || Math.abs(joy2DY) > DEAD)) {
+            if (
+              joy2Active &&
+              (Math.abs(joy2DX) > DEAD || Math.abs(joy2DY) > DEAD)
+            ) {
               /* up/down on stick = ascend/descend in world Y */
               rig.object3D.position.y -= joy2DY * SPEED;
               /* left/right on stick = yaw the rig */
@@ -54996,19 +55044,29 @@
         requestAnimationFrame(mobileLoop);
 
         /* ── Two-finger drag (fly forward) ── */
-        var _pan0X = 0, _pan0Y = 0, _panActive = false;
-        window.addEventListener("touchstart", function (e) {
-          if (e.touches.length === 2) {
-            var t0 = e.touches[0], t1 = e.touches[1];
-            var dist = Math.hypot(t1.clientX - t0.clientX, t1.clientY - t0.clientY);
-            _panStartDist = dist;
-            _pan0X = (t0.clientX + t1.clientX) / 2;
-            _pan0Y = (t0.clientY + t1.clientY) / 2;
-            _panActive = true;
-          } else {
-            _panActive = false;
-          }
-        }, { passive: true });
+        var _pan0X = 0,
+          _pan0Y = 0,
+          _panActive = false;
+        window.addEventListener(
+          "touchstart",
+          function (e) {
+            if (e.touches.length === 2) {
+              var t0 = e.touches[0],
+                t1 = e.touches[1];
+              var dist = Math.hypot(
+                t1.clientX - t0.clientX,
+                t1.clientY - t0.clientY,
+              );
+              _panStartDist = dist;
+              _pan0X = (t0.clientX + t1.clientX) / 2;
+              _pan0Y = (t0.clientY + t1.clientY) / 2;
+              _panActive = true;
+            } else {
+              _panActive = false;
+            }
+          },
+          { passive: true },
+        );
 
         var _panStartDist = 0;
         window.addEventListener(
