@@ -279,21 +279,9 @@
           border-color 0.2s,
           color 0.2s;
       }
-      /* ── Mobile look-invert toggles (touch devices only) ────────────────── */
-      /* Two small buttons: ↕ flips up/down look (pitch), ↔ flips left/right (yaw) */
+      /* ── Mobile look-invert toggles — hidden (joystick controls look now) ── */
       #mob-invert {
-        display: none;
-        position: fixed;
-        bottom: 62px;
-        right: 14px;
-        flex-direction: column;
-        gap: 8px;
-        z-index: 3000;
-      }
-      @media (hover: none) and (pointer: coarse) {
-        #mob-invert {
-          display: flex;
-        }
+        display: none !important;
       }
       .mb-inv-btn {
         width: 44px;
@@ -373,6 +361,20 @@
       }
       .a-enter-vr-button {
         pointer-events: all !important;
+        /* Move to top-right corner */
+        bottom: auto !important;
+        top: 12px !important;
+        right: 12px !important;
+      }
+      .a-enter-ar-button {
+        pointer-events: all !important;
+        bottom: auto !important;
+        top: 12px !important;
+        right: 72px !important;
+      }
+      /* Hide sketchfab — button does nothing currently */
+      #sketchfab-btn {
+        display: none !important;
       }
       /* ── Scale Drill-Down HUD ─────────────────────────────────────────── */
       #scale-indicator {
@@ -54890,6 +54892,17 @@
         if (isTouch) {
           joyWrap.style.display = "block";
           if (joyWrap2) joyWrap2.style.display = "block";
+          /* Disable look-controls touch so joysticks don't conflict */
+          var _disableLC = function () {
+            var _camEl = document.querySelector("[look-controls]");
+            if (_camEl && _camEl.components && _camEl.components["look-controls"]) {
+              _camEl.setAttribute("look-controls", "touchEnabled: false");
+            }
+          };
+          _disableLC();
+          var _scene = document.querySelector("a-scene");
+          if (_scene) _scene.addEventListener("loaded", _disableLC);
+          else window.addEventListener("load", _disableLC);
         }
         /* Crosshair always visible */
         if (crosshair) crosshair.style.display = "block";
@@ -55011,32 +55024,36 @@
               dist >= 16000 ? 400 : dist >= 8000 ? 200 : dist >= 3000 ? 80 : 20;
             var THREE = AFRAME.THREE;
 
-            /* ── Left stick: forward/backward + strafe ── */
-            if (
-              joyActive &&
-              (Math.abs(joyDX) > DEAD || Math.abs(joyDY) > DEAD)
-            ) {
+            /* ── Left stick: thrust (fwd/back follows camera pitch) + yaw ── */
+            var worldUp = new THREE.Vector3(0, 1, 0);
+            if (joyActive && (Math.abs(joyDX) > DEAD || Math.abs(joyDY) > DEAD)) {
               var fwd = new THREE.Vector3();
-              var right = new THREE.Vector3();
-              var worldUp = new THREE.Vector3(0, 1, 0);
-              /* Full camera direction — fly where you look (including pitch) */
               camEl.object3D.getWorldDirection(fwd);
               fwd.normalize();
-              right.crossVectors(fwd, worldUp).normalize();
-              /* joyDY up = push stick up = fly forward (positive fwd) */
+              /* push up (joyDY < 0 on screen) = fly forward */
               rig.object3D.position.addScaledVector(fwd, -joyDY * SPEED);
-              rig.object3D.position.addScaledVector(right, joyDX * SPEED);
+              /* left/right = yaw around world Y */
+              if (Math.abs(joyDX) > DEAD) {
+                rig.object3D.rotateOnWorldAxis(worldUp, -joyDX * 0.032);
+              }
             }
 
-            /* ── Right stick: altitude (Y) + yaw ── */
-            if (
-              joy2Active &&
-              (Math.abs(joy2DX) > DEAD || Math.abs(joy2DY) > DEAD)
-            ) {
-              /* up/down on stick = ascend/descend in world Y */
-              rig.object3D.position.y -= joy2DY * SPEED;
-              /* left/right on stick = yaw the rig */
-              rig.object3D.rotation.y -= joy2DX * 0.03;
+            /* ── Right stick: airplane yoke — pitch + bank/roll ── */
+            var lc = camEl.components && camEl.components["look-controls"];
+            var MAX_PITCH = 1.4;
+            if (joy2Active && (Math.abs(joy2DX) > DEAD || Math.abs(joy2DY) > DEAD)) {
+              /* pull back (joy2DY < 0) = pitch nose up */
+              if (lc && lc.pitchObject) {
+                lc.pitchObject.rotation.x = Math.max(
+                  -MAX_PITCH, Math.min(MAX_PITCH,
+                    lc.pitchObject.rotation.x - joy2DY * 0.035));
+              }
+              /* left/right = bank/roll */
+              camEl.object3D.rotation.z -= joy2DX * 0.04;
+            }
+            /* auto-level roll when right stick centred */
+            if (!joy2Active || Math.abs(joy2DX) <= DEAD) {
+              camEl.object3D.rotation.z *= 0.88;
             }
           }
           requestAnimationFrame(mobileLoop);
