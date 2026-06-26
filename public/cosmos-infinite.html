@@ -55816,14 +55816,14 @@
               /* Craft nose = rig -Z. Pilot look (VR or mouse) never steers. */
               var fwd = new THREE.Vector3(0, 0, -1).applyQuaternion(rig.object3D.quaternion);
               fwd.normalize();
-              /* push down (joyDY > 0 on screen) = fly forward */
-              var _thr = (window._inv_thrust ? -joyDY : joyDY);
+              /* push up (joyDY < 0 on screen) = fly forward — standard mobile stick */
+              var _thr = (window._inv_thrust ? joyDY : -joyDY);
               rig.object3D.position.addScaledVector(fwd, _thr * SPEED);
-              /* left/right = yaw around CRAFT local up */
+              /* left/right = yaw around CRAFT local up (use cam quat — includes roll) */
               if (Math.abs(joyDX) > DEAD) {
                 var _yw = (window._inv_yaw ? joyDX : -joyDX);
-                var _rigQuat = rig.object3D.getWorldQuaternion(new THREE.Quaternion());
-                var _craftUp = new THREE.Vector3(0, 1, 0).applyQuaternion(_rigQuat).normalize();
+                var _camYawQuat = camEl.object3D.getWorldQuaternion(new THREE.Quaternion());
+                var _craftUp = new THREE.Vector3(0, 1, 0).applyQuaternion(_camYawQuat).normalize();
                 rig.object3D.rotateOnWorldAxis(_craftUp, _yw * 0.032);
               }
             }
@@ -55837,8 +55837,8 @@
                  Roll right + pitch up = right-hand turn. Pilot visor look ignored. */
               if (Math.abs(joy2DY) > DEAD) {
                 var _pit = (window._inv_pitch ? -joy2DY : joy2DY);
-                var _rigPitchQuat = rig.object3D.getWorldQuaternion(new THREE.Quaternion());
-                var _rightVec = new THREE.Vector3(1, 0, 0).applyQuaternion(_rigPitchQuat).normalize();
+                var _camPitchQuat = camEl.object3D.getWorldQuaternion(new THREE.Quaternion());
+                var _rightVec = new THREE.Vector3(1, 0, 0).applyQuaternion(_camPitchQuat).normalize();
                 rig.object3D.rotateOnWorldAxis(_rightVec, _pit * 0.064);
                 /* zero out pitchObject so look-controls stale offset doesn't stack */
                 if (lc && lc.pitchObject) lc.pitchObject.rotation.x = 0;
