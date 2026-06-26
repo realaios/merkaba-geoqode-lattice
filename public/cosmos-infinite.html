@@ -10543,13 +10543,7 @@
               this._roll += window._joyRollDelta;
               window._joyRollDelta = 0;
             }
-            if (!K["KeyQ"] && !K["KeyE"] && !window._joyRollActive) {
-              this._roll *= Math.max(0, 1 - dt * 0.75); /* gradual auto-level */
-            }
-            this._roll = Math.max(
-              -Math.PI * 0.88,
-              Math.min(Math.PI * 0.88, this._roll),
-            );
+            /* Space: no auto-level, no clamp — orientation is sticky */
           } else {
             this._roll *= Math.max(0, 1 - dt * 2);
           }
@@ -55187,8 +55181,8 @@
               var fwd = new THREE.Vector3();
               camEl.object3D.getWorldDirection(fwd);
               fwd.normalize();
-              /* push up (joyDY < 0 on screen) = fly forward */
-              var _thr = (window._inv_thrust ? joyDY : -joyDY);
+              /* push down (joyDY > 0 on screen) = fly forward */
+              var _thr = (window._inv_thrust ? -joyDY : joyDY);
               rig.object3D.position.addScaledVector(fwd, _thr * SPEED);
               /* left/right = yaw around world Y */
               if (Math.abs(joyDX) > DEAD) {
@@ -55201,20 +55195,23 @@
 
             /* ── Right stick: airplane yoke — pitch + bank/roll ── */
             var lc = camEl.components && camEl.components["look-controls"];
-            var MAX_PITCH = 1.4;
             if (joy2Active && (Math.abs(joy2DX) > DEAD || Math.abs(joy2DY) > DEAD)) {
-              /* pull back (joy2DY < 0) = pitch nose up */
-              if (lc && lc.pitchObject) {
+              /* Pitch: rotate rig around camera's CURRENT world right-vector.
+                 When rolled, the right-vector tilts so pitch contributes to yaw
+                 → bank right + pull back = right-hand turn. */
+              if (Math.abs(joy2DY) > DEAD) {
                 var _pit = (window._inv_pitch ? joy2DY : -joy2DY);
-                lc.pitchObject.rotation.x = Math.max(
-                  -MAX_PITCH, Math.min(MAX_PITCH,
-                    lc.pitchObject.rotation.x + _pit * 0.035));
+                var _camQuat = camEl.object3D.getWorldQuaternion(new THREE.Quaternion());
+                var _rightVec = new THREE.Vector3(1, 0, 0).applyQuaternion(_camQuat).normalize();
+                rig.object3D.rotateOnWorldAxis(_rightVec, _pit * 0.032);
+                /* zero out pitchObject so look-controls stale offset doesn't stack */
+                if (lc && lc.pitchObject) lc.pitchObject.rotation.x = 0;
               }
               /* left/right = bank/roll — fed to cosmos-pilot-controls _roll */
               var _rl = (window._inv_roll ? -joy2DX : joy2DX);
               window._joyRollDelta = (window._joyRollDelta || 0) - _rl * 0.04;
             }
-            /* Signal pilot-controls to hold roll (suppress auto-level) */
+            /* used by cosmos-pilot-controls to suppress auto-level (now removed) */
             window._joyRollActive = joy2Active && Math.abs(joy2DX) > DEAD;
           }
           requestAnimationFrame(mobileLoop);
