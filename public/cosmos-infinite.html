@@ -4141,7 +4141,7 @@
 ══════════════════════════════════════════════════════════════════════════ */
       function enterUniverse() {
         initAudio();
-        playEntry();
+        /* playEntry(); — frequency tones silenced */
         if (window._introStopAnim) window._introStopAnim();
         var modal = document.getElementById("introModal");
         modal.classList.add("fade-out");
@@ -4156,8 +4156,8 @@
           if (v.length) { startNarrator(); }
           else { window.speechSynthesis.onvoiceschanged = startNarrator; }
         } */
-        /* Lattice pulse every 3.5 s */
-        setInterval(firePulse, 3500);
+        /* firePulse interval — silenced */
+        /* setInterval(firePulse, 3500); */
       }
 
       /* ══════════════════════════════════════════════════════════════════════════
@@ -55246,6 +55246,8 @@
                 rig.object3D.rotateOnWorldAxis(worldUp, _yw * 0.032);
               }
             }
+            /* Expose thrust level for rocket audio */
+            window._thrustLevel = joyActive ? Math.abs(joyDY) : 0;
 
             /* ── Right stick: airplane yoke — pitch + bank/roll ── */
             var lc = camEl.components && camEl.components["look-controls"];
@@ -55915,6 +55917,99 @@
 
         /* Start updating at 10 fps (fine for minimap) */
         setInterval(draw, 100);
+      })();
+
+      /* ─── Rocket / thrust audio ──────────────────────────────────────────── */
+      (function initThrustAudio() {
+        var _ctx = null, _noise = null, _osc = null, _sub = null;
+        var _gain = null, _filter = null, _subGain = null;
+        var _current = 0, _target = 0;
+        var _kW = false, _kS = false;
+
+        function _getCtx() {
+          if (!_ctx || _ctx.state === "closed") {
+            _ctx = new (window.AudioContext || window.webkitAudioContext)();
+          }
+          if (_ctx.state === "suspended") _ctx.resume();
+          return _ctx;
+        }
+
+        function _makeNoise(ac) {
+          var buf = ac.createBuffer(1, ac.sampleRate * 2, ac.sampleRate);
+          var d = buf.getChannelData(0);
+          for (var i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+          var src = ac.createBufferSource();
+          src.buffer = buf;
+          src.loop = true;
+          return src;
+        }
+
+        function _build() {
+          if (_gain) return;
+          var ac = _getCtx();
+
+          /* Noise → low-pass → master gain (rocket exhaust rumble) */
+          _filter = ac.createBiquadFilter();
+          _filter.type = "lowpass";
+          _filter.frequency.value = 160;
+          _filter.Q.value = 1.8;
+          _noise = _makeNoise(ac);
+          _noise.connect(_filter);
+
+          /* Sawtooth engine hum */
+          _osc = ac.createOscillator();
+          _osc.type = "sawtooth";
+          _osc.frequency.value = 80;
+
+          /* Sub thud */
+          _sub = ac.createOscillator();
+          _sub.type = "sine";
+          _sub.frequency.value = 42;
+          _subGain = ac.createGain();
+          _subGain.gain.value = 0.4;
+          _sub.connect(_subGain);
+
+          _gain = ac.createGain();
+          _gain.gain.value = 0;
+
+          _filter.connect(_gain);
+          _osc.connect(_gain);
+          _subGain.connect(_gain);
+          _gain.connect(ac.destination);
+
+          _noise.start();
+          _osc.start();
+          _sub.start();
+        }
+
+        /* Keyboard W / S */
+        window.addEventListener("keydown", function (e) {
+          if (e.code === "KeyW") _kW = true;
+          if (e.code === "KeyS") _kS = true;
+        });
+        window.addEventListener("keyup", function (e) {
+          if (e.code === "KeyW") _kW = false;
+          if (e.code === "KeyS") _kS = false;
+        });
+
+        /* Main loop — polls joystick level + key state */
+        (function loop() {
+          var joyLevel = window._thrustLevel || 0;
+          var keyLevel = (_kW || _kS) ? 1.0 : 0;
+          _target = Math.max(joyLevel, keyLevel);
+
+          if (_target > 0.04 && !_gain) _build();
+
+          if (_gain) {
+            _current += (_target - _current) * 0.07;
+            var v = Math.max(0, _current);
+            _gain.gain.value = v * 0.32;
+            if (_osc) _osc.frequency.value = 72 + v * 65;
+            if (_sub) _sub.frequency.value = 38 + v * 18;
+            if (_filter) _filter.frequency.value = 110 + v * 220;
+          }
+          requestAnimationFrame(loop);
+        })();
       })();
 
       /* ─── Options panel ──────────────────────────────────────────────── */
