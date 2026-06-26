@@ -1803,15 +1803,21 @@
       <div class="scale-dist">72.0 au</div>
     </div>
 
+    <!-- Pilot agent status toast (P key toggles autopilot) -->
+    <div id="agent-status" style="
+      position: fixed; top: 60px; left: 50%; transform: translateX(-50%);
+      background: rgba(0,0,0,0.7); border: 1px solid rgba(0,212,255,0.4);
+      color: #00d4ff; font-family: 'Monaco', monospace; font-size: 0.65rem;
+      letter-spacing: 0.12em; text-transform: uppercase; padding: 5px 14px;
+      border-radius: 4px; pointer-events: none; opacity: 0;
+      transition: opacity 0.4s ease; z-index: 9996;
+    "></div>
+
     <!-- UNIVERSE HORIZON OVERLAY - 48000 au - @alignment 8→26→48:480 -->
     <div id="horizon-overlay">
       <button
         id="horizon-close"
-        onclick="
-          document
-            .getElementById('horizon-overlay')
-            .classList.remove('hz-visible')
-        "
+        onclick="window.closeHorizonOverlay && window.closeHorizonOverlay()"
       >
         &#x00D7;
       </button>
@@ -2710,6 +2716,36 @@
       </div>
     </div>
 
+    <script>
+      /* Close horizon overlay: hide panel, push craft outward, face origin */
+      window.closeHorizonOverlay = function () {
+        document.getElementById("horizon-overlay").classList.remove("hz-visible");
+        var rig = document.getElementById("cameraRig");
+        if (!rig || !rig.object3D) return;
+        var THREE = window.AFRAME && window.AFRAME.THREE;
+        if (!THREE) return;
+        /* push outward 500 units so we're clearly past the horizon trigger */
+        var pos = rig.object3D.position;
+        var outward = pos.clone().normalize();
+        pos.addScaledVector(outward, 500);
+        /* rotate rig to face universe centre */
+        rig.object3D.lookAt(new THREE.Vector3(0, 0, 0));
+        /* reset look-controls pitch/yaw so they don't fight the new orientation */
+        var camEl =
+          document.querySelector("[camera]") ||
+          document.querySelector("a-camera");
+        if (camEl) {
+          var lc = camEl.components && camEl.components["look-controls"];
+          if (lc) {
+            if (lc.pitchObject) lc.pitchObject.rotation.x = 0;
+            if (lc.yawObject) lc.yawObject.rotation.y = 0;
+          }
+        }
+        if (typeof window._updateScaleHUD === "function")
+          window._updateScaleHUD(pos.length(), null);
+      };
+    </script>
+
     <!-- ══════════════════════════════════════════════════════════════════════════
      A-FRAME SCENE
 ════════════════════════════════════════════════════════════════════════════ -->
@@ -3474,7 +3510,7 @@
       <a-entity dark-matter-halo></a-entity>
       <!-- ── VOID FILAMENT — cosmic web strand threading galaxies like pearls ── -->
       <a-entity void-filament></a-entity>
-      <a-entity cosmos-pilot-controls></a-entity>
+      <a-entity cosmos-pilot-controls merkaba-pilot-agent></a-entity>
       <a-entity cosmos-audio></a-entity>
       <!-- ── STELLAR STREAM — tidal debris arc from disrupted globular cluster ── -->
       <a-entity stellar-stream></a-entity>
@@ -4157,10 +4193,10 @@
             new THREE.MeshPhongMaterial({
               color: 0xf59e0b,
               emissive: 0x8a5500,
-              emissiveIntensity: 0.9,
+              emissiveIntensity: 0.35,
               shininess: 130,
               transparent: true,
-              opacity: 0.93,
+              opacity: 0.65,
             }),
           );
           group.add(this.icoMesh);
@@ -4171,10 +4207,10 @@
             new THREE.MeshPhongMaterial({
               color: 0x00d4ff,
               emissive: 0x008099,
-              emissiveIntensity: 1.5,
+              emissiveIntensity: 0.6,
               shininess: 200,
               transparent: true,
-              opacity: 0.82,
+              opacity: 0.58,
             }),
           );
           group.add(this.octMesh);
@@ -4185,10 +4221,10 @@
             new THREE.MeshPhongMaterial({
               color: 0xfbbf24,
               emissive: 0x0077cc,
-              emissiveIntensity: 1.8,
+              emissiveIntensity: 0.7,
               shininess: 220,
               transparent: true,
-              opacity: 0.82,
+              opacity: 0.58,
             }),
           );
           group.add(this.tknMesh);
@@ -4200,7 +4236,7 @@
               color: 0x00d4ff,
               wireframe: true,
               transparent: true,
-              opacity: 0.26,
+              opacity: 0.12,
               blending: THREE.AdditiveBlending,
               depthWrite: false,
             }),
@@ -4214,9 +4250,9 @@
               new THREE.MeshPhongMaterial({
                 color: 0x4f46e5,
                 emissive: 0x4f46e5,
-                emissiveIntensity: 3.0,
+                emissiveIntensity: 1.2,
                 transparent: true,
-                opacity: 0.96,
+                opacity: 0.67,
               }),
             ),
           );
@@ -4228,10 +4264,10 @@
               new THREE.MeshPhongMaterial({
                 color: 0x4f46e5,
                 emissive: 0x4f46e5,
-                emissiveIntensity: 1.2,
+                emissiveIntensity: 0.5,
                 side: THREE.BackSide,
                 transparent: true,
-                opacity: 0.1,
+                opacity: 0.05,
                 blending: THREE.AdditiveBlending,
                 depthWrite: false,
               }),
@@ -4244,9 +4280,9 @@
             new THREE.MeshPhongMaterial({
               color: 0x00d4ff,
               emissive: 0x007799,
-              emissiveIntensity: 1.1,
+              emissiveIntensity: 0.45,
               transparent: true,
-              opacity: 0.55,
+              opacity: 0.38,
             }),
           );
           this.ringMesh.rotation.x = Math.PI / 2;
@@ -4258,9 +4294,9 @@
             new THREE.MeshPhongMaterial({
               color: 0x9b5cff,
               emissive: 0x4a00cc,
-              emissiveIntensity: 1.0,
+              emissiveIntensity: 0.4,
               transparent: true,
-              opacity: 0.45,
+              opacity: 0.32,
             }),
           );
           this.ring2Mesh.rotation.x = Math.PI / 3;
@@ -4300,12 +4336,12 @@
 
           if (this.icoMesh) {
             this.icoMesh.rotation.y = t * 0.26 * speedMult;
-            this.icoMesh.material.emissiveIntensity = 0.9 + glowMult * 0.8;
+            this.icoMesh.material.emissiveIntensity = 0.35 + glowMult * 0.8;
           }
           if (this.octMesh) {
             this.octMesh.rotation.y = -t * 0.26 * PHI * speedMult;
             this.octMesh.rotation.x = t * 0.12 * speedMult;
-            this.octMesh.material.emissiveIntensity = 1.5 + glowMult;
+            this.octMesh.material.emissiveIntensity = 0.6 + glowMult;
           }
           if (this.tknMesh) {
             this.tknMesh.rotation.z = t * 0.2 * speedMult;
@@ -4313,7 +4349,7 @@
             this.tknMesh.material.opacity =
               0.68 + Math.sin(t * 3.1) * 0.18 + burst * 0.14;
             this.tknMesh.material.emissiveIntensity =
-              1.4 + Math.sin(t * 2.7 + 1.0) * 0.55 + glowMult * 1.5;
+              0.55 + Math.sin(t * 2.7 + 1.0) * 0.22 + glowMult * 0.6;
           }
           if (this.tknWire) {
             this.tknWire.rotation.z = -t * 0.15 * speedMult;
@@ -4325,13 +4361,13 @@
             this.ringMesh.rotation.z = t * 0.32 * speedMult;
             this.ringMesh.material.opacity =
               0.38 + Math.sin(t * 2.2) * 0.18 + px * 0.5;
-            this.ringMesh.material.emissiveIntensity = 1.1 + glowMult * 0.9;
+            this.ringMesh.material.emissiveIntensity = 0.45 + glowMult * 0.9;
           }
           if (this.ring2Mesh) {
             this.ring2Mesh.rotation.z = -t * 0.28 * speedMult;
             this.ring2Mesh.material.opacity =
               0.28 + Math.sin(t * 1.8 + 1) * 0.15 + px * 0.4;
-            this.ring2Mesh.material.emissiveIntensity = 1.0 + glowMult * 0.8;
+            this.ring2Mesh.material.emissiveIntensity = 0.4 + glowMult * 0.8;
           }
         },
       });
@@ -5825,6 +5861,7 @@
           /* ── root pivot ── */
           this._pivot = new THREE.Group();
           this._pivot.position.set(-540, 180, 1140);
+          this._pivot.scale.setScalar(3.0);
           scene.add(this._pivot);
 
           var pivot = this._pivot;
@@ -5953,6 +5990,7 @@
 
           this._barycentre = new THREE.Group();
           this._barycentre.position.set(1500, 360, -1050);
+          this._barycentre.scale.setScalar(3.0);
           scene.add(this._barycentre);
 
           var bc = this._barycentre;
@@ -6101,6 +6139,7 @@
 
           this._nebPivot = new THREE.Group();
           this._nebPivot.position.set(-900, 600, -1800);
+          this._nebPivot.scale.setScalar(3.0);
           scene.add(this._nebPivot);
 
           var N = 3000;
@@ -6196,6 +6235,7 @@
 
           this._qPivot = new THREE.Group();
           this._qPivot.position.set(180, 1140, -2700);
+          this._qPivot.scale.setScalar(3.0);
           scene.add(this._qPivot);
 
           /* ── core ── */
@@ -6325,6 +6365,7 @@
 
           this._igRoot = new THREE.Group();
           this._igRoot.position.set(960, -540, 1350);
+          this._igRoot.scale.setScalar(3.0);
           scene.add(this._igRoot);
 
           /* ── planet body ── */
@@ -6463,6 +6504,7 @@
 
           this._grbRoot = new THREE.Group();
           this._grbRoot.position.set(-1500, 180, -840);
+          this._grbRoot.scale.setScalar(3.0);
           scene.add(this._grbRoot);
 
           /* ── fireball core ── */
@@ -6611,6 +6653,7 @@
 
           this._whRoot = new THREE.Group();
           this._whRoot.position.set(-540, -180, -2340);
+          this._whRoot.scale.setScalar(3.0);
           scene.add(this._whRoot);
 
           /* ── throat rings ── */
@@ -6760,6 +6803,7 @@
 
           this._mtRoot = new THREE.Group();
           this._mtRoot.position.set(1350, 600, 660);
+          this._mtRoot.scale.setScalar(3.0);
           scene.add(this._mtRoot);
 
           /* ── core body ── */
@@ -6906,6 +6950,7 @@
 
           this._snRoot = new THREE.Group();
           this._snRoot.position.set(-1200, 450, -1500);
+          this._snRoot.scale.setScalar(3.0);
           scene.add(this._snRoot);
 
           /* ── molecular cloud ── */
@@ -7052,6 +7097,7 @@
 
           this._kvRoot = new THREE.Group();
           this._kvRoot.position.set(-840, 960, -1950);
+          this._kvRoot.scale.setScalar(3.0);
           scene.add(this._kvRoot);
 
           /* ── twin neutron stars ── */
@@ -7462,6 +7508,7 @@
           var PI = Math.PI;
           this._cvRoot = new THREE.Group();
           this._cvRoot.position.set(600, -1050, 900);
+          this._cvRoot.scale.setScalar(3.0);
           scene.add(this._cvRoot);
 
           var VN = 200;
@@ -7581,6 +7628,7 @@
           var PI = Math.PI;
           this._awRoot = new THREE.Group();
           this._awRoot.position.set(-2100, 240, 900);
+          this._awRoot.scale.setScalar(3.0);
           scene.add(this._awRoot);
 
           /* planet body */
@@ -7712,6 +7760,7 @@
           var PI = Math.PI;
           this._tdRoot = new THREE.Group();
           this._tdRoot.position.set(-300, 660, 1950);
+          this._tdRoot.scale.setScalar(3.0);
           scene.add(this._tdRoot);
 
           /* victim star remnant */
@@ -7796,6 +7845,7 @@
           var PI = Math.PI;
           this._gmRoot = new THREE.Group();
           this._gmRoot.position.set(-600, -1800, -900);
+          this._gmRoot.scale.setScalar(3.0);
           scene.add(this._gmRoot);
 
           /* build a spiral galaxy with N stars */
@@ -8030,6 +8080,7 @@
           var PI = Math.PI;
           this._pwnRoot = new THREE.Group();
           this._pwnRoot.position.set(0, -2400, 600);
+          this._pwnRoot.scale.setScalar(3.0);
           scene.add(this._pwnRoot);
 
           /* neutron star core */
@@ -8247,6 +8298,7 @@
           var PI = Math.PI;
           this._xRoot = new THREE.Group();
           this._xRoot.position.set(-2400, 1800, -300);
+          this._xRoot.scale.setScalar(3.0);
           scene.add(this._xRoot);
 
           /* companion star (swollen donor) */
@@ -8512,6 +8564,7 @@
           var PI = Math.PI;
           this._mbRoot = new THREE.Group();
           this._mbRoot.position.set(1200, -1800, 2100);
+          this._mbRoot.scale.setScalar(3.0);
           scene.add(this._mbRoot);
 
           /* planet body */
@@ -8665,6 +8718,7 @@
           var PI = Math.PI;
           this._nsRoot = new THREE.Group();
           this._nsRoot.position.set(0, 2700, -600);
+          this._nsRoot.scale.setScalar(3.0);
           scene.add(this._nsRoot);
 
           /* NS body — large because we're close */
@@ -8796,6 +8850,7 @@
           var PI = Math.PI;
           this._pdRoot = new THREE.Group();
           this._pdRoot.position.set(-1800, -1200, -2100);
+          this._pdRoot.scale.setScalar(3.0);
           scene.add(this._pdRoot);
 
           /* central young star */
@@ -8960,6 +9015,7 @@
           var PI = Math.PI;
           this._crRoot = new THREE.Group();
           this._crRoot.position.set(2100, 1500, 1800);
+          this._crRoot.scale.setScalar(3.0);
           scene.add(this._crRoot);
 
           /* atmosphere ellipsoid below */
@@ -9148,6 +9204,7 @@
             }),
           );
           this._mergerMesh.position.set(0, -300, 0);
+          this._mergerMesh.scale.setScalar(3.0);
           scene.add(this._mergerMesh);
 
           /* 3 ring shells — each shell is 900 points on a sphere */
@@ -9258,6 +9315,7 @@
           var PI = Math.PI;
           this._mcRoot = new THREE.Group();
           this._mcRoot.position.set(-2700, 600, 900);
+          this._mcRoot.scale.setScalar(3.0);
           scene.add(this._mcRoot);
 
           /* cloud body — fractal clump distribution */
@@ -9394,6 +9452,7 @@
           var PI = Math.PI;
           this._psRoot = new THREE.Group();
           this._psRoot.position.set(-2400, -600, 1500);
+          this._psRoot.scale.setScalar(3.0);
           scene.add(this._psRoot);
 
           /* black hole body */
@@ -9520,6 +9579,7 @@
           var PI = Math.PI;
           this._bsRoot = new THREE.Group();
           this._bsRoot.position.set(2700, 600, 900);
+          this._bsRoot.scale.setScalar(3.0);
           scene.add(this._bsRoot);
 
           /* primary blue straggler */
@@ -9802,6 +9862,7 @@
           var PI = Math.PI;
           this._amRoot = new THREE.Group();
           this._amRoot.position.set(900, 1200, -2400);
+          this._amRoot.scale.setScalar(3.0);
           scene.add(this._amRoot);
 
           /* central star */
@@ -9939,6 +10000,7 @@
           var PI = Math.PI;
           this._afRoot = new THREE.Group();
           this._afRoot.position.set(-900, -2400, 1800);
+          this._afRoot.scale.setScalar(3.0);
           scene.add(this._afRoot);
 
           /* core annihilation zone */
@@ -10078,6 +10140,7 @@
           var PI = Math.PI;
           this._hrRoot = new THREE.Group();
           this._hrRoot.position.set(1800, -2100, -1200);
+          this._hrRoot.scale.setScalar(3.0);
           scene.add(this._hrRoot);
 
           /* micro BH core */
@@ -10215,6 +10278,7 @@
           var scene = this.el.sceneEl.object3D;
           var PI = Math.PI;
           this._dmGroup = new THREE.Group();
+          this._dmGroup.scale.setScalar(3.0);
           scene.add(this._dmGroup);
 
           /* NFW profile sampling: rejection sampling for r distribution */
@@ -10319,6 +10383,7 @@
           var scene = this.el.sceneEl.object3D;
           var PI = Math.PI;
           this._vfGroup = new THREE.Group();
+          this._vfGroup.scale.setScalar(3.0);
           scene.add(this._vfGroup);
 
           /* cubic Bezier control points */
@@ -10512,25 +10577,27 @@
           }
           this._speed = Math.max(-BACK_LIM, Math.min(LIMIT, this._speed));
 
-          /* ── MOVE along camera-facing direction (pitch + yaw combined) ────── */
+          /* ── MOVE along CRAFT nose (rig -Z); pilot look does NOT steer ──── */
           if (Math.abs(this._speed) > 0.5) {
             var fwd = new THREE.Vector3(0, 0, -1);
             fwd.applyQuaternion(
-              camObj.getWorldQuaternion(new THREE.Quaternion()),
+              rigObj.getWorldQuaternion(new THREE.Quaternion()),
             );
             rigObj.position.addScaledVector(fwd, this._speed * dt);
           }
 
-          /* ── YAW (A/D) — rotate rig around world Y; bank enhances rate ───── */
+          /* ── YAW (A/D) — rotate rig around CRAFT local up (not world Y) ─── */
           if (!uttActive) {
             var bankBoost = 1.0 + Math.abs(Math.sin(this._roll)) * 1.3;
             var speedFactor = Math.min(1.0, Math.abs(this._speed) / BASE);
             var yawRate = 0.85 * bankBoost * (0.25 + speedFactor * 0.75);
-            var UP = new THREE.Vector3(0, 1, 0);
+            var craftUp = new THREE.Vector3(0, 1, 0).applyQuaternion(
+              rigObj.getWorldQuaternion(new THREE.Quaternion()),
+            ).normalize();
             if (K["KeyA"] || K["ArrowLeft"])
-              rigObj.rotateOnWorldAxis(UP, yawRate * dt);
+              rigObj.rotateOnWorldAxis(craftUp, yawRate * dt);
             if (K["KeyD"] || K["ArrowRight"])
-              rigObj.rotateOnWorldAxis(UP, -yawRate * dt);
+              rigObj.rotateOnWorldAxis(craftUp, -yawRate * dt);
           }
 
           /* ── ROLL (Q/E) — applied to camera Z (look-controls owns X/Y) ───── */
@@ -10556,6 +10623,283 @@
             if (K["KeyR"] || K["PageUp"]) rigObj.position.y += altSpeed;
             if (K["KeyF"] || K["PageDown"]) rigObj.position.y -= altSpeed;
           }
+        },
+      });
+
+      /* ==================================================================
+         MERKABA FLIGHT LEARNING MODEL (FLM)
+         Lightweight 2-layer neural network (12→24→4) with REINFORCE policy
+         gradient. Trains in-browser, persists weights to localStorage.
+         Inputs:  craft position, nose direction, direction-to-Merkaba,
+                  proximity, roll state, distance-from-origin.
+         Outputs: [thrust, yaw, pitch, roll] ∈ [-1, 1].
+         @alignment 8→26→48:480  @frequency 963  @domain AI-learning
+      ================================================================== */
+      function MerkabaFLM(hiddenSize) {
+        var IN = 12, H = hiddenSize || 24, OUT = 4;
+        var self = this;
+        this.IN = IN; this.H = H; this.OUT = OUT;
+
+        function randn() {
+          var u = Math.random() + 1e-10;
+          return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * Math.random());
+        }
+        function initW(n, fan) {
+          var a = new Float32Array(n), s = Math.sqrt(2.0 / fan);
+          for (var i = 0; i < n; i++) a[i] = randn() * s;
+          return a;
+        }
+        this.W1 = initW(IN * H, IN);
+        this.b1 = new Float32Array(H);
+        this.W2 = initW(H * OUT, H);
+        this.b2 = new Float32Array(OUT);
+
+        this.forward = function (obs) {
+          var h = new Float32Array(H);
+          for (var j = 0; j < H; j++) {
+            var s = self.b1[j];
+            for (var i = 0; i < IN; i++) s += obs[i] * self.W1[i * H + j];
+            h[j] = Math.tanh(s);
+          }
+          var out = new Float32Array(OUT);
+          for (var k = 0; k < OUT; k++) {
+            var s2 = self.b2[k];
+            for (var j2 = 0; j2 < H; j2++) s2 += h[j2] * self.W2[j2 * OUT + k];
+            out[k] = Math.tanh(s2);
+          }
+          self._lastH = h;
+          return out;
+        };
+
+        this.trainREINFORCE = function (traj, lr, gamma) {
+          if (!traj.length) return;
+          var G = new Array(traj.length);
+          G[traj.length - 1] = traj[traj.length - 1].r;
+          for (var t = traj.length - 2; t >= 0; t--)
+            G[t] = traj[t].r + gamma * G[t + 1];
+          var mu = 0;
+          for (var i = 0; i < G.length; i++) mu += G[i];
+          mu /= G.length;
+          var variance = 1e-8;
+          for (var i = 0; i < G.length; i++) variance += (G[i] - mu) * (G[i] - mu);
+          var std = Math.sqrt(variance / G.length);
+          var sigma = 0.4;
+          for (var t = 0; t < traj.length; t++) {
+            var adv = (G[t] - mu) / std;
+            var obs = traj[t].o, act = traj[t].a;
+            var h = new Float32Array(H);
+            for (var j = 0; j < H; j++) {
+              var s = self.b1[j];
+              for (var i = 0; i < IN; i++) s += obs[i] * self.W1[i * H + j];
+              h[j] = Math.tanh(s);
+            }
+            var out = new Float32Array(OUT);
+            for (var k = 0; k < OUT; k++) {
+              var s2 = self.b2[k];
+              for (var j2 = 0; j2 < H; j2++) s2 += h[j2] * self.W2[j2 * OUT + k];
+              out[k] = Math.tanh(s2);
+            }
+            var dOut = new Float32Array(OUT);
+            for (var k = 0; k < OUT; k++)
+              dOut[k] = ((act[k] - out[k]) / (sigma * sigma)) * (1 - out[k] * out[k]);
+            for (var k = 0; k < OUT; k++) {
+              var g = lr * adv * dOut[k];
+              for (var j2 = 0; j2 < H; j2++) self.W2[j2 * OUT + k] += g * h[j2];
+              self.b2[k] += g;
+            }
+            var dH = new Float32Array(H);
+            for (var j = 0; j < H; j++) {
+              var s = 0;
+              for (var k = 0; k < OUT; k++) s += dOut[k] * self.W2[j * OUT + k];
+              dH[j] = s * (1 - h[j] * h[j]);
+            }
+            for (var j = 0; j < H; j++) {
+              var g2 = lr * adv * dH[j];
+              for (var i = 0; i < IN; i++) self.W1[i * H + j] += g2 * obs[i];
+              self.b1[j] += g2;
+            }
+          }
+        };
+
+        this.save = function () {
+          try {
+            localStorage.setItem("flm_W1", JSON.stringify(Array.from(self.W1)));
+            localStorage.setItem("flm_W2", JSON.stringify(Array.from(self.W2)));
+            localStorage.setItem("flm_b1", JSON.stringify(Array.from(self.b1)));
+            localStorage.setItem("flm_b2", JSON.stringify(Array.from(self.b2)));
+          } catch (e) {}
+        };
+        this.load = function () {
+          try {
+            var W1 = JSON.parse(localStorage.getItem("flm_W1"));
+            var W2 = JSON.parse(localStorage.getItem("flm_W2"));
+            var b1 = JSON.parse(localStorage.getItem("flm_b1"));
+            var b2 = JSON.parse(localStorage.getItem("flm_b2"));
+            if (W1 && W1.length === self.W1.length) self.W1 = new Float32Array(W1);
+            if (W2 && W2.length === self.W2.length) self.W2 = new Float32Array(W2);
+            if (b1 && b1.length === self.b1.length) self.b1 = new Float32Array(b1);
+            if (b2 && b2.length === self.b2.length) self.b2 = new Float32Array(b2);
+          } catch (e) {}
+        };
+        this.reset = function () {
+          self.W1 = initW(IN * H, IN); self.b1 = new Float32Array(H);
+          self.W2 = initW(H * OUT, H); self.b2 = new Float32Array(OUT);
+          try {
+            ["flm_W1","flm_W2","flm_b1","flm_b2"].forEach(function(k){localStorage.removeItem(k);});
+          } catch(e) {}
+        };
+      }
+
+      /* ==================================================================
+         MERKABA PILOT AGENT — A-Frame component. R2-D2 for the Merkaba
+         universe: finds cameraRig by ID, runs FLM policy every tick,
+         navigates toward Merkaba beacons, trains via REINFORCE.
+         Toggle: P key (or window._pilotAgentActive = true/false).
+         Weights: auto-saved to localStorage every 200 steps.
+         @alignment 8→26→48:480  @frequency 963  @domain AI-learning
+      ================================================================== */
+      AFRAME.registerComponent("merkaba-pilot-agent", {
+        init: function () {
+          this.flm = new MerkabaFLM(24);
+          this.flm.load();
+          window.MERKABA_FLM = this.flm;
+          window._pilotAgentActive = false;
+          this._traj = [];
+          this._steps = 0;
+          this._trainCount = 0;
+          this._prevDistToTarget = null;
+          this._merkabas = [];
+          this._cacheStep = -9999;
+          var self = this;
+          window.addEventListener("keydown", function (e) {
+            if (e.code === "KeyP" && !e.repeat) {
+              window._pilotAgentActive = !window._pilotAgentActive;
+              self._traj = []; self._steps = 0; self._prevDistToTarget = null;
+              self._toast(window._pilotAgentActive
+                ? "R2 · AUTOPILOT ENGAGED" : "R2 · MANUAL CONTROL");
+            }
+          });
+        },
+
+        tick: function (time, delta) {
+          if (!window._pilotAgentActive) return;
+          var dt = Math.min(delta, 200) * 0.001;
+          var THREE = AFRAME.THREE;
+          var rig = document.getElementById("cameraRig");
+          if (!rig || !rig.object3D) return;
+          var rigO = rig.object3D;
+
+          var obs = this._observe(rigO, THREE);
+          var action = this.flm.forward(obs);
+          this._applyAction(action, rigO, THREE, dt);
+          var reward = this._reward(rigO, THREE);
+          this._traj.push({ o: Array.from(obs), a: Array.from(action), r: reward });
+          this._steps++;
+
+          if (this._steps >= 200) {
+            this.flm.trainREINFORCE(this._traj, 0.0008, 0.97);
+            this._traj = []; this._steps = 0;
+            this._trainCount++;
+            this.flm.save();
+            this._toast("R2 · FLM UPDATE #" + this._trainCount);
+          }
+        },
+
+        _observe: function (rigO, THREE) {
+          var pos = rigO.position;
+          var D = 48000;
+          var fwd = new THREE.Vector3(0, 0, -1).applyQuaternion(rigO.quaternion);
+          var mPos = this._nearestMerkaba(rigO.position, THREE);
+          var toM = new THREE.Vector3().subVectors(mPos, pos);
+          var distToM = toM.length();
+          toM.normalize();
+          return [
+            pos.x / D, pos.y / D, pos.z / D,
+            fwd.x, fwd.y, fwd.z,
+            toM.x, toM.y, toM.z,
+            Math.max(0, 1 - distToM / (D * 0.3)),
+            Math.sin(rigO.rotation.z),
+            Math.min(1, pos.length() / D),
+          ];
+        },
+
+        _nearestMerkaba: function (pos, THREE) {
+          if (this._steps - this._cacheStep > 200 || !this._merkabas.length) {
+            this._cacheStep = this._steps;
+            this._merkabas = [];
+            var sc = document.querySelector("a-scene");
+            if (sc) {
+              var arr = this._merkabas;
+              sc.object3D.traverse(function (o) {
+                if (o.el && o.el.components && o.el.components["merkaba-core"]) {
+                  var p = new THREE.Vector3();
+                  o.el.object3D.getWorldPosition(p);
+                  arr.push(p.clone());
+                }
+              });
+            }
+            /* fallback: aim for origin if no Merkabas found */
+            if (!this._merkabas.length)
+              this._merkabas.push(new THREE.Vector3(0, 0, 0));
+          }
+          var best = this._merkabas[0], bestD = pos.distanceTo(best);
+          for (var i = 1; i < this._merkabas.length; i++) {
+            var d = pos.distanceTo(this._merkabas[i]);
+            if (d < bestD) { bestD = d; best = this._merkabas[i]; }
+          }
+          return best;
+        },
+
+        _applyAction: function (action, rigO, THREE, dt) {
+          var dist = rigO.position.length();
+          var SPEED = dist >= 16000 ? 400 : dist >= 8000 ? 200 : dist >= 3000 ? 80 : 20;
+          /* Thrust along craft nose */
+          var fwd = new THREE.Vector3(0, 0, -1).applyQuaternion(rigO.quaternion);
+          rigO.position.addScaledVector(fwd, action[0] * SPEED * dt * 60);
+          /* Yaw around craft up */
+          if (Math.abs(action[1]) > 0.04) {
+            var up = new THREE.Vector3(0, 1, 0)
+              .applyQuaternion(rigO.getWorldQuaternion(new THREE.Quaternion()))
+              .normalize();
+            rigO.rotateOnWorldAxis(up, action[1] * 0.032);
+          }
+          /* Pitch around craft right */
+          if (Math.abs(action[2]) > 0.04) {
+            var rgt = new THREE.Vector3(1, 0, 0)
+              .applyQuaternion(rigO.getWorldQuaternion(new THREE.Quaternion()))
+              .normalize();
+            rigO.rotateOnWorldAxis(rgt, action[2] * 0.064);
+          }
+          /* Roll via cosmos-pilot-controls bridge */
+          if (Math.abs(action[3]) > 0.04)
+            window._joyRollDelta = (window._joyRollDelta || 0) + action[3] * 0.08;
+          if (typeof window._updateScaleHUD === "function")
+            window._updateScaleHUD(rigO.position.length(), null);
+        },
+
+        _reward: function (rigO, THREE) {
+          var pos = rigO.position;
+          var dist = pos.length();
+          if (dist > 48000 * 0.92) return -2.0;
+          var mPos = this._nearestMerkaba(pos, THREE);
+          var d = pos.distanceTo(mPos);
+          var progress = this._prevDistToTarget !== null
+            ? (this._prevDistToTarget - d) * 0.005 : 0;
+          this._prevDistToTarget = d;
+          var proximity = Math.max(0, 1 - d / 500) * 0.1;
+          var arrival   = d < 20 ? 5.0 : 0;
+          return progress + proximity + arrival - 0.002;
+        },
+
+        _toast: function (msg) {
+          var el = document.getElementById("agent-status");
+          if (!el) return;
+          el.textContent = msg;
+          el.style.opacity = "1";
+          clearTimeout(this._toastTimer);
+          this._toastTimer = setTimeout(function () {
+            if (el) el.style.opacity = "0";
+          }, 2400);
         },
       });
 
@@ -10760,6 +11104,7 @@
 
           this._ssRoot = new THREE.Group();
           this._ssRoot.position.set(0, 3300, -1500);
+          this._ssRoot.scale.setScalar(3.0);
           scene.add(this._ssRoot);
           this._ssTime = 0;
           this._precRate = 0.005; /* rad/s */
@@ -10921,6 +11266,7 @@
 
           this._ctRoot = new THREE.Group();
           this._ctRoot.position.set(-1500, 2100, 1200);
+          this._ctRoot.scale.setScalar(3.0);
           scene.add(this._ctRoot);
           this._ctTime = 0;
 
@@ -11180,6 +11526,7 @@
 
           this._isRoot = new THREE.Group();
           this._isRoot.position.set(-2100, -900, -2400);
+          this._isRoot.scale.setScalar(3.0);
           scene.add(this._isRoot);
           this._isTime = 0;
 
@@ -11359,6 +11706,7 @@
 
           this._mhdRoot = new THREE.Group();
           this._mhdRoot.position.set(2100, -1500, 1800);
+          this._mhdRoot.scale.setScalar(3.0);
           scene.add(this._mhdRoot);
           this._mhdTime = 0;
 
@@ -12078,6 +12426,7 @@
 
           this._qlRoot = new THREE.Group();
           this._qlRoot.position.set(-2550, 1200, -600);
+          this._qlRoot.scale.setScalar(3.0);
           scene.add(this._qlRoot);
           this._qlTime = 0;
 
@@ -12283,6 +12632,7 @@
 
           this._rpRoot = new THREE.Group();
           this._rpRoot.position.set(450, -2100, 1050);
+          this._rpRoot.scale.setScalar(3.0);
           scene.add(this._rpRoot);
           this._rpTime = 0;
 
@@ -12440,6 +12790,7 @@
 
           this._pbRoot = new THREE.Group();
           this._pbRoot.position.set(2700, -600, -1500);
+          this._pbRoot.scale.setScalar(3.0);
           scene.add(this._pbRoot);
           this._pbTime = 0;
           this._pbPeriod = 3.2; /* seconds per full rotation */
@@ -12603,6 +12954,7 @@
           var PI = Math.PI;
 
           this._dmRoot = new THREE.Group();
+          this._dmRoot.scale.setScalar(3.0);
           scene.add(this._dmRoot);
           this._dmTime = 0;
 
@@ -12777,6 +13129,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(1500, 1200, 1500);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* ── outer dust envelope (600 amber particles) ── */
@@ -12927,6 +13280,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(900, 1800, -2100);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* ── compact magnetar body ── */
@@ -13124,6 +13478,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(600, -1200, 2400);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* ── tunnel rings (40 hoops along Z) ── */
@@ -13256,6 +13611,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(-1200, 0, -1200);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* ── primary wave (wireframe sphere) ── */
@@ -13392,6 +13748,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(-1800, 600, -2700);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* ── outer shell (wireframe) ── */
@@ -13516,6 +13873,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(-600, -1800, 900);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* ── helical spiral arms (3 arms × 500 particles) ── */
@@ -13644,6 +14002,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(2700, -900, 300);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* ── star body ── */
@@ -13789,6 +14148,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(0, 1500, -1800);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* ── 3 expanding rings ── */
@@ -13917,6 +14277,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(-2100, 1200, 600);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* ── star meshes ── */
@@ -14099,6 +14460,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(1200, 900, -1500);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* ── stream particles (1200 streaks) ── */
@@ -14214,6 +14576,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(-900, -1500, -2100);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* ── concentric wireframe shells ── */
@@ -14329,6 +14692,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(0, -600, 2400);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* ── neutral fog (behind wall, +Z side) ── */
@@ -14458,6 +14822,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(1800, 1800, 900);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* ── magnetar body ── */
@@ -14615,6 +14980,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(-1500, 300, 1200);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* ── outer envelope sphere ── */
@@ -14721,6 +15087,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(0, 1200, 1500);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* ── barely-visible dark matter cylinder ── */
@@ -14846,6 +15213,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(-2400, -900, 0);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* ── cluster nodes ── */
@@ -14987,6 +15355,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(2100, -1500, 1200);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* ── jet engine core ── */
@@ -15193,6 +15562,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(600, -1800, -600);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* ── diffuse IGM cloud (3000 pts) ── */
@@ -15294,6 +15664,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(-1200, 2100, -1800);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* ── black hole central body ── */
@@ -15488,6 +15859,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(-600, 600, -2700);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* ── runaway star ── */
@@ -15647,6 +16019,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(2700, 600, -1500);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* ── lens galaxy (compact elliptical) ── */
@@ -15806,6 +16179,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(-1800, -2100, 900);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* ── stellar disk (2500 pts) ── */
@@ -15974,6 +16348,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(900, -600, 2100);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* ── field line ribbons (two approaching arcs) ── */
@@ -16214,6 +16589,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(-900, 1200, 2400);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* ── magnetosphere body (teardrop: compressed sunward, elongated tailward) ── */
@@ -16366,6 +16742,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(1800, 1800, -2100);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* ── nucleus ── */
@@ -16565,6 +16942,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(-2400, 900, -900);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* ── GMC body (2500 pts) ── */
@@ -16748,6 +17126,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(0, -1500, 1800);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* ── host star ── */
@@ -16943,6 +17322,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(1200, -2400, -600);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* ── jet body (1500 pts along Y) ── */
@@ -17140,6 +17520,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(-1500, 2100, -1500);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* helper: add a sphere of pts */
@@ -17263,6 +17644,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(-300, -2100, -1200);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* ── upper stream (1200 pts) ── */
@@ -17433,6 +17815,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(2400, 600, 1200);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* tail lobes: north (y>0) south (y<0) */
@@ -17622,6 +18005,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(300, 1500, 2700);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* shell wall (3000 pts on sphere) */
@@ -17787,6 +18171,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(-2700, 900, 1800);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* quasar beam — 800 pts along Z */
@@ -17915,6 +18300,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(1800, -1200, 2400);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* MSP: bright white sphere */
@@ -18101,6 +18487,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(-900, -1800, 2100);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* solar wind upstream: streaming along +Z */
@@ -18299,6 +18686,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(-1800, 300, -2400);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* void background */
@@ -18467,6 +18855,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(900, 2100, -900);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* star disk: ring of pts representing stellar limb */
@@ -18628,6 +19017,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(-600, 2400, 1200);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* jet spine */
@@ -18799,6 +19189,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(2100, 600, 1800);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* bar region: ellipsoidal distribution of stars */
@@ -18999,6 +19390,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(0, -1200, 2700);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* nucleus */
@@ -19150,6 +19542,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(-1500, -600, -1800);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* stellar disk */
@@ -19286,6 +19679,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(2400, -1500, -600);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* inner bipolar lobes */
@@ -19455,6 +19849,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(-1800, 1050, -2400);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* central magnetar */
@@ -19616,6 +20011,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(1500, 1800, -1200);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* galaxy A nucleus */
@@ -19812,6 +20208,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(-2400, -300, 900);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* merger remnant */
@@ -20024,6 +20421,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(600, 1500, 2100);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* galaxy disk */
@@ -20211,6 +20609,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(0, -1050, -2700);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* FRB source */
@@ -20387,6 +20786,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(2100, -600, 1500);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* runaway star */
@@ -20566,6 +20966,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(-1800, 900, 2400);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* 30 pulsars on a sphere */
@@ -20704,6 +21105,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(1200, 600, -3300);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* BH1 */
@@ -20867,6 +21269,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(-900, 300, 1800);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* nucleus */
@@ -21051,6 +21454,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(-2700, -1200, 600);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* NS surface */
@@ -21226,6 +21630,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(2700, 1200, -1200);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* WR star */
@@ -21387,6 +21792,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(-300, -1800, 1500);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* ice giant body */
@@ -21548,6 +21954,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(900, 1800, 900);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* active region patch */
@@ -21689,6 +22096,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(-1500, 0, -1500);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* Sgr A* */
@@ -21849,6 +22257,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(1800, -900, -2100);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* 6 long strings as tube-curves */
@@ -21997,6 +22406,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(1500, 0, 2100);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* galactic disk */
@@ -22179,6 +22589,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(-2100, 900, 1200);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* accretion disk */
@@ -22346,6 +22757,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(300, 1500, -1800);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* current sheet — flat layer of points */
@@ -22507,6 +22919,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(-900, -1200, 1800);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* neutron star */
@@ -22650,6 +23063,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(-2400, 0, 600);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* void side — very sparse */
@@ -22798,6 +23212,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(1200, -1500, 900);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* neutron star core */
@@ -22922,6 +23337,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(600, 900, 2100);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* galaxy A — edge-on disk at (-50,0,0) */
@@ -23089,6 +23505,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(0, -1800, -1500);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* SMG bright blobs */
@@ -23230,6 +23647,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(-1200, 600, -2400);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* old bulge */
@@ -23395,6 +23813,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(1800, -900, -600);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* Abrikosov hex lattice of flux tubes */
@@ -23517,6 +23936,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(0, 300, 0);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* neutrino trajectory lines */
@@ -23628,6 +24048,7 @@
           this._root.position.set(-2100, 600, -1500);
           /* tilt disk to ~60 deg inclination for ALMA-like view */
           this._root.rotation.x = -1.05;
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* ring parameters: [innerR, outerR, color, opacity] */
@@ -23699,6 +24120,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(900, -300, 2100);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* heliosphere: oblate sphere compressed on nose side */
@@ -23810,6 +24232,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(-1200, 1200, -2700);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* AGN core */
@@ -23921,6 +24344,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(2400, 0, -1800);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* magnetar central object */
@@ -24058,6 +24482,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(0, -2400, -1500);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* BAO shell — large faint sphere */
@@ -24141,6 +24566,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(-2700, 900, 1200);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* host galaxy: inner disk */
@@ -24233,6 +24659,7 @@
           this._root = new THREE.Group();
           this._root.position.set(1500, 900, 1500);
           this._root.rotation.x = -0.4;
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* host star */
@@ -24349,6 +24776,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(-600, 1800, -3000);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* sheet plane */
@@ -24462,6 +24890,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(900, -1500, 600);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* compact binary: BH + donor */
@@ -24580,6 +25009,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(3000, -600, -2400);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* void interior — very faint dark sphere */
@@ -24693,6 +25123,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(-1800, -300, 900);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* host galaxy disk */
@@ -24796,6 +25227,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(-300, 2700, -2100);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* quasar core */
@@ -24921,6 +25353,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(-600, 1050, 1800);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* magnetar core */
@@ -25035,6 +25468,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(1800, 1500, 2700);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* Cluster A */
@@ -25163,6 +25597,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(-2700, -900, 1800);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* main pancake/wall sheet */
@@ -25277,6 +25712,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(1200, -2100, 1200);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* runaway star */
@@ -25390,6 +25826,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(-1200, 1800, -2400);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* central DM halo */
@@ -25488,6 +25925,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(2100, -1200, -2100);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* AGB star */
@@ -25603,6 +26041,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(600, 2100, -1500);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* white dwarf */
@@ -25736,6 +26175,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(-1800, 600, 3000);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* axis spine */
@@ -25847,6 +26287,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(2700, 900, -1200);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* galaxy A core */
@@ -25995,6 +26436,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(-2400, 2400, 600);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* generate nodes */
@@ -26117,6 +26559,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(1200, -2100, 1500);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* 12 MSP pulsars in a sphere around the origin */
@@ -26236,6 +26679,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(-900, -1500, 2700);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* red bulge */
@@ -26338,6 +26782,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(-2100, -900, -3000);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* central engine (compact star) */
@@ -26494,6 +26939,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(3300, 1200, 900);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* NS */
@@ -26619,6 +27065,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(-3300, 600, -1800);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* star */
@@ -26762,6 +27209,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(1800, 2100, -2400);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* star */
@@ -26871,6 +27319,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(-1500, 1800, 2100);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* magnetopause paraboloid surface */
@@ -27007,6 +27456,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(-600, 2700, -1200);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* two stars on elliptical orbit */
@@ -27122,6 +27572,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(600, -2400, -900);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* spiral arm star particles */
@@ -27233,6 +27684,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(2400, -1200, 2700);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* central NS-NS system glow */
@@ -27363,6 +27815,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(3600, 600, 1200);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* NS crust disk */
@@ -27490,6 +27943,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(-2700, -900, -3000);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* rolling sheet surface */
@@ -27604,6 +28058,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(-4200, 1800, 600);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* stellar disk */
@@ -27729,6 +28184,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(1200, 2700, -1800);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* accretor — small dense star */
@@ -27885,6 +28341,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(-2100, -2400, 1500);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* protostar core */
@@ -28005,6 +28462,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(0, -4200, 0);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* void interior — sparse nearly empty haze */
@@ -28138,6 +28596,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(2700, 900, 3300);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* the runaway star */
@@ -28264,6 +28723,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(-1200, 2100, -2700);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* galaxy disk — stellar component */
@@ -28374,6 +28834,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(-3000, 1200, 2700);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* magnetar body */
@@ -28521,6 +28982,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(3600, -900, -1200);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* OB star */
@@ -28657,6 +29119,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(0, 0, 4500);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* large sphere representing CMB sky — shell coloured by dipole */
@@ -28758,6 +29221,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(-1800, 3600, 2400);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* disk plane */
@@ -28885,6 +29349,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(1800, -1800, 2100);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* main photosphere sphere */
@@ -29030,6 +29495,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(-900, -3600, 3600);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* lattice of wormhole pairs */
@@ -29174,6 +29640,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(2700, 2100, -2700);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* orbit plane group — will precess */
@@ -29327,6 +29794,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(-2700, -600, -3300);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* vortex core — tapered cylinder of particles */
@@ -29466,6 +29934,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(600, -1500, 4500);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* dark matter halo wireframe */
@@ -29588,6 +30057,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(-300, 1800, -4200);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* stellar disk */
@@ -29710,6 +30180,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(1500, -300, 2400);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* sun */
@@ -29799,6 +30270,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(-4500, 0, -1500);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* field line traces — helical along galactic plane */
@@ -29898,6 +30370,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(-1200, 900, 5400);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* bubble pool */
@@ -30008,6 +30481,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(3600, -1200, 600);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* NS body */
@@ -30171,6 +30645,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(2100, 600, -2700);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* OB star */
@@ -30317,6 +30792,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(-2400, -600, 3600);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* expanding ejecta blob cloud */
@@ -30427,6 +30903,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(-1800, 0, -4800);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* torus rings */
@@ -30552,6 +31029,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(900, 1500, -1800);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* YSO + disk */
@@ -30686,6 +31164,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(-1200, -1050, -2400);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* differential-rotation disk */
@@ -30817,6 +31296,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(2700, -300, -600);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* central BH */
@@ -30930,6 +31410,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(0, 900, -5400);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* BH core */
@@ -31046,6 +31527,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(-3300, 1200, 1800);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* starburst disk */
@@ -31194,6 +31676,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(2100, 1500, -1800);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* three eddy scales: large, mid, small */
@@ -31283,6 +31766,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(-900, 1800, 1200);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* halo background haze */
@@ -31373,6 +31857,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(1200, -1800, 900);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* central OB star */
@@ -31508,6 +31993,7 @@
 
           this._root = new THREE.Group();
           this._root.position.set(-2400, 600, -3600);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* quasar core */
@@ -31602,6 +32088,7 @@
           var scene = this.el.sceneEl.object3D;
           this._root = new THREE.Group();
           this._root.position.set(2700, 900, -2400);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* star */
@@ -31690,6 +32177,7 @@
           var scene = this.el.sceneEl.object3D;
           this._root = new THREE.Group();
           this._root.position.set(-1200, 2100, -1500);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* aurora curtain sheets */
@@ -31795,6 +32283,7 @@
           var scene = this.el.sceneEl.object3D;
           this._root = new THREE.Group();
           this._root.position.set(-1800, -1200, 2700);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           this._lobes = [];
@@ -31911,6 +32400,7 @@
           var scene = this.el.sceneEl.object3D;
           this._root = new THREE.Group();
           this._root.position.set(600, -2400, 1800);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* disk plane */
@@ -32008,6 +32498,7 @@
           var scene = this.el.sceneEl.object3D;
           this._root = new THREE.Group();
           this._root.position.set(-600, 1500, -2700);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* jet spine — computed each tick via a sinusoidal kink */
@@ -32098,6 +32589,7 @@
           var scene = this.el.sceneEl.object3D;
           this._root = new THREE.Group();
           this._root.position.set(1800, 2400, 300);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* infall streams */
@@ -32186,6 +32678,7 @@
           var scene = this.el.sceneEl.object3D;
           this._root = new THREE.Group();
           this._root.position.set(-1500, -600, -2100);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* star */
@@ -32324,6 +32817,7 @@
           var scene = this.el.sceneEl.object3D;
           this._root = new THREE.Group();
           this._root.position.set(3300, -300, 1500);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* compressed (bright) patches */
@@ -32414,6 +32908,7 @@
           var scene = this.el.sceneEl.object3D;
           this._root = new THREE.Group();
           this._root.position.set(-2700, 900, 600);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* ridge line */
@@ -32523,6 +33018,7 @@
           var scene = this.el.sceneEl.object3D;
           this._root = new THREE.Group();
           this._root.position.set(900, -1800, -1200);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* nebula haze */
@@ -32644,6 +33140,7 @@
           var scene = this.el.sceneEl.object3D;
           this._root = new THREE.Group();
           this._root.position.set(-900, -1500, 2100);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* dense cloud obstacle */
@@ -32755,6 +33252,7 @@
           var scene = this.el.sceneEl.object3D;
           this._root = new THREE.Group();
           this._root.position.set(0, 3000, -900);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* helical wave ribbons */
@@ -32859,6 +33357,7 @@
           var scene = this.el.sceneEl.object3D;
           this._root = new THREE.Group();
           this._root.position.set(1800, 0, -2700);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* outer hot halo */
@@ -32950,6 +33449,7 @@
           var scene = this.el.sceneEl.object3D;
           this._root = new THREE.Group();
           this._root.position.set(-600, 1500, 1800);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* background dense cloud */
@@ -33052,6 +33552,7 @@
           var scene = this.el.sceneEl.object3D;
           this._root = new THREE.Group();
           this._root.position.set(0, -900, 2700);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* neutral sheet */
@@ -33181,6 +33682,7 @@
           var scene = this.el.sceneEl.object3D;
           this._root = new THREE.Group();
           this._root.position.set(-1800, -600, -1800);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* fractal density cloud — 3 scales */
@@ -33251,6 +33753,7 @@
           var scene = this.el.sceneEl.object3D;
           this._root = new THREE.Group();
           this._root.position.set(1200, 1800, 1200);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* dipole field lines */
@@ -33390,6 +33893,7 @@
           var scene = this.el.sceneEl.object3D;
           this._root = new THREE.Group();
           this._root.position.set(-2400, 300, -600);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* synchrotron arc */
@@ -33473,6 +33977,7 @@
           var scene = this.el.sceneEl.object3D;
           this._root = new THREE.Group();
           this._root.position.set(450, -2400, 900);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* protostar glow */
@@ -33576,6 +34081,7 @@
           var scene = this.el.sceneEl.object3D;
           this._root = new THREE.Group();
           this._root.position.set(2100, -1200, -2100);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* bar gas streams */
@@ -33685,6 +34191,7 @@
           var scene = this.el.sceneEl.object3D;
           this._root = new THREE.Group();
           this._root.position.set(-900, 2400, -1500);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           var NW = 80,
@@ -33756,6 +34263,7 @@
           var scene = this.el.sceneEl.object3D;
           this._root = new THREE.Group();
           this._root.position.set(-300, 1500, 2400);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* photosphere shell layers */
@@ -33846,6 +34354,7 @@
           var scene = this.el.sceneEl.object3D;
           this._root = new THREE.Group();
           this._root.position.set(2700, 600, 0);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* galaxy body */
@@ -33951,6 +34460,7 @@
           var scene = this.el.sceneEl.object3D;
           this._root = new THREE.Group();
           this._root.position.set(600, -1800, -2700);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* Mach cone outline — 3 lines */
@@ -34051,6 +34561,7 @@
           var scene = this.el.sceneEl.object3D;
           this._root = new THREE.Group();
           this._root.position.set(0, 3600, 0);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* tube outline as line strip */
@@ -34143,6 +34654,7 @@
           var scene = this.el.sceneEl.object3D;
           this._root = new THREE.Group();
           this._root.position.set(-1800, 1200, 2100);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* ionized interior haze */
@@ -34241,6 +34753,7 @@
           var scene = this.el.sceneEl.object3D;
           this._root = new THREE.Group();
           this._root.position.set(-2400, -900, 1500);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           this._rings = [];
@@ -34307,6 +34820,7 @@
           var scene = this.el.sceneEl.object3D;
           this._root = new THREE.Group();
           this._root.position.set(1200, 2700, -900);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* lat/lon grid */
@@ -34393,6 +34907,7 @@
           var scene = this.el.sceneEl.object3D;
           this._root = new THREE.Group();
           this._root.position.set(2700, 600, -1800);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           var NKS = 300;
@@ -34484,6 +34999,7 @@
           var scene = this.el.sceneEl.object3D;
           this._root = new THREE.Group();
           this._root.position.set(600, -1800, 2700);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* interior hot wind particles */
@@ -34567,6 +35083,7 @@
           var scene = this.el.sceneEl.object3D;
           this._root = new THREE.Group();
           this._root.position.set(1800, -2400, -1200);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           var NV = 5;
@@ -34630,6 +35147,7 @@
           var scene = this.el.sceneEl.object3D;
           this._root = new THREE.Group();
           this._root.position.set(-900, 2100, 1800);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           var NCOLS = 10,
@@ -34707,6 +35225,7 @@
           var scene = this.el.sceneEl.object3D;
           this._root = new THREE.Group();
           this._root.position.set(-2100, 1800, 600);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* arc backbone */
@@ -34796,6 +35315,7 @@
           var scene = this.el.sceneEl.object3D;
           this._root = new THREE.Group();
           this._root.position.set(0, -2700, -600);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* multiple wave shells */
@@ -34866,6 +35386,7 @@
           var scene = this.el.sceneEl.object3D;
           this._root = new THREE.Group();
           this._root.position.set(0, 0, -3000);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* fan-plane disc */
@@ -34965,6 +35486,7 @@
           var scene = this.el.sceneEl.object3D;
           this._root = new THREE.Group();
           this._root.position.set(2100, 1200, 2100);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* fractal levels */
@@ -35042,6 +35564,7 @@
           var scene = this.el.sceneEl.object3D;
           this._root = new THREE.Group();
           this._root.position.set(1350, 1800, -900);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           var NCL = 200;
@@ -35132,6 +35655,7 @@
           var scene = this.el.sceneEl.object3D;
           this._root = new THREE.Group();
           this._root.position.set(-1800, -900, 1500);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           var NOP = 3000;
@@ -35190,6 +35714,7 @@
           var scene = this.el.sceneEl.object3D;
           this._root = new THREE.Group();
           this._root.position.set(-1500, 1500, -1800);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           /* field-aligned streamer */
@@ -35279,6 +35804,7 @@
           var scene = this.el.sceneEl.object3D;
           this._root = new THREE.Group();
           this._root.position.set(600, -1800, 1200);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           var NBANDS = 8;
@@ -35352,6 +35878,7 @@
           var scene = this.el.sceneEl.object3D;
           this._root = new THREE.Group();
           this._root.position.set(2100, 0, -600);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           this._islands = [];
@@ -35449,6 +35976,7 @@
           var scene = this.el.sceneEl.object3D;
           this._root = new THREE.Group();
           this._root.position.set(-1200, 1800, 300);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           this._shells8 = [];
@@ -35522,6 +36050,7 @@
           var scene = this.el.sceneEl.object3D;
           this._root = new THREE.Group();
           this._root.position.set(0, 900, -2100);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           this._rings10 = [];
@@ -35594,6 +36123,7 @@
           var scene = this.el.sceneEl.object3D;
           this._root = new THREE.Group();
           this._root.position.set(-2100, -1500, 0);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           this._vortices = [];
@@ -35672,6 +36202,7 @@
           var scene = this.el.sceneEl.object3D;
           this._root = new THREE.Group();
           this._root.position.set(1800, -1200, 900);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           this._tori = [];
@@ -35753,6 +36284,7 @@
           var scene = this.el.sceneEl.object3D;
           this._root = new THREE.Group();
           this._root.position.set(-600, 2100, -300);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           this._fingers = [];
@@ -35830,6 +36362,7 @@
           var scene = this.el.sceneEl.object3D;
           this._root = new THREE.Group();
           this._root.position.set(-1800, 600, -1500);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           var NWP = 4000;
@@ -35918,6 +36451,7 @@
           var scene = this.el.sceneEl.object3D;
           this._root = new THREE.Group();
           this._root.position.set(1200, -2100, -300);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           var NARCH = 5;
@@ -35995,6 +36529,7 @@
           var scene = this.el.sceneEl.object3D;
           this._root = new THREE.Group();
           this._root.position.set(0, -900, 2400);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           var NSPK = 16;
@@ -36074,6 +36609,7 @@
           var scene = this.el.sceneEl.object3D;
           this._root = new THREE.Group();
           this._root.position.set(-1500, 1800, -600);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           var NLANE = 20;
@@ -36157,6 +36693,7 @@
           var scene = this.el.sceneEl.object3D;
           this._root = new THREE.Group();
           this._root.position.set(2400, 1800, -900);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           this._filaments = [];
@@ -36231,6 +36768,7 @@
           var scene = this.el.sceneEl.object3D;
           this._root = new THREE.Group();
           this._root.position.set(-300, -2400, 1200);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           var NST22 = 3;
@@ -36311,6 +36849,7 @@
           var scene = this.el.sceneEl.object3D;
           this._root = new THREE.Group();
           this._root.position.set(0, 2400, -1500);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           var NWAVE24 = 8;
@@ -36397,6 +36936,7 @@
           var scene = this.el.sceneEl.object3D;
           this._root = new THREE.Group();
           this._root.position.set(-2400, 300, 900);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           var NSHEET24 = 20;
@@ -36477,6 +37017,7 @@
           var scene = this.el.sceneEl.object3D;
           this._root = new THREE.Group();
           this._root.position.set(1200, -1500, -2100);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           var NEYE26 = 10;
@@ -36562,6 +37103,7 @@
           var scene = this.el.sceneEl.object3D;
           this._root = new THREE.Group();
           this._root.position.set(1800, 600, 1500);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           var NFIL26 = 36;
@@ -36637,6 +37179,7 @@
           var scene = this.el.sceneEl.object3D;
           this._root = new THREE.Group();
           this._root.position.set(-900, 1200, 2100);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           var NSPH28 = 600;
@@ -36743,6 +37286,7 @@
           var scene = this.el.sceneEl.object3D;
           this._root = new THREE.Group();
           this._root.position.set(2700, -600, -1200);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           var NBIN28 = 7;
@@ -36830,6 +37374,7 @@
           var scene = this.el.sceneEl.object3D;
           this._root = new THREE.Group();
           this._root.position.set(-2100, 0, 900);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           var NARC32 = 16;
@@ -36906,6 +37451,7 @@
           var scene = this.el.sceneEl.object3D;
           this._root = new THREE.Group();
           this._root.position.set(-300, -1800, -600);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           var NPLM32 = 10;
@@ -36988,6 +37534,7 @@
           var scene = this.el.sceneEl.object3D;
           this._root = new THREE.Group();
           this._root.position.set(600, 2100, -1800);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           var NSP34 = 700;
@@ -37098,6 +37645,7 @@
           var scene = this.el.sceneEl.object3D;
           this._root = new THREE.Group();
           this._root.position.set(1500, 0, -2400);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           var NRNG34 = 12;
@@ -37174,6 +37722,7 @@
           var scene = this.el.sceneEl.object3D;
           this._root = new THREE.Group();
           this._root.position.set(-1500, 1800, -900);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           var NMUS36 = 8;
@@ -37282,6 +37831,7 @@
           var scene = this.el.sceneEl.object3D;
           this._root = new THREE.Group();
           this._root.position.set(900, -1200, 1800);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           var NVORT36 = 5;
@@ -37374,6 +37924,7 @@
           var scene = this.el.sceneEl.object3D;
           this._root = new THREE.Group();
           this._root.position.set(2400, -600, 1200);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           var NFIB38 = 12;
@@ -37452,6 +38003,7 @@
           var scene = this.el.sceneEl.object3D;
           this._root = new THREE.Group();
           this._root.position.set(-900, -900, 2400);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           var NPTS38 = 400;
@@ -37545,6 +38097,7 @@
           var scene = this.el.sceneEl.object3D;
           this._root = new THREE.Group();
           this._root.position.set(-2700, 600, -1500);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           var NSH40 = 10;
@@ -37623,6 +38176,7 @@
           var scene = this.el.sceneEl.object3D;
           this._root = new THREE.Group();
           this._root.position.set(0, -2400, 600);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           var NCELL40 = 30;
@@ -37705,6 +38259,7 @@
           var scene = this.el.sceneEl.object3D;
           this._root = new THREE.Group();
           this._root.position.set(1800, 1500, 1500);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           var NSHTH42 = 600;
@@ -37798,6 +38353,7 @@
           var scene = this.el.sceneEl.object3D;
           this._root = new THREE.Group();
           this._root.position.set(-1200, 1800, 2100);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           var NRIDG42 = 8;
@@ -37875,6 +38431,7 @@
           var scene = this.el.sceneEl.object3D;
           this._root = new THREE.Group();
           this._root.position.set(-2100, -1200, -2100);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           var NSHELL44 = 5;
@@ -37964,6 +38521,7 @@
           var scene = this.el.sceneEl.object3D;
           this._root = new THREE.Group();
           this._root.position.set(900, -2100, 2700);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           var NPTS44 = 500;
@@ -38046,6 +38604,7 @@
           var scene = this.el.sceneEl.object3D;
           this._root = new THREE.Group();
           this._root.position.set(3000, 900, -900);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           var NCAV46 = 8;
@@ -38134,6 +38693,7 @@
           var scene = this.el.sceneEl.object3D;
           this._root = new THREE.Group();
           this._root.position.set(-1500, -600, -2400);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           var NFIB46 = 12;
@@ -38212,6 +38772,7 @@
           var scene = this.el.sceneEl.object3D;
           this._root = new THREE.Group();
           this._root.position.set(-2700, 2100, 600);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           var NHARM48 = 7;
@@ -38288,6 +38849,7 @@
           var scene = this.el.sceneEl.object3D;
           this._root = new THREE.Group();
           this._root.position.set(2100, 1500, -2400);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           // Fan: lat lines on upper hemisphere
@@ -38391,6 +38953,7 @@
           var scene = this.el.sceneEl.object3D;
           this._root = new THREE.Group();
           this._root.position.set(-600, -2700, -1800);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           var NBEAM50 = 3;
@@ -38467,6 +39030,7 @@
           var scene = this.el.sceneEl.object3D;
           this._root = new THREE.Group();
           this._root.position.set(2400, -1500, 1200);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           var NLOOP50 = 10;
@@ -38543,6 +39107,7 @@
           var scene = this.el.sceneEl.object3D;
           this._root = new THREE.Group();
           this._root.position.set(-1200, 3000, 900);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           var NSEG52 = 80;
@@ -38622,6 +39187,7 @@
           var scene = this.el.sceneEl.object3D;
           this._root = new THREE.Group();
           this._root.position.set(-2400, -300, 2700);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           var NP52 = 80;
@@ -38702,6 +39268,7 @@
           var scene = this.el.sceneEl.object3D;
           this._root = new THREE.Group();
           this._root.position.set(1800, 2400, -600);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           var NM53 = 5;
@@ -38776,6 +39343,7 @@
           var scene = this.el.sceneEl.object3D;
           this._root = new THREE.Group();
           this._root.position.set(-3000, 1200, -1200);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           var drawHex53 = function (R, cx, cy, mat) {
@@ -38856,6 +39424,7 @@
           var scene = this.el.sceneEl.object3D;
           this._root = new THREE.Group();
           this._root.position.set(900, -1800, -2700);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           var NI54 = 6;
@@ -38952,6 +39521,7 @@
           var scene = this.el.sceneEl.object3D;
           this._root = new THREE.Group();
           this._root.position.set(-1500, -600, 2100);
+          this._root.scale.setScalar(3.0);
           scene.add(this._root);
 
           var NRING54 = 8;
@@ -49779,6 +50349,7 @@
 
           this._group = new THREE.Group();
           this._group.position.copy(CENTER);
+          this._group.scale.setScalar(3.0);
           scene.add(this._group);
 
           /* Particle shell — random points on sphere surface */
@@ -50557,6 +51128,70 @@
             window._updateScaleHUD(rig.object3D.position.length(), null);
             if (t < 1.0) requestAnimationFrame(step);
             else _animating = false;
+          })();
+          if (typeof window.firePulse === "function") window.firePulse();
+        });
+
+        /* ---- FIRE-to-hyperspace: cosmos-fire event -------------------------
+           Raycasts along CRAFT nose (rig -Z), X-Wing targeting computer style.
+           Pilot visor look has no effect — crosshair is always on the nose.
+           Only fires when not already animating. */
+        window.addEventListener("cosmos-fire", function () {
+          if (window._cosmosAnimating) return;
+          var scene = document.querySelector("a-scene");
+          var cam = scene && scene.camera;
+          var rig = document.getElementById("cameraRig");
+          if (!cam || !rig || !rig.object3D) return;
+          var THREE = AFRAME.THREE;
+          /* Craft nose direction — NOT camera/HMD look direction */
+          var noseDir = new THREE.Vector3(0, 0, -1).applyQuaternion(
+            rig.object3D.getWorldQuaternion(new THREE.Quaternion()),
+          ).normalize();
+          var raycaster = new THREE.Raycaster();
+          raycaster.set(rig.object3D.position.clone(), noseDir);
+          var meshes = [];
+          scene.object3D.traverse(function (o) {
+            if (o.isMesh) meshes.push(o);
+          });
+          var hits = raycaster.intersectObjects(meshes, false);
+          if (!hits.length) return; /* no target — don't fire */
+          var pt = hits[0].point;
+          var dir = new THREE.Vector3()
+            .subVectors(rig.object3D.position, pt)
+            .normalize();
+          var backoff = Math.max(5, hits[0].distance * 0.25);
+          var targetPos = {
+            x: pt.x + dir.x * backoff,
+            y: pt.y + dir.y * backoff + 1.6,
+            z: pt.z + dir.z * backoff,
+          };
+          var td = Math.sqrt(
+            targetPos.x * targetPos.x +
+              targetPos.y * targetPos.y +
+              targetPos.z * targetPos.z,
+          );
+          if (td < MIN_DIST || td > MAX_DIST) {
+            var sf = Math.max(MIN_DIST, Math.min(MAX_DIST, td)) / (td || 1);
+            targetPos.x *= sf;
+            targetPos.y *= sf;
+            targetPos.z *= sf;
+          }
+          window._cosmosAnimating = true;
+          var sx = rig.object3D.position.x,
+            sy = rig.object3D.position.y,
+            sz = rig.object3D.position.z;
+          var t0 = performance.now();
+          (function step() {
+            var t = Math.min(1.0, (performance.now() - t0) / 900);
+            var e2 = t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+            rig.object3D.position.set(
+              sx + (targetPos.x - sx) * e2,
+              sy + (targetPos.y - sy) * e2,
+              sz + (targetPos.z - sz) * e2,
+            );
+            window._updateScaleHUD(rig.object3D.position.length(), null);
+            if (t < 1.0) requestAnimationFrame(step);
+            else window._cosmosAnimating = false;
           })();
           if (typeof window.firePulse === "function") window.firePulse();
         });
@@ -52067,11 +52702,11 @@
             new THREE.BufferAttribute(new Float32Array(sc), 3),
           );
           var mat = new THREE.PointsMaterial({
-            size: 10.0,
+            size: 4.0,
             map: this._makeStarTex(),
             vertexColors: true,
             transparent: true,
-            opacity: 1.0,
+            opacity: 0.55,
             blending: THREE.AdditiveBlending,
             depthWrite: false,
             sizeAttenuation: false,
@@ -55176,41 +55811,41 @@
               dist >= 16000 ? 400 : dist >= 8000 ? 200 : dist >= 3000 ? 80 : 20;
             var THREE = AFRAME.THREE;
 
-            /* ── Left stick: thrust (fwd/back follows camera pitch) + yaw ── */
-            var worldUp = new THREE.Vector3(0, 1, 0);
+            /* ── Left stick: thrust along craft nose + yaw around craft up ── */
             if (joyActive && (Math.abs(joyDX) > DEAD || Math.abs(joyDY) > DEAD)) {
-              var fwd = new THREE.Vector3();
-              camEl.object3D.getWorldDirection(fwd);
+              /* Craft nose = rig -Z. Pilot look (VR or mouse) never steers. */
+              var fwd = new THREE.Vector3(0, 0, -1).applyQuaternion(rig.object3D.quaternion);
               fwd.normalize();
               /* push down (joyDY > 0 on screen) = fly forward */
               var _thr = (window._inv_thrust ? -joyDY : joyDY);
               rig.object3D.position.addScaledVector(fwd, _thr * SPEED);
-              /* left/right = yaw around world Y */
+              /* left/right = yaw around CRAFT local up */
               if (Math.abs(joyDX) > DEAD) {
                 var _yw = (window._inv_yaw ? joyDX : -joyDX);
-                rig.object3D.rotateOnWorldAxis(worldUp, _yw * 0.032);
+                var _rigQuat = rig.object3D.getWorldQuaternion(new THREE.Quaternion());
+                var _craftUp = new THREE.Vector3(0, 1, 0).applyQuaternion(_rigQuat).normalize();
+                rig.object3D.rotateOnWorldAxis(_craftUp, _yw * 0.032);
               }
             }
             /* Expose thrust level for rocket audio */
             window._thrustLevel = joyActive ? Math.abs(joyDY) : 0;
 
-            /* ── Right stick: airplane yoke — pitch + bank/roll ── */
+            /* ── Right stick: flight-stick — pitch + roll (craft-frame) ─────── */
             var lc = camEl.components && camEl.components["look-controls"];
             if (joy2Active && (Math.abs(joy2DX) > DEAD || Math.abs(joy2DY) > DEAD)) {
-              /* Pitch: rotate rig around camera's CURRENT world right-vector.
-                 When rolled, the right-vector tilts so pitch contributes to yaw
-                 → bank right + pull back = right-hand turn. */
+              /* Pitch: rotate rig around craft right-vector (rig X in world).
+                 Roll right + pitch up = right-hand turn. Pilot visor look ignored. */
               if (Math.abs(joy2DY) > DEAD) {
-                var _pit = (window._inv_pitch ? joy2DY : -joy2DY);
-                var _camQuat = camEl.object3D.getWorldQuaternion(new THREE.Quaternion());
-                var _rightVec = new THREE.Vector3(1, 0, 0).applyQuaternion(_camQuat).normalize();
-                rig.object3D.rotateOnWorldAxis(_rightVec, _pit * 0.032);
+                var _pit = (window._inv_pitch ? -joy2DY : joy2DY);
+                var _rigPitchQuat = rig.object3D.getWorldQuaternion(new THREE.Quaternion());
+                var _rightVec = new THREE.Vector3(1, 0, 0).applyQuaternion(_rigPitchQuat).normalize();
+                rig.object3D.rotateOnWorldAxis(_rightVec, _pit * 0.064);
                 /* zero out pitchObject so look-controls stale offset doesn't stack */
                 if (lc && lc.pitchObject) lc.pitchObject.rotation.x = 0;
               }
               /* left/right = bank/roll — fed to cosmos-pilot-controls _roll */
               var _rl = (window._inv_roll ? -joy2DX : joy2DX);
-              window._joyRollDelta = (window._joyRollDelta || 0) - _rl * 0.04;
+              window._joyRollDelta = (window._joyRollDelta || 0) - _rl * 0.08;
             }
             /* used by cosmos-pilot-controls to suppress auto-level (now removed) */
             window._joyRollActive = joy2Active && Math.abs(joy2DX) > DEAD;
