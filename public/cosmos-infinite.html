@@ -10852,7 +10852,8 @@
 
         _applyAction: function (action, rigO, THREE, dt) {
           var dist = rigO.position.length();
-          var SPEED = dist >= 16000 ? 400 : dist >= 8000 ? 200 : dist >= 3000 ? 80 : 20;
+          var _sm = window._speedSetting === "fast" ? 10 : window._speedSetting === "medium" ? 4 : 1;
+          var SPEED = _sm * (dist >= 16000 ? 400 : dist >= 8000 ? 200 : dist >= 3000 ? 80 : 20);
           /* Thrust along craft nose */
           var fwd = new THREE.Vector3(0, 0, -1).applyQuaternion(rigO.quaternion);
           rigO.position.addScaledVector(fwd, action[0] * SPEED * dt * 60);
@@ -55464,6 +55465,7 @@
       .opts-toggle input:checked + .opts-slider { background: rgba(0, 212, 255, 0.22); border-color: #00d4ff; }
       .opts-toggle input:checked + .opts-slider:before { transform: translateX(16px); background: #00d4ff; }
       #opts-dash-type { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
+      #opts-speed-type { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
       .dash-type-btn {
         padding: 3px 8px;
         background: rgba(0, 212, 255, 0.05);
@@ -55631,6 +55633,12 @@
       <div class="opts-row">
         <label class="opts-label" for="opt-inv-yaw">Invert Yaw (turn)</label>
         <label class="opts-toggle"><input type="checkbox" id="opt-inv-yaw"><span class="opts-slider"></span></label>
+      </div>
+      <h3>Speed</h3>
+      <div id="opts-speed-type">
+        <button class="dash-type-btn active" data-speed="slow">Slow</button>
+        <button class="dash-type-btn" data-speed="medium">Medium</button>
+        <button class="dash-type-btn" data-speed="fast">Fast</button>
       </div>
     </div>
 
@@ -55807,8 +55815,10 @@
 
           if (rig && rig.object3D && camEl && camEl.object3D) {
             var dist = rig.object3D.position.length();
-            var SPEED =
-              dist >= 16000 ? 400 : dist >= 8000 ? 200 : dist >= 3000 ? 80 : 20;
+            /* Base gradient anchored at 8D-core centre speed (20).
+               Slow=1x, Medium=4x, Fast=10x — multiplies the whole gradient. */
+            var _sm = window._speedSetting === "fast" ? 10 : window._speedSetting === "medium" ? 4 : 1;
+            var SPEED = _sm * (dist >= 16000 ? 400 : dist >= 8000 ? 200 : dist >= 3000 ? 80 : 20);
             var THREE = AFRAME.THREE;
 
             /* ── Left stick: thrust along craft nose + yaw around craft up ── */
@@ -55821,7 +55831,9 @@
               rig.object3D.position.addScaledVector(fwd, _thr * SPEED);
               /* left/right = yaw around CRAFT local up (use cam quat — includes roll) */
               if (Math.abs(joyDX) > DEAD) {
-                var _yw = (window._inv_yaw ? joyDX : -joyDX);
+                var _yawRaw = (window._inv_yaw ? joyDX : -joyDX);
+                /* exponential curve: less sensitive near centre, same max at edges */
+                var _yw = Math.sign(_yawRaw) * Math.pow(Math.abs(_yawRaw), 1.8);
                 var _camYawQuat = camEl.object3D.getWorldQuaternion(new THREE.Quaternion());
                 var _craftUp = new THREE.Vector3(0, 1, 0).applyQuaternion(_camYawQuat).normalize();
                 rig.object3D.rotateOnWorldAxis(_craftUp, _yw * 0.032);
@@ -56703,6 +56715,17 @@
           if (!cb) return;
           cb.addEventListener("change", function () {
             window["_inv_" + axis] = cb.checked;
+          });
+        });
+
+        /* Speed setting — default Slow; gradient multiplied by setting */
+        window._speedSetting = "slow";
+        var speedBtns = document.querySelectorAll("#opts-speed-type [data-speed]");
+        speedBtns.forEach(function (btn) {
+          btn.addEventListener("click", function () {
+            speedBtns.forEach(function (b) { b.classList.remove("active"); });
+            btn.classList.add("active");
+            window._speedSetting = btn.dataset.speed;
           });
         });
       })();
