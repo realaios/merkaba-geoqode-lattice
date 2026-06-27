@@ -4193,10 +4193,10 @@
             new THREE.MeshPhongMaterial({
               color: 0xf59e0b,
               emissive: 0x8a5500,
-              emissiveIntensity: 0.35,
+              emissiveIntensity: 0.14,
               shininess: 130,
               transparent: true,
-              opacity: 0.65,
+              opacity: 0.55,
             }),
           );
           group.add(this.icoMesh);
@@ -4207,10 +4207,10 @@
             new THREE.MeshPhongMaterial({
               color: 0x00d4ff,
               emissive: 0x008099,
-              emissiveIntensity: 0.6,
+              emissiveIntensity: 0.22,
               shininess: 200,
               transparent: true,
-              opacity: 0.58,
+              opacity: 0.45,
             }),
           );
           group.add(this.octMesh);
@@ -4221,10 +4221,10 @@
             new THREE.MeshPhongMaterial({
               color: 0xfbbf24,
               emissive: 0x0077cc,
-              emissiveIntensity: 0.7,
+              emissiveIntensity: 0.25,
               shininess: 220,
               transparent: true,
-              opacity: 0.58,
+              opacity: 0.45,
             }),
           );
           group.add(this.tknMesh);
@@ -4250,9 +4250,9 @@
               new THREE.MeshPhongMaterial({
                 color: 0x4f46e5,
                 emissive: 0x4f46e5,
-                emissiveIntensity: 1.2,
+                emissiveIntensity: 0.45,
                 transparent: true,
-                opacity: 0.67,
+                opacity: 0.55,
               }),
             ),
           );
@@ -4264,10 +4264,10 @@
               new THREE.MeshPhongMaterial({
                 color: 0x4f46e5,
                 emissive: 0x4f46e5,
-                emissiveIntensity: 0.5,
+                emissiveIntensity: 0.18,
                 side: THREE.BackSide,
                 transparent: true,
-                opacity: 0.05,
+                opacity: 0.04,
                 blending: THREE.AdditiveBlending,
                 depthWrite: false,
               }),
@@ -4280,9 +4280,9 @@
             new THREE.MeshPhongMaterial({
               color: 0x00d4ff,
               emissive: 0x007799,
-              emissiveIntensity: 0.45,
+              emissiveIntensity: 0.16,
               transparent: true,
-              opacity: 0.38,
+              opacity: 0.30,
             }),
           );
           this.ringMesh.rotation.x = Math.PI / 2;
@@ -4294,9 +4294,9 @@
             new THREE.MeshPhongMaterial({
               color: 0x9b5cff,
               emissive: 0x4a00cc,
-              emissiveIntensity: 0.4,
+              emissiveIntensity: 0.14,
               transparent: true,
-              opacity: 0.32,
+              opacity: 0.25,
             }),
           );
           this.ring2Mesh.rotation.x = Math.PI / 3;
@@ -4336,12 +4336,12 @@
 
           if (this.icoMesh) {
             this.icoMesh.rotation.y = t * 0.26 * speedMult;
-            this.icoMesh.material.emissiveIntensity = 0.35 + glowMult * 0.8;
+            this.icoMesh.material.emissiveIntensity = 0.14 + glowMult * 0.35;
           }
           if (this.octMesh) {
             this.octMesh.rotation.y = -t * 0.26 * PHI * speedMult;
             this.octMesh.rotation.x = t * 0.12 * speedMult;
-            this.octMesh.material.emissiveIntensity = 0.6 + glowMult;
+            this.octMesh.material.emissiveIntensity = 0.22 + glowMult * 0.45;
           }
           if (this.tknMesh) {
             this.tknMesh.rotation.z = t * 0.2 * speedMult;
@@ -4349,7 +4349,7 @@
             this.tknMesh.material.opacity =
               0.68 + Math.sin(t * 3.1) * 0.18 + burst * 0.14;
             this.tknMesh.material.emissiveIntensity =
-              0.55 + Math.sin(t * 2.7 + 1.0) * 0.22 + glowMult * 0.6;
+              0.20 + Math.sin(t * 2.7 + 1.0) * 0.10 + glowMult * 0.25;
           }
           if (this.tknWire) {
             this.tknWire.rotation.z = -t * 0.15 * speedMult;
@@ -4361,13 +4361,13 @@
             this.ringMesh.rotation.z = t * 0.32 * speedMult;
             this.ringMesh.material.opacity =
               0.38 + Math.sin(t * 2.2) * 0.18 + px * 0.5;
-            this.ringMesh.material.emissiveIntensity = 0.45 + glowMult * 0.9;
+            this.ringMesh.material.emissiveIntensity = 0.16 + glowMult * 0.4;
           }
           if (this.ring2Mesh) {
             this.ring2Mesh.rotation.z = -t * 0.28 * speedMult;
             this.ring2Mesh.material.opacity =
               0.28 + Math.sin(t * 1.8 + 1) * 0.15 + px * 0.4;
-            this.ring2Mesh.material.emissiveIntensity = 0.4 + glowMult * 0.8;
+            this.ring2Mesh.material.emissiveIntensity = 0.14 + glowMult * 0.35;
           }
         },
       });
@@ -52705,11 +52705,11 @@
             new THREE.BufferAttribute(new Float32Array(sc), 3),
           );
           var mat = new THREE.PointsMaterial({
-            size: 4.0,
+            size: 2.0,
             map: this._makeStarTex(),
             vertexColors: true,
             transparent: true,
-            opacity: 0.55,
+            opacity: 0.22,
             blending: THREE.AdditiveBlending,
             depthWrite: false,
             sizeAttenuation: false,
@@ -55834,7 +55834,9 @@
               var fwd = new THREE.Vector3(0, 0, -1).applyQuaternion(rig.object3D.quaternion);
               fwd.normalize();
               /* push up (joyDY < 0 on screen) = fly forward — standard mobile stick */
-              var _thr = (window._inv_thrust ? joyDY : -joyDY);
+              var _thrRaw = (window._inv_thrust ? joyDY : -joyDY);
+              /* power 0.5: reaches ~71% thrust at 50% stick — sensitive, hits max sooner */
+              var _thr = Math.sign(_thrRaw) * Math.pow(Math.abs(_thrRaw), 0.5);
               rig.object3D.position.addScaledVector(fwd, _thr * SPEED);
               /* left/right = yaw around CRAFT local up (use cam quat — includes roll) */
               if (Math.abs(joyDX) > DEAD) {
