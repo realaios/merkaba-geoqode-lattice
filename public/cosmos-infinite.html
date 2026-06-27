@@ -10853,7 +10853,9 @@
         _applyAction: function (action, rigO, THREE, dt) {
           var dist = rigO.position.length();
           var _sm = window._speedSetting === "fast" ? 10 : window._speedSetting === "medium" ? 4 : 1;
-          var SPEED = _sm * (dist >= 16000 ? 400 : dist >= 8000 ? 200 : dist >= 3000 ? 80 : 20);
+          var SPEED = _sm * (window._speedGradient
+            ? (dist >= 16000 ? 400 : dist >= 8000 ? 200 : dist >= 3000 ? 80 : 20)
+            : 20);
           /* Thrust along craft nose */
           var fwd = new THREE.Vector3(0, 0, -1).applyQuaternion(rigO.quaternion);
           rigO.position.addScaledVector(fwd, action[0] * SPEED * dt * 60);
@@ -55640,6 +55642,10 @@
         <button class="dash-type-btn" data-speed="medium">Medium</button>
         <button class="dash-type-btn" data-speed="fast">Fast</button>
       </div>
+      <div class="opts-row" style="margin-top:8px;">
+        <label class="opts-label" for="opt-speed-gradient">Speed Gradient (dist)</label>
+        <label class="opts-toggle"><input type="checkbox" id="opt-speed-gradient"><span class="opts-slider"></span></label>
+      </div>
     </div>
 
     <!-- Sketchfab 3D Model button (shown on all screens) -->
@@ -55815,10 +55821,11 @@
 
           if (rig && rig.object3D && camEl && camEl.object3D) {
             var dist = rig.object3D.position.length();
-            /* Base gradient anchored at 8D-core centre speed (20).
-               Slow=1x, Medium=4x, Fast=10x — multiplies the whole gradient. */
+            /* Flat speed across the universe. Gradient only if _speedGradient ON. */
             var _sm = window._speedSetting === "fast" ? 10 : window._speedSetting === "medium" ? 4 : 1;
-            var SPEED = _sm * (dist >= 16000 ? 400 : dist >= 8000 ? 200 : dist >= 3000 ? 80 : 20);
+            var SPEED = _sm * (window._speedGradient
+              ? (dist >= 16000 ? 400 : dist >= 8000 ? 200 : dist >= 3000 ? 80 : 20)
+              : 20);
             var THREE = AFRAME.THREE;
 
             /* ── Left stick: thrust along craft nose + yaw around craft up ── */
@@ -56720,6 +56727,7 @@
 
         /* Speed setting — default Slow; gradient multiplied by setting */
         window._speedSetting = "slow";
+        window._speedGradient = false;
         var speedBtns = document.querySelectorAll("#opts-speed-type [data-speed]");
         speedBtns.forEach(function (btn) {
           btn.addEventListener("click", function () {
@@ -56727,6 +56735,10 @@
             btn.classList.add("active");
             window._speedSetting = btn.dataset.speed;
           });
+        });
+        var gradCb = document.getElementById("opt-speed-gradient");
+        if (gradCb) gradCb.addEventListener("change", function () {
+          window._speedGradient = gradCb.checked;
         });
       })();
     </script>
