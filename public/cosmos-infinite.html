@@ -10858,8 +10858,8 @@
           var dist = rigO.position.length();
           var _sm = window._speedSetting === "fast" ? 10 : window._speedSetting === "medium" ? 4 : 1;
           var SPEED = _sm * (window._speedGradient
-            ? (dist >= 16000 ? 400 : dist >= 8000 ? 200 : dist >= 3000 ? 80 : 20)
-            : 20);
+            ? (dist >= 16000 ? 200 : dist >= 8000 ? 100 : dist >= 3000 ? 40 : 10)
+            : 10);
           /* Thrust along craft nose */
           var fwd = new THREE.Vector3(0, 0, -1).applyQuaternion(rigO.quaternion);
           rigO.position.addScaledVector(fwd, action[0] * SPEED * dt * 60);
@@ -56140,8 +56140,8 @@
             /* Flat speed across the universe. Gradient only if _speedGradient ON. */
             var _sm = window._speedSetting === "fast" ? 10 : window._speedSetting === "medium" ? 4 : 1;
             var SPEED = _sm * (window._speedGradient
-              ? (dist >= 16000 ? 400 : dist >= 8000 ? 200 : dist >= 3000 ? 80 : 20)
-              : 20);
+              ? (dist >= 16000 ? 200 : dist >= 8000 ? 100 : dist >= 3000 ? 40 : 10)
+              : 10);
             var THREE = AFRAME.THREE;
 
             /* ── Left stick: thrust along craft nose + yaw around craft up ── */
@@ -56174,6 +56174,7 @@
                  Roll right + pitch up = right-hand turn. Pilot visor look ignored. */
               if (Math.abs(joy2DY) > DEAD) {
                 var _pit = (window._inv_pitch ? -joy2DY : joy2DY);
+                _pit = Math.sign(_pit) * Math.pow(Math.abs(_pit), 1.8);
                 var _camPitchQuat = camEl.object3D.getWorldQuaternion(new THREE.Quaternion());
                 var _rightVec = new THREE.Vector3(1, 0, 0).applyQuaternion(_camPitchQuat).normalize();
                 rig.object3D.rotateOnWorldAxis(_rightVec, _pit * 0.064);
@@ -56182,6 +56183,7 @@
               }
               /* left/right = bank/roll — fed to cosmos-pilot-controls _roll */
               var _rl = (window._inv_roll ? -joy2DX : joy2DX);
+              _rl = Math.sign(_rl) * Math.pow(Math.abs(_rl), 1.8);
               window._joyRollDelta = (window._joyRollDelta || 0) - _rl * 0.08;
             }
             /* used by cosmos-pilot-controls to suppress auto-level (now removed) */
