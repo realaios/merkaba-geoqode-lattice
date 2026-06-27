@@ -51424,17 +51424,31 @@
               }
             }
           }
-          var meshes = [];
-          scene.object3D.traverse(function (o) {
-            if (o.isMesh) meshes.push(o);
-          });
-          var hits = raycaster.intersectObjects(meshes, false);
-          if (!hits.length) return; /* no target — don't fire */
-          var pt = hits[0].point;
-          var dir = new THREE.Vector3()
-            .subVectors(rig.object3D.position, pt)
-            .normalize();
-          var backoff = Math.max(5, hits[0].distance * 0.25);
+          /* Find nearest galaxy anchor (Merkaba Dot) within 3° aim cone */
+          var _gData = window._galaxyData;
+          var _bestAnchor = null;
+          var _bestCos = Math.cos(3 * Math.PI / 180);
+          if (_gData) {
+            var _rp = rig.object3D.position;
+            for (var _gi = 0; _gi < _gData.length; _gi++) {
+              var _gp = _gData[_gi].pos;
+              var _gv = new THREE.Vector3(_gp[0] - _rp.x, _gp[1] - _rp.y, _gp[2] - _rp.z);
+              var _gd = _gv.length();
+              if (_gd < 1) continue;
+              var _ac = _gv.normalize().dot(noseDir);
+              if (_ac > _bestCos) { _bestCos = _ac; _bestAnchor = { pos: _gp, dist: _gd }; }
+            }
+          }
+          if (!_bestAnchor) {
+            /* No Merkaba Dot in aim — fire laser into open space */
+            _spawnLaser(rig.object3D.position, rig.object3D.position.clone().addScaledVector(noseDir, 2000), scene, THREE);
+            return;
+          }
+          /* Hyperspace to the targeted Merkaba Dot */
+          var _ap = _bestAnchor.pos;
+          var pt = new THREE.Vector3(_ap[0], _ap[1], _ap[2]);
+          var dir = new THREE.Vector3().subVectors(rig.object3D.position, pt).normalize();
+          var backoff = Math.max(5, _bestAnchor.dist * 0.25);
           var targetPos = {
             x: pt.x + dir.x * backoff,
             y: pt.y + dir.y * backoff + 1.6,
@@ -51876,6 +51890,7 @@
           this._gPoints = new THREE.Points(gGeo, gMat);
           this._gColArr = gCol; /* live reference for gold-marker updates */
           this.el.setObject3D("galaxy-anchors", this._gPoints);
+          window._galaxyData = this._galaxyData; /* expose for cosmos-fire targeting */
 
           /* Restore gold markers for galaxies visited in prior sessions */
           this._initVisitedMarkers();
