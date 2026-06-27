@@ -12090,8 +12090,18 @@
           scene.add(this._ship);
 
           /* Materials */
-          var hullMat = new THREE.MeshBasicMaterial({ color: 0xbcc8d4 });
-          var darkMat = new THREE.MeshBasicMaterial({ color: 0x778899 });
+          var hullMat = new THREE.MeshPhongMaterial({
+            color: 0x8899aa,        /* cool blue-grey hull */
+            emissive: 0x112233,
+            emissiveIntensity: 0.25,
+            shininess: 90,
+          });
+          var darkMat = new THREE.MeshPhongMaterial({
+            color: 0x334455,        /* deep slate accent panels */
+            emissive: 0x0a1520,
+            emissiveIntensity: 0.2,
+            shininess: 50,
+          });
 
           /* ── SAUCER ───────────────────────────────────────────── */
           /* Main disc */
@@ -12101,7 +12111,14 @@
           /* Bridge dome (top, forward) */
           var topDome = new THREE.Mesh(
             new THREE.SphereGeometry(10, 18, 8, 0, PI * 2, 0, PI / 2),
-            new THREE.MeshBasicMaterial({ color: 0xddeeff }),
+            new THREE.MeshPhongMaterial({
+              color: 0xaaccff,      /* bright command-bridge blue */
+              emissive: 0x2244aa,
+              emissiveIntensity: 0.5,
+              shininess: 160,
+              transparent: true,
+              opacity: 0.92,
+            }),
           );
           topDome.position.set(0, 5.5, -6);
           this._ship.add(topDome);
