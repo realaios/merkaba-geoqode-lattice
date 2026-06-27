@@ -11040,6 +11040,8 @@
             );
           });
 
+          var _invMap = {};
+          var _i2inv = [[], [], []];
           var idxs = [0, 0, 0];
           var dummy = new THREE.Object3D();
 
@@ -11054,6 +11056,7 @@
 
             for (var col = 0; col < COLS; col++) {
               var wx = (col - (COLS - 1) / 2) * GAP_X;
+              var _iStart = idxs[t];
               for (var pr = 0; pr < pR; pr++) {
                 for (var pc = 0; pc < pC; pc++) {
                   if (!pat[pr][pc]) continue;
@@ -11066,6 +11069,9 @@
                   meshes[t].setMatrixAt(idxs[t]++, dummy.matrix);
                 }
               }
+              var _iKey = row + "_" + col;
+              _invMap[_iKey] = { type: t, start: _iStart, count: idxs[t] - _iStart, alive: true };
+              for (var _ii = _iStart; _ii < idxs[t]; _ii++) { _i2inv[t][_ii] = _iKey; }
             }
           }
 
@@ -11078,6 +11084,7 @@
           group.add(new THREE.PointLight(0x00FF88, 1.5, 2400, 2));
 
           this.el.setObject3D("space-invaders", group);
+          window._siWall = { meshes: meshes, group: group, invMap: _invMap, i2inv: _i2inv };
         },
       });
 
@@ -51329,6 +51336,53 @@
           if (typeof window.firePulse === "function") window.firePulse();
         });
 
+        /* ---- Laser beam + explosion helpers for Space Invader hits --------- */
+        function _spawnLaser(from, to, scene, THREE) {
+          var pts = [from.clone(), to.clone()];
+          var geo = new THREE.BufferGeometry().setFromPoints(pts);
+          var mat = new THREE.LineBasicMaterial({ color: 0xFF2200, transparent: true, opacity: 1 });
+          var line = new THREE.Line(geo, mat);
+          scene.object3D.add(line);
+          var t0 = performance.now();
+          (function fadeLaser() {
+            var p = Math.min(1, (performance.now() - t0) / 300);
+            mat.opacity = 1 - p;
+            if (p < 1) requestAnimationFrame(fadeLaser);
+            else { scene.object3D.remove(line); geo.dispose(); mat.dispose(); }
+          })();
+        }
+        function _spawnExplosion(pt, scene, THREE) {
+          var N = 60;
+          var pos = new Float32Array(N * 3);
+          var vels = [];
+          for (var i = 0; i < N; i++) {
+            pos[i * 3] = pt.x; pos[i * 3 + 1] = pt.y; pos[i * 3 + 2] = pt.z;
+            vels.push(new THREE.Vector3(
+              (Math.random() - 0.5) * 2,
+              (Math.random() - 0.5) * 2,
+              (Math.random() - 0.5) * 2
+            ).normalize().multiplyScalar(1.5 + Math.random() * 3.0));
+          }
+          var geo = new THREE.BufferGeometry();
+          geo.setAttribute("position", new THREE.BufferAttribute(pos, 3));
+          var mat = new THREE.PointsMaterial({ color: 0xFF8800, size: 6, sizeAttenuation: false, transparent: true, opacity: 1, blending: THREE.AdditiveBlending, depthWrite: false });
+          var burst = new THREE.Points(geo, mat);
+          scene.object3D.add(burst);
+          var t0 = performance.now();
+          (function boom() {
+            var p = Math.min(1, (performance.now() - t0) / 800);
+            mat.opacity = 1 - p;
+            var arr = geo.attributes.position.array;
+            for (var i = 0; i < N; i++) {
+              arr[i * 3]     += vels[i].x;
+              arr[i * 3 + 1] += vels[i].y;
+              arr[i * 3 + 2] += vels[i].z;
+            }
+            geo.attributes.position.needsUpdate = true;
+            if (p < 1) requestAnimationFrame(boom);
+            else { scene.object3D.remove(burst); geo.dispose(); mat.dispose(); }
+          })();
+        }
         /* ---- FIRE-to-hyperspace: cosmos-fire event -------------------------
            Raycasts along CRAFT nose (rig -Z), X-Wing targeting computer style.
            Pilot visor look has no effect — crosshair is always on the nose.
@@ -51346,6 +51400,30 @@
           ).normalize();
           var raycaster = new THREE.Raycaster();
           raycaster.set(rig.object3D.position.clone(), noseDir);
+          /* Check Space Invaders first — a direct hit destroys the invader, skipping hyperspace */
+          if (window._siWall && window._siWall.meshes) {
+            for (var _si = 0; _si < window._siWall.meshes.length; _si++) {
+              var _siHits = raycaster.intersectObject(window._siWall.meshes[_si], false);
+              if (_siHits.length) {
+                var _iid = _siHits[0].instanceId;
+                var _iKey = window._siWall.i2inv[_si][_iid];
+                var _inv = (_iKey != null) && window._siWall.invMap[_iKey];
+                if (_inv && _inv.alive) {
+                  _inv.alive = false;
+                  var _dd = new THREE.Object3D();
+                  _dd.scale.set(0, 0, 0);
+                  _dd.updateMatrix();
+                  for (var _pi = _inv.start; _pi < _inv.start + _inv.count; _pi++) {
+                    window._siWall.meshes[_si].setMatrixAt(_pi, _dd.matrix);
+                  }
+                  window._siWall.meshes[_si].instanceMatrix.needsUpdate = true;
+                  _spawnLaser(rig.object3D.position, _siHits[0].point, scene, THREE);
+                  _spawnExplosion(_siHits[0].point, scene, THREE);
+                  return;
+                }
+              }
+            }
+          }
           var meshes = [];
           scene.object3D.traverse(function (o) {
             if (o.isMesh) meshes.push(o);
@@ -55599,6 +55677,33 @@
         border-color: #00d4ff;
         box-shadow: 0 0 20px rgba(0, 212, 255, 0.4);
       }
+      /* ── Full-screen button ── */
+      #fullscreen-btn {
+        position: fixed;
+        top: 12px;
+        left: 60px;
+        width: 40px;
+        height: 40px;
+        border-radius: 8px;
+        background: rgba(0, 0, 0, 0.55);
+        border: 1.5px solid rgba(0, 212, 255, 0.5);
+        color: #00d4ff;
+        font-size: 18px;
+        cursor: pointer;
+        z-index: 5000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 0 10px rgba(0, 212, 255, 0.2);
+        transition: background 0.2s, border-color 0.2s;
+        font-family: sans-serif;
+        user-select: none;
+      }
+      #fullscreen-btn:hover {
+        background: rgba(0, 212, 255, 0.15);
+        border-color: rgba(0, 212, 255, 0.85);
+        box-shadow: 0 0 16px rgba(0, 212, 255, 0.35);
+      }
       /* ── Options panel ── */
       #opts-panel {
         display: none;
@@ -55731,6 +55836,8 @@
 
     <!-- Options button -->
     <button id="opts-btn" title="Options">&#9881;</button>
+    <!-- Full-screen button -->
+    <button id="fullscreen-btn" title="Full Screen">&#x26F6;</button>
 
     <!-- Options panel -->
     <div id="opts-panel">
@@ -56936,6 +57043,26 @@
         if (gradCb) gradCb.addEventListener("change", function () {
           window._speedGradient = gradCb.checked;
         });
+        /* ---- Full-screen toggle ------------------------------------------ */
+        var fsBtn = document.getElementById("fullscreen-btn");
+        if (fsBtn) {
+          fsBtn.addEventListener("click", function () {
+            if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+              var el = document.documentElement;
+              if (el.requestFullscreen) el.requestFullscreen();
+              else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
+            } else {
+              if (document.exitFullscreen) document.exitFullscreen();
+              else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+            }
+          });
+          document.addEventListener("fullscreenchange", function () {
+            fsBtn.style.opacity = document.fullscreenElement ? "0.4" : "1";
+          });
+          document.addEventListener("webkitfullscreenchange", function () {
+            fsBtn.style.opacity = document.webkitFullscreenElement ? "0.4" : "1";
+          });
+        }
       })();
     </script>
   </body>
