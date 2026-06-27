@@ -3522,6 +3522,10 @@
       <a-entity magnetohydrodynamic-jet></a-entity>
       <!-- ── MERKABA STARSHIP — autonomous starship with hyperspace warp ── -->
       <a-entity merkaba-starship></a-entity>
+      <!-- ── PAC-MAN — giant iconic Pac-Man floating in the universe ── -->
+      <a-entity pac-man-entity position="2200 500 -3500"></a-entity>
+      <!-- ── SPACE INVADERS — iconic retro invasion fleet wall ── -->
+      <a-entity space-invaders-wall position="-3200 200 -2800"></a-entity>
       <!-- ── QUASAR LENS — blazing quasar with gravitational Einstein-ring lensing ── -->
       <a-entity quasar-lens></a-entity>
       <!-- ── ROGUE PLANET — lightless drifting world with IR glow + micro-moon ── -->
@@ -10905,6 +10909,179 @@
           }, 2400);
         },
       });
+
+      /* ==================================================================
+         PAC-MAN — giant 3D Pac-Man floating in the universe
+      ================================================================== */
+      AFRAME.registerComponent("pac-man-entity", {
+        init: function () {
+          var THREE = AFRAME.THREE;
+          var TAU = Math.PI * 2;
+          var R = 160;
+          var group = new THREE.Group();
+
+          /* Body: circle with mouth wedge cut (ExtrudeGeometry on XY shape) */
+          var mouth = Math.PI / 5; /* 36° half-open */
+          var shape = new THREE.Shape();
+          shape.moveTo(0, 0);
+          shape.absarc(0, 0, R, mouth, TAU - mouth, false);
+          shape.lineTo(0, 0);
+
+          var geo = new THREE.ExtrudeGeometry(shape, {
+            depth: R * 0.55,
+            bevelEnabled: true,
+            bevelSegments: 4,
+            bevelSize: 14,
+            bevelThickness: 14,
+            curveSegments: 80,
+          });
+          geo.translate(0, 0, -R * 0.275); /* centre along depth axis */
+
+          group.add(new THREE.Mesh(geo, new THREE.MeshPhongMaterial({
+            color: 0xFFDD00,
+            emissive: 0xCC9900,
+            emissiveIntensity: 0.35,
+            shininess: 80,
+          })));
+
+          /* Eye */
+          var eye = new THREE.Mesh(
+            new THREE.SphereGeometry(R * 0.09, 20, 20),
+            new THREE.MeshPhongMaterial({ color: 0x111111, shininess: 200 })
+          );
+          eye.position.set(R * 0.28, R * 0.52, 0);
+          group.add(eye);
+
+          /* Warm yellow glow light */
+          group.add(new THREE.PointLight(0xFFDD00, 2.0, R * 14, 2));
+
+          this._g = group;
+          this.el.setObject3D("pac-man", group);
+        },
+        tick: function (t) {
+          /* Gentle slow bob so it feels alive */
+          if (this._g) this._g.rotation.y = Math.sin(t * 0.00035) * 0.14;
+        },
+      });
+
+      /* ==================================================================
+         SPACE INVADERS WALL — iconic 3D pixel-art invasion fleet
+         Formation: 11 cols × 5 rows  (Squid / Crab×2 / Octopus×2)
+      ================================================================== */
+      AFRAME.registerComponent("space-invaders-wall", {
+        init: function () {
+          var THREE = AFRAME.THREE;
+
+          /* ── Pixel art patterns [row][col] 1=filled ── */
+          var PA = [ /* Squid  — 8 wide × 8 tall */
+            [0,0,0,1,1,0,0,0],
+            [0,0,1,1,1,1,0,0],
+            [0,1,1,1,1,1,1,0],
+            [1,1,0,1,1,0,1,1],
+            [1,1,1,1,1,1,1,1],
+            [0,1,0,1,1,0,1,0],
+            [1,0,0,0,0,0,0,1],
+            [0,1,0,0,0,0,1,0],
+          ];
+          var PB = [ /* Crab   — 11 wide × 8 tall */
+            [0,0,1,0,0,0,0,0,1,0,0],
+            [0,0,0,1,0,0,0,1,0,0,0],
+            [0,0,1,1,1,1,1,1,1,0,0],
+            [0,1,1,0,1,1,1,0,1,1,0],
+            [1,1,1,1,1,1,1,1,1,1,1],
+            [1,0,1,1,1,1,1,1,1,0,1],
+            [1,0,1,0,0,0,0,0,1,0,1],
+            [0,0,0,1,1,0,1,1,0,0,0],
+          ];
+          var PC = [ /* Octopus — 12 wide × 8 tall */
+            [0,0,1,1,1,1,1,1,1,1,0,0],
+            [0,1,1,1,1,1,1,1,1,1,1,0],
+            [1,1,0,1,1,1,1,1,1,0,1,1],
+            [1,1,1,1,1,1,1,1,1,1,1,1],
+            [0,1,1,0,1,1,1,1,0,1,1,0],
+            [1,0,1,1,1,1,1,1,1,1,0,1],
+            [1,0,1,0,0,0,0,0,0,1,0,1],
+            [0,0,1,1,0,0,0,0,1,1,0,0],
+          ];
+
+          var PS = 6;    /* pixel size (world units) */
+          var COLS = 11; /* invaders per row */
+          var GAP_X = 88, GAP_Y = 68; /* column / row spacing */
+
+          var rowPat  = [PA, PB, PB, PC, PC];
+          var rowType = [ 0,  1,  1,  2,  2];
+
+          function sumPx(p) {
+            return p.reduce(function (s, r) {
+              return s + r.reduce(function (a, v) { return a + v; }, 0);
+            }, 0);
+          }
+
+          var counts = [
+            sumPx(PA) * COLS,      /* type 0 — squid  (1 row)  */
+            sumPx(PB) * COLS * 2,  /* type 1 — crab   (2 rows) */
+            sumPx(PC) * COLS * 2,  /* type 2 — octopus(2 rows) */
+          ];
+
+          var pixGeo = new THREE.BoxGeometry(PS, PS, PS * 0.55);
+          var cfgs = [
+            { color: 0xFF44FF, emissive: 0x880088, ei: 0.6 }, /* magenta  squid   */
+            { color: 0x00FFCC, emissive: 0x005544, ei: 0.55 }, /* cyan     crab    */
+            { color: 0x44FF44, emissive: 0x006600, ei: 0.55 }, /* green    octopus */
+          ];
+          var meshes = cfgs.map(function (c, i) {
+            return new THREE.InstancedMesh(
+              pixGeo,
+              new THREE.MeshPhongMaterial({
+                color: c.color, emissive: c.emissive,
+                emissiveIntensity: c.ei, shininess: 140,
+              }),
+              counts[i]
+            );
+          });
+
+          var idxs = [0, 0, 0];
+          var dummy = new THREE.Object3D();
+
+          for (var row = 0; row < rowPat.length; row++) {
+            var pat = rowPat[row];
+            var t   = rowType[row];
+            var pR  = pat.length;
+            var pC  = pat[0].length;
+            var wy  = ((rowPat.length - 1) / 2 - row) * GAP_Y;
+            var offX = -(pC - 1) / 2 * PS;
+            var offY = -(pR - 1) / 2 * PS;
+
+            for (var col = 0; col < COLS; col++) {
+              var wx = (col - (COLS - 1) / 2) * GAP_X;
+              for (var pr = 0; pr < pR; pr++) {
+                for (var pc = 0; pc < pC; pc++) {
+                  if (!pat[pr][pc]) continue;
+                  dummy.position.set(
+                    wx + offX + pc * PS,
+                    wy + offY + (pR - 1 - pr) * PS,
+                    0
+                  );
+                  dummy.updateMatrix();
+                  meshes[t].setMatrixAt(idxs[t]++, dummy.matrix);
+                }
+              }
+            }
+          }
+
+          var group = new THREE.Group();
+          meshes.forEach(function (m) {
+            m.instanceMatrix.needsUpdate = true;
+            group.add(m);
+          });
+          /* Eerie green ambient glow */
+          group.add(new THREE.PointLight(0x00FF88, 1.5, 2400, 2));
+
+          this.el.setObject3D("space-invaders", group);
+        },
+      });
+
+      /* ================================================================== */
 
       /* ==================================================================
          COSMOS AUDIO — ambient cosmic soundtrack via Web Audio API.
