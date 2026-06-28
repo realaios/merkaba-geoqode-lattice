@@ -5696,15 +5696,29 @@ _wss.on("connection", (ws) => {
         _broadcast({ type: "callsign", id, name: entry.name }, id);
       }
     } else if (msg.type === "fire") {
-      _broadcast({
-        type: "fire", id,
-        ox: +msg.ox || 0, oy: +msg.oy || 0, oz: +msg.oz || 0,
-        dx: +msg.dx || 0, dy: +msg.dy || 0, dz: +msg.dz || 0,
-      }, id);
+      _broadcast(
+        {
+          type: "fire",
+          id,
+          ox: +msg.ox || 0,
+          oy: +msg.oy || 0,
+          oz: +msg.oz || 0,
+          dx: +msg.dx || 0,
+          dy: +msg.dy || 0,
+          dz: +msg.dz || 0,
+        },
+        id,
+      );
     } else if (msg.type === "hit") {
-      _broadcast({ type: "hit", shooterId: id, targetId: String(msg.targetId || "") }, id);
+      _broadcast(
+        { type: "hit", shooterId: id, targetId: String(msg.targetId || "") },
+        id,
+      );
     } else if (msg.type === "kill") {
-      _broadcast({ type: "kill", shooterId: id, targetId: String(msg.targetId || "") }, id);
+      _broadcast(
+        { type: "kill", shooterId: id, targetId: String(msg.targetId || "") },
+        id,
+      );
     }
   });
 
