@@ -27,14 +27,14 @@ npm run deploy
 
 ## API Endpoints
 
-| Method | Path | Description |
-|--------|------|-------------|
-| GET | `/` | Health check + endpoint index |
-| GET | `/status` | Agent state + recent cycle log |
-| GET | `/knowledge` | Full feature backlog + research findings |
-| POST | `/trigger` | Fire an immediate dev cycle |
-| POST | `/research` | Spawn research sub-agent `{topic, query}` |
-| POST | `/backlog` | Add feature/bug `{title, description, area, priority}` |
+| Method | Path         | Description                                            |
+| ------ | ------------ | ------------------------------------------------------ |
+| GET    | `/`          | Health check + endpoint index                          |
+| GET    | `/status`    | Agent state + recent cycle log                         |
+| GET    | `/knowledge` | Full feature backlog + research findings               |
+| POST   | `/trigger`   | Fire an immediate dev cycle                            |
+| POST   | `/research`  | Spawn research sub-agent `{topic, query}`              |
+| POST   | `/backlog`   | Add feature/bug `{title, description, area, priority}` |
 
 ## Architecture
 
@@ -56,6 +56,7 @@ Cloudflare Worker (index.ts)
 ## Research Agent
 
 POST `/research` with `{topic, query}` spins up a Claude Haiku sub-agent that:
+
 1. Fetches relevant documentation URLs
 2. Extracts technical findings
 3. Stores results in the `research` table for future dev cycles
@@ -63,6 +64,7 @@ POST `/research` with `{topic, query}` spins up a Claude Haiku sub-agent that:
 ## Feature Backlog (Phase 4–10)
 
 20 features seeded across the roadmap:
+
 - **Phase 4**: Homing missile, proximity mine, ammo pickups, minimap radar, kill-streak announcer, afterburner, weapon HUD
 - **Phase 5**: 5 zone-control sectors, holographic beacons, shield recharge
 - **Phase 6**: Squad formation system, spatial engine audio

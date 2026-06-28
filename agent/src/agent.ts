@@ -76,7 +76,10 @@ export class MerkabaGameAgent extends Agent<Env, AgentState> {
     await this.schedule("0 */6 * * *", "devCycle");
     // Telemetry snapshot every 30 minutes
     await this.scheduleEvery(1800, "recordTelemetry");
-    this.setState({ ...this.state, lastCycleResult: "Agent started and scheduled" });
+    this.setState({
+      ...this.state,
+      lastCycleResult: "Agent started and scheduled",
+    });
   }
 
   /* ── Scheduled: main development cycle ───────────────────────────────── */
@@ -109,11 +112,16 @@ Be decisive. One complete improvement per cycle. Surgical code change only.`,
       });
 
       const duration = Date.now() - start;
-      const result = text || toolResults?.map((r) => JSON.stringify(r.result)).join("; ") || "Cycle complete";
+      const result =
+        text ||
+        toolResults?.map((r) => JSON.stringify(r.result)).join("; ") ||
+        "Cycle complete";
 
       await this.env.DB.prepare(
-        "INSERT INTO agent_log (cycle_ts, action, result, duration_ms) VALUES (?,?,?,?)"
-      ).bind(start, "devCycle", result.slice(0, 2000), duration).run();
+        "INSERT INTO agent_log (cycle_ts, action, result, duration_ms) VALUES (?,?,?,?)",
+      )
+        .bind(start, "devCycle", result.slice(0, 2000), duration)
+        .run();
 
       this.setState({
         ...this.state,
@@ -125,10 +133,16 @@ Be decisive. One complete improvement per cycle. Surgical code change only.`,
       });
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err);
-      this.setState({ ...this.state, status: "error", lastCycleResult: `Error: ${msg}` });
+      this.setState({
+        ...this.state,
+        status: "error",
+        lastCycleResult: `Error: ${msg}`,
+      });
       await this.env.DB.prepare(
-        "INSERT INTO agent_log (cycle_ts, action, result) VALUES (?,?,?)"
-      ).bind(Date.now(), "devCycle_error", msg.slice(0, 2000)).run();
+        "INSERT INTO agent_log (cycle_ts, action, result) VALUES (?,?,?)",
+      )
+        .bind(Date.now(), "devCycle_error", msg.slice(0, 2000))
+        .run();
     }
   }
 
@@ -136,17 +150,24 @@ Be decisive. One complete improvement per cycle. Surgical code change only.`,
 
   async recordTelemetry() {
     try {
-      const res = await fetch(`https://raw.githubusercontent.com/${this.env.GITHUB_OWNER}/${this.env.GITHUB_REPO}/main/data/dogfight-scores.json`);
+      const res = await fetch(
+        `https://raw.githubusercontent.com/${this.env.GITHUB_OWNER}/${this.env.GITHUB_REPO}/main/data/dogfight-scores.json`,
+      );
       if (!res.ok) return;
-      const scores = await res.json() as Record<string, { kills: number; score: number }>;
+      const scores = (await res.json()) as Record<
+        string,
+        { kills: number; score: number }
+      >;
       const topPilots = Object.entries(scores)
         .sort((a, b) => b[1].score - a[1].score)
         .slice(0, 5)
         .map(([name, s]) => ({ name, kills: s.kills, score: s.score }));
 
       await this.env.DB.prepare(
-        "INSERT INTO telemetry (session_ts, player_count, top_pilots) VALUES (?,?,?)"
-      ).bind(Date.now(), topPilots.length, JSON.stringify(topPilots)).run();
+        "INSERT INTO telemetry (session_ts, player_count, top_pilots) VALUES (?,?,?)",
+      )
+        .bind(Date.now(), topPilots.length, JSON.stringify(topPilots))
+        .run();
 
       this.setState({ ...this.state, activePlayers: topPilots.length });
     } catch (_) {
@@ -165,17 +186,20 @@ Be decisive. One complete improvement per cycle. Surgical code change only.`,
     }
 
     if (url.pathname === "/research" && request.method === "POST") {
-      const { topic, query } = await request.json() as { topic: string; query: string };
+      const { topic, query } = (await request.json()) as {
+        topic: string;
+        query: string;
+      };
       await this._runResearch(topic, query);
       return json({ ok: true, topic });
     }
 
     if (url.pathname === "/status") {
       const recent = await this.env.DB.prepare(
-        "SELECT action, result, duration_ms, logged_at FROM agent_log ORDER BY logged_at DESC LIMIT 5"
+        "SELECT action, result, duration_ms, logged_at FROM agent_log ORDER BY logged_at DESC LIMIT 5",
       ).all();
       const features = await this.env.DB.prepare(
-        "SELECT COUNT(*) as c, status FROM features GROUP BY status"
+        "SELECT COUNT(*) as c, status FROM features GROUP BY status",
       ).all();
       return json({
         state: this.state,
@@ -186,23 +210,34 @@ Be decisive. One complete improvement per cycle. Surgical code change only.`,
 
     if (url.pathname === "/knowledge") {
       const features = await this.env.DB.prepare(
-        "SELECT * FROM features ORDER BY status ASC, priority ASC LIMIT 20"
+        "SELECT * FROM features ORDER BY status ASC, priority ASC LIMIT 20",
       ).all();
       const research = await this.env.DB.prepare(
-        "SELECT topic, findings, created_at FROM research ORDER BY created_at DESC LIMIT 10"
+        "SELECT topic, findings, created_at FROM research ORDER BY created_at DESC LIMIT 10",
       ).all();
       return json({ features: features.results, research: research.results });
     }
 
     if (url.pathname === "/backlog" && request.method === "POST") {
-      const item = await request.json() as Record<string, unknown>;
+      const item = (await request.json()) as Record<string, unknown>;
       await this.env.DB.prepare(
-        "INSERT INTO features (title, description, phase, area, priority) VALUES (?,?,?,?,?)"
-      ).bind(item.title, item.description, item.phase ?? 4, item.area ?? "gameplay", item.priority ?? 5).run();
+        "INSERT INTO features (title, description, phase, area, priority) VALUES (?,?,?,?,?)",
+      )
+        .bind(
+          item.title,
+          item.description,
+          item.phase ?? 4,
+          item.area ?? "gameplay",
+          item.priority ?? 5,
+        )
+        .run();
       return json({ added: true });
     }
 
-    return json({ agent: "MerkabaGameAgent", version: "1.0", status: this.state.status }, 200);
+    return json(
+      { agent: "MerkabaGameAgent", version: "1.0", status: this.state.status },
+      200,
+    );
   }
 
   /* ── On-demand research sub-agent ───────────────────────────────────── */
@@ -217,7 +252,10 @@ Be decisive. One complete improvement per cycle. Surgical code change only.`,
 Use fetch_url to look up documentation pages, then store_research to save findings.
 Be concise and technical — focus on code patterns and API details relevant to Three.js / A-Frame game development.`,
       prompt: `Research topic: ${topic}\nQuery: ${query}`,
-      tools: { fetch_url: tools.fetch_url, store_research: tools.store_research },
+      tools: {
+        fetch_url: tools.fetch_url,
+        store_research: tools.store_research,
+      },
       maxSteps: 5,
     });
 
@@ -239,6 +277,9 @@ Be concise and technical — focus on code patterns and API details relevant to 
 function json(data: unknown, status = 200): Response {
   return new Response(JSON.stringify(data, null, 2), {
     status,
-    headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" },
+    headers: {
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
+    },
   });
 }
