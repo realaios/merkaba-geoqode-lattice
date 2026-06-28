@@ -27,13 +27,13 @@ npm run deploy
 
 ## API Endpoints
 
-| Method | Path         | Description                                              |
-| ------ | ------------ | -------------------------------------------------------- |
-| GET    | `/`          | Health check + endpoint index                            |
-| GET    | `/status`    | Agent state + recent cycle log                           |
-| GET    | `/knowledge` | Full feature backlog + research findings                 |
-| POST   | `/trigger`   | Fire an immediate dev cycle                              |
-| POST   | `/research`  | Spawn research sub-agent `{topic, query}`                |
+| Method | Path         | Description                                                |
+| ------ | ------------ | ---------------------------------------------------------- |
+| GET    | `/`          | Health check + endpoint index                              |
+| GET    | `/status`    | Agent state + recent cycle log                             |
+| GET    | `/knowledge` | Full feature backlog + research findings                   |
+| POST   | `/trigger`   | Fire an immediate dev cycle                                |
+| POST   | `/research`  | Spawn research sub-agent `{topic, query}`                  |
 | POST   | `/backlog`   | Add feature `{title, description, module, area, priority}` |
 
 ## Architecture
@@ -56,17 +56,20 @@ Cloudflare Worker (index.ts)
 ## Feature Backlog (Phase 1–3)
 
 **Phase 1 — Core experiment enhancements (11 features):**
+
 - Pendulum phase space plot, wave interference colormap, orbital energy diagram
 - Molecule rotation controls, glucose structure (C6H12O6)
 - DNA base-pair legend, cell membrane animation, gear torque display
 - Rocket staging animation, portal ring pulse, keyboard cheatsheet
 
 **Phase 2 — Advanced simulations (8 features):**
+
 - Double pendulum chaos, standing wave resonance modes
 - Lewis structure overlay, pH indicator simulation
 - Protein folding, mitosis cell division
 - Bridge load simulation, fluid dynamics streamlines
 
 **Phase 3 — Curriculum + multi-user (5 features):**
+
 - Experiment narration mode, quiz mode
 - Shared experiment state sync, Merkaba peer avatars, chat overlay

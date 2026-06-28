@@ -110,11 +110,16 @@ If the feature requires a completely new experiment, add it as a new case in the
       });
 
       const duration = Date.now() - start;
-      const result = text || toolResults?.map((r) => JSON.stringify(r.result)).join("; ") || "Cycle complete";
+      const result =
+        text ||
+        toolResults?.map((r) => JSON.stringify(r.result)).join("; ") ||
+        "Cycle complete";
 
       await this.env.DB.prepare(
         "INSERT INTO agent_log (cycle_ts, action, result, duration_ms) VALUES (?,?,?,?)",
-      ).bind(start, "devCycle", result.slice(0, 2000), duration).run();
+      )
+        .bind(start, "devCycle", result.slice(0, 2000), duration)
+        .run();
 
       this.setState({
         ...this.state,
@@ -126,10 +131,16 @@ If the feature requires a completely new experiment, add it as a new case in the
       });
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err);
-      this.setState({ ...this.state, status: "error", lastCycleResult: `Error: ${msg}` });
+      this.setState({
+        ...this.state,
+        status: "error",
+        lastCycleResult: `Error: ${msg}`,
+      });
       await this.env.DB.prepare(
         "INSERT INTO agent_log (cycle_ts, action, result) VALUES (?,?,?)",
-      ).bind(Date.now(), "devCycle_error", msg.slice(0, 2000)).run();
+      )
+        .bind(Date.now(), "devCycle_error", msg.slice(0, 2000))
+        .run();
     }
   }
 
@@ -153,13 +164,22 @@ Research upcoming lab features and store findings that will help implement them.
 Focus on: Three.js geometry APIs, physics/chemistry/biology simulation algorithms, A-Frame patterns.
 Use fetch_url to look up docs, then store_research to save findings.`,
         prompt: `Research these upcoming features and store useful technical findings for each:\n${JSON.stringify(rows.results, null, 2)}\n\nFor each feature, search for the relevant Three.js geometry, physics formula, or algorithm needed.`,
-        tools: { fetch_url: tools.fetch_url, store_research: tools.store_research },
+        tools: {
+          fetch_url: tools.fetch_url,
+          store_research: tools.store_research,
+        },
         maxSteps: 8,
       });
 
       await this.env.DB.prepare(
         "INSERT INTO agent_log (cycle_ts, action, result) VALUES (?,?,?)",
-      ).bind(Date.now(), "researchCycle", `Researched ${rows.results.length} upcoming features`).run();
+      )
+        .bind(
+          Date.now(),
+          "researchCycle",
+          `Researched ${rows.results.length} upcoming features`,
+        )
+        .run();
     } catch (_) {}
   }
 
@@ -174,7 +194,10 @@ Use fetch_url to look up docs, then store_research to save findings.`,
     }
 
     if (url.pathname === "/research" && request.method === "POST") {
-      const { topic, query } = (await request.json()) as { topic: string; query: string };
+      const { topic, query } = (await request.json()) as {
+        topic: string;
+        query: string;
+      };
       await this._runResearch(topic, query);
       return json({ ok: true, topic });
     }
@@ -186,7 +209,11 @@ Use fetch_url to look up docs, then store_research to save findings.`,
       const features = await this.env.DB.prepare(
         "SELECT COUNT(*) as c, status FROM features GROUP BY status",
       ).all();
-      return json({ state: this.state, recent_log: recent.results, feature_counts: features.results });
+      return json({
+        state: this.state,
+        recent_log: recent.results,
+        feature_counts: features.results,
+      });
     }
 
     if (url.pathname === "/knowledge") {
@@ -203,7 +230,16 @@ Use fetch_url to look up docs, then store_research to save findings.`,
       const item = (await request.json()) as Record<string, unknown>;
       await this.env.DB.prepare(
         "INSERT INTO features (title, description, module, area, phase, priority) VALUES (?,?,?,?,?,?)",
-      ).bind(item.title, item.description, item.module ?? "all", item.area ?? "experiment", item.phase ?? 1, item.priority ?? 5).run();
+      )
+        .bind(
+          item.title,
+          item.description,
+          item.module ?? "all",
+          item.area ?? "experiment",
+          item.phase ?? 1,
+          item.priority ?? 5,
+        )
+        .run();
       return json({ added: true });
     }
 
@@ -216,7 +252,8 @@ Use fetch_url to look up docs, then store_research to save findings.`,
         "GET /knowledge": "Feature backlog + research",
         "POST /trigger": "Fire dev cycle",
         "POST /research": "Spawn research {topic, query}",
-        "POST /backlog": "Add feature {title, description, module, area, phase, priority}",
+        "POST /backlog":
+          "Add feature {title, description, module, area, phase, priority}",
       },
     });
   }
@@ -228,7 +265,10 @@ Use fetch_url to look up docs, then store_research to save findings.`,
       model: anthropic("claude-haiku-4-5-20251001"),
       system: `Research agent for MerkabaLabAgent. Look up documentation and store technical findings for cosmos-lab.html development.`,
       prompt: `Research topic: ${topic}\nQuery: ${query}`,
-      tools: { fetch_url: tools.fetch_url, store_research: tools.store_research },
+      tools: {
+        fetch_url: tools.fetch_url,
+        store_research: tools.store_research,
+      },
       maxSteps: 5,
     });
     return text;
@@ -246,6 +286,9 @@ Use fetch_url to look up docs, then store_research to save findings.`,
 function json(data: unknown, status = 200): Response {
   return new Response(JSON.stringify(data, null, 2), {
     status,
-    headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" },
+    headers: {
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
+    },
   });
 }
