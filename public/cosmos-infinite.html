@@ -3696,11 +3696,6 @@
           </button>
         </div>
       </div>
-      <div id="dashboardMenu">
-        <button class="menu-btn active" onclick="toggleDashboard()">
-          DASHBOARD
-        </button>
-      </div>
     </a-scene>
 
     <!-- ══════════════════════════════════════════════════════════════════════════
@@ -57365,9 +57360,9 @@
         }
 
         /* Dashboard type buttons */
-        optsPanel.querySelectorAll(".dash-type-btn").forEach(function (btn) {
+        optsPanel.querySelectorAll("#opts-dash-type .dash-type-btn").forEach(function (btn) {
           btn.addEventListener("click", function () {
-            optsPanel.querySelectorAll(".dash-type-btn").forEach(function (b) { b.classList.remove("active"); });
+            optsPanel.querySelectorAll("#opts-dash-type .dash-type-btn").forEach(function (b) { b.classList.remove("active"); });
             btn.classList.add("active");
             if (typeof rotateDashboard === "function") rotateDashboard(btn.dataset.dash);
             /* also auto-show dashboard if hidden */
