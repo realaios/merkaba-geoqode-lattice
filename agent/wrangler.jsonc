@@ -1,0 +1,36 @@
+{
+  "name": "merkaba-game-agent",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-06-28",
+  "compatibility_flags": ["nodejs_compat"],
+
+  "durable_objects": {
+    "bindings": [
+      { "name": "MERKABA_AGENT", "class_name": "MerkabaGameAgent" }
+    ]
+  },
+
+  "migrations": [
+    { "tag": "v1", "new_sqlite_classes": ["MerkabaGameAgent"] }
+  ],
+
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "merkaba-knowledge",
+      "database_id": "TO_FILL_AFTER_wrangler_d1_create"
+    }
+  ],
+
+  "triggers": {
+    "crons": ["0 */6 * * *"]
+  },
+
+  "vars": {
+    "GITHUB_OWNER": "realaios",
+    "GITHUB_REPO": "merkaba-geoqode-lattice",
+    "GAME_FILE_PATH": "public/cosmos-infinite.html",
+    "AGENT_BRANCH": "game-agent-improvements",
+    "LOG_LEVEL": "info"
+  }
+}
