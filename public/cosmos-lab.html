@@ -1,0 +1,1521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>COSMOS-LAB — Interactive Science Universe</title>
+<script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#000;overflow:hidden;font-family:'Courier New',monospace;color:#0ff}
+#hud{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:10}
+
+/* Module selector */
+#module-bar{position:fixed;top:0;left:50%;transform:translateX(-50%);display:flex;gap:2px;padding:8px;pointer-events:all;z-index:20}
+.mod-btn{background:rgba(0,20,40,0.85);border:1px solid #0ff4;color:#0ff;padding:8px 18px;font-family:inherit;font-size:11px;letter-spacing:2px;cursor:pointer;text-transform:uppercase;transition:all 0.2s;clip-path:polygon(8px 0,100% 0,calc(100% - 8px) 100%,0 100%)}
+.mod-btn:hover{background:rgba(0,200,255,0.15);border-color:#0ff;box-shadow:0 0 12px #0ff6}
+.mod-btn.active{background:rgba(0,200,255,0.22);border-color:#0ff;color:#fff;box-shadow:0 0 18px #0ff8}
+.mod-btn.hub-btn{color:#a78bfa;border-color:#a78bfa4}
+.mod-btn.hub-btn.active{background:rgba(167,139,250,0.22);border-color:#a78bfa;color:#fff;box-shadow:0 0 18px #a78bfa8}
+.mod-btn.phys-btn{color:#60a5fa}
+.mod-btn.phys-btn.active{background:rgba(96,165,250,0.22);border-color:#60a5fa;color:#fff;box-shadow:0 0 18px #60a5fa8}
+.mod-btn.chem-btn{color:#34d399}
+.mod-btn.chem-btn.active{background:rgba(52,211,153,0.22);border-color:#34d399;color:#fff;box-shadow:0 0 18px #34d3998}
+.mod-btn.bio-btn{color:#4ade80}
+.mod-btn.bio-btn.active{background:rgba(74,222,128,0.22);border-color:#4ade80;color:#fff;box-shadow:0 0 18px #4ade808}
+.mod-btn.eng-btn{color:#fb923c}
+.mod-btn.eng-btn.active{background:rgba(251,146,60,0.22);border-color:#fb923c;color:#fff;box-shadow:0 0 18px #fb923c8}
+
+/* Controls panel */
+#controls{position:fixed;left:16px;top:60px;width:220px;pointer-events:all}
+#controls-inner{background:rgba(0,10,24,0.88);border:1px solid #0ff3;padding:12px;display:none}
+#controls-inner.visible{display:block}
+#ctrl-title{font-size:10px;letter-spacing:3px;color:#0ff;opacity:0.7;margin-bottom:10px;text-transform:uppercase}
+.ctrl-group{margin-bottom:10px}
+.ctrl-label{font-size:9px;letter-spacing:1px;color:#8af;opacity:0.7;margin-bottom:3px;text-transform:uppercase}
+.ctrl-row{display:flex;gap:6px;align-items:center;margin-bottom:4px}
+.ctrl-btn{background:rgba(0,200,255,0.1);border:1px solid #0ff3;color:#0ff;padding:4px 10px;font-family:inherit;font-size:10px;cursor:pointer;letter-spacing:1px;transition:all 0.15s}
+.ctrl-btn:hover{background:rgba(0,200,255,0.25);border-color:#0ff}
+.ctrl-btn.active{background:rgba(0,200,255,0.3);border-color:#0ff;box-shadow:0 0 8px #0ff6}
+.ctrl-slider{width:100%;accent-color:#0ff;background:transparent;outline:none}
+.ctrl-value{font-size:9px;color:#0ff;min-width:36px;text-align:right}
+
+/* Data display */
+#data-panel{position:fixed;right:16px;top:60px;width:240px;pointer-events:none}
+#data-inner{background:rgba(0,10,24,0.88);border:1px solid #0ff3;padding:14px;display:none}
+#data-inner.visible{display:block}
+#data-title{font-size:10px;letter-spacing:3px;color:#0ff;opacity:0.7;margin-bottom:10px}
+.data-row{display:flex;justify-content:space-between;margin-bottom:5px;font-size:11px}
+.data-key{color:#8af;opacity:0.7;letter-spacing:1px;font-size:9px;text-transform:uppercase}
+.data-val{color:#0ff;font-size:11px}
+#equation-box{margin-top:12px;padding:10px;border:1px solid #0ff2;background:rgba(0,200,255,0.05);font-size:11px;color:#a0f8e8;line-height:1.6;font-style:italic;min-height:40px}
+
+/* User list */
+#user-list{position:fixed;right:16px;bottom:16px;width:180px;background:rgba(0,10,24,0.85);border:1px solid #0ff3;padding:10px;font-size:10px}
+#user-title{letter-spacing:2px;color:#0ff;opacity:0.5;margin-bottom:6px;font-size:9px}
+.user-entry{display:flex;align-items:center;gap:6px;margin-bottom:3px}
+.user-dot{width:6px;height:6px;border-radius:50%;background:#0ff}
+.user-name{color:#cff;letter-spacing:1px}
+.user-lab{color:#0ff5;font-size:8px}
+
+/* Bottom HUD */
+#bottom-hud{position:fixed;bottom:0;left:0;width:100%;height:36px;background:rgba(0,0,0,0.7);border-top:1px solid #0ff2;display:flex;align-items:center;padding:0 16px;gap:20px;font-size:9px;letter-spacing:1px;color:#0ff6}
+#fps-counter{color:#0ff4}
+#lab-status{color:#4ade806a}
+#nav-hint{position:fixed;bottom:44px;left:50%;transform:translateX(-50%);font-size:9px;color:#0ff3;letter-spacing:2px;text-align:center;pointer-events:none}
+
+/* Feed / notifications */
+#feed{position:fixed;left:50%;bottom:50px;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:4px;pointer-events:none}
+.feed-item{font-size:11px;letter-spacing:2px;color:#0ff;background:rgba(0,20,40,0.9);padding:4px 16px;border:1px solid #0ff3;opacity:0;transition:opacity 0.3s;white-space:nowrap}
+.feed-item.show{opacity:1}
+
+/* Crosshair */
+#crosshair{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:16px;height:16px;pointer-events:none}
+#crosshair::before,#crosshair::after{content:'';position:absolute;background:#0ff4}
+#crosshair::before{width:100%;height:1px;top:50%;left:0}
+#crosshair::after{width:1px;height:100%;left:50%;top:0}
+</style>
+</head>
+<body>
+
+<!-- HUD -->
+<div id="hud">
+  <!-- Module bar -->
+  <div id="module-bar">
+    <button class="mod-btn hub-btn active" onclick="switchModule('hub')">◈ HUB</button>
+    <button class="mod-btn phys-btn" onclick="switchModule('physics')">⚡ PHYSICS</button>
+    <button class="mod-btn chem-btn" onclick="switchModule('chemistry')">⚗ CHEMISTRY</button>
+    <button class="mod-btn bio-btn" onclick="switchModule('biology')">⬡ BIOLOGY</button>
+    <button class="mod-btn eng-btn" onclick="switchModule('engineering')">⚙ ENGINEERING</button>
+  </div>
+
+  <!-- Controls -->
+  <div id="controls">
+    <div id="controls-inner">
+      <div id="ctrl-title">CONTROLS</div>
+      <div id="ctrl-content"></div>
+    </div>
+  </div>
+
+  <!-- Data panel -->
+  <div id="data-panel">
+    <div id="data-inner">
+      <div id="data-title">LIVE DATA</div>
+      <div id="data-rows"></div>
+      <div id="equation-box"></div>
+    </div>
+  </div>
+
+  <!-- User list -->
+  <div id="user-list">
+    <div id="user-title">ACTIVE RESEARCHERS</div>
+    <div id="user-entries"></div>
+  </div>
+
+  <!-- Bottom -->
+  <div id="bottom-hud">
+    <span>COSMOS-LAB v1.0</span>
+    <span id="fps-counter">FPS: --</span>
+    <span id="lab-status">HUB ACTIVE</span>
+    <span style="margin-left:auto;color:#a78bfa6a">STORM-AI AIOS</span>
+  </div>
+  <div id="nav-hint">WASD + MOUSE LOOK · SPACE/SHIFT = UP/DOWN</div>
+  <div id="feed"></div>
+  <div id="crosshair"></div>
+</div>
+
+<!-- A-Frame scene -->
+<a-scene
+  id="scene"
+  background="color: #000008"
+  renderer="antialias: true; colorManagement: true; physicallyCorrectLights: false"
+  vr-mode-ui="enabled: false"
+  stats="false">
+
+  <a-assets timeout="10000"></a-assets>
+
+  <!-- Camera rig — free fly -->
+  <a-entity id="rig" position="0 0 30">
+    <a-entity id="cam"
+      camera="fov: 75; near: 0.05; far: 50000"
+      look-controls="pointerLockEnabled: true; reverseMouseDrag: false"
+      wasd-controls="acceleration: 65; fly: true">
+    </a-entity>
+  </a-entity>
+
+  <!-- Lab world root — all modules attach here -->
+  <a-entity id="world-root"></a-entity>
+
+  <!-- Ambient stars -->
+  <a-entity id="starfield"></a-entity>
+
+</a-scene>
+
+<script>
+'use strict';
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   COSMOS-LAB  —  Interactive Science Universe
+   Four science modules + multi-user presence + live WebSocket sync
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+var THREE, _scene, _worldRoot, _rig, _cam;
+var _activeModule = 'hub';
+var _modules = {};  // name → { root: THREE.Group, start, stop, update, controls, dispose }
+var _raf = null;
+var _lastT = 0;
+var _fpsFrames = 0, _fpsT = 0, _fps = 0;
+
+/* ── Bootstrap ─────────────────────────────────────────────────────────── */
+
+document.querySelector('a-scene').addEventListener('loaded', function() {
+  THREE = AFRAME.THREE;
+  _scene  = document.querySelector('a-scene').object3D;
+  _worldRoot = document.getElementById('world-root').object3D;
+  _rig   = document.getElementById('rig').object3D;
+  _cam   = document.getElementById('cam').object3D;
+
+  _buildStarfield();
+  _initModules();
+  _startModule('hub');
+  _initWebSocket();
+  _loop(0);
+});
+
+/* ── Main RAF loop ──────────────────────────────────────────────────────── */
+
+function _loop(ts) {
+  _raf = requestAnimationFrame(_loop);
+  var dt = Math.min((ts - _lastT) / 1000, 0.05);
+  _lastT = ts;
+
+  // FPS
+  _fpsFrames++;
+  _fpsT += dt;
+  if (_fpsT >= 1) { _fps = _fpsFrames; _fpsFrames = 0; _fpsT = 0; document.getElementById('fps-counter').textContent = 'FPS: ' + _fps; }
+
+  // Update active module
+  var mod = _modules[_activeModule];
+  if (mod && mod.update) mod.update(dt, ts / 1000);
+}
+
+/* ── Starfield ──────────────────────────────────────────────────────────── */
+
+function _buildStarfield() {
+  var geo = new THREE.BufferGeometry();
+  var n = 3000;
+  var pos = new Float32Array(n * 3);
+  for (var i = 0; i < n * 3; i++) pos[i] = (Math.random() - 0.5) * 4000;
+  geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+  var mat = new THREE.PointsMaterial({ color: 0xffffff, size: 0.6, transparent: true, opacity: 0.7, depthWrite: false });
+  var stars = new THREE.Points(geo, mat);
+  document.getElementById('starfield').object3D.add(stars);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   MODULE SYSTEM
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+function _initModules() {
+  _modules['hub']         = _buildHubModule();
+  _modules['physics']     = _buildPhysicsModule();
+  _modules['chemistry']   = _buildChemistryModule();
+  _modules['biology']     = _buildBiologyModule();
+  _modules['engineering'] = _buildEngineeringModule();
+
+  // All module roots added to world but hidden
+  Object.keys(_modules).forEach(function(k) {
+    _worldRoot.add(_modules[k].root);
+    _modules[k].root.visible = false;
+  });
+}
+
+function _startModule(name) {
+  var mod = _modules[name];
+  if (!mod) return;
+  mod.root.visible = true;
+  if (mod.start) mod.start();
+  _updateHUD(name);
+}
+
+function _stopModule(name) {
+  var mod = _modules[name];
+  if (!mod) return;
+  mod.root.visible = false;
+  if (mod.stop) mod.stop();
+}
+
+function switchModule(name) {
+  if (name === _activeModule) return;
+  _stopModule(_activeModule);
+  _activeModule = name;
+  _startModule(name);
+
+  // Update buttons
+  document.querySelectorAll('.mod-btn').forEach(function(b) { b.classList.remove('active'); });
+  var map = { hub: 'hub-btn', physics: 'phys-btn', chemistry: 'chem-btn', biology: 'bio-btn', engineering: 'eng-btn' };
+  document.querySelector('.' + map[name]).classList.add('active');
+
+  var labels = { hub: 'HUB ACTIVE', physics: 'PHYSICS LAB', chemistry: 'CHEMISTRY LAB', biology: 'BIOLOGY LAB', engineering: 'ENGINEERING LAB' };
+  document.getElementById('lab-status').textContent = labels[name] || name.toUpperCase();
+  _postFeed('» ' + (labels[name] || name.toUpperCase()));
+  _wsSync({ type: 'lab_switch', lab: name });
+}
+
+function _updateHUD(name) {
+  var ctrl = document.getElementById('controls-inner');
+  var data = document.getElementById('data-inner');
+  ctrl.classList.remove('visible');
+  data.classList.remove('visible');
+  var mod = _modules[name];
+  if (!mod) return;
+  if (mod.controls) {
+    document.getElementById('ctrl-content').innerHTML = mod.controls();
+    ctrl.classList.add('visible');
+  }
+  if (mod.dataInit) {
+    mod.dataInit();
+    data.classList.add('visible');
+  }
+}
+
+/* ── Feed ─────────────────────────────────────────────────────────────── */
+
+function _postFeed(msg) {
+  var feed = document.getElementById('feed');
+  var el = document.createElement('div');
+  el.className = 'feed-item';
+  el.textContent = msg;
+  feed.appendChild(el);
+  requestAnimationFrame(function() { el.classList.add('show'); });
+  setTimeout(function() { el.classList.remove('show'); setTimeout(function() { feed.removeChild(el); }, 400); }, 3000);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   HUB MODULE  —  Merkaba48 central nexus + portal rings
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+function _buildHubModule() {
+  var root = new THREE.Group();
+  var t = 0;
+
+  // Central Merkaba48 cluster
+  function addWire(geo, color, opacity) {
+    var m = new THREE.MeshBasicMaterial({ color: color, wireframe: true, transparent: true, opacity: opacity, depthWrite: false, blending: THREE.AdditiveBlending });
+    var mesh = new THREE.Mesh(geo, m);
+    root.add(mesh);
+    return mesh;
+  }
+  var ico = addWire(new THREE.IcosahedronGeometry(8, 1), 0xa78bfa, 0.3);
+  var oct = addWire(new THREE.OctahedronGeometry(6, 0), 0x60a5fa, 0.4);
+  var teA = addWire(new THREE.TetrahedronGeometry(7, 0), 0x34d399, 0.3);
+  var teB = addWire(new THREE.TetrahedronGeometry(7, 0), 0xfb923c, 0.25);
+  teB.rotation.x = Math.PI;
+
+  // Core glow sphere
+  var coreGeo = new THREE.SphereGeometry(2.5, 20, 20);
+  var coreMat = new THREE.MeshBasicMaterial({ color: 0xa78bfa, transparent: true, opacity: 0.18, depthWrite: false, blending: THREE.AdditiveBlending });
+  root.add(new THREE.Mesh(coreGeo, coreMat));
+
+  // Four portal rings at cardinal positions (one per lab)
+  var portalDefs = [
+    { pos: [0, 0, -40], color: 0x60a5fa, label: '⚡ PHYSICS', mod: 'physics' },
+    { pos: [40, 0,   0], color: 0x34d399, label: '⚗ CHEMISTRY', mod: 'chemistry' },
+    { pos: [0, 0,  40], color: 0x4ade80, label: '⬡ BIOLOGY', mod: 'biology' },
+    { pos: [-40, 0,  0], color: 0xfb923c, label: '⚙ ENGINEERING', mod: 'engineering' },
+  ];
+  var portals = [];
+  portalDefs.forEach(function(def) {
+    var pg = new THREE.Group();
+    pg.position.set(def.pos[0], def.pos[1], def.pos[2]);
+
+    // Ring torus
+    var tg = new THREE.TorusGeometry(7, 0.3, 12, 60);
+    var tm = new THREE.MeshBasicMaterial({ color: def.color, transparent: true, opacity: 0.7, depthWrite: false, blending: THREE.AdditiveBlending });
+    var ring = new THREE.Mesh(tg, tm);
+    pg.add(ring);
+
+    // Inner disc (subtle)
+    var dg = new THREE.CircleGeometry(6.5, 40);
+    var dm = new THREE.MeshBasicMaterial({ color: def.color, transparent: true, opacity: 0.06, depthWrite: false, blending: THREE.AdditiveBlending, side: THREE.DoubleSide });
+    pg.add(new THREE.Mesh(dg, dm));
+
+    // Outer glow ring
+    var og = new THREE.TorusGeometry(8, 0.08, 8, 60);
+    var om = new THREE.MeshBasicMaterial({ color: def.color, transparent: true, opacity: 0.25, depthWrite: false, blending: THREE.AdditiveBlending });
+    pg.add(new THREE.Mesh(og, om));
+
+    // Face center
+    pg.lookAt(0, 0, 0);
+
+    // HTML label entity
+    var labelEl = document.createElement('a-entity');
+    labelEl.setAttribute('text', 'value: ' + def.label + '; color: #' + def.color.toString(16).padStart(6,'0') + '; align: center; width: 14; font: monoid');
+    labelEl.setAttribute('position', def.pos[0] + ' ' + (def.pos[1] + 10) + ' ' + def.pos[2]);
+    document.getElementById('world-root').appendChild(labelEl);
+
+    root.add(pg);
+    portals.push({ group: pg, ring: ring, color: def.color, mat: tm, mod: def.mod });
+  });
+
+  // Orbital connecting lines (lattice edges)
+  var linePts = [];
+  portalDefs.forEach(function(d) { linePts.push(new THREE.Vector3(d.pos[0], d.pos[1], d.pos[2])); });
+  linePts.push(linePts[0]);
+  var lineGeo = new THREE.BufferGeometry().setFromPoints(linePts);
+  var lineMat = new THREE.LineBasicMaterial({ color: 0x0ff, transparent: true, opacity: 0.08, depthWrite: false, blending: THREE.AdditiveBlending });
+  root.add(new THREE.Line(lineGeo, lineMat));
+
+  // Orbiting particle
+  var orbGeo = new THREE.SphereGeometry(0.5, 8, 8);
+  var orbMat = new THREE.MeshBasicMaterial({ color: 0xa78bfa, transparent: true, opacity: 0.9, depthWrite: false, blending: THREE.AdditiveBlending });
+  var orb = new THREE.Mesh(orbGeo, orbMat);
+  root.add(orb);
+
+  return {
+    root: root,
+    start: function() {
+      _rig.position.set(0, 2, 30);
+      document.getElementById('nav-hint').style.opacity = '1';
+    },
+    update: function(dt, ts) {
+      t += dt;
+      ico.rotation.y = t * 0.12;
+      ico.rotation.x = t * 0.07;
+      oct.rotation.y = -t * 0.18;
+      teA.rotation.y = t * 0.22;
+      teA.rotation.z = t * 0.08;
+      teB.rotation.y = -t * 0.22;
+      teB.rotation.x = Math.PI + t * 0.08;
+
+      portals.forEach(function(p, i) {
+        p.ring.rotation.z = t * (0.4 + i * 0.12);
+        p.mat.opacity = 0.55 + 0.2 * Math.sin(t * 1.8 + i * Math.PI / 2);
+      });
+
+      // Orbiting particle
+      orb.position.x = 20 * Math.cos(t * 0.5);
+      orb.position.z = 20 * Math.sin(t * 0.5);
+      orb.position.y = 6 * Math.sin(t * 1.1);
+    },
+    stop: function() {},
+  };
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   PHYSICS LAB MODULE
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+function _buildPhysicsModule() {
+  var root = new THREE.Group();
+  root.position.set(0, 0, -40);
+
+  var _experiment = 'pendulum'; // pendulum | wave | orbital | projectile
+  var _t = 0;
+
+  // ── PENDULUM ──────────────────────────────────────────────────────────
+  var pendGroup = new THREE.Group();
+  root.add(pendGroup);
+
+  var pendState = { theta: Math.PI / 3, omega: 0, L: 12, g: 9.8, trail: [] };
+  var pivotGeo = new THREE.SphereGeometry(0.3, 8, 8);
+  var pivotMat = new THREE.MeshBasicMaterial({ color: 0x60a5fa, transparent: true, opacity: 0.8, depthWrite: false, blending: THREE.AdditiveBlending });
+  pendGroup.add(new THREE.Mesh(pivotGeo, pivotMat));
+
+  var rodGeo = new THREE.CylinderGeometry(0.06, 0.06, 12, 8);
+  var rodMat = new THREE.MeshBasicMaterial({ color: 0x60a5fa, transparent: true, opacity: 0.4, depthWrite: false, blending: THREE.AdditiveBlending });
+  var rod = new THREE.Mesh(rodGeo, rodMat);
+  pendGroup.add(rod);
+
+  var bobGeo = new THREE.SphereGeometry(0.8, 16, 16);
+  var bobMat = new THREE.MeshBasicMaterial({ color: 0x60a5fa, transparent: true, opacity: 0.95, depthWrite: false, blending: THREE.AdditiveBlending });
+  var bob = new THREE.Mesh(bobGeo, bobMat);
+  pendGroup.add(bob);
+
+  // Trail
+  var trailN = 120;
+  var trailPos = new Float32Array(trailN * 3);
+  var trailGeo = new THREE.BufferGeometry();
+  trailGeo.setAttribute('position', new THREE.BufferAttribute(trailPos, 3));
+  var trailMat = new THREE.LineBasicMaterial({ color: 0x60a5fa, transparent: true, opacity: 0.3, depthWrite: false, blending: THREE.AdditiveBlending });
+  var trailLine = new THREE.Line(trailGeo, trailMat);
+  pendGroup.add(trailLine);
+
+  // ── WAVE INTERFERENCE ─────────────────────────────────────────────────
+  var waveGroup = new THREE.Group();
+  root.add(waveGroup);
+  waveGroup.visible = false;
+  waveGroup.rotation.x = -Math.PI / 2;
+
+  var waveRes = 64;
+  var waveGeo = new THREE.PlaneGeometry(30, 30, waveRes - 1, waveRes - 1);
+  var waveMat = new THREE.MeshBasicMaterial({ color: 0x60a5fa, transparent: true, opacity: 0.45, depthWrite: false, blending: THREE.AdditiveBlending, wireframe: true });
+  var waveMesh = new THREE.Mesh(waveGeo, waveMat);
+  waveGroup.add(waveMesh);
+  var _waveA = 1.2, _waveK = 0.8, _waveOmega = 2.5;
+
+  // Source indicators
+  [-8, 8].forEach(function(x) {
+    var sg = new THREE.SphereGeometry(0.4, 8, 8);
+    var sm = new THREE.MeshBasicMaterial({ color: 0xffd700, transparent: true, opacity: 0.9, depthWrite: false, blending: THREE.AdditiveBlending });
+    var s = new THREE.Mesh(sg, sm);
+    s.position.set(x, 0, 0);
+    waveGroup.add(s);
+  });
+
+  // ── ORBITAL MECHANICS ─────────────────────────────────────────────────
+  var orbitalGroup = new THREE.Group();
+  root.add(orbitalGroup);
+  orbitalGroup.visible = false;
+
+  // Central star
+  var starGeo = new THREE.SphereGeometry(2.5, 20, 20);
+  var starMat = new THREE.MeshBasicMaterial({ color: 0xffd700, transparent: true, opacity: 0.9, depthWrite: false, blending: THREE.AdditiveBlending });
+  orbitalGroup.add(new THREE.Mesh(starGeo, starMat));
+  var starGlow = new THREE.Mesh(new THREE.SphereGeometry(4, 20, 20), new THREE.MeshBasicMaterial({ color: 0xff8800, transparent: true, opacity: 0.15, depthWrite: false, blending: THREE.AdditiveBlending }));
+  orbitalGroup.add(starGlow);
+
+  // Planets — RK4 orbital simulation
+  var planets = [
+    { x: 10, y: 0, vx: 0, vy: 2.8, m: 1, color: 0x60a5fa, r: 0.6 },
+    { x: -18, y: 0, vx: 0, vy: -2.1, m: 1, color: 0x34d399, r: 0.8 },
+    { x: 24, y: 0, vx: 0, vy: 1.7, m: 1, color: 0xfb923c, r: 1.0 },
+  ];
+  var GM = 50;
+  var planetMeshes = planets.map(function(p) {
+    var g = new THREE.SphereGeometry(p.r, 12, 12);
+    var m = new THREE.MeshBasicMaterial({ color: p.color, transparent: true, opacity: 0.9, depthWrite: false, blending: THREE.AdditiveBlending });
+    var mesh = new THREE.Mesh(g, m);
+    orbitalGroup.add(mesh);
+    // Orbit trail
+    var tg = new THREE.BufferGeometry();
+    var tp = new Float32Array(300 * 3);
+    tg.setAttribute('position', new THREE.BufferAttribute(tp, 3));
+    var tm = new THREE.LineBasicMaterial({ color: p.color, transparent: true, opacity: 0.2, depthWrite: false, blending: THREE.AdditiveBlending });
+    var tl = new THREE.Line(tg, tm);
+    orbitalGroup.add(tl);
+    p._trailPos = tp; p._trailLine = tl; p._trailIdx = 0;
+    return mesh;
+  });
+
+  // ── PROJECTILE ────────────────────────────────────────────────────────
+  var projGroup = new THREE.Group();
+  root.add(projGroup);
+  projGroup.visible = false;
+
+  // Cannon
+  var cannonGeo = new THREE.CylinderGeometry(0.4, 0.6, 3, 12);
+  var cannonMat = new THREE.MeshBasicMaterial({ color: 0x888, transparent: true, opacity: 0.8, depthWrite: false, blending: THREE.AdditiveBlending });
+  var cannon = new THREE.Mesh(cannonGeo, cannonMat);
+  cannon.position.set(-14, -4, 0);
+  cannon.rotation.z = Math.PI / 4;
+  projGroup.add(cannon);
+
+  // Ground plane line
+  var groundPts = [new THREE.Vector3(-20, -6, 0), new THREE.Vector3(20, -6, 0)];
+  projGroup.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(groundPts),
+    new THREE.LineBasicMaterial({ color: 0x0ff, transparent: true, opacity: 0.2, depthWrite: false })));
+
+  var projState = { x: -12, y: -4, vx: 8, vy: 8, active: false, trail: [] };
+  var projGeo = new THREE.SphereGeometry(0.5, 12, 12);
+  var projMat = new THREE.MeshBasicMaterial({ color: 0xfb923c, transparent: true, opacity: 0.9, depthWrite: false, blending: THREE.AdditiveBlending });
+  var projMesh = new THREE.Mesh(projGeo, projMat);
+  projGroup.add(projMesh);
+
+  var projTrailN = 80;
+  var projTrailPos = new Float32Array(projTrailN * 3);
+  var projTrailGeo = new THREE.BufferGeometry();
+  projTrailGeo.setAttribute('position', new THREE.BufferAttribute(projTrailPos, 3));
+  var projTrailLine = new THREE.Line(projTrailGeo, new THREE.LineBasicMaterial({ color: 0xfb923c, transparent: true, opacity: 0.3, depthWrite: false, blending: THREE.AdditiveBlending }));
+  projGroup.add(projTrailLine);
+
+  var _projAngle = 45, _projSpeed = 12, _projG = 9.8;
+
+  // ── DATA ──────────────────────────────────────────────────────────────
+  var _dataRows = document.getElementById('data-rows');
+  var _eqBox = document.getElementById('equation-box');
+
+  function _updateData(rows, eq) {
+    _dataRows.innerHTML = rows.map(function(r) {
+      return '<div class="data-row"><span class="data-key">' + r[0] + '</span><span class="data-val">' + r[1] + '</span></div>';
+    }).join('');
+    _eqBox.textContent = eq;
+  }
+
+  function _setExperiment(name) {
+    _experiment = name;
+    pendGroup.visible   = name === 'pendulum';
+    waveGroup.visible   = name === 'wave';
+    orbitalGroup.visible = name === 'orbital';
+    projGroup.visible   = name === 'projectile';
+    // Re-render controls
+    document.getElementById('ctrl-content').innerHTML = _buildControls();
+    _attachControlHandlers();
+  }
+
+  function _buildControls() {
+    var expBtns = ['pendulum','wave','orbital','projectile'].map(function(e) {
+      return '<button class="ctrl-btn' + (_experiment === e ? ' active' : '') + '" onclick="window._physSetExp(\'' + e + '\')">' + e.toUpperCase() + '</button>';
+    }).join('');
+    var extra = '';
+    if (_experiment === 'pendulum') {
+      extra = '<div class="ctrl-group"><div class="ctrl-label">Length (L)</div>' +
+        '<div class="ctrl-row"><input class="ctrl-slider" type="range" id="pend-L" min="6" max="20" step="0.5" value="' + pendState.L + '"><span class="ctrl-value" id="pend-L-val">' + pendState.L + '</span></div></div>' +
+        '<div class="ctrl-group"><div class="ctrl-label">Gravity (g)</div>' +
+        '<div class="ctrl-row"><input class="ctrl-slider" type="range" id="pend-g" min="1" max="25" step="0.5" value="' + pendState.g + '"><span class="ctrl-value" id="pend-g-val">' + pendState.g + '</span></div></div>' +
+        '<div class="ctrl-row"><button class="ctrl-btn" onclick="window._physRelease()">RELEASE</button></div>';
+    } else if (_experiment === 'wave') {
+      extra = '<div class="ctrl-group"><div class="ctrl-label">Amplitude</div>' +
+        '<div class="ctrl-row"><input class="ctrl-slider" type="range" id="wave-A" min="0.2" max="3" step="0.1" value="' + _waveA + '"><span class="ctrl-value" id="wave-A-val">' + _waveA + '</span></div></div>' +
+        '<div class="ctrl-group"><div class="ctrl-label">Frequency ω</div>' +
+        '<div class="ctrl-row"><input class="ctrl-slider" type="range" id="wave-omega" min="0.5" max="6" step="0.1" value="' + _waveOmega + '"><span class="ctrl-value" id="wave-omega-val">' + _waveOmega + '</span></div></div>';
+    } else if (_experiment === 'projectile') {
+      extra = '<div class="ctrl-group"><div class="ctrl-label">Angle (°)</div>' +
+        '<div class="ctrl-row"><input class="ctrl-slider" type="range" id="proj-angle" min="10" max="80" step="1" value="' + _projAngle + '"><span class="ctrl-value" id="proj-angle-val">' + _projAngle + '</span></div></div>' +
+        '<div class="ctrl-group"><div class="ctrl-label">Speed</div>' +
+        '<div class="ctrl-row"><input class="ctrl-slider" type="range" id="proj-speed" min="4" max="25" step="0.5" value="' + _projSpeed + '"><span class="ctrl-value" id="proj-speed-val">' + _projSpeed + '</span></div></div>' +
+        '<div class="ctrl-row"><button class="ctrl-btn" onclick="window._physFire()">FIRE ▶</button></div>';
+    }
+    return '<div class="ctrl-group"><div class="ctrl-row" style="flex-wrap:wrap;gap:4px">' + expBtns + '</div></div>' + extra;
+  }
+
+  function _attachControlHandlers() {
+    var pL = document.getElementById('pend-L');
+    if (pL) { pL.addEventListener('input', function() { pendState.L = parseFloat(this.value); document.getElementById('pend-L-val').textContent = this.value; }); }
+    var pG = document.getElementById('pend-g');
+    if (pG) { pG.addEventListener('input', function() { pendState.g = parseFloat(this.value); document.getElementById('pend-g-val').textContent = this.value; }); }
+    var wA = document.getElementById('wave-A');
+    if (wA) { wA.addEventListener('input', function() { _waveA = parseFloat(this.value); document.getElementById('wave-A-val').textContent = this.value; }); }
+    var wO = document.getElementById('wave-omega');
+    if (wO) { wO.addEventListener('input', function() { _waveOmega = parseFloat(this.value); document.getElementById('wave-omega-val').textContent = this.value; }); }
+    var pa = document.getElementById('proj-angle');
+    if (pa) { pa.addEventListener('input', function() { _projAngle = parseFloat(this.value); document.getElementById('proj-angle-val').textContent = this.value; cannon.rotation.z = Math.PI / 4 - (_projAngle - 45) * Math.PI / 180; }); }
+    var ps = document.getElementById('proj-speed');
+    if (ps) { ps.addEventListener('input', function() { _projSpeed = parseFloat(this.value); document.getElementById('proj-speed-val').textContent = this.value; }); }
+  }
+
+  window._physSetExp = function(e) { _setExperiment(e); };
+  window._physRelease = function() {
+    pendState.theta = Math.PI / 2.5;
+    pendState.omega = 0;
+    pendState.trail = [];
+  };
+  window._physFire = function() {
+    var rad = _projAngle * Math.PI / 180;
+    projState.x = -12; projState.y = -4;
+    projState.vx = _projSpeed * Math.cos(rad);
+    projState.vy = _projSpeed * Math.sin(rad);
+    projState.active = true; projState.trail = [];
+    for (var i = 0; i < projTrailN * 3; i++) projTrailPos[i] = 0;
+  };
+
+  return {
+    root: root,
+    start: function() {
+      _rig.position.set(0, 5, -15);
+      _experiment = 'pendulum';
+      pendGroup.visible = true; waveGroup.visible = false;
+      orbitalGroup.visible = false; projGroup.visible = false;
+      document.getElementById('data-inner').classList.add('visible');
+    },
+    stop: function() {
+      document.getElementById('data-inner').classList.remove('visible');
+    },
+    update: function(dt, ts) {
+      _t += dt;
+
+      if (_experiment === 'pendulum') {
+        // Euler integration: θ'' = -(g/L)·sin(θ)
+        var damping = 0.003;
+        pendState.omega += (-(pendState.g / pendState.L) * Math.sin(pendState.theta) - damping * pendState.omega) * dt;
+        pendState.theta += pendState.omega * dt;
+        var bx = Math.sin(pendState.theta) * pendState.L;
+        var by = -Math.cos(pendState.theta) * pendState.L;
+        bob.position.set(bx, by, 0);
+        rod.position.set(bx / 2, by / 2, 0);
+        rod.rotation.z = pendState.theta;
+        rod.scale.y = pendState.L / 12;
+
+        // Trail
+        pendState.trail.push({ x: bx, y: by });
+        if (pendState.trail.length > trailN) pendState.trail.shift();
+        for (var i = 0; i < trailN * 3; i++) trailPos[i] = 0;
+        pendState.trail.forEach(function(p, i) { trailPos[i * 3] = p.x; trailPos[i * 3 + 1] = p.y; });
+        trailGeo.attributes.position.needsUpdate = true;
+        trailLine.geometry.setDrawRange(0, pendState.trail.length);
+
+        var period = 2 * Math.PI * Math.sqrt(pendState.L / pendState.g);
+        _updateData([
+          ['θ (rad)', pendState.theta.toFixed(3)],
+          ['ω (rad/s)', pendState.omega.toFixed(3)],
+          ['T (period)', period.toFixed(2) + ' s'],
+          ['Length L', pendState.L + ' m'],
+          ['Gravity g', pendState.g + ' m/s²'],
+        ], 'T = 2π√(L/g)\nθ\'\' = −(g/L)·sin(θ)');
+
+      } else if (_experiment === 'wave') {
+        // z = A·sin(k·r1 − ωt) + A·sin(k·r2 − ωt)
+        var posAttr = waveGeo.attributes.position;
+        var vCount = posAttr.count;
+        for (var vi = 0; vi < vCount; vi++) {
+          var wx = posAttr.getX(vi);
+          var wy = posAttr.getY(vi);
+          var r1 = Math.sqrt((wx + 8) * (wx + 8) + wy * wy);
+          var r2 = Math.sqrt((wx - 8) * (wx - 8) + wy * wy);
+          posAttr.setZ(vi, _waveA * Math.sin(_waveK * r1 - _waveOmega * _t) + _waveA * Math.sin(_waveK * r2 - _waveOmega * _t));
+        }
+        posAttr.needsUpdate = true;
+        waveGeo.computeVertexNormals();
+
+        _updateData([
+          ['Amplitude A', _waveA.toFixed(1)],
+          ['Wavenumber k', _waveK.toFixed(2)],
+          ['Frequency ω', _waveOmega.toFixed(1) + ' rad/s'],
+          ['λ (wavelength)', (2 * Math.PI / _waveK).toFixed(2) + ' m'],
+        ], 'z = A·sin(kr₁−ωt) + A·sin(kr₂−ωt)\nConstructive: Δr = nλ');
+
+      } else if (_experiment === 'orbital') {
+        // RK4 integration
+        var subSteps = 4;
+        var subDt = dt / subSteps;
+        planets.forEach(function(p, pi) {
+          for (var s = 0; s < subSteps; s++) {
+            function acc(x, y) { var r3 = Math.pow(x * x + y * y, 1.5); return [-GM * x / r3, -GM * y / r3]; }
+            var a1 = acc(p.x, p.y);
+            var k1x = p.vx, k1y = p.vy, k1vx = a1[0], k1vy = a1[1];
+            var a2 = acc(p.x + subDt / 2 * k1x, p.y + subDt / 2 * k1y);
+            var k2x = p.vx + subDt / 2 * k1vx, k2y = p.vy + subDt / 2 * k1vy, k2vx = a2[0], k2vy = a2[1];
+            var a3 = acc(p.x + subDt / 2 * k2x, p.y + subDt / 2 * k2y);
+            var k3x = p.vx + subDt / 2 * k2vx, k3y = p.vy + subDt / 2 * k2vy, k3vx = a3[0], k3vy = a3[1];
+            var a4 = acc(p.x + subDt * k3x, p.y + subDt * k3y);
+            var k4x = p.vx + subDt * k3vx, k4y = p.vy + subDt * k3vy, k4vx = a4[0], k4vy = a4[1];
+            p.x  += subDt / 6 * (k1x + 2 * k2x + 2 * k3x + k4x);
+            p.y  += subDt / 6 * (k1y + 2 * k2y + 2 * k3y + k4y);
+            p.vx += subDt / 6 * (k1vx + 2 * k2vx + 2 * k3vx + k4vx);
+            p.vy += subDt / 6 * (k1vy + 2 * k2vy + 2 * k3vy + k4vy);
+          }
+          var m = planetMeshes[pi];
+          m.position.set(p.x, p.y, 0);
+          var idx = p._trailIdx;
+          p._trailPos[idx * 3] = p.x; p._trailPos[idx * 3 + 1] = p.y;
+          p._trailIdx = (idx + 1) % 100;
+          p._trailLine.geometry.attributes.position.needsUpdate = true;
+        });
+        var p0 = planets[0];
+        var r = Math.sqrt(p0.x * p0.x + p0.y * p0.y);
+        var v = Math.sqrt(p0.vx * p0.vx + p0.vy * p0.vy);
+        _updateData([
+          ['r (AU)', r.toFixed(2)],
+          ['v (km/s)', v.toFixed(2)],
+          ['KE', (0.5 * v * v).toFixed(2)],
+          ['PE', (-GM / r).toFixed(2)],
+          ['E total', (0.5 * v * v - GM / r).toFixed(2)],
+        ], 'F = GMm/r²\nv_circ = √(GM/r)\nT² ∝ a³  (Kepler III)');
+
+      } else if (_experiment === 'projectile') {
+        if (projState.active) {
+          projState.vy -= _projG * dt;
+          projState.x += projState.vx * dt;
+          projState.y += projState.vy * dt;
+          projMesh.position.set(projState.x, projState.y, 0);
+          projState.trail.push({ x: projState.x, y: projState.y });
+          if (projState.trail.length > projTrailN) projState.trail.shift();
+          for (var i = 0; i < projTrailN * 3; i++) projTrailPos[i] = 0;
+          projState.trail.forEach(function(p, i) { projTrailPos[i * 3] = p.x; projTrailPos[i * 3 + 1] = p.y; });
+          projTrailGeo.attributes.position.needsUpdate = true;
+          projTrailLine.geometry.setDrawRange(0, projState.trail.length);
+          if (projState.y < -6) { projState.active = false; }
+        }
+        var rad2 = _projAngle * Math.PI / 180;
+        var timeOfFlight = 2 * _projSpeed * Math.sin(rad2) / _projG;
+        var range = _projSpeed * _projSpeed * Math.sin(2 * rad2) / _projG;
+        var maxH = (_projSpeed * Math.sin(rad2)) * (_projSpeed * Math.sin(rad2)) / (2 * _projG);
+        _updateData([
+          ['Angle θ', _projAngle + '°'],
+          ['Speed v₀', _projSpeed + ' m/s'],
+          ['Range R', range.toFixed(1) + ' m'],
+          ['Max height', maxH.toFixed(1) + ' m'],
+          ['Time of flight', timeOfFlight.toFixed(2) + ' s'],
+        ], 'x = v₀cos(θ)·t\ny = v₀sin(θ)·t − ½gt²\nR = v₀²sin(2θ)/g');
+      }
+    },
+    controls: function() { return _buildControls(); },
+    dataInit: function() { _attachControlHandlers(); },
+  };
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   CHEMISTRY LAB MODULE
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+function _buildChemistryModule() {
+  var root = new THREE.Group();
+  root.position.set(40, 0, 0);
+
+  var _experiment = 'molecule';
+  var _molecule = 'H2O';
+  var _t = 0;
+
+  // CPK colors
+  var CPK = { H: 0xffffff, C: 0x888888, N: 0x4444ff, O: 0xff2222, S: 0xffff00, P: 0xff8800, F: 0x00ff88, Cl: 0x00ff00 };
+  var CPK_R = { H: 0.53, C: 1.0, N: 0.9, O: 0.88, S: 1.3, P: 1.2, F: 0.64, Cl: 1.1 };
+
+  var molGroup = new THREE.Group();
+  root.add(molGroup);
+
+  var electronGroup = new THREE.Group();
+  root.add(electronGroup);
+  electronGroup.visible = false;
+
+  var reactionGroup = new THREE.Group();
+  root.add(reactionGroup);
+  reactionGroup.visible = false;
+
+  // Molecule definitions: [element, x, y, z], bonds: [i, j]
+  var MOLECULES = {
+    'H2O': {
+      atoms: [['O', 0, 0, 0], ['H', 2.2, 1.2, 0], ['H', -2.2, 1.2, 0]],
+      bonds: [[0,1],[0,2]],
+      name: 'Water'
+    },
+    'CO2': {
+      atoms: [['C', 0, 0, 0], ['O', 3.5, 0, 0], ['O', -3.5, 0, 0]],
+      bonds: [[0,1],[0,2]],
+      name: 'Carbon Dioxide'
+    },
+    'CH4': {
+      atoms: [['C', 0, 0, 0], ['H', 2.1, 2.1, 2.1], ['H', -2.1, -2.1, 2.1], ['H', 2.1, -2.1, -2.1], ['H', -2.1, 2.1, -2.1]],
+      bonds: [[0,1],[0,2],[0,3],[0,4]],
+      name: 'Methane'
+    },
+    'NH3': {
+      atoms: [['N', 0, 0, 0], ['H', 2.0, -1.0, 1.5], ['H', -2.0, -1.0, 1.5], ['H', 0, -1.0, -2.0]],
+      bonds: [[0,1],[0,2],[0,3]],
+      name: 'Ammonia'
+    },
+    'C6H6': {
+      atoms: Array.from({length:6}, function(_,i) {
+        var a = i * Math.PI / 3;
+        return ['C', Math.cos(a)*3.5, Math.sin(a)*3.5, 0];
+      }).concat(Array.from({length:6}, function(_,i) {
+        var a = i * Math.PI / 3;
+        return ['H', Math.cos(a)*5.5, Math.sin(a)*5.5, 0];
+      })),
+      bonds: [[0,1],[1,2],[2,3],[3,4],[4,5],[5,0],[0,6],[1,7],[2,8],[3,9],[4,10],[5,11]],
+      name: 'Benzene'
+    },
+  };
+
+  var _atomMeshes = [], _bondMeshes = [];
+
+  function _clearMolecule() {
+    _atomMeshes.forEach(function(m) { molGroup.remove(m); m.geometry.dispose(); });
+    _bondMeshes.forEach(function(m) { molGroup.remove(m); m.geometry.dispose(); });
+    _atomMeshes = []; _bondMeshes = [];
+  }
+
+  function _buildMolecule(name) {
+    _clearMolecule();
+    var def = MOLECULES[name];
+    if (!def) return;
+    var THREE = AFRAME.THREE;
+
+    var positions = def.atoms.map(function(a) { return new THREE.Vector3(a[1], a[2], a[3]); });
+
+    def.atoms.forEach(function(a, i) {
+      var r = (CPK_R[a[0]] || 1.0) * 0.9;
+      var geo = new THREE.SphereGeometry(r, 20, 20);
+      var mat = new THREE.MeshBasicMaterial({
+        color: CPK[a[0]] || 0xffffff,
+        transparent: true, opacity: 0.85,
+        depthWrite: false, blending: THREE.AdditiveBlending
+      });
+      var m = new THREE.Mesh(geo, mat);
+      m.position.copy(positions[i]);
+      molGroup.add(m);
+      _atomMeshes.push(m);
+    });
+
+    def.bonds.forEach(function(b) {
+      var p1 = positions[b[0]], p2 = positions[b[1]];
+      var dir = new THREE.Vector3().subVectors(p2, p1);
+      var len = dir.length();
+      var geo = new THREE.CylinderGeometry(0.15, 0.15, len, 8);
+      var mat = new THREE.MeshBasicMaterial({ color: 0xaaaaaa, transparent: true, opacity: 0.5, depthWrite: false, blending: THREE.AdditiveBlending });
+      var m = new THREE.Mesh(geo, mat);
+      m.position.copy(p1).addScaledVector(dir.normalize(), len / 2);
+      m.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), dir);
+      molGroup.add(m);
+      _bondMeshes.push(m);
+    });
+  }
+
+  // Electron orbital cloud — 1s, 2p, 3d clouds (point cloud)
+  function _buildElectronOrbital(orbital) {
+    electronGroup.clear();
+    var nPoints = 3000;
+    var pos = new Float32Array(nPoints * 3);
+    for (var i = 0; i < nPoints; i++) {
+      var r, theta, phi;
+      if (orbital === '1s') {
+        r = -Math.log(Math.random()) * 3;
+        theta = Math.random() * Math.PI; phi = Math.random() * 2 * Math.PI;
+      } else if (orbital === '2p') {
+        r = Math.random() * 10;
+        theta = Math.random() < 0.5 ? Math.random() * 0.6 : Math.PI - Math.random() * 0.6;
+        phi = Math.random() * 2 * Math.PI;
+      } else {
+        r = 3 + Math.random() * 8;
+        theta = Math.random() * Math.PI; phi = Math.random() * 2 * Math.PI;
+      }
+      pos[i * 3]     = r * Math.sin(theta) * Math.cos(phi);
+      pos[i * 3 + 1] = r * Math.cos(theta);
+      pos[i * 3 + 2] = r * Math.sin(theta) * Math.sin(phi);
+    }
+    var geo = new THREE.BufferGeometry();
+    geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+    var mat = new THREE.PointsMaterial({ color: 0x60a5fa, size: 0.12, transparent: true, opacity: 0.4, depthWrite: false, blending: THREE.AdditiveBlending });
+    electronGroup.add(new THREE.Points(geo, mat));
+
+    // Nucleus
+    var nucGeo = new THREE.SphereGeometry(0.5, 12, 12);
+    var nucMat = new THREE.MeshBasicMaterial({ color: 0xff4444, transparent: true, opacity: 0.9, depthWrite: false, blending: THREE.AdditiveBlending });
+    electronGroup.add(new THREE.Mesh(nucGeo, nucMat));
+  }
+
+  var _orbitalType = '1s';
+  _buildMolecule('H2O');
+
+  function _getDataForMolecule(name) {
+    var data = {
+      'H2O': [['Bond angle', '104.5°'], ['Bond len O-H', '96 pm'], ['μ dipole', '1.85 D'], ['MW', '18.02 g/mol']],
+      'CO2': [['Bond angle', '180°'], ['Bond len C=O', '116 pm'], ['μ dipole', '0 D'], ['MW', '44.01 g/mol']],
+      'CH4': [['Bond angle', '109.5°'], ['Bond len C-H', '109 pm'], ['μ dipole', '0 D'], ['MW', '16.04 g/mol']],
+      'NH3': [['Bond angle', '107.8°'], ['Bond len N-H', '101 pm'], ['μ dipole', '1.47 D'], ['MW', '17.03 g/mol']],
+      'C6H6': [['C-C len', '140 pm'], ['C-H len', '109 pm'], ['Symmetry', 'D₆ₕ'], ['MW', '78.11 g/mol']],
+    };
+    return data[name] || [];
+  }
+
+  window._chemSetMol = function(name) {
+    _molecule = name;
+    _experiment = 'molecule';
+    molGroup.visible = true; electronGroup.visible = false; reactionGroup.visible = false;
+    _buildMolecule(name);
+    document.getElementById('data-rows').innerHTML = _getDataForMolecule(name).map(function(r) {
+      return '<div class="data-row"><span class="data-key">' + r[0] + '</span><span class="data-val">' + r[1] + '</span></div>';
+    }).join('');
+    document.getElementById('equation-box').textContent = 'Molecular formula: ' + name + '\nVSEPR geometry from electron pairs';
+  };
+  window._chemSetOrbital = function(type) {
+    _orbitalType = type;
+    _experiment = 'orbital';
+    molGroup.visible = false; electronGroup.visible = true; reactionGroup.visible = false;
+    _buildElectronOrbital(type);
+    var eqMap = { '1s': 'ψ₁ₛ = (1/√π)(1/a₀)³/² e^(−r/a₀)', '2p': 'ψ₂ₚ = (1/4√2π)(1/a₀)^5/² r·e^(−r/2a₀)·cosθ', '3d': 'ψ₃d = (1/81√2π)(1/a₀)^7/² r²·e^(−r/3a₀)·sin²θ·e^(2iφ)' };
+    document.getElementById('equation-box').textContent = eqMap[type] || '';
+  };
+
+  return {
+    root: root,
+    start: function() {
+      _rig.position.set(40, 5, 15);
+      _buildMolecule(_molecule);
+      document.getElementById('data-inner').classList.add('visible');
+    },
+    stop: function() {
+      document.getElementById('data-inner').classList.remove('visible');
+    },
+    update: function(dt, ts) {
+      _t += dt;
+      molGroup.rotation.y = _t * 0.25;
+      molGroup.rotation.x = Math.sin(_t * 0.15) * 0.18;
+      electronGroup.rotation.y = _t * 0.4;
+    },
+    controls: function() {
+      return '<div class="ctrl-group"><div class="ctrl-label">Molecules</div>' +
+        '<div class="ctrl-row" style="flex-wrap:wrap;gap:4px">' +
+        Object.keys(MOLECULES).map(function(k) {
+          return '<button class="ctrl-btn' + (_molecule === k ? ' active' : '') + '" onclick="window._chemSetMol(\'' + k + '\')">' + k + '</button>';
+        }).join('') + '</div></div>' +
+        '<div class="ctrl-group"><div class="ctrl-label">Electron Orbitals</div>' +
+        '<div class="ctrl-row" style="flex-wrap:wrap;gap:4px">' +
+        ['1s','2p','3d'].map(function(o) {
+          return '<button class="ctrl-btn" onclick="window._chemSetOrbital(\'' + o + '\')">' + o + '</button>';
+        }).join('') + '</div></div>';
+    },
+    dataInit: function() {
+      document.getElementById('data-rows').innerHTML = _getDataForMolecule(_molecule).map(function(r) {
+        return '<div class="data-row"><span class="data-key">' + r[0] + '</span><span class="data-val">' + r[1] + '</span></div>';
+      }).join('');
+      document.getElementById('equation-box').textContent = 'CPK atomic radii\nBond cylinder: quat.setFromUnitVectors(Y̲, bond_dir)';
+    },
+  };
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   BIOLOGY LAB MODULE
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+function _buildBiologyModule() {
+  var root = new THREE.Group();
+  root.position.set(0, 0, 40);
+
+  var _experiment = 'dna';
+  var _t = 0;
+
+  // ── DNA DOUBLE HELIX ─────────────────────────────────────────────────
+  var dnaGroup = new THREE.Group();
+  root.add(dnaGroup);
+
+  function _buildDNA() {
+    dnaGroup.clear();
+    var THREE = AFRAME.THREE;
+    var turns = 3, strandPts = 120;
+    var colors = [0x60a5fa, 0x34d399];
+    var offsets = [0, Math.PI];
+
+    offsets.forEach(function(offset, si) {
+      var pts = [];
+      for (var i = 0; i <= strandPts; i++) {
+        var t = (i / strandPts) * turns * 2 * Math.PI;
+        pts.push(new THREE.Vector3(Math.cos(t + offset) * 3.5, (i / strandPts) * 28 - 14, Math.sin(t + offset) * 3.5));
+      }
+      var curve = new THREE.CatmullRomCurve3(pts);
+      var tg = new THREE.TubeGeometry(curve, 100, 0.2, 8, false);
+      var tm = new THREE.MeshBasicMaterial({ color: colors[si], transparent: true, opacity: 0.7, depthWrite: false, blending: THREE.AdditiveBlending });
+      dnaGroup.add(new THREE.Mesh(tg, tm));
+    });
+
+    // Base pairs — rungs
+    var BASES = [0xff6688, 0x44ffcc, 0xffcc44, 0x8844ff];
+    for (var i = 0; i < 30; i++) {
+      var t = (i / 30) * turns * 2 * Math.PI;
+      var y = (i / 30) * 28 - 14;
+      var p1 = new THREE.Vector3(Math.cos(t) * 3.5, y, Math.sin(t) * 3.5);
+      var p2 = new THREE.Vector3(Math.cos(t + Math.PI) * 3.5, y, Math.sin(t + Math.PI) * 3.5);
+      var rpts = [p1, p2];
+      var rg = new THREE.BufferGeometry().setFromPoints(rpts);
+      var rm = new THREE.LineBasicMaterial({ color: BASES[i % 4], transparent: true, opacity: 0.5, depthWrite: false, blending: THREE.AdditiveBlending });
+      dnaGroup.add(new THREE.Line(rg, rm));
+
+      // Sugar-phosphate spheres
+      [p1, p2].forEach(function(p) {
+        var sg = new THREE.SphereGeometry(0.25, 8, 8);
+        var sm = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.5, depthWrite: false, blending: THREE.AdditiveBlending });
+        var s = new THREE.Mesh(sg, sm);
+        s.position.copy(p);
+        dnaGroup.add(s);
+      });
+    }
+  }
+  _buildDNA();
+
+  // ── CELL VIEWER ──────────────────────────────────────────────────────
+  var cellGroup = new THREE.Group();
+  root.add(cellGroup);
+  cellGroup.visible = false;
+
+  function _buildCell() {
+    cellGroup.clear();
+    var THREE = AFRAME.THREE;
+    function sphere(r, color, opacity, pos) {
+      var g = new THREE.SphereGeometry(r, 20, 20);
+      var m = new THREE.MeshBasicMaterial({ color: color, transparent: true, opacity: opacity, depthWrite: false, blending: THREE.AdditiveBlending, wireframe: false });
+      var mesh = new THREE.Mesh(g, m);
+      if (pos) mesh.position.set(pos[0], pos[1], pos[2]);
+      return mesh;
+    }
+    function addWithWire(r, color, op, pos, wColor) {
+      cellGroup.add(sphere(r, color, op, pos));
+      var wg = new THREE.SphereGeometry(r, 14, 14);
+      var wm = new THREE.MeshBasicMaterial({ color: wColor || color, wireframe: true, transparent: true, opacity: op * 0.25, depthWrite: false, blending: THREE.AdditiveBlending });
+      var wm2 = new THREE.Mesh(wg, wm);
+      if (pos) wm2.position.set(pos[0], pos[1], pos[2]);
+      cellGroup.add(wm2);
+    }
+    addWithWire(10, 0x00ff88, 0.08, null);       // Cell membrane
+    addWithWire(4, 0x60a5fa, 0.25, [0, 0, 0]);   // Nucleus
+    addWithWire(1.5, 0xa78bfa, 0.5, [0, 0, 0]);  // Nucleolus
+    addWithWire(1.0, 0xff8800, 0.6, [5, 3, 2]);  // Mitochondrion 1
+    addWithWire(1.0, 0xff8800, 0.6, [-5, -2, 3]);
+    addWithWire(1.2, 0x34d399, 0.5, [-4, 3, -3]); // Chloroplast
+    addWithWire(0.8, 0xffff00, 0.5, [3, -4, 1]);  // Ribosome cluster
+    addWithWire(0.8, 0xffff00, 0.5, [-3, 4, -2]);
+    addWithWire(2.5, 0x60a5fa, 0.2, [5, -3, -3]); // Vacuole
+  }
+  _buildCell();
+
+  // ── ECOSYSTEM ────────────────────────────────────────────────────────
+  var ecoGroup = new THREE.Group();
+  root.add(ecoGroup);
+  ecoGroup.visible = false;
+
+  var ecoNodes = [
+    { name: 'Sun', x: 0, y: 10, color: 0xffd700, r: 1.5 },
+    { name: 'Plants', x: -8, y: 4, color: 0x4ade80, r: 1.0 },
+    { name: 'Herbivores', x: 4, y: 0, color: 0x60a5fa, r: 0.8 },
+    { name: 'Predators', x: 10, y: -4, color: 0xfb923c, r: 0.8 },
+    { name: 'Decomposers', x: -4, y: -6, color: 0xa78bfa, r: 0.7 },
+    { name: 'Bacteria', x: 0, y: -10, color: 0xf43f5e, r: 0.5 },
+  ];
+  var ecoEdges = [[0,1],[1,2],[2,3],[3,4],[4,5],[5,1],[1,4]];
+
+  function _buildEcosystem() {
+    ecoGroup.clear();
+    var THREE = AFRAME.THREE;
+    ecoEdges.forEach(function(e) {
+      var n1 = ecoNodes[e[0]], n2 = ecoNodes[e[1]];
+      var pts = [new THREE.Vector3(n1.x, n1.y, 0), new THREE.Vector3(n2.x, n2.y, 0)];
+      var g = new THREE.BufferGeometry().setFromPoints(pts);
+      var m = new THREE.LineBasicMaterial({ color: 0x0ff, transparent: true, opacity: 0.2, depthWrite: false, blending: THREE.AdditiveBlending });
+      ecoGroup.add(new THREE.Line(g, m));
+    });
+    ecoNodes.forEach(function(n) {
+      var g = new THREE.SphereGeometry(n.r, 14, 14);
+      var m = new THREE.MeshBasicMaterial({ color: n.color, transparent: true, opacity: 0.85, depthWrite: false, blending: THREE.AdditiveBlending });
+      var mesh = new THREE.Mesh(g, m);
+      mesh.position.set(n.x, n.y, 0);
+      ecoGroup.add(mesh);
+    });
+  }
+  _buildEcosystem();
+
+  window._bioSetExp = function(exp) {
+    _experiment = exp;
+    dnaGroup.visible = exp === 'dna';
+    cellGroup.visible = exp === 'cell';
+    ecoGroup.visible = exp === 'ecosystem';
+    var eqMap = {
+      dna: 'DNA: 5\'−3\' antiparallel strands\nA−T: 2 H-bonds, G−C: 3 H-bonds\nHelical pitch: 3.4 nm / 10 bp',
+      cell: 'Eukaryotic cell organelles\nNucleus: DNA replication + transcription\nMitochondria: ATP synthesis (ETC)',
+      ecosystem: 'Trophic levels: 10% energy transfer\nFood web: producers → consumers → decomposers\nBiodiversity Index H = −Σ(pᵢ ln pᵢ)',
+    };
+    document.getElementById('equation-box').textContent = eqMap[exp] || '';
+  };
+
+  return {
+    root: root,
+    start: function() {
+      _rig.position.set(0, 5, 60);
+      dnaGroup.visible = true; cellGroup.visible = false; ecoGroup.visible = false;
+      document.getElementById('data-inner').classList.add('visible');
+    },
+    stop: function() {
+      document.getElementById('data-inner').classList.remove('visible');
+    },
+    update: function(dt) {
+      _t += dt;
+      dnaGroup.rotation.y = _t * 0.3;
+      cellGroup.rotation.y = _t * 0.18;
+      ecoGroup.rotation.y = _t * 0.12;
+    },
+    controls: function() {
+      return '<div class="ctrl-group"><div class="ctrl-label">Experiment</div>' +
+        '<div class="ctrl-row" style="flex-wrap:wrap;gap:4px">' +
+        ['dna', 'cell', 'ecosystem'].map(function(e) {
+          return '<button class="ctrl-btn" onclick="window._bioSetExp(\'' + e + '\')">' + e.toUpperCase() + '</button>';
+        }).join('') + '</div></div>';
+    },
+    dataInit: function() {
+      document.getElementById('data-rows').innerHTML = [
+        ['Strands', '2 (antiparallel)'],
+        ['Helix pitch', '3.4 nm'],
+        ['Base pairs/turn', '10'],
+        ['Diameter', '2.0 nm'],
+        ['Nucleotide bonds', 'Hydrogen bonds'],
+      ].map(function(r) {
+        return '<div class="data-row"><span class="data-key">' + r[0] + '</span><span class="data-val">' + r[1] + '</span></div>';
+      }).join('');
+      document.getElementById('equation-box').textContent = 'DNA: 5\'−3\' antiparallel strands\nA−T: 2 H-bonds, G−C: 3 H-bonds';
+    },
+  };
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   ENGINEERING LAB MODULE
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+function _buildEngineeringModule() {
+  var root = new THREE.Group();
+  root.position.set(-40, 0, 0);
+
+  var _experiment = 'gears';
+  var _t = 0;
+
+  // ── GEAR TRAIN ───────────────────────────────────────────────────────
+  var gearGroup = new THREE.Group();
+  root.add(gearGroup);
+
+  var gearDefs = [
+    { teeth: 20, r: 4.0, x: -8, y: 0, color: 0xfb923c },
+    { teeth: 10, r: 2.0, x:  0, y: 0, color: 0x60a5fa },
+    { teeth: 30, r: 6.0, x:  10, y: 0, color: 0x34d399 },
+  ];
+  var _gearOmegaBase = 1.5; // rad/s for gear 0
+  var gearMeshes = [];
+
+  function _buildGears() {
+    gearGroup.clear(); gearMeshes = [];
+    var THREE = AFRAME.THREE;
+    gearDefs.forEach(function(def, gi) {
+      // Main disc
+      var dg = new THREE.CylinderGeometry(def.r * 0.85, def.r * 0.85, 0.6, def.teeth * 2);
+      var dm = new THREE.MeshBasicMaterial({ color: def.color, transparent: true, opacity: 0.55, depthWrite: false, blending: THREE.AdditiveBlending, wireframe: false });
+      var disc = new THREE.Mesh(dg, dm);
+      disc.position.set(def.x, def.y, 0);
+      disc.rotation.x = Math.PI / 2;
+
+      // Teeth ring
+      var wg = new THREE.TorusGeometry(def.r, 0.2, 4, def.teeth * 2);
+      var wm = new THREE.MeshBasicMaterial({ color: def.color, transparent: true, opacity: 0.7, depthWrite: false, blending: THREE.AdditiveBlending, wireframe: true });
+      var tring = new THREE.Mesh(wg, wm);
+      tring.position.set(def.x, def.y, 0);
+
+      // Hub
+      var hg = new THREE.CylinderGeometry(0.4, 0.4, 1.0, 12);
+      var hm = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.6, depthWrite: false, blending: THREE.AdditiveBlending });
+      var hub = new THREE.Mesh(hg, hm);
+      hub.position.set(def.x, def.y, 0);
+      hub.rotation.x = Math.PI / 2;
+
+      gearGroup.add(disc); gearGroup.add(tring); gearGroup.add(hub);
+      gearMeshes.push({ disc: disc, ring: tring, def: def });
+    });
+  }
+  _buildGears();
+
+  // ── ROCKET LAUNCH ────────────────────────────────────────────────────
+  var rocketGroup = new THREE.Group();
+  root.add(rocketGroup);
+  rocketGroup.visible = false;
+
+  var rocketState = { y: -10, vy: 0, fuel: 100, thrust: 0, m0: 10, burnRate: 0.5, Ve: 30 };
+  var _rocketThrust = 180;
+
+  function _buildRocket() {
+    rocketGroup.clear();
+    var THREE = AFRAME.THREE;
+    // Body
+    var bg = new THREE.CylinderGeometry(0.6, 0.8, 4, 12);
+    var bm = new THREE.MeshBasicMaterial({ color: 0xdddddd, transparent: true, opacity: 0.75, depthWrite: false, blending: THREE.AdditiveBlending });
+    var body = new THREE.Mesh(bg, bm);
+
+    // Nose
+    var ng = new THREE.ConeGeometry(0.6, 2, 12);
+    var nm = new THREE.MeshBasicMaterial({ color: 0xfb923c, transparent: true, opacity: 0.8, depthWrite: false, blending: THREE.AdditiveBlending });
+    var nose = new THREE.Mesh(ng, nm);
+    nose.position.y = 3;
+
+    // Fins
+    for (var fi = 0; fi < 4; fi++) {
+      var a = fi * Math.PI / 2;
+      var fg = new THREE.CylinderGeometry(0.05, 0.8, 1.5, 4);
+      var fm = new THREE.MeshBasicMaterial({ color: 0x888, transparent: true, opacity: 0.6, depthWrite: false, blending: THREE.AdditiveBlending });
+      var fin = new THREE.Mesh(fg, fm);
+      fin.position.set(Math.cos(a) * 0.9, -2.2, Math.sin(a) * 0.9);
+      rocketGroup.add(fin);
+    }
+
+    // Exhaust plume
+    var eg = new THREE.ConeGeometry(0.5, 3, 10);
+    var em = new THREE.MeshBasicMaterial({ color: 0xff6600, transparent: true, opacity: 0, depthWrite: false, blending: THREE.AdditiveBlending });
+    var exhaust = new THREE.Mesh(eg, em);
+    exhaust.position.y = -3.5;
+    exhaust.rotation.x = Math.PI;
+    rocketGroup.add(body); rocketGroup.add(nose); rocketGroup.add(exhaust);
+    rocketGroup._exhaust = exhaust;
+    rocketGroup.position.y = rocketState.y;
+
+    // Ground
+    var groundPts = [new THREE.Vector3(-20, -10, 0), new THREE.Vector3(20, -10, 0)];
+    rocketGroup.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(groundPts),
+      new THREE.LineBasicMaterial({ color: 0x0ff, transparent: true, opacity: 0.2, depthWrite: false })));
+
+    // Height markers
+    for (var h = 0; h <= 30; h += 5) {
+      var hPts = [new THREE.Vector3(-1, -10 + h, 0), new THREE.Vector3(1, -10 + h, 0)];
+      rocketGroup.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(hPts),
+        new THREE.LineBasicMaterial({ color: 0x0ff, transparent: true, opacity: 0.15, depthWrite: false })));
+    }
+  }
+  _buildRocket();
+
+  // ── CIRCUIT ──────────────────────────────────────────────────────────
+  var circuitGroup = new THREE.Group();
+  root.add(circuitGroup);
+  circuitGroup.visible = false;
+
+  function _buildCircuit() {
+    circuitGroup.clear();
+    var THREE = AFRAME.THREE;
+    // Nodes: battery, resistor, capacitor, LED
+    var nodes = [
+      { x: -8, y: 4, label: '+ V', color: 0xff4444 },
+      { x: 8, y: 4, label: 'R', color: 0xffaa00 },
+      { x: 8, y: -4, label: 'C', color: 0x60a5fa },
+      { x: -8, y: -4, label: '−V', color: 0x888888 },
+    ];
+    var edges = [[0,1],[1,2],[2,3],[3,0]];
+    edges.forEach(function(e) {
+      var n1 = nodes[e[0]], n2 = nodes[e[1]];
+      var pts = [new THREE.Vector3(n1.x, n1.y, 0), new THREE.Vector3(n2.x, n2.y, 0)];
+      var g = new THREE.BufferGeometry().setFromPoints(pts);
+      var m = new THREE.LineBasicMaterial({ color: 0x0ff, transparent: true, opacity: 0.35, depthWrite: false, blending: THREE.AdditiveBlending });
+      circuitGroup.add(new THREE.Line(g, m));
+    });
+    nodes.forEach(function(n) {
+      var g = new THREE.SphereGeometry(0.6, 10, 10);
+      var m = new THREE.MeshBasicMaterial({ color: n.color, transparent: true, opacity: 0.85, depthWrite: false, blending: THREE.AdditiveBlending });
+      var mesh = new THREE.Mesh(g, m);
+      mesh.position.set(n.x, n.y, 0);
+      circuitGroup.add(mesh);
+    });
+
+    // Current particles
+    var cN = 40;
+    var cPos = new Float32Array(cN * 3);
+    var cGeo = new THREE.BufferGeometry();
+    cGeo.setAttribute('position', new THREE.BufferAttribute(cPos, 3));
+    var cMat = new THREE.PointsMaterial({ color: 0x00ffff, size: 0.35, transparent: true, opacity: 0.8, depthWrite: false, blending: THREE.AdditiveBlending });
+    var cPts = new THREE.Points(cGeo, cMat);
+    circuitGroup.add(cPts);
+    circuitGroup._currentPos = cPos; circuitGroup._currentGeo = cGeo;
+    circuitGroup._currentT = Array.from({ length: cN }, function(_, i) { return i / cN; });
+  }
+  _buildCircuit();
+
+  // Circuit path — rectangular
+  function _circuitPos(t) {
+    t = t % 1;
+    var segs = [
+      { t0: 0, t1: 0.25, x0: -8, y0: 4, x1: 8, y1: 4 },
+      { t0: 0.25, t1: 0.5, x0: 8, y0: 4, x1: 8, y1: -4 },
+      { t0: 0.5, t1: 0.75, x0: 8, y0: -4, x1: -8, y1: -4 },
+      { t0: 0.75, t1: 1.0, x0: -8, y0: -4, x1: -8, y1: 4 },
+    ];
+    for (var i = 0; i < segs.length; i++) {
+      var s = segs[i];
+      if (t >= s.t0 && t < s.t1) {
+        var f = (t - s.t0) / (s.t1 - s.t0);
+        return { x: s.x0 + (s.x1 - s.x0) * f, y: s.y0 + (s.y1 - s.y0) * f };
+      }
+    }
+    return { x: -8, y: 4 };
+  }
+
+  var _circuitSpeed = 0.25;
+  var _gearSpeed = 1.0;
+  var _rocketFiring = false;
+
+  window._engSetExp = function(exp) {
+    _experiment = exp;
+    gearGroup.visible = exp === 'gears';
+    rocketGroup.visible = exp === 'rocket';
+    circuitGroup.visible = exp === 'circuit';
+  };
+  window._engFireRocket = function() {
+    if (rocketState.fuel <= 0) {
+      rocketState.y = -10; rocketState.vy = 0; rocketState.fuel = 100;
+      rocketGroup.position.y = -10; _buildRocket();
+    }
+    _rocketFiring = !_rocketFiring;
+  };
+  window._engSetGearSpeed = function(v) { _gearSpeed = parseFloat(v); document.getElementById('gear-speed-val').textContent = v; };
+  window._engSetCircuitSpeed = function(v) { _circuitSpeed = parseFloat(v); document.getElementById('circ-speed-val').textContent = v; };
+
+  return {
+    root: root,
+    start: function() {
+      _rig.position.set(-40, 5, 15);
+      gearGroup.visible = true; rocketGroup.visible = false; circuitGroup.visible = false;
+      document.getElementById('data-inner').classList.add('visible');
+    },
+    stop: function() {
+      document.getElementById('data-inner').classList.remove('visible');
+    },
+    update: function(dt) {
+      _t += dt;
+
+      if (_experiment === 'gears') {
+        // ω2 = N1/N2 · ω1, gear 1 meshes with gear 0, gear 2 meshes with gear 1
+        var omega0 = _gearOmegaBase * _gearSpeed;
+        var omega1 = -omega0 * (gearDefs[0].teeth / gearDefs[1].teeth);
+        var omega2 = -omega1 * (gearDefs[1].teeth / gearDefs[2].teeth);
+        gearMeshes[0].disc.rotation.y += omega0 * dt;
+        gearMeshes[0].ring.rotation.y += omega0 * dt;
+        gearMeshes[1].disc.rotation.y += omega1 * dt;
+        gearMeshes[1].ring.rotation.y += omega1 * dt;
+        gearMeshes[2].disc.rotation.y += omega2 * dt;
+        gearMeshes[2].ring.rotation.y += omega2 * dt;
+
+        document.getElementById('data-rows').innerHTML = [
+          ['Gear 1 teeth', gearDefs[0].teeth],
+          ['Gear 2 teeth', gearDefs[1].teeth],
+          ['Gear 3 teeth', gearDefs[2].teeth],
+          ['ω₁ (rad/s)', omega0.toFixed(2)],
+          ['ω₂ (rad/s)', omega1.toFixed(2)],
+          ['ω₃ (rad/s)', omega2.toFixed(2)],
+          ['Gear ratio 1:3', (omega2 / omega0).toFixed(2)],
+        ].map(function(r) { return '<div class="data-row"><span class="data-key">' + r[0] + '</span><span class="data-val">' + r[1] + '</span></div>'; }).join('');
+        document.getElementById('equation-box').textContent = 'ω₂/ω₁ = N₁/N₂\nτ₂ = τ₁ · N₂/N₁\nPower = τ · ω = const';
+
+      } else if (_experiment === 'rocket') {
+        var g = 9.8;
+        if (_rocketFiring && rocketState.fuel > 0) {
+          var mass = rocketState.m0 - (100 - rocketState.fuel) * rocketState.burnRate / 10;
+          rocketState.vy += (_rocketThrust / Math.max(mass, 1) - g) * dt;
+          rocketState.fuel -= rocketState.burnRate * dt * 10;
+          if (rocketState.fuel < 0) { rocketState.fuel = 0; _rocketFiring = false; }
+        } else {
+          rocketState.vy -= g * dt;
+        }
+        rocketState.y += rocketState.vy * dt;
+        if (rocketState.y <= -10) { rocketState.y = -10; rocketState.vy = Math.max(0, rocketState.vy); _rocketFiring = false; }
+        rocketGroup.position.y = rocketState.y + 10;
+
+        if (rocketGroup._exhaust) {
+          rocketGroup._exhaust.material.opacity = _rocketFiring ? 0.55 + 0.25 * Math.sin(_t * 20) : 0;
+          rocketGroup._exhaust.scale.y = _rocketFiring ? 1 + 0.4 * Math.random() : 1;
+        }
+
+        var altitude = rocketState.y + 10;
+        var Isp = rocketState.Ve / g;
+        document.getElementById('data-rows').innerHTML = [
+          ['Altitude', altitude.toFixed(1) + ' m'],
+          ['Velocity', rocketState.vy.toFixed(1) + ' m/s'],
+          ['Fuel', rocketState.fuel.toFixed(0) + '%'],
+          ['Thrust', (_rocketFiring ? _rocketThrust : 0) + ' N'],
+          ['Isp', Isp.toFixed(0) + ' s'],
+        ].map(function(r) { return '<div class="data-row"><span class="data-key">' + r[0] + '</span><span class="data-val">' + r[1] + '</span></div>'; }).join('');
+        document.getElementById('equation-box').textContent = 'F_net = T − mg\nΔv = Isp·g₀·ln(m₀/mf)\n(Tsiolkovsky rocket equation)';
+
+      } else if (_experiment === 'circuit') {
+        var cT = circuitGroup._currentT;
+        var cPos = circuitGroup._currentPos;
+        if (!cT) return;
+        for (var ci = 0; ci < cT.length; ci++) {
+          cT[ci] = (cT[ci] + _circuitSpeed * dt) % 1;
+          var p = _circuitPos(cT[ci]);
+          cPos[ci * 3] = p.x; cPos[ci * 3 + 1] = p.y;
+        }
+        circuitGroup._currentGeo.attributes.position.needsUpdate = true;
+
+        var V = 12, R = 100, C = 0.001;
+        var tRC = R * C;
+        document.getElementById('data-rows').innerHTML = [
+          ['Voltage V', V + ' V'],
+          ['Resistance R', R + ' Ω'],
+          ['Capacitance C', (C * 1000).toFixed(1) + ' mF'],
+          ['τ = RC', (tRC * 1000).toFixed(1) + ' ms'],
+          ['I steady', (V / R * 1000).toFixed(1) + ' mA'],
+        ].map(function(r) { return '<div class="data-row"><span class="data-key">' + r[0] + '</span><span class="data-val">' + r[1] + '</span></div>'; }).join('');
+        document.getElementById('equation-box').textContent = 'V = IR  (Ohm\'s Law)\nQ = CV\nτ = RC\nI(t) = V/R · e^(−t/τ)';
+      }
+    },
+    controls: function() {
+      return '<div class="ctrl-group"><div class="ctrl-label">Experiment</div>' +
+        '<div class="ctrl-row" style="flex-wrap:wrap;gap:4px">' +
+        ['gears','rocket','circuit'].map(function(e) {
+          return '<button class="ctrl-btn" onclick="window._engSetExp(\'' + e + '\')">' + e.toUpperCase() + '</button>';
+        }).join('') + '</div></div>' +
+        '<div class="ctrl-group"><div class="ctrl-label">Gear Speed</div>' +
+        '<div class="ctrl-row"><input class="ctrl-slider" type="range" id="gear-speed" min="0.1" max="4" step="0.1" value="1" oninput="window._engSetGearSpeed(this.value)"><span class="ctrl-value" id="gear-speed-val">1</span></div></div>' +
+        '<div class="ctrl-group"><div class="ctrl-label">Circuit Speed</div>' +
+        '<div class="ctrl-row"><input class="ctrl-slider" type="range" id="circ-speed" min="0.05" max="1" step="0.05" value="0.25" oninput="window._engSetCircuitSpeed(this.value)"><span class="ctrl-value" id="circ-speed-val">0.25</span></div></div>' +
+        '<div class="ctrl-row"><button class="ctrl-btn" onclick="window._engFireRocket()">🚀 FIRE / RESET</button></div>';
+    },
+    dataInit: function() {
+      document.getElementById('data-rows').innerHTML = '';
+      document.getElementById('equation-box').textContent = 'ω₂/ω₁ = N₁/N₂ (gear ratio)';
+    },
+  };
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   WEBSOCKET — Multi-user lab presence
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+var _ws = null;
+var _myId = 'user-' + Math.random().toString(36).slice(2, 7).toUpperCase();
+var _myName = 'RESEARCHER-' + Math.random().toString(36).slice(2, 5).toUpperCase();
+var _peers = {};
+var _lastPosSent = 0;
+
+function _initWebSocket() {
+  var proto = location.protocol === 'https:' ? 'wss:' : 'ws:';
+  var wsUrl = proto + '//' + location.host + '/ws/lab';
+  try {
+    _ws = new WebSocket(wsUrl);
+    _ws.onopen = function() {
+      _ws.send(JSON.stringify({ type: 'join', id: _myId, name: _myName, lab: _activeModule }));
+      _postFeed('» MULTI-USER SYNC ACTIVE');
+      _updateUserList();
+    };
+    _ws.onmessage = function(ev) {
+      try {
+        var msg = JSON.parse(ev.data);
+        if (msg.type === 'pos' && msg.id !== _myId) {
+          _peers[msg.id] = Object.assign(_peers[msg.id] || {}, msg);
+        } else if (msg.type === 'join' && msg.id !== _myId) {
+          _peers[msg.id] = { id: msg.id, name: msg.name, lab: msg.lab };
+          _postFeed('» ' + msg.name + ' JOINED ' + (msg.lab || 'HUB').toUpperCase());
+          _updateUserList();
+        } else if (msg.type === 'leave' && msg.id !== _myId) {
+          var n = _peers[msg.id] && _peers[msg.id].name;
+          delete _peers[msg.id];
+          if (n) _postFeed('» ' + n + ' LEFT');
+          _updateUserList();
+        } else if (msg.type === 'lab_switch' && msg.id !== _myId) {
+          if (_peers[msg.id]) { _peers[msg.id].lab = msg.lab; _updateUserList(); }
+        }
+      } catch (_) {}
+    };
+    _ws.onclose = function() { _ws = null; };
+  } catch (_) {
+    // Single-user mode — no WS available (file:// or no server)
+  }
+}
+
+function _wsSync(data) {
+  if (_ws && _ws.readyState === 1) {
+    _ws.send(JSON.stringify(Object.assign({ id: _myId }, data)));
+  }
+}
+
+function _updateUserList() {
+  var entries = document.getElementById('user-entries');
+  var html = '<div class="user-entry"><div class="user-dot" style="background:#a78bfa"></div><span class="user-name">' + _myName + '</span><span class="user-lab"> (YOU)</span></div>';
+  Object.values(_peers).forEach(function(p) {
+    var labColors = { hub: '#a78bfa', physics: '#60a5fa', chemistry: '#34d399', biology: '#4ade80', engineering: '#fb923c' };
+    var c = labColors[p.lab] || '#0ff';
+    html += '<div class="user-entry"><div class="user-dot" style="background:' + c + '"></div><span class="user-name">' + (p.name || p.id) + '</span><span class="user-lab"> ' + (p.lab || '') + '</span></div>';
+  });
+  entries.innerHTML = html;
+}
+
+// Send position every 100ms
+setInterval(function() {
+  if (!_rig) return;
+  var p = _rig.position;
+  _wsSync({ type: 'pos', x: p.x, y: p.y, z: p.z, lab: _activeModule });
+}, 100);
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   KEYBOARD SHORTCUTS
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === '1') switchModule('hub');
+  if (e.key === '2') switchModule('physics');
+  if (e.key === '3') switchModule('chemistry');
+  if (e.key === '4') switchModule('biology');
+  if (e.key === '5') switchModule('engineering');
+  if (e.key === 'h' || e.key === 'H') {
+    var ctrl = document.getElementById('controls-inner');
+    ctrl.classList.toggle('visible');
+  }
+});
+</script>
+</body>
+</html>
