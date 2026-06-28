@@ -55052,27 +55052,87 @@
         function _makeFighterAvatar(color) {
           var THREE = AFRAME.THREE;
           var g = new THREE.Group();
-          var hexColor = parseInt(color.replace("#", ""), 16);
-          var body = new THREE.Mesh(
-            new THREE.OctahedronGeometry(3, 0),
-            new THREE.MeshBasicMaterial({ color: hexColor, transparent: true, opacity: 0.75,
-              depthWrite: false, blending: THREE.AdditiveBlending })
-          );
-          g.add(body);
-          var nose = new THREE.Mesh(
-            new THREE.ConeGeometry(1, 5, 8),
-            new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.6,
-              depthWrite: false, blending: THREE.AdditiveBlending })
-          );
-          nose.rotation.x = Math.PI / 2;
-          nose.position.z = -4;
+          var hex = parseInt(color.replace("#", ""), 16);
+          function _m(c, op) {
+            return new THREE.MeshBasicMaterial({ color: c, transparent: true, opacity: op,
+              depthWrite: false, blending: THREE.AdditiveBlending, side: THREE.DoubleSide });
+          }
+          /* ── FUSELAGE ── */
+          var fGeo = new THREE.CylinderGeometry(0.9, 0.3, 13, 8);
+          fGeo.rotateX(Math.PI / 2);
+          g.add(new THREE.Mesh(fGeo, _m(hex, 0.9)));
+          /* ── NOSE CONE ── */
+          var nGeo = new THREE.ConeGeometry(0.9, 6, 8);
+          nGeo.rotateX(Math.PI / 2);
+          var nose = new THREE.Mesh(nGeo, _m(0xffffff, 0.85));
+          nose.position.z = -9.5;
           g.add(nose);
-          var ring = new THREE.Mesh(
-            new THREE.TorusGeometry(4, 0.15, 6, 32),
-            new THREE.MeshBasicMaterial({ color: hexColor, transparent: true, opacity: 0.5,
-              depthWrite: false, blending: THREE.AdditiveBlending })
-          );
-          g.add(ring);
+          /* ── SWEPT DELTA WINGS ── */
+          function _wing(s) {
+            var v = new Float32Array([0,0,1, s*9,-1,5, s*4,0,-7]);
+            var wg = new THREE.BufferGeometry();
+            wg.setAttribute("position", new THREE.BufferAttribute(v, 3));
+            return new THREE.Mesh(wg, _m(hex, 0.7));
+          }
+          g.add(_wing(1)); g.add(_wing(-1));
+          /* ── VERTICAL STABILIZERS ── */
+          function _fin(s) {
+            var v = new Float32Array([0,0,2, 0,s*3,0, 0,0,-5]);
+            var fg = new THREE.BufferGeometry();
+            fg.setAttribute("position", new THREE.BufferAttribute(v, 3));
+            return new THREE.Mesh(fg, _m(hex, 0.55));
+          }
+          g.add(_fin(1)); g.add(_fin(-1));
+          /* ── TWIN ENGINE NACELLES ── */
+          var nacelles = [];
+          [2.2, -2.2].forEach(function(xOff) {
+            var ng = new THREE.Group();
+            var tube = new THREE.Mesh(new THREE.CylinderGeometry(0.65, 0.45, 6, 8), _m(hex, 0.8));
+            tube.rotation.x = Math.PI / 2; tube.position.z = 4.5;
+            ng.add(tube);
+            var glow = new THREE.Mesh(new THREE.TorusGeometry(0.95, 0.3, 8, 20),
+              new THREE.MeshBasicMaterial({ color: 0xff6600, transparent: true, opacity: 0.95,
+                depthWrite: false, blending: THREE.AdditiveBlending }));
+            glow.position.z = 7.5; ng.add(glow);
+            var core = new THREE.Mesh(new THREE.CircleGeometry(0.55, 14),
+              new THREE.MeshBasicMaterial({ color: 0xffee55, transparent: true, opacity: 1.0,
+                depthWrite: false, blending: THREE.AdditiveBlending }));
+            core.position.z = 7.6; ng.add(core);
+            ng.position.set(xOff, -0.5, 0);
+            ng._glow = glow; ng._core = core;
+            nacelles.push(ng); g.add(ng);
+          });
+          g._nacelles = nacelles;
+          /* ── COCKPIT DOME ── */
+          var cockpit = new THREE.Mesh(
+            new THREE.SphereGeometry(1.1, 10, 8, 0, Math.PI*2, 0, Math.PI/2),
+            new THREE.MeshBasicMaterial({ color: 0x44eeff, transparent: true, opacity: 0.9,
+              depthWrite: false, blending: THREE.AdditiveBlending }));
+          cockpit.position.set(0, 1.0, -3.5); g.add(cockpit);
+          /* ── RUNNING LIGHTS (port=red, starboard=green, alternating strobe) ── */
+          var portLight = new THREE.Mesh(new THREE.SphereGeometry(0.28, 6, 6),
+            new THREE.MeshBasicMaterial({ color: 0xff2222, transparent: true, opacity: 1.0,
+              depthWrite: false, blending: THREE.AdditiveBlending }));
+          portLight.position.set(5, 0, 1);
+          var stbdLight = new THREE.Mesh(new THREE.SphereGeometry(0.28, 6, 6),
+            new THREE.MeshBasicMaterial({ color: 0x22ff44, transparent: true, opacity: 1.0,
+              depthWrite: false, blending: THREE.AdditiveBlending }));
+          stbdLight.position.set(-5, 0, 1);
+          g.add(portLight); g.add(stbdLight);
+          g._portLight = portLight; g._stbdLight = stbdLight;
+          /* ── SHIELD SHIMMER (rotating wireframe icosahedron) ── */
+          var shield = new THREE.Mesh(new THREE.IcosahedronGeometry(7.5, 1),
+            new THREE.MeshBasicMaterial({ color: hex, transparent: true, opacity: 0.05,
+              depthWrite: false, blending: THREE.AdditiveBlending, wireframe: true }));
+          g.add(shield); g._shield = shield;
+          /* ── KILL-STREAK CORONA (hidden until 3 kills, then blazing orange ring) ── */
+          var corona = new THREE.Mesh(new THREE.TorusGeometry(8.5, 0.35, 6, 40),
+            new THREE.MeshBasicMaterial({ color: 0xffaa00, transparent: true, opacity: 0,
+              depthWrite: false, blending: THREE.AdditiveBlending }));
+          g.add(corona); g._corona = corona;
+          /* Tag special-color meshes so hit-flash skips them */
+          [cockpit, portLight, stbdLight, shield, corona].forEach(function(m) { m.userData.noFlash = true; });
+          nacelles.forEach(function(n) { n._glow.userData.noFlash = true; n._core.userData.noFlash = true; });
           return g;
         }
 
@@ -55105,7 +55165,7 @@
             label.setAttribute("align", "center");
             label.setAttribute("color", color);
             label.setAttribute("scale", "12 12 12");
-            label.setAttribute("position", "0 7 0");
+            label.setAttribute("position", "0 10 0");
             label.setAttribute("look-at", "[camera]");
             el.appendChild(label);
 
@@ -55131,6 +55191,7 @@
 
         /* ── Interpolation loop — smooth ghost movement at 60 fps ─────────── */
         (function _interpLoop() {
+          var _t = Date.now() / 1000;
           var keys = Object.keys(_ghostMap);
           for (var i = 0; i < keys.length; i++) {
             var g = _ghostMap[keys[i]];
@@ -55142,6 +55203,26 @@
             if (g.el && g.el.object3D) {
               g.el.object3D.position.copy(g.pos);
               g.el.object3D.quaternion.copy(g.quat);
+            }
+            /* ── Fighter FX: pulse nacelles, strobe lights, spin shield, corona ── */
+            var gr = g.group;
+            if (gr._nacelles) {
+              var _p = 0.8 + 0.2 * Math.sin(_t * 7);
+              gr._nacelles.forEach(function(n) {
+                if (n._glow) n._glow.material.opacity = _p * 0.95;
+                if (n._core) n._core.material.opacity = _p;
+              });
+            }
+            if (gr._portLight) gr._portLight.material.opacity = Math.sin(_t * 2.5) > 0 ? 1.0 : 0.06;
+            if (gr._stbdLight) gr._stbdLight.material.opacity = Math.sin(_t * 2.5) < 0 ? 1.0 : 0.06;
+            if (gr._shield) {
+              gr._shield.rotation.y = _t * 0.35;
+              gr._shield.material.opacity = 0.035 + 0.018 * Math.sin(_t * 1.8);
+            }
+            if (gr._corona) {
+              var ks = g.kills || 0;
+              gr._corona.material.opacity = ks >= 3 ? (0.5 + 0.25 * Math.sin(_t * 5)) : 0;
+              gr._corona.rotation.z = _t * 2.2;
             }
           }
           requestAnimationFrame(_interpLoop);
@@ -55552,17 +55633,17 @@
                     setTimeout(function() { _updateFighterHUD(); }, 3100);
                   }
                 } else if (_ghostMap[msg.targetId]) {
-                  /* Flash hit ghost red momentarily */
+                  /* Flash hit ghost red momentarily (skip special-color FX meshes) */
                   var _hg = _ghostMap[msg.targetId];
                   _hg.health = Math.max(0, (_hg.health || 100) - 25);
                   if (_hg.group) {
                     _hg.group.traverse(function(m) {
-                      if (m.material) { m.material.color.setHex(0xff2200); }
+                      if (m.material && !m.userData.noFlash) { m.material.color.setHex(0xff2200); }
                     });
                     var _hgRef = _hg.group;
                     var _hColor = parseInt((_hg.isAgent ? "#ffc83c" : "#00d4ff").replace("#",""), 16);
                     setTimeout(function() {
-                      _hgRef.traverse(function(m) { if (m.material) m.material.color.setHex(_hColor); });
+                      _hgRef.traverse(function(m) { if (m.material && !m.userData.noFlash) m.material.color.setHex(_hColor); });
                     }, 250);
                   }
                 }
