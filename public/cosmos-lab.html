@@ -414,6 +414,30 @@
         <div id="user-entries"></div>
       </div>
 
+      <!-- Chat panel -->
+      <div id="chat-panel" style="position:fixed;left:16px;bottom:50px;width:240px;display:none;pointer-events:all">
+        <div style="background:rgba(0,10,24,0.9);border:1px solid #0ff3;padding:10px">
+          <div style="font-size:9px;letter-spacing:2px;color:#0ff;opacity:0.5;margin-bottom:6px">CHAT · C to toggle</div>
+          <div id="chat-log" style="max-height:120px;overflow-y:auto;font-size:10px;color:#cff;margin-bottom:6px;line-height:1.5"></div>
+          <input id="chat-input" type="text" maxlength="200" placeholder="message…"
+            style="width:100%;background:rgba(0,200,255,0.08);border:1px solid #0ff3;color:#0ff;font-family:inherit;font-size:10px;padding:4px 6px;outline:none"
+            onkeydown="if(event.key==='Enter'&&this.value.trim()){window._sendChat(this.value.trim());this.value='';}" />
+        </div>
+      </div>
+
+      <!-- Keyboard cheatsheet overlay -->
+      <div id="cheatsheet" style="position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(0,10,30,0.97);border:1px solid #0ff3;padding:28px 36px;font-size:11px;color:#cff;line-height:2;display:none;z-index:50;pointer-events:none;min-width:320px">
+        <div style="font-size:12px;letter-spacing:3px;color:#0ff;margin-bottom:12px">KEYBOARD SHORTCUTS</div>
+        <div><span style="color:#0ff;min-width:80px;display:inline-block">1–5</span>Switch lab module</div>
+        <div><span style="color:#0ff;min-width:80px;display:inline-block">H</span>Toggle controls panel</div>
+        <div><span style="color:#0ff;min-width:80px;display:inline-block">C</span>Toggle chat</div>
+        <div><span style="color:#0ff;min-width:80px;display:inline-block">D</span>Toggle data panel</div>
+        <div><span style="color:#0ff;min-width:80px;display:inline-block">?</span>This cheatsheet</div>
+        <div><span style="color:#0ff;min-width:80px;display:inline-block">WASD</span>Fly navigation</div>
+        <div><span style="color:#0ff;min-width:80px;display:inline-block">SPACE/SHIFT</span>Up / Down</div>
+        <div style="margin-top:10px;font-size:9px;color:#0ff5">Press ? to close</div>
+      </div>
+
       <!-- Bottom -->
       <div id="bottom-hud">
         <span>COSMOS-LAB v1.0</span>
@@ -421,7 +445,7 @@
         <span id="lab-status">HUB ACTIVE</span>
         <span style="margin-left: auto; color: #a78bfa6a">STORM-AI AIOS</span>
       </div>
-      <div id="nav-hint">WASD + MOUSE LOOK · SPACE/SHIFT = UP/DOWN</div>
+      <div id="nav-hint">WASD + MOUSE LOOK · SPACE/SHIFT = UP/DOWN · ? = HELP</div>
       <div id="feed"></div>
       <div id="crosshair"></div>
     </div>
@@ -2597,6 +2621,7 @@
       var _myName =
         "RESEARCHER-" + Math.random().toString(36).slice(2, 5).toUpperCase();
       var _peers = {};
+      var _peerAvatars = {};
       var _lastPosSent = 0;
 
       function _initWebSocket() {
@@ -2621,18 +2646,16 @@
               var msg = JSON.parse(ev.data);
               if (msg.type === "pos" && msg.id !== _myId) {
                 _peers[msg.id] = Object.assign(_peers[msg.id] || {}, msg);
+                _updatePeerAvatar(msg.id);
               } else if (msg.type === "join" && msg.id !== _myId) {
                 _peers[msg.id] = { id: msg.id, name: msg.name, lab: msg.lab };
-                _postFeed(
-                  "» " +
-                    msg.name +
-                    " JOINED " +
-                    (msg.lab || "HUB").toUpperCase(),
-                );
+                _postFeed("» " + msg.name + " JOINED");
+                _spawnPeerAvatar(msg.id);
                 _updateUserList();
               } else if (msg.type === "leave" && msg.id !== _myId) {
                 var n = _peers[msg.id] && _peers[msg.id].name;
                 delete _peers[msg.id];
+                _removePeerAvatar(msg.id);
                 if (n) _postFeed("» " + n + " LEFT");
                 _updateUserList();
               } else if (msg.type === "lab_switch" && msg.id !== _myId) {
@@ -2640,6 +2663,20 @@
                   _peers[msg.id].lab = msg.lab;
                   _updateUserList();
                 }
+              } else if (msg.type === "experiment_state" && msg.id !== _myId) {
+                if (msg.lab === _activeModule && window._remoteExpSync) {
+                  window._remoteExpSync(msg);
+                }
+              } else if (msg.type === "chat" && msg.id !== _myId) {
+                _appendChat(msg.name, msg.text, false);
+              } else if (msg.type === "welcome") {
+                (msg.peers || []).forEach(function (p) {
+                  if (p.id !== _myId) {
+                    _peers[p.id] = p;
+                    _spawnPeerAvatar(p.id);
+                  }
+                });
+                _updateUserList();
               }
             } catch (_) {}
           };
@@ -2647,13 +2684,61 @@
             _ws = null;
           };
         } catch (_) {
-          // Single-user mode — no WS available (file:// or no server)
+          // Single-user mode
         }
       }
 
+      /* ── Peer Merkaba avatars ─────────────────────────────────────────── */
+
+      function _spawnPeerAvatar(id) {
+        if (_peerAvatars[id] || !_worldRoot) return;
+        var g = new THREE.Group();
+        function _addWire(geo, color, op) {
+          var m = new THREE.MeshBasicMaterial({ color: color, wireframe: true, transparent: true, opacity: op, depthWrite: false, blending: THREE.AdditiveBlending });
+          g.add(new THREE.Mesh(geo, m));
+        }
+        _addWire(new THREE.OctahedronGeometry(0.8, 0), 0x00ffff, 0.7);
+        _addWire(new THREE.TetrahedronGeometry(0.9, 0), 0xa78bfa, 0.3);
+        _worldRoot.add(g);
+        _peerAvatars[id] = g;
+      }
+
+      function _updatePeerAvatar(id) {
+        var av = _peerAvatars[id];
+        var p = _peers[id];
+        if (!av || !p) return;
+        av.position.set(p.x || 0, p.y || 0, p.z || 0);
+      }
+
+      function _removePeerAvatar(id) {
+        var av = _peerAvatars[id];
+        if (av && _worldRoot) _worldRoot.remove(av);
+        delete _peerAvatars[id];
+      }
+
+      /* ── Chat ─────────────────────────────────────────────────────────── */
+
+      function _appendChat(name, text, isSelf) {
+        var log = document.getElementById("chat-log");
+        if (!log) return;
+        var color = isSelf ? "#0ff" : "#a78bfa";
+        log.innerHTML +=
+          '<div><span style="color:' + color + '">' +
+          (name || "?").slice(0, 12) +
+          ":</span> " +
+          text.replace(/</g, "&lt;") +
+          "</div>";
+        log.scrollTop = log.scrollHeight;
+      }
+
+      window._sendChat = function (text) {
+        _appendChat("YOU", text, true);
+        _wsSync({ type: "chat", text: text });
+      };
+
       function _wsSync(data) {
         if (_ws && _ws.readyState === 1) {
-          _ws.send(JSON.stringify(Object.assign({ id: _myId }, data)));
+          _ws.send(JSON.stringify(Object.assign({ id: _myId, name: _myName }, data)));
         }
       }
 
@@ -2691,19 +2776,42 @@
         _wsSync({ type: "pos", x: p.x, y: p.y, z: p.z, lab: _activeModule });
       }, 100);
 
+      // Spin peer avatars each frame
+      var _peerAvatarT = 0;
+      var _origLoop = _loop;
+
       /* ═══════════════════════════════════════════════════════════════════════════
    KEYBOARD SHORTCUTS
    ═══════════════════════════════════════════════════════════════════════════ */
 
       document.addEventListener("keydown", function (e) {
+        // Skip if typing in chat
+        if (document.activeElement && document.activeElement.id === "chat-input") return;
         if (e.key === "1") switchModule("hub");
         if (e.key === "2") switchModule("physics");
         if (e.key === "3") switchModule("chemistry");
         if (e.key === "4") switchModule("biology");
         if (e.key === "5") switchModule("engineering");
         if (e.key === "h" || e.key === "H") {
-          var ctrl = document.getElementById("controls-inner");
-          ctrl.classList.toggle("visible");
+          document.getElementById("controls-inner").classList.toggle("visible");
+        }
+        if (e.key === "d" || e.key === "D") {
+          document.getElementById("data-inner").classList.toggle("visible");
+        }
+        if (e.key === "c" || e.key === "C") {
+          var chat = document.getElementById("chat-panel");
+          var nowVisible = chat.style.display === "block";
+          chat.style.display = nowVisible ? "none" : "block";
+          if (!nowVisible) {
+            setTimeout(function () {
+              var inp = document.getElementById("chat-input");
+              if (inp) inp.focus();
+            }, 50);
+          }
+        }
+        if (e.key === "?") {
+          var cs = document.getElementById("cheatsheet");
+          cs.style.display = cs.style.display === "block" ? "none" : "block";
         }
       });
     </script>

@@ -1,0 +1,42 @@
+{
+  "name": "merkaba-lab-agent",
+  "main": "src/index.ts",
+  "compatibility_date": "2025-06-01",
+  "compatibility_flags": ["nodejs_compat"],
+
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "LAB_AGENT",
+        "class_name": "MerkabaLabAgent"
+      }
+    ]
+  },
+
+  "migrations": [
+    {
+      "tag": "v1",
+      "new_classes": ["MerkabaLabAgent"]
+    }
+  ],
+
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "merkaba-lab-knowledge",
+      "database_id": "REPLACE_WITH_D1_DATABASE_ID"
+    }
+  ],
+
+  "triggers": {
+    "crons": ["0 */4 * * *"]
+  },
+
+  "vars": {
+    "GITHUB_OWNER": "realaios",
+    "GITHUB_REPO": "merkaba-geoqode-lattice",
+    "GAME_FILE_PATH": "public/cosmos-lab.html",
+    "AGENT_BRANCH": "lab-agent-improvements",
+    "LOG_LEVEL": "info"
+  }
+}

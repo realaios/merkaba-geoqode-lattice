@@ -1,0 +1,24 @@
+{
+  "name": "merkaba-lab-agent",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "db:create": "wrangler d1 create merkaba-lab-knowledge",
+    "db:migrate:remote": "wrangler d1 execute merkaba-lab-knowledge --remote --file=schema.sql",
+    "db:migrate:local": "wrangler d1 execute merkaba-lab-knowledge --local --file=schema.sql",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@ai-sdk/anthropic": "^1.0.0",
+    "agents": "^0.0.96",
+    "ai": "^4.0.0",
+    "zod": "^3.22.0"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.0.0",
+    "typescript": "^5.5.0",
+    "wrangler": "^3.0.0"
+  }
+}

@@ -5770,6 +5770,104 @@ _wss.on("connection", (ws) => {
 
 console.log("[AIOSmux] Presence WebSocket ready at /ws/presence");
 
+// ── Cosmos-Lab WebSocket (/ws/lab) ────────────────────────────────────────────
+// Multi-user lab presence: join/leave/pos/lab_switch/experiment_state/chat
+const _labWss = new WebSocketServer({ server, path: "/ws/lab" });
+const _labMap = new Map(); // id → { id, name, lab, x, y, z, experiment, ts }
+
+function _labBroadcast(msg, skipId) {
+  const raw = JSON.stringify(msg);
+  _labWss.clients.forEach((c) => {
+    if (c.readyState === 1 && c._labId !== skipId) c.send(raw);
+  });
+}
+
+_labWss.on("connection", (ws) => {
+  const id = "lab-" + Math.random().toString(36).slice(2, 9);
+  ws._labId = id;
+
+  // Welcome: own ID + current peers
+  ws.send(JSON.stringify({
+    type: "welcome",
+    id,
+    peers: Array.from(_labMap.values()),
+    ts: Date.now(),
+  }));
+
+  _labBroadcast({ type: "join", id, ts: Date.now() }, id);
+  console.log(`[CosmosLab] Researcher joined: ${id} (${_labMap.size + 1} active)`);
+
+  ws.on("message", (raw) => {
+    let msg;
+    try { msg = JSON.parse(raw); } catch (_) { return; }
+    if (!msg || typeof msg !== "object") return;
+
+    if (msg.type === "join") {
+      const entry = {
+        id,
+        name: String(msg.name || "").slice(0, 20) || ("RESEARCHER-" + id.slice(4, 8).toUpperCase()),
+        lab: String(msg.lab || "hub").slice(0, 20),
+        x: 0, y: 0, z: 0,
+        experiment: "",
+        ts: Date.now(),
+      };
+      _labMap.set(id, entry);
+      _labBroadcast({ type: "join", ...entry }, id);
+
+    } else if (msg.type === "pos") {
+      const entry = _labMap.get(id);
+      if (entry) {
+        entry.x = typeof msg.x === "number" ? msg.x : entry.x;
+        entry.y = typeof msg.y === "number" ? msg.y : entry.y;
+        entry.z = typeof msg.z === "number" ? msg.z : entry.z;
+        entry.lab = String(msg.lab || entry.lab).slice(0, 20);
+        entry.ts = Date.now();
+        _labBroadcast({ type: "pos", id, x: entry.x, y: entry.y, z: entry.z, lab: entry.lab }, id);
+      }
+
+    } else if (msg.type === "lab_switch") {
+      const entry = _labMap.get(id);
+      if (entry) {
+        entry.lab = String(msg.lab || "hub").slice(0, 20);
+        _labBroadcast({ type: "lab_switch", id, lab: entry.lab, name: entry.name }, id);
+      }
+
+    } else if (msg.type === "experiment_state") {
+      // Broadcast experiment parameter change so peers can see live sync
+      _labBroadcast({
+        type: "experiment_state",
+        id,
+        lab: String(msg.lab || "").slice(0, 20),
+        experiment: String(msg.experiment || "").slice(0, 32),
+        params: typeof msg.params === "object" ? msg.params : {},
+        ts: Date.now(),
+      }, id);
+
+    } else if (msg.type === "chat") {
+      const entry = _labMap.get(id);
+      const name = entry?.name || id;
+      _labBroadcast({
+        type: "chat",
+        id,
+        name,
+        text: String(msg.text || "").slice(0, 200),
+        ts: Date.now(),
+      }, id);
+    }
+  });
+
+  ws.on("close", () => {
+    const entry = _labMap.get(id);
+    _labMap.delete(id);
+    _labBroadcast({ type: "leave", id, name: entry?.name || id });
+    console.log(`[CosmosLab] Researcher left: ${id} (${_labMap.size} remaining)`);
+  });
+
+  ws.on("error", () => { _labMap.delete(id); });
+});
+
+console.log("[CosmosLab] Lab WebSocket ready at /ws/lab");
+
 // ── AIOSmux DeployAgent — Autonomous Explorer ─────────────────────────────────
 // Orbits through the D480 lattice on a schedule. Appears as a gold orb to
 // human explorers. Posts discovery events to the feed every stop.
