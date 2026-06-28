@@ -3523,9 +3523,9 @@
       <!-- ── MERKABA STARSHIP — autonomous starship with hyperspace warp ── -->
       <a-entity merkaba-starship></a-entity>
       <!-- ── PAC-MAN — giant iconic Pac-Man floating in the universe ── -->
-      <a-entity pac-man-entity position="7500 1800 -13000"></a-entity>
+      <a-entity pac-man-entity position="2200 500 -3500"></a-entity>
       <!-- ── SPACE INVADERS — iconic retro invasion fleet wall ── -->
-      <a-entity space-invaders-wall position="-10000 600 -8800"></a-entity>
+      <a-entity space-invaders-wall position="-3200 200 -2800"></a-entity>
       <!-- ── QUASAR LENS — blazing quasar with gravitational Einstein-ring lensing ── -->
       <a-entity quasar-lens></a-entity>
       <!-- ── ROGUE PLANET — lightless drifting world with IR glow + micro-moon ── -->
@@ -3739,9 +3739,9 @@
       }
 
       /* ── D-Ring radii ──────────────────────────────────────────────────────── */
-      const R8 = 55;
-      const R26 = 140;
-      const R48 = 340;
+      const R8 = 24;
+      const R26 = 40;
+      const R48 = 60;
 
       /* ── Sector definitions ────────────────────────────────────────────────── */
       const SECTORS = [
@@ -5552,42 +5552,42 @@
               segDur: 0,
             },
             {
-              pos: new V3(0, 260, -180),
+              pos: new V3(0, 55, -35),
               label: "STATION-ALPHA • ORBITAL DOCK",
               segDur: 3200,
             },
             {
-              pos: new V3(1600, -200, -900),
+              pos: new V3(320, -40, -180),
               label: "STORM VORTEX ALPHA • ELECTRIC CHAOS",
               segDur: 5200,
             },
             {
-              pos: new V3(-2400, 300, 1100),
+              pos: new V3(-480, 60, 220),
               label: "STORM VORTEX BETA • VIOLET TEMPEST",
               segDur: 6800,
             },
             {
-              pos: new V3(900, 400, 2200),
+              pos: new V3(180, 80, 450),
               label: "STORM VORTEX GAMMA • CYAN MAELSTROM",
               segDur: 5500,
             },
             {
-              pos: new V3(0, 4000, 0),
-              label: "GALACTIC ZENITH • 4000 AU ABOVE THE PLANE",
+              pos: new V3(0, 600, 0),
+              label: "GALACTIC ZENITH • 600 AU ABOVE THE PLANE",
               segDur: 6800,
             },
             {
-              pos: new V3(6000, 800, 0),
+              pos: new V3(900, 200, 0),
               label: "D480 FRONTIER • HARMONIC OUTER EDGE",
               segDur: 8000,
             },
             {
-              pos: new V3(-1300, -150, -2100),
+              pos: new V3(-260, -30, -420),
               label: "STORM VORTEX DELTA • MAGENTA SINGULARITY",
               segDur: 7500,
             },
             {
-              pos: new V3(0, -2000, -5000),
+              pos: new V3(0, -400, -800),
               label: "SOUTHERN ABYSS • DEEP VOID",
               segDur: 7200,
             },
@@ -51084,7 +51084,7 @@
       ==================================================================== */
       (function initGeoNav() {
         var MIN_DIST = 1.2,
-          MAX_DIST = 80000;
+          MAX_DIST = 48000;
         /* True Merkaba resonance: anchor D480=480, PHI-stepped zones.
            MERKABA CORE (0-183 au) = one inner zone -- everything is close. */
         var _PHI = 1.6180339887;
@@ -51696,7 +51696,7 @@
           var bgP = new Float32Array(BG * 3);
           var bgC = new Float32Array(BG * 3);
           for (var i = 0; i < BG; i++) {
-            var br = 4000 + Math.pow(Math.random(), 0.4) * 66000;
+            var br = 280 + Math.pow(Math.random(), 0.5) * 19720;
             var bth = Math.random() * Math.PI * 2;
             var bph = Math.acos(2 * Math.random() - 1);
             bgP[i * 3] = Math.sin(bph) * Math.cos(bth) * br;
@@ -51819,7 +51819,7 @@
             var gyi = 1.0 - gt * 2.0;
             var grad = Math.sqrt(Math.max(0, 1 - gyi * gyi));
             var gang = goldenAngle * g;
-            var gr = 5000 + Math.pow(gt, 0.55) * 30000;
+            var gr = 900 + Math.pow(gt, 0.62) * 11100;
             var gpx = Math.cos(gang) * grad * gr;
             var gpy = gyi * gr * 0.55;
             var gpz = Math.sin(gang) * grad * gr;
