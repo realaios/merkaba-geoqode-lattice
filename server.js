@@ -5793,9 +5793,8 @@ _labWss.on("connection", (ws) => {
     peers: Array.from(_labMap.values()),
     ts: Date.now(),
   }));
-
-  _labBroadcast({ type: "join", id, ts: Date.now() }, id);
-  console.log(`[CosmosLab] Researcher joined: ${id} (${_labMap.size + 1} active)`);
+  // NOTE: full join broadcast fires only after client sends a join msg with name/lab metadata
+  console.log(`[CosmosLab] Connection opened: ${id} (${_labMap.size} active peers)`);
 
   ws.on("message", (raw) => {
     let msg;
@@ -5812,18 +5811,23 @@ _labWss.on("connection", (ws) => {
         ts: Date.now(),
       };
       _labMap.set(id, entry);
+      // Broadcast full entry so peers get name + lab immediately
       _labBroadcast({ type: "join", ...entry }, id);
+      console.log(`[CosmosLab] Researcher joined: ${entry.name} (${_labMap.size} active)`);
 
     } else if (msg.type === "pos") {
-      const entry = _labMap.get(id);
-      if (entry) {
-        entry.x = typeof msg.x === "number" ? msg.x : entry.x;
-        entry.y = typeof msg.y === "number" ? msg.y : entry.y;
-        entry.z = typeof msg.z === "number" ? msg.z : entry.z;
-        entry.lab = String(msg.lab || entry.lab).slice(0, 20);
-        entry.ts = Date.now();
-        _labBroadcast({ type: "pos", id, x: entry.x, y: entry.y, z: entry.z, lab: entry.lab }, id);
+      let entry = _labMap.get(id);
+      if (!entry) {
+        // Auto-init if pos arrives before explicit join
+        entry = { id, name: "RESEARCHER-" + id.slice(4, 8).toUpperCase(), lab: "hub", x: 0, y: 0, z: 0, experiment: "", ts: Date.now() };
+        _labMap.set(id, entry);
       }
+      entry.x = typeof msg.x === "number" ? msg.x : entry.x;
+      entry.y = typeof msg.y === "number" ? msg.y : entry.y;
+      entry.z = typeof msg.z === "number" ? msg.z : entry.z;
+      entry.lab = String(msg.lab || entry.lab).slice(0, 20);
+      entry.ts = Date.now();
+      _labBroadcast({ type: "pos", id, x: entry.x, y: entry.y, z: entry.z, lab: entry.lab }, id);
 
     } else if (msg.type === "lab_switch") {
       const entry = _labMap.get(id);
@@ -5833,7 +5837,7 @@ _labWss.on("connection", (ws) => {
       }
 
     } else if (msg.type === "experiment_state") {
-      // Broadcast experiment parameter change so peers can see live sync
+      if (!_labMap.has(id)) return; // require join first
       _labBroadcast({
         type: "experiment_state",
         id,

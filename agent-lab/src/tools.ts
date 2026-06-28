@@ -84,10 +84,11 @@ export function buildTools(env: Env) {
         max_results: z.number().default(20),
       }),
       execute: async ({ pattern, max_results }) => {
+        let rx: RegExp;
+        try { rx = new RegExp(pattern, "i"); } catch (_) { return { error: "Invalid regex pattern", matches: [], total_matches: 0, total_lines: 0 }; }
         const url = `https://raw.githubusercontent.com/${env.GITHUB_OWNER}/${env.GITHUB_REPO}/main/${env.GAME_FILE_PATH}`;
         const raw = await fetch(url).then((r) => r.text());
         const lines = raw.split("\n");
-        const rx = new RegExp(pattern, "i");
         const matches: Array<{ line: number; text: string }> = [];
         for (let i = 0; i < lines.length && matches.length < max_results; i++) {
           if (rx.test(lines[i]))
