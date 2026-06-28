@@ -4,7 +4,7 @@
 
 import { createServer } from "http";
 import { WebSocketServer } from "ws";
-import { readFileSync, existsSync, readdirSync } from "fs";
+import { readFileSync, writeFileSync, existsSync, mkdirSync, readdirSync } from "fs";
 import { extname, join, dirname, resolve, relative, sep } from "path";
 import { fileURLToPath } from "url";
 import { StormAdapter } from "./geo/bridge/storm-adapter.js";
@@ -5622,6 +5622,18 @@ let _beaconRotateTimer = setInterval(
   30 * 60 * 1000,
 );
 
+// ── Dogfight persistent scores ────────────────────────────────────────────────
+const SCORES_FILE = join(__dirname_static, "data", "dogfight-scores.json");
+let _dogfightScores = {};
+try {
+  const dataDir = join(__dirname_static, "data");
+  if (!existsSync(dataDir)) mkdirSync(dataDir, { recursive: true });
+  if (existsSync(SCORES_FILE)) _dogfightScores = JSON.parse(readFileSync(SCORES_FILE, "utf8"));
+} catch (_) {}
+function _saveScores() {
+  try { writeFileSync(SCORES_FILE, JSON.stringify(_dogfightScores)); } catch (_) {}
+}
+
 // ── WebSocket Server ──────────────────────────────────────────────────────────
 const _wss = new WebSocketServer({ server, path: "/ws/presence" });
 
@@ -5651,6 +5663,9 @@ _wss.on("connection", (ws) => {
         pos: beaconGalaxy.pos,
       },
       explorers: Array.from(_presenceMap.values()),
+      allTimeTop: Object.entries(_dogfightScores)
+        .sort((a, b) => b[1].score - a[1].score).slice(0, 10)
+        .map(([name, s]) => ({ name, kills: s.kills, score: s.score })),
     }),
   );
 
@@ -5710,13 +5725,31 @@ _wss.on("connection", (ws) => {
         id,
       );
     } else if (msg.type === "hit") {
+      const sEntry = _presenceMap.get(id);
+      const sName = sEntry?.name || ("PILOT-" + id.slice(0, 4).toUpperCase());
       _broadcast(
-        { type: "hit", shooterId: id, targetId: String(msg.targetId || "") },
+        { type: "hit", shooterId: id, shooterName: sName, targetId: String(msg.targetId || "") },
         id,
       );
     } else if (msg.type === "kill") {
+      const shooterEntry = _presenceMap.get(id);
+      const targetEntry  = _presenceMap.get(String(msg.targetId || ""));
+      const shooterName  = shooterEntry?.name || ("PILOT-" + id.slice(0, 4).toUpperCase());
+      const targetName   = targetEntry?.name  || ("PILOT-" + String(msg.targetId || "").slice(0, 4).toUpperCase());
+      if (shooterEntry) {
+        shooterEntry.kills = (shooterEntry.kills || 0) + 1;
+        shooterEntry.score = (shooterEntry.score || 0) + 100;
+      }
+      if (!_dogfightScores[shooterName]) _dogfightScores[shooterName] = { kills: 0, score: 0 };
+      _dogfightScores[shooterName].kills++;
+      _dogfightScores[shooterName].score += 100;
+      _saveScores();
       _broadcast(
-        { type: "kill", shooterId: id, targetId: String(msg.targetId || "") },
+        {
+          type: "kill", shooterId: id, targetId: String(msg.targetId || ""),
+          shooterName, targetName,
+          shooterScore: shooterEntry?.score || 0, shooterKills: shooterEntry?.kills || 0,
+        },
         id,
       );
     }
