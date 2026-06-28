@@ -5670,20 +5670,41 @@ _wss.on("connection", (ws) => {
     if (!msg || typeof msg !== "object") return;
 
     if (msg.type === "pos") {
+      const prev = _presenceMap.get(id) || {};
       const entry = {
         id,
         x: typeof msg.x === "number" ? msg.x : 0,
         y: typeof msg.y === "number" ? msg.y : 0,
         z: typeof msg.z === "number" ? msg.z : 0,
+        qx: typeof msg.qx === "number" ? msg.qx : 0,
+        qy: typeof msg.qy === "number" ? msg.qy : 0,
+        qz: typeof msg.qz === "number" ? msg.qz : 0,
+        qw: typeof msg.qw === "number" ? msg.qw : 1,
         geoCode:
           typeof msg.geoCode === "string" ? msg.geoCode.slice(0, 64) : "",
         freq: typeof msg.freq === "number" ? msg.freq : 528,
         ts: Date.now(),
         isAgent: false,
-        name: "EXPLORER",
+        name: prev.name || "EXPLORER",
       };
       _presenceMap.set(id, entry);
       _broadcast({ type: "pos", ...entry }, id);
+    } else if (msg.type === "callsign") {
+      const entry = _presenceMap.get(id);
+      if (entry) {
+        entry.name = String(msg.name || "").slice(0, 16) || entry.name;
+        _broadcast({ type: "callsign", id, name: entry.name }, id);
+      }
+    } else if (msg.type === "fire") {
+      _broadcast({
+        type: "fire", id,
+        ox: +msg.ox || 0, oy: +msg.oy || 0, oz: +msg.oz || 0,
+        dx: +msg.dx || 0, dy: +msg.dy || 0, dz: +msg.dz || 0,
+      }, id);
+    } else if (msg.type === "hit") {
+      _broadcast({ type: "hit", shooterId: id, targetId: String(msg.targetId || "") }, id);
+    } else if (msg.type === "kill") {
+      _broadcast({ type: "kill", shooterId: id, targetId: String(msg.targetId || "") }, id);
     }
   });
 

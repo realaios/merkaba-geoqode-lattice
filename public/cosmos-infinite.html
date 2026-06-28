@@ -54945,6 +54945,54 @@
           transform: translateX(0);
         }
       }
+      /* ── Fighter HUD + Dogfight Scoreboard ── */
+      #fighter-hud {
+        position: fixed;
+        top: 60px;
+        left: 12px;
+        width: 180px;
+        background: rgba(0,0,0,0.60);
+        border: 1.5px solid rgba(0,212,255,0.4);
+        border-radius: 8px;
+        padding: 6px 10px;
+        z-index: 4900;
+        color: #00d4ff;
+        font-family: monospace;
+        font-size: 11px;
+        user-select: none;
+      }
+      #fhud-callsign { font-size:13px; font-weight:bold; letter-spacing:1px; margin-bottom:4px; color:#fff; }
+      #fhud-hp-row { display:flex; align-items:center; gap:6px; margin-bottom:3px; }
+      #fhud-hp-bar { display:inline-block; height:7px; width:100px; background:linear-gradient(90deg,#00ff88,#00d4ff); border-radius:4px; transition:width 0.2s,background 0.3s; }
+      #fhud-hp-num { font-size:10px; opacity:0.8; }
+      #fhud-stats { opacity:0.75; font-size:10px; }
+      #dogfight-scoreboard {
+        position: fixed;
+        bottom: 20px;
+        right: 12px;
+        width: 160px;
+        background: rgba(0,0,0,0.60);
+        border: 1.5px solid rgba(255,200,60,0.4);
+        border-radius: 8px;
+        padding: 6px 10px;
+        z-index: 4900;
+        color: #ffe090;
+        font-family: monospace;
+        font-size: 10px;
+        user-select: none;
+      }
+      #dfs-title { font-size:11px; font-weight:bold; margin-bottom:4px; letter-spacing:1px; }
+      .dfs-row { display:flex; justify-content:space-between; padding:1px 0; }
+      .dfs-row.me { color:#fff; }
+      #damage-flash {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 9000;
+        background: rgba(255,0,0,0);
+        transition: background 0.15s;
+      }
+      #damage-flash.hit { background: rgba(255,0,0,0.35); }
     </style>
 
     <script>
@@ -54958,15 +55006,20 @@
           location.host +
           "/ws/presence";
         var RECONNECT_DELAY_MS = 4000;
-        var POS_SEND_INTERVAL = 2500; // send position every 2.5s
+        var POS_SEND_INTERVAL = 100; // 10 Hz — real-time dogfight sync
         var FEED_MAX_ENTRIES = 5;
         var GHOST_CLEANUP_MS = 15000; // remove ghost if no update for 15s
 
         /* ── State ────────────────────────────────────────────────────────── */
         var _ws = null;
         var _myId = null;
-        var _ghostMap = {}; // id -> { el, ts, isAgent }
+        var _ghostMap = {}; // id -> { el, group, ts, isAgent, health, score, kills, pos, targetPos, quat, targetQuat }
         var _ghostScene = null; // a-entity container for ghosts
+        var _myCallsign = "PILOT-" + Math.random().toString(36).slice(2, 5).toUpperCase();
+        var _myHealth = 100;
+        var _myKills = 0;
+        var _myDeaths = 0;
+        var _myScore = 0;
         var _beaconEl = null; // pulsing beacon ring in A-Frame
         var _beaconCode = null;
         var _reconnTimer = null;
@@ -55000,83 +55053,110 @@
           scene.appendChild(_ghostScene);
         }
 
+        function _makeFighterAvatar(color) {
+          var THREE = AFRAME.THREE;
+          var g = new THREE.Group();
+          var hexColor = parseInt(color.replace("#", ""), 16);
+          var body = new THREE.Mesh(
+            new THREE.OctahedronGeometry(3, 0),
+            new THREE.MeshBasicMaterial({ color: hexColor, transparent: true, opacity: 0.75,
+              depthWrite: false, blending: THREE.AdditiveBlending })
+          );
+          g.add(body);
+          var nose = new THREE.Mesh(
+            new THREE.ConeGeometry(1, 5, 8),
+            new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.6,
+              depthWrite: false, blending: THREE.AdditiveBlending })
+          );
+          nose.rotation.x = Math.PI / 2;
+          nose.position.z = -4;
+          g.add(nose);
+          var ring = new THREE.Mesh(
+            new THREE.TorusGeometry(4, 0.15, 6, 32),
+            new THREE.MeshBasicMaterial({ color: hexColor, transparent: true, opacity: 0.5,
+              depthWrite: false, blending: THREE.AdditiveBlending })
+          );
+          g.add(ring);
+          return g;
+        }
+
         function _upsertGhost(entry) {
           _ensureScene();
           if (!_ghostScene) return;
           if (entry.id === _myId) return; // skip self
 
+          var THREE = AFRAME.THREE;
           var existing = _ghostMap[entry.id];
-          var color = entry.isAgent ? "#ffc83c" : "#00d4ff";
-          var opacity = entry.isAgent ? "0.9" : "0.45";
+          var isAgent = entry.isAgent;
+          var color = isAgent ? "#ffc83c" : "#00d4ff";
 
           if (!existing) {
-            /* Create ghost orb */
-            var orb = document.createElement("a-sphere");
-            orb.setAttribute("radius", entry.isAgent ? "3" : "2");
-            orb.setAttribute("color", color);
-            orb.setAttribute("opacity", opacity);
-            orb.setAttribute("emissive", color);
-            orb.setAttribute(
-              "emissive-intensity",
-              entry.isAgent ? "0.7" : "0.4",
-            );
-            orb.setAttribute(
-              "material",
-              "shader:standard;metalness:0.1;roughness:0.6;transparent:true",
-            );
-            orb.setAttribute(
-              "position",
-              entry.x + " " + entry.y + " " + entry.z,
-            );
+            /* Create A-Frame entity to hold the Three.js fighter group */
+            var el = document.createElement("a-entity");
+            _ghostScene.appendChild(el);
 
-            /* Label */
+            /* Wait one tick for el to be in scenegraph, then attach group */
+            var group = _makeFighterAvatar(color);
+            el.addEventListener("loaded", function onLoad() {
+              el.object3D.add(group);
+            }, { once: true });
+            if (el.object3D) el.object3D.add(group);
+
+            /* Callsign label */
             var label = document.createElement("a-text");
-            label.setAttribute(
-              "value",
-              entry.isAgent ? "\u26a1 " + entry.name : "\u25cf EXPLORER",
-            );
+            var callsign = entry.name || (isAgent ? ("\u26a1 " + entry.name) : "PILOT-" + String(entry.id).slice(0, 4).toUpperCase());
+            label.setAttribute("value", callsign);
             label.setAttribute("align", "center");
             label.setAttribute("color", color);
             label.setAttribute("scale", "12 12 12");
-            label.setAttribute("position", "0 4 0");
+            label.setAttribute("position", "0 7 0");
             label.setAttribute("look-at", "[camera]");
-            orb.appendChild(label);
+            el.appendChild(label);
 
-            /* Pulse ring for agent */
-            if (entry.isAgent) {
-              var ring = document.createElement("a-torus");
-              ring.setAttribute("radius", "4");
-              ring.setAttribute("radius-tubular", "0.3");
-              ring.setAttribute("color", "#ffc83c");
-              ring.setAttribute("opacity", "0.4");
-              ring.setAttribute(
-                "animation",
-                "property:rotation;to:0 360 0;loop:true;dur:4000;easing:linear",
-              );
-              orb.appendChild(ring);
-            }
-
-            _ghostScene.appendChild(orb);
+            var pos = new THREE.Vector3(entry.x || 0, entry.y || 0, entry.z || 0);
             _ghostMap[entry.id] = {
-              el: orb,
-              ts: Date.now(),
-              isAgent: entry.isAgent,
+              el: el, group: group, label: label, ts: Date.now(), isAgent: isAgent,
+              health: 100, score: 0, kills: 0,
+              pos: pos.clone(), targetPos: pos.clone(),
+              quat: new THREE.Quaternion(), targetQuat: new THREE.Quaternion(),
             };
           } else {
-            /* Update position */
-            existing.el.setAttribute(
-              "position",
-              entry.x + " " + entry.y + " " + entry.z,
-            );
+            /* Update target position and orientation for interpolation */
+            existing.targetPos.set(entry.x || 0, entry.y || 0, entry.z || 0);
+            if (entry.qx != null) {
+              existing.targetQuat.set(entry.qx, entry.qy, entry.qz, entry.qw);
+            }
+            if (entry.name && existing.label) {
+              existing.label.setAttribute("value", entry.name);
+            }
             existing.ts = Date.now();
           }
         }
+
+        /* ── Interpolation loop — smooth ghost movement at 60 fps ─────────── */
+        (function _interpLoop() {
+          var keys = Object.keys(_ghostMap);
+          for (var i = 0; i < keys.length; i++) {
+            var g = _ghostMap[keys[i]];
+            if (!g.group) continue;
+            g.pos.lerp(g.targetPos, 0.15);
+            g.quat.slerp(g.targetQuat, 0.15);
+            g.group.position.copy(g.pos);
+            g.group.quaternion.copy(g.quat);
+            if (g.el && g.el.object3D) {
+              g.el.object3D.position.copy(g.pos);
+              g.el.object3D.quaternion.copy(g.quat);
+            }
+          }
+          requestAnimationFrame(_interpLoop);
+        })();
 
         function _removeGhost(id) {
           var g = _ghostMap[id];
           if (!g) return;
           if (g.el && g.el.parentNode) g.el.parentNode.removeChild(g.el);
           delete _ghostMap[id];
+          _updateScoreboard();
         }
 
         function _updateExplorerCount() {
@@ -55190,12 +55270,60 @@
           );
         }
 
+        /* ── Fighter HUD + Scoreboard helpers ────────────────────────────────── */
+        var _fhudCallsign = null, _fhudHpBar = null, _fhudHpNum = null;
+        var _fhudStats = null, _dfsListEl = null;
+
+        function _initHudRefs() {
+          _fhudCallsign = document.getElementById("fhud-callsign");
+          _fhudHpBar = document.getElementById("fhud-hp-bar");
+          _fhudHpNum = document.getElementById("fhud-hp-num");
+          _fhudStats = document.getElementById("fhud-stats");
+          _dfsListEl = document.getElementById("dfs-list");
+        }
+
+        function _updateFighterHUD() {
+          if (!_fhudCallsign) _initHudRefs();
+          var hp = Math.max(0, _myHealth);
+          var hpPct = hp + "%";
+          var hpColor = hp > 60 ? "#00d4ff" : hp > 30 ? "#ffcc00" : "#ff3322";
+          if (_fhudCallsign) _fhudCallsign.textContent = _myCallsign;
+          if (_fhudHpBar) { _fhudHpBar.style.width = hpPct; _fhudHpBar.style.background = hpColor; }
+          if (_fhudHpNum) _fhudHpNum.textContent = "HP: " + hp;
+          if (_fhudStats) _fhudStats.textContent = "K:" + _myKills + " D:" + _myDeaths + " Pts:" + _myScore;
+        }
+
+        function _updateScoreboard() {
+          if (!_dfsListEl) _initHudRefs();
+          if (!_dfsListEl) return;
+          var rows = [{ id: "me", name: _myCallsign, kills: _myKills, score: _myScore, me: true }];
+          Object.keys(_ghostMap).forEach(function(id) {
+            var g = _ghostMap[id];
+            rows.push({ id: id, name: g.label ? (g.label.getAttribute("value") || id.slice(0,6)) : id.slice(0,6),
+              kills: g.kills || 0, score: g.score || 0, me: false });
+          });
+          rows.sort(function(a,b) { return b.score - a.score; });
+          _dfsListEl.innerHTML = rows.slice(0, 5).map(function(r, i) {
+            return '<div class="dfs-row' + (r.me ? ' me' : '') + '">' +
+              (i+1) + '. ' + (r.name.slice(0,10)) + ' &nbsp; ' + r.kills + 'K &nbsp; ' + r.score + 'pts</div>';
+          }).join('');
+        }
+
+        function _flashDamage() {
+          var d = document.getElementById("damage-flash");
+          if (!d) return;
+          d.classList.add("hit");
+          setTimeout(function() { d.classList.remove("hit"); }, 220);
+        }
+
         /* ── Position sender ──────────────────────────────────────────────── */
         function _sendPosition() {
           if (!_ws || _ws.readyState !== 1) return;
           var rig = document.getElementById("cameraRig");
-          if (!rig) return;
-          var pos = rig.getAttribute("position") || {};
+          if (!rig || !rig.object3D) return;
+          var pos = rig.object3D.position;
+          var _THREE = AFRAME.THREE;
+          var _q = rig.object3D.getWorldQuaternion(new _THREE.Quaternion());
 
           /* Get current galaxy geoCode from cosmos component if available */
           var du = document.querySelector("[distant-universe]");
@@ -55212,11 +55340,9 @@
           _ws.send(
             JSON.stringify({
               type: "pos",
-              x: pos.x || 0,
-              y: pos.y || 0,
-              z: pos.z || 0,
-              geoCode: geoCode,
-              freq: freq,
+              x: pos.x, y: pos.y, z: pos.z,
+              qx: _q.x, qy: _q.y, qz: _q.z, qw: _q.w,
+              geoCode: geoCode, freq: freq,
             }),
           );
         }
@@ -55251,6 +55377,20 @@
             switch (msg.type) {
               case "welcome":
                 _myId = msg.id;
+                /* Wire callsign input */
+                var _csIn = document.getElementById("opt-callsign");
+                if (_csIn) {
+                  if (!_csIn.value) _csIn.value = _myCallsign;
+                  else _myCallsign = _csIn.value;
+                  _csIn.addEventListener("input", function() {
+                    _myCallsign = _csIn.value.trim() || _myCallsign;
+                    if (_ws && _ws.readyState === 1) _ws.send(JSON.stringify({ type: "callsign", name: _myCallsign }));
+                    _updateFighterHUD();
+                  });
+                }
+                /* Send callsign after welcome */
+                if (_ws && _ws.readyState === 1) _ws.send(JSON.stringify({ type: "callsign", name: _myCallsign }));
+                _updateFighterHUD();
                 /* Seed existing explorers */
                 if (Array.isArray(msg.explorers)) {
                   msg.explorers.forEach(function (e) {
@@ -55326,6 +55466,90 @@
                   true,
                 );
                 break;
+
+              case "callsign":
+                if (msg.id && _ghostMap[msg.id]) {
+                  var _cg = _ghostMap[msg.id];
+                  if (_cg.label) _cg.label.setAttribute("value", msg.name || "");
+                }
+                _updateScoreboard();
+                break;
+
+              case "fire": {
+                /* Render incoming laser from another pilot */
+                var THREE = AFRAME.THREE;
+                var _fScene = document.querySelector("a-scene");
+                var _fOrig = new THREE.Vector3(+msg.ox||0, +msg.oy||0, +msg.oz||0);
+                var _fDir = new THREE.Vector3(+msg.dx||0, +msg.dy||0, +msg.dz||0).normalize();
+                var _fDest = _fOrig.clone().addScaledVector(_fDir, 2000);
+                if (_fScene && typeof _spawnLaser !== "undefined") {
+                  _spawnLaser(_fOrig, _fDest, _fScene, THREE);
+                }
+                /* Check if our rig is near this ray */
+                var _myRig = document.getElementById("cameraRig");
+                if (_myRig && _myRig.object3D) {
+                  var _rp2 = _myRig.object3D.position;
+                  var _toRig = new THREE.Vector3().subVectors(_rp2, _fOrig);
+                  var _t = _toRig.dot(_fDir);
+                  var _closest = new THREE.Vector3().copy(_fOrig).addScaledVector(_fDir, Math.max(0, _t));
+                  if (_closest.distanceTo(_rp2) < 8 && _t > 0 && _t < 2000) {
+                    /* We got hit — send hit notification */
+                    if (_ws && _ws.readyState === 1) _ws.send(JSON.stringify({ type: "hit", targetId: _myId }));
+                  }
+                }
+                break;
+              }
+
+              case "hit":
+                if (msg.targetId === _myId) {
+                  _myHealth = Math.max(0, _myHealth - 25);
+                  _flashDamage();
+                  _updateFighterHUD();
+                  if (_myHealth <= 0) {
+                    _myDeaths++;
+                    _myHealth = 100;
+                    if (_ws && _ws.readyState === 1) _ws.send(JSON.stringify({ type: "kill", targetId: _myId }));
+                    setTimeout(function() { _updateFighterHUD(); }, 3100);
+                  }
+                } else if (_ghostMap[msg.targetId]) {
+                  /* Flash hit ghost red momentarily */
+                  var _hg = _ghostMap[msg.targetId];
+                  _hg.health = Math.max(0, (_hg.health || 100) - 25);
+                  if (_hg.group) {
+                    _hg.group.traverse(function(m) {
+                      if (m.material) { m.material.color.setHex(0xff2200); }
+                    });
+                    var _hgRef = _hg.group;
+                    var _hColor = parseInt((_hg.isAgent ? "#ffc83c" : "#00d4ff").replace("#",""), 16);
+                    setTimeout(function() {
+                      _hgRef.traverse(function(m) { if (m.material) m.material.color.setHex(_hColor); });
+                    }, 250);
+                  }
+                }
+                break;
+
+              case "kill":
+                if (msg.shooterId === _myId) {
+                  _myKills++;
+                  _myScore += 100;
+                  _updateFighterHUD();
+                  _addFeedEntry("\u2605 KILL! +" + 100 + " pts", true);
+                }
+                if (msg.targetId && _ghostMap[msg.targetId]) {
+                  /* Explosion + brief ghost hide then respawn */
+                  var _kg = _ghostMap[msg.targetId];
+                  _kg.score = Math.max(0, (_kg.score || 0) - 0);
+                  if (_kg.group) _kg.group.visible = false;
+                  var _kId = msg.targetId;
+                  setTimeout(function() {
+                    if (_ghostMap[_kId] && _ghostMap[_kId].group) {
+                      _ghostMap[_kId].group.visible = true;
+                      _ghostMap[_kId].health = 100;
+                    }
+                  }, 3000);
+                }
+                _updateScoreboard();
+                break;
             }
           };
 
@@ -55347,8 +55571,38 @@
           };
         }
 
+        /* ── cosmos-fire broadcast: transmit laser fire to all other pilots ─── */
+        window.addEventListener("cosmos-fire", function() {
+          if (!_ws || _ws.readyState !== 1) return;
+          var THREE = AFRAME.THREE;
+          var rig = document.getElementById("cameraRig");
+          if (!rig || !rig.object3D) return;
+          var rp = rig.object3D.position.clone();
+          var nd = new THREE.Vector3(0, 0, -1)
+            .applyQuaternion(rig.object3D.getWorldQuaternion(new THREE.Quaternion()))
+            .normalize();
+          /* Broadcast fire */
+          _ws.send(JSON.stringify({ type: "fire",
+            ox: rp.x, oy: rp.y, oz: rp.z,
+            dx: nd.x, dy: nd.y, dz: nd.z }));
+          /* Local hit detection against visible ghosts */
+          Object.keys(_ghostMap).forEach(function(id) {
+            var g = _ghostMap[id];
+            if (!g.group || !g.group.visible) return;
+            var _toG = new THREE.Vector3().subVectors(g.targetPos, rp);
+            var _t = _toG.dot(nd);
+            if (_t <= 0) return;
+            var _closest = rp.clone().addScaledVector(nd, _t);
+            if (_closest.distanceTo(g.targetPos) < 8) {
+              _ws.send(JSON.stringify({ type: "hit", targetId: id }));
+            }
+          });
+        });
+
         /* ── Boot: wait for scene ready, then connect ─────────────────────── */
         var _scene = document.querySelector("a-scene");
+        /* Initialize HUD immediately with default callsign */
+        setTimeout(_updateFighterHUD, 200);
         if (_scene && _scene.hasLoaded) {
           _connect();
         } else if (_scene) {
@@ -55967,8 +56221,27 @@
         <label class="opts-label" for="opt-speed-gradient">Speed Gradient (dist)</label>
         <label class="opts-toggle"><input type="checkbox" id="opt-speed-gradient"><span class="opts-slider"></span></label>
       </div>
+      <h3>Callsign</h3>
+      <div class="opts-row" style="gap:6px;">
+        <label class="opts-label" for="opt-callsign">Fighter Name</label>
+        <input id="opt-callsign" type="text" maxlength="12" placeholder="PILOT-XXX"
+          style="background:rgba(0,0,0,0.55);border:1.5px solid rgba(0,212,255,0.5);border-radius:6px;color:#00d4ff;font-size:13px;padding:4px 8px;width:96px;outline:none;font-family:monospace;">
+      </div>
     </div>
 
+    <!-- Fighter HUD -->
+    <div id="fighter-hud">
+      <div id="fhud-callsign"></div>
+      <div id="fhud-hp-row"><span id="fhud-hp-bar"></span><span id="fhud-hp-num">100</span></div>
+      <div id="fhud-stats">K: <span id="fhud-kills">0</span> &nbsp;D: <span id="fhud-deaths">0</span> &nbsp;Pts: <span id="fhud-score">0</span></div>
+    </div>
+    <!-- Dogfight Scoreboard -->
+    <div id="dogfight-scoreboard">
+      <div id="dfs-title">&#x1F3C6; LEADERBOARD</div>
+      <div id="dfs-list"></div>
+    </div>
+    <!-- Damage flash overlay -->
+    <div id="damage-flash"></div>
     <!-- Sketchfab 3D Model button (shown on all screens) -->
     <div id="sketchfab-btn" title="3D Model Viewer">&#x1F9CA;</div>
 
