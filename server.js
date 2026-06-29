@@ -128,6 +128,14 @@ const LAB_HTML_PATH = join(PUBLIC_DIR, "lab.html");
 const LAB_HTML = existsSync(LAB_HTML_PATH)
   ? withMeta(readFileSync(LAB_HTML_PATH, "utf-8"))
   : null;
+const COSMOS_LAB_HTML_PATH = join(PUBLIC_DIR, "cosmos-lab.html");
+const COSMOS_LAB_HTML = existsSync(COSMOS_LAB_HTML_PATH)
+  ? withMeta(readFileSync(COSMOS_LAB_HTML_PATH, "utf-8"))
+  : null;
+const COSMOS_LAB_LANDING_HTML_PATH = join(PUBLIC_DIR, "cosmos-lab-landing.html");
+const COSMOS_LAB_LANDING_HTML = existsSync(COSMOS_LAB_LANDING_HTML_PATH)
+  ? withMeta(readFileSync(COSMOS_LAB_LANDING_HTML_PATH, "utf-8"))
+  : null;
 const VIEWER_HTML_PATH = join(PUBLIC_DIR, "viewer.html");
 const VIEWER_HTML = existsSync(VIEWER_HTML_PATH)
   ? withMeta(readFileSync(VIEWER_HTML_PATH, "utf-8"))
@@ -3397,6 +3405,24 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
         return json(res, 404, { ok: false, error: "Lab page not found" });
       res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
       res.end(LAB_HTML);
+      return;
+    }
+
+    // ── GET /cosmos-lab — Cosmos-Lab Science Universe ────────────────────────
+    if (req.method === "GET" && (pathname === "/cosmos-lab" || pathname === "/cosmos-lab.html")) {
+      if (!COSMOS_LAB_HTML)
+        return json(res, 404, { ok: false, error: "Cosmos Lab not found" });
+      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+      res.end(COSMOS_LAB_HTML);
+      return;
+    }
+
+    // ── GET /cosmos-lab-landing — Cosmos-Lab Landing Page ───────────────────
+    if (req.method === "GET" && (pathname === "/cosmos-lab-landing" || pathname === "/cosmos-lab-landing.html")) {
+      if (!COSMOS_LAB_LANDING_HTML)
+        return json(res, 404, { ok: false, error: "Cosmos Lab landing not found" });
+      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+      res.end(COSMOS_LAB_LANDING_HTML);
       return;
     }
 
