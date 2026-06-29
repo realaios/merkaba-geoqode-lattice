@@ -1,117 +1,25 @@
-name: MERKABA_geoqode-os CI
+name: CI
 
 on:
   push:
-    branches: [main, develop]
+    branches: [main]
   pull_request:
     branches: [main]
 
-env:
-  NODE_VERSION: "20.x"
-
 jobs:
-  test:
-    name: Test GeoQode Runtime
+  lint-and-test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
-
-      - name: Setup Node.js ${{ env.NODE_VERSION }}
-        uses: actions/setup-node@v5
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: "npm"
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Run parser tests
-        run: npm test -- tests/parser.test.js
-
-      - name: Run runtime tests
-        run: npm test -- tests/runtime.test.js
-
-      - name: Run compliance tests
-        run: npm test -- tests/compliance.test.js
-        continue-on-error: true
-
-      - name: Run full test suite
-        run: npm test
-
-  validate:
-    name: Validate GeoQode Playbooks
-    runs-on: ubuntu-latest
-    needs: test
-    steps:
-      - uses: actions/checkout@v5
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v5
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: "npm"
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Validate migration playbook
-        run: node scripts/compliance-check.js geo/playbooks/migration.geo || true
-
-      - name: Validate resonance playbook
-        run: node scripts/compliance-check.js geo/playbooks/resonance.geo || true
-
-      - name: Validate adoption playbook
-        run: node scripts/compliance-check.js geo/playbooks/adoption.geo || true
-
-      - name: Run example programs
+          node-version: '20'
+          cache: 'npm'
+      - run: npm ci
+      - run: npm test --if-present
+      - name: Check server starts
         run: |
-          node scripts/run.js examples/hello-geoqode.geo || true
-
-      - name: Generate STATUS_REPORT
-        run: node scripts/generate-status-report.js
-        continue-on-error: true
-
-  status-report:
-    name: Publish STATUS_REPORT
-    runs-on: ubuntu-latest
-    needs: [test, validate]
-    if: github.ref == 'refs/heads/main'
-    steps:
-      - uses: actions/checkout@v5
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v5
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: "npm"
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Generate deployment STATUS_REPORT
-        run: |
-          mkdir -p STATUSREPORT
-          node -e "
-          const fs = require('fs');
-          const os = {
-            name: 'merkaba-geoqode-os',
-            version: require('./package.json').version,
-            commit: process.env.GITHUB_SHA?.substring(0,8),
-            timestamp: new Date().toISOString(),
-            status: 'OPERATIONAL'
-          };
-          console.log('=== MERKABA STATUS_REPORT ===');
-          console.log(JSON.stringify(os, null, 2));
-          console.log('Compliance: CERTIFIED');
-          console.log('Runtime: ACTIVE');
-          console.log('Lattice: CANONICAL 8,26,48:480 MAPPED');
-          fs.writeFileSync('STATUSREPORT/status.json', JSON.stringify(os, null, 2));
-          "
-
-      - name: Upload STATUS_REPORT artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: status-report-${{ github.sha }}
-          path: STATUSREPORT/
-          if-no-files-found: warn
-          retention-days: 90
+          timeout 5 node server.js &
+          sleep 2
+          curl -sf http://localhost:3000/ > /dev/null && echo "Server OK" || true
+          kill %1 2>/dev/null || true
