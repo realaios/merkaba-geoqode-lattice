@@ -1244,7 +1244,7 @@ const server = createServer(async (req, res) => {
     if (req.method === "GET" && pathname === "/") {
       const accept = req.headers["accept"] || "";
       if (accept.includes("text/html") || accept.includes("*/*")) {
-        const homeHtml = VR_HTML || AIOS_HTML;
+        const homeHtml = AIOS_HTML || VR_HTML;
         if (homeHtml) {
           res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
           res.end(homeHtml);

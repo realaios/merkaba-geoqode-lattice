@@ -367,6 +367,50 @@
         left: 50%;
         top: 0;
       }
+      /* ── MOBILE ─────────────────────────────────────────────────────────── */
+      @media (max-width: 900px), (pointer: coarse) {
+        #module-bar {
+          top: auto; bottom: 36px; left: 0; transform: none;
+          width: 100%; padding: 0; gap: 0;
+          overflow-x: auto; scrollbar-width: none;
+          border-top: 1px solid #0ff2;
+          background: rgba(0,0,10,0.95);
+        }
+        #module-bar::-webkit-scrollbar { display: none; }
+        .mod-btn {
+          flex: 1; min-width: 72px; padding: 14px 6px;
+          font-size: 11px; clip-path: none; border-radius: 0;
+          border-left: none; border-right: none; border-top: none;
+        }
+        #controls { display: none !important; }
+        #data-panel { top: auto; right: 0; left: 0; bottom: 120px; width: 100%; }
+        #data-inner { max-height: 140px; overflow-y: auto; }
+        #user-list { display: none; }
+        #nav-hint { display: none; }
+        #crosshair { opacity: 0.2; }
+        #feed { bottom: 100px; }
+        #chat-panel { left: 8px !important; right: 8px !important; width: auto !important; bottom: 120px !important; }
+      }
+
+      /* Mobile joystick */
+      #m-stick {
+        display: none;
+        position: fixed; z-index: 200;
+        width: 116px; height: 116px; border-radius: 50%;
+        background: rgba(0,200,255,0.05);
+        border: 1.5px solid rgba(0,200,255,0.2);
+        pointer-events: none;
+        transition: opacity 0.2s;
+      }
+      #m-knob {
+        position: absolute; width: 42px; height: 42px; border-radius: 50%;
+        background: rgba(0,200,255,0.22);
+        border: 1.5px solid rgba(0,200,255,0.55);
+        top: 50%; left: 50%;
+        transform: translate(-50%, -50%);
+        box-shadow: 0 0 14px rgba(0,200,255,0.3);
+      }
+      .is-mobile #m-stick { display: block; }
     </style>
   </head>
   <body>
@@ -438,6 +482,7 @@
       <div id="nav-hint">CLICK SCENE TO FLY · ESC = RELEASE · WASD · SPACE/SHIFT = UP/DOWN · ? = HELP</div>
       <div id="feed"></div>
       <div id="crosshair"></div>
+      <div id="m-stick"><div id="m-knob"></div></div>
     </div>
 
     <!-- A-Frame scene -->
@@ -476,7 +521,7 @@
    Four science modules + multi-user presence + live WebSocket sync
    ═══════════════════════════════════════════════════════════════════════════ */
 
-      var THREE, _scene, _worldRoot, _rig, _cam;
+      var THREE, _scene, _worldRoot, _rig, _cam, _mobileVel = {fx:0, fz:0};
       var _activeModule = "hub";
       var _modules = {}; // name → { root: THREE.Group, start, stop, update, controls, dispose }
       var _raf = null;
@@ -521,6 +566,17 @@
         // Update active module
         var mod = _modules[_activeModule];
         if (mod && mod.update) mod.update(dt, ts / 1000);
+
+        // Mobile movement injection
+        if (_mobileVel.fx !== 0 || _mobileVel.fz !== 0) {
+          var camEl2 = document.getElementById("cam");
+          var lc2 = camEl2 && camEl2.components && camEl2.components["look-controls"];
+          var yaw = lc2 ? lc2.yawObject.rotation.y : 0;
+          var sinY = Math.sin(yaw), cosY = Math.cos(yaw);
+          var spd = 14 * dt;
+          _rig.position.x += (-sinY * _mobileVel.fz + cosY * _mobileVel.fx) * spd;
+          _rig.position.z += (-cosY * _mobileVel.fz - sinY * _mobileVel.fx) * spd;
+        }
       }
 
       /* ── Starfield ──────────────────────────────────────────────────────────── */
@@ -2808,6 +2864,80 @@
           cs.style.display = cs.style.display === "block" ? "none" : "block";
         }
       });
+
+      /* ── Mobile Touch Controls ───────────────────────────────────────────── */
+      (function () {
+        if (!("ontouchstart" in window)) return;
+        document.body.classList.add("is-mobile");
+
+        // Disable A-Frame's built-in touch look so we control it ourselves
+        var camEl = document.getElementById("cam");
+        camEl.setAttribute("look-controls", "touchEnabled: false; pointerLockEnabled: true; reverseMouseDrag: false");
+
+        var stick = document.getElementById("m-stick");
+        var knob  = document.getElementById("m-knob");
+        var R = 36; // max knob travel
+        var _sid = null, _sb = {x:0, y:0}; // movement stick
+        var _lid = null, _ll = {x:0, y:0}; // look touch
+
+        function _applyStick(cx, cy) {
+          var dx = cx - _sb.x, dy = cy - _sb.y;
+          var d = Math.sqrt(dx*dx + dy*dy);
+          if (d > R) { dx *= R/d; dy *= R/d; }
+          knob.style.transform = "translate(calc(-50% + " + dx + "px), calc(-50% + " + dy + "px))";
+          _mobileVel.fx =  dx / R;
+          _mobileVel.fz = -dy / R; // negative: push up = move forward
+        }
+
+        document.addEventListener("touchstart", function (e) {
+          for (var i = 0; i < e.changedTouches.length; i++) {
+            var t = e.changedTouches[i];
+            if (t.clientX < window.innerWidth * 0.42 && _sid === null) {
+              _sid = t.identifier;
+              _sb.x = t.clientX; _sb.y = t.clientY;
+              stick.style.left = (t.clientX - 58) + "px";
+              stick.style.top  = (t.clientY - 58) + "px";
+              stick.style.opacity = "1";
+              _applyStick(t.clientX, t.clientY);
+            } else if (t.clientX >= window.innerWidth * 0.42 && _lid === null) {
+              _lid = t.identifier;
+              _ll.x = t.clientX; _ll.y = t.clientY;
+            }
+          }
+        }, {passive: true});
+
+        document.addEventListener("touchmove", function (e) {
+          for (var i = 0; i < e.changedTouches.length; i++) {
+            var t = e.changedTouches[i];
+            if (t.identifier === _sid) {
+              _applyStick(t.clientX, t.clientY);
+            } else if (t.identifier === _lid) {
+              var dx = t.clientX - _ll.x, dy = t.clientY - _ll.y;
+              var lc = document.getElementById("cam").components && document.getElementById("cam").components["look-controls"];
+              if (lc) {
+                lc.yawObject.rotation.y -= dx * 0.005;
+                lc.pitchObject.rotation.x -= dy * 0.005;
+                lc.pitchObject.rotation.x = Math.max(-Math.PI/2, Math.min(Math.PI/2, lc.pitchObject.rotation.x));
+              }
+              _ll.x = t.clientX; _ll.y = t.clientY;
+            }
+          }
+        }, {passive: true});
+
+        document.addEventListener("touchend", function (e) {
+          for (var i = 0; i < e.changedTouches.length; i++) {
+            var t = e.changedTouches[i];
+            if (t.identifier === _sid) {
+              _sid = null; _mobileVel.fx = 0; _mobileVel.fz = 0;
+              knob.style.transform = "translate(-50%, -50%)";
+              stick.style.opacity = "0.4";
+            } else if (t.identifier === _lid) {
+              _lid = null;
+            }
+          }
+        }, {passive: true});
+      })();
+
     </script>
   </body>
 </html>

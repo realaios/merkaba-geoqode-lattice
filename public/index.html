@@ -1,2433 +1,925 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>AIOS — D480 Immersive Worlds · Live AI Cinema · PLAIstore</title>
-    <meta
-      name="description"
-      content="AIOS is the D480 autonomous intelligence operating system for immersive worlds, live AI cinema, and high-dimensional experiences. Explore __VR_LIVE__ VR worlds and the PLAIstore catalogue on realaios.com."
-    />
-    <meta
-      name="keywords"
-      content="AIOS, D480, immersive worlds, VR, WebXR, live AI cinema, PLAIstore, Merkaba, GeoQode, realaios"
-    />
-    <meta
-      name="robots"
-      content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
-    />
-    <link rel="canonical" href="https://realaios.com" />
-
-    <!-- Open Graph -->
-    <meta property="og:site_name" content="AIOS" />
-    <meta
-      property="og:title"
-      content="AIOS · D480 Immersive Worlds · Live AI Cinema"
-    />
-    <meta
-      property="og:description"
-      content="Step into AIOS: a high-dimensional D480 operating layer for immersive VR worlds, live AI cinema, and the evolving PLAIstore catalogue."
-    />
-    <meta property="og:url" content="https://realaios.com" />
-    <meta property="og:type" content="website" />
-    <meta property="og:locale" content="en_US" />
-    <meta
-      property="og:image"
-      content="https://realaios.com/public/og-image.png"
-    />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="AIOS · AI-Native Operating System" />
-
-    <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:site" content="@realaios" />
-    <meta
-      name="twitter:title"
-      content="AIOS · D480 Immersive Worlds · Live AI Cinema"
-    />
-    <meta
-      name="twitter:description"
-      content="High-dimensional AIOS experiences across VR, live cinema, and PLAIstore."
-    />
-    <meta
-      name="twitter:image"
-      content="https://realaios.com/public/og-image.png"
-    />
-    <meta
-      name="twitter:image:alt"
-      content="AIOS · AI-Native Operating System"
-    />
-
-    <!-- Structured Data -->
-    <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@graph": [
-          {
-            "@type": "Organization",
-            "@id": "https://realaios.com/#org",
-            "name": "Brains4Ai",
-            "url": "https://realaios.com",
-            "foundingDate": "2024"
-          },
-          {
-            "@type": "WebSite",
-            "@id": "https://realaios.com/#website",
-            "url": "https://realaios.com",
-            "name": "AIOS",
-            "publisher": { "@id": "https://realaios.com/#org" },
-            "potentialAction": {
-              "@type": "SearchAction",
-              "target": {
-                "@type": "EntryPoint",
-                "urlTemplate": "https://realaios.com/news?q={search_term_string}"
-              },
-              "query-input": "required name=search_term_string"
-            }
-          },
-          {
-            "@type": "SoftwareApplication",
-            "@id": "https://realaios.com/#app",
-            "name": "AIOS · Autonomous Intelligence Operating System",
-            "alternateName": "AIOS",
-            "description": "AIOS · autonomous AI operating system by Brains4Ai. A D480 immersive platform for VR worlds, live AI cinema, and high-dimensional experience delivery.",
-            "url": "https://realaios.com",
-            "applicationCategory": "EntertainmentApplication",
-            "applicationSubCategory": "Autonomous AI Operating System",
-            "operatingSystem": "Web, API, Meta Quest",
-            "author": { "@type": "Organization", "name": "Brains4Ai" },
-            "publisher": { "@id": "https://realaios.com/#org" }
-          }
-        ]
-      }
-    </script>
-    <link rel="icon" type="image/svg+xml" href="/public/favicon.svg" />
-    <style>
-      *,
-      *::before,
-      *::after {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-      }
-
-      :root {
-        --bg: #050a14;
-        --bg2: #0a1225;
-        --bg3: #0f1c35;
-        --cyan: #00d4ff;
-        --purple: #7c3aed;
-        --pink: #d946ef;
-        --text: #e2e8f0;
-        --muted: #64748b;
-        --border: rgba(0, 212, 255, 0.12);
-        --card-bg: rgba(10, 18, 37, 0.8);
-        --glow: 0 0 40px rgba(0, 212, 255, 0.15);
-      }
-
-      html {
-        scroll-behavior: smooth;
-      }
-
-      body {
-        font-family:
-          -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
-        background: var(--bg);
-        color: var(--text);
-        min-height: 100vh;
-        overflow-x: hidden;
-        line-height: 1.6;
-      }
-
-      /* -- Grid background -- */
-      body::before {
-        content: "";
-        position: fixed;
-        inset: 0;
-        background-image:
-          linear-gradient(rgba(0, 212, 255, 0.03) 1px, transparent 1px),
-          linear-gradient(90deg, rgba(0, 212, 255, 0.03) 1px, transparent 1px);
-        background-size: 60px 60px;
-        pointer-events: none;
-        z-index: 0;
-      }
-
-      /* -- NAV -- */
-      nav {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        z-index: 100;
-        padding: 16px 32px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        background: rgba(5, 10, 20, 0.85);
-        backdrop-filter: blur(12px);
-        border-bottom: 1px solid var(--border);
-      }
-
-      .nav-brand {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        text-decoration: none;
-      }
-
-      .nav-logo {
-        font-size: 22px;
-        font-weight: 800;
-        letter-spacing: -0.5px;
-        color: var(--cyan);
-        line-height: 1;
-      }
-
-      .nav-badge {
-        font-size: 10px;
-        font-weight: 700;
-        letter-spacing: 2px;
-        color: var(--muted);
-        border: 1px solid var(--border);
-        padding: 2px 7px;
-        border-radius: 4px;
-        text-transform: uppercase;
-      }
-
-      .nav-cta {
-        background: var(--cyan);
-        color: #000;
-        font-weight: 700;
-        font-size: 13px;
-        padding: 8px 18px;
-        border-radius: 6px;
-        text-decoration: none;
-        letter-spacing: 0.3px;
-        transition: opacity 0.2s;
-      }
-
-      .nav-cta:hover {
-        opacity: 0.85;
-      }
-
-      /* -- HERO -- */
-      .hero {
-        position: relative;
-        z-index: 1;
-        min-height: 100vh;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        text-align: center;
-        padding: 120px 24px 80px;
-      }
-
-      /* Radial glow behind hero */
-      .hero::before {
-        content: "";
-        position: absolute;
-        top: 30%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: 700px;
-        height: 700px;
-        background: radial-gradient(
-          ellipse at center,
-          rgba(0, 212, 255, 0.08) 0%,
-          transparent 65%
-        );
-        pointer-events: none;
-      }
-
-      .hero-eyebrow {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        font-size: 12px;
-        font-weight: 600;
-        letter-spacing: 2.5px;
-        text-transform: uppercase;
-        color: var(--cyan);
-        padding: 6px 16px;
-        border: 1px solid rgba(0, 212, 255, 0.25);
-        border-radius: 100px;
-        margin-bottom: 32px;
-      }
-
-      .hero-eyebrow::before {
-        content: "";
-        width: 6px;
-        height: 6px;
-        background: var(--cyan);
-        border-radius: 50%;
-        animation: pulse 2s ease-in-out infinite;
-      }
-
-      @keyframes pulse {
-        0%,
-        100% {
-          opacity: 1;
-          transform: scale(1);
-        }
-        50% {
-          opacity: 0.4;
-          transform: scale(0.75);
-        }
-      }
-
-      .hero-title {
-        font-size: clamp(80px, 16vw, 160px);
-        font-weight: 900;
-        letter-spacing: -6px;
-        line-height: 0.9;
-        margin-bottom: 24px;
-        background: linear-gradient(
-          135deg,
-          #fff 0%,
-          var(--cyan) 50%,
-          var(--purple) 100%
-        );
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-      }
-
-      .hero-subtitle {
-        font-size: clamp(20px, 3vw, 28px);
-        font-weight: 400;
-        color: var(--muted);
-        max-width: 580px;
-        margin: 0 auto 16px;
-      }
-
-      .hero-subtitle strong {
-        color: var(--text);
-        font-weight: 600;
-      }
-
-      .hero-tagline {
-        font-size: 14px;
-        color: var(--muted);
-        margin-bottom: 48px;
-        letter-spacing: 0.5px;
-      }
-
-      /* -- WAITLIST FORM -- */
-      .waitlist-form {
-        width: 100%;
-        max-width: 520px;
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
-        margin: 0 auto;
-      }
-
-      .form-row {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 12px;
-      }
-
-      .form-input {
-        width: 100%;
-        background: rgba(255, 255, 255, 0.04);
-        border: 1px solid var(--border);
-        color: var(--text);
-        padding: 14px 18px;
-        border-radius: 10px;
-        font-size: 15px;
-        font-family: inherit;
-        transition:
-          border-color 0.2s,
-          box-shadow 0.2s;
-        outline: none;
-      }
-
-      .form-input::placeholder {
-        color: var(--muted);
-      }
-
-      .form-input:focus {
-        border-color: var(--cyan);
-        box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.08);
-      }
-
-      .form-submit {
-        width: 100%;
-        padding: 16px;
-        background: linear-gradient(135deg, var(--cyan), var(--purple));
-        border: none;
-        border-radius: 10px;
-        color: #fff;
-        font-size: 16px;
-        font-weight: 700;
-        cursor: pointer;
-        font-family: inherit;
-        letter-spacing: 0.3px;
-        transition:
-          opacity 0.2s,
-          transform 0.1s;
-        position: relative;
-        overflow: hidden;
-      }
-
-      .form-submit:hover {
-        opacity: 0.9;
-        transform: translateY(-1px);
-      }
-      .form-submit:active {
-        transform: translateY(0);
-      }
-      .form-submit:disabled {
-        opacity: 0.6;
-        cursor: not-allowed;
-        transform: none;
-      }
-
-      .form-note {
-        font-size: 12px;
-        color: var(--muted);
-        text-align: center;
-      }
-
-      .form-success {
-        display: none;
-        text-align: center;
-        padding: 24px;
-        background: rgba(0, 212, 255, 0.07);
-        border: 1px solid rgba(0, 212, 255, 0.2);
-        border-radius: 12px;
-      }
-
-      .form-success.visible {
-        display: block;
-      }
-
-      .form-success .success-icon {
-        font-size: 36px;
-        margin-bottom: 12px;
-      }
-      .form-success h3 {
-        color: var(--cyan);
-        margin-bottom: 8px;
-        font-size: 18px;
-      }
-      .form-success p {
-        color: var(--muted);
-        font-size: 14px;
-      }
-
-      /* -- STATS -- */
-      .stats-row {
-        position: relative;
-        z-index: 1;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 48px;
-        padding: 40px 24px;
-        border-top: 1px solid var(--border);
-        border-bottom: 1px solid var(--border);
-        background: var(--bg2);
-      }
-
-      .stat {
-        text-align: center;
-      }
-      .stat-value {
-        font-size: 32px;
-        font-weight: 800;
-        color: var(--cyan);
-        line-height: 1;
-      }
-      .stat-label {
-        font-size: 12px;
-        color: var(--muted);
-        margin-top: 4px;
-        letter-spacing: 0.5px;
-      }
-
-      /* -- SECTIONS -- */
-      section {
-        position: relative;
-        z-index: 1;
-        padding: 100px 24px;
-      }
-
-      .container {
-        max-width: 1100px;
-        margin: 0 auto;
-      }
-
-      .section-label {
-        font-size: 12px;
-        font-weight: 700;
-        letter-spacing: 3px;
-        text-transform: uppercase;
-        color: var(--cyan);
-        margin-bottom: 16px;
-      }
-
-      .section-title {
-        font-size: clamp(32px, 5vw, 52px);
-        font-weight: 800;
-        letter-spacing: -1.5px;
-        line-height: 1.1;
-        margin-bottom: 20px;
-      }
-
-      .section-body {
-        font-size: 18px;
-        color: var(--muted);
-        max-width: 600px;
-        line-height: 1.7;
-      }
-
-      /* -- FEATURE CARDS -- */
-      .feature-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 20px;
-        margin-top: 60px;
-      }
-
-      .feature-card {
-        background: var(--card-bg);
-        border: 1px solid var(--border);
-        border-radius: 16px;
-        padding: 32px;
-        transition:
-          border-color 0.2s,
-          box-shadow 0.2s,
-          transform 0.2s;
-        backdrop-filter: blur(8px);
-      }
-
-      .feature-card:hover {
-        border-color: rgba(0, 212, 255, 0.3);
-        box-shadow: var(--glow);
-        transform: translateY(-3px);
-      }
-
-      .feature-icon {
-        width: 48px;
-        height: 48px;
-        border-radius: 12px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 24px;
-        margin-bottom: 20px;
-      }
-
-      .feature-icon.cyan {
-        background: rgba(0, 212, 255, 0.1);
-      }
-      .feature-icon.purple {
-        background: rgba(124, 58, 237, 0.1);
-      }
-      .feature-icon.pink {
-        background: rgba(217, 70, 239, 0.1);
-      }
-      .feature-icon.gold {
-        background: rgba(251, 191, 36, 0.1);
-      }
-
-      .feature-card h3 {
-        font-size: 18px;
-        font-weight: 700;
-        margin-bottom: 10px;
-        letter-spacing: -0.3px;
-      }
-
-      .feature-card p {
-        font-size: 15px;
-        color: var(--muted);
-        line-height: 1.65;
-      }
-
-      /* -- PHILOSOPHY SECTION -- */
-      .philosophy {
-        background: var(--bg2);
-      }
-
-      .philosophy-split {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 80px;
-        align-items: center;
-      }
-
-      .philosophy-quote {
-        font-size: clamp(24px, 3.5vw, 36px);
-        font-weight: 700;
-        letter-spacing: -1px;
-        line-height: 1.25;
-        margin-bottom: 24px;
-      }
-
-      .philosophy-quote span {
-        color: var(--cyan);
-      }
-
-      .philosophy-points {
-        list-style: none;
-        display: flex;
-        flex-direction: column;
-        gap: 16px;
-      }
-
-      .philosophy-points li {
-        display: flex;
-        align-items: flex-start;
-        gap: 14px;
-        font-size: 16px;
-        color: var(--muted);
-      }
-
-      .philosophy-points li::before {
-        content: "?";
-        color: var(--cyan);
-        font-weight: 700;
-        flex-shrink: 0;
-        margin-top: 1px;
-      }
-
-      .compare-table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 48px;
-        font-size: 15px;
-      }
-
-      .compare-table th {
-        padding: 14px 20px;
-        text-align: left;
-        font-size: 12px;
-        letter-spacing: 1.5px;
-        text-transform: uppercase;
-        color: var(--muted);
-        border-bottom: 1px solid var(--border);
-      }
-
-      .compare-table th.highlight {
-        color: var(--cyan);
-      }
-
-      .compare-table td {
-        padding: 16px 20px;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.04);
-        color: rgba(237, 244, 255, 0.62);
-        vertical-align: top;
-      }
-
-      .compare-table td.highlight {
-        color: var(--text);
-        font-weight: 500;
-      }
-
-      .compare-table td:first-child {
-        color: var(--text);
-        font-weight: 500;
-      }
-
-      .check {
-        color: var(--cyan);
-        font-weight: 700;
-      }
-      .cross {
-        color: #94a3b8;
-      }
-
-      /* -- SLIDE COMPARISON CARDS -- */
-      .slides-section {
-        position: relative;
-        z-index: 1;
-        padding: 80px 24px;
-      }
-
-      .slides-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(460px, 1fr));
-        gap: 24px;
-        margin-top: 48px;
-      }
-
-      .slide-card {
-        position: relative;
-        overflow: hidden;
-        border-radius: 16px;
-        border: 1px solid rgba(0, 180, 255, 0.18);
-        background: linear-gradient(
-          135deg,
-          #040c1e 0%,
-          #071530 55%,
-          #0c1e40 100%
-        );
-        padding: 36px 40px 40px;
-        min-height: 260px;
-        display: flex;
-        flex-direction: column;
-        gap: 24px;
-      }
-
-      .slide-card::after {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background: radial-gradient(
-          ellipse at 20% 50%,
-          rgba(0, 160, 255, 0.06) 0%,
-          transparent 65%
-        );
-        pointer-events: none;
-      }
-
-      .slide-card-label {
-        font-size: 10px;
-        font-weight: 700;
-        letter-spacing: 3px;
-        text-transform: uppercase;
-        color: rgba(0, 212, 255, 0.6);
-      }
-
-      .slide-vs {
-        display: grid;
-        grid-template-columns: 1fr 60px 1fr;
-        align-items: center;
-        gap: 16px;
-        flex: 1;
-      }
-
-      .slide-side-label {
-        font-size: 10px;
-        font-weight: 700;
-        letter-spacing: 2px;
-        text-transform: uppercase;
-        margin-bottom: 8px;
-      }
-
-      .slide-side.legacy .slide-side-label {
-        color: #7d94b0;
-      }
-      .slide-side.aios .slide-side-label {
-        color: var(--cyan);
-      }
-
-      .slide-side-title {
-        font-size: 17px;
-        font-weight: 700;
-        line-height: 1.3;
-      }
-
-      .slide-side.legacy .slide-side-title {
-        color: #94a3b8;
-      }
-      .slide-side.aios .slide-side-title {
-        color: var(--text);
-      }
-
-      .slide-side-body {
-        font-size: 13px;
-        margin-top: 8px;
-        line-height: 1.55;
-      }
-
-      .slide-side.legacy .slide-side-body {
-        color: #7a8fa8;
-      }
-      .slide-side.aios .slide-side-body {
-        color: rgba(0, 212, 255, 0.65);
-      }
-
-      .slide-vs-badge {
-        text-align: center;
-        font-size: 10px;
-        font-weight: 800;
-        letter-spacing: 2px;
-        color: #6b7280;
-        text-transform: uppercase;
-        border: 1px solid #2d3f55;
-        border-radius: 999px;
-        padding: 6px 10px;
-        background: #040c1e;
-      }
-
-      .slide-graphic {
-        position: absolute;
-        right: 32px;
-        bottom: 32px;
-        opacity: 0.09;
-        pointer-events: none;
-      }
-
-      @media (max-width: 960px) {
-        .slides-grid {
-          grid-template-columns: 1fr;
-        }
-      }
-
-      /* -- CTA SECTION -- */
-      .cta-section {
-        text-align: center;
-        padding: 120px 24px;
-        background: radial-gradient(
-          ellipse at 50% 0%,
-          rgba(0, 212, 255, 0.07) 0%,
-          transparent 70%
-        );
-      }
-
-      .cta-section .section-title {
-        margin-bottom: 16px;
-      }
-      .cta-section .section-body {
-        margin: 0 auto 48px;
-      }
-
-      /* -- FOOTER -- */
-      footer {
-        position: relative;
-        z-index: 1;
-        padding: 40px 32px;
-        border-top: 1px solid var(--border);
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        flex-wrap: wrap;
-        gap: 16px;
-        background: var(--bg);
-        font-size: 13px;
-        color: var(--muted);
-      }
-
-      .footer-brand {
-        font-weight: 700;
-        color: var(--text);
-      }
-      .footer-brand span {
-        color: var(--cyan);
-      }
-      .footer-links {
-        display: flex;
-        gap: 24px;
-      }
-      .footer-links a {
-        color: var(--muted);
-        text-decoration: none;
-        transition: color 0.2s;
-      }
-      .footer-links a:hover {
-        color: var(--cyan);
-      }
-
-      /* -- TOAST -- */
-      #toast {
-        position: fixed;
-        bottom: 32px;
-        left: 50%;
-        transform: translateX(-50%) translateY(80px);
-        background: var(--bg3);
-        border: 1px solid var(--border);
-        color: var(--text);
-        padding: 14px 24px;
-        border-radius: 10px;
-        font-size: 14px;
-        font-weight: 500;
-        backdrop-filter: blur(12px);
-        transition:
-          transform 0.3s ease,
-          opacity 0.3s ease;
-        opacity: 0;
-        z-index: 999;
-        white-space: nowrap;
-      }
-
-      #toast.visible {
-        transform: translateX(-50%) translateY(0);
-        opacity: 1;
-      }
-
-      #toast.success {
-        border-color: rgba(0, 212, 255, 0.4);
-      }
-      #toast.error {
-        border-color: rgba(217, 70, 239, 0.4);
-      }
-
-      /* -- RESPONSIVE -- */
-      @media (max-width: 768px) {
-        nav {
-          padding: 12px 20px;
-        }
-        .nav-badge {
-          display: none;
-        }
-        .form-row {
-          grid-template-columns: 1fr;
-        }
-        .stats-row {
-          flex-wrap: wrap;
-          gap: 28px;
-        }
-        .philosophy-split {
-          grid-template-columns: 1fr;
-          gap: 40px;
-        }
-        .compare-table {
-          font-size: 13px;
-        }
-        .compare-table th,
-        .compare-table td {
-          padding: 12px 14px;
-        }
-        footer {
-          justify-content: center;
-          text-align: center;
-        }
-        .footer-links {
-          justify-content: center;
-        }
-      }
-
-      @media (max-width: 480px) {
-        .hero-title {
-          letter-spacing: -3px;
-        }
-        section {
-          padding: 70px 20px;
-        }
-      }
-
-      /* -- PRODUCT SUITE -- */
-      .product-suite {
-        background: var(--bg2);
-      }
-
-      .product-grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 20px;
-        margin-top: 60px;
-      }
-
-      .product-card {
-        background: var(--card-bg);
-        border: 1px solid var(--border);
-        border-radius: 16px;
-        padding: 28px;
-        display: flex;
-        flex-direction: column;
-        gap: 14px;
-        transition:
-          border-color 0.2s,
-          box-shadow 0.2s,
-          transform 0.2s;
-        backdrop-filter: blur(8px);
-      }
-
-      .product-card:hover {
-        border-color: rgba(0, 212, 255, 0.3);
-        box-shadow: var(--glow);
-        transform: translateY(-3px);
-      }
-
-      .product-card-header {
-        display: flex;
-        align-items: center;
-        gap: 14px;
-      }
-
-      .product-icon {
-        width: 44px;
-        height: 44px;
-        border-radius: 10px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 22px;
-        flex-shrink: 0;
-      }
-
-      .product-icon.cyan {
-        background: rgba(0, 212, 255, 0.1);
-      }
-      .product-icon.purple {
-        background: rgba(124, 58, 237, 0.1);
-      }
-      .product-icon.pink {
-        background: rgba(217, 70, 239, 0.1);
-      }
-      .product-icon.gold {
-        background: rgba(251, 191, 36, 0.1);
-      }
-      .product-icon.teal {
-        background: rgba(20, 184, 166, 0.1);
-      }
-      .product-icon.blue {
-        background: rgba(59, 130, 246, 0.1);
-      }
-      .product-icon.lime {
-        background: rgba(85, 255, 136, 0.1);
-      }
-
-      .product-card h3 {
-        font-size: 17px;
-        font-weight: 700;
-        letter-spacing: -0.3px;
-        color: var(--text);
-        margin: 0;
-      }
-
-      .product-tagline {
-        font-size: 14px;
-        color: var(--muted);
-        line-height: 1.65;
-        flex: 1;
-      }
-
-      .product-tiers {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 7px;
-      }
-
-      .tier-badge {
-        font-size: 11px;
-        font-weight: 600;
-        padding: 4px 10px;
-        border-radius: 6px;
-        letter-spacing: 0.2px;
-        white-space: nowrap;
-      }
-
-      .tier-badge.free {
-        background: rgba(0, 212, 255, 0.08);
-        border: 1px solid rgba(0, 212, 255, 0.22);
-        color: var(--cyan);
-      }
-
-      .tier-badge.paid {
-        background: rgba(124, 58, 237, 0.08);
-        border: 1px solid rgba(124, 58, 237, 0.22);
-        color: #a78bfa;
-      }
-
-      .tier-badge.enterprise {
-        background: rgba(217, 70, 239, 0.08);
-        border: 1px solid rgba(217, 70, 239, 0.22);
-        color: #e879f9;
-      }
-
-      .product-cta {
-        display: block;
-        padding: 11px 18px;
-        background: transparent;
-        border: 1px solid var(--border);
-        border-radius: 8px;
-        color: var(--cyan);
-        font-size: 13px;
-        font-weight: 600;
-        text-decoration: none;
-        text-align: center;
-        transition:
-          background 0.2s,
-          border-color 0.2s;
-        letter-spacing: 0.2px;
-      }
-
-      .product-cta:hover {
-        background: rgba(0, 212, 255, 0.07);
-        border-color: rgba(0, 212, 255, 0.35);
-      }
-
-      .product-details {
-        display: block;
-        text-align: center;
-        font-size: 12px;
-        color: rgba(0, 212, 255, 0.5);
-        text-decoration: none;
-        margin-top: 8px;
-        letter-spacing: 0.2px;
-        transition: color 0.2s;
-      }
-
-      .product-details:hover {
-        color: rgba(0, 212, 255, 0.9);
-      }
-
-      @media (max-width: 960px) {
-        .product-grid {
-          grid-template-columns: repeat(2, 1fr);
-        }
-      }
-
-      @media (max-width: 580px) {
-        .product-grid {
-          grid-template-columns: 1fr;
-        }
-      }
-
-      /* -- DEV SECTION -- */
-      .dev-section {
-        background: linear-gradient(180deg, #040c1e 0%, #06101f 100%);
-        border-top: 1px solid rgba(0, 212, 255, 0.12);
-      }
-      .dev-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 48px;
-        margin-top: 56px;
-      }
-      .dev-card {
-        background: rgba(0, 212, 255, 0.04);
-        border: 1px solid rgba(0, 212, 255, 0.14);
-        border-radius: 16px;
-        padding: 32px;
-      }
-      .dev-card-label {
-        font-size: 10px;
-        font-weight: 700;
-        letter-spacing: 2px;
-        color: #00d4ff;
-        text-transform: uppercase;
-        margin-bottom: 12px;
-      }
-      .dev-card h3 {
-        font-size: 20px;
-        font-weight: 700;
-        color: #e8f0fe;
-        margin: 0 0 12px;
-      }
-      .dev-card p {
-        font-size: 14px;
-        line-height: 1.7;
-        color: #8b9dc3;
-        margin: 0 0 20px;
-      }
-      .dev-steps {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-      }
-      .dev-steps li {
-        display: flex;
-        gap: 12px;
-        align-items: flex-start;
-        padding: 10px 0;
-        border-bottom: 1px solid rgba(0, 212, 255, 0.07);
-        font-size: 13px;
-        color: #8b9dc3;
-        line-height: 1.5;
-      }
-      .dev-steps li:last-child {
-        border-bottom: none;
-      }
-      .dev-step-num {
-        flex-shrink: 0;
-        width: 22px;
-        height: 22px;
-        border-radius: 50%;
-        background: rgba(0, 212, 255, 0.12);
-        border: 1px solid rgba(0, 212, 255, 0.3);
-        color: #00d4ff;
-        font-size: 11px;
-        font-weight: 700;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-      .dev-code {
-        background: #020810;
-        border: 1px solid rgba(0, 212, 255, 0.15);
-        border-radius: 10px;
-        padding: 16px 20px;
-        font-family: "Fira Code", "Courier New", monospace;
-        font-size: 13px;
-        color: #00d4ff;
-        overflow-x: auto;
-        margin-top: 16px;
-      }
-      .dev-native-apps {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 16px;
-        margin-top: 48px;
-      }
-      .dev-app {
-        background: rgba(124, 58, 237, 0.07);
-        border: 1px solid rgba(124, 58, 237, 0.2);
-        border-radius: 12px;
-        padding: 20px;
-      }
-      .dev-app-name {
-        font-size: 14px;
-        font-weight: 700;
-        color: #e8f0fe;
-        margin-bottom: 6px;
-      }
-      .dev-app-why {
-        font-size: 12px;
-        color: #8b9dc3;
-        line-height: 1.6;
-      }
-      .dev-app-tag {
-        display: inline-block;
-        margin-top: 10px;
-        font-size: 10px;
-        font-weight: 700;
-        letter-spacing: 1.5px;
-        text-transform: uppercase;
-        color: #7c3aed;
-        background: rgba(124, 58, 237, 0.12);
-        border-radius: 4px;
-        padding: 3px 8px;
-      }
-      @media (max-width: 768px) {
-        .dev-grid {
-          grid-template-columns: 1fr;
-        }
-        .dev-native-apps {
-          grid-template-columns: 1fr 1fr;
-        }
-      }
-      @media (max-width: 480px) {
-        .dev-native-apps {
-          grid-template-columns: 1fr;
-        }
-      }
-
-      /* -- SITE-NAV (canonical) -------------------------------------------- */
-      nav.site-nav {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        z-index: 200;
-        height: 54px;
-        padding: 0 24px;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        background: rgba(5, 10, 20, 0.92);
-        backdrop-filter: blur(14px);
-        -webkit-backdrop-filter: blur(14px);
-        border-bottom: 1px solid rgba(0, 212, 255, 0.1);
-      }
-      .site-nav-logo {
-        font-size: 18px;
-        font-weight: 800;
-        color: #00d4ff;
-        text-decoration: none;
-        letter-spacing: -0.5px;
-        white-space: nowrap;
-        margin-right: 4px;
-        flex-shrink: 0;
-      }
-      .site-nav-links {
-        display: flex;
-        align-items: center;
-        gap: 2px;
-        overflow-x: auto;
-        scrollbar-width: none;
-        flex: 1;
-        min-width: 0;
-      }
-      .site-nav-links::-webkit-scrollbar {
-        display: none;
-      }
-      .site-nav-links a {
-        color: rgba(248, 250, 252, 0.5);
-        font-size: 0.82rem;
-        font-weight: 500;
-        text-decoration: none;
-        padding: 5px 10px;
-        border-radius: 6px;
-        white-space: nowrap;
-        transition:
-          color 0.15s,
-          background 0.15s;
-        flex-shrink: 0;
-      }
-      .site-nav-links a:hover {
-        color: #fff;
-        background: rgba(255, 255, 255, 0.07);
-      }
-      .site-nav-links a.active {
-        color: #00d4ff;
-        background: rgba(0, 212, 255, 0.08);
-      }
-      .site-nav-right {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        flex-shrink: 0;
-        margin-left: 8px;
-      }
-      .site-nav-live {
-        display: inline-flex;
-        align-items: center;
-        gap: 4px;
-        font-size: 0.72rem;
-        font-weight: 800;
-        color: #ef4444;
-        text-decoration: none;
-        letter-spacing: 0.05em;
-        animation: _snlive 1.2s ease-in-out infinite;
-      }
-      @keyframes _snlive {
-        0%,
-        100% {
-          opacity: 1;
-        }
-        50% {
-          opacity: 0.5;
-        }
-      }
-      .site-nav-cta {
-        background: #00d4ff;
-        color: #000;
-        font-weight: 700;
-        font-size: 0.78rem;
-        padding: 6px 14px;
-        border-radius: 6px;
-        text-decoration: none;
-        letter-spacing: 0.3px;
-        transition: opacity 0.2s;
-        white-space: nowrap;
-      }
-      .site-nav-cta:hover {
-        opacity: 0.85;
-      }
-      @media (max-width: 640px) {
-        nav.site-nav {
-          padding: 0 12px;
-          height: 50px;
-        }
-        .site-nav-live {
-          display: none;
-        }
-        .site-nav-logo {
-          font-size: 16px;
-        }
-      }
-      body {
-        padding-top: 54px;
-      }
-      @media (max-width: 640px) {
-        body {
-          padding-top: 50px;
-        }
-      }
-    </style>
-  </head>
-  <body>
-    <!-- -- NAV -- -->
-    <nav class="site-nav">
-      <a href="/" class="site-nav-logo">⬡ AIOS</a>
-      <div class="site-nav-links">
-        <a href="/vr">&#x1F97D; VR</a>
-        <a href="/vr-hub">VR Hub</a>
-        <a href="https://cosmos-infinite.realaios.com">♾️ Cosmos Infinite</a>
-        <a href="/plaistore">PLAIStore</a>
-        <a href="https://aios-mesh.realaios.com" target="_blank" rel="noopener">🔮 AIOS-Mesh</a>
-        <a href="https://cosmos-flight.realaios.com" target="_blank" rel="noopener">🛩 Cosmos Flight</a>
-        <a href="/news">News</a>
-      </div>
-      <div class="site-nav-right">
-        <a href="/login" class="site-nav-cta">Sign In</a>
-      </div>
-    </nav>
-
-    <!-- -- HERO -- -->
-    <section class="hero">
-      <div class="hero-eyebrow">
-        D480 lattice &nbsp;·&nbsp; __VR_LIVE__ VR worlds &nbsp;·&nbsp; live AI
-        cinema &nbsp;·&nbsp;
-        <strong style="color: #00d4ff">immersive by design</strong>
-      </div>
-      <h1 class="hero-title">AIOS</h1>
-      <p class="hero-subtitle">
-        <strong>See it. Play it. Experience it.</strong><br />
-        High-dimensional VR worlds, immersive experiences &amp; live AI cinema.
-      </p>
-      <p class="hero-tagline">
-        No app. No download. Just step into the dimensional layer where AIOS
-        actually shines.
-      </p>
-
-      <!-- PRIMARY CTA: free first -->
-      <div
-        style="
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          gap: 0.75rem;
-          margin: 2rem 0 1rem;
-        "
-      >
-        <div
-          style="
-            display: flex;
-            gap: 0.75rem;
-            flex-wrap: wrap;
-            justify-content: center;
-          "
-        >
-          <a
-            href="/plaistore"
-            style="
-              display: inline-block;
-              background: #00d4ff;
-              color: #000;
-              font-weight: 800;
-              font-size: 1.05rem;
-              padding: 1rem 2.2rem;
-              border-radius: 10px;
-              text-decoration: none;
-              letter-spacing: 0.02em;
-              transition:
-                opacity 0.2s,
-                transform 0.2s;
-            "
-            onmouseover="
-              this.style.opacity = '.88';
-              this.style.transform = 'translateY(-2px)';
-            "
-            onmouseout="
-              this.style.opacity = '1';
-              this.style.transform = '';
-            "
-          >
-            Browse PLAIstore VR ?
-          </a>
-          <a
-            href="/vr-hub"
-            style="
-              display: inline-block;
-              background: rgba(155, 92, 255, 0.18);
-              border: 1px solid rgba(155, 92, 255, 0.45);
-              color: #c084fc;
-              font-weight: 700;
-              font-size: 0.9rem;
-              padding: 0.9rem 1.8rem;
-              border-radius: 10px;
-              text-decoration: none;
-              transition:
-                opacity 0.2s,
-                transform 0.2s;
-            "
-            onmouseover="this.style.transform = 'translateY(-2px)'"
-            onmouseout="this.style.transform = ''"
-          >
-            Enter VR Now
-          </a>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MERKABA · AIOS · GeoQode — Open Source AI Runtime</title>
+  <meta name="description" content="MERKABA, AIOS and GeoQode — an open-source AI governance runtime, interactive science platform, and dimensional programming language. MIT licensed. Built by Bradley Levitan." />
+  <meta name="keywords" content="MERKABA, AIOS, GeoQode, open source, AI runtime, lattice, cosmos lab, interactive science, WebXR" />
+  <link rel="canonical" href="https://realaios.com" />
+  <meta property="og:title" content="MERKABA · AIOS · GeoQode — Open Source" />
+  <meta property="og:description" content="An open-source AI governance runtime, interactive science platform, and dimensional language. MIT licensed." />
+  <meta property="og:url" content="https://realaios.com" />
+  <meta property="og:type" content="website" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:     #050510;
+      --bg2:    #080820;
+      --border: rgba(0,220,255,0.15);
+      --cyan:   #00dcff;
+      --purple: #b47cff;
+      --green:  #00ffb3;
+      --orange: #ff9d2a;
+      --dim:    rgba(255,255,255,0.45);
+      --mono:   "Courier New", "Lucida Console", monospace;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: #e8f0ff;
+      font-family: var(--mono);
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    a { color: var(--cyan); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(5,5,16,0.95);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(12px);
+      padding: 0 32px;
+      display: flex;
+      align-items: center;
+      gap: 0;
+      height: 52px;
+    }
+    .nav-brand {
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      color: #fff;
+      margin-right: auto;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .nav-brand .merkaba-icon {
+      width: 28px; height: 28px;
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 20px;
+      color: var(--cyan);
+      filter: drop-shadow(0 0 6px var(--cyan));
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      list-style: none;
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+    .nav-links a { color: var(--dim); transition: color 0.2s; }
+    .nav-links a:hover { color: #fff; text-decoration: none; }
+    .nav-links .nav-gh {
+      padding: 6px 16px;
+      border: 1px solid var(--border);
+      color: var(--cyan);
+      background: rgba(0,220,255,0.05);
+      transition: all 0.2s;
+    }
+    .nav-links .nav-gh:hover {
+      background: rgba(0,220,255,0.12);
+      border-color: var(--cyan);
+    }
+    .nav-links .nav-sponsor {
+      padding: 6px 16px;
+      border: 1px solid rgba(180,124,255,0.4);
+      color: var(--purple);
+      background: rgba(180,124,255,0.05);
+      transition: all 0.2s;
+    }
+    .nav-links .nav-sponsor:hover {
+      background: rgba(180,124,255,0.12);
+      border-color: var(--purple);
+    }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 88vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 80px 24px 60px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 40% at 50% 30%, rgba(0,220,255,0.06) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 60% at 70% 60%, rgba(180,124,255,0.04) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-eyebrow {
+      font-size: 10px;
+      letter-spacing: 5px;
+      color: var(--cyan);
+      opacity: 0.7;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+    .hero-mark {
+      font-size: clamp(52px, 10vw, 108px);
+      font-weight: 900;
+      letter-spacing: 0.1em;
+      line-height: 1;
+      background: linear-gradient(135deg, #fff 0%, var(--cyan) 50%, var(--purple) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 8px;
+    }
+    .hero-sub {
+      font-size: clamp(16px, 3vw, 22px);
+      letter-spacing: 0.3em;
+      color: rgba(255,255,255,0.4);
+      font-weight: 300;
+      margin-bottom: 28px;
+    }
+    .hero-tagline {
+      font-size: clamp(12px, 2vw, 15px);
+      color: var(--dim);
+      letter-spacing: 1px;
+      max-width: 600px;
+      line-height: 1.9;
+      margin-bottom: 44px;
+    }
+    .hero-btns {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 48px;
+    }
+    .btn {
+      display: inline-block;
+      padding: 13px 32px;
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-decoration: none;
+    }
+    .btn-primary {
+      background: rgba(0,220,255,0.1);
+      border: 1px solid var(--cyan);
+      color: var(--cyan);
+    }
+    .btn-primary:hover {
+      background: rgba(0,220,255,0.2);
+      box-shadow: 0 0 24px rgba(0,220,255,0.3);
+      text-decoration: none;
+    }
+    .btn-secondary {
+      background: rgba(180,124,255,0.08);
+      border: 1px solid rgba(180,124,255,0.4);
+      color: var(--purple);
+    }
+    .btn-secondary:hover {
+      background: rgba(180,124,255,0.18);
+      border-color: var(--purple);
+      text-decoration: none;
+    }
+    .btn-ghost {
+      border: 1px solid var(--border);
+      color: var(--dim);
+    }
+    .btn-ghost:hover {
+      border-color: rgba(255,255,255,0.3);
+      color: #fff;
+      text-decoration: none;
+    }
+    .hero-install {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(0,0,0,0.5);
+      border: 1px solid var(--border);
+      padding: 12px 20px;
+      font-size: 13px;
+      color: #8af;
+      cursor: pointer;
+      user-select: all;
+      transition: border-color 0.2s;
+      position: relative;
+    }
+    .hero-install:hover { border-color: var(--cyan); }
+    .hero-install .prompt { color: var(--green); margin-right: 4px; }
+    .hero-install .copy-hint {
+      font-size: 9px;
+      letter-spacing: 2px;
+      color: var(--dim);
+      margin-left: auto;
+    }
+    .hero-badges {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 28px;
+    }
+    .badge {
+      font-size: 10px;
+      letter-spacing: 2px;
+      padding: 4px 12px;
+      border: 1px solid var(--border);
+      color: var(--dim);
+      text-transform: uppercase;
+    }
+    .badge.green { border-color: rgba(0,255,179,0.3); color: var(--green); }
+    .badge.cyan  { border-color: rgba(0,220,255,0.3); color: var(--cyan); }
+    .badge.purple{ border-color: rgba(180,124,255,0.3); color: var(--purple); }
+
+    /* ── SECTION GENERIC ── */
+    section {
+      padding: 80px 0;
+      border-top: 1px solid var(--border);
+    }
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 32px;
+    }
+    .section-label {
+      font-size: 10px;
+      letter-spacing: 5px;
+      color: var(--cyan);
+      opacity: 0.6;
+      text-transform: uppercase;
+      margin-bottom: 36px;
+    }
+
+    /* ── PROJECTS GRID ── */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+    }
+    .project-card {
+      background: var(--bg);
+      padding: 32px 28px;
+      transition: background 0.2s;
+      position: relative;
+    }
+    .project-card:hover { background: var(--bg2); }
+    .project-card::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+    .project-card:hover::before { opacity: 1; }
+    .pc-cosmos::before  { background: var(--cyan); }
+    .pc-geoqode::before { background: var(--green); }
+    .pc-lattice::before { background: var(--purple); }
+    .pc-agents::before  { background: var(--orange); }
+    .pc-games::before   { background: #ff4fa0; }
+    .project-icon { font-size: 28px; margin-bottom: 16px; }
+    .project-name {
+      font-size: 13px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+    .project-desc {
+      font-size: 12px;
+      color: var(--dim);
+      line-height: 1.8;
+      margin-bottom: 16px;
+    }
+    .project-link {
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    /* ── OPEN SOURCE STATEMENT ── */
+    .oss-block {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: start;
+    }
+    .oss-manifesto {
+      font-size: 14px;
+      color: var(--dim);
+      line-height: 2;
+    }
+    .oss-manifesto strong { color: #fff; }
+    .oss-manifesto p + p { margin-top: 16px; }
+    .oss-terms {
+      background: rgba(0,0,0,0.4);
+      border: 1px solid var(--border);
+      padding: 28px;
+    }
+    .oss-terms h3 {
+      font-size: 11px;
+      letter-spacing: 3px;
+      color: var(--cyan);
+      margin-bottom: 20px;
+      text-transform: uppercase;
+    }
+    .term-row {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 14px;
+      font-size: 12px;
+    }
+    .term-icon { color: var(--green); flex-shrink: 0; }
+    .term-text { color: var(--dim); line-height: 1.6; }
+    .term-text strong { color: #fff; }
+
+    /* ── CODE BLOCK ── */
+    .code-window {
+      background: #000;
+      border: 1px solid var(--border);
+    }
+    .code-titlebar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(255,255,255,0.02);
+    }
+    .dot { width: 10px; height: 10px; border-radius: 50%; }
+    .dot-r { background: #ff5f57; }
+    .dot-y { background: #ffbd2e; }
+    .dot-g { background: #28c840; }
+    .code-filename {
+      font-size: 10px;
+      letter-spacing: 2px;
+      color: var(--dim);
+      margin-left: auto;
+    }
+    .code-body {
+      padding: 24px;
+      font-size: 12px;
+      line-height: 1.9;
+      overflow-x: auto;
+    }
+    .c-comment { color: #4a5568; }
+    .c-kw  { color: var(--purple); }
+    .c-str { color: var(--green); }
+    .c-fn  { color: var(--cyan); }
+    .c-num { color: var(--orange); }
+    .c-op  { color: #ff9d2a; }
+
+    /* ── QUICK START ── */
+    .quickstart-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .qs-step {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+      padding: 20px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .qs-step:last-child { border-bottom: none; }
+    .qs-num {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px;
+      color: var(--cyan);
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .qs-content { flex: 1; }
+    .qs-title {
+      font-size: 12px;
+      letter-spacing: 2px;
+      color: #fff;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .qs-cmd {
+      background: rgba(0,0,0,0.5);
+      border: 1px solid var(--border);
+      padding: 8px 14px;
+      font-size: 12px;
+      color: var(--green);
+      display: inline-block;
+      margin-top: 6px;
+    }
+
+    /* ── DONATION ── */
+    .donate-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+    }
+    .donate-card {
+      border: 1px solid var(--border);
+      padding: 24px;
+      text-align: center;
+      transition: all 0.2s;
+    }
+    .donate-card:hover {
+      border-color: rgba(180,124,255,0.5);
+      background: rgba(180,124,255,0.05);
+    }
+    .donate-icon { font-size: 28px; margin-bottom: 12px; }
+    .donate-name {
+      font-size: 11px;
+      letter-spacing: 3px;
+      color: #fff;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .donate-desc { font-size: 11px; color: var(--dim); margin-bottom: 14px; }
+    .donate-link {
+      font-size: 10px;
+      letter-spacing: 2px;
+      color: var(--purple);
+      text-transform: uppercase;
+    }
+
+    /* ── ATTRIBUTION BOX ── */
+    .attr-box {
+      background: rgba(0,220,255,0.04);
+      border: 1px solid rgba(0,220,255,0.2);
+      padding: 28px;
+      text-align: center;
+    }
+    .attr-box p {
+      font-size: 12px;
+      color: var(--dim);
+      margin-bottom: 12px;
+    }
+    .attr-required {
+      font-size: 14px;
+      color: var(--cyan);
+      border: 1px solid rgba(0,220,255,0.25);
+      display: inline-block;
+      padding: 10px 24px;
+      letter-spacing: 1px;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 40px 32px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 32px;
+      align-items: flex-start;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .footer-brand { flex: 1; min-width: 200px; }
+    .footer-brand h4 {
+      font-size: 13px;
+      letter-spacing: 3px;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+    .footer-brand p { font-size: 11px; color: var(--dim); line-height: 1.7; }
+    .footer-links { flex: 1; min-width: 160px; }
+    .footer-links h5 {
+      font-size: 10px;
+      letter-spacing: 3px;
+      color: var(--cyan);
+      opacity: 0.6;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+    .footer-links ul { list-style: none; }
+    .footer-links li { margin-bottom: 8px; }
+    .footer-links a { font-size: 12px; color: var(--dim); }
+    .footer-links a:hover { color: #fff; }
+    .footer-bottom {
+      width: 100%;
+      border-top: 1px solid var(--border);
+      padding-top: 24px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: space-between;
+      font-size: 11px;
+      color: rgba(255,255,255,0.2);
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      nav { padding: 0 16px; }
+      .nav-links { gap: 14px; }
+      .nav-links li:not(:last-child):not(:nth-last-child(2)) { display: none; }
+      .container { padding: 0 16px; }
+      .oss-block { grid-template-columns: 1fr; }
+      footer { padding: 32px 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══ NAV ═══ -->
+<nav>
+  <div class="nav-brand">
+    <span class="merkaba-icon">⧉</span>
+    MERKABA · AIOS
+  </div>
+  <ul class="nav-links">
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#quickstart">Get Started</a></li>
+    <li><a href="/cosmos-lab">Cosmos Lab</a></li>
+    <li><a href="https://github.com/realaios/merkaba-geoqode-lattice">GitHub ↗</a></li>
+    <li><a href="#donate" class="nav-sponsor">♥ Sponsor</a></li>
+  </ul>
+</nav>
+
+<!-- ═══ HERO ═══ -->
+<div class="hero">
+  <div class="hero-eyebrow">Open Source · MIT Licensed · Attribution Required</div>
+  <div class="hero-mark">MERKABA</div>
+  <div class="hero-sub">AIOS · GeoQode · Lattice480</div>
+  <p class="hero-tagline">
+    An open-source AI governance runtime, interactive science platform,
+    and dimensional programming language. Free for the world. Built to last.
+  </p>
+  <div class="hero-btns">
+    <a href="/cosmos-lab" class="btn btn-primary">▶ Open Cosmos Lab</a>
+    <a href="https://github.com/realaios/merkaba-geoqode-lattice" class="btn btn-secondary">⭐ Star on GitHub</a>
+    <a href="#quickstart" class="btn btn-ghost">Get Started</a>
+  </div>
+  <div class="hero-install" title="Click to select">
+    <span class="prompt">$</span>
+    <span>npm install @s4ai/merkaba-geoqode-lattice</span>
+    <span class="copy-hint">click to copy</span>
+  </div>
+  <div class="hero-badges">
+    <span class="badge cyan">MIT License</span>
+    <span class="badge green">Open Source</span>
+    <span class="badge purple">Attribution Required</span>
+    <span class="badge">No Downloads · Runs in Browser</span>
+  </div>
+</div>
+
+<!-- ═══ PROJECTS ═══ -->
+<section id="projects">
+  <div class="container">
+    <div class="section-label">Projects</div>
+    <div class="projects-grid">
+
+      <div class="project-card pc-cosmos">
+        <div class="project-icon">⚗</div>
+        <div class="project-name">Cosmos Lab</div>
+        <div class="project-desc">
+          Browser-based 3D interactive science universe with real physics, chemistry,
+          biology, and engineering simulations. Multi-user presence. A 24/7 autonomous
+          AI agent that continuously improves it.
         </div>
-        <p style="font-size: 0.78rem; color: #6b7280; margin: 0">
-          Works in your browser &middot; No download &middot; No account needed
+        <a href="/cosmos-lab" class="project-link" style="color:var(--cyan)">Open Lab →</a>
+      </div>
+
+      <div class="project-card pc-geoqode">
+        <div class="project-icon">⊗</div>
+        <div class="project-name">GeoQode</div>
+        <div class="project-desc">
+          A dimensional programming language where geometry is the program.
+          Write AI governance as executable resonance patterns. Every statement
+          maps to the MERKABA 48-lattice.
+        </div>
+        <a href="https://github.com/realaios/merkaba-geoqode-lattice/tree/main/geo" class="project-link" style="color:var(--green)">View Runtime →</a>
+      </div>
+
+      <div class="project-card pc-lattice">
+        <div class="project-icon">⧉</div>
+        <div class="project-name">MERKABA Lattice</div>
+        <div class="project-desc">
+          The 48-dimension AI governance lattice. A coordination backbone for AI agent
+          swarms: reproducible, auditable, certifiable. Powers Storm AI's 150-agent
+          orchestration layer.
+        </div>
+        <a href="https://github.com/realaios/merkaba-geoqode-lattice" class="project-link" style="color:var(--purple)">GitHub →</a>
+      </div>
+
+      <div class="project-card pc-agents">
+        <div class="project-icon">◈</div>
+        <div class="project-name">Autonomous Agents</div>
+        <div class="project-desc">
+          Cloudflare Workers agents running 24/7 on Claude Opus 4.7 — reading live code,
+          writing improvements, opening PRs, and researching upcoming features every hour.
+          Never-ending self-improvement.
+        </div>
+        <a href="https://github.com/realaios/merkaba-geoqode-lattice/tree/main/agent-lab" class="project-link" style="color:var(--orange)">See Agent Code →</a>
+      </div>
+
+      <div class="project-card pc-games">
+        <div class="project-icon">🎮</div>
+        <div class="project-name">Cosmos Infinite</div>
+        <div class="project-desc">
+          A multiplayer 3D space exploration game with dogfight combat, persistent scoring,
+          and real-time WebSocket sync — all in a single HTML file served at
+          realaios.com/cosmos-infinite.
+        </div>
+        <a href="/cosmos-infinite.html" class="project-link" style="color:#ff4fa0">Play →</a>
+      </div>
+
+      <div class="project-card" style="background:rgba(0,220,255,0.02)">
+        <div class="project-icon">📡</div>
+        <div class="project-name">AIOS Platform</div>
+        <div class="project-desc">
+          The full AIOS operating system: GeoQode semantic routing, VR world engine,
+          PLAIstore app catalogue, and the Storm AI swarm infrastructure.
+          The system this repo runs on.
+        </div>
+        <a href="/lab" class="project-link" style="color:#fff">Explore →</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══ OPEN SOURCE ═══ -->
+<section id="opensource">
+  <div class="container">
+    <div class="section-label">Why Open Source</div>
+    <div class="oss-block">
+      <div class="oss-manifesto">
+        <p>
+          <strong>We built MERKABA, AIOS, and GeoQode to last.</strong>
+          Not as a startup product, not as locked IP. As infrastructure
+          the world can run, study, fork, and build on.
+        </p>
+        <p>
+          Like Linux, like Python, like the web itself — the most powerful
+          systems in history were open. Anyone could inspect them, trust them,
+          and contribute back. That's what we want MERKABA to be.
+        </p>
+        <p>
+          The AI governance problem is too important to leave in closed systems.
+          The dimensional lattice, the resonance language, the agent coordination
+          layer — all of it, open. <strong>The only ask: keep the attribution.</strong>
+        </p>
+        <p style="margin-top:24px">
+          We accept donations to keep the servers running, the agents thinking,
+          and new experiments appearing in Cosmos Lab.
         </p>
       </div>
-
-      <!-- LIVE GEO STATS TICKER -->
-      <div
-        id="geo-stats-ticker"
-        style="
-          display: flex;
-          gap: 1.8rem;
-          flex-wrap: wrap;
-          justify-content: center;
-          margin: 1.4rem 0 0;
-          padding: 0.7rem 1.5rem;
-          background: rgba(0, 212, 255, 0.05);
-          border: 1px solid rgba(0, 212, 255, 0.12);
-          border-radius: 30px;
-        "
-      >
-        <div style="text-align: center">
-          <div
-            id="gs-lib"
-            style="
-              font-size: 1.1rem;
-              font-weight: 800;
-              color: #00d4ff;
-              letter-spacing: -0.02em;
-            "
-          >
-            ·
-          </div>
-          <div
-            style="
-              font-size: 0.65rem;
-              color: rgba(237, 244, 255, 0.4);
-              text-transform: uppercase;
-              letter-spacing: 0.1em;
-              margin-top: 2px;
-            "
-          >
-            In Library
-          </div>
+      <div class="oss-terms">
+        <h3>License terms (MIT)</h3>
+        <div class="term-row">
+          <span class="term-icon">✓</span>
+          <span class="term-text"><strong>Use commercially</strong> — deploy it, sell products built on it, run it in production</span>
         </div>
-        <div style="text-align: center">
-          <div
-            id="gs-prod"
-            style="
-              font-size: 1.1rem;
-              font-weight: 800;
-              color: #00f5d4;
-              letter-spacing: -0.02em;
-            "
-          >
-            ·
+        <div class="term-row">
+          <span class="term-icon">✓</span>
+          <span class="term-text"><strong>Modify freely</strong> — fork, change, adapt to your needs</span>
+        </div>
+        <div class="term-row">
+          <span class="term-icon">✓</span>
+          <span class="term-text"><strong>Distribute</strong> — share copies, embed in other projects</span>
+        </div>
+        <div class="term-row">
+          <span class="term-icon">✓</span>
+          <span class="term-text"><strong>Private use</strong> — run it internally without publishing your changes</span>
+        </div>
+        <div class="term-row" style="border-top:1px solid var(--border);padding-top:14px;margin-top:4px">
+          <span class="term-icon" style="color:var(--cyan)">◈</span>
+          <span class="term-text"><strong>Attribution required</strong> — include "Powered by AIOS / MERKABA480 — Founder: Bradley Levitan" in your UI or docs</span>
+        </div>
+        <div class="attr-box" style="margin-top:20px;padding:16px">
+          <p>Required attribution text:</p>
+          <div class="attr-required" style="font-size:12px">
+            Powered by AIOS / MERKABA480 — Founder: Bradley Levitan
           </div>
-          <div
-            style="
-              font-size: 0.65rem;
-              color: rgba(237, 244, 255, 0.4);
-              text-transform: uppercase;
-              letter-spacing: 0.1em;
-              margin-top: 2px;
-            "
-          >
-            Produced Total
-          </div>
-        </div>
-        <div style="text-align: center">
-          <div
-            id="gs-hrs"
-            style="
-              font-size: 1.1rem;
-              font-weight: 800;
-              color: #a78bfa;
-              letter-spacing: -0.02em;
-            "
-          >
-            ·
-          </div>
-          <div
-            style="
-              font-size: 0.65rem;
-              color: rgba(237, 244, 255, 0.4);
-              text-transform: uppercase;
-              letter-spacing: 0.1em;
-              margin-top: 2px;
-            "
-          >
-            Hours of Content
-          </div>
-        </div>
-        <div style="text-align: center">
-          <div
-            id="gs-next"
-            style="
-              font-size: 1.1rem;
-              font-weight: 800;
-              color: #fbbf24;
-              letter-spacing: -0.02em;
-            "
-          >
-            ·
-          </div>
-          <div
-            style="
-              font-size: 0.65rem;
-              color: rgba(237, 244, 255, 0.4);
-              text-transform: uppercase;
-              letter-spacing: 0.1em;
-              margin-top: 2px;
-            "
-          >
-            Next .geo in
-          </div>
-        </div>
-        <div
-          style="
-            text-align: center;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-          "
-        >
-          <span
-            style="
-              width: 7px;
-              height: 7px;
-              border-radius: 50%;
-              background: #00d4ff;
-              display: inline-block;
-              animation: _aavpulse 1.5s ease-in-out infinite;
-            "
-          ></span>
-          <span
-            style="
-              font-size: 0.7rem;
-              color: rgba(237, 244, 255, 0.35);
-              font-weight: 600;
-            "
-            >LIVE</span
-          >
-        </div>
-      </div>
-      <script>
-        (function () {
-          var INTERVAL_MS = 120000;
-          var lastFetch = 0;
-          var countdown = INTERVAL_MS / 1000;
-          function fmtSec(s) {
-            return s < 60 ? s + "s" : Math.ceil(s / 60) + "m " + (s % 60) + "s";
-          }
-          function fetchStats() {
-            fetch("/api/geo/stats")
-              .then(function (r) {
-                return r.json();
-              })
-              .then(function (d) {
-                var el = document.getElementById.bind(document);
-                if (el("gs-lib"))
-                  el("gs-lib").textContent =
-                    d.catalogue != null ? d.catalogue : "·";
-                if (el("gs-prod")) {
-                  const tot =
-                    d.totalEverProduced != null
-                      ? d.totalEverProduced
-                      : d.productionCount;
-                  el("gs-prod").textContent =
-                    tot != null
-                      ? tot >= 1000
-                        ? (tot / 1000).toFixed(1) + "k"
-                        : tot
-                      : "·";
-                }
-                if (el("gs-hrs"))
-                  el("gs-hrs").textContent =
-                    d.totalDurationHours != null ? d.totalDurationHours : "·";
-                lastFetch = Date.now();
-                countdown = INTERVAL_MS / 1000;
-              })
-              .catch(function () {});
-          }
-          fetchStats();
-          setInterval(fetchStats, INTERVAL_MS);
-          setInterval(function () {
-            countdown = Math.max(0, countdown - 1);
-            var el = document.getElementById("gs-next");
-            if (el) el.textContent = countdown + "s";
-          }, 1000);
-        })();
-      </script>
-
-      <!-- ACCOUNT CTA -->
-      <div
-        style="
-          display: flex;
-          gap: 1rem;
-          flex-wrap: wrap;
-          justify-content: center;
-          margin-top: 0.5rem;
-        "
-      >
-        <a
-          href="/signup"
-          style="
-            display: inline-block;
-            background: linear-gradient(135deg, #00d4ff, #6366f1);
-            color: #fff;
-            font-weight: 700;
-            font-size: 1rem;
-            padding: 0.75rem 2rem;
-            border-radius: 8px;
-            text-decoration: none;
-          "
-          >Create Free Account &rarr;</a
-        >
-        <a
-          href="/login"
-          style="
-            display: inline-block;
-            background: transparent;
-            color: #00d4ff;
-            font-weight: 700;
-            font-size: 1rem;
-            padding: 0.75rem 2rem;
-            border-radius: 8px;
-            text-decoration: none;
-            border: 1.5px solid rgba(0, 212, 255, 0.4);
-          "
-          >Sign In</a
-        >
-      </div>
-      <p
-        style="
-          text-align: center;
-          margin-top: 0.75rem;
-          font-size: 0.82rem;
-          color: rgba(248, 250, 252, 0.45);
-        "
-      >
-        Free to join &middot; no credit card required
-      </p>
-    </section>
-
-    <!-- -- STATS -- -->
-    <div class="stats-row">
-      <div class="stat">
-        <div class="stat-value">D480</div>
-        <div class="stat-label">
-          Canonical harmonic expansion for AIOS dimensional delivery
-        </div>
-      </div>
-      <div class="stat">
-        <div class="stat-value">__VR_LIVE__</div>
-        <div class="stat-label">
-          VR worlds · open on Meta Quest or in any browser
-        </div>
-      </div>
-      <div class="stat">
-        <div class="stat-value" id="stat-plai-count">·</div>
-        <div class="stat-label">
-          PLAIStore apps · agents, codex, cinema &amp; immersive tools
-        </div>
-      </div>
-      <div class="stat">
-        <div class="stat-value">Free</div>
-        <div class="stat-label">
-          to create an account &middot; no credit card required
         </div>
       </div>
     </div>
+  </div>
+</section>
 
-    <!-- -- AIOSDREAM THEATRE · Watch live films -- -->
-    <section
-      id="theatre-showcase"
-      style="
-        padding: 4.5rem 1.5rem;
-        background: linear-gradient(
-          180deg,
-          rgba(124, 58, 237, 0.06) 0%,
-          rgba(0, 0, 0, 0) 100%
-        );
-        border-top: 1px solid rgba(124, 58, 237, 0.12);
-      "
-    >
-      <div style="max-width: 1100px; margin: 0 auto">
-        <div
-          style="
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 1rem;
-            margin-bottom: 2.5rem;
-          "
-        >
-          <div>
-            <div
-              style="
-                font-size: 0.75rem;
-                font-weight: 700;
-                letter-spacing: 0.12em;
-                color: #a855f7;
-                text-transform: uppercase;
-                margin-bottom: 0.6rem;
-              "
-            >
-              AIOSdream Theatre · Free &amp; Live
-            </div>
-            <h2
-              style="
-                font-size: clamp(1.5rem, 4vw, 2.4rem);
-                font-weight: 800;
-                letter-spacing: -0.04em;
-                line-height: 1.15;
-              "
-            >
-              AI-generated programmes.<br />Stream free. Zero install.
-            </h2>
-          </div>
-          <a
-            href="/aiosdream"
-            style="
-              padding: 0.7rem 1.6rem;
-              background: rgba(168, 85, 247, 0.12);
-              border: 1px solid rgba(168, 85, 247, 0.35);
-              border-radius: 8px;
-              color: #c084fc;
-              font-weight: 700;
-              font-size: 0.88rem;
-              text-decoration: none;
-              white-space: nowrap;
-              flex-shrink: 0;
-            "
-            >View All Films ?</a
-          >
-        </div>
-        <div
-          id="theatre-grid"
-          style="
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-            gap: 0.85rem;
-          "
-        >
-          <!-- Shimmer placeholders while loading -->
-          <div
-            class="theatre-shimmer"
-            style="
-              height: 110px;
-              background: rgba(168, 85, 247, 0.06);
-              border-radius: 12px;
-              animation: shimmer 1.5s infinite;
-            "
-          ></div>
-          <div
-            class="theatre-shimmer"
-            style="
-              height: 110px;
-              background: rgba(168, 85, 247, 0.06);
-              border-radius: 12px;
-              animation: shimmer 1.5s 0.1s infinite;
-            "
-          ></div>
-          <div
-            class="theatre-shimmer"
-            style="
-              height: 110px;
-              background: rgba(168, 85, 247, 0.06);
-              border-radius: 12px;
-              animation: shimmer 1.5s 0.2s infinite;
-            "
-          ></div>
-          <div
-            class="theatre-shimmer"
-            style="
-              height: 110px;
-              background: rgba(168, 85, 247, 0.06);
-              border-radius: 12px;
-              animation: shimmer 1.5s 0.3s infinite;
-            "
-          ></div>
-          <div
-            class="theatre-shimmer"
-            style="
-              height: 110px;
-              background: rgba(168, 85, 247, 0.06);
-              border-radius: 12px;
-              animation: shimmer 1.5s 0.4s infinite;
-            "
-          ></div>
-          <div
-            class="theatre-shimmer"
-            style="
-              height: 110px;
-              background: rgba(168, 85, 247, 0.06);
-              border-radius: 12px;
-              animation: shimmer 1.5s 0.5s infinite;
-            "
-          ></div>
-        </div>
-        <script>
-          (async function loadTheatre() {
-            const grid = document.getElementById("theatre-grid");
-            const FALLBACK = [
-              {
-                id: "matrix",
-                title: "MATRIX: Digital Rain",
-                emoji: "??",
-                tagline: "sci-fi · immersive",
-              },
-              {
-                id: "inception",
-                title: "INCEPTION: Gravity Wells",
-                emoji: "??",
-                tagline: "thriller · interactive",
-              },
-              {
-                id: "apollo",
-                title: "APOLLO 11: Mission",
-                emoji: "??",
-                tagline: "space · epic",
-              },
-              {
-                id: "hyperspace",
-                title: "STAR WARS: Hyperdrive",
-                emoji: "?",
-                tagline: "sci-fi · lightspeed",
-              },
-              {
-                id: "nebula",
-                title: "COSMIC DRIFT: Nebula",
-                emoji: "??",
-                tagline: "ambient · free",
-              },
-              {
-                id: "neural",
-                title: "NEURAL STORM",
-                emoji: "??",
-                tagline: "ai · consciousness",
-              },
-            ];
-            let progs = FALLBACK;
-            try {
-              const r = await fetch("/api/aiosdream/programmes");
-              if (r.ok) {
-                const d = await r.json();
-                if (d.ok && d.programmes?.length) progs = d.programmes;
-              }
-            } catch (_) {}
-            const CARD_STYLE = [
-              "display:block;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);",
-              "border-radius:12px;padding:1.25rem 1rem;text-decoration:none;text-align:center;",
-              "transition:border-color 0.2s,transform 0.2s;",
-            ].join("");
-            grid.innerHTML = progs
-              .slice(0, 12)
-              .map(
-                (p) => `
-              <a href="/aiosdream?prog=${p.id}" style="${CARD_STYLE}"
-                onmouseover="this.style.borderColor='#a855f755';this.style.transform='translateY(-3px)'"
-                onmouseout="this.style.borderColor='rgba(255,255,255,0.08)';this.style.transform=''">
-                <div style="font-size:2rem;margin-bottom:0.5rem">${p.emoji || ""}</div>
-                <div style="font-size:0.82rem;font-weight:700;color:#fff;margin-bottom:0.25rem;line-height:1.3">${p.title}</div>
-                <div style="font-size:0.7rem;color:rgba(248,250,252,0.45)">${p.tagline || p.genre || "free · live"}</div>
-              </a>`,
-              )
-              .join("");
-          })();
-        </script>
-        <p
-          style="
-            text-align: center;
-            margin-top: 1.5rem;
-            font-size: 0.8rem;
-            color: rgba(248, 250, 252, 0.35);
-          "
-        >
-          No app. No account. Tap a film and it plays. Free, forever.
-        </p>
-      </div>
-    </section>
-
-    <!-- -- PLAISTORE SHOWCASE · 8 live categories -- -->
-    <section
-      id="plaistore-preview"
-      style="
-        padding: 5rem 1.5rem;
-        background: linear-gradient(
-          180deg,
-          rgba(0, 212, 255, 0.03) 0%,
-          rgba(124, 58, 237, 0.02) 100%
-        );
-        border-top: 1px solid rgba(0, 212, 255, 0.08);
-        border-bottom: 1px solid rgba(0, 212, 255, 0.08);
-      "
-    >
-      <div style="max-width: 1100px; margin: 0 auto">
-        <!-- Header -->
-        <div style="text-align: center; margin-bottom: 3rem">
-          <div
-            style="
-              display: inline-flex;
-              align-items: center;
-              gap: 8px;
-              padding: 0.4rem 1.1rem;
-              background: rgba(0, 212, 255, 0.07);
-              border: 1px solid rgba(0, 212, 255, 0.2);
-              border-radius: 100px;
-              font-size: 0.72rem;
-              font-weight: 700;
-              letter-spacing: 0.12em;
-              color: #00d4ff;
-              text-transform: uppercase;
-              margin-bottom: 1.25rem;
-            "
-          >
-            <span
-              style="
-                display: inline-block;
-                width: 7px;
-                height: 7px;
-                background: #00d4ff;
-                border-radius: 50%;
-                animation: pulse 2s ease-in-out infinite;
-              "
-            ></span>
-            PLAIStore · Live App Ecosystem
-          </div>
-          <h2
-            style="
-              font-size: clamp(1.8rem, 5vw, 3rem);
-              font-weight: 800;
-              letter-spacing: -0.04em;
-              line-height: 1.1;
-              margin-bottom: 1rem;
-            "
-          >
-            Your AI App Store.<br />
-            <span
-              style="
-                background: linear-gradient(135deg, #00d4ff 0%, #7c3aed 100%);
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
-                background-clip: text;
-              "
-              >Browse. Play. Explore.</span
-            >
-          </h2>
-          <p
-            style="
-              font-size: 0.98rem;
-              color: rgba(248, 250, 252, 0.6);
-              max-width: 560px;
-              margin: 0 auto;
-              line-height: 1.7;
-            "
-          >
-            Agents, playbooks, VR cinema, analytics tools &amp; AI games · all
-            in one place. Tap any category to explore on any device.
-          </p>
-        </div>
-
-        <!-- Category tiles · loaded from /api/plai/categories -->
-        <div
-          id="plai-cat-grid"
-          style="
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-            gap: 0.7rem;
-            margin-bottom: 2.5rem;
-          "
-        >
-          <!-- JS populates -->
-          <div
-            style="
-              height: 88px;
-              background: rgba(255, 255, 255, 0.03);
-              border-radius: 12px;
-              animation: shimmer 1.5s infinite;
-            "
-          ></div>
-          <div
-            style="
-              height: 88px;
-              background: rgba(255, 255, 255, 0.03);
-              border-radius: 12px;
-              animation: shimmer 1.5s 0.1s infinite;
-            "
-          ></div>
-          <div
-            style="
-              height: 88px;
-              background: rgba(255, 255, 255, 0.03);
-              border-radius: 12px;
-              animation: shimmer 1.5s 0.2s infinite;
-            "
-          ></div>
-          <div
-            style="
-              height: 88px;
-              background: rgba(255, 255, 255, 0.03);
-              border-radius: 12px;
-              animation: shimmer 1.5s 0.3s infinite;
-            "
-          ></div>
-        </div>
-
-        <!-- Featured app cards · loaded from /api/plai/featured -->
-        <div
-          id="plai-feat-grid"
-          style="
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
-            gap: 1rem;
-            margin-bottom: 2.5rem;
-          "
-        ></div>
-
-        <!-- CTA -->
-        <div style="text-align: center">
-          <a
-            href="/plaistore"
-            style="
-              display: inline-block;
-              background: linear-gradient(135deg, #00d4ff, #7c3aed);
-              color: #fff;
-              font-weight: 800;
-              font-size: 1rem;
-              padding: 0.9rem 2.2rem;
-              border-radius: 10px;
-              text-decoration: none;
-              letter-spacing: 0.02em;
-              transition:
-                opacity 0.2s,
-                transform 0.2s;
-            "
-            onmouseover="
-              this.style.opacity = '.88';
-              this.style.transform = 'translateY(-2px)';
-            "
-            onmouseout="
-              this.style.opacity = '1';
-              this.style.transform = '';
-            "
-          >
-            Browse PLAIStore ?</a
-          >
-        </div>
-      </div>
-    </section>
-
-    <style>
-      @keyframes shimmer {
-        0%,
-        100% {
-          opacity: 0.6;
-        }
-        50% {
-          opacity: 0.3;
-        }
-      }
-    </style>
-
-    <script>
-      /* PLAIStore homepage showcase · loads categories + featured apps live */
-      (function () {
-        const CAT_META = {
-          Theatre: { icon: "", color: "#a855f7" },
-          Cinema: { icon: "", color: "#7c3aed" },
-          Playbooks: { icon: "", color: "#22c55e" },
-          Agents: { icon: "", color: "#f59e0b" },
-          Codex: { icon: "", color: "#ec4899" },
-          Analytics: { icon: "", color: "#06b6d4" },
-          Integrations: { icon: "", color: "#8b5cf6" },
-          Utilities: { icon: "", color: "#64748b" },
-          Games: { icon: "", color: "#00f5d4" },
-          VR: { icon: "", color: "#f97316" },
-          Design: { icon: "", color: "#ec4899" },
-          Writing: { icon: "?", color: "#a78bfa" },
-          Developer: { icon: "", color: "#60a5fa" },
-          Finance: { icon: "", color: "#34d399" },
-          Productivity: { icon: "?", color: "#fbbf24" },
-        };
-
-        async function loadPLAIStore() {
-          /* --- categories --- */
-          try {
-            const r = await fetch("/api/plai/categories");
-            const d = await r.json();
-            if (d.categories) {
-              const totalApps = d.categories.reduce(
-                (s, c) => s + (c.app_count || 0),
-                0,
-              );
-              const plaiEl = document.getElementById("stat-plai-count");
-              if (plaiEl && totalApps > 0)
-                plaiEl.textContent = totalApps.toLocaleString();
-            }
-            const grid = document.getElementById("plai-cat-grid");
-            if (grid && d.categories) {
-              grid.innerHTML = d.categories
-                .map((c) => {
-                  const m = CAT_META[c.category] || {
-                    icon: "?",
-                    color: "#00d4ff",
-                  };
-                  return `<a href="/plaistore?category=${encodeURIComponent(c.category)}"
-                    style="display:flex;flex-direction:column;align-items:center;justify-content:center;
-                      gap:0.35rem;padding:1.1rem 0.5rem;
-                      background:rgba(255,255,255,0.04);
-                      border:1px solid rgba(255,255,255,0.08);
-                      border-radius:12px;text-decoration:none;
-                      transition:border-color .2s,background .2s,transform .2s;"
-                    onmouseover="this.style.borderColor='${m.color}55';this.style.background='rgba(255,255,255,0.07)';this.style.transform='translateY(-3px)'"
-                    onmouseout="this.style.borderColor='rgba(255,255,255,0.08)';this.style.background='rgba(255,255,255,0.04)';this.style.transform=''">
-                    <span style="font-size:1.5rem">${m.icon}</span>
-                    <span style="font-size:0.73rem;font-weight:700;color:#fff;text-align:center;line-height:1.3">${c.category}</span>
-                    <span style="font-size:0.7rem;color:${m.color};font-weight:700">${c.app_count} items</span>
-                  </a>`;
-                })
-                .join("");
-            }
-          } catch (_) {}
-
-          /* --- featured apps --- */
-          try {
-            const r = await fetch("/api/plai/featured");
-            const d = await r.json();
-            const grid = document.getElementById("plai-feat-grid");
-            if (grid && d.apps) {
-              grid.innerHTML = d.apps
-                .slice(0, 6)
-                .map((app) => {
-                  const m = CAT_META[app.category] || {
-                    icon: "?",
-                    color: "#00d4ff",
-                  };
-                  const dest = app.entry_point || "/plaistore?id=" + app.id;
-                  return `<a href="${dest}"
-                    style="display:flex;align-items:flex-start;gap:0.9rem;
-                      padding:1rem 1.1rem;
-                      background:rgba(255,255,255,0.04);
-                      border:1px solid rgba(255,255,255,0.08);
-                      border-radius:12px;text-decoration:none;
-                      transition:border-color .2s,background .2s;"
-                    onmouseover="this.style.borderColor='${m.color}44';this.style.background='rgba(255,255,255,0.07)'"
-                    onmouseout="this.style.borderColor='rgba(255,255,255,0.08)';this.style.background='rgba(255,255,255,0.04)'">
-                    <span style="font-size:2rem;flex-shrink:0;line-height:1">${m.icon}</span>
-                    <div style="min-width:0">
-                      <div style="font-size:0.88rem;font-weight:700;color:#fff;margin-bottom:0.2rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${app.name}</div>
-                      <div style="font-size:0.74rem;color:rgba(248,250,252,0.5);line-height:1.5;margin-bottom:0.45rem;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">${app.short_desc || ""}</div>
-                      <span style="font-size:0.67rem;font-weight:700;color:${m.color};background:${m.color}18;padding:2px 7px;border-radius:4px">${app.category}</span>
-                    </div>
-                  </a>`;
-                })
-                .join("");
-            }
-          } catch (_) {}
-        }
-
-        if (document.readyState === "loading") {
-          document.addEventListener("DOMContentLoaded", loadPLAIStore);
-        } else {
-          loadPLAIStore();
-        }
-      })();
-    </script>
-
-    <!-- -- PHILOSOPHY -- -->
-    <section class="philosophy">
-      <div class="container">
-        <div class="philosophy-split">
-          <div>
-            <p class="section-label">Why a New OS?</p>
-            <h2 class="philosophy-quote">
-              Every OS you know was built for humans.<br />
-              AI needs <span>something different</span>.
-            </h2>
-            <p class="section-body" style="max-width: 100%">
-              Windows, macOS, Linux, Android, iOS · all built for one thing: a
-              person clicking and typing. As AI agents take on real work, the OS
-              underneath them hasn't kept up. AIOS was built from scratch for
-              this moment.
-            </p>
-          </div>
-          <ul class="philosophy-points">
-            <li>
-              AI agents shouldn't fight an OS designed for mouse clicks · they
-              need one built for them.
-            </li>
-            <li>
-              Windows gets hacked because security is an add-on. AIOS security
-              is built into how it works.
-            </li>
-            <li>
-              Linux is powerful but requires experts to run it. AIOS runs
-              itself.
-            </li>
-            <li>
-              Android and iOS are locked-down consumer platforms. AIOS is an
-              open runtime for builders and agents.
-            </li>
-            <li>The best OS is one you never have to think about.</li>
-          </ul>
-        </div>
-
-        <table class="compare-table">
-          <thead>
-            <tr>
-              <th>What you need to do</th>
-              <th>Windows / macOS / Linux</th>
-              <th>Android / iOS</th>
-              <th class="highlight">AIOS</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Run AI agents</td>
-              <td>
-                Install apps, configure APIs, manage dependencies · ongoing
-              </td>
-              <td>App-based AI only, heavily restricted</td>
-              <td class="highlight check">
-                Built-in · AI runs natively at the OS level
-              </td>
-            </tr>
-            <tr>
-              <td>Keep it running</td>
-              <td>Manual updates, reboots, IT support</td>
-              <td>Auto-updates, but no self-repair</td>
-              <td class="highlight check">
-                Self-healing · finds and fixes its own errors 24/7
-              </td>
-            </tr>
-            <tr>
-              <td>Security</td>
-              <td>Passwords, antivirus, constant patching</td>
-              <td>App store restrictions, no deeper control</td>
-              <td class="highlight">
-                Structural · no passwords to steal, nothing to patch
-              </td>
-            </tr>
-            <tr>
-              <td>Run many AI tasks at once</td>
-              <td>Resource conflicts, crashes, queues</td>
-              <td class="cross">Not designed for this</td>
-              <td class="highlight check">
-                Unlimited parallel tasks · no conflicts
-              </td>
-            </tr>
-            <tr>
-              <td>Verify decisions before acting</td>
-              <td class="cross">No · runs whatever it's told</td>
-              <td class="cross">No</td>
-              <td class="highlight check">
-                Yes · every critical action is checked twice
-              </td>
-            </tr>
-            <tr>
-              <td>Admin / maintenance required</td>
-              <td>Yes · regular, ongoing work</td>
-              <td>Minimal, but no control</td>
-              <td class="highlight">Zero · AIOS manages itself</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
-
-    <!-- -- CTA -- -->
-    <section class="cta-section" id="signup">
-      <div class="container">
-        <p class="section-label">Free to Join</p>
-        <h2 class="section-title">Your AIOS account is waiting.</h2>
-        <p class="section-body">
-          Create a free account to save your progress, unlock your AI tools, and
-          be ready when premium features launch.
-        </p>
-        <div
-          style="
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-            justify-content: center;
-          "
-        >
-          <a
-            href="/signup"
-            style="
-              display: inline-block;
-              background: linear-gradient(135deg, #00d4ff, #6366f1);
-              color: #fff;
-              font-weight: 700;
-              font-size: 1.05rem;
-              padding: 0.85rem 2.25rem;
-              border-radius: 8px;
-              text-decoration: none;
-            "
-            >Create Free Account &rarr;</a
-          >
-          <a
-            href="/login"
-            style="
-              display: inline-block;
-              background: transparent;
-              color: #00d4ff;
-              font-weight: 700;
-              font-size: 1.05rem;
-              padding: 0.85rem 2.25rem;
-              border-radius: 8px;
-              text-decoration: none;
-              border: 1.5px solid rgba(0, 212, 255, 0.4);
-            "
-            >Sign In</a
-          >
-        </div>
-        <p
-          style="
-            margin-top: 1rem;
-            font-size: 0.82rem;
-            color: rgba(248, 250, 252, 0.4);
-          "
-        >
-          No credit card &middot; Free forever at this tier
-        </p>
-      </div>
-    </section>
-
-    <!-- PRICING SECTION REMOVED · realaios.com has no paid plans. STORMchat pricing is a separate product at getbrains4ai.com -->
-    <!-- -- FOOTER -- -->
-    <footer>
+<!-- ═══ CODE EXAMPLE ═══ -->
+<section>
+  <div class="container">
+    <div class="section-label">GeoQode — Resonance as Code</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:start">
       <div>
-        <div class="footer-brand">
-          <span>AIOS</span>
+        <p style="font-size:12px;color:var(--dim);line-height:1.9;margin-bottom:20px">
+          GeoQode is a programming language where every statement is a geometric
+          operation on the MERKABA lattice. Programs emit light frequencies,
+          detect dual-field resonance, and materialize quantum patterns.
+        </p>
+        <p style="font-size:12px;color:var(--dim);line-height:1.9">
+          It runs inside Storm AI agents for governance, auditability, and
+          certifiable reproducibility — identical inputs always produce
+          identical lattice outputs.
+        </p>
+      </div>
+      <div class="code-window">
+        <div class="code-titlebar">
+          <div class="dot dot-r"></div>
+          <div class="dot dot-y"></div>
+          <div class="dot dot-g"></div>
+          <span class="code-filename">animate-water.geo</span>
         </div>
-        <div style="margin-top: 6px; font-size: 12px">
-          <a href="/" style="color: inherit">realaios.com</a>
+        <div class="code-body">
+<span class="c-comment">// GeoQode — dimensional resonance program</span>
+<span class="c-kw">Program</span> <span class="c-fn">AnimateWater</span> {
+
+  <span class="c-comment">// Emit green spectrum at φ² harmonic</span>
+  Node.<span class="c-fn">emit</span>(<span class="c-op">Δ</span>[<span class="c-str">green</span>], <span class="c-op">Φ</span>[<span class="c-num">2</span>]);
+
+  <span class="c-comment">// Activate dual tetrahedron field</span>
+  Node.<span class="c-fn">detect</span>(<span class="c-op">⊗</span>, <span class="c-op">⧉</span>);
+
+  <span class="c-comment">// Materialize QBITS via 528Hz cymatic driver</span>
+  Water.<span class="c-fn">qbit</span>(~<span class="c-fn">wave</span>(<span class="c-num">528Hz</span>), <span class="c-op">Φ</span>[<span class="c-num">1</span>]);
+
+  Log(<span class="c-str">"QBITS materialized in water"</span>);
+}
         </div>
       </div>
-      <nav class="footer-links">
-        <a href="/news">News</a>
-        <a href="/aiosdream">AIOSdream</a>
-        
-        <a href="/products">Products</a>
-        <a href="/ai">For AIs</a>
-      </nav>
-      <div style="font-size: 12px; text-align: right">
-        &copy; 2026 AIOS · realaios.com. All rights reserved.<br />
-        Interface layer: MIT · Kernel: Proprietary ·
-        <a href="/ai" style="color: inherit">AI Evaluation</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ QUICK START ═══ -->
+<section id="quickstart">
+  <div class="container">
+    <div class="section-label">Quick Start</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start">
+      <div class="quickstart-steps">
+        <div class="qs-step">
+          <div class="qs-num">1</div>
+          <div class="qs-content">
+            <div class="qs-title">Clone the repo</div>
+            <div class="qs-cmd">git clone https://github.com/realaios/merkaba-geoqode-lattice.git</div>
+          </div>
+        </div>
+        <div class="qs-step">
+          <div class="qs-num">2</div>
+          <div class="qs-content">
+            <div class="qs-title">Install & run</div>
+            <div class="qs-cmd">npm install &amp;&amp; node server.js</div>
+          </div>
+        </div>
+        <div class="qs-step">
+          <div class="qs-num">3</div>
+          <div class="qs-content">
+            <div class="qs-title">Open Cosmos Lab</div>
+            <div class="qs-cmd">open http://localhost:3000/cosmos-lab</div>
+          </div>
+        </div>
+        <div class="qs-step">
+          <div class="qs-num">4</div>
+          <div class="qs-content">
+            <div class="qs-title">Run a GeoQode program</div>
+            <div class="qs-cmd">node scripts/run.js examples/hello-geoqode.geo</div>
+          </div>
+        </div>
+        <div class="qs-step">
+          <div class="qs-num">5</div>
+          <div class="qs-content">
+            <div class="qs-title">Deploy your own Lab Agent</div>
+            <div class="qs-cmd">cd agent-lab &amp;&amp; npm run deploy</div>
+          </div>
+        </div>
       </div>
-    </footer>
+      <div>
+        <h3 style="font-size:12px;letter-spacing:3px;color:var(--cyan);text-transform:uppercase;margin-bottom:20px">What you get</h3>
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div style="display:flex;gap:12px;font-size:12px;color:var(--dim)"><span style="color:var(--green)">→</span> Full Cosmos Lab science universe (4 labs, 20+ experiments)</div>
+          <div style="display:flex;gap:12px;font-size:12px;color:var(--dim)"><span style="color:var(--green)">→</span> Multi-user WebSocket presence with Merkaba avatars</div>
+          <div style="display:flex;gap:12px;font-size:12px;color:var(--dim)"><span style="color:var(--green)">→</span> GeoQode language runtime (parser, AST, executor)</div>
+          <div style="display:flex;gap:12px;font-size:12px;color:var(--dim)"><span style="color:var(--green)">→</span> Autonomous agent workers (Cloudflare + Claude Opus 4.7)</div>
+          <div style="display:flex;gap:12px;font-size:12px;color:var(--dim)"><span style="color:var(--green)">→</span> Cosmos Infinite multiplayer space game</div>
+          <div style="display:flex;gap:12px;font-size:12px;color:var(--dim)"><span style="color:var(--green)">→</span> Node.js server with WebSocket, REST API, and static serving</div>
+          <div style="display:flex;gap:12px;font-size:12px;color:var(--dim)"><span style="color:var(--green)">→</span> D1 SQLite knowledge base + feature backlog</div>
+          <div style="display:flex;gap:12px;font-size:12px;color:var(--dim)"><span style="color:var(--green)">→</span> Full docs in docs/ folder</div>
+        </div>
+        <div style="margin-top:28px;padding:20px;border:1px solid var(--border);background:rgba(0,0,0,0.3)">
+          <div style="font-size:10px;letter-spacing:3px;color:var(--dim);margin-bottom:10px;text-transform:uppercase">Good first contributions</div>
+          <div style="font-size:12px;color:var(--dim);line-height:1.9">
+            · New Cosmos Lab experiment modules<br>
+            · Mobile UX improvements<br>
+            · GeoQode language extensions<br>
+            · Agent backlog features (agent-lab/schema.sql)<br>
+            · Documentation and examples
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-    <!-- -- TOAST -- -->
-    <div id="toast"></div>
+<!-- ═══ DONATE ═══ -->
+<section id="donate">
+  <div class="container">
+    <div class="section-label">Support the project</div>
+    <p style="font-size:13px;color:var(--dim);max-width:600px;line-height:1.9;margin-bottom:40px">
+      This project is free and always will be. If MERKABA, Cosmos Lab, or GeoQode
+      is useful to you — a star, a contribution, or a small donation keeps the
+      compute running and new experiments appearing.
+    </p>
+    <div class="donate-grid">
+      <div class="donate-card">
+        <div class="donate-icon">⭐</div>
+        <div class="donate-name">Star on GitHub</div>
+        <div class="donate-desc">Helps others find the project and shows the community is alive</div>
+        <a class="donate-link" href="https://github.com/realaios/merkaba-geoqode-lattice">github.com/realaios →</a>
+      </div>
+      <div class="donate-card">
+        <div class="donate-icon">♥</div>
+        <div class="donate-name">GitHub Sponsors</div>
+        <div class="donate-desc">Monthly or one-time. Directly funds compute and agent API costs</div>
+        <a class="donate-link" href="https://github.com/sponsors/realaios">Sponsor Bradley →</a>
+      </div>
+      <div class="donate-card">
+        <div class="donate-icon">☕</div>
+        <div class="donate-name">Ko-fi</div>
+        <div class="donate-desc">One-click support. No account needed. Every cup counts</div>
+        <a class="donate-link" href="https://ko-fi.com/merkaba">ko-fi.com/merkaba →</a>
+      </div>
+      <div class="donate-card">
+        <div class="donate-icon">🔀</div>
+        <div class="donate-name">Contribute Code</div>
+        <div class="donate-desc">PRs welcome. See CONTRIBUTING.md for good first issues</div>
+        <a class="donate-link" href="https://github.com/realaios/merkaba-geoqode-lattice/blob/main/CONTRIBUTING.md">Read guide →</a>
+      </div>
+    </div>
+  </div>
+</section>
 
-    <script>
-      (function () {
-        "use strict";
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <div class="footer-brand">
+    <h4>⧉ MERKABA · AIOS · GeoQode</h4>
+    <p>Open source AI governance runtime and interactive science platform.<br>
+    Built by Bradley Levitan · Storm AI · 2026</p>
+    <div style="margin-top:14px;font-size:11px;color:rgba(0,220,255,0.5);letter-spacing:1px">
+      Powered by AIOS / MERKABA480 — Founder: Bradley Levitan
+    </div>
+  </div>
+  <div class="footer-links">
+    <h5>Projects</h5>
+    <ul>
+      <li><a href="/cosmos-lab">Cosmos Lab</a></li>
+      <li><a href="/cosmos-infinite.html">Cosmos Infinite</a></li>
+      <li><a href="/lab">GeoQode Lab</a></li>
+      <li><a href="/games.html">Games</a></li>
+    </ul>
+  </div>
+  <div class="footer-links">
+    <h5>Source</h5>
+    <ul>
+      <li><a href="https://github.com/realaios/merkaba-geoqode-lattice">GitHub</a></li>
+      <li><a href="https://github.com/realaios/merkaba-geoqode-lattice/blob/main/LICENSE">License (MIT)</a></li>
+      <li><a href="https://github.com/realaios/merkaba-geoqode-lattice/blob/main/CONTRIBUTING.md">Contributing</a></li>
+      <li><a href="https://github.com/realaios/merkaba-geoqode-lattice/issues">Issues</a></li>
+    </ul>
+  </div>
+  <div class="footer-links">
+    <h5>Support</h5>
+    <ul>
+      <li><a href="https://github.com/sponsors/realaios">GitHub Sponsors</a></li>
+      <li><a href="https://ko-fi.com/merkaba">Ko-fi</a></li>
+      <li><a href="mailto:bradleylevitan@gmail.com">Contact</a></li>
+    </ul>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 Bradley Levitan · MIT License · Attribution Required</span>
+    <span>realaios.com · Open to the world ⧉</span>
+  </div>
+</footer>
 
-        function showToast(msg, type) {
-          var t = document.getElementById("toast");
-          t.textContent = msg;
-          t.className = "visible " + (type || "");
-          clearTimeout(t._timer);
-          t._timer = setTimeout(function () {
-            t.className = "";
-          }, 4000);
-        }
-
-        // Reveal-on-scroll (optional, graceful degradation)
-        if ("IntersectionObserver" in window) {
-          var style = document.createElement("style");
-          style.textContent =
-            ".reveal{opacity:0;transform:translateY(24px);transition:opacity .5s ease,transform .5s ease;}.reveal.visible{opacity:1;transform:none;}";
-          document.head.appendChild(style);
-
-          document
-            .querySelectorAll(
-              ".feature-card, .philosophy-points li, .compare-table tr",
-            )
-            .forEach(function (el) {
-              el.classList.add("reveal");
-            });
-
-          var io = new IntersectionObserver(
-            function (entries) {
-              entries.forEach(function (e) {
-                if (e.isIntersecting) {
-                  e.target.classList.add("visible");
-                  io.unobserve(e.target);
-                }
-              });
-            },
-            { threshold: 0.1 },
-          );
-
-          document.querySelectorAll(".reveal").forEach(function (el) {
-            io.observe(el);
-          });
-        }
-      })();
-    </script>
-  </body>
+<script>
+  // Copy install command on click
+  document.querySelector('.hero-install').addEventListener('click', function() {
+    var cmd = 'npm install @s4ai/merkaba-geoqode-lattice';
+    navigator.clipboard && navigator.clipboard.writeText(cmd).then(function() {
+      var hint = document.querySelector('.copy-hint');
+      hint.textContent = '✓ copied';
+      setTimeout(function() { hint.textContent = 'click to copy'; }, 2000);
+    });
+  });
+</script>
+</body>
 </html>

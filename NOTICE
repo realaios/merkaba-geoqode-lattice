@@ -1,60 +1,27 @@
-# NOTICE — MERKABA_geoqode Lattice480
+# NOTICE — MERKABA · AIOS · GeoQode
 
-This product includes software developed by Bradley Levitan.
+Copyright (c) 2026 Bradley Levitan
 
-Founder: Bradley Levitan
-Project: MERKABA_geoqode Lattice480 (part of AIOS / MERKABA480)
-Website: https://getbrains4ai.com
+## Required Attribution
+
+All copies, forks, derivatives, or products built on this software must
+include the following attribution in their user-facing interface or documentation:
+
+> Powered by AIOS / MERKABA480 — Founder: Bradley Levitan
+
+This must appear in at least one of: footer, about page, splash screen,
+README, or equivalent user-visible location.
+
+## Founder
+
+Bradley Levitan
+Creator of MERKABA lattice, AIOS platform, and GeoQode language.
 Contact: bradleylevitan@gmail.com
-Inception: 2026
+GitHub: https://github.com/realaios
 
----
+## Third-Party Acknowledgements
 
-DUAL LICENSE STRUCTURE:
-
-This repository operates under a dual-license model:
-
-1. INTERFACE LAYER (MIT License)
-   The open interface layer — including GeoQode language specification,
-   developer API surface, documentation, cinema tooling, and runtime
-   scheduler interface — is released under the MIT License (see LICENSE).
-   Community use, modification, and distribution of the interface layer
-   is encouraged, provided the attribution requirement is met.
-
-2. KERNEL LAYER (Closed Kernel License)
-   The MERKABA kernel runtime — including lattice geometry constants,
-   adaptive coupling, dual-pole attestation, and governance execution
-   logic — is proprietary intellectual property (see LICENSE-KERNEL).
-   Redistribution, reverse engineering, or derivative works of the
-   Kernel are strictly prohibited without explicit written consent.
-
----
-
-ATTRIBUTION REQUIREMENT:
-
-All copies, distributions, and derivative works of the interface layer must
-include the following notice in documentation and any user-facing interface:
-
-    "Powered by AIOS / MERKABA480 — Founder: Bradley Levitan"
-
----
-
-THIRD-PARTY COMPONENTS:
-
-This software may include components from the following open-source projects,
-each governed by their respective licenses:
-
-- Node.js (MIT)
-- Express (MIT)
-- Various npm packages (see package.json for full dependency list)
-
----
-
-CRYPTOGRAPHIC AUTHORSHIP:
-
-Commits to this repository are GPG-signed by the Founder as cryptographic
-proof of origination and stewardship.
-
----
-
-Copyright (c) 2026 Bradley Levitan. All Rights Reserved.
+- A-Frame (MIT) — https://aframe.io
+- Three.js (MIT) — https://threejs.org
+- Cloudflare Agents SDK — https://github.com/cloudflare/agents
+- Anthropic Claude — https://anthropic.com
