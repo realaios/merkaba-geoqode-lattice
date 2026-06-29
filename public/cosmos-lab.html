@@ -374,21 +374,11 @@
     <div id="hud">
       <!-- Module bar -->
       <div id="module-bar">
-        <button class="mod-btn hub-btn active" onclick="switchModule('hub')">
-          ◈ HUB
-        </button>
-        <button class="mod-btn phys-btn" onclick="switchModule('physics')">
-          ⚡ PHYSICS
-        </button>
-        <button class="mod-btn chem-btn" onclick="switchModule('chemistry')">
-          ⚗ CHEMISTRY
-        </button>
-        <button class="mod-btn bio-btn" onclick="switchModule('biology')">
-          ⬡ BIOLOGY
-        </button>
-        <button class="mod-btn eng-btn" onclick="switchModule('engineering')">
-          ⚙ ENGINEERING
-        </button>
+        <button class="mod-btn hub-btn active" onclick="document.exitPointerLock();switchModule('hub')">◈ HUB</button>
+        <button class="mod-btn phys-btn" onclick="document.exitPointerLock();switchModule('physics')">⚡ PHYSICS</button>
+        <button class="mod-btn chem-btn" onclick="document.exitPointerLock();switchModule('chemistry')">⚗ CHEMISTRY</button>
+        <button class="mod-btn bio-btn" onclick="document.exitPointerLock();switchModule('biology')">⬡ BIOLOGY</button>
+        <button class="mod-btn eng-btn" onclick="document.exitPointerLock();switchModule('engineering')">⚙ ENGINEERING</button>
       </div>
 
       <!-- Controls -->
@@ -445,7 +435,7 @@
         <span id="lab-status">HUB ACTIVE</span>
         <span style="margin-left: auto; color: #a78bfa6a">STORM-AI AIOS</span>
       </div>
-      <div id="nav-hint">WASD + MOUSE LOOK · SPACE/SHIFT = UP/DOWN · ? = HELP</div>
+      <div id="nav-hint">CLICK SCENE TO FLY · ESC = RELEASE · WASD · SPACE/SHIFT = UP/DOWN · ? = HELP</div>
       <div id="feed"></div>
       <div id="crosshair"></div>
     </div>
@@ -576,6 +566,13 @@
         mod.root.visible = true;
         if (mod.start) mod.start();
         _updateHUD(name);
+        // Reset camera to face forward so experiments are visible on arrival
+        var camEl = document.getElementById("cam");
+        if (camEl && camEl.components && camEl.components["look-controls"]) {
+          var lc = camEl.components["look-controls"];
+          if (lc.pitchObject) lc.pitchObject.rotation.x = 0;
+          if (lc.yawObject) lc.yawObject.rotation.y = 0;
+        }
       }
 
       function _stopModule(name) {
