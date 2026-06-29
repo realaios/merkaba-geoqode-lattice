@@ -1,925 +1,1351 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MERKABA · AIOS · GeoQode — Open Source AI Runtime</title>
-  <meta name="description" content="MERKABA, AIOS and GeoQode — an open-source AI governance runtime, interactive science platform, and dimensional programming language. MIT licensed. Built by Bradley Levitan." />
-  <meta name="keywords" content="MERKABA, AIOS, GeoQode, open source, AI runtime, lattice, cosmos lab, interactive science, WebXR" />
-  <link rel="canonical" href="https://realaios.com" />
-  <meta property="og:title" content="MERKABA · AIOS · GeoQode — Open Source" />
-  <meta property="og:description" content="An open-source AI governance runtime, interactive science platform, and dimensional language. MIT licensed." />
-  <meta property="og:url" content="https://realaios.com" />
-  <meta property="og:type" content="website" />
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MERKABA · AIOS · GeoQode — Open Source AI Runtime</title>
+    <meta
+      name="description"
+      content="MERKABA, AIOS and GeoQode — an open-source AI governance runtime, interactive science platform, and dimensional programming language. MIT licensed. Built by Bradley Levitan."
+    />
+    <meta
+      name="keywords"
+      content="MERKABA, AIOS, GeoQode, open source, AI runtime, lattice, cosmos lab, interactive science, WebXR"
+    />
+    <link rel="canonical" href="https://realaios.com" />
+    <meta
+      property="og:title"
+      content="MERKABA · AIOS · GeoQode — Open Source"
+    />
+    <meta
+      property="og:description"
+      content="An open-source AI governance runtime, interactive science platform, and dimensional language. MIT licensed."
+    />
+    <meta property="og:url" content="https://realaios.com" />
+    <meta property="og:type" content="website" />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
 
-    :root {
-      --bg:     #050510;
-      --bg2:    #080820;
-      --border: rgba(0,220,255,0.15);
-      --cyan:   #00dcff;
-      --purple: #b47cff;
-      --green:  #00ffb3;
-      --orange: #ff9d2a;
-      --dim:    rgba(255,255,255,0.45);
-      --mono:   "Courier New", "Lucida Console", monospace;
-    }
+      :root {
+        --bg: #050510;
+        --bg2: #080820;
+        --border: rgba(0, 220, 255, 0.15);
+        --cyan: #00dcff;
+        --purple: #b47cff;
+        --green: #00ffb3;
+        --orange: #ff9d2a;
+        --dim: rgba(255, 255, 255, 0.45);
+        --mono: "Courier New", "Lucida Console", monospace;
+      }
 
-    html { scroll-behavior: smooth; }
+      html {
+        scroll-behavior: smooth;
+      }
 
-    body {
-      background: var(--bg);
-      color: #e8f0ff;
-      font-family: var(--mono);
-      font-size: 14px;
-      line-height: 1.7;
-    }
+      body {
+        background: var(--bg);
+        color: #e8f0ff;
+        font-family: var(--mono);
+        font-size: 14px;
+        line-height: 1.7;
+      }
 
-    a { color: var(--cyan); text-decoration: none; }
-    a:hover { text-decoration: underline; }
+      a {
+        color: var(--cyan);
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
 
-    /* ── NAV ── */
-    nav {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      background: rgba(5,5,16,0.95);
-      border-bottom: 1px solid var(--border);
-      backdrop-filter: blur(12px);
-      padding: 0 32px;
-      display: flex;
-      align-items: center;
-      gap: 0;
-      height: 52px;
-    }
-    .nav-brand {
-      font-size: 14px;
-      font-weight: 700;
-      letter-spacing: 3px;
-      color: #fff;
-      margin-right: auto;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .nav-brand .merkaba-icon {
-      width: 28px; height: 28px;
-      display: inline-flex; align-items: center; justify-content: center;
-      font-size: 20px;
-      color: var(--cyan);
-      filter: drop-shadow(0 0 6px var(--cyan));
-    }
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 28px;
-      list-style: none;
-      font-size: 11px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-    }
-    .nav-links a { color: var(--dim); transition: color 0.2s; }
-    .nav-links a:hover { color: #fff; text-decoration: none; }
-    .nav-links .nav-gh {
-      padding: 6px 16px;
-      border: 1px solid var(--border);
-      color: var(--cyan);
-      background: rgba(0,220,255,0.05);
-      transition: all 0.2s;
-    }
-    .nav-links .nav-gh:hover {
-      background: rgba(0,220,255,0.12);
-      border-color: var(--cyan);
-    }
-    .nav-links .nav-sponsor {
-      padding: 6px 16px;
-      border: 1px solid rgba(180,124,255,0.4);
-      color: var(--purple);
-      background: rgba(180,124,255,0.05);
-      transition: all 0.2s;
-    }
-    .nav-links .nav-sponsor:hover {
-      background: rgba(180,124,255,0.12);
-      border-color: var(--purple);
-    }
+      /* ── NAV ── */
+      nav {
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        background: rgba(5, 5, 16, 0.95);
+        border-bottom: 1px solid var(--border);
+        backdrop-filter: blur(12px);
+        padding: 0 32px;
+        display: flex;
+        align-items: center;
+        gap: 0;
+        height: 52px;
+      }
+      .nav-brand {
+        font-size: 14px;
+        font-weight: 700;
+        letter-spacing: 3px;
+        color: #fff;
+        margin-right: auto;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .nav-brand .merkaba-icon {
+        width: 28px;
+        height: 28px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        color: var(--cyan);
+        filter: drop-shadow(0 0 6px var(--cyan));
+      }
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 28px;
+        list-style: none;
+        font-size: 11px;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+      }
+      .nav-links a {
+        color: var(--dim);
+        transition: color 0.2s;
+      }
+      .nav-links a:hover {
+        color: #fff;
+        text-decoration: none;
+      }
+      .nav-links .nav-gh {
+        padding: 6px 16px;
+        border: 1px solid var(--border);
+        color: var(--cyan);
+        background: rgba(0, 220, 255, 0.05);
+        transition: all 0.2s;
+      }
+      .nav-links .nav-gh:hover {
+        background: rgba(0, 220, 255, 0.12);
+        border-color: var(--cyan);
+      }
+      .nav-links .nav-sponsor {
+        padding: 6px 16px;
+        border: 1px solid rgba(180, 124, 255, 0.4);
+        color: var(--purple);
+        background: rgba(180, 124, 255, 0.05);
+        transition: all 0.2s;
+      }
+      .nav-links .nav-sponsor:hover {
+        background: rgba(180, 124, 255, 0.12);
+        border-color: var(--purple);
+      }
 
-    /* ── HERO ── */
-    .hero {
-      min-height: 88vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 80px 24px 60px;
-      position: relative;
-      overflow: hidden;
-    }
-    .hero::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(ellipse 60% 40% at 50% 30%, rgba(0,220,255,0.06) 0%, transparent 70%),
-        radial-gradient(ellipse 40% 60% at 70% 60%, rgba(180,124,255,0.04) 0%, transparent 70%);
-      pointer-events: none;
-    }
-    .hero-eyebrow {
-      font-size: 10px;
-      letter-spacing: 5px;
-      color: var(--cyan);
-      opacity: 0.7;
-      text-transform: uppercase;
-      margin-bottom: 24px;
-    }
-    .hero-mark {
-      font-size: clamp(52px, 10vw, 108px);
-      font-weight: 900;
-      letter-spacing: 0.1em;
-      line-height: 1;
-      background: linear-gradient(135deg, #fff 0%, var(--cyan) 50%, var(--purple) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      margin-bottom: 8px;
-    }
-    .hero-sub {
-      font-size: clamp(16px, 3vw, 22px);
-      letter-spacing: 0.3em;
-      color: rgba(255,255,255,0.4);
-      font-weight: 300;
-      margin-bottom: 28px;
-    }
-    .hero-tagline {
-      font-size: clamp(12px, 2vw, 15px);
-      color: var(--dim);
-      letter-spacing: 1px;
-      max-width: 600px;
-      line-height: 1.9;
-      margin-bottom: 44px;
-    }
-    .hero-btns {
-      display: flex;
-      gap: 14px;
-      flex-wrap: wrap;
-      justify-content: center;
-      margin-bottom: 48px;
-    }
-    .btn {
-      display: inline-block;
-      padding: 13px 32px;
-      font-family: var(--mono);
-      font-size: 11px;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      cursor: pointer;
-      transition: all 0.2s;
-      text-decoration: none;
-    }
-    .btn-primary {
-      background: rgba(0,220,255,0.1);
-      border: 1px solid var(--cyan);
-      color: var(--cyan);
-    }
-    .btn-primary:hover {
-      background: rgba(0,220,255,0.2);
-      box-shadow: 0 0 24px rgba(0,220,255,0.3);
-      text-decoration: none;
-    }
-    .btn-secondary {
-      background: rgba(180,124,255,0.08);
-      border: 1px solid rgba(180,124,255,0.4);
-      color: var(--purple);
-    }
-    .btn-secondary:hover {
-      background: rgba(180,124,255,0.18);
-      border-color: var(--purple);
-      text-decoration: none;
-    }
-    .btn-ghost {
-      border: 1px solid var(--border);
-      color: var(--dim);
-    }
-    .btn-ghost:hover {
-      border-color: rgba(255,255,255,0.3);
-      color: #fff;
-      text-decoration: none;
-    }
-    .hero-install {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      background: rgba(0,0,0,0.5);
-      border: 1px solid var(--border);
-      padding: 12px 20px;
-      font-size: 13px;
-      color: #8af;
-      cursor: pointer;
-      user-select: all;
-      transition: border-color 0.2s;
-      position: relative;
-    }
-    .hero-install:hover { border-color: var(--cyan); }
-    .hero-install .prompt { color: var(--green); margin-right: 4px; }
-    .hero-install .copy-hint {
-      font-size: 9px;
-      letter-spacing: 2px;
-      color: var(--dim);
-      margin-left: auto;
-    }
-    .hero-badges {
-      display: flex;
-      gap: 14px;
-      flex-wrap: wrap;
-      justify-content: center;
-      margin-top: 28px;
-    }
-    .badge {
-      font-size: 10px;
-      letter-spacing: 2px;
-      padding: 4px 12px;
-      border: 1px solid var(--border);
-      color: var(--dim);
-      text-transform: uppercase;
-    }
-    .badge.green { border-color: rgba(0,255,179,0.3); color: var(--green); }
-    .badge.cyan  { border-color: rgba(0,220,255,0.3); color: var(--cyan); }
-    .badge.purple{ border-color: rgba(180,124,255,0.3); color: var(--purple); }
+      /* ── HERO ── */
+      .hero {
+        min-height: 88vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 80px 24px 60px;
+        position: relative;
+        overflow: hidden;
+      }
+      .hero::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background:
+          radial-gradient(
+            ellipse 60% 40% at 50% 30%,
+            rgba(0, 220, 255, 0.06) 0%,
+            transparent 70%
+          ),
+          radial-gradient(
+            ellipse 40% 60% at 70% 60%,
+            rgba(180, 124, 255, 0.04) 0%,
+            transparent 70%
+          );
+        pointer-events: none;
+      }
+      .hero-eyebrow {
+        font-size: 10px;
+        letter-spacing: 5px;
+        color: var(--cyan);
+        opacity: 0.7;
+        text-transform: uppercase;
+        margin-bottom: 24px;
+      }
+      .hero-mark {
+        font-size: clamp(52px, 10vw, 108px);
+        font-weight: 900;
+        letter-spacing: 0.1em;
+        line-height: 1;
+        background: linear-gradient(
+          135deg,
+          #fff 0%,
+          var(--cyan) 50%,
+          var(--purple) 100%
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 8px;
+      }
+      .hero-sub {
+        font-size: clamp(16px, 3vw, 22px);
+        letter-spacing: 0.3em;
+        color: rgba(255, 255, 255, 0.4);
+        font-weight: 300;
+        margin-bottom: 28px;
+      }
+      .hero-tagline {
+        font-size: clamp(12px, 2vw, 15px);
+        color: var(--dim);
+        letter-spacing: 1px;
+        max-width: 600px;
+        line-height: 1.9;
+        margin-bottom: 44px;
+      }
+      .hero-btns {
+        display: flex;
+        gap: 14px;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-bottom: 48px;
+      }
+      .btn {
+        display: inline-block;
+        padding: 13px 32px;
+        font-family: var(--mono);
+        font-size: 11px;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: all 0.2s;
+        text-decoration: none;
+      }
+      .btn-primary {
+        background: rgba(0, 220, 255, 0.1);
+        border: 1px solid var(--cyan);
+        color: var(--cyan);
+      }
+      .btn-primary:hover {
+        background: rgba(0, 220, 255, 0.2);
+        box-shadow: 0 0 24px rgba(0, 220, 255, 0.3);
+        text-decoration: none;
+      }
+      .btn-secondary {
+        background: rgba(180, 124, 255, 0.08);
+        border: 1px solid rgba(180, 124, 255, 0.4);
+        color: var(--purple);
+      }
+      .btn-secondary:hover {
+        background: rgba(180, 124, 255, 0.18);
+        border-color: var(--purple);
+        text-decoration: none;
+      }
+      .btn-ghost {
+        border: 1px solid var(--border);
+        color: var(--dim);
+      }
+      .btn-ghost:hover {
+        border-color: rgba(255, 255, 255, 0.3);
+        color: #fff;
+        text-decoration: none;
+      }
+      .hero-install {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        background: rgba(0, 0, 0, 0.5);
+        border: 1px solid var(--border);
+        padding: 12px 20px;
+        font-size: 13px;
+        color: #8af;
+        cursor: pointer;
+        user-select: all;
+        transition: border-color 0.2s;
+        position: relative;
+      }
+      .hero-install:hover {
+        border-color: var(--cyan);
+      }
+      .hero-install .prompt {
+        color: var(--green);
+        margin-right: 4px;
+      }
+      .hero-install .copy-hint {
+        font-size: 9px;
+        letter-spacing: 2px;
+        color: var(--dim);
+        margin-left: auto;
+      }
+      .hero-badges {
+        display: flex;
+        gap: 14px;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-top: 28px;
+      }
+      .badge {
+        font-size: 10px;
+        letter-spacing: 2px;
+        padding: 4px 12px;
+        border: 1px solid var(--border);
+        color: var(--dim);
+        text-transform: uppercase;
+      }
+      .badge.green {
+        border-color: rgba(0, 255, 179, 0.3);
+        color: var(--green);
+      }
+      .badge.cyan {
+        border-color: rgba(0, 220, 255, 0.3);
+        color: var(--cyan);
+      }
+      .badge.purple {
+        border-color: rgba(180, 124, 255, 0.3);
+        color: var(--purple);
+      }
 
-    /* ── SECTION GENERIC ── */
-    section {
-      padding: 80px 0;
-      border-top: 1px solid var(--border);
-    }
-    .container {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 0 32px;
-    }
-    .section-label {
-      font-size: 10px;
-      letter-spacing: 5px;
-      color: var(--cyan);
-      opacity: 0.6;
-      text-transform: uppercase;
-      margin-bottom: 36px;
-    }
+      /* ── SECTION GENERIC ── */
+      section {
+        padding: 80px 0;
+        border-top: 1px solid var(--border);
+      }
+      .container {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 0 32px;
+      }
+      .section-label {
+        font-size: 10px;
+        letter-spacing: 5px;
+        color: var(--cyan);
+        opacity: 0.6;
+        text-transform: uppercase;
+        margin-bottom: 36px;
+      }
 
-    /* ── PROJECTS GRID ── */
-    .projects-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
-      gap: 1px;
-      background: var(--border);
-      border: 1px solid var(--border);
-    }
-    .project-card {
-      background: var(--bg);
-      padding: 32px 28px;
-      transition: background 0.2s;
-      position: relative;
-    }
-    .project-card:hover { background: var(--bg2); }
-    .project-card::before {
-      content: "";
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 2px;
-      opacity: 0;
-      transition: opacity 0.2s;
-    }
-    .project-card:hover::before { opacity: 1; }
-    .pc-cosmos::before  { background: var(--cyan); }
-    .pc-geoqode::before { background: var(--green); }
-    .pc-lattice::before { background: var(--purple); }
-    .pc-agents::before  { background: var(--orange); }
-    .pc-games::before   { background: #ff4fa0; }
-    .project-icon { font-size: 28px; margin-bottom: 16px; }
-    .project-name {
-      font-size: 13px;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      color: #fff;
-      margin-bottom: 8px;
-    }
-    .project-desc {
-      font-size: 12px;
-      color: var(--dim);
-      line-height: 1.8;
-      margin-bottom: 16px;
-    }
-    .project-link {
-      font-size: 10px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-    }
+      /* ── PROJECTS GRID ── */
+      .projects-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+        gap: 1px;
+        background: var(--border);
+        border: 1px solid var(--border);
+      }
+      .project-card {
+        background: var(--bg);
+        padding: 32px 28px;
+        transition: background 0.2s;
+        position: relative;
+      }
+      .project-card:hover {
+        background: var(--bg2);
+      }
+      .project-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        opacity: 0;
+        transition: opacity 0.2s;
+      }
+      .project-card:hover::before {
+        opacity: 1;
+      }
+      .pc-cosmos::before {
+        background: var(--cyan);
+      }
+      .pc-geoqode::before {
+        background: var(--green);
+      }
+      .pc-lattice::before {
+        background: var(--purple);
+      }
+      .pc-agents::before {
+        background: var(--orange);
+      }
+      .pc-games::before {
+        background: #ff4fa0;
+      }
+      .project-icon {
+        font-size: 28px;
+        margin-bottom: 16px;
+      }
+      .project-name {
+        font-size: 13px;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: #fff;
+        margin-bottom: 8px;
+      }
+      .project-desc {
+        font-size: 12px;
+        color: var(--dim);
+        line-height: 1.8;
+        margin-bottom: 16px;
+      }
+      .project-link {
+        font-size: 10px;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+      }
 
-    /* ── OPEN SOURCE STATEMENT ── */
-    .oss-block {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 40px;
-      align-items: start;
-    }
-    .oss-manifesto {
-      font-size: 14px;
-      color: var(--dim);
-      line-height: 2;
-    }
-    .oss-manifesto strong { color: #fff; }
-    .oss-manifesto p + p { margin-top: 16px; }
-    .oss-terms {
-      background: rgba(0,0,0,0.4);
-      border: 1px solid var(--border);
-      padding: 28px;
-    }
-    .oss-terms h3 {
-      font-size: 11px;
-      letter-spacing: 3px;
-      color: var(--cyan);
-      margin-bottom: 20px;
-      text-transform: uppercase;
-    }
-    .term-row {
-      display: flex;
-      gap: 12px;
-      margin-bottom: 14px;
-      font-size: 12px;
-    }
-    .term-icon { color: var(--green); flex-shrink: 0; }
-    .term-text { color: var(--dim); line-height: 1.6; }
-    .term-text strong { color: #fff; }
+      /* ── OPEN SOURCE STATEMENT ── */
+      .oss-block {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 40px;
+        align-items: start;
+      }
+      .oss-manifesto {
+        font-size: 14px;
+        color: var(--dim);
+        line-height: 2;
+      }
+      .oss-manifesto strong {
+        color: #fff;
+      }
+      .oss-manifesto p + p {
+        margin-top: 16px;
+      }
+      .oss-terms {
+        background: rgba(0, 0, 0, 0.4);
+        border: 1px solid var(--border);
+        padding: 28px;
+      }
+      .oss-terms h3 {
+        font-size: 11px;
+        letter-spacing: 3px;
+        color: var(--cyan);
+        margin-bottom: 20px;
+        text-transform: uppercase;
+      }
+      .term-row {
+        display: flex;
+        gap: 12px;
+        margin-bottom: 14px;
+        font-size: 12px;
+      }
+      .term-icon {
+        color: var(--green);
+        flex-shrink: 0;
+      }
+      .term-text {
+        color: var(--dim);
+        line-height: 1.6;
+      }
+      .term-text strong {
+        color: #fff;
+      }
 
-    /* ── CODE BLOCK ── */
-    .code-window {
-      background: #000;
-      border: 1px solid var(--border);
-    }
-    .code-titlebar {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 10px 16px;
-      border-bottom: 1px solid var(--border);
-      background: rgba(255,255,255,0.02);
-    }
-    .dot { width: 10px; height: 10px; border-radius: 50%; }
-    .dot-r { background: #ff5f57; }
-    .dot-y { background: #ffbd2e; }
-    .dot-g { background: #28c840; }
-    .code-filename {
-      font-size: 10px;
-      letter-spacing: 2px;
-      color: var(--dim);
-      margin-left: auto;
-    }
-    .code-body {
-      padding: 24px;
-      font-size: 12px;
-      line-height: 1.9;
-      overflow-x: auto;
-    }
-    .c-comment { color: #4a5568; }
-    .c-kw  { color: var(--purple); }
-    .c-str { color: var(--green); }
-    .c-fn  { color: var(--cyan); }
-    .c-num { color: var(--orange); }
-    .c-op  { color: #ff9d2a; }
+      /* ── CODE BLOCK ── */
+      .code-window {
+        background: #000;
+        border: 1px solid var(--border);
+      }
+      .code-titlebar {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 16px;
+        border-bottom: 1px solid var(--border);
+        background: rgba(255, 255, 255, 0.02);
+      }
+      .dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+      }
+      .dot-r {
+        background: #ff5f57;
+      }
+      .dot-y {
+        background: #ffbd2e;
+      }
+      .dot-g {
+        background: #28c840;
+      }
+      .code-filename {
+        font-size: 10px;
+        letter-spacing: 2px;
+        color: var(--dim);
+        margin-left: auto;
+      }
+      .code-body {
+        padding: 24px;
+        font-size: 12px;
+        line-height: 1.9;
+        overflow-x: auto;
+      }
+      .c-comment {
+        color: #4a5568;
+      }
+      .c-kw {
+        color: var(--purple);
+      }
+      .c-str {
+        color: var(--green);
+      }
+      .c-fn {
+        color: var(--cyan);
+      }
+      .c-num {
+        color: var(--orange);
+      }
+      .c-op {
+        color: #ff9d2a;
+      }
 
-    /* ── QUICK START ── */
-    .quickstart-steps {
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-    }
-    .qs-step {
-      display: flex;
-      gap: 20px;
-      align-items: flex-start;
-      padding: 20px 0;
-      border-bottom: 1px solid var(--border);
-    }
-    .qs-step:last-child { border-bottom: none; }
-    .qs-num {
-      width: 32px; height: 32px;
-      border-radius: 50%;
-      border: 1px solid var(--border);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 11px;
-      color: var(--cyan);
-      flex-shrink: 0;
-      margin-top: 2px;
-    }
-    .qs-content { flex: 1; }
-    .qs-title {
-      font-size: 12px;
-      letter-spacing: 2px;
-      color: #fff;
-      text-transform: uppercase;
-      margin-bottom: 6px;
-    }
-    .qs-cmd {
-      background: rgba(0,0,0,0.5);
-      border: 1px solid var(--border);
-      padding: 8px 14px;
-      font-size: 12px;
-      color: var(--green);
-      display: inline-block;
-      margin-top: 6px;
-    }
+      /* ── QUICK START ── */
+      .quickstart-steps {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+      }
+      .qs-step {
+        display: flex;
+        gap: 20px;
+        align-items: flex-start;
+        padding: 20px 0;
+        border-bottom: 1px solid var(--border);
+      }
+      .qs-step:last-child {
+        border-bottom: none;
+      }
+      .qs-num {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        border: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 11px;
+        color: var(--cyan);
+        flex-shrink: 0;
+        margin-top: 2px;
+      }
+      .qs-content {
+        flex: 1;
+      }
+      .qs-title {
+        font-size: 12px;
+        letter-spacing: 2px;
+        color: #fff;
+        text-transform: uppercase;
+        margin-bottom: 6px;
+      }
+      .qs-cmd {
+        background: rgba(0, 0, 0, 0.5);
+        border: 1px solid var(--border);
+        padding: 8px 14px;
+        font-size: 12px;
+        color: var(--green);
+        display: inline-block;
+        margin-top: 6px;
+      }
 
-    /* ── DONATION ── */
-    .donate-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 16px;
-    }
-    .donate-card {
-      border: 1px solid var(--border);
-      padding: 24px;
-      text-align: center;
-      transition: all 0.2s;
-    }
-    .donate-card:hover {
-      border-color: rgba(180,124,255,0.5);
-      background: rgba(180,124,255,0.05);
-    }
-    .donate-icon { font-size: 28px; margin-bottom: 12px; }
-    .donate-name {
-      font-size: 11px;
-      letter-spacing: 3px;
-      color: #fff;
-      text-transform: uppercase;
-      margin-bottom: 8px;
-    }
-    .donate-desc { font-size: 11px; color: var(--dim); margin-bottom: 14px; }
-    .donate-link {
-      font-size: 10px;
-      letter-spacing: 2px;
-      color: var(--purple);
-      text-transform: uppercase;
-    }
+      /* ── DONATION ── */
+      .donate-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 16px;
+      }
+      .donate-card {
+        border: 1px solid var(--border);
+        padding: 24px;
+        text-align: center;
+        transition: all 0.2s;
+      }
+      .donate-card:hover {
+        border-color: rgba(180, 124, 255, 0.5);
+        background: rgba(180, 124, 255, 0.05);
+      }
+      .donate-icon {
+        font-size: 28px;
+        margin-bottom: 12px;
+      }
+      .donate-name {
+        font-size: 11px;
+        letter-spacing: 3px;
+        color: #fff;
+        text-transform: uppercase;
+        margin-bottom: 8px;
+      }
+      .donate-desc {
+        font-size: 11px;
+        color: var(--dim);
+        margin-bottom: 14px;
+      }
+      .donate-link {
+        font-size: 10px;
+        letter-spacing: 2px;
+        color: var(--purple);
+        text-transform: uppercase;
+      }
 
-    /* ── ATTRIBUTION BOX ── */
-    .attr-box {
-      background: rgba(0,220,255,0.04);
-      border: 1px solid rgba(0,220,255,0.2);
-      padding: 28px;
-      text-align: center;
-    }
-    .attr-box p {
-      font-size: 12px;
-      color: var(--dim);
-      margin-bottom: 12px;
-    }
-    .attr-required {
-      font-size: 14px;
-      color: var(--cyan);
-      border: 1px solid rgba(0,220,255,0.25);
-      display: inline-block;
-      padding: 10px 24px;
-      letter-spacing: 1px;
-    }
+      /* ── ATTRIBUTION BOX ── */
+      .attr-box {
+        background: rgba(0, 220, 255, 0.04);
+        border: 1px solid rgba(0, 220, 255, 0.2);
+        padding: 28px;
+        text-align: center;
+      }
+      .attr-box p {
+        font-size: 12px;
+        color: var(--dim);
+        margin-bottom: 12px;
+      }
+      .attr-required {
+        font-size: 14px;
+        color: var(--cyan);
+        border: 1px solid rgba(0, 220, 255, 0.25);
+        display: inline-block;
+        padding: 10px 24px;
+        letter-spacing: 1px;
+      }
 
-    /* ── FOOTER ── */
-    footer {
-      border-top: 1px solid var(--border);
-      padding: 40px 32px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 32px;
-      align-items: flex-start;
-      max-width: 1100px;
-      margin: 0 auto;
-    }
-    .footer-brand { flex: 1; min-width: 200px; }
-    .footer-brand h4 {
-      font-size: 13px;
-      letter-spacing: 3px;
-      color: #fff;
-      margin-bottom: 8px;
-    }
-    .footer-brand p { font-size: 11px; color: var(--dim); line-height: 1.7; }
-    .footer-links { flex: 1; min-width: 160px; }
-    .footer-links h5 {
-      font-size: 10px;
-      letter-spacing: 3px;
-      color: var(--cyan);
-      opacity: 0.6;
-      text-transform: uppercase;
-      margin-bottom: 14px;
-    }
-    .footer-links ul { list-style: none; }
-    .footer-links li { margin-bottom: 8px; }
-    .footer-links a { font-size: 12px; color: var(--dim); }
-    .footer-links a:hover { color: #fff; }
-    .footer-bottom {
-      width: 100%;
-      border-top: 1px solid var(--border);
-      padding-top: 24px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      justify-content: space-between;
-      font-size: 11px;
-      color: rgba(255,255,255,0.2);
-    }
+      /* ── FOOTER ── */
+      footer {
+        border-top: 1px solid var(--border);
+        padding: 40px 32px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 32px;
+        align-items: flex-start;
+        max-width: 1100px;
+        margin: 0 auto;
+      }
+      .footer-brand {
+        flex: 1;
+        min-width: 200px;
+      }
+      .footer-brand h4 {
+        font-size: 13px;
+        letter-spacing: 3px;
+        color: #fff;
+        margin-bottom: 8px;
+      }
+      .footer-brand p {
+        font-size: 11px;
+        color: var(--dim);
+        line-height: 1.7;
+      }
+      .footer-links {
+        flex: 1;
+        min-width: 160px;
+      }
+      .footer-links h5 {
+        font-size: 10px;
+        letter-spacing: 3px;
+        color: var(--cyan);
+        opacity: 0.6;
+        text-transform: uppercase;
+        margin-bottom: 14px;
+      }
+      .footer-links ul {
+        list-style: none;
+      }
+      .footer-links li {
+        margin-bottom: 8px;
+      }
+      .footer-links a {
+        font-size: 12px;
+        color: var(--dim);
+      }
+      .footer-links a:hover {
+        color: #fff;
+      }
+      .footer-bottom {
+        width: 100%;
+        border-top: 1px solid var(--border);
+        padding-top: 24px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        justify-content: space-between;
+        font-size: 11px;
+        color: rgba(255, 255, 255, 0.2);
+      }
 
-    /* ── RESPONSIVE ── */
-    @media (max-width: 768px) {
-      nav { padding: 0 16px; }
-      .nav-links { gap: 14px; }
-      .nav-links li:not(:last-child):not(:nth-last-child(2)) { display: none; }
-      .container { padding: 0 16px; }
-      .oss-block { grid-template-columns: 1fr; }
-      footer { padding: 32px 16px; }
-    }
-  </style>
-</head>
-<body>
-
-<!-- ═══ NAV ═══ -->
-<nav>
-  <div class="nav-brand">
-    <span class="merkaba-icon">⧉</span>
-    MERKABA · AIOS
-  </div>
-  <ul class="nav-links">
-    <li><a href="#projects">Projects</a></li>
-    <li><a href="#quickstart">Get Started</a></li>
-    <li><a href="/cosmos-lab">Cosmos Lab</a></li>
-    <li><a href="https://github.com/realaios/merkaba-geoqode-lattice">GitHub ↗</a></li>
-    <li><a href="#donate" class="nav-sponsor">♥ Sponsor</a></li>
-  </ul>
-</nav>
-
-<!-- ═══ HERO ═══ -->
-<div class="hero">
-  <div class="hero-eyebrow">Open Source · MIT Licensed · Attribution Required</div>
-  <div class="hero-mark">MERKABA</div>
-  <div class="hero-sub">AIOS · GeoQode · Lattice480</div>
-  <p class="hero-tagline">
-    An open-source AI governance runtime, interactive science platform,
-    and dimensional programming language. Free for the world. Built to last.
-  </p>
-  <div class="hero-btns">
-    <a href="/cosmos-lab" class="btn btn-primary">▶ Open Cosmos Lab</a>
-    <a href="https://github.com/realaios/merkaba-geoqode-lattice" class="btn btn-secondary">⭐ Star on GitHub</a>
-    <a href="#quickstart" class="btn btn-ghost">Get Started</a>
-  </div>
-  <div class="hero-install" title="Click to select">
-    <span class="prompt">$</span>
-    <span>npm install @s4ai/merkaba-geoqode-lattice</span>
-    <span class="copy-hint">click to copy</span>
-  </div>
-  <div class="hero-badges">
-    <span class="badge cyan">MIT License</span>
-    <span class="badge green">Open Source</span>
-    <span class="badge purple">Attribution Required</span>
-    <span class="badge">No Downloads · Runs in Browser</span>
-  </div>
-</div>
-
-<!-- ═══ PROJECTS ═══ -->
-<section id="projects">
-  <div class="container">
-    <div class="section-label">Projects</div>
-    <div class="projects-grid">
-
-      <div class="project-card pc-cosmos">
-        <div class="project-icon">⚗</div>
-        <div class="project-name">Cosmos Lab</div>
-        <div class="project-desc">
-          Browser-based 3D interactive science universe with real physics, chemistry,
-          biology, and engineering simulations. Multi-user presence. A 24/7 autonomous
-          AI agent that continuously improves it.
-        </div>
-        <a href="/cosmos-lab" class="project-link" style="color:var(--cyan)">Open Lab →</a>
+      /* ── RESPONSIVE ── */
+      @media (max-width: 768px) {
+        nav {
+          padding: 0 16px;
+        }
+        .nav-links {
+          gap: 14px;
+        }
+        .nav-links li:not(:last-child):not(:nth-last-child(2)) {
+          display: none;
+        }
+        .container {
+          padding: 0 16px;
+        }
+        .oss-block {
+          grid-template-columns: 1fr;
+        }
+        footer {
+          padding: 32px 16px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ═══ NAV ═══ -->
+    <nav>
+      <div class="nav-brand">
+        <span class="merkaba-icon">⧉</span>
+        MERKABA · AIOS
       </div>
+      <ul class="nav-links">
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#quickstart">Get Started</a></li>
+        <li><a href="/cosmos-lab">Cosmos Lab</a></li>
+        <li>
+          <a href="https://github.com/realaios/merkaba-geoqode-lattice"
+            >GitHub ↗</a
+          >
+        </li>
+        <li><a href="#donate" class="nav-sponsor">♥ Sponsor</a></li>
+      </ul>
+    </nav>
 
-      <div class="project-card pc-geoqode">
-        <div class="project-icon">⊗</div>
-        <div class="project-name">GeoQode</div>
-        <div class="project-desc">
-          A dimensional programming language where geometry is the program.
-          Write AI governance as executable resonance patterns. Every statement
-          maps to the MERKABA 48-lattice.
-        </div>
-        <a href="https://github.com/realaios/merkaba-geoqode-lattice/tree/main/geo" class="project-link" style="color:var(--green)">View Runtime →</a>
+    <!-- ═══ HERO ═══ -->
+    <div class="hero">
+      <div class="hero-eyebrow">
+        Open Source · MIT Licensed · Attribution Required
       </div>
-
-      <div class="project-card pc-lattice">
-        <div class="project-icon">⧉</div>
-        <div class="project-name">MERKABA Lattice</div>
-        <div class="project-desc">
-          The 48-dimension AI governance lattice. A coordination backbone for AI agent
-          swarms: reproducible, auditable, certifiable. Powers Storm AI's 150-agent
-          orchestration layer.
-        </div>
-        <a href="https://github.com/realaios/merkaba-geoqode-lattice" class="project-link" style="color:var(--purple)">GitHub →</a>
+      <div class="hero-mark">MERKABA</div>
+      <div class="hero-sub">AIOS · GeoQode · Lattice480</div>
+      <p class="hero-tagline">
+        An open-source AI governance runtime, interactive science platform, and
+        dimensional programming language. Free for the world. Built to last.
+      </p>
+      <div class="hero-btns">
+        <a href="/cosmos-lab" class="btn btn-primary">▶ Open Cosmos Lab</a>
+        <a
+          href="https://github.com/realaios/merkaba-geoqode-lattice"
+          class="btn btn-secondary"
+          >⭐ Star on GitHub</a
+        >
+        <a href="#quickstart" class="btn btn-ghost">Get Started</a>
       </div>
-
-      <div class="project-card pc-agents">
-        <div class="project-icon">◈</div>
-        <div class="project-name">Autonomous Agents</div>
-        <div class="project-desc">
-          Cloudflare Workers agents running 24/7 on Claude Opus 4.7 — reading live code,
-          writing improvements, opening PRs, and researching upcoming features every hour.
-          Never-ending self-improvement.
-        </div>
-        <a href="https://github.com/realaios/merkaba-geoqode-lattice/tree/main/agent-lab" class="project-link" style="color:var(--orange)">See Agent Code →</a>
+      <div class="hero-install" title="Click to select">
+        <span class="prompt">$</span>
+        <span>npm install @s4ai/merkaba-geoqode-lattice</span>
+        <span class="copy-hint">click to copy</span>
       </div>
-
-      <div class="project-card pc-games">
-        <div class="project-icon">🎮</div>
-        <div class="project-name">Cosmos Infinite</div>
-        <div class="project-desc">
-          A multiplayer 3D space exploration game with dogfight combat, persistent scoring,
-          and real-time WebSocket sync — all in a single HTML file served at
-          realaios.com/cosmos-infinite.
-        </div>
-        <a href="/cosmos-infinite.html" class="project-link" style="color:#ff4fa0">Play →</a>
+      <div class="hero-badges">
+        <span class="badge cyan">MIT License</span>
+        <span class="badge green">Open Source</span>
+        <span class="badge purple">Attribution Required</span>
+        <span class="badge">No Downloads · Runs in Browser</span>
       </div>
-
-      <div class="project-card" style="background:rgba(0,220,255,0.02)">
-        <div class="project-icon">📡</div>
-        <div class="project-name">AIOS Platform</div>
-        <div class="project-desc">
-          The full AIOS operating system: GeoQode semantic routing, VR world engine,
-          PLAIstore app catalogue, and the Storm AI swarm infrastructure.
-          The system this repo runs on.
-        </div>
-        <a href="/lab" class="project-link" style="color:#fff">Explore →</a>
-      </div>
-
     </div>
-  </div>
-</section>
 
-<!-- ═══ OPEN SOURCE ═══ -->
-<section id="opensource">
-  <div class="container">
-    <div class="section-label">Why Open Source</div>
-    <div class="oss-block">
-      <div class="oss-manifesto">
+    <!-- ═══ PROJECTS ═══ -->
+    <section id="projects">
+      <div class="container">
+        <div class="section-label">Projects</div>
+        <div class="projects-grid">
+          <div class="project-card pc-cosmos">
+            <div class="project-icon">⚗</div>
+            <div class="project-name">Cosmos Lab</div>
+            <div class="project-desc">
+              Browser-based 3D interactive science universe with real physics,
+              chemistry, biology, and engineering simulations. Multi-user
+              presence. A 24/7 autonomous AI agent that continuously improves
+              it.
+            </div>
+            <a
+              href="/cosmos-lab"
+              class="project-link"
+              style="color: var(--cyan)"
+              >Open Lab →</a
+            >
+          </div>
+
+          <div class="project-card pc-geoqode">
+            <div class="project-icon">⊗</div>
+            <div class="project-name">GeoQode</div>
+            <div class="project-desc">
+              A dimensional programming language where geometry is the program.
+              Write AI governance as executable resonance patterns. Every
+              statement maps to the MERKABA 48-lattice.
+            </div>
+            <a
+              href="https://github.com/realaios/merkaba-geoqode-lattice/tree/main/geo"
+              class="project-link"
+              style="color: var(--green)"
+              >View Runtime →</a
+            >
+          </div>
+
+          <div class="project-card pc-lattice">
+            <div class="project-icon">⧉</div>
+            <div class="project-name">MERKABA Lattice</div>
+            <div class="project-desc">
+              The 48-dimension AI governance lattice. A coordination backbone
+              for AI agent swarms: reproducible, auditable, certifiable. Powers
+              Storm AI's 150-agent orchestration layer.
+            </div>
+            <a
+              href="https://github.com/realaios/merkaba-geoqode-lattice"
+              class="project-link"
+              style="color: var(--purple)"
+              >GitHub →</a
+            >
+          </div>
+
+          <div class="project-card pc-agents">
+            <div class="project-icon">◈</div>
+            <div class="project-name">Autonomous Agents</div>
+            <div class="project-desc">
+              Cloudflare Workers agents running 24/7 on Claude Opus 4.7 —
+              reading live code, writing improvements, opening PRs, and
+              researching upcoming features every hour. Never-ending
+              self-improvement.
+            </div>
+            <a
+              href="https://github.com/realaios/merkaba-geoqode-lattice/tree/main/agent-lab"
+              class="project-link"
+              style="color: var(--orange)"
+              >See Agent Code →</a
+            >
+          </div>
+
+          <div class="project-card pc-games">
+            <div class="project-icon">🎮</div>
+            <div class="project-name">Cosmos Infinite</div>
+            <div class="project-desc">
+              A multiplayer 3D space exploration game with dogfight combat,
+              persistent scoring, and real-time WebSocket sync — all in a single
+              HTML file served at realaios.com/cosmos-infinite.
+            </div>
+            <a
+              href="/cosmos-infinite.html"
+              class="project-link"
+              style="color: #ff4fa0"
+              >Play →</a
+            >
+          </div>
+
+          <div class="project-card" style="background: rgba(0, 220, 255, 0.02)">
+            <div class="project-icon">📡</div>
+            <div class="project-name">AIOS Platform</div>
+            <div class="project-desc">
+              The full AIOS operating system: GeoQode semantic routing, VR world
+              engine, PLAIstore app catalogue, and the Storm AI swarm
+              infrastructure. The system this repo runs on.
+            </div>
+            <a href="/lab" class="project-link" style="color: #fff"
+              >Explore →</a
+            >
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ OPEN SOURCE ═══ -->
+    <section id="opensource">
+      <div class="container">
+        <div class="section-label">Why Open Source</div>
+        <div class="oss-block">
+          <div class="oss-manifesto">
+            <p>
+              <strong>We built MERKABA, AIOS, and GeoQode to last.</strong>
+              Not as a startup product, not as locked IP. As infrastructure the
+              world can run, study, fork, and build on.
+            </p>
+            <p>
+              Like Linux, like Python, like the web itself — the most powerful
+              systems in history were open. Anyone could inspect them, trust
+              them, and contribute back. That's what we want MERKABA to be.
+            </p>
+            <p>
+              The AI governance problem is too important to leave in closed
+              systems. The dimensional lattice, the resonance language, the
+              agent coordination layer — all of it, open.
+              <strong>The only ask: keep the attribution.</strong>
+            </p>
+            <p style="margin-top: 24px">
+              We accept donations to keep the servers running, the agents
+              thinking, and new experiments appearing in Cosmos Lab.
+            </p>
+          </div>
+          <div class="oss-terms">
+            <h3>License terms (MIT)</h3>
+            <div class="term-row">
+              <span class="term-icon">✓</span>
+              <span class="term-text"
+                ><strong>Use commercially</strong> — deploy it, sell products
+                built on it, run it in production</span
+              >
+            </div>
+            <div class="term-row">
+              <span class="term-icon">✓</span>
+              <span class="term-text"
+                ><strong>Modify freely</strong> — fork, change, adapt to your
+                needs</span
+              >
+            </div>
+            <div class="term-row">
+              <span class="term-icon">✓</span>
+              <span class="term-text"
+                ><strong>Distribute</strong> — share copies, embed in other
+                projects</span
+              >
+            </div>
+            <div class="term-row">
+              <span class="term-icon">✓</span>
+              <span class="term-text"
+                ><strong>Private use</strong> — run it internally without
+                publishing your changes</span
+              >
+            </div>
+            <div
+              class="term-row"
+              style="
+                border-top: 1px solid var(--border);
+                padding-top: 14px;
+                margin-top: 4px;
+              "
+            >
+              <span class="term-icon" style="color: var(--cyan)">◈</span>
+              <span class="term-text"
+                ><strong>Attribution required</strong> — include "Powered by
+                AIOS / MERKABA480 — Founder: Bradley Levitan" in your UI or
+                docs</span
+              >
+            </div>
+            <div class="attr-box" style="margin-top: 20px; padding: 16px">
+              <p>Required attribution text:</p>
+              <div class="attr-required" style="font-size: 12px">
+                Powered by AIOS / MERKABA480 — Founder: Bradley Levitan
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ CODE EXAMPLE ═══ -->
+    <section>
+      <div class="container">
+        <div class="section-label">GeoQode — Resonance as Code</div>
+        <div
+          style="
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+            align-items: start;
+          "
+        >
+          <div>
+            <p
+              style="
+                font-size: 12px;
+                color: var(--dim);
+                line-height: 1.9;
+                margin-bottom: 20px;
+              "
+            >
+              GeoQode is a programming language where every statement is a
+              geometric operation on the MERKABA lattice. Programs emit light
+              frequencies, detect dual-field resonance, and materialize quantum
+              patterns.
+            </p>
+            <p style="font-size: 12px; color: var(--dim); line-height: 1.9">
+              It runs inside Storm AI agents for governance, auditability, and
+              certifiable reproducibility — identical inputs always produce
+              identical lattice outputs.
+            </p>
+          </div>
+          <div class="code-window">
+            <div class="code-titlebar">
+              <div class="dot dot-r"></div>
+              <div class="dot dot-y"></div>
+              <div class="dot dot-g"></div>
+              <span class="code-filename">animate-water.geo</span>
+            </div>
+            <div class="code-body">
+              <span class="c-comment"
+                >// GeoQode — dimensional resonance program</span
+              >
+              <span class="c-kw">Program</span>
+              <span class="c-fn">AnimateWater</span> {
+
+              <span class="c-comment"
+                >// Emit green spectrum at φ² harmonic</span
+              >
+              Node.<span class="c-fn">emit</span>(<span class="c-op">Δ</span
+              >[<span class="c-str">green</span>],
+              <span class="c-op">Φ</span>[<span class="c-num">2</span>]);
+
+              <span class="c-comment">// Activate dual tetrahedron field</span>
+              Node.<span class="c-fn">detect</span>(<span class="c-op">⊗</span>,
+              <span class="c-op">⧉</span>);
+
+              <span class="c-comment"
+                >// Materialize QBITS via 528Hz cymatic driver</span
+              >
+              Water.<span class="c-fn">qbit</span>(~<span class="c-fn"
+                >wave</span
+              >(<span class="c-num">528Hz</span>),
+              <span class="c-op">Φ</span>[<span class="c-num">1</span>]);
+              Log(<span class="c-str">"QBITS materialized in water"</span>); }
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ QUICK START ═══ -->
+    <section id="quickstart">
+      <div class="container">
+        <div class="section-label">Quick Start</div>
+        <div
+          style="
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 48px;
+            align-items: start;
+          "
+        >
+          <div class="quickstart-steps">
+            <div class="qs-step">
+              <div class="qs-num">1</div>
+              <div class="qs-content">
+                <div class="qs-title">Clone the repo</div>
+                <div class="qs-cmd">
+                  git clone
+                  https://github.com/realaios/merkaba-geoqode-lattice.git
+                </div>
+              </div>
+            </div>
+            <div class="qs-step">
+              <div class="qs-num">2</div>
+              <div class="qs-content">
+                <div class="qs-title">Install & run</div>
+                <div class="qs-cmd">npm install &amp;&amp; node server.js</div>
+              </div>
+            </div>
+            <div class="qs-step">
+              <div class="qs-num">3</div>
+              <div class="qs-content">
+                <div class="qs-title">Open Cosmos Lab</div>
+                <div class="qs-cmd">open http://localhost:3000/cosmos-lab</div>
+              </div>
+            </div>
+            <div class="qs-step">
+              <div class="qs-num">4</div>
+              <div class="qs-content">
+                <div class="qs-title">Run a GeoQode program</div>
+                <div class="qs-cmd">
+                  node scripts/run.js examples/hello-geoqode.geo
+                </div>
+              </div>
+            </div>
+            <div class="qs-step">
+              <div class="qs-num">5</div>
+              <div class="qs-content">
+                <div class="qs-title">Deploy your own Lab Agent</div>
+                <div class="qs-cmd">cd agent-lab &amp;&amp; npm run deploy</div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <h3
+              style="
+                font-size: 12px;
+                letter-spacing: 3px;
+                color: var(--cyan);
+                text-transform: uppercase;
+                margin-bottom: 20px;
+              "
+            >
+              What you get
+            </h3>
+            <div style="display: flex; flex-direction: column; gap: 12px">
+              <div
+                style="
+                  display: flex;
+                  gap: 12px;
+                  font-size: 12px;
+                  color: var(--dim);
+                "
+              >
+                <span style="color: var(--green)">→</span> Full Cosmos Lab
+                science universe (4 labs, 20+ experiments)
+              </div>
+              <div
+                style="
+                  display: flex;
+                  gap: 12px;
+                  font-size: 12px;
+                  color: var(--dim);
+                "
+              >
+                <span style="color: var(--green)">→</span> Multi-user WebSocket
+                presence with Merkaba avatars
+              </div>
+              <div
+                style="
+                  display: flex;
+                  gap: 12px;
+                  font-size: 12px;
+                  color: var(--dim);
+                "
+              >
+                <span style="color: var(--green)">→</span> GeoQode language
+                runtime (parser, AST, executor)
+              </div>
+              <div
+                style="
+                  display: flex;
+                  gap: 12px;
+                  font-size: 12px;
+                  color: var(--dim);
+                "
+              >
+                <span style="color: var(--green)">→</span> Autonomous agent
+                workers (Cloudflare + Claude Opus 4.7)
+              </div>
+              <div
+                style="
+                  display: flex;
+                  gap: 12px;
+                  font-size: 12px;
+                  color: var(--dim);
+                "
+              >
+                <span style="color: var(--green)">→</span> Cosmos Infinite
+                multiplayer space game
+              </div>
+              <div
+                style="
+                  display: flex;
+                  gap: 12px;
+                  font-size: 12px;
+                  color: var(--dim);
+                "
+              >
+                <span style="color: var(--green)">→</span> Node.js server with
+                WebSocket, REST API, and static serving
+              </div>
+              <div
+                style="
+                  display: flex;
+                  gap: 12px;
+                  font-size: 12px;
+                  color: var(--dim);
+                "
+              >
+                <span style="color: var(--green)">→</span> D1 SQLite knowledge
+                base + feature backlog
+              </div>
+              <div
+                style="
+                  display: flex;
+                  gap: 12px;
+                  font-size: 12px;
+                  color: var(--dim);
+                "
+              >
+                <span style="color: var(--green)">→</span> Full docs in docs/
+                folder
+              </div>
+            </div>
+            <div
+              style="
+                margin-top: 28px;
+                padding: 20px;
+                border: 1px solid var(--border);
+                background: rgba(0, 0, 0, 0.3);
+              "
+            >
+              <div
+                style="
+                  font-size: 10px;
+                  letter-spacing: 3px;
+                  color: var(--dim);
+                  margin-bottom: 10px;
+                  text-transform: uppercase;
+                "
+              >
+                Good first contributions
+              </div>
+              <div style="font-size: 12px; color: var(--dim); line-height: 1.9">
+                · New Cosmos Lab experiment modules<br />
+                · Mobile UX improvements<br />
+                · GeoQode language extensions<br />
+                · Agent backlog features (agent-lab/schema.sql)<br />
+                · Documentation and examples
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ DONATE ═══ -->
+    <section id="donate">
+      <div class="container">
+        <div class="section-label">Support the project</div>
+        <p
+          style="
+            font-size: 13px;
+            color: var(--dim);
+            max-width: 600px;
+            line-height: 1.9;
+            margin-bottom: 40px;
+          "
+        >
+          This project is free and always will be. If MERKABA, Cosmos Lab, or
+          GeoQode is useful to you — a star, a contribution, or a small donation
+          keeps the compute running and new experiments appearing.
+        </p>
+        <div class="donate-grid">
+          <div class="donate-card">
+            <div class="donate-icon">⭐</div>
+            <div class="donate-name">Star on GitHub</div>
+            <div class="donate-desc">
+              Helps others find the project and shows the community is alive
+            </div>
+            <a
+              class="donate-link"
+              href="https://github.com/realaios/merkaba-geoqode-lattice"
+              >github.com/realaios →</a
+            >
+          </div>
+          <div class="donate-card">
+            <div class="donate-icon">♥</div>
+            <div class="donate-name">GitHub Sponsors</div>
+            <div class="donate-desc">
+              Monthly or one-time. Directly funds compute and agent API costs
+            </div>
+            <a class="donate-link" href="https://github.com/sponsors/realaios"
+              >Sponsor Bradley →</a
+            >
+          </div>
+          <div class="donate-card">
+            <div class="donate-icon">☕</div>
+            <div class="donate-name">Ko-fi</div>
+            <div class="donate-desc">
+              One-click support. No account needed. Every cup counts
+            </div>
+            <a class="donate-link" href="https://ko-fi.com/merkaba"
+              >ko-fi.com/merkaba →</a
+            >
+          </div>
+          <div class="donate-card">
+            <div class="donate-icon">🔀</div>
+            <div class="donate-name">Contribute Code</div>
+            <div class="donate-desc">
+              PRs welcome. See CONTRIBUTING.md for good first issues
+            </div>
+            <a
+              class="donate-link"
+              href="https://github.com/realaios/merkaba-geoqode-lattice/blob/main/CONTRIBUTING.md"
+              >Read guide →</a
+            >
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ FOOTER ═══ -->
+    <footer>
+      <div class="footer-brand">
+        <h4>⧉ MERKABA · AIOS · GeoQode</h4>
         <p>
-          <strong>We built MERKABA, AIOS, and GeoQode to last.</strong>
-          Not as a startup product, not as locked IP. As infrastructure
-          the world can run, study, fork, and build on.
+          Open source AI governance runtime and interactive science platform.<br />
+          Built by Bradley Levitan · Storm AI · 2026
         </p>
-        <p>
-          Like Linux, like Python, like the web itself — the most powerful
-          systems in history were open. Anyone could inspect them, trust them,
-          and contribute back. That's what we want MERKABA to be.
-        </p>
-        <p>
-          The AI governance problem is too important to leave in closed systems.
-          The dimensional lattice, the resonance language, the agent coordination
-          layer — all of it, open. <strong>The only ask: keep the attribution.</strong>
-        </p>
-        <p style="margin-top:24px">
-          We accept donations to keep the servers running, the agents thinking,
-          and new experiments appearing in Cosmos Lab.
-        </p>
-      </div>
-      <div class="oss-terms">
-        <h3>License terms (MIT)</h3>
-        <div class="term-row">
-          <span class="term-icon">✓</span>
-          <span class="term-text"><strong>Use commercially</strong> — deploy it, sell products built on it, run it in production</span>
-        </div>
-        <div class="term-row">
-          <span class="term-icon">✓</span>
-          <span class="term-text"><strong>Modify freely</strong> — fork, change, adapt to your needs</span>
-        </div>
-        <div class="term-row">
-          <span class="term-icon">✓</span>
-          <span class="term-text"><strong>Distribute</strong> — share copies, embed in other projects</span>
-        </div>
-        <div class="term-row">
-          <span class="term-icon">✓</span>
-          <span class="term-text"><strong>Private use</strong> — run it internally without publishing your changes</span>
-        </div>
-        <div class="term-row" style="border-top:1px solid var(--border);padding-top:14px;margin-top:4px">
-          <span class="term-icon" style="color:var(--cyan)">◈</span>
-          <span class="term-text"><strong>Attribution required</strong> — include "Powered by AIOS / MERKABA480 — Founder: Bradley Levitan" in your UI or docs</span>
-        </div>
-        <div class="attr-box" style="margin-top:20px;padding:16px">
-          <p>Required attribution text:</p>
-          <div class="attr-required" style="font-size:12px">
-            Powered by AIOS / MERKABA480 — Founder: Bradley Levitan
-          </div>
+        <div
+          style="
+            margin-top: 14px;
+            font-size: 11px;
+            color: rgba(0, 220, 255, 0.5);
+            letter-spacing: 1px;
+          "
+        >
+          Powered by AIOS / MERKABA480 — Founder: Bradley Levitan
         </div>
       </div>
-    </div>
-  </div>
-</section>
+      <div class="footer-links">
+        <h5>Projects</h5>
+        <ul>
+          <li><a href="/cosmos-lab">Cosmos Lab</a></li>
+          <li><a href="/cosmos-infinite.html">Cosmos Infinite</a></li>
+          <li><a href="/lab">GeoQode Lab</a></li>
+          <li><a href="/games.html">Games</a></li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h5>Source</h5>
+        <ul>
+          <li>
+            <a href="https://github.com/realaios/merkaba-geoqode-lattice"
+              >GitHub</a
+            >
+          </li>
+          <li>
+            <a
+              href="https://github.com/realaios/merkaba-geoqode-lattice/blob/main/LICENSE"
+              >License (MIT)</a
+            >
+          </li>
+          <li>
+            <a
+              href="https://github.com/realaios/merkaba-geoqode-lattice/blob/main/CONTRIBUTING.md"
+              >Contributing</a
+            >
+          </li>
+          <li>
+            <a href="https://github.com/realaios/merkaba-geoqode-lattice/issues"
+              >Issues</a
+            >
+          </li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h5>Support</h5>
+        <ul>
+          <li>
+            <a href="https://github.com/sponsors/realaios">GitHub Sponsors</a>
+          </li>
+          <li><a href="https://ko-fi.com/merkaba">Ko-fi</a></li>
+          <li><a href="mailto:bradleylevitan@gmail.com">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 Bradley Levitan · MIT License · Attribution Required</span>
+        <span>realaios.com · Open to the world ⧉</span>
+      </div>
+    </footer>
 
-<!-- ═══ CODE EXAMPLE ═══ -->
-<section>
-  <div class="container">
-    <div class="section-label">GeoQode — Resonance as Code</div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:start">
-      <div>
-        <p style="font-size:12px;color:var(--dim);line-height:1.9;margin-bottom:20px">
-          GeoQode is a programming language where every statement is a geometric
-          operation on the MERKABA lattice. Programs emit light frequencies,
-          detect dual-field resonance, and materialize quantum patterns.
-        </p>
-        <p style="font-size:12px;color:var(--dim);line-height:1.9">
-          It runs inside Storm AI agents for governance, auditability, and
-          certifiable reproducibility — identical inputs always produce
-          identical lattice outputs.
-        </p>
-      </div>
-      <div class="code-window">
-        <div class="code-titlebar">
-          <div class="dot dot-r"></div>
-          <div class="dot dot-y"></div>
-          <div class="dot dot-g"></div>
-          <span class="code-filename">animate-water.geo</span>
-        </div>
-        <div class="code-body">
-<span class="c-comment">// GeoQode — dimensional resonance program</span>
-<span class="c-kw">Program</span> <span class="c-fn">AnimateWater</span> {
-
-  <span class="c-comment">// Emit green spectrum at φ² harmonic</span>
-  Node.<span class="c-fn">emit</span>(<span class="c-op">Δ</span>[<span class="c-str">green</span>], <span class="c-op">Φ</span>[<span class="c-num">2</span>]);
-
-  <span class="c-comment">// Activate dual tetrahedron field</span>
-  Node.<span class="c-fn">detect</span>(<span class="c-op">⊗</span>, <span class="c-op">⧉</span>);
-
-  <span class="c-comment">// Materialize QBITS via 528Hz cymatic driver</span>
-  Water.<span class="c-fn">qbit</span>(~<span class="c-fn">wave</span>(<span class="c-num">528Hz</span>), <span class="c-op">Φ</span>[<span class="c-num">1</span>]);
-
-  Log(<span class="c-str">"QBITS materialized in water"</span>);
-}
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══ QUICK START ═══ -->
-<section id="quickstart">
-  <div class="container">
-    <div class="section-label">Quick Start</div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start">
-      <div class="quickstart-steps">
-        <div class="qs-step">
-          <div class="qs-num">1</div>
-          <div class="qs-content">
-            <div class="qs-title">Clone the repo</div>
-            <div class="qs-cmd">git clone https://github.com/realaios/merkaba-geoqode-lattice.git</div>
-          </div>
-        </div>
-        <div class="qs-step">
-          <div class="qs-num">2</div>
-          <div class="qs-content">
-            <div class="qs-title">Install & run</div>
-            <div class="qs-cmd">npm install &amp;&amp; node server.js</div>
-          </div>
-        </div>
-        <div class="qs-step">
-          <div class="qs-num">3</div>
-          <div class="qs-content">
-            <div class="qs-title">Open Cosmos Lab</div>
-            <div class="qs-cmd">open http://localhost:3000/cosmos-lab</div>
-          </div>
-        </div>
-        <div class="qs-step">
-          <div class="qs-num">4</div>
-          <div class="qs-content">
-            <div class="qs-title">Run a GeoQode program</div>
-            <div class="qs-cmd">node scripts/run.js examples/hello-geoqode.geo</div>
-          </div>
-        </div>
-        <div class="qs-step">
-          <div class="qs-num">5</div>
-          <div class="qs-content">
-            <div class="qs-title">Deploy your own Lab Agent</div>
-            <div class="qs-cmd">cd agent-lab &amp;&amp; npm run deploy</div>
-          </div>
-        </div>
-      </div>
-      <div>
-        <h3 style="font-size:12px;letter-spacing:3px;color:var(--cyan);text-transform:uppercase;margin-bottom:20px">What you get</h3>
-        <div style="display:flex;flex-direction:column;gap:12px">
-          <div style="display:flex;gap:12px;font-size:12px;color:var(--dim)"><span style="color:var(--green)">→</span> Full Cosmos Lab science universe (4 labs, 20+ experiments)</div>
-          <div style="display:flex;gap:12px;font-size:12px;color:var(--dim)"><span style="color:var(--green)">→</span> Multi-user WebSocket presence with Merkaba avatars</div>
-          <div style="display:flex;gap:12px;font-size:12px;color:var(--dim)"><span style="color:var(--green)">→</span> GeoQode language runtime (parser, AST, executor)</div>
-          <div style="display:flex;gap:12px;font-size:12px;color:var(--dim)"><span style="color:var(--green)">→</span> Autonomous agent workers (Cloudflare + Claude Opus 4.7)</div>
-          <div style="display:flex;gap:12px;font-size:12px;color:var(--dim)"><span style="color:var(--green)">→</span> Cosmos Infinite multiplayer space game</div>
-          <div style="display:flex;gap:12px;font-size:12px;color:var(--dim)"><span style="color:var(--green)">→</span> Node.js server with WebSocket, REST API, and static serving</div>
-          <div style="display:flex;gap:12px;font-size:12px;color:var(--dim)"><span style="color:var(--green)">→</span> D1 SQLite knowledge base + feature backlog</div>
-          <div style="display:flex;gap:12px;font-size:12px;color:var(--dim)"><span style="color:var(--green)">→</span> Full docs in docs/ folder</div>
-        </div>
-        <div style="margin-top:28px;padding:20px;border:1px solid var(--border);background:rgba(0,0,0,0.3)">
-          <div style="font-size:10px;letter-spacing:3px;color:var(--dim);margin-bottom:10px;text-transform:uppercase">Good first contributions</div>
-          <div style="font-size:12px;color:var(--dim);line-height:1.9">
-            · New Cosmos Lab experiment modules<br>
-            · Mobile UX improvements<br>
-            · GeoQode language extensions<br>
-            · Agent backlog features (agent-lab/schema.sql)<br>
-            · Documentation and examples
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══ DONATE ═══ -->
-<section id="donate">
-  <div class="container">
-    <div class="section-label">Support the project</div>
-    <p style="font-size:13px;color:var(--dim);max-width:600px;line-height:1.9;margin-bottom:40px">
-      This project is free and always will be. If MERKABA, Cosmos Lab, or GeoQode
-      is useful to you — a star, a contribution, or a small donation keeps the
-      compute running and new experiments appearing.
-    </p>
-    <div class="donate-grid">
-      <div class="donate-card">
-        <div class="donate-icon">⭐</div>
-        <div class="donate-name">Star on GitHub</div>
-        <div class="donate-desc">Helps others find the project and shows the community is alive</div>
-        <a class="donate-link" href="https://github.com/realaios/merkaba-geoqode-lattice">github.com/realaios →</a>
-      </div>
-      <div class="donate-card">
-        <div class="donate-icon">♥</div>
-        <div class="donate-name">GitHub Sponsors</div>
-        <div class="donate-desc">Monthly or one-time. Directly funds compute and agent API costs</div>
-        <a class="donate-link" href="https://github.com/sponsors/realaios">Sponsor Bradley →</a>
-      </div>
-      <div class="donate-card">
-        <div class="donate-icon">☕</div>
-        <div class="donate-name">Ko-fi</div>
-        <div class="donate-desc">One-click support. No account needed. Every cup counts</div>
-        <a class="donate-link" href="https://ko-fi.com/merkaba">ko-fi.com/merkaba →</a>
-      </div>
-      <div class="donate-card">
-        <div class="donate-icon">🔀</div>
-        <div class="donate-name">Contribute Code</div>
-        <div class="donate-desc">PRs welcome. See CONTRIBUTING.md for good first issues</div>
-        <a class="donate-link" href="https://github.com/realaios/merkaba-geoqode-lattice/blob/main/CONTRIBUTING.md">Read guide →</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══ FOOTER ═══ -->
-<footer>
-  <div class="footer-brand">
-    <h4>⧉ MERKABA · AIOS · GeoQode</h4>
-    <p>Open source AI governance runtime and interactive science platform.<br>
-    Built by Bradley Levitan · Storm AI · 2026</p>
-    <div style="margin-top:14px;font-size:11px;color:rgba(0,220,255,0.5);letter-spacing:1px">
-      Powered by AIOS / MERKABA480 — Founder: Bradley Levitan
-    </div>
-  </div>
-  <div class="footer-links">
-    <h5>Projects</h5>
-    <ul>
-      <li><a href="/cosmos-lab">Cosmos Lab</a></li>
-      <li><a href="/cosmos-infinite.html">Cosmos Infinite</a></li>
-      <li><a href="/lab">GeoQode Lab</a></li>
-      <li><a href="/games.html">Games</a></li>
-    </ul>
-  </div>
-  <div class="footer-links">
-    <h5>Source</h5>
-    <ul>
-      <li><a href="https://github.com/realaios/merkaba-geoqode-lattice">GitHub</a></li>
-      <li><a href="https://github.com/realaios/merkaba-geoqode-lattice/blob/main/LICENSE">License (MIT)</a></li>
-      <li><a href="https://github.com/realaios/merkaba-geoqode-lattice/blob/main/CONTRIBUTING.md">Contributing</a></li>
-      <li><a href="https://github.com/realaios/merkaba-geoqode-lattice/issues">Issues</a></li>
-    </ul>
-  </div>
-  <div class="footer-links">
-    <h5>Support</h5>
-    <ul>
-      <li><a href="https://github.com/sponsors/realaios">GitHub Sponsors</a></li>
-      <li><a href="https://ko-fi.com/merkaba">Ko-fi</a></li>
-      <li><a href="mailto:bradleylevitan@gmail.com">Contact</a></li>
-    </ul>
-  </div>
-  <div class="footer-bottom">
-    <span>© 2026 Bradley Levitan · MIT License · Attribution Required</span>
-    <span>realaios.com · Open to the world ⧉</span>
-  </div>
-</footer>
-
-<script>
-  // Copy install command on click
-  document.querySelector('.hero-install').addEventListener('click', function() {
-    var cmd = 'npm install @s4ai/merkaba-geoqode-lattice';
-    navigator.clipboard && navigator.clipboard.writeText(cmd).then(function() {
-      var hint = document.querySelector('.copy-hint');
-      hint.textContent = '✓ copied';
-      setTimeout(function() { hint.textContent = 'click to copy'; }, 2000);
-    });
-  });
-</script>
-</body>
+    <script>
+      // Copy install command on click
+      document
+        .querySelector(".hero-install")
+        .addEventListener("click", function () {
+          var cmd = "npm install @s4ai/merkaba-geoqode-lattice";
+          navigator.clipboard &&
+            navigator.clipboard.writeText(cmd).then(function () {
+              var hint = document.querySelector(".copy-hint");
+              hint.textContent = "✓ copied";
+              setTimeout(function () {
+                hint.textContent = "click to copy";
+              }, 2000);
+            });
+        });
+    </script>
+  </body>
 </html>
