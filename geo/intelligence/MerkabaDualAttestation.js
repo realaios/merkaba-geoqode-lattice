@@ -18,17 +18,20 @@
  *   A node that resonates at 1.0 from BOTH poles is in a genuinely
  *   QUANTIZED state â€” verified across the full 369â€“963 Hz band.
  *
- * Attestation Score Formula
- * â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
- *   separatorBand = ALPHA_HZ + OMEGA_HZ  (963 + 369 = 1332)
- *   attested963   = alpha.coherence Ã— ALPHA_HZ / separatorBand
- *   attested369   = omega.coherence Ã— OMEGA_HZ / separatorBand
- *   attestedScore = attested963 + attested369          (range: 0â€“1)
+ * Attestation Score Formula (implemented)
+ * -----------------------------------------
+ *   GOLDEN_BAND  = PHI + PSI = 1.618 + 1.414 = 3.032 (digit sum 8 = FOUNDATION_NODES)
+ *   ALPHA_WEIGHT = PHI / 3.032 ~0.5337
+ *   OMEGA_WEIGHT = PSI / 3.032 ~0.4663
+ *
+ *   attestedScore = alpha.coherence x (PHI/3.032) + omega.coherence x (PSI/3.032)
  *
  *   When alpha.coherence = omega.coherence = 1.0:
- *     attestedScore = 963/1332 + 369/1332 = 1332/1332 = 1.0 âœ… ABSOLUTE
+ *     attestedScore = 3.032/3.032 = 1.0 -- ABSOLUTE
  *
- *   Note: 1332 = 963+369, digit sum = 1+3+3+2 = 9 â€” the digital root holds.
+ *   Note: 963/369 Hz poles define the standing wave band conceptually.
+ *   PHI/PSI are the incommensurable geometric weights ensuring the two poles
+ *   can never coincide -- preventing echo-chamber false positives.
  *
  * 480-Dimension Quantization
  * â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
