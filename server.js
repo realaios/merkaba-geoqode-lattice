@@ -2668,6 +2668,19 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
       return json(res, 200, { ok: true, game: safeGame, leaderboard: board });
     }
 
+    // ── POST /api/pixel-event — local relay bridge ────────────────────────
+    if (pathname === "/api/pixel-event" && req.method === "POST") {
+      let body = "";
+      for await (const chunk of req) body += chunk;
+      try {
+        const event = JSON.parse(body);
+        _pixelBroadcast({ type: "pixel-event", event, ts: Date.now() }, null);
+        return json(res, 200, { ok: true });
+      } catch {
+        return json(res, 400, { ok: false, error: "invalid json" });
+      }
+    }
+
     // ── GET /api/plai/categories ──────────────────────────────────────────
     if (
       req.method === "GET" &&
@@ -5897,6 +5910,56 @@ _labWss.on("connection", (ws) => {
 });
 
 console.log("[CosmosLab] Lab WebSocket ready at /ws/lab");
+
+// ── Cosmos-Pixel WebSocket /ws/pixel ─────────────────────────────────────────
+const _pixelWss = new WebSocketServer({ server, path: "/ws/pixel" });
+const _pixelMap = new Map(); // id → { id, name, ts }
+let _agentStatuses = {};     // agentId → { status, ts }
+
+function _pixelBroadcast(msg, skipId) {
+  const data = JSON.stringify(msg);
+  _pixelWss.clients.forEach((c) => {
+    if (c.readyState === 1 && c._pixelId !== skipId) c.send(data);
+  });
+}
+
+_pixelWss.on("connection", (ws) => {
+  const id = Math.random().toString(36).slice(2, 10);
+  ws._pixelId = id;
+
+  ws.send(JSON.stringify({
+    type: "cp-welcome",
+    id,
+    count: _pixelMap.size,
+    agentStatuses: _agentStatuses,
+  }));
+
+  ws.on("message", (raw) => {
+    let msg;
+    try { msg = JSON.parse(raw); } catch (_) { return; }
+
+    if (msg.type === "cp-hello") {
+      const entry = { id, name: msg.name || ("PIXEL-" + id.slice(0, 4).toUpperCase()), ts: Date.now() };
+      _pixelMap.set(id, entry);
+      _pixelBroadcast({ type: "cp-presence", count: _pixelMap.size, joined: entry }, id);
+    } else if (msg.type === "pixel-relay") {
+      _pixelBroadcast({ type: "pixel-event", event: msg.event, ts: Date.now() }, null);
+    } else if (msg.type === "cp-agent-status") {
+      _agentStatuses[msg.agentId] = { status: msg.status, ts: Date.now() };
+      _pixelBroadcast({ type: "cp-agent-status", agentId: msg.agentId, status: msg.status }, null);
+    }
+  });
+
+  ws.on("close", () => {
+    const entry = _pixelMap.get(id);
+    _pixelMap.delete(id);
+    if (entry) _pixelBroadcast({ type: "cp-presence", count: _pixelMap.size, left: entry }, null);
+  });
+
+  ws.on("error", () => { _pixelMap.delete(id); });
+});
+
+console.log("[CosmosPixel] WebSocket ready at /ws/pixel");
 
 // ── AIOSmux DeployAgent — Autonomous Explorer ─────────────────────────────────
 // Orbits through the D480 lattice on a schedule. Appears as a gold orb to
