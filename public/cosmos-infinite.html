@@ -5841,30 +5841,9 @@
           document.body.appendChild(ban);
           this._ban = ban;
 
-          /* ── GRAND TOUR toggle button ── */
-          var btn = document.createElement("button");
-          btn.id = "tour-btn";
-          btn.textContent = "[ U ] GRAND TOUR";
-          btn.style.cssText =
-            "position:fixed;bottom:58px;left:50%;transform:translateX(-50%);z-index:9999;cursor:pointer;padding:5px 20px;background:rgba(0,10,30,0.78);border:1px solid rgba(0,212,255,0.32);border-radius:3px;color:#00d4ff;font-family:monospace;font-size:0.62rem;letter-spacing:0.22em;outline:none";
-          btn.addEventListener("click", function () {
-            if (self._active) self._stopTour();
-            else self._startTour();
-          });
-          btn.addEventListener("mouseenter", function () {
-            btn.style.background = "rgba(0,212,255,0.11)";
-            btn.style.borderColor = "rgba(0,212,255,0.72)";
-          });
-          btn.addEventListener("mouseleave", function () {
-            btn.style.background = self._active
-              ? "rgba(30,0,15,0.78)"
-              : "rgba(0,10,30,0.78)";
-            btn.style.borderColor = self._active
-              ? "rgba(255,107,157,0.45)"
-              : "rgba(0,212,255,0.32)";
-          });
-          document.body.appendChild(btn);
-          this._btn = btn;
+          /* ── GRAND TOUR: exposed as window._tourToggle, button lives in Options panel ── */
+          window._tourToggle = function() { if (self._active) self._stopTour(); else self._startTour(); };
+          this._btn = null;
 
           /* U = start / stop   Escape = stop */
           window.addEventListener("keydown", function (e) {
@@ -5893,7 +5872,7 @@
           this._segElapsed = 0;
           this._cv.style.opacity = "1";
           this._showBanner(this._waypoints[0].label, 0, this._waypoints.length);
-          var b = this._btn;
+          var b = document.getElementById('opt-tour-btn');
           if (b) {
             b.textContent = "[ U ] STOP TOUR";
             b.style.color = "#ff6b9d";
@@ -5906,7 +5885,7 @@
           this._active = false;
           this._cv.style.opacity = "0";
           this._ban.style.opacity = "0";
-          var b = this._btn;
+          var b = document.getElementById('opt-tour-btn');
           if (b) {
             b.textContent = "[ U ] GRAND TOUR";
             b.style.color = "#00d4ff";
@@ -55971,10 +55950,13 @@
           var THREE = AFRAME.THREE;
           var rig = document.getElementById("cameraRig");
           if (!rig || !rig.object3D) return;
-          var rp = rig.object3D.position.clone();
-          var shipQ = rig.object3D.getWorldQuaternion(new THREE.Quaternion());
-          var nd = new THREE.Vector3(0, 0, -1).applyQuaternion(shipQ).normalize();
-          var right = new THREE.Vector3(1, 0, 0).applyQuaternion(shipQ).normalize();
+          var rp = new THREE.Vector3(); rig.object3D.getWorldPosition(rp);
+          var _camEl = rig.querySelector('a-camera') || rig.querySelector('[camera]');
+          if (!_camEl || !_camEl.object3D) return;
+          var camQ = _camEl.object3D.getWorldQuaternion(new THREE.Quaternion());
+          var nd = new THREE.Vector3(0, 0, -1).applyQuaternion(camQ).normalize();
+          if (nd.lengthSq() < 0.001) return;
+          var right = new THREE.Vector3(1, 0, 0).applyQuaternion(camQ).normalize();
           var WING = 9; // matches wing-tip at s*9 in _makeFighterAvatar
           var orig1 = rp.clone().addScaledVector(right,  WING);
           var orig2 = rp.clone().addScaledVector(right, -WING);
@@ -56492,11 +56474,11 @@
         background: radial-gradient(circle, rgba(255, 160, 0, 0.6) 0%, rgba(255, 60, 0, 0.3) 70%);
         box-shadow: 0 0 28px rgba(255, 120, 0, 0.8);
       }
-      /* ── Warp button (purple/blue, sits above fire button) ── */
+      /* ── Warp button (purple/blue, left side — opposite fire button) ── */
       #warp-btn {
         position: fixed;
         bottom: 250px;
-        right: 38px;
+        left: 38px;
         width: 50px;
         height: 50px;
         border-radius: 50%;
@@ -56666,6 +56648,12 @@
       <div class="opts-row">
         <label class="opts-label" for="opt-hyperspace">Enable Warp Jump</label>
         <label class="opts-toggle"><input type="checkbox" id="opt-hyperspace" checked><span class="opts-slider"></span></label>
+      </div>
+      <h3>Navigation</h3>
+      <div class="opts-row" style="justify-content:space-between;align-items:center;">
+        <span class="opts-label">Grand Tour</span>
+        <button id="opt-tour-btn" onclick="if(window._tourToggle)window._tourToggle();"
+          style="background:rgba(0,10,30,0.78);border:1px solid rgba(0,212,255,0.32);border-radius:3px;color:#00d4ff;font-family:monospace;font-size:0.62rem;letter-spacing:0.08em;padding:4px 10px;cursor:pointer;outline:none;">[ U ] GRAND TOUR</button>
       </div>
     </div>
 
