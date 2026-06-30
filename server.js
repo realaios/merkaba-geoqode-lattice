@@ -132,6 +132,11 @@ const COSMOS_LAB_HTML_PATH = join(PUBLIC_DIR, "cosmos-lab.html");
 const COSMOS_LAB_HTML = existsSync(COSMOS_LAB_HTML_PATH)
   ? withMeta(readFileSync(COSMOS_LAB_HTML_PATH, "utf-8"))
   : null;
+
+const COSMOS_PIXEL_HTML_PATH = join(PUBLIC_DIR, "cosmos-pixel.html");
+const COSMOS_PIXEL_HTML = existsSync(COSMOS_PIXEL_HTML_PATH)
+  ? withMeta(readFileSync(COSMOS_PIXEL_HTML_PATH, "utf-8"))
+  : null;
 const COSMOS_LAB_LANDING_HTML_PATH = join(PUBLIC_DIR, "cosmos-lab-landing.html");
 const COSMOS_LAB_LANDING_HTML = existsSync(COSMOS_LAB_LANDING_HTML_PATH)
   ? withMeta(readFileSync(COSMOS_LAB_LANDING_HTML_PATH, "utf-8"))
@@ -3427,6 +3432,15 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
         return json(res, 404, { ok: false, error: "Cosmos Lab not found" });
       res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
       res.end(COSMOS_LAB_HTML);
+      return;
+    }
+
+    // ── GET /cosmos-pixel — AIOS Agent Lattice Visualizer ───────────────────
+    if (req.method === "GET" && (pathname === "/cosmos-pixel" || pathname === "/cosmos-pixel.html")) {
+      if (!COSMOS_PIXEL_HTML)
+        return json(res, 404, { ok: false, error: "Cosmos Pixel not found" });
+      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+      res.end(COSMOS_PIXEL_HTML);
       return;
     }
 
