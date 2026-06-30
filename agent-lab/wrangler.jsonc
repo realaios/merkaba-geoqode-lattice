@@ -16,7 +16,7 @@
   "migrations": [
     {
       "tag": "v1",
-      "new_classes": ["MerkabaLabAgent"],
+      "new_sqlite_classes": ["MerkabaLabAgent"],
     },
   ],
 
@@ -24,7 +24,7 @@
     {
       "binding": "DB",
       "database_name": "merkaba-lab-knowledge",
-      "database_id": "REPLACE_WITH_D1_DATABASE_ID",
+      "database_id": "2ff6331f-64df-464a-80d1-e264b2f7d1f9",
     },
   ],
 
