@@ -20,7 +20,7 @@ jobs:
 
       - run: npm ci
 
-      - run: npm test --if-present
+      - run: npx vitest run --passWithNoTests
 
       - name: Check server starts
         run: |
