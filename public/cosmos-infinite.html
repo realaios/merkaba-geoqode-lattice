@@ -51599,11 +51599,12 @@
             else { scene.object3D.remove(burst); geo.dispose(); mat.dispose(); }
           })();
         }
-        /* ---- FIRE-to-hyperspace: cosmos-fire event -------------------------
+        /* ---- WARP: cosmos-warp event (separate from fire/shoot) ---------------
            Raycasts along CRAFT nose (rig -Z), X-Wing targeting computer style.
            Pilot visor look has no effect — crosshair is always on the nose.
            Only fires when not already animating. */
-        window.addEventListener("cosmos-fire", function () {
+        window.addEventListener("cosmos-warp", function () {
+          if (!window._hyperspaceEnabled) return;
           if (window._cosmosAnimating) return;
           var scene = document.querySelector("a-scene");
           var cam = scene && scene.camera;
@@ -55255,6 +55256,7 @@
 
         /* ── Discovery feed ───────────────────────────────────────────────── */
         function _addFeedEntry(text, isAgent) {
+          if (!_feed) return;
           var d = document.createElement("div");
           d.className = "disc-entry" + (isAgent ? " agent" : "");
           d.textContent = text;
@@ -55376,12 +55378,13 @@
             var el = document.createElement("a-entity");
             _ghostScene.appendChild(el);
 
-            /* Wait one tick for el to be in scenegraph, then attach group */
+            /* Attach Three.js group — one path only to prevent double-add */
             var group = _makeFighterAvatar(color);
-            el.addEventListener("loaded", function onLoad() {
+            if (el.object3D) {
               el.object3D.add(group);
-            }, { once: true });
-            if (el.object3D) el.object3D.add(group);
+            } else {
+              el.addEventListener("loaded", function() { el.object3D.add(group); }, { once: true });
+            }
 
             /* Callsign label */
             var label = document.createElement("a-text");
@@ -55416,8 +55419,9 @@
 
         /* ── Interpolation loop — smooth ghost movement at 60 fps ─────────── */
         (function _interpLoop() {
-          var _t = Date.now() / 1000;
           var keys = Object.keys(_ghostMap);
+          if (keys.length) {
+            var _t = Date.now() / 1000;
           for (var i = 0; i < keys.length; i++) {
             var g = _ghostMap[keys[i]];
             if (!g.group) continue;
@@ -55450,12 +55454,22 @@
               gr._corona.rotation.z = _t * 2.2;
             }
           }
+          } // end if keys.length
           requestAnimationFrame(_interpLoop);
         })();
 
         function _removeGhost(id) {
           var g = _ghostMap[id];
           if (!g) return;
+          if (g.group) {
+            g.group.traverse(function(obj) {
+              if (obj.geometry) obj.geometry.dispose();
+              if (obj.material) {
+                if (Array.isArray(obj.material)) { obj.material.forEach(function(m) { m.dispose(); }); }
+                else { obj.material.dispose(); }
+              }
+            });
+          }
           if (g.el && g.el.parentNode) g.el.parentNode.removeChild(g.el);
           delete _ghostMap[id];
           _updateScoreboard();
@@ -55469,7 +55483,7 @@
             : Object.keys(_ghostMap).reduce(function (n, k) {
                 return n + (_ghostMap[k].isAgent ? 0 : 1);
               }, 0);
-          _explorerBadge.textContent = humans;
+          if (_explorerBadge) _explorerBadge.textContent = humans;
         }
 
         /* ── Stale ghost cleanup ──────────────────────────────────────────── */
@@ -55558,9 +55572,9 @@
           _beaconEl = container;
 
           /* Update banner */
-          _beaconLabel.textContent =
+          if (_beaconLabel) _beaconLabel.textContent =
             beaconData.label + " \u2022 " + beaconData.freq + " Hz";
-          _beaconBanner.style.display = "block";
+          if (_beaconBanner) _beaconBanner.style.display = "block";
 
           _addFeedEntry(
             "\u26a1 BEACON -> " +
@@ -55661,16 +55675,17 @@
         }
 
         /* ── Position sender ──────────────────────────────────────────────── */
+        var _sendRigEl = null, _sendDuEl = null;
         function _sendPosition() {
           if (!_ws || _ws.readyState !== 1) return;
-          var rig = document.getElementById("cameraRig");
+          var rig = _sendRigEl || (_sendRigEl = document.getElementById("cameraRig"));
           if (!rig || !rig.object3D) return;
           var pos = rig.object3D.position;
           var _THREE = AFRAME.THREE;
           var _q = rig.object3D.getWorldQuaternion(new _THREE.Quaternion());
 
           /* Get current galaxy geoCode from cosmos component if available */
-          var du = document.querySelector("[distant-universe]");
+          var du = _sendDuEl || (_sendDuEl = document.querySelector("[distant-universe]"));
           var geoCode = "";
           var freq = 528;
           if (du && du.components && du.components["distant-universe"]) {
@@ -55681,14 +55696,16 @@
             }
           }
 
-          _ws.send(
-            JSON.stringify({
-              type: "pos",
-              x: pos.x, y: pos.y, z: pos.z,
-              qx: _q.x, qy: _q.y, qz: _q.z, qw: _q.w,
-              geoCode: geoCode, freq: freq,
-            }),
-          );
+          try {
+            _ws.send(
+              JSON.stringify({
+                type: "pos",
+                x: pos.x, y: pos.y, z: pos.z,
+                qx: _q.x, qy: _q.y, qz: _q.z, qw: _q.w,
+                geoCode: geoCode, freq: freq,
+              }),
+            );
+          } catch(_) {}
         }
 
         /* ── WebSocket connect / reconnect ────────────────────────────────── */
@@ -55721,9 +55738,10 @@
             switch (msg.type) {
               case "welcome":
                 _myId = msg.id;
-                /* Wire callsign input */
+                /* Wire callsign input — guard so reconnects don't stack listeners */
                 var _csIn = document.getElementById("opt-callsign");
-                if (_csIn) {
+                if (_csIn && !_csIn._wired) {
+                  _csIn._wired = true;
                   if (!_csIn.value) _csIn.value = _myCallsign;
                   else _myCallsign = _csIn.value;
                   _csIn.addEventListener("input", function() {
@@ -55731,6 +55749,8 @@
                     if (_ws && _ws.readyState === 1) _ws.send(JSON.stringify({ type: "callsign", name: _myCallsign }));
                     _updateFighterHUD();
                   });
+                } else if (_csIn && !_csIn.value) {
+                  _csIn.value = _myCallsign;
                 }
                 /* Send callsign after welcome */
                 if (_ws && _ws.readyState === 1) _ws.send(JSON.stringify({ type: "callsign", name: _myCallsign }));
@@ -56472,6 +56492,33 @@
         background: radial-gradient(circle, rgba(255, 160, 0, 0.6) 0%, rgba(255, 60, 0, 0.3) 70%);
         box-shadow: 0 0 28px rgba(255, 120, 0, 0.8);
       }
+      /* ── Warp button (purple/blue, sits above fire button) ── */
+      #warp-btn {
+        position: fixed;
+        bottom: 250px;
+        right: 38px;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(120, 0, 255, 0.35) 0%, rgba(40, 0, 180, 0.15) 70%);
+        border: 2px solid rgba(160, 80, 255, 0.7);
+        color: #bb88ff;
+        font-size: 22px;
+        cursor: pointer;
+        z-index: 4500;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 0 14px rgba(120, 0, 255, 0.4), inset 0 0 8px rgba(80, 0, 200, 0.15);
+        font-family: sans-serif;
+        line-height: 1;
+        user-select: none;
+        transition: background 0.1s, box-shadow 0.1s;
+      }
+      #warp-btn:active {
+        background: radial-gradient(circle, rgba(180, 80, 255, 0.6) 0%, rgba(80, 0, 220, 0.3) 70%);
+        box-shadow: 0 0 28px rgba(160, 80, 255, 0.8);
+      }
     </style>
 
     <!-- Mobile joystick -->
@@ -56483,6 +56530,8 @@
 
     <!-- Fire / Select button (above left joystick, touch only) -->
     <button id="fire-btn" title="Fire / Select">&#128165;</button>
+    <!-- Warp / Hyperspace button (separate from fire, touch only) -->
+    <button id="warp-btn" title="Warp Jump">&#x26A1;</button>
 
     <!-- Right joystick: altitude + yaw -->
     <div id="mobile-joy-wrap2">
@@ -56599,8 +56648,8 @@
       </div>
       <h3>Speed</h3>
       <div id="opts-speed-type">
-        <button class="dash-type-btn active" data-speed="slow">Slow</button>
-        <button class="dash-type-btn" data-speed="medium">Medium</button>
+        <button class="dash-type-btn" data-speed="slow">Slow</button>
+        <button class="dash-type-btn active" data-speed="medium">Medium</button>
         <button class="dash-type-btn" data-speed="fast">Fast</button>
       </div>
       <div class="opts-row" style="margin-top:8px;">
@@ -56612,6 +56661,11 @@
         <label class="opts-label" for="opt-callsign">Fighter Name</label>
         <input id="opt-callsign" type="text" maxlength="12" placeholder="PILOT-XXX"
           style="background:rgba(0,0,0,0.55);border:1.5px solid rgba(0,212,255,0.5);border-radius:6px;color:#00d4ff;font-size:13px;padding:4px 8px;width:96px;outline:none;font-family:monospace;">
+      </div>
+      <h3>Hyperspace</h3>
+      <div class="opts-row">
+        <label class="opts-label" for="opt-hyperspace">Enable Warp Jump</label>
+        <label class="opts-toggle"><input type="checkbox" id="opt-hyperspace" checked><span class="opts-slider"></span></label>
       </div>
     </div>
 
@@ -56655,6 +56709,7 @@
         var joyStick2 = document.getElementById("mobile-joy-stick2");
         var crosshair = document.getElementById("crosshair");
         var fireBtn = document.getElementById("fire-btn");
+        var warpBtn = document.getElementById("warp-btn");
         if (!joyWrap || !joyStick) return;
 
         /* Show joystick only on touch-capable devices */
@@ -56663,6 +56718,7 @@
           joyWrap.style.display = "block";
           if (joyWrap2) joyWrap2.style.display = "block";
           if (fireBtn) fireBtn.style.setProperty("display", "flex", "important");
+          if (warpBtn) warpBtn.style.setProperty("display", "flex", "important");
           /* Disable look-controls touch so joysticks don't conflict */
           var _disableLC = function () {
             var _camEl = document.querySelector("[look-controls]");
@@ -56795,24 +56851,31 @@
         }
 
         /* ── RAF: apply both joysticks to cameraRig ── */
+        var _mlRigCache = null, _mlCamCache = null;
+        var _mlFwd = null, _mlCraftUp = null, _mlRightVec = null;
+        var _mlYawQ = null, _mlPitchQ = null;
         function mobileLoop() {
-          var rig = document.getElementById("cameraRig");
-          var camEl = document.querySelector("[look-controls]");
+          var rig = _mlRigCache || (_mlRigCache = document.getElementById("cameraRig"));
+          var camEl = _mlCamCache || (_mlCamCache = document.querySelector("[look-controls]"));
 
           if (rig && rig.object3D && camEl && camEl.object3D) {
+            var THREE = AFRAME.THREE;
+            /* Lazily init reusable math objects (avoids per-frame allocation) */
+            if (!_mlFwd) {
+              _mlFwd = new THREE.Vector3(); _mlCraftUp = new THREE.Vector3();
+              _mlRightVec = new THREE.Vector3(); _mlYawQ = new THREE.Quaternion(); _mlPitchQ = new THREE.Quaternion();
+            }
             var dist = rig.object3D.position.length();
             /* Flat speed across the universe. Gradient only if _speedGradient ON. */
             var _sm = window._speedSetting === "fast" ? 10 : window._speedSetting === "medium" ? 4 : 1;
             var SPEED = _sm * (window._speedGradient
               ? (dist >= 16000 ? 400 : dist >= 8000 ? 200 : dist >= 3000 ? 80 : 20)
               : 20);
-            var THREE = AFRAME.THREE;
 
             /* ── Left stick: thrust along craft nose + yaw around craft up ── */
             if (joyActive && (Math.abs(joyDX) > DEAD || Math.abs(joyDY) > DEAD)) {
               /* Craft nose = rig -Z. Pilot look (VR or mouse) never steers. */
-              var fwd = new THREE.Vector3(0, 0, -1).applyQuaternion(rig.object3D.quaternion);
-              fwd.normalize();
+              var fwd = _mlFwd.set(0, 0, -1).applyQuaternion(rig.object3D.quaternion).normalize();
               /* push up (joyDY < 0 on screen) = fly forward — standard mobile stick */
               var _thrRaw = (window._inv_thrust ? joyDY : -joyDY);
               /* power 0.5: reaches ~71% thrust at 50% stick — sensitive, hits max sooner */
@@ -56823,8 +56886,8 @@
                 var _yawRaw = (window._inv_yaw ? joyDX : -joyDX);
                 /* exponential curve: less sensitive near centre, same max at edges */
                 var _yw = Math.sign(_yawRaw) * Math.pow(Math.abs(_yawRaw), 1.8);
-                var _camYawQuat = camEl.object3D.getWorldQuaternion(new THREE.Quaternion());
-                var _craftUp = new THREE.Vector3(0, 1, 0).applyQuaternion(_camYawQuat).normalize();
+                camEl.object3D.getWorldQuaternion(_mlYawQ);
+                var _craftUp = _mlCraftUp.set(0, 1, 0).applyQuaternion(_mlYawQ).normalize();
                 rig.object3D.rotateOnWorldAxis(_craftUp, _yw * 0.032);
               }
             }
@@ -56839,8 +56902,8 @@
               if (Math.abs(joy2DY) > DEAD) {
                 var _pit = (window._inv_pitch ? -joy2DY : joy2DY);
                 _pit = Math.sign(_pit) * Math.pow(Math.abs(_pit), 1.8);
-                var _camPitchQuat = camEl.object3D.getWorldQuaternion(new THREE.Quaternion());
-                var _rightVec = new THREE.Vector3(1, 0, 0).applyQuaternion(_camPitchQuat).normalize();
+                camEl.object3D.getWorldQuaternion(_mlPitchQ);
+                var _rightVec = _mlRightVec.set(1, 0, 0).applyQuaternion(_mlPitchQ).normalize();
                 rig.object3D.rotateOnWorldAxis(_rightVec, _pit * 0.064);
                 /* zero out pitchObject so look-controls stale offset doesn't stack */
                 if (lc && lc.pitchObject) lc.pitchObject.rotation.x = 0;
@@ -56874,6 +56937,16 @@
               o.start(); o.stop(ac.currentTime + 0.25);
             } catch (err) {}
             window.dispatchEvent(new CustomEvent("cosmos-fire"));
+          }, { passive: false });
+        }
+
+        /* ── Warp / Hyperspace button ── */
+        if (warpBtn) {
+          warpBtn.addEventListener("touchstart", function (e) {
+            e.preventDefault();
+            warpBtn.style.boxShadow = "0 0 40px rgba(160,80,255,0.95)";
+            setTimeout(function () { warpBtn.style.boxShadow = ""; }, 150);
+            window.dispatchEvent(new CustomEvent("cosmos-warp"));
           }, { passive: false });
         }
 
@@ -57709,8 +57782,8 @@
           });
         });
 
-        /* Speed setting — default Slow; gradient multiplied by setting */
-        window._speedSetting = "slow";
+        /* Speed setting — default Medium; gradient multiplied by setting */
+        window._speedSetting = "medium";
         window._speedGradient = false;
         var speedBtns = document.querySelectorAll("#opts-speed-type [data-speed]");
         speedBtns.forEach(function (btn) {
@@ -57724,6 +57797,10 @@
         if (gradCb) gradCb.addEventListener("change", function () {
           window._speedGradient = gradCb.checked;
         });
+        /* Hyperspace toggle */
+        window._hyperspaceEnabled = true;
+        var hypCb = document.getElementById("opt-hyperspace");
+        if (hypCb) hypCb.addEventListener("change", function() { window._hyperspaceEnabled = hypCb.checked; });
         /* ---- Full-screen toggle ------------------------------------------ */
         var fsBtn = document.getElementById("fullscreen-btn");
         if (fsBtn) {
