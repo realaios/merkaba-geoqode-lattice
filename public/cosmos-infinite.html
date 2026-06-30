@@ -4346,6 +4346,18 @@
         initAudio();
         /* playEntry(); — frequency tones silenced */
         if (window._introStopAnim) window._introStopAnim();
+        /* Request fullscreen + landscape lock on mobile */
+        var _fsEl = document.documentElement;
+        var _fsReq = _fsEl.requestFullscreen || _fsEl.webkitRequestFullscreen || _fsEl.mozRequestFullScreen;
+        if (_fsReq) {
+          Promise.resolve(_fsReq.call(_fsEl)).then(function() {
+            if (screen.orientation && screen.orientation.lock) {
+              screen.orientation.lock('landscape').catch(function(){});
+            }
+          }).catch(function(){});
+        } else if (screen.orientation && screen.orientation.lock) {
+          screen.orientation.lock('landscape').catch(function(){});
+        }
         var modal = document.getElementById("introModal");
         modal.classList.add("fade-out");
         setTimeout(function () {
@@ -55577,6 +55589,9 @@
         function _updateScoreboard() {
           if (!_dfsListEl) _initHudRefs();
           if (!_dfsListEl) return;
+          var _online = Object.keys(_ghostMap).length + 1;
+          var _titleEl = document.getElementById("dfs-title");
+          if (_titleEl) _titleEl.innerHTML = '&#x1F3C6; LEADERBOARD &nbsp;<span style="font-size:9px;opacity:0.75;">&#x1F7E2;&nbsp;' + _online + ' online</span>';
           var rows = [{ id: "me", name: _myCallsign, kills: _myKills, score: _myScore, me: true }];
           Object.keys(_ghostMap).forEach(function(id) {
             var g = _ghostMap[id];
@@ -55800,14 +55815,21 @@
                 break;
 
               case "fire": {
-                /* Render incoming laser from another pilot */
+                /* Render incoming double laser from another pilot */
                 var THREE = AFRAME.THREE;
                 var _fScene = document.querySelector("a-scene");
                 var _fOrig = new THREE.Vector3(+msg.ox||0, +msg.oy||0, +msg.oz||0);
-                var _fDir = new THREE.Vector3(+msg.dx||0, +msg.dy||0, +msg.dz||0).normalize();
-                var _fDest = _fOrig.clone().addScaledVector(_fDir, 2000);
+                var _fDir  = new THREE.Vector3(+msg.dx||0, +msg.dy||0, +msg.dz||0).normalize();
                 if (_fScene && typeof _spawnLaser !== "undefined") {
-                  _spawnLaser(_fOrig, _fDest, _fScene, THREE);
+                  if (msg.rx != null) {
+                    var _fRight = new THREE.Vector3(+msg.rx, +msg.ry, +msg.rz).normalize();
+                    var _fo1 = _fOrig.clone().addScaledVector(_fRight,  9);
+                    var _fo2 = _fOrig.clone().addScaledVector(_fRight, -9);
+                    _spawnLaser(_fo1, _fo1.clone().addScaledVector(_fDir, 2000), _fScene, THREE);
+                    _spawnLaser(_fo2, _fo2.clone().addScaledVector(_fDir, 2000), _fScene, THREE);
+                  } else {
+                    _spawnLaser(_fOrig, _fOrig.clone().addScaledVector(_fDir, 2000), _fScene, THREE);
+                  }
                 }
                 /* Check if our rig is near this ray */
                 var _myRig = document.getElementById("cameraRig");
@@ -55816,7 +55838,7 @@
                   var _toRig = new THREE.Vector3().subVectors(_rp2, _fOrig);
                   var _t = _toRig.dot(_fDir);
                   var _closest = new THREE.Vector3().copy(_fOrig).addScaledVector(_fDir, Math.max(0, _t));
-                  if (_closest.distanceTo(_rp2) < 8 && _t > 0 && _t < 2000) {
+                  if (_closest.distanceTo(_rp2) < 12 && _t > 0 && _t < 2000) {
                     /* We got hit — send hit notification */
                     if (_ws && _ws.readyState === 1) _ws.send(JSON.stringify({ type: "hit", targetId: _myId }));
                   }
@@ -55917,18 +55939,29 @@
           if (_now - _lastFire < 400) return; // 400ms fire cooldown
           _lastFire = _now;
           _playSfx('fire');
-          if (!_ws || _ws.readyState !== 1) return;
           var THREE = AFRAME.THREE;
           var rig = document.getElementById("cameraRig");
           if (!rig || !rig.object3D) return;
           var rp = rig.object3D.position.clone();
-          var nd = new THREE.Vector3(0, 0, -1)
-            .applyQuaternion(rig.object3D.getWorldQuaternion(new THREE.Quaternion()))
-            .normalize();
-          /* Broadcast fire */
-          _ws.send(JSON.stringify({ type: "fire",
-            ox: rp.x, oy: rp.y, oz: rp.z,
-            dx: nd.x, dy: nd.y, dz: nd.z }));
+          var shipQ = rig.object3D.getWorldQuaternion(new THREE.Quaternion());
+          var nd = new THREE.Vector3(0, 0, -1).applyQuaternion(shipQ).normalize();
+          var right = new THREE.Vector3(1, 0, 0).applyQuaternion(shipQ).normalize();
+          var WING = 9; // matches wing-tip at s*9 in _makeFighterAvatar
+          var orig1 = rp.clone().addScaledVector(right,  WING);
+          var orig2 = rp.clone().addScaledVector(right, -WING);
+          /* Spawn local lasers so the shooter sees their own beams */
+          var _lScene = document.querySelector("a-scene");
+          if (_lScene && typeof _spawnLaser !== "undefined") {
+            _spawnLaser(orig1, orig1.clone().addScaledVector(nd, 2000), _lScene, THREE);
+            _spawnLaser(orig2, orig2.clone().addScaledVector(nd, 2000), _lScene, THREE);
+          }
+          /* Broadcast fire — carry both wing origins via right vector */
+          if (_ws && _ws.readyState === 1) {
+            _ws.send(JSON.stringify({ type: "fire",
+              ox: rp.x, oy: rp.y, oz: rp.z,
+              dx: nd.x, dy: nd.y, dz: nd.z,
+              rx: right.x, ry: right.y, rz: right.z }));
+          }
           /* Local hit detection against visible ghosts */
           Object.keys(_ghostMap).forEach(function(id) {
             var g = _ghostMap[id];
@@ -55937,8 +55970,8 @@
             var _t = _toG.dot(nd);
             if (_t <= 0) return;
             var _closest = rp.clone().addScaledVector(nd, _t);
-            if (_closest.distanceTo(g.targetPos) < 8) {
-              _ws.send(JSON.stringify({ type: "hit", targetId: id }));
+            if (_closest.distanceTo(g.targetPos) < 12) {
+              if (_ws && _ws.readyState === 1) _ws.send(JSON.stringify({ type: "hit", targetId: id }));
             }
           });
         });
