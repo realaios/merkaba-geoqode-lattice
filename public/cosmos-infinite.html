@@ -51537,6 +51537,7 @@
           var geo = new THREE.BufferGeometry().setFromPoints(pts);
           var mat = new THREE.LineBasicMaterial({ color: 0xFF2200, transparent: true, opacity: 1 });
           var line = new THREE.Line(geo, mat);
+          line.frustumCulled = false;
           scene.object3D.add(line);
           var t0 = performance.now();
           (function fadeLaser() {
@@ -51578,107 +51579,6 @@
             else { scene.object3D.remove(burst); geo.dispose(); mat.dispose(); }
           })();
         }
-        /* ---- WARP: cosmos-warp event (separate from fire/shoot) ---------------
-           Raycasts along CRAFT nose (rig -Z), X-Wing targeting computer style.
-           Pilot visor look has no effect — crosshair is always on the nose.
-           Only fires when not already animating. */
-        window.addEventListener("cosmos-warp", function () {
-          if (!window._hyperspaceEnabled) return;
-          if (window._cosmosAnimating) return;
-          var scene = document.querySelector("a-scene");
-          var cam = scene && scene.camera;
-          var rig = document.getElementById("cameraRig");
-          if (!cam || !rig || !rig.object3D) return;
-          var THREE = AFRAME.THREE;
-          /* Craft nose direction — NOT camera/HMD look direction */
-          var noseDir = new THREE.Vector3(0, 0, -1).applyQuaternion(
-            rig.object3D.getWorldQuaternion(new THREE.Quaternion()),
-          ).normalize();
-          var raycaster = new THREE.Raycaster();
-          raycaster.set(rig.object3D.position.clone(), noseDir);
-          /* Check Space Invaders first — a direct hit destroys the invader, skipping hyperspace */
-          if (window._siWall && window._siWall.meshes) {
-            for (var _si = 0; _si < window._siWall.meshes.length; _si++) {
-              var _siHits = raycaster.intersectObject(window._siWall.meshes[_si], false);
-              if (_siHits.length) {
-                var _iid = _siHits[0].instanceId;
-                var _iKey = window._siWall.i2inv[_si][_iid];
-                var _inv = (_iKey != null) && window._siWall.invMap[_iKey];
-                if (_inv && _inv.alive) {
-                  _inv.alive = false;
-                  var _dd = new THREE.Object3D();
-                  _dd.scale.set(0, 0, 0);
-                  _dd.updateMatrix();
-                  for (var _pi = _inv.start; _pi < _inv.start + _inv.count; _pi++) {
-                    window._siWall.meshes[_si].setMatrixAt(_pi, _dd.matrix);
-                  }
-                  window._siWall.meshes[_si].instanceMatrix.needsUpdate = true;
-                  _spawnExplosion(_siHits[0].point, scene, THREE);
-                  return;
-                }
-              }
-            }
-          }
-          /* Find nearest galaxy anchor (Merkaba Dot) within 3° aim cone */
-          var _gData = window._galaxyData;
-          var _bestAnchor = null;
-          var _bestCos = Math.cos(3 * Math.PI / 180);
-          if (_gData) {
-            var _rp = rig.object3D.position;
-            for (var _gi = 0; _gi < _gData.length; _gi++) {
-              var _gp = _gData[_gi].pos;
-              var _gv = new THREE.Vector3(_gp[0] - _rp.x, _gp[1] - _rp.y, _gp[2] - _rp.z);
-              var _gd = _gv.length();
-              if (_gd < 1) continue;
-              var _ac = _gv.normalize().dot(noseDir);
-              if (_ac > _bestCos) { _bestCos = _ac; _bestAnchor = { pos: _gp, dist: _gd }; }
-            }
-          }
-          if (!_bestAnchor) {
-            /* No Merkaba Dot in aim — warp has no target, do nothing */
-            return;
-          }
-          /* Hyperspace to the targeted Merkaba Dot */
-          var _ap = _bestAnchor.pos;
-          var pt = new THREE.Vector3(_ap[0], _ap[1], _ap[2]);
-          var dir = new THREE.Vector3().subVectors(rig.object3D.position, pt).normalize();
-          var backoff = Math.max(5, _bestAnchor.dist * 0.25);
-          var targetPos = {
-            x: pt.x + dir.x * backoff,
-            y: pt.y + dir.y * backoff + 1.6,
-            z: pt.z + dir.z * backoff,
-          };
-          var td = Math.sqrt(
-            targetPos.x * targetPos.x +
-              targetPos.y * targetPos.y +
-              targetPos.z * targetPos.z,
-          );
-          if (td < MIN_DIST || td > MAX_DIST) {
-            var sf = Math.max(MIN_DIST, Math.min(MAX_DIST, td)) / (td || 1);
-            targetPos.x *= sf;
-            targetPos.y *= sf;
-            targetPos.z *= sf;
-          }
-          window._cosmosAnimating = true;
-          var sx = rig.object3D.position.x,
-            sy = rig.object3D.position.y,
-            sz = rig.object3D.position.z;
-          var t0 = performance.now();
-          (function step() {
-            var t = Math.min(1.0, (performance.now() - t0) / 900);
-            var e2 = t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-            rig.object3D.position.set(
-              sx + (targetPos.x - sx) * e2,
-              sy + (targetPos.y - sy) * e2,
-              sz + (targetPos.z - sz) * e2,
-            );
-            window._updateScaleHUD(rig.object3D.position.length(), null);
-            if (t < 1.0) requestAnimationFrame(step);
-            else window._cosmosAnimating = false;
-          })();
-          if (typeof window.firePulse === "function") window.firePulse();
-        });
-
         /* ---- Initial HUD + 2-second refresh -------------------------------- */
         setTimeout(function () {
           window._updateScaleHUD(null, null);
@@ -55960,11 +55860,8 @@
           var orig1 = rp.clone().addScaledVector(right,  WING);
           var orig2 = rp.clone().addScaledVector(right, -WING);
           /* Spawn local lasers so the shooter sees their own beams */
-          var _lScene = document.querySelector("a-scene");
-          if (_lScene && typeof _spawnLaser !== "undefined") {
-            _spawnLaser(orig1, orig1.clone().addScaledVector(nd, 2000), _lScene, THREE);
-            _spawnLaser(orig2, orig2.clone().addScaledVector(nd, 2000), _lScene, THREE);
-          }
+          _spawnLaser(orig1, orig1.clone().addScaledVector(nd, 2000), _lScn, THREE);
+          _spawnLaser(orig2, orig2.clone().addScaledVector(nd, 2000), _lScn, THREE);
           /* Broadcast fire — carry both wing origins via right vector */
           if (_ws && _ws.readyState === 1) {
             _ws.send(JSON.stringify({ type: "fire",
@@ -56473,33 +56370,6 @@
         background: radial-gradient(circle, rgba(255, 160, 0, 0.6) 0%, rgba(255, 60, 0, 0.3) 70%);
         box-shadow: 0 0 28px rgba(255, 120, 0, 0.8);
       }
-      /* ── Warp button (purple/blue, left side — opposite fire button) ── */
-      #warp-btn {
-        position: fixed;
-        bottom: 250px;
-        left: 38px;
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        background: radial-gradient(circle, rgba(120, 0, 255, 0.35) 0%, rgba(40, 0, 180, 0.15) 70%);
-        border: 2px solid rgba(160, 80, 255, 0.7);
-        color: #bb88ff;
-        font-size: 22px;
-        cursor: pointer;
-        z-index: 4500;
-        display: none;
-        align-items: center;
-        justify-content: center;
-        box-shadow: 0 0 14px rgba(120, 0, 255, 0.4), inset 0 0 8px rgba(80, 0, 200, 0.15);
-        font-family: sans-serif;
-        line-height: 1;
-        user-select: none;
-        transition: background 0.1s, box-shadow 0.1s;
-      }
-      #warp-btn:active {
-        background: radial-gradient(circle, rgba(180, 80, 255, 0.6) 0%, rgba(80, 0, 220, 0.3) 70%);
-        box-shadow: 0 0 28px rgba(160, 80, 255, 0.8);
-      }
     </style>
 
     <!-- Mobile joystick -->
@@ -56511,8 +56381,6 @@
 
     <!-- Fire / Select button (above left joystick, touch only) -->
     <button id="fire-btn" title="Fire / Select">&#128165;</button>
-    <!-- Warp / Hyperspace button (separate from fire, touch only) -->
-    <button id="warp-btn" title="Warp Jump">&#x26A1;</button>
 
     <!-- Right joystick: altitude + yaw -->
     <div id="mobile-joy-wrap2">
@@ -56643,11 +56511,6 @@
         <input id="opt-callsign" type="text" maxlength="12" placeholder="PILOT-XXX"
           style="background:rgba(0,0,0,0.55);border:1.5px solid rgba(0,212,255,0.5);border-radius:6px;color:#00d4ff;font-size:13px;padding:4px 8px;width:96px;outline:none;font-family:monospace;">
       </div>
-      <h3>Hyperspace</h3>
-      <div class="opts-row">
-        <label class="opts-label" for="opt-hyperspace">Enable Warp Jump</label>
-        <label class="opts-toggle"><input type="checkbox" id="opt-hyperspace" checked><span class="opts-slider"></span></label>
-      </div>
       <h3>Navigation</h3>
       <div class="opts-row" style="justify-content:space-between;align-items:center;">
         <span class="opts-label">Grand Tour</span>
@@ -56696,7 +56559,6 @@
         var joyStick2 = document.getElementById("mobile-joy-stick2");
         var crosshair = document.getElementById("crosshair");
         var fireBtn = document.getElementById("fire-btn");
-        var warpBtn = document.getElementById("warp-btn");
         if (!joyWrap || !joyStick) return;
 
         /* Show joystick only on touch-capable devices */
@@ -56705,7 +56567,6 @@
           joyWrap.style.display = "block";
           if (joyWrap2) joyWrap2.style.display = "block";
           if (fireBtn) fireBtn.style.setProperty("display", "flex", "important");
-          if (warpBtn) warpBtn.style.setProperty("display", "flex", "important");
           /* Disable look-controls touch so joysticks don't conflict */
           var _disableLC = function () {
             var _camEl = document.querySelector("[look-controls]");
@@ -56924,16 +56785,6 @@
               o.start(); o.stop(ac.currentTime + 0.25);
             } catch (err) {}
             window.dispatchEvent(new CustomEvent("cosmos-fire"));
-          }, { passive: false });
-        }
-
-        /* ── Warp / Hyperspace button ── */
-        if (warpBtn) {
-          warpBtn.addEventListener("touchstart", function (e) {
-            e.preventDefault();
-            warpBtn.style.boxShadow = "0 0 40px rgba(160,80,255,0.95)";
-            setTimeout(function () { warpBtn.style.boxShadow = ""; }, 150);
-            window.dispatchEvent(new CustomEvent("cosmos-warp"));
           }, { passive: false });
         }
 
@@ -57784,10 +57635,6 @@
         if (gradCb) gradCb.addEventListener("change", function () {
           window._speedGradient = gradCb.checked;
         });
-        /* Hyperspace toggle */
-        window._hyperspaceEnabled = true;
-        var hypCb = document.getElementById("opt-hyperspace");
-        if (hypCb) hypCb.addEventListener("change", function() { window._hyperspaceEnabled = hypCb.checked; });
         /* ---- Full-screen toggle ------------------------------------------ */
         var fsBtn = document.getElementById("fullscreen-btn");
         if (fsBtn) {
