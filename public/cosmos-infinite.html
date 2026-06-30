@@ -51613,7 +51613,6 @@
                     window._siWall.meshes[_si].setMatrixAt(_pi, _dd.matrix);
                   }
                   window._siWall.meshes[_si].instanceMatrix.needsUpdate = true;
-                  _spawnLaser(rig.object3D.position, _siHits[0].point, scene, THREE);
                   _spawnExplosion(_siHits[0].point, scene, THREE);
                   return;
                 }
@@ -51636,8 +51635,7 @@
             }
           }
           if (!_bestAnchor) {
-            /* No Merkaba Dot in aim — fire laser into open space */
-            _spawnLaser(rig.object3D.position, rig.object3D.position.clone().addScaledVector(noseDir, 2000), scene, THREE);
+            /* No Merkaba Dot in aim — warp has no target, do nothing */
             return;
           }
           /* Hyperspace to the targeted Merkaba Dot */
@@ -55951,9 +55949,10 @@
           var rig = document.getElementById("cameraRig");
           if (!rig || !rig.object3D) return;
           var rp = new THREE.Vector3(); rig.object3D.getWorldPosition(rp);
-          var _camEl = rig.querySelector('a-camera') || rig.querySelector('[camera]');
-          if (!_camEl || !_camEl.object3D) return;
-          var camQ = _camEl.object3D.getWorldQuaternion(new THREE.Quaternion());
+          var _lScn = document.querySelector('a-scene');
+          if (!_lScn || !_lScn.camera) return;
+          var camQ = new THREE.Quaternion();
+          _lScn.camera.getWorldQuaternion(camQ);
           var nd = new THREE.Vector3(0, 0, -1).applyQuaternion(camQ).normalize();
           if (nd.lengthSq() < 0.001) return;
           var right = new THREE.Vector3(1, 0, 0).applyQuaternion(camQ).normalize();
