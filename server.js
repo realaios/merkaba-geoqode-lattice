@@ -2,10 +2,11 @@
 // MERKABA_geoqode OS — Railway HTTP Service
 // Exposes the GeoQode interpreter as a REST API for the Storm ecosystem.
 
-import { createServer } from "http";
+import { createServer, request as httpRequest } from "http";
 import { WebSocketServer, WebSocket as WsClient } from "ws";
 import { readFileSync, writeFileSync, existsSync, mkdirSync, readdirSync } from "fs";
 import { spawn } from "child_process";
+import { homedir } from "os";
 import { extname, join, dirname, resolve, relative, sep } from "path";
 import { fileURLToPath } from "url";
 import { StormAdapter } from "./geo/bridge/storm-adapter.js";
@@ -5621,6 +5622,62 @@ function _runAwarePulse() {
 setTimeout(_runAwarePulse, 5_000);
 setInterval(_runAwarePulse, 5 * 60 * 1000);
 
+// ── AIOS agent names injected into pixel-agents office ───────────────────────
+const _AIOS_PA_AGENTS = [
+  "STORM Chat Orchestrator", "Q-DD Engine", "PLAIStore Manager",
+  "AIOS API Gateway", "GeoQode Kernel", "Merkaba Theatre Engine",
+  "Cosmos WebSocket Hub", "Railway Deploy Proxy",
+  "HYPER-SWARM x150", "AIOSOverwatch", "MerkabaLLM", "MerkabAware",
+  "MerkabaDualAttestation", "MerkabaBeEyeSwarm", "Hebrew Geometric Ops",
+  "MerkabaLabAgent CF", "AIOSAssetMinerAgent", "AIOSEmergentSeedAgent",
+  "CinemaVirtualizer", "AIOSmux DeployAgent", "StormAdapter Bridge",
+  "MerkabaBridge", "MerkabaALM Audio", "s4ai-core Module", "Merkaba48OS CLI",
+  "GeoQode Native Engine", "Storm Chat Front Orchestr", "169-Agent Governance",
+  "BullMQ Redis Queue", "PostgreSQL Store", "D1 Knowledge Base",
+  "VR Taxonomy Layer", "Cosmos Lab VR", "Cosmos Infinite VR",
+  "Cosmos-Pixel VR", "Stripe Billing Agent", "Cloudflare Pages CDN",
+  "Enterprise Certifier", "Lattice Transform-420", "Pixel-Relay Bridge",
+  "MAL Injector", "VR Scene Generator",
+];
+
+function _injectAiosAgents() {
+  const serverJsonPath = join(homedir(), ".pixel-agents", "server.json");
+  if (!existsSync(serverJsonPath)) {
+    setTimeout(_injectAiosAgents, 5000);
+    return;
+  }
+  let token;
+  try {
+    token = JSON.parse(readFileSync(serverJsonPath, "utf-8")).token;
+  } catch (_) { return; }
+  console.log("[pixel-agents] injecting", _AIOS_PA_AGENTS.length, "AIOS agents");
+  _AIOS_PA_AGENTS.forEach(function(name, i) {
+    setTimeout(function() {
+      const body = JSON.stringify({
+        hook_event_name: "SessionStart",
+        session_id: "aios-" + i + "-" + Date.now(),
+        cwd: "/app/aios/" + name.toLowerCase().replace(/[^a-z0-9]+/g, "-"),
+        transcript_path: "/app/aios/transcripts/agent-" + i + ".jsonl",
+      });
+      const req = httpRequest({
+        hostname: "127.0.0.1", port: 3101,
+        path: "/api/hooks/claude", method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Content-Length": Buffer.byteLength(body),
+          "Authorization": "Bearer " + token,
+        },
+      }, (res) => {
+        if (res.statusCode >= 400)
+          console.warn("[pixel-agents] inject", res.statusCode, name);
+      });
+      req.on("error", () => {});
+      req.write(body);
+      req.end();
+    }, i * 300);
+  });
+}
+
 server.listen(PORT, () => {
   console.log(`[GeoQode OS] MERKABA_geoqode OS running on port ${PORT}`);
   console.log(
@@ -5637,10 +5694,19 @@ server.listen(PORT, () => {
     const pa = spawn(process.execPath, [paCliPath, "--port", "3101", "--host", "127.0.0.1"], {
       stdio: ["ignore", "pipe", "pipe"],
     });
-    pa.stdout.on("data", (d) => process.stdout.write("[pixel-agents] " + d));
+    let _paInjected = false;
+    pa.stdout.on("data", (d) => {
+      process.stdout.write("[pixel-agents] " + d);
+      if (!_paInjected && d.toString().toLowerCase().includes("listening")) {
+        _paInjected = true;
+        setTimeout(_injectAiosAgents, 1500);
+      }
+    });
     pa.stderr.on("data", (d) => process.stderr.write("[pixel-agents] " + d));
     pa.on("exit", (code) => console.warn("[pixel-agents] exited code", code));
     console.log("[pixel-agents] spawned on port 3101");
+    // Fallback: inject after 10s in case the "listening" log is missed
+    setTimeout(() => { if (!_paInjected) { _paInjected = true; _injectAiosAgents(); } }, 10000);
   } else {
     console.warn("[pixel-agents] cli.js not found, skipping spawn");
   }
