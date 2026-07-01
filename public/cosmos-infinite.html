@@ -55366,6 +55366,56 @@
         from { opacity: 0; transform: scale(0.75) translateX(20px); }
         to   { opacity: 1; transform: scale(1) translateX(0); }
       }
+
+      /* ── Spectator mode ─────────────────────────────────────────────────── */
+      #spec-overlay {
+        position: fixed;
+        top: 14px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: none;
+        align-items: center;
+        gap: 14px;
+        background: rgba(0,8,22,0.76);
+        border: 1px solid rgba(0,180,255,0.28);
+        border-radius: 4px;
+        padding: 6px 20px;
+        z-index: 5100;
+        pointer-events: none;
+        white-space: nowrap;
+      }
+      #spec-label {
+        font-family: monospace;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 3px;
+        color: #00DDFF;
+        text-shadow: 0 0 10px rgba(0,200,255,0.7);
+      }
+      #spec-status {
+        font-family: monospace;
+        font-size: 11px;
+        color: rgba(140,185,215,0.8);
+        letter-spacing: 1px;
+      }
+      #spec-minimap-wrap {
+        position: fixed;
+        bottom: 14px;
+        left: 14px;
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        gap: 3px;
+        z-index: 5100;
+        pointer-events: none;
+      }
+      #spec-minimap { border-radius: 3px; }
+      #spec-minimap-label {
+        font-family: monospace;
+        font-size: 8px;
+        letter-spacing: 2px;
+        color: rgba(0,155,210,0.45);
+      }
       #dtc-team-badge {
         font-family: monospace;
         font-size: 15px;
@@ -55580,7 +55630,8 @@
         var _ghostMap = {}; // id -> { el, group, ts, isAgent, health, score, kills, pos, targetPos, quat, targetQuat, team }
         var _ghostScene = null; // a-entity container for ghosts
         var _myCallsign = "PILOT-" + Math.random().toString(36).slice(2, 5).toUpperCase();
-        var _gameMode = new URLSearchParams(location.search).get('mode'); // 'dtc' | null
+        var _gameMode = new URLSearchParams(location.search).get('mode'); // 'dtc' | 'spectate' | null
+        var _spectatorMode = (_gameMode === 'spectate');
         var _lastKillData = null;   // last own-kill metadata for share card
         var _killShareTimer = null; // auto-hide timeout for kill share button
         var _myHealth = 100;
@@ -56123,6 +56174,80 @@
           setTimeout(function() { document.body.removeChild(a); URL.revokeObjectURL(objUrl); }, 1200);
         }
 
+        /* ── Phase 4C: Spectator minimap ──────────────────────────────────── */
+        var _specMinimapTimer = null;
+        function _updateSpecMinimap() {
+          /* Update status label from live DOM state */
+          var _ss = document.getElementById('spec-status');
+          if (_ss) {
+            var _tv = document.getElementById('dtc-timer-val');
+            var _tl = document.getElementById('dtc-timer-label');
+            var _hp = typeof window._coreHealth === 'number' ? Math.round(window._coreHealth) : 100;
+            _ss.textContent = (_tl ? _tl.textContent : 'LOBBY') + ' \u2502 ' + (_tv ? _tv.textContent : '--:--') + ' \u2502 CORE: ' + _hp + '%';
+          }
+
+          var cv = document.getElementById('spec-minimap');
+          if (!cv) return;
+          var ctx = cv.getContext('2d');
+          var W = cv.width, H = cv.height, CX = W/2, CY = H/2;
+          var SCALE = 3000; // AU radius shown
+
+          /* Background */
+          ctx.clearRect(0, 0, W, H);
+          ctx.fillStyle = 'rgba(0,5,16,0.93)';
+          ctx.fillRect(0, 0, W, H);
+
+          /* Range rings */
+          ctx.strokeStyle = 'rgba(0,80,120,0.28)';
+          ctx.lineWidth = 1;
+          [500, 1000, 2000, 3000].forEach(function(r) {
+            ctx.beginPath();
+            ctx.arc(CX, CY, (r / SCALE) * CX, 0, Math.PI*2);
+            ctx.stroke();
+          });
+
+          /* Merkaba Core */
+          var hp2 = typeof window._coreHealth === 'number' ? window._coreHealth : 100;
+          var cc = hp2 > 60 ? '#00ff88' : hp2 > 30 ? '#ffcc00' : '#ff3300';
+          ctx.beginPath(); ctx.arc(CX, CY, 4, 0, Math.PI*2);
+          ctx.fillStyle = cc; ctx.shadowColor = cc; ctx.shadowBlur = 10; ctx.fill();
+          ctx.shadowBlur = 0;
+
+          /* Pilot ghosts */
+          Object.keys(_ghostMap).forEach(function(gid) {
+            var g = _ghostMap[gid];
+            var pos = g.targetPos || g.pos;
+            if (!pos) return;
+            var sx = Math.max(3, Math.min(W-3, CX + (pos.x / SCALE) * CX));
+            var sy = Math.max(3, Math.min(H-3, CY - (pos.z / SCALE) * CY));
+            var tc = g.team === 'ATTACKER' ? '#FF4444' : g.team === 'DEFENDER' ? '#4488FF' : '#00d4ff';
+            ctx.beginPath(); ctx.arc(sx, sy, 3.5, 0, Math.PI*2);
+            ctx.fillStyle = tc; ctx.shadowColor = tc; ctx.shadowBlur = 7; ctx.fill();
+            ctx.shadowBlur = 0;
+            /* Short callsign label */
+            var lbl = g.label ? (g.label.getAttribute('value') || '') : '';
+            if (lbl) {
+              ctx.font = '8px monospace'; ctx.fillStyle = 'rgba(200,220,240,0.65)';
+              ctx.fillText(lbl.slice(0,6), sx+5, sy+3);
+            }
+          });
+
+          /* Spectator own position */
+          var rig = document.getElementById('cameraRig');
+          if (rig && rig.object3D) {
+            var sp = rig.object3D.position;
+            var spx = Math.max(3, Math.min(W-3, CX + (sp.x / SCALE) * CX));
+            var spy = Math.max(3, Math.min(H-3, CY - (sp.z / SCALE) * CY));
+            ctx.beginPath(); ctx.arc(spx, spy, 3, 0, Math.PI*2);
+            ctx.fillStyle = '#FFFFFF'; ctx.shadowColor = 'rgba(255,255,255,0.85)'; ctx.shadowBlur = 8; ctx.fill();
+            ctx.shadowBlur = 0;
+          }
+
+          /* Border */
+          ctx.strokeStyle = 'rgba(0,120,180,0.4)'; ctx.lineWidth = 1;
+          ctx.strokeRect(0.5, 0.5, W-1, H-1);
+        }
+
         function _updateScoreboard() {
           if (!_dfsListEl) _initHudRefs();
           if (!_dfsListEl) return;
@@ -56217,6 +56342,7 @@
         /* ── Position sender ──────────────────────────────────────────────── */
         var _sendRigEl = null, _sendDuEl = null;
         function _sendPosition() {
+          if (_spectatorMode) return; // spectators are invisible
           if (!_ws || _ws.readyState !== 1) return;
           var rig = _sendRigEl || (_sendRigEl = document.getElementById("cameraRig"));
           if (!rig || !rig.object3D) return;
@@ -56309,6 +56435,19 @@
                 }
                 /* Auto-join DTC mode — only if not already on a team */
                 if (_gameMode === 'dtc' && !_myTeam) setTimeout(window._sendReady, 800);
+                /* Spectator mode setup */
+                if (_spectatorMode) {
+                  if (_ws && _ws.readyState === 1) _ws.send(JSON.stringify({ type: 'spectate' }));
+                  ['fighter-hud', 'cockpit-overlay', 'dtc-ready-wrap', 'kill-share-wrap'].forEach(function(eid) {
+                    var el = document.getElementById(eid); if (el) el.style.display = 'none';
+                  });
+                  var _so = document.getElementById('spec-overlay');
+                  var _sm = document.getElementById('spec-minimap-wrap');
+                  if (_so) _so.style.display = 'flex';
+                  if (_sm) _sm.style.display = 'flex';
+                  clearInterval(_specMinimapTimer);
+                  _specMinimapTimer = setInterval(_updateSpecMinimap, 800);
+                }
                 /* Seed existing explorers */
                 if (Array.isArray(msg.explorers)) {
                   msg.explorers.forEach(function (e) {
@@ -56747,6 +56886,7 @@
 
         /* ── cosmos-fire broadcast: transmit laser fire to all other pilots ─── */
         window.addEventListener("cosmos-fire", function() {
+          if (_spectatorMode) return; // spectators cannot fire
           var _now = Date.now();
           if (_now - _lastFire < 400) return; // 400ms fire cooldown
           _lastFire = _now;
@@ -57705,6 +57845,16 @@
     <!-- Kill share button (appears 6s after own kill) -->
     <div id="kill-share-wrap">
       <button id="kill-share-btn" onclick="window._shareKill()">&#x1F4E4; SHARE THIS KILL</button>
+    </div>
+    <!-- Spectator overlay (shown when ?mode=spectate) -->
+    <div id="spec-overlay">
+      <span id="spec-label">&#x1F441; SPECTATING</span>
+      <span id="spec-status"></span>
+    </div>
+    <!-- Spectator minimap -->
+    <div id="spec-minimap-wrap">
+      <canvas id="spec-minimap" width="160" height="160"></canvas>
+      <div id="spec-minimap-label">MINIMAP</div>
     </div>
     <!-- Sketchfab 3D Model button (shown on all screens) -->
     <div id="sketchfab-btn" title="3D Model Viewer">&#x1F9CA;</div>

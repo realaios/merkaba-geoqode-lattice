@@ -5897,6 +5897,7 @@ _wss.on("connection", (ws) => {
 
     if (msg.type === "pos") {
       const prev = _presenceMap.get(id) || {};
+      if (prev.isSpectator) return; // spectators are invisible — never broadcast their position
       const entry = {
         id,
         x: typeof msg.x === "number" ? msg.x : 0,
@@ -6008,6 +6009,9 @@ _wss.on("connection", (ws) => {
       if (Object.keys(_gameState.teams).length >= 2 && _gameState.phase === 'lobby') {
         _startRound();
       }
+    } else if (msg.type === 'spectate') {
+      const entry = _presenceMap.get(id);
+      if (entry) entry.isSpectator = true;
     }
   });
 
