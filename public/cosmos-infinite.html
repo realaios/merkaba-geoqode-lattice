@@ -55879,8 +55879,9 @@
           if (nd.lengthSq() < 0.001) return;
           var right = new THREE.Vector3(1, 0, 0).applyQuaternion(camQ).normalize();
           var WING = 9; // matches wing-tip at s*9 in _makeFighterAvatar
-          var orig1 = rp.clone().addScaledVector(right,  WING);
-          var orig2 = rp.clone().addScaledVector(right, -WING);
+          var laserOrig = rp.clone().addScaledVector(nd, 5); // push past near-clip so lasers are visible first-person
+          var orig1 = laserOrig.clone().addScaledVector(right,  WING);
+          var orig2 = laserOrig.clone().addScaledVector(right, -WING);
           /* Spawn local lasers so the shooter sees their own beams */
           _spawnLaser(orig1, orig1.clone().addScaledVector(nd, 2000), _lScn, THREE);
           _spawnLaser(orig2, orig2.clone().addScaledVector(nd, 2000), _lScn, THREE);

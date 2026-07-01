@@ -288,26 +288,48 @@
   <body>
     <script>
       AFRAME.registerComponent('cp-orbit', {
-        schema: { minDist: { default: 8 }, maxDist: { default: 180 }, startDist: { default: 55 } },
+        schema: { minDist: { default: 6 }, maxDist: { default: 240 }, startDist: { default: 72 } },
         init: function () {
           var self = this;
-          this._theta = 0; this._phi = 1.1; this._r = this.data.startDist;
-          this._drag = false; this._px = 0; this._py = 0;
+          this._theta = 0; this._phi = Math.PI / 3; // 60° — natural looking-down angle
+          this._r = this.data.startDist;
+          this._drag = false; this._pan = false;
+          this._px = 0; this._py = 0;
+          this._panX = 0; this._panY = 0;
+          this._tx = 0; this._ty = 0; this._tz = 0; // pan offset from centroid
           var canvas = null;
           var onDown = function (e) {
-            if (e.button !== 0) return;
-            self._drag = true; self._px = e.clientX; self._py = e.clientY;
-            if (canvas) canvas.style.cursor = 'grabbing';
+            if (e.button === 0) {
+              self._drag = true; self._px = e.clientX; self._py = e.clientY;
+              if (canvas) canvas.style.cursor = 'grabbing';
+            }
+            if (e.button === 1) {
+              self._pan = true; self._panX = e.clientX; self._panY = e.clientY;
+              e.preventDefault();
+            }
           };
           var onMove = function (e) {
-            if (!self._drag) return;
-            var dx = e.clientX - self._px, dy = e.clientY - self._py;
-            self._px = e.clientX; self._py = e.clientY;
-            self._theta -= dx * 0.006;
-            self._phi = Math.max(0.08, Math.min(Math.PI - 0.08, self._phi - dy * 0.006));
-            self._apply();
+            if (self._drag) {
+              var dx = e.clientX - self._px, dy = e.clientY - self._py;
+              self._px = e.clientX; self._py = e.clientY;
+              self._theta -= dx * 0.006;
+              self._phi = Math.max(0.08, Math.min(Math.PI - 0.08, self._phi - dy * 0.006));
+              self._apply();
+            }
+            if (self._pan) {
+              var dx2 = e.clientX - self._panX, dy2 = e.clientY - self._panY;
+              self._panX = e.clientX; self._panY = e.clientY;
+              var spd = self._r * 0.0012;
+              self._tx -= dx2 * Math.cos(self._theta) * spd;
+              self._tz += dx2 * Math.sin(self._theta) * spd;
+              self._ty += dy2 * spd;
+              self._apply();
+            }
           };
-          var onUp = function () { self._drag = false; if (canvas) canvas.style.cursor = 'grab'; };
+          var onUp = function () {
+            self._drag = false; self._pan = false;
+            if (canvas) canvas.style.cursor = 'grab';
+          };
           var onWheel = function (e) {
             e.preventDefault();
             self._r = Math.max(self.data.minDist, Math.min(self.data.maxDist, self._r + e.deltaY * 0.08));
@@ -324,9 +346,15 @@
           });
         },
         _apply: function () {
+          var cen = window._agentCentroid || { x: 0, y: 0, z: 0 };
+          var cx = cen.x + this._tx, cy = cen.y + this._ty, cz = cen.z + this._tz;
           var s = Math.sin(this._phi), c = Math.cos(this._phi);
-          this.el.object3D.position.set(s * Math.sin(this._theta) * this._r, c * this._r, s * Math.cos(this._theta) * this._r);
-          this.el.object3D.lookAt(0, 0, 0);
+          this.el.object3D.position.set(
+            cx + s * Math.sin(this._theta) * this._r,
+            cy + c * this._r,
+            cz + s * Math.cos(this._theta) * this._r
+          );
+          this.el.object3D.lookAt(cx, cy, cz);
         }
       });
     </script>
@@ -351,18 +379,18 @@
 
       <!-- Ambient + starfield -->
       <a-entity id="cp-stars"></a-entity>
-      <a-light type="ambient" color="#001122" intensity="0.6"></a-light>
+      <a-light type="ambient" color="#002244" intensity="1.4"></a-light>
       <a-light
         type="directional"
         position="1 2 1"
-        color="#0066ff"
-        intensity="0.4"
+        color="#4488ff"
+        intensity="0.9"
       ></a-light>
       <a-light
         type="directional"
         position="-1 -1 -2"
-        color="#ff6600"
-        intensity="0.15"
+        color="#ff8833"
+        intensity="0.45"
       ></a-light>
 
       <!-- Central Merkaba star tetrahedron -->
@@ -403,7 +431,7 @@
         <!-- core glow -->
         <a-sphere
           radius="1.4"
-          material="color: #ffffff; emissive: #00d4ff; emissiveIntensity: 0.6; opacity: 0.25; transparent: true; shader: flat"
+          material="color: #ffffff; emissive: #00d4ff; emissiveIntensity: 2.2; opacity: 0.55; transparent: true; shader: flat"
         >
           <a-animation
             attribute="scale"
@@ -966,6 +994,13 @@
             var y = i < half ? 5 : -5;
             a.pos = [33 * Math.cos(angle), y, 33 * Math.sin(angle)];
           });
+        })();
+
+        // Compute real centroid of all agent positions so orbit locks to agent mass
+        (function() {
+          var cx = 0, cy = 0, cz = 0, n = AIOS_AGENTS.length;
+          AIOS_AGENTS.forEach(function(a) { cx += a.pos[0]; cy += a.pos[1]; cz += a.pos[2]; });
+          window._agentCentroid = { x: cx/n, y: cy/n, z: cz/n };
         })();
 
         // Index by id
