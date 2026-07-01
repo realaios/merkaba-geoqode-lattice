@@ -5636,6 +5636,8 @@ let _gameState = {
   timerSec: 300,
   teams: {},         // id -> 'ATTACKER' | 'DEFENDER'
   roundTimer: null,
+  drainLoop: null,
+  lastBroadcastHealth: 100,
 };
 
 // 480 GeoQode galaxy positions (D48 lattice, scaled to cosmos space)
@@ -5716,24 +5718,65 @@ function _broadcast(msg, skipId) {
 function _startRound() {
   _gameState.phase = 'active';
   _gameState.coreHealth = 100;
+  _gameState.lastBroadcastHealth = 100;
   _gameState.timerSec = 300;
   _gameState.round++;
   _broadcast({ type: 'roundStart', round: _gameState.round, timerSec: 300, teams: _gameState.teams }, null);
+  _broadcast({ type: 'coreState', health: 100 }, null);
+
   clearInterval(_gameState.roundTimer);
   _gameState.roundTimer = setInterval(() => {
     _gameState.timerSec--;
     if (_gameState.timerSec <= 0 || _gameState.coreHealth <= 0) {
       clearInterval(_gameState.roundTimer);
+      clearInterval(_gameState.drainLoop);
+      _gameState.drainLoop = null;
       _endRound(_gameState.coreHealth <= 0 ? 'ATTACKER' : 'DEFENDER');
     } else if (_gameState.timerSec % 10 === 0) {
       _broadcast({ type: 'roundTick', sec: _gameState.timerSec }, null);
     }
   }, 1000);
+
+  // Core drain loop: check attacker positions every 500ms
+  clearInterval(_gameState.drainLoop);
+  _gameState.drainLoop = setInterval(() => {
+    if (_gameState.phase !== 'active') return;
+    let drained = false;
+    _presenceMap.forEach((entry) => {
+      if (_gameState.teams[entry.id] !== 'ATTACKER') return;
+      const dist = Math.sqrt(entry.x * entry.x + entry.y * entry.y + entry.z * entry.z);
+      if (dist < 500) {
+        _gameState.coreHealth -= 0.25; // 0.5/sec at 500ms interval
+        if (dist < 50) _gameState.coreHealth -= 1.5; // +3/sec when touching
+        drained = true;
+      }
+    });
+    if (drained) {
+      _gameState.coreHealth = Math.max(0, _gameState.coreHealth);
+      // Broadcast on threshold crossings (30, 20, 0) or every 2s (~4 ticks)
+      const h = _gameState.coreHealth;
+      const prev = _gameState.lastBroadcastHealth;
+      const crossedThreshold =
+        (prev > 30 && h <= 30) ||
+        (prev > 20 && h <= 20) ||
+        (prev > 0  && h <= 0);
+      const timedBroadcast = Math.floor(prev / 2.5) !== Math.floor(h / 2.5);
+      if (crossedThreshold || timedBroadcast) {
+        _gameState.lastBroadcastHealth = h;
+        _broadcast({ type: 'coreState', health: Math.round(h * 10) / 10 }, null);
+      }
+    }
+  }, 500);
 }
 
 function _endRound(winner) {
   _gameState.phase = 'lobby';
   clearInterval(_gameState.roundTimer);
+  clearInterval(_gameState.drainLoop);
+  _gameState.drainLoop = null;
+  // Restore core health for next round display
+  _gameState.coreHealth = 100;
+  _gameState.lastBroadcastHealth = 100;
   // Swap teams for next round
   Object.keys(_gameState.teams).forEach(pid => {
     _gameState.teams[pid] = _gameState.teams[pid] === 'ATTACKER' ? 'DEFENDER' : 'ATTACKER';

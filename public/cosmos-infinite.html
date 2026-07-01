@@ -4534,6 +4534,15 @@
           this.t = time * 0.001;
           var t = this.t;
 
+          /* ── Core health damage state ──────────────────────────────────────── */
+          var coreHp = (typeof window._coreHealth === 'number') ? window._coreHealth : 100;
+          var hpFrac = Math.max(0, Math.min(1, coreHp / 100)); // 1 = full, 0 = destroyed
+          var isDanger = coreHp < 30;
+          var isCritical = coreHp < 20;
+          /* Pulse phase for low-health red flash (7 Hz at critical) */
+          var pulseHz = isCritical ? 7 : isDanger ? 3 : 0;
+          var pulse = isDanger ? 0.5 + 0.5 * Math.sin(t * pulseHz * Math.PI * 2) : 1;
+
           /* ── Proximity detection (no alloc per frame) ────────────────────── */
           if (!this._cam) this._cam = document.querySelector("a-camera");
           if (this._cam) {
@@ -4553,12 +4562,24 @@
 
           if (this.icoMesh) {
             this.icoMesh.rotation.y = t * 0.26 * speedMult;
-            this.icoMesh.material.emissiveIntensity = 2.8 + glowMult * 0.8;
+            /* Health-reactive: shifts gold → red as damage increases */
+            var icoR = Math.round(245 * hpFrac + 255 * (1 - hpFrac));
+            var icoG = Math.round(158 * hpFrac);
+            var icoB = Math.round(11  * hpFrac);
+            this.icoMesh.material.color.setRGB(icoR/255, icoG/255, icoB/255);
+            this.icoMesh.material.emissive.setRGB(icoR/255 * pulse, icoG/255 * pulse * 0.3, 0);
+            this.icoMesh.material.emissiveIntensity = (2.8 + glowMult * 0.8) * (isDanger ? 1.4 * pulse : 1);
           }
           if (this.octMesh) {
             this.octMesh.rotation.y = -t * 0.26 * PHI * speedMult;
             this.octMesh.rotation.x = t * 0.12 * speedMult;
-            this.octMesh.material.emissiveIntensity = 4.0 + glowMult;
+            /* Octahedron: cyan → orange at low health */
+            var octR = Math.round(255 * (1 - hpFrac));
+            var octG = Math.round(212 * hpFrac + 120 * (1 - hpFrac));
+            var octB = Math.round(255 * hpFrac);
+            this.octMesh.material.color.setRGB(octR/255, octG/255, octB/255);
+            this.octMesh.material.emissive.setRGB(octR/255 * pulse, octG/255 * pulse * 0.4, octB/255 * pulse * 0.5);
+            this.octMesh.material.emissiveIntensity = (4.0 + glowMult) * (isDanger ? 1.3 * pulse : 1);
           }
           if (this.tknMesh) {
             this.tknMesh.rotation.z = t * 0.2 * speedMult;
@@ -4577,13 +4598,16 @@
           if (this.ringMesh) {
             this.ringMesh.rotation.z = t * 0.32 * speedMult;
             this.ringMesh.material.opacity =
-              0.38 + Math.sin(t * 2.2) * 0.18 + px * 0.5;
+              (0.38 + Math.sin(t * 2.2) * 0.18 + px * 0.5) * (isDanger ? pulse : 1);
             this.ringMesh.material.emissiveIntensity = 3.0 + glowMult * 0.9;
+            /* Ring color: cyan → red at low health */
+            this.ringMesh.material.color.setRGB(1, hpFrac * 0.83, hpFrac * hpFrac);
+            this.ringMesh.material.emissive.setRGB(pulse, hpFrac * 0.83 * pulse * 0.5, 0);
           }
           if (this.ring2Mesh) {
             this.ring2Mesh.rotation.z = -t * 0.28 * speedMult;
             this.ring2Mesh.material.opacity =
-              0.28 + Math.sin(t * 1.8 + 1) * 0.15 + px * 0.4;
+              (0.28 + Math.sin(t * 1.8 + 1) * 0.15 + px * 0.4) * (isDanger ? pulse : 1);
             this.ring2Mesh.material.emissiveIntensity = 2.8 + glowMult * 0.8;
           }
         },
@@ -55237,6 +55261,58 @@
         #dtc-ready-wrap { bottom: 140px; }
       }
 
+      /* ── Core health bar ────────────────────────────────────────────────── */
+      #dtc-core-wrap {
+        position: fixed;
+        bottom: 52px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        gap: 3px;
+        z-index: 5100;
+        pointer-events: none;
+        min-width: 200px;
+      }
+      #dtc-core-label {
+        font-family: monospace;
+        font-size: 9px;
+        letter-spacing: 2px;
+        color: #aaccff;
+        opacity: 0.82;
+      }
+      #dtc-core-track {
+        width: 200px;
+        height: 7px;
+        background: rgba(0,0,0,0.55);
+        border: 1px solid rgba(100,180,255,0.35);
+        border-radius: 4px;
+        overflow: hidden;
+      }
+      #dtc-core-fill {
+        height: 100%;
+        width: 100%;
+        background: #00dd88;
+        border-radius: 4px;
+        transition: width 0.5s ease, background 0.6s ease;
+      }
+      #dtc-core-fill.amber { background: #ffcc00; }
+      #dtc-core-fill.danger { background: #ff3322; animation: core-pulse 0.7s ease-in-out infinite; }
+      #dtc-core-pct {
+        font-family: monospace;
+        font-size: 9px;
+        color: #aaccff;
+        letter-spacing: 1px;
+      }
+      @keyframes core-pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.45; }
+      }
+      @media (pointer: coarse) {
+        #dtc-core-wrap { bottom: 120px; }
+      }
+
 
       #damage-flash {
         position: fixed;
@@ -55274,6 +55350,7 @@
         var _myDeaths = 0;
         var _myScore = 0;
         var _myTeam = null; // 'ATTACKER' | 'DEFENDER' | null
+        window._coreHealth = 100; // shared with merkaba-core component tick
         var _lastFire = 0; // fire cooldown timestamp
         var _beaconEl = null; // pulsing beacon ring in A-Frame
         var _beaconCode = null;
@@ -56053,19 +56130,53 @@
               case 'roundStart':
                 _addFeedEntry('\u25B6 ROUND ' + msg.round + ' \u2014 DEFEND THE CORE!', true);
                 _playSfx('lock');
+                window._coreHealth = 100;
+                window._lastCoreAlertHealth = 100;
+                (function() {
+                  var _w = document.getElementById('dtc-core-wrap');
+                  var _f = document.getElementById('dtc-core-fill');
+                  var _p = document.getElementById('dtc-core-pct');
+                  if (_w) _w.style.display = 'flex';
+                  if (_f) { _f.style.width = '100%'; _f.className = ''; }
+                  if (_p) _p.textContent = '100%';
+                })();
                 break;
 
               case 'roundEnd':
                 _addFeedEntry('\u25A0 ROUND OVER \u2014 ' + (msg.winner === 'ATTACKER' ? '\u2694 STORM VANGUARD WINS' : '\uD83D\uDEE1 MERKABA GUARD WINS'), true);
+                window._coreHealth = 100;
                 /* Re-show READY button for next round */
                 (function() {
                   var _rb = document.getElementById('dtc-ready-btn');
                   if (_rb) setTimeout(function() { _rb.classList.remove('hidden'); }, 5000);
+                  /* Hide core bar during lobby */
+                  var _cw = document.getElementById('dtc-core-wrap');
+                  if (_cw) setTimeout(function() { _cw.style.display = 'none'; }, 8000);
                 })();
                 break;
 
               case 'roundTick':
                 /* Phase 3D: wire to round timer display */
+                break;
+
+              case 'coreState':
+                window._coreHealth = typeof msg.health === 'number' ? msg.health : 100;
+                (function() {
+                  var _wrap = document.getElementById('dtc-core-wrap');
+                  var _fill = document.getElementById('dtc-core-fill');
+                  var _pct  = document.getElementById('dtc-core-pct');
+                  if (!_fill) return;
+                  var h = Math.max(0, Math.min(100, window._coreHealth));
+                  _fill.style.width = h + '%';
+                  _pct.textContent = Math.round(h) + '%';
+                  _fill.className = h > 60 ? '' : h > 30 ? 'amber' : 'danger';
+                  if (_wrap) _wrap.style.display = 'flex';
+                  /* core-alert SFX at first crossing below 30 */
+                  if (h < 30 && (window._lastCoreAlertHealth === undefined || window._lastCoreAlertHealth >= 30)) {
+                    _playSfx('core-alert');
+                  }
+                  window._lastCoreAlertHealth = h;
+                })();
                 break;
             }
           };
@@ -57016,6 +57127,14 @@
     <div id="dogfight-scoreboard">
       <div id="dfs-title">&#x1F3C6; LEADERBOARD</div>
       <div id="dfs-list"></div>
+    </div>
+    <!-- Defend the Core: Core health bar (hidden until round active) -->
+    <div id="dtc-core-wrap">
+      <div id="dtc-core-label">&#x2B22; MERKABA CORE</div>
+      <div id="dtc-core-track">
+        <div id="dtc-core-fill"></div>
+      </div>
+      <div id="dtc-core-pct">100%</div>
     </div>
     <!-- Defend the Core: READY button + team badge -->
     <div id="dtc-ready-wrap">
