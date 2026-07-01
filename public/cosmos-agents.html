@@ -1,0 +1,1464 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Cosmos-Agents — AIOS Agent Registry | MERKABA480</title>
+    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        background: #000;
+        overflow: hidden;
+        font-family: monospace;
+      }
+
+      /* ── HUD overlay ── */
+      #cp-hud {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        pointer-events: none;
+        z-index: 100;
+      }
+
+      /* ── Top bar: service health ── */
+      #cp-services {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 7px 14px;
+        background: rgba(0, 0, 0, 0.72);
+        border-bottom: 1px solid rgba(0, 212, 255, 0.18);
+        pointer-events: auto;
+      }
+      #cp-services .svc-dot {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 0.58rem;
+        color: #aaa;
+        letter-spacing: 0.06em;
+      }
+      #cp-services .dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: #555;
+        transition: background 0.4s;
+      }
+      #cp-services .dot.green {
+        background: #00ff88;
+        box-shadow: 0 0 5px #00ff88;
+      }
+      #cp-services .dot.yellow {
+        background: #ffd700;
+        box-shadow: 0 0 5px #ffd700;
+      }
+      #cp-services .dot.red {
+        background: #ff4444;
+        box-shadow: 0 0 5px #ff4444;
+      }
+      #cp-title {
+        margin-left: auto;
+        font-size: 0.6rem;
+        color: #00d4ff;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
+      /* ── Left panel: agent list ── */
+      #cp-left {
+        position: absolute;
+        top: 36px;
+        left: 0;
+        bottom: 40px;
+        width: 210px;
+        background: rgba(0, 0, 0, 0.78);
+        border-right: 1px solid rgba(0, 212, 255, 0.14);
+        display: flex;
+        flex-direction: column;
+        pointer-events: auto;
+        overflow: hidden;
+      }
+      #cp-left h2 {
+        padding: 8px 10px 5px;
+        font-size: 0.6rem;
+        color: #00d4ff;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        border-bottom: 1px solid rgba(0, 212, 255, 0.12);
+      }
+      #cp-agent-list {
+        flex: 1;
+        overflow-y: auto;
+      }
+      #cp-agent-list::-webkit-scrollbar {
+        width: 3px;
+      }
+      #cp-agent-list::-webkit-scrollbar-thumb {
+        background: #00d4ff44;
+      }
+      .cp-category {
+        padding: 4px 8px 1px;
+        font-size: 0.5rem;
+        color: #555;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+      .cp-agent-row {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 8px;
+        cursor: pointer;
+        transition: background 0.15s;
+      }
+      .cp-agent-row:hover,
+      .cp-agent-row.selected {
+        background: rgba(0, 212, 255, 0.1);
+      }
+      .cp-freq-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        flex-shrink: 0;
+      }
+      .cp-agent-name {
+        font-size: 0.55rem;
+        color: #c8e8f0;
+        letter-spacing: 0.04em;
+      }
+      .cp-agent-svc {
+        font-size: 0.47rem;
+        color: #556;
+        margin-left: auto;
+      }
+
+      /* ── Right panel: event feed ── */
+      #cp-right {
+        position: absolute;
+        top: 36px;
+        right: 0;
+        bottom: 40px;
+        width: 240px;
+        background: rgba(0, 0, 0, 0.78);
+        border-left: 1px solid rgba(0, 212, 255, 0.14);
+        display: flex;
+        flex-direction: column;
+        pointer-events: auto;
+        overflow: hidden;
+      }
+      #cp-right h2 {
+        padding: 8px 10px 5px;
+        font-size: 0.6rem;
+        color: #00ff88;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        border-bottom: 1px solid rgba(0, 255, 136, 0.12);
+      }
+      #cp-feed {
+        flex: 1;
+        overflow-y: auto;
+        padding: 4px 0;
+      }
+      #cp-feed::-webkit-scrollbar {
+        width: 3px;
+      }
+      #cp-feed::-webkit-scrollbar-thumb {
+        background: #00ff8844;
+      }
+      .cp-feed-row {
+        padding: 3px 8px;
+        font-size: 0.5rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+      }
+      .cp-feed-row .ts {
+        color: #334;
+      }
+      .cp-feed-row .ev-type {
+        color: #00d4ff;
+        margin-right: 4px;
+      }
+      .cp-feed-row .ev-body {
+        color: #8ab;
+      }
+      #cp-relay-status {
+        padding: 5px 8px;
+        font-size: 0.48rem;
+        color: #555;
+        border-top: 1px solid rgba(0, 212, 255, 0.1);
+      }
+
+      /* ── Detail popup ── */
+      #cp-detail {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 280px;
+        background: rgba(0, 5, 20, 0.94);
+        border: 1px solid rgba(0, 212, 255, 0.35);
+        border-radius: 4px;
+        padding: 14px 16px;
+        pointer-events: auto;
+        display: none;
+        z-index: 200;
+      }
+      #cp-detail h3 {
+        font-size: 0.72rem;
+        color: #00d4ff;
+        margin-bottom: 8px;
+      }
+      #cp-detail table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.52rem;
+      }
+      #cp-detail td {
+        padding: 2px 4px;
+        color: #9ab;
+        vertical-align: top;
+      }
+      #cp-detail td:first-child {
+        color: #556;
+        width: 70px;
+      }
+      #cp-detail-desc {
+        margin-top: 8px;
+        font-size: 0.5rem;
+        color: #7899aa;
+        line-height: 1.5;
+      }
+      #cp-detail-close {
+        position: absolute;
+        top: 8px;
+        right: 10px;
+        color: #556;
+        cursor: pointer;
+        font-size: 0.8rem;
+      }
+
+      /* ── Bottom: attestation ── */
+      #cp-bottom {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 5px 14px;
+        background: rgba(0, 0, 0, 0.72);
+        border-top: 1px solid rgba(0, 212, 255, 0.12);
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        font-size: 0.5rem;
+        color: #334;
+        pointer-events: auto;
+      }
+      #cp-bottom .attest {
+        color: #00d4ff88;
+      }
+      #cp-bottom .visitors {
+        margin-left: auto;
+        color: #556;
+      }
+      #cp-enter-vr {
+        background: rgba(0, 212, 255, 0.12);
+        border: 1px solid rgba(0, 212, 255, 0.3);
+        color: #00d4ff;
+        font-family: monospace;
+        font-size: 0.52rem;
+        padding: 2px 10px;
+        border-radius: 2px;
+        cursor: pointer;
+        letter-spacing: 0.06em;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ══════════════════════════════════════════════════════════════════════════
+     A-FRAME SCENE
+══════════════════════════════════════════════════════════════════════════ -->
+    <a-scene
+      id="cp-scene"
+      renderer="antialias: true; colorManagement: true"
+      background="color: #000005"
+      vr-mode-ui="enabled: true"
+      loading-screen="backgroundColor: #000005; dotsColor: #00d4ff"
+      fog="type: exponential; color: #000005; density: 0.003"
+    >
+      <a-assets>
+        <a-mixin
+          id="mx-pulse"
+          animation="property: scale; from: 1 1 1; to: 1.2 1.2 1.2; dur: 1200; loop: true; dir: alternate; easing: easeInOutSine"
+        >
+        </a-mixin>
+      </a-assets>
+
+      <!-- Ambient + starfield -->
+      <a-entity id="cp-stars"></a-entity>
+      <a-light type="ambient" color="#001122" intensity="0.6"></a-light>
+      <a-light
+        type="directional"
+        position="1 2 1"
+        color="#0066ff"
+        intensity="0.4"
+      ></a-light>
+      <a-light
+        type="directional"
+        position="-1 -1 -2"
+        color="#ff6600"
+        intensity="0.15"
+      ></a-light>
+
+      <!-- Central Merkaba star tetrahedron -->
+      <a-entity id="cp-merkaba" position="0 0 0">
+        <!-- upward tetrahedron — gold -->
+        <a-tetrahedron
+          id="cp-tet-up"
+          radius="4.5"
+          detail="0"
+          material="color: #ffd700; wireframe: true; opacity: 0.65; transparent: true"
+        >
+          <a-animation
+            attribute="rotation"
+            from="0 0 0"
+            to="0 360 0"
+            dur="18000"
+            repeat="indefinite"
+            easing="linear"
+          ></a-animation>
+        </a-tetrahedron>
+        <!-- downward tetrahedron — cyan -->
+        <a-tetrahedron
+          id="cp-tet-down"
+          radius="4.5"
+          detail="0"
+          rotation="180 0 0"
+          material="color: #00d4ff; wireframe: true; opacity: 0.55; transparent: true"
+        >
+          <a-animation
+            attribute="rotation"
+            from="180 0 0"
+            to="180 -360 0"
+            dur="18000"
+            repeat="indefinite"
+            easing="linear"
+          ></a-animation>
+        </a-tetrahedron>
+        <!-- core glow -->
+        <a-sphere
+          radius="1.4"
+          material="color: #ffffff; emissive: #00d4ff; emissiveIntensity: 0.6; opacity: 0.25; transparent: true; shader: flat"
+        >
+          <a-animation
+            attribute="scale"
+            from="1 1 1"
+            to="1.3 1.3 1.3"
+            dur="2200"
+            repeat="indefinite"
+            dir="alternate"
+            easing="easeInOutSine"
+          ></a-animation>
+        </a-sphere>
+        <!-- centre label -->
+        <a-text
+          value="AIOS\nMERKABA480"
+          align="center"
+          color="#00d4ff"
+          width="6"
+          position="0 5.5 0"
+          look-at="[camera]"
+          font="monoid"
+          letter-spacing="2"
+        >
+        </a-text>
+      </a-entity>
+
+      <!-- Agent node container — populated by JS -->
+      <a-entity id="cp-nodes"></a-entity>
+
+      <!-- Connection lines container -->
+      <a-entity id="cp-lines"></a-entity>
+
+      <!-- Camera rig -->
+      <a-entity id="cp-rig" position="0 0 55">
+        <a-camera
+          id="cp-camera"
+          look-controls="pointerLockEnabled: true"
+          wasd-controls="acceleration: 80"
+          near="0.1"
+          far="3000"
+          fov="72"
+        >
+        </a-camera>
+      </a-entity>
+    </a-scene>
+
+    <!-- ══════════════════════════════════════════════════════════════════════════
+     HUD
+══════════════════════════════════════════════════════════════════════════ -->
+    <div id="cp-hud">
+      <!-- top bar -->
+      <div id="cp-services">
+        <div class="svc-dot"><span class="dot" id="dot-api"></span>API</div>
+        <div class="svc-dot">
+          <span class="dot" id="dot-frontend"></span>FRONTEND
+        </div>
+        <div class="svc-dot">
+          <span class="dot" id="dot-aios-mesh"></span>AIOS-MESH
+        </div>
+        <div class="svc-dot">
+          <span class="dot" id="dot-cosmos"></span>COSMOS
+        </div>
+        <div id="cp-title">
+          COSMOS-PIXEL &nbsp;|&nbsp; AIOS AGENT LATTICE &nbsp;|&nbsp;
+          8→26→48:480
+        </div>
+      </div>
+
+      <!-- left panel -->
+      <div id="cp-left">
+        <h2>AIOS Agent Registry</h2>
+        <div id="cp-agent-list"></div>
+      </div>
+
+      <!-- right panel -->
+      <div id="cp-right">
+        <h2>Live Event Feed</h2>
+        <div id="cp-feed"></div>
+        <div id="cp-relay-status">
+          pixel-relay: <span id="relay-status-text">offline</span>
+        </div>
+      </div>
+
+      <!-- detail popup -->
+      <div id="cp-detail">
+        <span id="cp-detail-close" onclick="cpCloseDetail()">✕</span>
+        <h3 id="cp-detail-name"></h3>
+        <table id="cp-detail-table"></table>
+        <div id="cp-detail-desc"></div>
+      </div>
+
+      <!-- bottom bar -->
+      <div id="cp-bottom">
+        <span class="attest"
+          >S = α·(PHI/3.032) + ω·(PSI/3.032) = 1.0 ABSOLUTE</span
+        >
+        <span
+          >8→26→48:480 &nbsp;|&nbsp; PHI=1.618 &nbsp;PSI=1.414
+          &nbsp;F₀=72Hz</span
+        >
+        <span class="visitors">Observers: <span id="cp-count">0</span></span>
+        <button
+          id="cp-enter-vr"
+          onclick="document.querySelector('a-scene').enterVR()"
+        >
+          ENTER VR
+        </button>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════════════════════════
+     MAIN SCRIPT
+══════════════════════════════════════════════════════════════════════════ -->
+    <script>
+      (function () {
+        "use strict";
+
+        // ── GeoQode canonical constants ────────────────────────────────────────────
+        var PHI = 1.618;
+        var PSI = 1.414;
+        var GOLDEN_BAND = 3.032;
+        var ALPHA_W = 0.5337;
+        var OMEGA_W = 0.4663;
+        var F0 = 72;
+
+        // Semantic frequency → hue mapping (matched to cosmos-infinite colour system)
+        var FREQ_COLOR = {
+          72: "#00d4ff", // HOLOGRAPHIC  — cyan
+          396: "#ff9900", // ENTITY       — orange
+          417: "#00ff88", // LOCATION     — green
+          528: "#ffd700", // ACTION       — gold
+          639: "#ff6bcd", // DIALOGUE     — pink
+          741: "#aa66ff", // EMOTION      — violet
+          852: "#ff4444", // PHYSICS      — red
+          963: "#ffffff", // NARRATIVE    — white
+        };
+
+        // ── Complete AIOS agent registry ──────────────────────────────────────────
+        var AIOS_AGENTS = [
+          // ── D8 — ORCHESTRATORS (8 nodes) ──
+          {
+            id: "storm-chat",
+            name: "STORM Chat Orchestrator",
+            type: "ORCHESTRATOR",
+            service: "pwai-controller",
+            lat: 8,
+            freq: 528,
+            desc: "Primary Q-DD brain. Coordinates 18 agents + 150 HYPER-SWARM. Entry point for all user chat sessions on getbrains4ai.com.",
+          },
+          {
+            id: "q-dd",
+            name: "Q-DD Engine",
+            type: "ORCHESTRATOR",
+            service: "pwai-controller",
+            lat: 8,
+            freq: 528,
+            desc: "Quantum-Directed Dialogue engine. Routes prompts through multi-agent consensus, attestation scoring, and GeoQode lattice envelopes.",
+          },
+          {
+            id: "plai-store",
+            name: "PLAIStore Manager",
+            type: "ORCHESTRATOR",
+            service: "pwai-api-service",
+            lat: 8,
+            freq: 528,
+            desc: "170-agent app store controller. Manages dynamic app discovery, installs, categories, and Storm MLM integration.",
+          },
+          {
+            id: "aios-api-gw",
+            name: "AIOS API Gateway",
+            type: "ORCHESTRATOR",
+            service: "pwai-api-service",
+            lat: 8,
+            freq: 528,
+            desc: "REST gateway at api.getbrains4ai.com. Handles auth, routing, rate-limiting, Stripe billing, and session management.",
+          },
+          {
+            id: "geo-kernel",
+            name: "GeoQode Kernel",
+            type: "ORCHESTRATOR",
+            service: "merkaba-geoqode-lattice",
+            lat: 8,
+            freq: 72,
+            desc: "Core semantic frequency engine. Applies PHI/PSI attestation, D8→D26→D48 lattice transforms, and Hebrew gematria maps to all data flows.",
+          },
+          {
+            id: "merkaba-theatre",
+            name: "Merkaba Theatre Engine",
+            type: "ORCHESTRATOR",
+            service: "merkaba-geoqode-lattice",
+            lat: 8,
+            freq: 963,
+            desc: "Reality-mode VR programme coordinator. Manages 12 theatre modes, PROGRAMME_CATALOGUE, and Solfeggio audio layer.",
+          },
+          {
+            id: "cosmos-server",
+            name: "Cosmos WebSocket Hub",
+            type: "ORCHESTRATOR",
+            service: "merkaba-geoqode-lattice",
+            lat: 8,
+            freq: 417,
+            desc: "Central /ws/presence, /ws/lab, /ws/pixel WebSocket hub. Orchestrates multi-user VR presence, dogfight PvP, and pixel-relay.",
+          },
+          {
+            id: "railway-proxy",
+            name: "Railway Deploy Proxy",
+            type: "ORCHESTRATOR",
+            service: "storm-dev",
+            lat: 8,
+            freq: 528,
+            desc: "CI/CD orchestrator. Manages Railway production deployments across all 8 services via self-hosted runner.",
+          },
+
+          // ── D26 — BRAINS / SWARMS / INTELLIGENCE (25 nodes) ──
+          {
+            id: "hyper-swarm",
+            name: "HYPER-SWARM (×150)",
+            type: "SWARM",
+            service: "pwai-ai-worker",
+            lat: 26,
+            freq: 852,
+            desc: "150-agent hyperscale execution swarm. Parallelises long-horizon tasks across BullMQ/Redis job queues.",
+          },
+          {
+            id: "aios-overwatch",
+            name: "AIOSOverwatch",
+            type: "MONITOR",
+            service: "pwai-ai-worker",
+            lat: 26,
+            freq: 639,
+            desc: '24/7 living system directory. "The Babysitter on Duty." Continuous health-check, escalation, and cross-service coherence monitor.',
+          },
+          {
+            id: "merkaba-llm",
+            name: "MerkabaLLM",
+            type: "BRAIN",
+            service: "merkaba-geoqode-lattice",
+            lat: 26,
+            freq: 528,
+            desc: "Claude-backed reasoning core with PHI/PSI attestation wrapper. Powers cosmos lab assistant and GeoQode semantic inference.",
+          },
+          {
+            id: "merkaba-aware",
+            name: "MerkabAware",
+            type: "BRAIN",
+            service: "merkaba-geoqode-lattice",
+            lat: 26,
+            freq: 72,
+            desc: "Awareness-level sentinel. Tracks COHERENCE_THRESHOLDS across all agents and surfaces drift alerts to the feed.",
+          },
+          {
+            id: "dual-attest",
+            name: "MerkabaDualAttestation",
+            type: "BRAIN",
+            service: "merkaba-geoqode-lattice",
+            lat: 26,
+            freq: 72,
+            desc: "PHI/PSI attestation engine. Computes S = α·(PHI/3.032) + ω·(PSI/3.032) for every agent state snapshot.",
+          },
+          {
+            id: "be-eye-swarm",
+            name: "MerkabaBeEyeSwarm",
+            type: "SWARM",
+            service: "merkaba-geoqode-lattice",
+            lat: 26,
+            freq: 963,
+            desc: "Omega PSI witness pole. Distributed 26-node witness swarm anchoring the bosonic D26 ring.",
+          },
+          {
+            id: "hebrew-geo",
+            name: "Hebrew Geometric Ops",
+            type: "BRAIN",
+            service: "merkaba-geoqode-lattice",
+            lat: 26,
+            freq: 72,
+            desc: "22-letter Hebrew gematria operator map. Assigns semantic frequencies to entity fields using the Sefirot resonance table.",
+          },
+          {
+            id: "lab-agent",
+            name: "MerkabaLabAgent (CF)",
+            type: "BRAIN",
+            service: "merkaba-geoqode-lattice",
+            lat: 26,
+            freq: 639,
+            desc: "Cloudflare Worker at merkaba-lab-agent.bradleylevitan.workers.dev. Cron 0 */4 * * *. Posts discoveries to D1 knowledge base.",
+          },
+          {
+            id: "asset-miner",
+            name: "AIOSAssetMinerAgent",
+            type: "AGENT",
+            service: "merkaba-geoqode-lattice",
+            lat: 26,
+            freq: 528,
+            desc: "Mines Sketchfab, PolyHaven, NASA 3D on 3h VR cycle. Auto-generates A-Frame scenes and updates VR taxonomy + MAL.",
+          },
+          {
+            id: "emergent-seed",
+            name: "AIOSEmergentSeedAgent",
+            type: "AGENT",
+            service: "merkaba-geoqode-lattice",
+            lat: 26,
+            freq: 963,
+            desc: "Discovers system gaps, generates seeds and cosmic aspirations. Runs 3min post-boot and on VR cycle.",
+          },
+          {
+            id: "cinema-virt",
+            name: "CinemaVirtualizer",
+            type: "AGENT",
+            service: "merkaba-geoqode-lattice",
+            lat: 26,
+            freq: 963,
+            desc: "Converts programme catalogue entries into immersive VR cinema rooms with Solfeggio-tuned audio environments.",
+          },
+          {
+            id: "aiosmux",
+            name: "AIOSmux DeployAgent",
+            type: "AGENT",
+            service: "merkaba-geoqode-lattice",
+            lat: 26,
+            freq: 417,
+            desc: "Autonomous explorer orbiting D480 galaxies every 8s. Posts discovery events to cosmos-infinite feed.",
+          },
+          {
+            id: "storm-bridge",
+            name: "StormAdapter Bridge",
+            type: "AGENT",
+            service: "merkaba-geoqode-lattice",
+            lat: 26,
+            freq: 528,
+            desc: "Bridges GeoQode lattice events into the Storm pwai-controller Q-DD pipeline via REST/WS adapters.",
+          },
+          {
+            id: "merkaba-bridge",
+            name: "MerkabaBridge",
+            type: "AGENT",
+            service: "merkaba-geoqode-lattice",
+            lat: 26,
+            freq: 72,
+            desc: "Internal PHI/PSI bridge layer. Normalises lattice transforms between D8, D26, D48 rings and external consumers.",
+          },
+          {
+            id: "merkaba-alm",
+            name: "MerkabaALM Audio",
+            type: "AGENT",
+            service: "merkaba-geoqode-lattice",
+            lat: 26,
+            freq: 72,
+            desc: "Audio lattice modulator. Converts semantic frequency maps to Solfeggio-tuned WebAudio events for VR soundscapes.",
+          },
+          {
+            id: "s4ai-core",
+            name: "@s4ai/core Module",
+            type: "BRAIN",
+            service: "s4ai-core",
+            lat: 26,
+            freq: 528,
+            desc: "Shared autonomous agent modules (npm). Exports MerkabAware primitives, GeoQode constants, and lattice utility functions.",
+          },
+          {
+            id: "merkaba48-cli",
+            name: "Merkaba48OS CLI",
+            type: "BRAIN",
+            service: "Merkaba48OS",
+            lat: 26,
+            freq: 72,
+            desc: "Unified OS launcher. Merkaba CLI entry point for local development, lattice bootstrapping, and agent orchestration.",
+          },
+
+          // ── D48 — AGENTS / WORKERS / INTELLIGENCE (17 nodes, rest of registry) ──
+          {
+            id: "geo-native",
+            name: "GeoQode Native Engine",
+            type: "AGENT",
+            service: "pwai-api-service",
+            lat: 48,
+            freq: 72,
+            desc: "Canonical constants, semantic map, envelope builder. The authoritative source for all GeoQode frequency assignments.",
+          },
+          {
+            id: "storm-chat-o",
+            name: "Storm Chat Front Orchestr",
+            type: "AGENT",
+            service: "pwai-controller",
+            lat: 48,
+            freq: 528,
+            desc: "Sub-orchestrator managing user-facing chat sessions. Wraps Q-DD output in UX-safe response envelopes.",
+          },
+          {
+            id: "169-gov",
+            name: "169-Agent Governance",
+            type: "SWARM",
+            service: "pwai-api-service",
+            lat: 48,
+            freq: 639,
+            desc: "169-agent governance ring on pwai-api-service. Enforces policy, consent gates, and cross-agent accountability.",
+          },
+          {
+            id: "redis-queue",
+            name: "BullMQ/Redis Queue",
+            type: "INFRASTRUCTURE",
+            service: "pwai-ai-worker",
+            lat: 48,
+            freq: 852,
+            desc: "BullMQ job queue backed by Railway Redis. Routes tasks from Q-DD to HYPER-SWARM workers with priority lanes.",
+          },
+          {
+            id: "pg-db",
+            name: "PostgreSQL Store",
+            type: "INFRASTRUCTURE",
+            service: "storm-dev",
+            lat: 48,
+            freq: 852,
+            desc: "Railway PostgreSQL. Persistent store for sessions, user data, programme catalogue, and agent state snapshots.",
+          },
+          {
+            id: "d1-db",
+            name: "D1 Knowledge Base",
+            type: "INFRASTRUCTURE",
+            service: "merkaba-geoqode-lattice",
+            lat: 48,
+            freq: 852,
+            desc: "Cloudflare D1: merkaba-lab-knowledge (2ff6331f). Stores lab discoveries, geoCode entries, and semantic frequency logs.",
+          },
+          {
+            id: "vr-taxonomy",
+            name: "VR Taxonomy Layer",
+            type: "AGENT",
+            service: "merkaba-geoqode-lattice",
+            lat: 48,
+            freq: 417,
+            desc: "JSON taxonomy of all VR assets, categorised by lattice layer, semantic frequency, and Solfeggio band.",
+          },
+          {
+            id: "cosmos-lab",
+            name: "Cosmos Lab VR",
+            type: "AGENT",
+            service: "merkaba-geoqode-lattice",
+            lat: 48,
+            freq: 639,
+            desc: "science-lab VR at /cosmos-lab.html. WebXR A-Frame lab with MerkabaLLM assistant, /ws/lab presence.",
+          },
+          {
+            id: "cosmos-inf",
+            name: "Cosmos Infinite VR",
+            type: "AGENT",
+            service: "merkaba-geoqode-lattice",
+            lat: 48,
+            freq: 417,
+            desc: "Main VR experience at realaios.com. 57k-line WebXR world with dogfight, D480 galaxies, AIOSmux agent, grand tour.",
+          },
+          {
+            id: "cosmos-px",
+            name: "Cosmos-Pixel VR (self)",
+            type: "AGENT",
+            service: "merkaba-geoqode-lattice",
+            lat: 48,
+            freq: 72,
+            desc: "This page. AIOS agent lattice visualiser. D8/D26/D48 GeoQode node map with live pixel-relay event feed.",
+          },
+          {
+            id: "stripe-billing",
+            name: "Stripe Billing Agent",
+            type: "AGENT",
+            service: "pwai-api-service",
+            lat: 48,
+            freq: 396,
+            desc: "Manages AIOS Pro checkout, webhook validation, and subscription state on Stripe live/test environments.",
+          },
+          {
+            id: "cf-pages",
+            name: "Cloudflare Pages CDN",
+            type: "INFRASTRUCTURE",
+            service: "merkaba-geoqode-lattice",
+            lat: 48,
+            freq: 852,
+            desc: "Edge CDN serving realaios.com. Hosts cosmos-infinite.html, cosmos-lab.html, cosmos-pixel.html globally.",
+          },
+          {
+            id: "certifier",
+            name: "Enterprise Certifier",
+            type: "AGENT",
+            service: "merkaba-geoqode-lattice",
+            lat: 48,
+            freq: 72,
+            desc: "MERKABA_LATTICE certification engine. Validates 8→26→48:480 canonical signature on every service manifest.",
+          },
+          {
+            id: "transform420",
+            name: "Lattice Transform-420",
+            type: "AGENT",
+            service: "merkaba-geoqode-lattice",
+            lat: 48,
+            freq: 72,
+            desc: "D480 lattice transform pipeline. Applies PHI/PSI weighting to 420 coordinate nodes for harmonic spectrum expansion.",
+          },
+          {
+            id: "pixel-relay",
+            name: "Pixel-Relay Bridge",
+            type: "AGENT",
+            service: "merkaba-geoqode-lattice",
+            lat: 48,
+            freq: 639,
+            desc: "Local WS bridge: pixel-agents → /ws/pixel → cosmos-pixel. Run scripts/pixel-relay.js to activate.",
+          },
+          {
+            id: "mal-injector",
+            name: "MAL Injector",
+            type: "AGENT",
+            service: "merkaba-geoqode-lattice",
+            lat: 48,
+            freq: 528,
+            desc: "Merkaba Asset Library injector. Appends VR-cycle mined assets and GeoQode tags to the master MAL JSON catalogue.",
+          },
+          {
+            id: "vr-scene-gen",
+            name: "VR Scene Generator",
+            type: "AGENT",
+            service: "merkaba-geoqode-lattice",
+            lat: 48,
+            freq: 528,
+            desc: "Generates A-Frame scene fragments from asset miner output. Outputs into public/ for immediate hosting.",
+          },
+        ];
+
+        // ── Compute lattice positions ──────────────────────────────────────────────
+        (function buildPositions() {
+          var d8 = AIOS_AGENTS.filter(function (a) {
+            return a.lat === 8;
+          });
+          var d26 = AIOS_AGENTS.filter(function (a) {
+            return a.lat === 26;
+          });
+          var d48 = AIOS_AGENTS.filter(function (a) {
+            return a.lat === 48;
+          });
+
+          // D8: single ring R=14, alternating y=±3
+          d8.forEach(function (a, i) {
+            var angle = (i / d8.length) * Math.PI * 2;
+            a.pos = [
+              14 * Math.cos(angle),
+              i % 2 === 0 ? 3 : -3,
+              14 * Math.sin(angle),
+            ];
+          });
+
+          // D26: two rings R=22, y=+9 (first half) / y=-9 (second half)
+          d26.forEach(function (a, i) {
+            var half = Math.floor(d26.length / 2);
+            var inRing = i < half ? i : i - half;
+            var ringLen = i < half ? half : d26.length - half;
+            var angle = (inRing / ringLen) * Math.PI * 2;
+            var y = i < half ? 9 : -9;
+            a.pos = [22 * Math.cos(angle), y, 22 * Math.sin(angle)];
+          });
+
+          // D48: two rings R=33, y=+5 / y=-5, plus extra nodes offset outward
+          d48.forEach(function (a, i) {
+            var half = Math.floor(d48.length / 2);
+            var inRing = i < half ? i : i - half;
+            var ringLen = i < half ? half : d48.length - half;
+            var angle = (inRing / ringLen) * Math.PI * 2;
+            var y = i < half ? 5 : -5;
+            a.pos = [33 * Math.cos(angle), y, 33 * Math.sin(angle)];
+          });
+        })();
+
+        // Index by id
+        var AGENT_MAP = {};
+        AIOS_AGENTS.forEach(function (a) {
+          AGENT_MAP[a.id] = a;
+        });
+
+        // ── Build star field ───────────────────────────────────────────────────────
+        var _scene = null;
+        var _nodesEl = null;
+        var _linesEl = null;
+        var _selectedId = null;
+        var _ws = null;
+        var _flyTarget = null;
+
+        window.addEventListener("DOMContentLoaded", function () {
+          _buildAgentList();
+          _pollServices();
+          setInterval(_pollServices, 45000);
+          _connectWS();
+        });
+
+        document
+          .querySelector("a-scene")
+          .addEventListener("loaded", function () {
+            _scene = document.querySelector("a-scene");
+            _nodesEl = document.getElementById("cp-nodes");
+            _linesEl = document.getElementById("cp-lines");
+            _buildStars();
+            _buildNodes();
+            _buildConnections();
+            _animateLoop();
+          });
+
+        // ── Build procedural star field ────────────────────────────────────────────
+        function _buildStars() {
+          var THREE = AFRAME.THREE;
+          var pts = [];
+          for (var i = 0; i < 3000; i++) {
+            var r = 400 + Math.random() * 600;
+            var theta = Math.acos(2 * Math.random() - 1);
+            var phi = Math.random() * Math.PI * 2;
+            pts.push(
+              new THREE.Vector3(
+                r * Math.sin(theta) * Math.cos(phi),
+                r * Math.sin(theta) * Math.sin(phi),
+                r * Math.cos(theta),
+              ),
+            );
+          }
+          var geo = new THREE.BufferGeometry().setFromPoints(pts);
+          var mat = new THREE.PointsMaterial({
+            color: 0xaaccff,
+            size: 0.6,
+            sizeAttenuation: true,
+          });
+          var stars = new THREE.Points(geo, mat);
+          stars.frustumCulled = false;
+          _scene.object3D.add(stars);
+        }
+
+        // ── Build 3-D agent node entities ─────────────────────────────────────────
+        var NODE_SCALE = {
+          ORCHESTRATOR: 1.3,
+          SWARM: 1.1,
+          BRAIN: 1.0,
+          AGENT: 0.8,
+          MONITOR: 0.85,
+          INFRASTRUCTURE: 0.75,
+        };
+        var NODE_GEOM = {
+          ORCHESTRATOR: "a-octahedron",
+          SWARM: "a-icosahedron",
+          BRAIN: "a-sphere",
+          AGENT: "a-tetrahedron",
+          MONITOR: "a-dodecahedron",
+          INFRASTRUCTURE: "a-box",
+        };
+
+        function _buildNodes() {
+          AIOS_AGENTS.forEach(function (agent) {
+            var color = FREQ_COLOR[agent.freq] || "#ffffff";
+            var scale = NODE_SCALE[agent.type] || 1.0;
+            var geomTag = NODE_GEOM[agent.type] || "a-sphere";
+            var radius =
+              (agent.lat === 8 ? 1.2 : agent.lat === 26 ? 0.95 : 0.7) * scale;
+
+            var wrapper = document.createElement("a-entity");
+            wrapper.setAttribute("id", "cp-node-" + agent.id);
+            wrapper.setAttribute("position", agent.pos.join(" "));
+            wrapper.setAttribute("data-agent-id", agent.id);
+
+            // Main geometry (wireframe)
+            var mesh = document.createElement(geomTag);
+            if (
+              geomTag === "a-sphere" ||
+              geomTag === "a-octahedron" ||
+              geomTag === "a-icosahedron" ||
+              geomTag === "a-dodecahedron"
+            ) {
+              mesh.setAttribute("radius", radius);
+            } else if (geomTag === "a-tetrahedron") {
+              mesh.setAttribute("radius", radius);
+            } else {
+              mesh.setAttribute("width", radius * 1.4);
+              mesh.setAttribute("height", radius * 1.4);
+              mesh.setAttribute("depth", radius * 1.4);
+            }
+            mesh.setAttribute(
+              "material",
+              "color: " +
+                color +
+                "; wireframe: true; opacity: 0.85; transparent: true",
+            );
+
+            // Glow sphere
+            var glow = document.createElement("a-sphere");
+            glow.setAttribute("radius", radius * 1.5);
+            glow.setAttribute(
+              "material",
+              "color: " +
+                color +
+                "; opacity: 0.08; transparent: true; shader: flat; side: back",
+            );
+
+            // Label
+            var label = document.createElement("a-text");
+            label.setAttribute("value", agent.name.slice(0, 20));
+            label.setAttribute("align", "center");
+            label.setAttribute("color", color);
+            label.setAttribute("width", agent.lat === 8 ? 10 : 8);
+            label.setAttribute("position", "0 " + radius * 2.2 + " 0");
+            label.setAttribute("look-at", "#cp-camera");
+            label.setAttribute("font", "monoid");
+            label.setAttribute("letter-spacing", "1");
+
+            // Slow rotation
+            var anim = document.createElement("a-animation");
+            anim.setAttribute("attribute", "rotation");
+            anim.setAttribute("from", "0 0 0");
+            anim.setAttribute("to", "0 360 0");
+            anim.setAttribute("dur", String(14000 + Math.random() * 8000));
+            anim.setAttribute("repeat", "indefinite");
+            anim.setAttribute("easing", "linear");
+            wrapper.appendChild(anim);
+
+            wrapper.appendChild(mesh);
+            wrapper.appendChild(glow);
+            wrapper.appendChild(label);
+
+            // Click handler
+            wrapper.setAttribute("class", "cp-clickable");
+            wrapper.addEventListener("click", function () {
+              _selectAgent(agent.id);
+            });
+            wrapper.addEventListener("mouseenter", function () {
+              glow.setAttribute(
+                "material",
+                "color: " +
+                  color +
+                  "; opacity: 0.22; transparent: true; shader: flat; side: back",
+              );
+            });
+            wrapper.addEventListener("mouseleave", function () {
+              if (_selectedId !== agent.id) {
+                glow.setAttribute(
+                  "material",
+                  "color: " +
+                    color +
+                    "; opacity: 0.08; transparent: true; shader: flat; side: back",
+                );
+              }
+            });
+
+            _nodesEl.appendChild(wrapper);
+          });
+
+          // Cursor for raycasting
+          var camera = document.getElementById("cp-camera");
+          if (!camera.querySelector("a-cursor")) {
+            var cursor = document.createElement("a-cursor");
+            cursor.setAttribute("raycaster", "objects: .cp-clickable");
+            cursor.setAttribute("fuse", "false");
+            camera.appendChild(cursor);
+          }
+        }
+
+        // ── Build connection lines between related agents ──────────────────────────
+        var CONNECTIONS = [
+          ["storm-chat", "q-dd"],
+          ["q-dd", "hyper-swarm"],
+          ["storm-chat", "aios-api-gw"],
+          ["geo-kernel", "dual-attest"],
+          ["geo-kernel", "hebrew-geo"],
+          ["geo-kernel", "transform420"],
+          ["geo-kernel", "merkaba-bridge"],
+          ["geo-kernel", "merkaba-alm"],
+          ["cosmos-server", "cosmos-inf"],
+          ["cosmos-server", "cosmos-lab"],
+          ["cosmos-server", "cosmos-px"],
+          ["aios-overwatch", "hyper-swarm"],
+          ["aios-overwatch", "merkaba-aware"],
+          ["merkaba-llm", "dual-attest"],
+          ["merkaba-llm", "be-eye-swarm"],
+          ["lab-agent", "d1-db"],
+          ["lab-agent", "merkaba-llm"],
+          ["asset-miner", "vr-taxonomy"],
+          ["asset-miner", "mal-injector"],
+          ["asset-miner", "vr-scene-gen"],
+          ["s4ai-core", "merkaba-aware"],
+          ["s4ai-core", "dual-attest"],
+          ["redis-queue", "hyper-swarm"],
+          ["pg-db", "aios-api-gw"],
+          ["stripe-billing", "aios-api-gw"],
+          ["certifier", "geo-kernel"],
+          ["pixel-relay", "cosmos-px"],
+          ["plai-store", "169-gov"],
+          ["railway-proxy", "cosmos-server"],
+          ["merkaba-theatre", "cinema-virt"],
+        ];
+
+        function _buildConnections() {
+          var THREE = AFRAME.THREE;
+          CONNECTIONS.forEach(function (pair) {
+            var a = AGENT_MAP[pair[0]];
+            var b = AGENT_MAP[pair[1]];
+            if (!a || !b) return;
+            var ap = new THREE.Vector3(a.pos[0], a.pos[1], a.pos[2]);
+            var bp = new THREE.Vector3(b.pos[0], b.pos[1], b.pos[2]);
+            var colorA = FREQ_COLOR[a.freq] || "#ffffff";
+            var geo = new THREE.BufferGeometry().setFromPoints([ap, bp]);
+            var mat = new THREE.LineBasicMaterial({
+              color: colorA,
+              transparent: true,
+              opacity: 0.18,
+            });
+            var line = new THREE.Line(geo, mat);
+            line.frustumCulled = false;
+            _linesEl.object3D.add(line);
+          });
+        }
+
+        // ── Select / fly-to agent ──────────────────────────────────────────────────
+        function _selectAgent(id) {
+          _selectedId = id;
+          var agent = AGENT_MAP[id];
+          if (!agent) return;
+
+          // Highlight list
+          document.querySelectorAll(".cp-agent-row").forEach(function (r) {
+            r.classList.toggle("selected", r.dataset.agentId === id);
+          });
+
+          // Show detail popup
+          document.getElementById("cp-detail").style.display = "block";
+          document.getElementById("cp-detail-name").textContent = agent.name;
+          var S = (
+            ALPHA_W * (PHI / GOLDEN_BAND) +
+            OMEGA_W * (PSI / GOLDEN_BAND)
+          ).toFixed(4);
+          document.getElementById("cp-detail-table").innerHTML = [
+            "<tr><td>Type</td><td>" + agent.type + "</td></tr>",
+            "<tr><td>Service</td><td>" + agent.service + "</td></tr>",
+            "<tr><td>Lattice</td><td>D" + agent.lat + "</td></tr>",
+            "<tr><td>Frequency</td><td>" + agent.freq + " Hz</td></tr>",
+            "<tr><td>S-Score</td><td>" + S + " (ABSOLUTE)</td></tr>",
+          ].join("");
+          document.getElementById("cp-detail-desc").textContent = agent.desc;
+
+          // Fly camera toward node
+          var rig = document.getElementById("cp-rig");
+          if (rig) {
+            var p = agent.pos;
+            var nx = p[0] * 0.75;
+            var ny = p[1];
+            var nz = p[2] * 0.75 + 8;
+            rig.setAttribute("animation", {
+              property: "position",
+              to: nx + " " + ny + " " + nz,
+              dur: 1200,
+              easing: "easeInOutQuad",
+            });
+          }
+        }
+
+        window.cpCloseDetail = function () {
+          document.getElementById("cp-detail").style.display = "none";
+          _selectedId = null;
+          document.querySelectorAll(".cp-agent-row").forEach(function (r) {
+            r.classList.remove("selected");
+          });
+        };
+
+        // ── Build left-panel agent list ────────────────────────────────────────────
+        function _buildAgentList() {
+          var container = document.getElementById("cp-agent-list");
+          var byType = {};
+          AIOS_AGENTS.forEach(function (a) {
+            if (!byType[a.type]) byType[a.type] = [];
+            byType[a.type].push(a);
+          });
+
+          var typeOrder = [
+            "ORCHESTRATOR",
+            "BRAIN",
+            "SWARM",
+            "MONITOR",
+            "AGENT",
+            "INFRASTRUCTURE",
+          ];
+          typeOrder.forEach(function (t) {
+            if (!byType[t]) return;
+            var cat = document.createElement("div");
+            cat.className = "cp-category";
+            cat.textContent = t;
+            container.appendChild(cat);
+            byType[t].forEach(function (agent) {
+              var row = document.createElement("div");
+              row.className = "cp-agent-row";
+              row.dataset.agentId = agent.id;
+              var dot = document.createElement("span");
+              dot.className = "cp-freq-dot";
+              dot.style.background = FREQ_COLOR[agent.freq] || "#fff";
+              dot.style.boxShadow =
+                "0 0 4px " + (FREQ_COLOR[agent.freq] || "#fff");
+              var name = document.createElement("span");
+              name.className = "cp-agent-name";
+              name.textContent = agent.name.slice(0, 22);
+              var svc = document.createElement("span");
+              svc.className = "cp-agent-svc";
+              svc.textContent = agent.service
+                .replace("pwai-", "")
+                .replace("merkaba-geoqode-", "m-")
+                .slice(0, 14);
+              row.appendChild(dot);
+              row.appendChild(name);
+              row.appendChild(svc);
+              row.addEventListener("click", function () {
+                _selectAgent(agent.id);
+              });
+              container.appendChild(row);
+            });
+          });
+        }
+
+        // ── Service health polling ─────────────────────────────────────────────────
+        var SERVICES = [
+          { id: "dot-api", url: "https://api.getbrains4ai.com/health" },
+          { id: "dot-frontend", url: "https://getbrains4ai.com" },
+          { id: "dot-aios-mesh", url: "https://aios-mesh.realaios.com/health" },
+          { id: "dot-cosmos", url: "https://realaios.com" },
+        ];
+
+        function _pollServices() {
+          SERVICES.forEach(function (svc) {
+            var dot = document.getElementById(svc.id);
+            if (!dot) return;
+            var t0 = Date.now();
+            fetch(svc.url, {
+              method: "GET",
+              mode: "no-cors",
+              cache: "no-cache",
+            })
+              .then(function () {
+                var ms = Date.now() - t0;
+                dot.className = "dot " + (ms < 600 ? "green" : "yellow");
+              })
+              .catch(function () {
+                dot.className = "dot red";
+              });
+          });
+        }
+
+        // ── WebSocket /ws/pixel ────────────────────────────────────────────────────
+        function _connectWS() {
+          var proto = location.protocol === "https:" ? "wss:" : "ws:";
+          var url = proto + "//" + location.host + "/ws/pixel";
+          try {
+            _ws = new WebSocket(url);
+          } catch (e) {
+            return;
+          }
+
+          _ws.onopen = function () {
+            document.getElementById("relay-status-text").textContent =
+              "connected";
+            document.getElementById("relay-status-text").style.color =
+              "#00ff88";
+            _ws.send(
+              JSON.stringify({
+                type: "cp-hello",
+                name:
+                  "OBSERVER-" +
+                  Math.random().toString(36).slice(2, 6).toUpperCase(),
+              }),
+            );
+          };
+
+          _ws.onmessage = function (ev) {
+            var msg;
+            try {
+              msg = JSON.parse(ev.data);
+            } catch (_) {
+              return;
+            }
+
+            if (msg.type === "cp-welcome") {
+              document.getElementById("cp-count").textContent = msg.count || 0;
+              if (msg.agentStatuses) {
+                Object.keys(msg.agentStatuses).forEach(function (aid) {
+                  _updateNodeStatus(aid, msg.agentStatuses[aid].status);
+                });
+              }
+            } else if (msg.type === "cp-presence") {
+              document.getElementById("cp-count").textContent = msg.count || 0;
+              if (msg.joined) _addFeed("JOINED", msg.joined.name);
+              if (msg.left) _addFeed("LEFT", msg.left.name);
+            } else if (msg.type === "pixel-event") {
+              var ev2 = msg.event || {};
+              var type = ev2.type || ev2.eventType || "event";
+              var body = ev2.agentId || ev2.data || "";
+              _addFeed(
+                type.toUpperCase().slice(0, 16),
+                String(body).slice(0, 40),
+              );
+              if (ev2.agentId) _pulseNode(ev2.agentId);
+            } else if (msg.type === "cp-agent-status") {
+              _updateNodeStatus(msg.agentId, msg.status);
+            }
+          };
+
+          _ws.onclose = function () {
+            document.getElementById("relay-status-text").textContent =
+              "disconnected";
+            document.getElementById("relay-status-text").style.color =
+              "#ff4444";
+            setTimeout(_connectWS, 4000);
+          };
+
+          _ws.onerror = function () {
+            document.getElementById("relay-status-text").textContent = "error";
+            document.getElementById("relay-status-text").style.color =
+              "#ff4444";
+          };
+        }
+
+        function _addFeed(type, body) {
+          var feed = document.getElementById("cp-feed");
+          var row = document.createElement("div");
+          row.className = "cp-feed-row";
+          var d = new Date();
+          var ts =
+            d.getHours().toString().padStart(2, "0") +
+            ":" +
+            d.getMinutes().toString().padStart(2, "0") +
+            ":" +
+            d.getSeconds().toString().padStart(2, "0");
+          row.innerHTML =
+            '<span class="ts">' +
+            ts +
+            '</span> <span class="ev-type">' +
+            type +
+            '</span><span class="ev-body">' +
+            body +
+            "</span>";
+          feed.insertBefore(row, feed.firstChild);
+          while (feed.children.length > 80) feed.removeChild(feed.lastChild);
+        }
+
+        function _pulseNode(agentId) {
+          var el = document.getElementById("cp-node-" + agentId);
+          if (!el) return;
+          el.setAttribute("animation__pulse", {
+            property: "scale",
+            from: "1 1 1",
+            to: "1.5 1.5 1.5",
+            dur: 300,
+            dir: "alternate",
+            loop: 2,
+            easing: "easeInOutSine",
+          });
+        }
+
+        function _updateNodeStatus(agentId, status) {
+          var el = document.getElementById("cp-node-" + agentId);
+          if (!el) return;
+          var agent = AGENT_MAP[agentId];
+          var color =
+            status === "active"
+              ? FREQ_COLOR[agent ? agent.freq : 72] || "#00ff88"
+              : status === "error"
+                ? "#ff4444"
+                : "#555555";
+          var mesh = el.firstElementChild;
+          if (mesh)
+            mesh.setAttribute(
+              "material",
+              "color: " +
+                color +
+                "; wireframe: true; opacity: 0.85; transparent: true",
+            );
+        }
+
+        // ── Gentle orbital drift animation ────────────────────────────────────────
+        var _t0 = Date.now();
+        function _animateLoop() {
+          var dt = (Date.now() - _t0) / 1000;
+          // Slowly rotate the entire D8 ring
+          AIOS_AGENTS.filter(function (a) {
+            return a.lat === 8;
+          }).forEach(function (agent, i) {
+            var base = (i / 8) * Math.PI * 2;
+            var angle = base + dt * 0.04;
+            var el = document.getElementById("cp-node-" + agent.id);
+            if (el)
+              el.setAttribute(
+                "position",
+                14 * Math.cos(angle) +
+                  " " +
+                  agent.pos[1] +
+                  " " +
+                  14 * Math.sin(angle),
+              );
+          });
+          requestAnimationFrame(_animateLoop);
+        }
+
+        // ── Keyboard shortcuts ────────────────────────────────────────────────────
+        document.addEventListener("keydown", function (e) {
+          if (e.key === "Escape") cpCloseDetail();
+          if (e.key === "v" || e.key === "V")
+            document.querySelector("a-scene").enterVR();
+        });
+      })();
+    </script>
+  </body>
+</html>

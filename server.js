@@ -143,6 +143,10 @@ const COSMOS_PIXEL_HTML_PATH = join(PUBLIC_DIR, "cosmos-pixel.html");
 const COSMOS_PIXEL_HTML = existsSync(COSMOS_PIXEL_HTML_PATH)
   ? withMeta(readFileSync(COSMOS_PIXEL_HTML_PATH, "utf-8"))
   : null;
+const COSMOS_AGENTS_HTML_PATH = join(PUBLIC_DIR, "cosmos-agents.html");
+const COSMOS_AGENTS_HTML = existsSync(COSMOS_AGENTS_HTML_PATH)
+  ? withMeta(readFileSync(COSMOS_AGENTS_HTML_PATH, "utf-8"))
+  : null;
 const COSMOS_LAB_LANDING_HTML_PATH = join(PUBLIC_DIR, "cosmos-lab-landing.html");
 const COSMOS_LAB_LANDING_HTML = existsSync(COSMOS_LAB_LANDING_HTML_PATH)
   ? withMeta(readFileSync(COSMOS_LAB_LANDING_HTML_PATH, "utf-8"))
@@ -3447,6 +3451,15 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
         return json(res, 404, { ok: false, error: "Pixel Agents webview not found" });
       res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
       res.end(PIXEL_AGENTS_HTML);
+      return;
+    }
+
+    // ── GET /cosmos-agents — AIOS Agent Registry (Merkaba 3D lattice, permanent) ─
+    if (req.method === "GET" && (pathname === "/cosmos-agents" || pathname === "/cosmos-agents.html" || pathname === "/cosmos-agents/")) {
+      if (!COSMOS_AGENTS_HTML)
+        return json(res, 404, { ok: false, error: "Cosmos Agents not found" });
+      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+      res.end(COSMOS_AGENTS_HTML);
       return;
     }
 
