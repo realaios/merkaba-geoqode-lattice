@@ -55416,6 +55416,31 @@
         letter-spacing: 2px;
         color: rgba(0,155,210,0.45);
       }
+      #minimap-toggle-btn {
+        position: fixed;
+        top: 14px;
+        left: 14px;
+        width: 38px;
+        height: 38px;
+        background: rgba(0,8,24,0.78);
+        border: 1px solid rgba(0,140,200,0.45);
+        border-radius: 7px;
+        color: rgba(0,210,255,0.85);
+        font-size: 18px;
+        cursor: pointer;
+        z-index: 5090;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        pointer-events: auto;
+        -webkit-tap-highlight-color: transparent;
+        touch-action: manipulation;
+        transition: box-shadow 0.15s ease, background 0.15s ease;
+      }
+      #minimap-toggle-btn:active {
+        background: rgba(0,30,60,0.92);
+        box-shadow: 0 0 14px rgba(0,180,255,0.5);
+      }
       #dtc-team-badge {
         font-family: monospace;
         font-size: 15px;
@@ -56174,8 +56199,37 @@
           setTimeout(function() { document.body.removeChild(a); URL.revokeObjectURL(objUrl); }, 1200);
         }
 
-        /* ── Phase 4C: Spectator minimap ──────────────────────────────────── */
-        var _specMinimapTimer = null;
+        /* ── Phase 4C/4D: Minimap ─────────────────────────────────────────── */
+        var _specMinimapTimer  = null;
+        var _minimapVisible    = false;
+        var _minimapAutoHide   = null;
+
+        window._toggleMinimap = function(autoHide) {
+          if (_spectatorMode) return;
+          _minimapVisible = !_minimapVisible;
+          var mw = document.getElementById('spec-minimap-wrap');
+          if (!mw) return;
+          clearTimeout(_minimapAutoHide);
+          _minimapAutoHide = null;
+          if (_minimapVisible) {
+            mw.style.display = 'flex';
+            if (!_specMinimapTimer) _specMinimapTimer = setInterval(_updateSpecMinimap, 800);
+            _updateSpecMinimap();
+            if (autoHide) {
+              _minimapAutoHide = setTimeout(function() {
+                _minimapVisible = false;
+                mw.style.display = 'none';
+                clearInterval(_specMinimapTimer);
+                _specMinimapTimer = null;
+              }, 3000);
+            }
+          } else {
+            mw.style.display = 'none';
+            clearInterval(_specMinimapTimer);
+            _specMinimapTimer = null;
+          }
+        };
+
         function _updateSpecMinimap() {
           /* Update status label from live DOM state */
           var _ss = document.getElementById('spec-status');
@@ -56438,7 +56492,7 @@
                 /* Spectator mode setup */
                 if (_spectatorMode) {
                   if (_ws && _ws.readyState === 1) _ws.send(JSON.stringify({ type: 'spectate' }));
-                  ['fighter-hud', 'cockpit-overlay', 'dtc-ready-wrap', 'kill-share-wrap'].forEach(function(eid) {
+                  ['fighter-hud', 'cockpit-overlay', 'dtc-ready-wrap', 'kill-share-wrap', 'minimap-toggle-btn'].forEach(function(eid) {
                     var el = document.getElementById(eid); if (el) el.style.display = 'none';
                   });
                   var _so = document.getElementById('spec-overlay');
@@ -57851,6 +57905,8 @@
       <span id="spec-label">&#x1F441; SPECTATING</span>
       <span id="spec-status"></span>
     </div>
+    <!-- Minimap toggle button (regular pilots: N key / mobile tap) -->
+    <button id="minimap-toggle-btn" onclick="window._toggleMinimap(true)" title="Toggle minimap (N)">&#x1F5FA;</button>
     <!-- Spectator minimap -->
     <div id="spec-minimap-wrap">
       <canvas id="spec-minimap" width="160" height="160"></canvas>
@@ -58961,6 +59017,13 @@
         window.addEventListener("keyup", function (e) {
           if (e.code === "KeyW") _kW = false;
           if (e.code === "KeyS") _kS = false;
+        });
+
+        /* N key: toggle minimap (desktop — persistent) */
+        window.addEventListener("keydown", function(e) {
+          if ((e.key === "n" || e.key === "N") && !(e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA')) {
+            window._toggleMinimap(false);
+          }
         });
 
         /* Main loop: smooth gain + sweep bandpass frequency with thrust level */
