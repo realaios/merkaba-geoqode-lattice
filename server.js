@@ -1096,7 +1096,7 @@ const server = createServer(async (req, res) => {
         (pathname === "/" || pathname === "/index.html")
       ) {
         if (AIOS67_HTML) {
-          res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+          res.writeHead(200, { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-cache, no-store" });
           res.end(AIOS67_HTML);
         } else {
           res.writeHead(302, { Location: "https://realaios.com" });
@@ -1262,7 +1262,7 @@ const server = createServer(async (req, res) => {
       if (accept.includes("text/html") || accept.includes("*/*")) {
         const homeHtml = AIOS_HTML || VR_HTML;
         if (homeHtml) {
-          res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+          res.writeHead(200, { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-cache, no-store" });
           res.end(homeHtml);
           return;
         }
@@ -1356,7 +1356,7 @@ const server = createServer(async (req, res) => {
         })),
       });
       const html = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>AIOS Products — AI-Native Tools Built on Merkaba OS</title><meta name="description" content="Six AI-native products built on the AIOS Merkaba OS. App factory, AI attestation, uptime intelligence, hallucination detection, signal marketplace, and semantic matching."><meta property="og:title" content="AIOS Products"><meta property="og:description" content="AI-native tools built on autonomous OS geometry."><meta property="og:image" content="https://realaios.com/public/og-image.png"><meta property="og:url" content="https://realaios.com/products"><meta property="og:type" content="website"><link rel="canonical" href="https://realaios.com/products"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="https://realaios.com/public/og-image.png"><script type="application/ld+json">${productListLD}</script>${GSC_TOKEN ? `<meta name="google-site-verification" content="${GSC_TOKEN}"/>` : ""}<script async src="https://www.googletagmanager.com/gtag/js?id=${GA_ID}"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','${GA_ID}',{send_page_view:true});</script><style>*{margin:0;padding:0;box-sizing:border-box}body{background:#0a0a0f;color:#fff;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;min-height:100vh}a{text-decoration:none}main{max-width:1000px;margin:0 auto;padding:5rem 2rem}.hero-label{font-size:0.78rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#00f5d4;margin-bottom:1rem}h1{font-size:clamp(2rem,5vw,3rem);font-weight:800;letter-spacing:-0.03em;margin-bottom:1rem}h1 span{background:linear-gradient(135deg,#00f5d4,#a855f7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}.hero-sub{font-size:1.05rem;color:#888;line-height:1.7;max-width:560px;margin-bottom:3rem}.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.25rem}footer{text-align:center;padding:4rem 2rem;color:#444;font-size:0.85rem;border-top:1px solid rgba(255,255,255,0.06);margin-top:4rem}@media(max-width:640px){main{padding:3rem 1.25rem}}nav.site-nav{position:fixed;top:0;left:0;right:0;z-index:200;height:54px;padding:0 24px;display:flex;align-items:center;gap:8px;background:rgba(5,10,20,0.92);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid rgba(0,212,255,0.1)}.site-nav-logo{font-size:18px;font-weight:800;color:#00d4ff;text-decoration:none;letter-spacing:-0.5px;white-space:nowrap;margin-right:4px;flex-shrink:0}.site-nav-links{display:flex;align-items:center;gap:2px;overflow-x:auto;scrollbar-width:none;flex:1;min-width:0}.site-nav-links::-webkit-scrollbar{display:none}.site-nav-links a{color:rgba(248,250,252,0.5);font-size:0.82rem;font-weight:500;text-decoration:none;padding:5px 10px;border-radius:6px;white-space:nowrap;transition:color .15s,background .15s;flex-shrink:0}.site-nav-links a:hover{color:#fff;background:rgba(255,255,255,0.07)}.site-nav-links a.active{color:#00d4ff;background:rgba(0,212,255,0.08)}.site-nav-right{display:flex;align-items:center;gap:10px;flex-shrink:0;margin-left:8px}.site-nav-live{display:inline-flex;align-items:center;gap:4px;font-size:0.72rem;font-weight:800;color:#ef4444;text-decoration:none;letter-spacing:.05em;animation:_snlive 1.2s ease-in-out infinite}@keyframes _snlive{0%,100%{opacity:1}50%{opacity:.5}}.site-nav-cta{background:#00d4ff;color:#000;font-weight:700;font-size:0.78rem;padding:6px 14px;border-radius:6px;text-decoration:none;letter-spacing:.3px;transition:opacity .2s;white-space:nowrap}.site-nav-cta:hover{opacity:.85}@media(max-width:640px){nav.site-nav{padding:0 12px;height:50px}.site-nav-live{display:none}.site-nav-logo{font-size:16px}}body{padding-top:54px}@media(max-width:640px){body{padding-top:50px}}</style></head><body><nav class="site-nav"><a href="/" class="site-nav-logo">&#x2B21; AIOS</a><div class="site-nav-links"><a href="/vr">&#x1F97D; VR</a><a href="/news">News</a><a href="/geo-codec">Geoqode</a></div><div class="site-nav-right"><a href="/live" class="site-nav-live">&#x25CF; LIVE</a><a href="/login" class="site-nav-cta">Login</a></div></nav><main><div class="hero-label">AIOS Product Suite</div><h1>Built for the <span>AI-Native Era</span></h1><p class="hero-sub">Six intelligent products running on AIOS Merkaba OS. Self-healing, semantically grounded, and geometrically sound.</p><div class="grid">${cardsHTML}</div></main><footer>© 2026 AIOS — realaios.com</footer></body></html>`;
-      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-cache, no-store" });
       res.end(html);
       return;
     }
@@ -1662,7 +1662,7 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
 </script>
 </body>
 </html>`;
-      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-cache, no-store" });
       res.end(html);
       return;
     }
@@ -3432,7 +3432,7 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
     if (req.method === "GET" && pathname === "/lab") {
       if (!LAB_HTML)
         return json(res, 404, { ok: false, error: "Lab page not found" });
-      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-cache, no-store" });
       res.end(LAB_HTML);
       return;
     }
@@ -3441,7 +3441,7 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
     if (req.method === "GET" && (pathname === "/cosmos-lab" || pathname === "/cosmos-lab.html")) {
       if (!COSMOS_LAB_HTML)
         return json(res, 404, { ok: false, error: "Cosmos Lab not found" });
-      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-cache, no-store" });
       res.end(COSMOS_LAB_HTML);
       return;
     }
@@ -3450,7 +3450,7 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
     if (req.method === "GET" && (pathname === "/cosmos-pixel" || pathname === "/cosmos-pixel.html" || pathname === "/cosmos-pixel/")) {
       if (!PIXEL_AGENTS_HTML)
         return json(res, 404, { ok: false, error: "Pixel Agents webview not found" });
-      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-cache, no-store" });
       res.end(PIXEL_AGENTS_HTML);
       return;
     }
@@ -3459,7 +3459,7 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
     if (req.method === "GET" && (pathname === "/cosmos-agents" || pathname === "/cosmos-agents.html" || pathname === "/cosmos-agents/")) {
       if (!COSMOS_AGENTS_HTML)
         return json(res, 404, { ok: false, error: "Cosmos Agents not found" });
-      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-cache, no-store" });
       res.end(COSMOS_AGENTS_HTML);
       return;
     }
@@ -3495,7 +3495,7 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
     if (req.method === "GET" && (pathname === "/cosmos-lab-landing" || pathname === "/cosmos-lab-landing.html")) {
       if (!COSMOS_LAB_LANDING_HTML)
         return json(res, 404, { ok: false, error: "Cosmos Lab landing not found" });
-      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-cache, no-store" });
       res.end(COSMOS_LAB_LANDING_HTML);
       return;
     }
@@ -3504,7 +3504,7 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
     if (req.method === "GET" && pathname === "/viewer") {
       if (!VIEWER_HTML)
         return json(res, 404, { ok: false, error: "Viewer page not found" });
-      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-cache, no-store" });
       res.end(VIEWER_HTML);
       return;
     }
@@ -3513,7 +3513,7 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
     if (req.method === "GET" && pathname === "/attest") {
       if (!ATTEST_HTML)
         return json(res, 404, { ok: false, error: "Attest page not found" });
-      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-cache, no-store" });
       res.end(ATTEST_HTML);
       return;
     }
@@ -3525,7 +3525,7 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
     ) {
       if (!HANDSHAKE_HTML)
         return json(res, 404, { ok: false, error: "Handshake page not found" });
-      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-cache, no-store" });
       res.end(HANDSHAKE_HTML);
       return;
     }
@@ -3621,7 +3621,7 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
     if (req.method === "GET" && pathname === "/dashboard") {
       if (!DASHBOARD_HTML)
         return json(res, 404, { ok: false, error: "Dashboard page not found" });
-      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-cache, no-store" });
       res.end(DASHBOARD_HTML);
       return;
     }
@@ -3659,7 +3659,7 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
     ) {
       if (!SIGNUP_HTML)
         return json(res, 404, { ok: false, error: "Signup page not found" });
-      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-cache, no-store" });
       res.end(SIGNUP_HTML);
       return;
     }
@@ -3671,7 +3671,7 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
     ) {
       if (!LOGIN_HTML)
         return json(res, 404, { ok: false, error: "Login page not found" });
-      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-cache, no-store" });
       res.end(LOGIN_HTML);
       return;
     }
@@ -3683,7 +3683,7 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
     ) {
       if (!PRICING_HTML)
         return json(res, 404, { ok: false, error: "Pricing page not found" });
-      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-cache, no-store" });
       res.end(PRICING_HTML);
       return;
     }
@@ -3702,7 +3702,7 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
     if (req.method === "GET" && (pathname === "/vr" || pathname === "/vr/")) {
       if (!VR_HTML)
         return json(res, 404, { ok: false, error: "VR page not found" });
-      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-cache, no-store" });
       res.end(VR_HTML);
       return;
     }
@@ -3717,7 +3717,7 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
           ok: false,
           error: "AIOS Standard page not found",
         });
-      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-cache, no-store" });
       res.end(GEO_CODEC_HTML);
       return;
     }
@@ -3739,7 +3739,7 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
     ) {
       if (!VR_HUB_HTML)
         return json(res, 404, { ok: false, error: "VR Hub not found" });
-      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-cache, no-store" });
       res.end(VR_HUB_HTML);
       return;
     }
@@ -3751,7 +3751,7 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
     ) {
       if (!VR_DEV_HTML)
         return json(res, 404, { ok: false, error: "Not found" });
-      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-cache, no-store" });
       res.end(VR_DEV_HTML);
       return;
     }
@@ -4135,7 +4135,7 @@ ${GSC_TOKEN ? `<meta name="google-site-verification" content="${GSC_TOKEN}"/>` :
     if (req.method === "GET" && (pathname === "/ai" || pathname === "/ai/")) {
       if (!AI_HTML)
         return json(res, 404, { ok: false, error: "AI page not found" });
-      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-cache, no-store" });
       res.end(AI_HTML);
       return;
     }
@@ -4147,7 +4147,7 @@ ${GSC_TOKEN ? `<meta name="google-site-verification" content="${GSC_TOKEN}"/>` :
     ) {
       const demoPath = join(PUBLIC_DIR, "aios-geo-demo.html");
       if (existsSync(demoPath)) {
-        res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+        res.writeHead(200, { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-cache, no-store" });
         res.end(readFileSync(demoPath, "utf-8"));
       } else {
         return json(res, 404, { ok: false, error: "Demo page not found" });
@@ -4161,7 +4161,7 @@ ${GSC_TOKEN ? `<meta name="google-site-verification" content="${GSC_TOKEN}"/>` :
     ) {
       if (!START_HTML)
         return json(res, 404, { ok: false, error: "Start page not found" });
-      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-cache, no-store" });
       res.end(START_HTML);
       return;
     }
@@ -4571,7 +4571,7 @@ footer{text-align:center;padding:2.5rem;color:#2a3a50;font-size:0.8rem;border-to
       GSC_TOKEN &&
       pathname === `/google${GSC_TOKEN}.html`
     ) {
-      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-cache, no-store" });
       res.end(`google-site-verification: google${GSC_TOKEN}.html`);
       return;
     }
@@ -4801,7 +4801,7 @@ footer{text-align:center;padding:2.5rem;color:#2a3a50;font-size:0.8rem;border-to
         res.writeHead(302, { Location: "/vr-hub" });
         return res.end();
       }
-      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-cache, no-store" });
       return res.end(SKETCHFAB_GALLERY_HTML);
     }
 
@@ -4814,7 +4814,7 @@ footer{text-align:center;padding:2.5rem;color:#2a3a50;font-size:0.8rem;border-to
         res.writeHead(302, { Location: "/vr-hub" });
         return res.end();
       }
-      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-cache, no-store" });
       return res.end(AIOS_LIVE_HTML);
     }
 
@@ -4827,7 +4827,7 @@ footer{text-align:center;padding:2.5rem;color:#2a3a50;font-size:0.8rem;border-to
         res.writeHead(302, { Location: "/vr-hub" });
         return res.end();
       }
-      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-cache, no-store" });
       return res.end(SCENE_BUILDER_HTML);
     }
 
@@ -4840,7 +4840,7 @@ footer{text-align:center;padding:2.5rem;color:#2a3a50;font-size:0.8rem;border-to
         res.writeHead(302, { Location: "/vr-hub" });
         return res.end();
       }
-      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-cache, no-store" });
       return res.end(COSMOS_INFINITE_HTML);
     }
 
@@ -4850,7 +4850,7 @@ footer{text-align:center;padding:2.5rem;color:#2a3a50;font-size:0.8rem;border-to
       (pathname === "/live" || pathname === "/live/")
     ) {
       if (LIVE_HTML) {
-        res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+        res.writeHead(200, { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-cache, no-store" });
         return res.end(LIVE_HTML);
       }
       // Fallback: redirect to geo-library

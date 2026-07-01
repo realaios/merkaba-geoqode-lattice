@@ -55536,7 +55536,10 @@
           try {
             if (!_audioCtx) _audioCtx = new (window.AudioContext || window.webkitAudioContext)();
             var ctx = _audioCtx;
-            if (ctx.state === 'suspended') { ctx.resume().catch(function(){}); }
+            if (ctx.state === 'suspended') {
+              ctx.resume().then(function() { _playSfx(type); }).catch(function(){});
+              return;
+            }
             if (ctx.state !== 'running') return;
             var osc = ctx.createOscillator();
             var gain = ctx.createGain();
