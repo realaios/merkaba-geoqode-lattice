@@ -56020,27 +56020,24 @@
             setTimeout(function() { _ch.classList.remove("firing"); }, 130);
           }
           var THREE = AFRAME.THREE;
-          var rig = document.getElementById("cameraRig");
-          if (!rig || !rig.object3D) return;
-          var rp = new THREE.Vector3(); rig.object3D.getWorldPosition(rp);
           var _lScn = document.querySelector('a-scene');
-          if (!_lScn) return;
+          if (!_lScn || !_lScn.camera) return;
+          var cam = _lScn.camera;
+          /* Screen-locked muzzle positions via NDC unproject.
+             NDC is always viewport-relative — immune to roll/pitch/yaw.
+             (-0.70,-0.85) = bottom-left, (0.70,-0.85) = bottom-right.
+             NDC z=0.85 ≈ 1-2 AU from cam; z=0.9999 = crosshair far point. */
+          var muzzle1   = new THREE.Vector3(-0.70, -0.85, 0.85).unproject(cam);
+          var muzzle2   = new THREE.Vector3( 0.70, -0.85, 0.85).unproject(cam);
+          var crosshair = new THREE.Vector3( 0.00,  0.00, 0.9999).unproject(cam);
+          /* nd / right / rp still needed for broadcast + hit detection */
           var camQ = new THREE.Quaternion();
-          var _isFireTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
-          if (_isFireTouch) {
-            rig.object3D.getWorldQuaternion(camQ);
-          } else {
-            if (!_lScn.camera) return;
-            _lScn.camera.getWorldQuaternion(camQ);
-          }
-          var nd = new THREE.Vector3(0, 0, -1).applyQuaternion(camQ).normalize();
-          if (nd.lengthSq() < 0.001) return;
+          cam.getWorldQuaternion(camQ);
+          var nd    = new THREE.Vector3(0, 0, -1).applyQuaternion(camQ).normalize();
           var right = new THREE.Vector3(1, 0, 0).applyQuaternion(camQ).normalize();
-          var up = new THREE.Vector3(0, 1, 0).applyQuaternion(camQ).normalize();
-          /* Guns at joystick-level bottom corners → beams converge at crosshair center */
-          var crosshair = rp.clone().addScaledVector(nd, 500);
-          var muzzle1 = rp.clone().addScaledVector(nd, 25).addScaledVector(right, -6).addScaledVector(up, -10);
-          var muzzle2 = rp.clone().addScaledVector(nd, 25).addScaledVector(right,  6).addScaledVector(up, -10);
+          var rig   = document.getElementById('cameraRig');
+          var rp    = new THREE.Vector3();
+          if (rig && rig.object3D) rig.object3D.getWorldPosition(rp);
           _spawnLaser(muzzle1, crosshair, _lScn, THREE);
           _spawnLaser(muzzle2, crosshair, _lScn, THREE);
           /* Broadcast fire — carry both wing origins via right vector */
