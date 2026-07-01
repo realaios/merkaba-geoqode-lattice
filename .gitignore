@@ -16,6 +16,7 @@ STATUSREPORT/reports/*
 !STATUSREPORT/reports/.gitkeep
 coverage/
 .nyc_output/
+data/
 # Claw Code local artifacts
 .claw/settings.local.json
 .claw/sessions/
