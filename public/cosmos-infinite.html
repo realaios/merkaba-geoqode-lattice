@@ -56516,6 +56516,68 @@
       /* On touch, show cockpit elements */
       @media (pointer: coarse) {
         #fighter-hud { display: none !important; }
+
+        /* ── Mobile HUD: enterprise layout, zero overlap ──────────────────── */
+
+        /* Opts button: slim, top-right corner inside topbar band */
+        #opts-btn {
+          top: 8px;
+          left: auto;
+          right: 8px;
+          width: 28px;
+          height: 28px;
+          font-size: 13px;
+          padding: 0;
+          border-radius: 6px;
+        }
+        /* Fullscreen button: browser handles this on mobile, remove clutter */
+        #fullscreen-btn { display: none !important; }
+
+        /* Topbar: taller, right-padded so SPD clears opts-btn */
+        #ck-topbar { height: 46px; padding-right: 44px; gap: 8px; }
+        /* Wider HP bar now that fullscreen btn is gone */
+        #ck-hp-outer { width: 110px; }
+        /* Slightly larger stats text */
+        #ck-kda { font-size: 10px; }
+        #ck-speed { font-size: 10px; }
+
+        /* Leaderboard scoreboard: compact strip below topbar, top-right */
+        #dogfight-scoreboard {
+          top: 48px !important;
+          right: 0 !important;
+          left: auto !important;
+          bottom: auto !important;
+          width: 164px !important;
+          border-radius: 0 0 0 10px !important;
+          border-top: none !important;
+          padding: 4px 8px !important;
+        }
+        #dfs-title { font-size: 10px; margin-bottom: 2px; }
+
+        /* Zone/scale label: raise above bottom dash bar */
+        #scale-indicator {
+          bottom: 46px;
+          font-size: 9px;
+          padding: 3px 12px;
+          border-radius: 8px;
+        }
+
+        /* Bottom dash: larger text, only show relevant stats */
+        #ck-dash { height: 40px; gap: 18px; }
+        .ck-disp { font-size: 8.5px; }
+        .ck-disp span { font-size: 11px; }
+        /* Hide stats already shown in topbar */
+        .ck-hide-mobile { display: none !important; }
+
+        /* Opts panel: slide from top-right on mobile */
+        #opts-panel {
+          top: 48px;
+          left: auto;
+          right: 0;
+          width: 270px;
+          border-radius: 0 0 0 12px;
+          max-height: calc(100vh - 60px);
+        }
       }
     </style>
 
@@ -56561,9 +56623,9 @@
         <span id="ck-speed">SPD —</span>
       </div>
       <div id="ck-dash">
-        <div class="ck-disp">SHIELDS<span id="ck-shield-val">100%</span></div>
-        <div class="ck-disp">KILLS<span id="ck-kills-val">0</span></div>
-        <div class="ck-disp">SCORE<span id="ck-score-val">0</span></div>
+        <div class="ck-disp ck-hide-mobile">SHIELDS<span id="ck-shield-val">100%</span></div>
+        <div class="ck-disp ck-hide-mobile">KILLS<span id="ck-kills-val">0</span></div>
+        <div class="ck-disp ck-hide-mobile">SCORE<span id="ck-score-val">0</span></div>
         <div class="ck-disp">ONLINE<span id="ck-online-val">1</span></div>
         <div class="ck-disp">DIST<span id="ck-dist-val">—</span></div>
       </div>
@@ -56967,7 +57029,7 @@
           if (_tlId !== null) return;
           var t = e.changedTouches[0];
           var hit = document.elementFromPoint(t.clientX, t.clientY);
-          if (hit && (hit.closest('#mobile-joy-wrap') || hit.closest('#mobile-joy-wrap2') || hit.closest('#fire-btn'))) return;
+          if (hit && (hit.closest('#mobile-joy-wrap') || hit.closest('#mobile-joy-wrap2') || hit.closest('#fire-btn') || hit.closest('#dogfight-scoreboard') || hit.closest('#opts-btn') || hit.closest('#opts-panel'))) return;
           _tlId = t.identifier; _tlLx = t.clientX; _tlLy = t.clientY;
         }, { passive: true });
         document.addEventListener('touchmove', function(e) {
