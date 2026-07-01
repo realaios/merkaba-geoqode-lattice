@@ -2921,17 +2921,20 @@
     </div>
 
     <script>
-      /* Close horizon overlay: hide panel, push craft outward, face origin */
+      /* Close horizon overlay: hide panel, push craft INWARD past hysteresis, face origin */
       window.closeHorizonOverlay = function () {
         document.getElementById("horizon-overlay").classList.remove("hz-visible");
         var rig = document.getElementById("cameraRig");
         if (!rig || !rig.object3D) return;
         var THREE = window.AFRAME && window.AFRAME.THREE;
         if (!THREE) return;
-        /* push outward 500 units so we're clearly past the horizon trigger */
+        /* push inward: from ~47500-48000 au, move to 44000 au (well below 46000 hide threshold) */
         var pos = rig.object3D.position;
-        var outward = pos.clone().normalize();
-        pos.addScaledVector(outward, 500);
+        var dist = pos.length();
+        if (dist > 44000) {
+          var inward = pos.clone().normalize().negate();
+          pos.addScaledVector(inward, dist - 44000);
+        }
         /* rotate rig to face universe centre */
         rig.object3D.lookAt(new THREE.Vector3(0, 0, 0));
         /* reset look-controls pitch/yaw so they don't fight the new orientation */
@@ -55484,6 +55487,14 @@
           if (_fhudHpBar) { _fhudHpBar.style.width = hpPct; _fhudHpBar.style.background = hpColor; }
           if (_fhudHpNum) _fhudHpNum.textContent = "HP: " + hp;
           if (_fhudStats) _fhudStats.textContent = "K:" + _myKills + " D:" + _myDeaths + " Pts:" + _myScore;
+          /* Sync cockpit topbar */
+          var ckCs = document.getElementById("ck-callsign"); if (ckCs) ckCs.textContent = _myCallsign;
+          var ckHpI = document.getElementById("ck-hp-inner"); if (ckHpI) { ckHpI.style.width = hpPct; ckHpI.style.background = hpColor; }
+          var ckHpV = document.getElementById("ck-hp-val"); if (ckHpV) ckHpV.textContent = hp;
+          var ckKda = document.getElementById("ck-kda"); if (ckKda) ckKda.textContent = "K:" + _myKills + " D:" + _myDeaths + " PTS:" + _myScore;
+          var ckShield = document.getElementById("ck-shield-val"); if (ckShield) ckShield.textContent = hp + "%";
+          var ckKills = document.getElementById("ck-kills-val"); if (ckKills) ckKills.textContent = _myKills;
+          var ckScore = document.getElementById("ck-score-val"); if (ckScore) ckScore.textContent = _myScore;
         }
 
         function _updateScoreboard() {
@@ -55525,6 +55536,8 @@
           try {
             if (!_audioCtx) _audioCtx = new (window.AudioContext || window.webkitAudioContext)();
             var ctx = _audioCtx;
+            if (ctx.state === 'suspended') { ctx.resume().catch(function(){}); }
+            if (ctx.state !== 'running') return;
             var osc = ctx.createOscillator();
             var gain = ctx.createGain();
             osc.connect(gain); gain.connect(ctx.destination);
@@ -55845,6 +55858,12 @@
           if (_now - _lastFire < 400) return; // 400ms fire cooldown
           _lastFire = _now;
           _playSfx('fire');
+          /* Crosshair fire animation */
+          var _ch = document.getElementById("crosshair");
+          if (_ch) {
+            _ch.classList.add("firing");
+            setTimeout(function() { _ch.classList.remove("firing"); }, 130);
+          }
           var THREE = AFRAME.THREE;
           var rig = document.getElementById("cameraRig");
           if (!rig || !rig.object3D) return;
@@ -55869,7 +55888,10 @@
               dx: nd.x, dy: nd.y, dz: nd.z,
               rx: right.x, ry: right.y, rz: right.z }));
           }
-          /* Local hit detection against visible ghosts */
+          /* Hit detection — aim-assist on touch (wider cone) */
+          var _isTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
+          var _hitRadius = _isTouch ? 22 : 12;
+          var _hitTarget = false;
           Object.keys(_ghostMap).forEach(function(id) {
             var g = _ghostMap[id];
             if (!g.group || !g.group.visible) return;
@@ -55877,10 +55899,13 @@
             var _t = _toG.dot(nd);
             if (_t <= 0) return;
             var _closest = rp.clone().addScaledVector(nd, _t);
-            if (_closest.distanceTo(g.targetPos) < 12) {
+            if (_closest.distanceTo(g.targetPos) < _hitRadius) {
               if (_ws && _ws.readyState === 1) _ws.send(JSON.stringify({ type: "hit", targetId: id }));
+              _hitTarget = true;
             }
           });
+          /* Lock-on crosshair state */
+          if (_ch) { if (_hitTarget) _ch.classList.add("locked"); else _ch.classList.remove("locked"); }
         });
 
         /* ── Boot: wait for scene ready, then connect ─────────────────────── */
@@ -55975,48 +56000,73 @@
         pointer-events: none;
         transition: transform 0.05s linear;
       }
-      /* ── Centre crosshair ── */
+      /* ── Combat targeting reticle ── */
       #crosshair {
         display: none;
         position: fixed;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        width: 24px;
-        height: 24px;
+        width: 58px;
+        height: 58px;
         z-index: 2500;
         pointer-events: none;
+        transition: transform 0.1s;
       }
-      #crosshair::before,
-      #crosshair::after {
-        content: "";
+      #crosshair.firing { animation: ch-fire 0.12s ease-out; }
+      @keyframes ch-fire {
+        0%   { transform: translate(-50%,-50%) scale(1.22); }
+        100% { transform: translate(-50%,-50%) scale(1); }
+      }
+      .ch-ring {
+        position: absolute; inset: 0; border-radius: 50%;
+        border: 1.5px solid rgba(255,70,0,0.42);
+        transition: border-color 0.12s, box-shadow 0.12s;
+      }
+      #crosshair.locked .ch-ring {
+        border-color: rgba(255,30,0,0.95);
+        box-shadow: 0 0 10px rgba(255,40,0,0.55);
+      }
+      .ch-top, .ch-bot {
         position: absolute;
-        background: rgba(255, 255, 255, 0.75);
+        width: 2px; height: 14px;
+        background: rgba(255,90,0,0.88);
+        left: 50%; transform: translateX(-50%);
         border-radius: 1px;
       }
-      #crosshair::before {
-        width: 2px;
-        height: 100%;
-        left: 50%;
-        transform: translateX(-50%);
+      .ch-top { top: 2px; }
+      .ch-bot { bottom: 2px; }
+      .ch-left, .ch-right {
+        position: absolute;
+        width: 14px; height: 2px;
+        background: rgba(255,90,0,0.88);
+        top: 50%; transform: translateY(-50%);
+        border-radius: 1px;
       }
-      #crosshair::after {
-        width: 100%;
-        height: 2px;
-        top: 50%;
-        transform: translateY(-50%);
-      }
+      .ch-left  { left: 2px; }
+      .ch-right { right: 2px; }
       #crosshair-dot {
         position: absolute;
-        width: 4px;
-        height: 4px;
-        border-radius: 50%;
-        background: rgba(0, 212, 255, 0.95);
-        top: 50%;
-        left: 50%;
+        width: 5px; height: 5px; border-radius: 50%;
+        background: rgba(255,60,0,0.95);
+        top: 50%; left: 50%;
         transform: translate(-50%, -50%);
-        box-shadow: 0 0 4px rgba(0, 212, 255, 0.8);
+        box-shadow: 0 0 6px rgba(255,60,0,0.9);
+        transition: background 0.1s, box-shadow 0.1s;
       }
+      #crosshair.locked #crosshair-dot {
+        background: #ff2200;
+        box-shadow: 0 0 10px #ff2200;
+      }
+      .ch-lock {
+        position: absolute; bottom: -17px; left: 50%;
+        transform: translateX(-50%);
+        font-family: monospace; font-size: 9px;
+        letter-spacing: 2.5px; text-transform: uppercase;
+        color: rgba(255,60,0,0); white-space: nowrap;
+        transition: color 0.15s;
+      }
+      #crosshair.locked .ch-lock { color: rgba(255,50,0,0.9); }
 
       /* W163: MERKABA HUD/DASHBOARD TELEMETRY SYSTEM */
       #dashboardContainer {
@@ -56343,32 +56393,118 @@
       #opts-panel::-webkit-scrollbar { width: 4px; }
       #opts-panel::-webkit-scrollbar-track { background: transparent; }
       #opts-panel::-webkit-scrollbar-thumb { background: rgba(0, 212, 255, 0.3); border-radius: 4px; }
-      /* ── Fire button ── */
+      /* ── Fire button — cockpit style ── */
       #fire-btn {
         position: fixed;
-        bottom: 190px;
-        right: 38px;
-        width: 50px;
-        height: 50px;
+        bottom: 155px;
+        right: 18px;
+        width: 92px;
+        height: 92px;
         border-radius: 50%;
-        background: radial-gradient(circle, rgba(255, 80, 0, 0.35) 0%, rgba(200, 20, 0, 0.15) 70%);
-        border: 2px solid rgba(255, 120, 0, 0.7);
-        color: #ff6a00;
-        font-size: 22px;
+        background: radial-gradient(circle at 38% 34%, rgba(255,50,0,0.55) 0%, rgba(160,0,0,0.22) 70%);
+        border: 2.5px solid rgba(255,75,0,0.82);
+        color: rgba(255,130,0,0.92);
+        font-size: 11px;
+        font-family: 'Courier New', monospace;
+        font-weight: bold;
+        letter-spacing: 2px;
+        text-transform: uppercase;
         cursor: pointer;
         z-index: 4500;
         display: none;
         align-items: center;
         justify-content: center;
-        box-shadow: 0 0 14px rgba(255, 80, 0, 0.4), inset 0 0 8px rgba(255, 40, 0, 0.15);
-        font-family: sans-serif;
-        line-height: 1;
+        box-shadow:
+          0 0 24px rgba(255,55,0,0.42),
+          inset 0 0 16px rgba(255,25,0,0.18),
+          0 0 0 5px rgba(255,65,0,0.1),
+          0 0 0 10px rgba(255,65,0,0.045);
         user-select: none;
-        transition: background 0.1s, box-shadow 0.1s;
+        touch-action: none;
+        transition: background 0.07s, box-shadow 0.07s, transform 0.06s;
       }
-      #fire-btn:active {
-        background: radial-gradient(circle, rgba(255, 160, 0, 0.6) 0%, rgba(255, 60, 0, 0.3) 70%);
-        box-shadow: 0 0 28px rgba(255, 120, 0, 0.8);
+      #fire-btn:active, #fire-btn.firing {
+        background: radial-gradient(circle, rgba(255,140,0,0.75) 0%, rgba(255,40,0,0.45) 70%);
+        box-shadow: 0 0 44px rgba(255,90,0,0.92), inset 0 0 22px rgba(255,45,0,0.42);
+        transform: scale(0.91);
+      }
+
+      /* ── Cockpit chrome overlay (touch only) ── */
+      #cockpit-overlay {
+        display: none;
+        position: fixed; inset: 0;
+        pointer-events: none; z-index: 3985;
+      }
+      /* Vignette */
+      #cockpit-overlay::before {
+        content: '';
+        position: absolute; inset: 0;
+        background:
+          radial-gradient(ellipse at 50% 50%, transparent 38%, rgba(0,0,0,0.58) 100%),
+          linear-gradient(to bottom, rgba(0,0,0,0.58) 0px, transparent 55px, transparent calc(100% - 65px), rgba(0,0,0,0.58) 100%),
+          linear-gradient(to right, rgba(0,0,0,0.45) 0px, transparent 50px, transparent calc(100% - 50px), rgba(0,0,0,0.45) 100%);
+        pointer-events: none;
+      }
+      /* Corner L-brackets */
+      .ck-corner { position: absolute; width: 36px; height: 36px; }
+      .ck-tl { top: 4px; left: 4px; border-top: 2.5px solid rgba(0,200,255,0.48); border-left: 2.5px solid rgba(0,200,255,0.48); }
+      .ck-tr { top: 4px; right: 4px; border-top: 2.5px solid rgba(0,200,255,0.48); border-right: 2.5px solid rgba(0,200,255,0.48); }
+      .ck-bl { bottom: 4px; left: 4px; border-bottom: 2.5px solid rgba(0,200,255,0.48); border-left: 2.5px solid rgba(0,200,255,0.48); }
+      .ck-br { bottom: 4px; right: 4px; border-bottom: 2.5px solid rgba(0,200,255,0.48); border-right: 2.5px solid rgba(0,200,255,0.48); }
+      /* Cockpit top bar */
+      #ck-topbar {
+        position: absolute; top: 0; left: 0; right: 0; height: 38px;
+        background: linear-gradient(to bottom, rgba(0,5,18,0.88) 0%, rgba(0,8,22,0.52) 75%, transparent 100%);
+        border-bottom: 1px solid rgba(0,175,255,0.14);
+        display: flex; align-items: center; gap: 10px; padding: 0 12px;
+      }
+      #ck-callsign {
+        font-family: 'Courier New', monospace; font-size: 11px;
+        color: rgba(0,212,255,0.92); font-weight: bold; letter-spacing: 2px;
+        text-shadow: 0 0 6px rgba(0,212,255,0.5);
+      }
+      #ck-hp-wrap { display: flex; align-items: center; gap: 5px; }
+      #ck-hp-outer {
+        width: 72px; height: 6px;
+        background: rgba(255,255,255,0.08); border-radius: 3px;
+        border: 1px solid rgba(0,212,255,0.28); overflow: hidden;
+      }
+      #ck-hp-inner {
+        height: 100%; width: 100%;
+        background: linear-gradient(90deg, #00ff88, #00d4ff);
+        border-radius: 3px; transition: width 0.2s, background 0.3s;
+      }
+      #ck-hp-val { font-family: monospace; font-size: 9px; color: rgba(0,200,255,0.65); }
+      #ck-kda { font-family: monospace; font-size: 9px; color: rgba(0,190,255,0.52); letter-spacing: 1px; }
+      #ck-speed { margin-left: auto; font-family: monospace; font-size: 9px; color: rgba(0,190,255,0.48); letter-spacing: 1px; }
+      /* Cockpit bottom dash */
+      #ck-dash {
+        position: absolute; bottom: 0; left: 0; right: 0; height: 34px;
+        background: linear-gradient(to top, rgba(0,4,15,0.88) 0%, rgba(0,7,20,0.52) 75%, transparent 100%);
+        border-top: 1px solid rgba(0,175,255,0.1);
+        display: flex; align-items: center; justify-content: center; gap: 24px; padding: 0 8px;
+      }
+      .ck-disp {
+        font-family: 'Courier New', monospace; font-size: 7.5px;
+        color: rgba(0,195,255,0.42); letter-spacing: 1.5px; text-align: center; line-height: 1.4;
+      }
+      .ck-disp span { display: block; font-size: 10px; color: rgba(0,205,255,0.72); }
+      /* Radar */
+      #ck-radar {
+        display: none;
+        position: fixed; bottom: 50px; right: 128px;
+        width: 72px; height: 72px;
+        pointer-events: none; z-index: 4100;
+      }
+      #ck-radar canvas {
+        width: 72px; height: 72px; border-radius: 50%;
+        border: 1.5px solid rgba(0,212,255,0.35);
+        background: rgba(0,5,18,0.75);
+        box-shadow: 0 0 10px rgba(0,212,255,0.18);
+      }
+      /* On touch, show cockpit elements */
+      @media (pointer: coarse) {
+        #fighter-hud { display: none !important; }
       }
     </style>
 
@@ -56379,8 +56515,8 @@
       </div>
     </div>
 
-    <!-- Fire / Select button (above left joystick, touch only) -->
-    <button id="fire-btn" title="Fire / Select">&#128165;</button>
+    <!-- Fire / Select button (cockpit style, touch only) -->
+    <button id="fire-btn" title="Fire">FIRE</button>
 
     <!-- Right joystick: altitude + yaw -->
     <div id="mobile-joy-wrap2">
@@ -56389,8 +56525,40 @@
       </div>
     </div>
 
-    <!-- Centre crosshair -->
-    <div id="crosshair"><div id="crosshair-dot"></div></div>
+    <!-- Centre combat reticle -->
+    <div id="crosshair">
+      <div class="ch-ring"></div>
+      <div class="ch-top"></div><div class="ch-bot"></div>
+      <div class="ch-left"></div><div class="ch-right"></div>
+      <div id="crosshair-dot"></div>
+      <div class="ch-lock">TARGET</div>
+    </div>
+
+    <!-- Cockpit chrome overlay -->
+    <div id="cockpit-overlay">
+      <div class="ck-corner ck-tl"></div>
+      <div class="ck-corner ck-tr"></div>
+      <div class="ck-corner ck-bl"></div>
+      <div class="ck-corner ck-br"></div>
+      <div id="ck-topbar">
+        <span id="ck-callsign">PILOT</span>
+        <div id="ck-hp-wrap">
+          <div id="ck-hp-outer"><div id="ck-hp-inner"></div></div>
+          <span id="ck-hp-val">100</span>
+        </div>
+        <span id="ck-kda">K:0 D:0 PTS:0</span>
+        <span id="ck-speed">SPD —</span>
+      </div>
+      <div id="ck-dash">
+        <div class="ck-disp">SHIELDS<span id="ck-shield-val">100%</span></div>
+        <div class="ck-disp">KILLS<span id="ck-kills-val">0</span></div>
+        <div class="ck-disp">SCORE<span id="ck-score-val">0</span></div>
+        <div class="ck-disp">ONLINE<span id="ck-online-val">1</span></div>
+        <div class="ck-disp">DIST<span id="ck-dist-val">—</span></div>
+      </div>
+    </div>
+    <!-- Radar mini-map -->
+    <div id="ck-radar"><canvas id="ck-radar-canvas" width="72" height="72"></canvas></div>
 
     <!-- Options button -->
     <button id="opts-btn" title="Options">&#9881;</button>
@@ -56578,6 +56746,11 @@
           var _scene = document.querySelector("a-scene");
           if (_scene) _scene.addEventListener("loaded", _disableLC);
           else window.addEventListener("load", _disableLC);
+          /* Show cockpit overlay + radar on touch */
+          var ckOverlay = document.getElementById("cockpit-overlay");
+          var ckRadar = document.getElementById("ck-radar");
+          if (ckOverlay) ckOverlay.style.display = "block";
+          if (ckRadar) ckRadar.style.display = "block";
         }
         /* Crosshair always visible */
         if (crosshair) crosshair.style.display = "block";
@@ -56770,20 +56943,8 @@
         if (fireBtn) {
           fireBtn.addEventListener("touchstart", function (e) {
             e.preventDefault();
-            fireBtn.style.boxShadow = "0 0 40px rgba(255,160,0,0.95)";
-            setTimeout(function () { fireBtn.style.boxShadow = ""; }, 150);
-            try {
-              var ac = new (window.AudioContext || window.webkitAudioContext)();
-              var o = ac.createOscillator();
-              var g = ac.createGain();
-              o.type = "sine";
-              o.frequency.setValueAtTime(1200, ac.currentTime);
-              o.frequency.exponentialRampToValueAtTime(220, ac.currentTime + 0.18);
-              g.gain.setValueAtTime(0.38, ac.currentTime);
-              g.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + 0.22);
-              o.connect(g); g.connect(ac.destination);
-              o.start(); o.stop(ac.currentTime + 0.25);
-            } catch (err) {}
+            fireBtn.classList.add("firing");
+            setTimeout(function () { fireBtn.classList.remove("firing"); }, 160);
             window.dispatchEvent(new CustomEvent("cosmos-fire"));
           }, { passive: false });
         }
@@ -56848,6 +57009,69 @@
           },
           { passive: true },
         );
+
+        /* ── Radar + cockpit data update loop (500ms) ── */
+        setInterval(function() {
+          /* Radar canvas */
+          var canvas = document.getElementById("ck-radar-canvas");
+          if (canvas && canvas.getContext) {
+            var ctx = canvas.getContext("2d");
+            var W = 72, H = 72, R = 34;
+            ctx.clearRect(0, 0, W, H);
+            /* Background */
+            ctx.fillStyle = "rgba(0,5,18,0.82)";
+            ctx.beginPath(); ctx.arc(W/2, H/2, R, 0, Math.PI*2); ctx.fill();
+            /* Radar rings */
+            ctx.strokeStyle = "rgba(0,212,255,0.18)"; ctx.lineWidth = 1;
+            [R*0.4, R*0.7, R].forEach(function(r) {
+              ctx.beginPath(); ctx.arc(W/2, H/2, r, 0, Math.PI*2); ctx.stroke();
+            });
+            /* Cross */
+            ctx.strokeStyle = "rgba(0,212,255,0.12)"; ctx.lineWidth = 0.8;
+            ctx.beginPath(); ctx.moveTo(W/2, H/2-R); ctx.lineTo(W/2, H/2+R); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(W/2-R, H/2); ctx.lineTo(W/2+R, H/2); ctx.stroke();
+            /* Player dot */
+            ctx.fillStyle = "rgba(0,255,136,0.9)";
+            ctx.beginPath(); ctx.arc(W/2, H/2, 3, 0, Math.PI*2); ctx.fill();
+            /* Enemy dots */
+            var myRig = document.getElementById("cameraRig");
+            if (myRig && myRig.object3D && window._ghostMap) {
+              var myPos = new AFRAME.THREE.Vector3();
+              myRig.object3D.getWorldPosition(myPos);
+              var myQ = new AFRAME.THREE.Quaternion();
+              myRig.object3D.getWorldQuaternion(myQ);
+              var fwdR = new AFRAME.THREE.Vector3(0,0,-1).applyQuaternion(myQ);
+              var rightR = new AFRAME.THREE.Vector3(1,0,0).applyQuaternion(myQ);
+              var RADAR_RANGE = 2000;
+              Object.keys(window._ghostMap).forEach(function(id) {
+                var g = window._ghostMap[id];
+                if (!g || !g.targetPos) return;
+                var diff = new AFRAME.THREE.Vector3().subVectors(g.targetPos, myPos);
+                var fwdD = diff.dot(fwdR);
+                var rightD = diff.dot(rightR);
+                var px = W/2 + (rightD / RADAR_RANGE) * R;
+                var py = H/2 - (fwdD / RADAR_RANGE) * R;
+                px = Math.max(W/2-R+3, Math.min(W/2+R-3, px));
+                py = Math.max(H/2-R+3, Math.min(H/2+R-3, py));
+                ctx.fillStyle = "rgba(255,60,0,0.88)";
+                ctx.beginPath(); ctx.arc(px, py, 3.5, 0, Math.PI*2); ctx.fill();
+              });
+            }
+            /* Clip to circle */
+            ctx.globalCompositeOperation = "destination-in";
+            ctx.beginPath(); ctx.arc(W/2, H/2, R, 0, Math.PI*2); ctx.fill();
+            ctx.globalCompositeOperation = "source-over";
+          }
+          /* Cockpit data: distance + online */
+          var rig2 = document.getElementById("cameraRig");
+          if (rig2 && rig2.object3D) {
+            var dist2 = rig2.object3D.position.length();
+            var distEl = document.getElementById("ck-dist-val");
+            if (distEl) distEl.textContent = dist2 > 1000 ? (dist2/1000).toFixed(1)+"kau" : dist2.toFixed(0)+"au";
+            var onlineEl = document.getElementById("ck-online-val");
+            if (onlineEl && window._ghostMap) onlineEl.textContent = Object.keys(window._ghostMap).length + 1;
+          }
+        }, 500);
       })();
 
       /* ─── Sketchfab 3D panel ──────────────────────────────────────────── */
