@@ -5631,13 +5631,14 @@ const _presenceMap = new Map();
 // Defend the Core game state
 let _gameState = {
   round: 0,
-  phase: 'lobby',   // 'lobby' | 'active' | 'roundEnd'
+  phase: 'lobby',
   coreHealth: 100,
   timerSec: 300,
-  teams: {},         // id -> 'ATTACKER' | 'DEFENDER'
+  teams: {},
   roundTimer: null,
   drainLoop: null,
   lastBroadcastHealth: 100,
+  coreBreachPilots: new Set(), // pilots who earned the <50au breach bonus this round
 };
 
 // 480 GeoQode galaxy positions (D48 lattice, scaled to cosmos space)
@@ -5732,7 +5733,7 @@ function _startRound() {
       clearInterval(_gameState.drainLoop);
       _gameState.drainLoop = null;
       _endRound(_gameState.coreHealth <= 0 ? 'ATTACKER' : 'DEFENDER');
-    } else if (_gameState.timerSec % 10 === 0) {
+    } else {
       _broadcast({ type: 'roundTick', sec: _gameState.timerSec }, null);
     }
   }, 1000);
@@ -5749,11 +5750,28 @@ function _startRound() {
         _gameState.coreHealth -= 0.25; // 0.5/sec at 500ms interval
         if (dist < 50) _gameState.coreHealth -= 1.5; // +3/sec when touching
         drained = true;
+
+        // 3C: Proximity scoring — +10pts/sec = +5pts per 500ms tick
+        const pts = 5;
+        entry.roundScore = (entry.roundScore || 0) + pts;
+        entry.score = (entry.score || 0) + pts;
+        const eName = entry.name || ('PILOT-' + entry.id.slice(0,4).toUpperCase());
+        if (!_dogfightScores[eName]) _dogfightScores[eName] = { kills: 0, score: 0 };
+        _dogfightScores[eName].score += pts;
+
+        // 3C: Core breach bonus (+300) — one-time per pilot per round when dist < 50
+        if (dist < 50 && !_gameState.coreBreachPilots.has(entry.id)) {
+          _gameState.coreBreachPilots.add(entry.id);
+          const bonus = 300;
+          entry.roundScore = (entry.roundScore || 0) + bonus;
+          entry.score = (entry.score || 0) + bonus;
+          _dogfightScores[eName].score += bonus;
+          _broadcast({ type: 'scoreBonus', id: entry.id, name: eName, reason: 'CORE BREACH', pts: bonus }, null);
+        }
       }
     });
     if (drained) {
       _gameState.coreHealth = Math.max(0, _gameState.coreHealth);
-      // Broadcast on threshold crossings (30, 20, 0) or every 2s (~4 ticks)
       const h = _gameState.coreHealth;
       const prev = _gameState.lastBroadcastHealth;
       const crossedThreshold =
@@ -5774,17 +5792,56 @@ function _endRound(winner) {
   clearInterval(_gameState.roundTimer);
   clearInterval(_gameState.drainLoop);
   _gameState.drainLoop = null;
-  // Restore core health for next round display
+
+  // 3C: Collect top-5 round scores BEFORE applying bonuses
+  const roundTop = Array.from(_presenceMap.values())
+    .filter(e => (e.roundScore || 0) > 0 || (e.kills || 0) > 0)
+    .sort((a, b) => (b.roundScore || 0) - (a.roundScore || 0))
+    .slice(0, 5)
+    .map(e => ({
+      name: e.name || 'PILOT',
+      score: e.roundScore || 0,
+      kills: e.kills || 0,
+      team: _gameState.teams[e.id] || '?',
+    }));
+
+  // 3C: Round-end bonus — winning team splits bonus points
+  const bonusPts = winner === 'DEFENDER' ? 1000 : 2000;
+  _presenceMap.forEach(e => {
+    if (_gameState.teams[e.id] === winner) {
+      e.score = (e.score || 0) + bonusPts;
+      e.roundScore = (e.roundScore || 0) + bonusPts;
+      const n = e.name || ('PILOT-' + e.id.slice(0,4).toUpperCase());
+      if (_dogfightScores[n]) _dogfightScores[n].score += bonusPts;
+    }
+  });
+  _saveScores();
+
+  // Persist round result to dtc-rounds.json
+  try {
+    const dtcPath = path.join(__dirname, 'data', 'dtc-rounds.json');
+    let rounds = [];
+    try { rounds = JSON.parse(fs.readFileSync(dtcPath, 'utf8')); } catch(_) {}
+    rounds.push({ round: _gameState.round, winner, ts: Date.now(), scores: roundTop });
+    fs.writeFileSync(dtcPath, JSON.stringify(rounds.slice(-100))); // keep last 100 rounds
+  } catch(_) {}
+
+  // Reset round state
+  _presenceMap.forEach(e => { e.roundScore = 0; });
+  _gameState.coreBreachPilots = new Set();
   _gameState.coreHealth = 100;
   _gameState.lastBroadcastHealth = 100;
+
   // Swap teams for next round
   Object.keys(_gameState.teams).forEach(pid => {
     _gameState.teams[pid] = _gameState.teams[pid] === 'ATTACKER' ? 'DEFENDER' : 'ATTACKER';
     const e = _presenceMap.get(pid);
     if (e) e.team = _gameState.teams[pid];
   });
-  _broadcast({ type: 'roundEnd', winner, round: _gameState.round }, null);
-  // 30-second lobby before next round
+
+  _broadcast({ type: 'roundEnd', winner, round: _gameState.round, scores: roundTop, bonus: bonusPts }, null);
+  // 30-second lobby countdown
+  _broadcast({ type: 'roundTick', sec: 30 }, null);
   setTimeout(_startRound, 30000);
 }
 
@@ -5885,16 +5942,30 @@ _wss.on("connection", (ws) => {
       if (shooterEntry) {
         shooterEntry.kills = (shooterEntry.kills || 0) + 1;
         shooterEntry.score = (shooterEntry.score || 0) + 100;
+        shooterEntry.roundScore = (shooterEntry.roundScore || 0) + 100;
       }
       if (!_dogfightScores[shooterName]) _dogfightScores[shooterName] = { kills: 0, score: 0 };
       _dogfightScores[shooterName].kills++;
       _dogfightScores[shooterName].score += 100;
+
+      // 3C: Defender proximity bonus — +150 extra when killing attacker near core
+      let defBonus = 0;
+      if (shooterEntry && _gameState.teams[id] === 'DEFENDER' && targetEntry) {
+        const tDist = Math.sqrt(targetEntry.x ** 2 + targetEntry.y ** 2 + targetEntry.z ** 2);
+        if (tDist < 500) {
+          defBonus = 150; // +250 total (100 base + 150 bonus)
+          shooterEntry.score = (shooterEntry.score || 0) + defBonus;
+          shooterEntry.roundScore = (shooterEntry.roundScore || 0) + defBonus;
+          _dogfightScores[shooterName].score += defBonus;
+        }
+      }
       _saveScores();
       _broadcast(
         {
           type: "kill", shooterId: id, targetId: String(msg.targetId || ""),
           shooterName, targetName,
           shooterScore: shooterEntry?.score || 0, shooterKills: shooterEntry?.kills || 0,
+          defBonus,
         },
         id,
       );

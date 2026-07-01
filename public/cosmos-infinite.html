@@ -55404,6 +55404,104 @@
         #dtc-core-wrap { bottom: 120px; }
       }
 
+      /* ── Round timer ────────────────────────────────────────────────────── */
+      #dtc-round-timer {
+        position: fixed;
+        top: 14px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        gap: 1px;
+        z-index: 5100;
+        pointer-events: none;
+      }
+      #dtc-timer-label {
+        font-family: monospace;
+        font-size: 9px;
+        letter-spacing: 2px;
+        color: #88aacc;
+        opacity: 0.75;
+      }
+      #dtc-timer-val {
+        font-family: monospace;
+        font-size: 26px;
+        font-weight: 900;
+        letter-spacing: 3px;
+        color: #00eeff;
+        text-shadow: 0 0 12px rgba(0,220,255,0.7);
+        transition: color 0.5s ease, text-shadow 0.5s ease;
+      }
+      #dtc-round-timer.amber #dtc-timer-val {
+        color: #ffcc00;
+        text-shadow: 0 0 12px rgba(255,180,0,0.8);
+      }
+      #dtc-round-timer.danger #dtc-timer-val {
+        color: #ff3322;
+        text-shadow: 0 0 16px rgba(255,40,0,0.9);
+        animation: core-pulse 0.6s ease-in-out infinite;
+      }
+
+      /* ── Round-end overlay ──────────────────────────────────────────────── */
+      #dtc-end-overlay {
+        position: fixed;
+        inset: 0;
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 14px;
+        z-index: 8000;
+        background: rgba(0,0,10,0.82);
+        cursor: pointer;
+        animation: dtc-badge-in 0.4s cubic-bezier(0.22,1,0.36,1) both;
+      }
+      #dtc-end-winner {
+        font-family: monospace;
+        font-size: 28px;
+        font-weight: 900;
+        letter-spacing: 4px;
+        text-align: center;
+        padding: 10px 24px;
+        border-radius: 4px;
+      }
+      #dtc-end-winner.attacker {
+        color: #FF4444;
+        border: 1.5px solid #FF2222;
+        text-shadow: 0 0 18px rgba(255,40,40,0.9);
+        box-shadow: 0 0 40px rgba(255,40,40,0.4);
+      }
+      #dtc-end-winner.defender {
+        color: #44AAFF;
+        border: 1.5px solid #2277FF;
+        text-shadow: 0 0 18px rgba(80,160,255,0.9);
+        box-shadow: 0 0 40px rgba(40,100,255,0.4);
+      }
+      #dtc-end-bonus {
+        font-family: monospace;
+        font-size: 13px;
+        letter-spacing: 2px;
+        color: #ffd700;
+        text-shadow: 0 0 8px rgba(255,200,0,0.8);
+      }
+      #dtc-end-scores {
+        font-family: monospace;
+        font-size: 13px;
+        color: #aaccff;
+        letter-spacing: 1px;
+        text-align: center;
+        line-height: 1.9;
+      }
+      .end-score-row { padding: 2px 0; }
+      .end-score-row.me { color: #fff; font-weight: bold; }
+      #dtc-end-dismiss {
+        font-family: monospace;
+        font-size: 10px;
+        letter-spacing: 3px;
+        color: rgba(150,180,220,0.5);
+        margin-top: 8px;
+      }
 
       #damage-flash {
         position: fixed;
@@ -56230,6 +56328,16 @@
                   if (_w) _w.style.display = 'flex';
                   if (_f) { _f.style.width = '100%'; _f.className = ''; }
                   if (_p) _p.textContent = '100%';
+                  /* Round timer */
+                  var _timer = document.getElementById('dtc-round-timer');
+                  var _label = document.getElementById('dtc-timer-label');
+                  var _val   = document.getElementById('dtc-timer-val');
+                  if (_timer) { _timer.style.display = 'flex'; _timer.classList.remove('amber', 'danger'); }
+                  if (_label) _label.textContent = 'ROUND ' + (msg.round || 1);
+                  if (_val)   _val.textContent = '5:00';
+                  /* Hide end overlay if still showing */
+                  var _ov = document.getElementById('dtc-end-overlay');
+                  if (_ov) _ov.style.display = 'none';
                 })();
                 break;
 
@@ -56303,6 +56411,28 @@
                 }
                 /* Re-show READY button for next round */
                 (function() {
+                  /* Hide round timer */
+                  var _timer = document.getElementById('dtc-round-timer');
+                  if (_timer) _timer.style.display = 'none';
+                  /* Show end overlay */
+                  var _ov = document.getElementById('dtc-end-overlay');
+                  var _wn = document.getElementById('dtc-end-winner');
+                  var _bn = document.getElementById('dtc-end-bonus');
+                  var _sc = document.getElementById('dtc-end-scores');
+                  if (_ov) {
+                    if (_wn) {
+                      _wn.className = msg.winner === 'ATTACKER' ? 'attacker' : 'defender';
+                      _wn.textContent = msg.winner === 'ATTACKER' ? '\u2694 STORM VANGUARD WINS' : '\uD83D\uDEE1 MERKABA GUARD WINS';
+                    }
+                    if (_bn) _bn.textContent = '+' + (msg.bonus || 0) + ' PTS \u2014 ' + (msg.winner === 'ATTACKER' ? 'CORE DESTROYED' : 'CORE SURVIVED');
+                    if (_sc && Array.isArray(msg.scores)) {
+                      _sc.innerHTML = msg.scores.map(function(r) {
+                        return '<div class="end-score-row">' + (r.name || 'PILOT') + ' &nbsp; ' + (r.score || 0) + ' PTS &nbsp; ' + (r.kills || 0) + ' KILLS</div>';
+                      }).join('');
+                    }
+                    _ov.style.display = 'flex';
+                    setTimeout(function() { if (_ov) _ov.style.display = 'none'; }, 8000);
+                  }
                   var _rb = document.getElementById('dtc-ready-btn');
                   if (_rb) setTimeout(function() { _rb.classList.remove('hidden'); }, 5000);
                   /* Hide core bar during lobby */
@@ -56312,7 +56442,24 @@
                 break;
 
               case 'roundTick':
-                /* Phase 3D: wire to round timer display */
+                (function() {
+                  var s = typeof msg.sec === 'number' ? msg.sec : 0;
+                  var mm = Math.floor(s / 60);
+                  var ss = s % 60;
+                  var _tv = document.getElementById('dtc-timer-val');
+                  var _tw = document.getElementById('dtc-round-timer');
+                  if (_tv) _tv.textContent = mm + ':' + (ss < 10 ? '0' : '') + ss;
+                  if (_tw) {
+                    _tw.classList.remove('amber', 'danger');
+                    if (s <= 30) _tw.classList.add('danger');
+                    else if (s <= 60) _tw.classList.add('amber');
+                  }
+                })();
+                break;
+
+              case 'scoreBonus':
+                _addFeedEntry((msg.name || 'PILOT') + ' \u2014 ' + (msg.reason || 'BONUS') + ' +' + (msg.pts || 0) + ' PTS', false);
+                _playSfx('lock');
                 break;
 
               case 'coreState':
@@ -57283,6 +57430,18 @@
     <div id="dogfight-scoreboard">
       <div id="dfs-title">&#x1F3C6; LEADERBOARD</div>
       <div id="dfs-list"></div>
+    </div>
+    <!-- Defend the Core: Round timer (top-center, hidden in lobby) -->
+    <div id="dtc-round-timer">
+      <span id="dtc-timer-label">ROUND 1</span>
+      <span id="dtc-timer-val">5:00</span>
+    </div>
+    <!-- Defend the Core: Round-end overlay -->
+    <div id="dtc-end-overlay" onclick="this.style.display='none'">
+      <div id="dtc-end-winner"></div>
+      <div id="dtc-end-bonus"></div>
+      <div id="dtc-end-scores"></div>
+      <div id="dtc-end-dismiss">TAP TO CONTINUE</div>
     </div>
     <!-- Defend the Core: Core health bar (hidden until round active) -->
     <div id="dtc-core-wrap">
