@@ -51528,21 +51528,28 @@
           if (typeof window.firePulse === "function") window.firePulse();
         });
 
-        /* ---- Laser beam + explosion helpers for Space Invader hits --------- */
+        /* ---- Laser beam + explosion helpers --------------------------------- */
         function _spawnLaser(from, to, scene, THREE) {
-          var pts = [from.clone(), to.clone()];
-          var geo = new THREE.BufferGeometry().setFromPoints(pts);
-          var mat = new THREE.LineBasicMaterial({ color: 0xFF2200, transparent: true, opacity: 1 });
-          var line = new THREE.Line(geo, mat);
-          line.frustumCulled = false;
-          scene.object3D.add(line);
-          var t0 = performance.now();
-          (function fadeLaser() {
-            var p = Math.min(1, (performance.now() - t0) / 300);
-            mat.opacity = 1 - p;
-            if (p < 1) requestAnimationFrame(fadeLaser);
-            else { scene.object3D.remove(line); geo.dispose(); mat.dispose(); }
-          })();
+          /* Use A-Frame box entity — Three.js Line is 1-px and invisible on mobile WebGL */
+          var dir = new THREE.Vector3().subVectors(to, from);
+          var len = dir.length();
+          var mid = from.clone().lerp(to, 0.5);
+          dir.normalize();
+          var el = document.createElement('a-box');
+          el.setAttribute('width', '0.6');
+          el.setAttribute('height', '0.6');
+          el.setAttribute('depth', String(Math.round(len)));
+          el.setAttribute('material', 'color:#FF2200;emissive:#FF4400;emissiveIntensity:4;shader:flat;transparent:true;opacity:0.92');
+          el.setAttribute('position', mid.x + ' ' + mid.y + ' ' + mid.z);
+          /* Rotate so box depth-axis (+Z) aligns with fire direction */
+          var fwd = new THREE.Vector3(0, 0, 1);
+          var q = new THREE.Quaternion().setFromUnitVectors(fwd, dir);
+          var eu = new THREE.Euler().setFromQuaternion(q, 'YXZ');
+          var d = 180 / Math.PI;
+          el.setAttribute('rotation', (eu.x*d) + ' ' + (eu.y*d) + ' ' + (eu.z*d));
+          el.setAttribute('shadow', 'cast:false;receive:false');
+          scene.appendChild(el);
+          setTimeout(function() { if (el.parentNode) el.parentNode.removeChild(el); }, 320);
         }
         function _spawnExplosion(pt, scene, THREE) {
           var N = 60;
@@ -56759,22 +56766,6 @@
         /* Crosshair always visible */
         if (crosshair) crosshair.style.display = "block";
 
-        /* ── Mobile RAM reduction: hide heavy particle components ────────── */
-        var _isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent) ||
-          (window.innerWidth < 1024 && navigator.maxTouchPoints > 0);
-        if (_isMobile) {
-          var _heavySel = '[d480-galaxy],[starfield],[cosmic-storm],[binary-star],' +
-            '[gamma-ray-burst],[gamma-ray-burst-afterglow],[molecular-cloud],[cosmic-tornado]';
-          var _hideHeavy = function() {
-            document.querySelectorAll(_heavySel).forEach(function(el) {
-              el.setAttribute('visible', 'false');
-            });
-          };
-          var _ms = document.querySelector('a-scene');
-          if (_ms && _ms.hasLoaded) _hideHeavy();
-          else (_ms || document).addEventListener('loaded', _hideHeavy);
-        }
-
         /* ── Left stick state ── */
         var joyActive = false, joyTouchId = -1;
         var joyDX = 0,
@@ -56968,6 +56959,46 @@
             window.dispatchEvent(new CustomEvent("cosmos-fire"));
           }, { passive: false });
         }
+
+        /* ── Touch-look: single-finger drag on open canvas → yaw/pitch rig ─ */
+        /* Yaw on world-Y (no circular drift), pitch on local-X (clamped ±80°) */
+        var _tlId = null, _tlLx = 0, _tlLy = 0, _tlPitch = 0;
+        document.addEventListener('touchstart', function(e) {
+          if (_tlId !== null) return;
+          var t = e.changedTouches[0];
+          var hit = document.elementFromPoint(t.clientX, t.clientY);
+          if (hit && (hit.closest('#mobile-joy-wrap') || hit.closest('#mobile-joy-wrap2') || hit.closest('#fire-btn'))) return;
+          _tlId = t.identifier; _tlLx = t.clientX; _tlLy = t.clientY;
+        }, { passive: true });
+        document.addEventListener('touchmove', function(e) {
+          if (_tlId === null) return;
+          var t = null;
+          for (var _ti = 0; _ti < e.changedTouches.length; _ti++) {
+            if (e.changedTouches[_ti].identifier === _tlId) { t = e.changedTouches[_ti]; break; }
+          }
+          if (!t) return;
+          var dx = t.clientX - _tlLx, dy = t.clientY - _tlLy;
+          _tlLx = t.clientX; _tlLy = t.clientY;
+          var _rig = document.getElementById('cameraRig');
+          if (!_rig || !_rig.object3D) return;
+          var TH = AFRAME.THREE;
+          /* Yaw: always around absolute world-up so it never gets circular */
+          _rig.object3D.rotateOnWorldAxis(new TH.Vector3(0, 1, 0), -dx * 0.005);
+          /* Pitch: clamp to ±80° so we never hit the apex singularity */
+          var pd = -dy * 0.005;
+          var np = Math.max(-1.396, Math.min(1.396, _tlPitch + pd));
+          var act = np - _tlPitch; _tlPitch = np;
+          if (Math.abs(act) > 0.0001) {
+            var _fwd = new TH.Vector3(0, 0, -1).applyQuaternion(_rig.object3D.quaternion);
+            var _rt = new TH.Vector3().crossVectors(_fwd, new TH.Vector3(0, 1, 0)).normalize();
+            if (_rt.lengthSq() > 0.1) _rig.object3D.rotateOnWorldAxis(_rt, act);
+          }
+        }, { passive: true });
+        document.addEventListener('touchend', function(e) {
+          for (var _ti = 0; _ti < e.changedTouches.length; _ti++) {
+            if (e.changedTouches[_ti].identifier === _tlId) { _tlId = null; break; }
+          }
+        }, { passive: true });
 
         requestAnimationFrame(mobileLoop);
 
