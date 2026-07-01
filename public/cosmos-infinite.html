@@ -3849,7 +3849,7 @@
       <a-entity id="cameraRig" position="0 24 150">
         <a-camera
           wasd-controls="acceleration: 20000; fly: true"
-          look-controls="pointerLockEnabled: false; touchEnabled: true; magicWindowTrackingEnabled: false"
+          look-controls="pointerLockEnabled: false; touchEnabled: false; magicWindowTrackingEnabled: false"
           fov="60"
           far="2000000"
         >
@@ -51530,19 +51530,29 @@
 
         /* ---- Laser beam + explosion helpers --------------------------------- */
         function _spawnLaser(from, to, scene, THREE) {
-          /* Use THREE.Mesh directly — bypasses A-Frame entity init delay,
-             guaranteed visible on mobile WebGL this render frame */
+          /* Points-based tracer — screen-space pixels, visible at any angle/FOV.
+             BoxGeometry viewed nose-on is sub-pixel; sizeAttenuation:false points are not. */
           var dir = new THREE.Vector3().subVectors(to, from);
           var len = dir.length();
           if (len < 0.01) return;
           dir.normalize();
-          var geo = new THREE.BoxGeometry(1.2, 1.2, len);
-          var mat = new THREE.MeshBasicMaterial({ color: 0xFF2200, transparent: true, opacity: 0.92 });
-          var mesh = new THREE.Mesh(geo, mat);
-          mesh.position.copy(from.clone().lerp(to, 0.5));
-          mesh.quaternion.setFromUnitVectors(new THREE.Vector3(0, 0, 1), dir);
-          scene.object3D.add(mesh);
-          setTimeout(function() { scene.object3D.remove(mesh); geo.dispose(); mat.dispose(); }, 280);
+          var N = 14;
+          var pos = new Float32Array(N * 3);
+          for (var i = 0; i < N; i++) {
+            var t = (i + 0.5) / N;
+            var p = from.clone().addScaledVector(dir, t * len);
+            pos[i * 3] = p.x; pos[i * 3 + 1] = p.y; pos[i * 3 + 2] = p.z;
+          }
+          var geo = new THREE.BufferGeometry();
+          geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+          var mat = new THREE.PointsMaterial({
+            color: 0xFF2200, size: 22, sizeAttenuation: false,
+            transparent: true, opacity: 0.95,
+            depthTest: false
+          });
+          var pts = new THREE.Points(geo, mat);
+          scene.object3D.add(pts);
+          setTimeout(function() { scene.object3D.remove(pts); geo.dispose(); mat.dispose(); }, 260);
         }
         function _spawnExplosion(pt, scene, THREE) {
           var N = 60;
@@ -55877,11 +55887,11 @@
           var nd = new THREE.Vector3(0, 0, -1).applyQuaternion(camQ).normalize();
           if (nd.lengthSq() < 0.001) return;
           var right = new THREE.Vector3(1, 0, 0).applyQuaternion(camQ).normalize();
-          var WING = 2.5; // 2.5 units to the side — bolt visible in mobile FOV
+          var WING = 1.0; // 1u offset: 14° from center at near end, within portrait 18° half-FOV
           var laserOrig = rp.clone().addScaledVector(nd, 4); // push past near-clip
           var orig1 = laserOrig.clone().addScaledVector(right,  WING);
           var orig2 = laserOrig.clone().addScaledVector(right, -WING);
-          /* Short 80-unit bolt — visible as a snappy streak from cockpit POV */
+          /* 80-unit tracer bolt — snappy streak visible from cockpit POV */
           _spawnLaser(orig1, orig1.clone().addScaledVector(nd, 80), _lScn, THREE);
           _spawnLaser(orig2, orig2.clone().addScaledVector(nd, 80), _lScn, THREE);
           /* Broadcast fire — carry both wing origins via right vector */
@@ -57014,15 +57024,22 @@
           }, { passive: false });
         }
 
-        /* ── Touch-look: single-finger drag on open canvas → yaw/pitch rig ─ */
-        /* Local Y (yaw) + local X (pitch) — full 360° all axes, no gimbal lock */
-        var _tlId = null, _tlLx = 0, _tlLy = 0;
+        /* ── Touch-look: single-finger drag → yaw/pitch rig via YXZ Euler ─── */
+        /* YXZ order: yaw applied first (world Y), then pitch in yawed frame.
+           No roll drift. Full 360° yaw, ±180° pitch (upside-down). */
+        var _tlId = null, _tlLx = 0, _tlLy = 0, _tlYaw = 0, _tlPitch = 0;
         document.addEventListener('touchstart', function(e) {
           if (_tlId !== null) return;
           var t = e.changedTouches[0];
           var hit = document.elementFromPoint(t.clientX, t.clientY);
           if (hit && (hit.closest('#mobile-joy-wrap') || hit.closest('#mobile-joy-wrap2') || hit.closest('#fire-btn') || hit.closest('#dogfight-scoreboard') || hit.closest('#opts-btn') || hit.closest('#opts-panel'))) return;
           _tlId = t.identifier; _tlLx = t.clientX; _tlLy = t.clientY;
+          /* Init from current rig state so first drag doesn't snap */
+          var _r = document.getElementById('cameraRig');
+          if (_r && _r.object3D) {
+            var _e = new AFRAME.THREE.Euler().setFromQuaternion(_r.object3D.quaternion, 'YXZ');
+            _tlYaw = _e.y; _tlPitch = _e.x;
+          }
         }, { passive: true });
         document.addEventListener('touchmove', function(e) {
           if (_tlId === null) return;
@@ -57035,9 +57052,11 @@
           _tlLx = t.clientX; _tlLy = t.clientY;
           var _rig = document.getElementById('cameraRig');
           if (!_rig || !_rig.object3D) return;
-          /* Local-space rotations: no singularity, no circular drift, unlimited 360° */
-          _rig.object3D.rotateY(-dx * 0.005);
-          _rig.object3D.rotateX(-dy * 0.005);
+          _tlYaw -= dx * 0.005;
+          _tlPitch -= dy * 0.005;
+          /* Reconstruct quaternion: yaw (Y) first, pitch (X) second — no roll */
+          var TH = AFRAME.THREE;
+          _rig.object3D.quaternion.setFromEuler(new TH.Euler(_tlPitch, _tlYaw, 0, 'YXZ'));
         }, { passive: true });
         document.addEventListener('touchend', function(e) {
           for (var _ti = 0; _ti < e.changedTouches.length; _ti++) {
