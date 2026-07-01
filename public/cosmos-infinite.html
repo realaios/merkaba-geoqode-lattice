@@ -3852,8 +3852,8 @@
           look-controls="pointerLockEnabled: false; touchEnabled: false; magicWindowTrackingEnabled: false"
           fov="60"
           far="2000000"
+          cosmos-cockpit
         >
-        </a-camera>
       </a-entity>
 
       <!-- W163: MERKABA HUD/DASHBOARD TELEMETRY -->
@@ -51263,6 +51263,159 @@
           }
         },
       }); /* orphan-closer REMOVED */
+
+      /* ── cosmos-cockpit: F-16/F-18 style fighter cockpit frame ─────────── */
+      AFRAME.registerComponent('cosmos-cockpit', {
+        init: function() {
+          var THREE = AFRAME.THREE;
+          var g = new THREE.Group();
+          /* All coords in camera-local space: forward=-Z, up=+Y, right=+X.
+             Geometry at ~0.4-0.8u from camera — well inside near-clip safe zone. */
+
+          var mStruct = new THREE.MeshBasicMaterial({ color: 0x191C22, side: THREE.FrontSide });
+          var mMetal  = new THREE.MeshBasicMaterial({ color: 0x2B3444, side: THREE.FrontSide });
+          var mPanel  = new THREE.MeshBasicMaterial({ color: 0x0C0E12, side: THREE.FrontSide });
+          var mScreen = new THREE.MeshBasicMaterial({ color: 0x002916 });
+          var mHud    = new THREE.MeshBasicMaterial({ color: 0x18321E });
+          var mGreen  = new THREE.MeshBasicMaterial({ color: 0x00CC44 });
+          var mAmber  = new THREE.MeshBasicMaterial({ color: 0xFF8800 });
+          var mRed    = new THREE.MeshBasicMaterial({ color: 0xFF2200 });
+          var mWing   = new THREE.MeshBasicMaterial({ color: 0x1A1D24, side: THREE.DoubleSide });
+
+          function tube(pts, segs, r, mat) {
+            var c = new THREE.CatmullRomCurve3(pts);
+            g.add(new THREE.Mesh(new THREE.TubeGeometry(c, segs, r, 6, false), mat));
+          }
+          function box(x, y, z, w, h, d, mat, rx, rz) {
+            var m = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), mat);
+            m.position.set(x, y, z);
+            if (rx) m.rotation.x = rx;
+            if (rz) m.rotation.z = rz;
+            g.add(m); return m;
+          }
+          function plane(x, y, z, w, h, mat, rx) {
+            var m = new THREE.Mesh(new THREE.PlaneGeometry(w, h), mat);
+            m.position.set(x, y, z);
+            if (rx) m.rotation.x = rx;
+            g.add(m);
+          }
+
+          /* ── MAIN CANOPY ARCH ─────────────────────────────────────────── */
+          tube([
+            new THREE.Vector3(-0.72, -0.24, -0.82),
+            new THREE.Vector3(-0.66,  0.00, -0.75),
+            new THREE.Vector3(-0.52,  0.20, -0.68),
+            new THREE.Vector3(-0.20,  0.40, -0.60),
+            new THREE.Vector3( 0.00,  0.46, -0.57),
+            new THREE.Vector3( 0.20,  0.40, -0.60),
+            new THREE.Vector3( 0.52,  0.20, -0.68),
+            new THREE.Vector3( 0.66,  0.00, -0.75),
+            new THREE.Vector3( 0.72, -0.24, -0.82),
+          ], 64, 0.025, mMetal);
+
+          /* ── REAR ARCH (behind pilot head) ───────────────────────────── */
+          tube([
+            new THREE.Vector3(-0.50, -0.10, -0.40),
+            new THREE.Vector3(-0.18,  0.14, -0.36),
+            new THREE.Vector3( 0.00,  0.18, -0.35),
+            new THREE.Vector3( 0.18,  0.14, -0.36),
+            new THREE.Vector3( 0.50, -0.10, -0.40),
+          ], 30, 0.020, mMetal);
+
+          /* ── LEFT STRUT: arch foot → rear rim ────────────────────────── */
+          tube([
+            new THREE.Vector3(-0.72, -0.24, -0.82),
+            new THREE.Vector3(-0.60, -0.34, -0.62),
+            new THREE.Vector3(-0.50, -0.10, -0.40),
+          ], 12, 0.020, mMetal);
+
+          /* ── RIGHT STRUT ─────────────────────────────────────────────── */
+          tube([
+            new THREE.Vector3( 0.72, -0.24, -0.82),
+            new THREE.Vector3( 0.60, -0.34, -0.62),
+            new THREE.Vector3( 0.50, -0.10, -0.40),
+          ], 12, 0.020, mMetal);
+
+          /* ── CANOPY SPINE (center arch rail) ─────────────────────────── */
+          tube([
+            new THREE.Vector3(0, 0.46, -0.57),
+            new THREE.Vector3(0, 0.18, -0.35),
+          ], 4, 0.013, mMetal);
+
+          /* ── INSTRUMENT PANEL SLAB ───────────────────────────────────── */
+          var panelAngle = 0.54;
+          box(0, -0.355, -0.630, 1.18, 0.048, 0.54, mPanel, panelAngle);
+          /* Panel face (angled surface facing pilot) */
+          plane(0, -0.348, -0.628, 1.10, 0.46, mPanel, -0.88);
+          /* Panel top lip (chrome trim) */
+          box(0, -0.295, -0.585, 1.18, 0.030, 0.024, mMetal, panelAngle);
+
+          /* ── THREE MFD SCREENS ───────────────────────────────────────── */
+          [-0.25, 0.00, 0.25].forEach(function(sx) {
+            /* Screen glass */
+            var sm = new THREE.Mesh(new THREE.PlaneGeometry(0.19, 0.155), mScreen);
+            sm.position.set(sx, -0.338, -0.626); sm.rotation.x = -0.88;
+            g.add(sm);
+            /* Screen bezel */
+            box(sx, -0.336, -0.622, 0.210, 0.172, 0.006, mMetal, -0.88);
+          });
+
+          /* ── BUTTON ARRAY (top row) ──────────────────────────────────── */
+          var palette = ['g','r','a','g','g','r','a','g','r','g','a','r'];
+          palette.forEach(function(c, i) {
+            var m = c === 'r' ? mRed : c === 'a' ? mAmber : mGreen;
+            box(-0.50 + i * 0.092, -0.285, -0.572, 0.026, 0.020, 0.008, m, -0.88);
+          });
+          /* Bottom row (smaller) */
+          palette.reverse().forEach(function(c, i) {
+            var m = c === 'r' ? mRed : c === 'a' ? mAmber : mGreen;
+            box(-0.50 + i * 0.092, -0.305, -0.582, 0.018, 0.014, 0.006, m, -0.88);
+          });
+
+          /* ── LEFT SIDE CONSOLE ────────────────────────────────────────── */
+          var lc = box(-0.56, -0.355, -0.525, 0.26, 0.006, 0.46, mPanel, 0.28, 0.28);
+          for (var i = 0; i < 6; i++) {
+            box(-0.54 + i * 0.022, -0.310, -0.498, 0.016, 0.028, 0.007, i % 3 === 1 ? mAmber : mGreen, 0.28, 0.28);
+          }
+
+          /* ── RIGHT SIDE CONSOLE ───────────────────────────────────────── */
+          box( 0.56, -0.355, -0.525, 0.26, 0.006, 0.46, mPanel, 0.28, -0.28);
+          for (var j = 0; j < 6; j++) {
+            box( 0.54 - j * 0.022, -0.310, -0.498, 0.016, 0.028, 0.007, j % 3 === 0 ? mRed : mAmber, 0.28, -0.28);
+          }
+
+          /* ── HUD FRAME BRACKET ────────────────────────────────────────── */
+          var hw = 0.26, hh = 0.20, hZ = -0.56, hY = 0.065, cs = 0.050;
+          [[-1,-1],[1,-1],[1,1],[-1,1]].forEach(function(s) {
+            var cx = s[0]*hw/2, cy = hY + s[1]*hh/2;
+            /* horizontal arm */
+            box(cx - s[0]*cs/2, cy, hZ, cs, 0.007, 0.007, mHud);
+            /* vertical arm */
+            box(cx, cy - s[1]*cs/2, hZ, 0.007, cs, 0.007, mHud);
+          });
+          /* HUD mount stalk */
+          tube([
+            new THREE.Vector3(0, -0.060, -0.575),
+            new THREE.Vector3(0, hY - hh/2, hZ),
+          ], 4, 0.011, mHud);
+
+          /* ── NOSE VISIBLE BELOW DASH ──────────────────────────────────── */
+          var noseG = new THREE.CylinderGeometry(0.038, 0.20, 0.60, 10);
+          var nose = new THREE.Mesh(noseG, mPanel);
+          nose.position.set(0, -0.595, -0.580);
+          nose.rotation.x = 0.30; g.add(nose);
+
+          /* ── WING STUBS (intake shoulders) ───────────────────────────── */
+          var wgL = new THREE.Mesh(new THREE.BoxGeometry(0.65, 0.022, 0.42), mWing);
+          wgL.position.set(-0.66, -0.450, -0.520);
+          wgL.rotation.set(0.12, 0, 0.18); g.add(wgL);
+          var wgR = new THREE.Mesh(new THREE.BoxGeometry(0.65, 0.022, 0.42), mWing);
+          wgR.position.set( 0.66, -0.450, -0.520);
+          wgR.rotation.set(0.12, 0, -0.18); g.add(wgR);
+
+          this.el.setObject3D('cosmos-cockpit', g);
+        }
+      });
 
       /* ====================================================================
          GeoAnchor Navigation: Scroll Zoom + Pinch Zoom +
