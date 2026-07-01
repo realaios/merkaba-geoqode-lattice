@@ -51264,154 +51264,73 @@
         },
       }); /* orphan-closer REMOVED */
 
-      /* ── cosmos-cockpit: F-16/F-18 style fighter cockpit frame ─────────── */
+      /* ── cosmos-cockpit: Neon holographic fighter frame ─────────── */
       AFRAME.registerComponent('cosmos-cockpit', {
         init: function() {
           var THREE = AFRAME.THREE;
           var g = new THREE.Group();
-          /* All coords in camera-local space: forward=-Z, up=+Y, right=+X.
-             Geometry at ~0.4-0.8u from camera — well inside near-clip safe zone. */
 
-          var mStruct = new THREE.MeshBasicMaterial({ color: 0x191C22, side: THREE.FrontSide });
-          var mMetal  = new THREE.MeshBasicMaterial({ color: 0x2B3444, side: THREE.FrontSide });
-          var mPanel  = new THREE.MeshBasicMaterial({ color: 0x0C0E12, side: THREE.FrontSide });
-          var mScreen = new THREE.MeshBasicMaterial({ color: 0x002916 });
-          var mHud    = new THREE.MeshBasicMaterial({ color: 0x18321E });
-          var mGreen  = new THREE.MeshBasicMaterial({ color: 0x00CC44 });
-          var mAmber  = new THREE.MeshBasicMaterial({ color: 0xFF8800 });
-          var mRed    = new THREE.MeshBasicMaterial({ color: 0xFF2200 });
-          var mWing   = new THREE.MeshBasicMaterial({ color: 0x1A1D24, side: THREE.DoubleSide });
+          /* Neon materials — bright cyan primary, dim blue secondary, green HUD */
+          var mNeon = new THREE.MeshBasicMaterial({ color: 0x00EEFF, transparent: true, opacity: 0.92, side: THREE.DoubleSide });
+          var mBlue = new THREE.MeshBasicMaterial({ color: 0x0055BB, transparent: true, opacity: 0.68, side: THREE.DoubleSide });
+          var mHud  = new THREE.MeshBasicMaterial({ color: 0x00FF88, transparent: true, opacity: 0.88 });
+          var mGlow = new THREE.PointsMaterial({
+            color: 0x00FFFF, size: 9, sizeAttenuation: false,
+            transparent: true, opacity: 0.92,
+            blending: THREE.AdditiveBlending, depthWrite: false
+          });
 
           function tube(pts, segs, r, mat) {
-            var c = new THREE.CatmullRomCurve3(pts);
-            g.add(new THREE.Mesh(new THREE.TubeGeometry(c, segs, r, 6, false), mat));
-          }
-          function box(x, y, z, w, h, d, mat, rx, rz) {
-            var m = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), mat);
-            m.position.set(x, y, z);
-            if (rx) m.rotation.x = rx;
-            if (rz) m.rotation.z = rz;
-            g.add(m); return m;
-          }
-          function plane(x, y, z, w, h, mat, rx) {
-            var m = new THREE.Mesh(new THREE.PlaneGeometry(w, h), mat);
-            m.position.set(x, y, z);
-            if (rx) m.rotation.x = rx;
-            g.add(m);
+            g.add(new THREE.Mesh(
+              new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts), segs, r, 5, false), mat));
           }
 
-          /* ── MAIN CANOPY ARCH ─────────────────────────────────────────── */
+          /* ── MAIN CANOPY ARCH — narrowed for portrait + landscape fit ── */
           tube([
-            new THREE.Vector3(-0.72, -0.24, -0.82),
-            new THREE.Vector3(-0.66,  0.00, -0.75),
-            new THREE.Vector3(-0.52,  0.20, -0.68),
-            new THREE.Vector3(-0.20,  0.40, -0.60),
-            new THREE.Vector3( 0.00,  0.46, -0.57),
-            new THREE.Vector3( 0.20,  0.40, -0.60),
-            new THREE.Vector3( 0.52,  0.20, -0.68),
-            new THREE.Vector3( 0.66,  0.00, -0.75),
-            new THREE.Vector3( 0.72, -0.24, -0.82),
-          ], 64, 0.025, mMetal);
+            new THREE.Vector3(-0.50, -0.20, -0.80),
+            new THREE.Vector3(-0.42,  0.05, -0.73),
+            new THREE.Vector3(-0.26,  0.26, -0.65),
+            new THREE.Vector3( 0.00,  0.37, -0.60),
+            new THREE.Vector3( 0.26,  0.26, -0.65),
+            new THREE.Vector3( 0.42,  0.05, -0.73),
+            new THREE.Vector3( 0.50, -0.20, -0.80),
+          ], 36, 0.005, mNeon);
 
-          /* ── REAR ARCH (behind pilot head) ───────────────────────────── */
+          /* ── LEFT STRUT ────────────────────────────────────────── */
           tube([
-            new THREE.Vector3(-0.50, -0.10, -0.40),
-            new THREE.Vector3(-0.18,  0.14, -0.36),
-            new THREE.Vector3( 0.00,  0.18, -0.35),
-            new THREE.Vector3( 0.18,  0.14, -0.36),
-            new THREE.Vector3( 0.50, -0.10, -0.40),
-          ], 30, 0.020, mMetal);
+            new THREE.Vector3(-0.50, -0.20, -0.80),
+            new THREE.Vector3(-0.48, -0.46, -0.64),
+          ], 4, 0.0035, mBlue);
 
-          /* ── LEFT STRUT: arch foot → rear rim ────────────────────────── */
+          /* ── RIGHT STRUT ───────────────────────────────────────── */
           tube([
-            new THREE.Vector3(-0.72, -0.24, -0.82),
-            new THREE.Vector3(-0.60, -0.34, -0.62),
-            new THREE.Vector3(-0.50, -0.10, -0.40),
-          ], 12, 0.020, mMetal);
+            new THREE.Vector3( 0.50, -0.20, -0.80),
+            new THREE.Vector3( 0.48, -0.46, -0.64),
+          ], 4, 0.0035, mBlue);
 
-          /* ── RIGHT STRUT ─────────────────────────────────────────────── */
+          /* ── DASHBOARD LIP ─────────────────────────────────────── */
           tube([
-            new THREE.Vector3( 0.72, -0.24, -0.82),
-            new THREE.Vector3( 0.60, -0.34, -0.62),
-            new THREE.Vector3( 0.50, -0.10, -0.40),
-          ], 12, 0.020, mMetal);
+            new THREE.Vector3(-0.48, -0.46, -0.64),
+            new THREE.Vector3( 0.48, -0.46, -0.64),
+          ], 4, 0.003, mBlue);
 
-          /* ── CANOPY SPINE (center arch rail) ─────────────────────────── */
-          tube([
-            new THREE.Vector3(0, 0.46, -0.57),
-            new THREE.Vector3(0, 0.18, -0.35),
-          ], 4, 0.013, mMetal);
+          /* ── GLOWING JUNCTION NODES ────────────────────────────── */
+          var nPts = new Float32Array([
+            -0.50, -0.20, -0.80,    0.50, -0.20, -0.80,
+            -0.48, -0.46, -0.64,    0.48, -0.46, -0.64,
+             0.00,  0.37, -0.60,
+          ]);
+          var nGeo = new THREE.BufferGeometry();
+          nGeo.setAttribute('position', new THREE.BufferAttribute(nPts, 3));
+          g.add(new THREE.Points(nGeo, mGlow));
 
-          /* ── INSTRUMENT PANEL SLAB ───────────────────────────────────── */
-          var panelAngle = 0.54;
-          box(0, -0.355, -0.630, 1.18, 0.048, 0.54, mPanel, panelAngle);
-          /* Panel face (angled surface facing pilot) */
-          plane(0, -0.348, -0.628, 1.10, 0.46, mPanel, -0.88);
-          /* Panel top lip (chrome trim) */
-          box(0, -0.295, -0.585, 1.18, 0.030, 0.024, mMetal, panelAngle);
-
-          /* ── THREE MFD SCREENS ───────────────────────────────────────── */
-          [-0.25, 0.00, 0.25].forEach(function(sx) {
-            /* Screen glass */
-            var sm = new THREE.Mesh(new THREE.PlaneGeometry(0.19, 0.155), mScreen);
-            sm.position.set(sx, -0.338, -0.626); sm.rotation.x = -0.88;
-            g.add(sm);
-            /* Screen bezel */
-            box(sx, -0.336, -0.622, 0.210, 0.172, 0.006, mMetal, -0.88);
-          });
-
-          /* ── BUTTON ARRAY (top row) ──────────────────────────────────── */
-          var palette = ['g','r','a','g','g','r','a','g','r','g','a','r'];
-          palette.forEach(function(c, i) {
-            var m = c === 'r' ? mRed : c === 'a' ? mAmber : mGreen;
-            box(-0.50 + i * 0.092, -0.285, -0.572, 0.026, 0.020, 0.008, m, -0.88);
-          });
-          /* Bottom row (smaller) */
-          palette.reverse().forEach(function(c, i) {
-            var m = c === 'r' ? mRed : c === 'a' ? mAmber : mGreen;
-            box(-0.50 + i * 0.092, -0.305, -0.582, 0.018, 0.014, 0.006, m, -0.88);
-          });
-
-          /* ── LEFT SIDE CONSOLE ────────────────────────────────────────── */
-          var lc = box(-0.56, -0.355, -0.525, 0.26, 0.006, 0.46, mPanel, 0.28, 0.28);
-          for (var i = 0; i < 6; i++) {
-            box(-0.54 + i * 0.022, -0.310, -0.498, 0.016, 0.028, 0.007, i % 3 === 1 ? mAmber : mGreen, 0.28, 0.28);
-          }
-
-          /* ── RIGHT SIDE CONSOLE ───────────────────────────────────────── */
-          box( 0.56, -0.355, -0.525, 0.26, 0.006, 0.46, mPanel, 0.28, -0.28);
-          for (var j = 0; j < 6; j++) {
-            box( 0.54 - j * 0.022, -0.310, -0.498, 0.016, 0.028, 0.007, j % 3 === 0 ? mRed : mAmber, 0.28, -0.28);
-          }
-
-          /* ── HUD FRAME BRACKET ────────────────────────────────────────── */
-          var hw = 0.26, hh = 0.20, hZ = -0.56, hY = 0.065, cs = 0.050;
+          /* ── 3D HUD TARGETING BRACKET — centered (hY=0 aligns with HTML XH) */
+          var hw = 0.20, hh = 0.16, hZ = -0.57, hY = 0.0, cs = 0.042;
           [[-1,-1],[1,-1],[1,1],[-1,1]].forEach(function(s) {
             var cx = s[0]*hw/2, cy = hY + s[1]*hh/2;
-            /* horizontal arm */
-            box(cx - s[0]*cs/2, cy, hZ, cs, 0.007, 0.007, mHud);
-            /* vertical arm */
-            box(cx, cy - s[1]*cs/2, hZ, 0.007, cs, 0.007, mHud);
+            tube([new THREE.Vector3(cx - s[0]*cs, cy, hZ), new THREE.Vector3(cx, cy, hZ)], 2, 0.0025, mHud);
+            tube([new THREE.Vector3(cx, cy - s[1]*cs, hZ), new THREE.Vector3(cx, cy, hZ)], 2, 0.0025, mHud);
           });
-          /* HUD mount stalk */
-          tube([
-            new THREE.Vector3(0, -0.060, -0.575),
-            new THREE.Vector3(0, hY - hh/2, hZ),
-          ], 4, 0.011, mHud);
-
-          /* ── NOSE VISIBLE BELOW DASH ──────────────────────────────────── */
-          var noseG = new THREE.CylinderGeometry(0.038, 0.20, 0.60, 10);
-          var nose = new THREE.Mesh(noseG, mPanel);
-          nose.position.set(0, -0.595, -0.580);
-          nose.rotation.x = 0.30; g.add(nose);
-
-          /* ── WING STUBS (intake shoulders) ───────────────────────────── */
-          var wgL = new THREE.Mesh(new THREE.BoxGeometry(0.65, 0.022, 0.42), mWing);
-          wgL.position.set(-0.66, -0.450, -0.520);
-          wgL.rotation.set(0.12, 0, 0.18); g.add(wgL);
-          var wgR = new THREE.Mesh(new THREE.BoxGeometry(0.65, 0.022, 0.42), mWing);
-          wgR.position.set( 0.66, -0.450, -0.520);
-          wgR.rotation.set(0.12, 0, -0.18); g.add(wgR);
 
           this.el.setObject3D('cosmos-cockpit', g);
         }
@@ -51657,58 +51576,73 @@
         });
 
         /* ---- Laser beam + explosion helpers --------------------------------- */
-        window._spawnLaser = function(from, to, scene, THREE) {
+        /* rigRef: optional camera rig object3D reference for velocity compensation.
+           When provided, bolt position tracks ship movement so it doesn't drift
+           relative to the pilot's frame of reference during movement. */
+        window._spawnLaser = function(from, to, scene, THREE, rigRef) {
           var dx = to.x - from.x, dy = to.y - from.y, dz = to.z - from.z;
           var len = Math.sqrt(dx*dx + dy*dy + dz*dz);
           if (len < 0.01) return;
           dx /= len; dy /= len; dz /= len;
-          var DURATION = 280;
-          /* ── plasma core blob: 18 particles in tight sphere, rides the bolt ── */
-          var NC = 18;
+          var DURATION = 160;
+
+          /* Capture rig position at fire time for velocity compensation */
+          var rigPos0 = new THREE.Vector3();
+          var rigPosNow = new THREE.Vector3();
+          if (rigRef && rigRef.object3D) rigRef.object3D.getWorldPosition(rigPos0);
+
+          /* ── plasma head: 6 tightly clustered bright particles ── */
+          var NC = 6;
           var bArr = new Float32Array(NC * 3);
           for (var i = 0; i < NC; i++) {
-            var th = Math.random() * Math.PI * 2;
-            var ph = Math.acos(2 * Math.random() - 1);
-            var r = Math.pow(Math.random(), 0.5) * 2.2;
-            bArr[i*3]   = Math.sin(ph)*Math.cos(th)*r;
-            bArr[i*3+1] = Math.sin(ph)*Math.sin(th)*r;
-            bArr[i*3+2] = Math.cos(ph)*r;
+            bArr[i*3]   = (Math.random()-0.5) * 0.10;
+            bArr[i*3+1] = (Math.random()-0.5) * 0.10;
+            bArr[i*3+2] = (Math.random()-0.5) * 0.10;
           }
           var bGeo = new THREE.BufferGeometry();
           bGeo.setAttribute('position', new THREE.BufferAttribute(bArr, 3));
           var bMat = new THREE.PointsMaterial({
-            color: 0x88FFEE, size: 18, sizeAttenuation: false,
+            color: 0xCCFFFF, size: 5, sizeAttenuation: false,
             transparent: true, opacity: 1.0,
             blending: THREE.AdditiveBlending, depthWrite: false
           });
           var blob = new THREE.Points(bGeo, bMat);
-          blob.position.set(from.x, from.y, from.z);
           scene.object3D.add(blob);
-          /* ── trailing wake: 12 orange-red dots fading behind the head ── */
-          var NT = 12;
+
+          /* ── plasma trail: 20 dots stretched along travel direction ── */
+          var NT = 20;
           var tArr = new Float32Array(NT * 3);
           var tGeo = new THREE.BufferGeometry();
           tGeo.setAttribute('position', new THREE.BufferAttribute(tArr, 3));
           var tMat = new THREE.PointsMaterial({
-            color: 0xFF5500, size: 9, sizeAttenuation: false,
-            transparent: true, opacity: 0.7,
+            color: 0x44AAFF, size: 2, sizeAttenuation: false,
+            transparent: true, opacity: 0.85,
             blending: THREE.AdditiveBlending, depthWrite: false
           });
           var wake = new THREE.Points(tGeo, tMat);
           scene.object3D.add(wake);
+
           var t0 = performance.now();
           (function frame() {
             var p = Math.min(1, (performance.now() - t0) / DURATION);
-            blob.position.set(from.x + dx*p*len, from.y + dy*p*len, from.z + dz*p*len);
-            bMat.opacity = p < 0.75 ? 1.0 : 4 * (1 - p);
+            /* Velocity compensation: keep bolt in pilot's reference frame */
+            var vdx = 0, vdy = 0, vdz = 0;
+            if (rigRef && rigRef.object3D) {
+              rigRef.object3D.getWorldPosition(rigPosNow);
+              vdx = rigPosNow.x - rigPos0.x;
+              vdy = rigPosNow.y - rigPos0.y;
+              vdz = rigPosNow.z - rigPos0.z;
+            }
+            blob.position.set(from.x + dx*p*len + vdx, from.y + dy*p*len + vdy, from.z + dz*p*len + vdz);
+            bMat.opacity = p < 0.70 ? 1.0 : (1-p) / 0.30;
             for (var j = 0; j < NT; j++) {
-              var tp = Math.max(0, p - (j + 1) * 0.055);
-              tArr[j*3]   = from.x + dx*tp*len;
-              tArr[j*3+1] = from.y + dy*tp*len;
-              tArr[j*3+2] = from.z + dz*tp*len;
+              var tp = Math.max(0, p - (j+1) * 0.018);
+              tArr[j*3]   = from.x + dx*tp*len + vdx;
+              tArr[j*3+1] = from.y + dy*tp*len + vdy;
+              tArr[j*3+2] = from.z + dz*tp*len + vdz;
             }
             tGeo.attributes.position.needsUpdate = true;
-            tMat.opacity = (1 - p) * 0.65;
+            tMat.opacity = (1-p) * 0.80;
             if (p < 1) { requestAnimationFrame(frame); return; }
             scene.object3D.remove(blob); scene.object3D.remove(wake);
             bGeo.dispose(); bMat.dispose(); tGeo.dispose(); tMat.dispose();
@@ -56038,8 +55972,8 @@
           var rig   = document.getElementById('cameraRig');
           var rp    = new THREE.Vector3();
           if (rig && rig.object3D) rig.object3D.getWorldPosition(rp);
-          _spawnLaser(muzzle1, crosshair, _lScn, THREE);
-          _spawnLaser(muzzle2, crosshair, _lScn, THREE);
+          _spawnLaser(muzzle1, crosshair, _lScn, THREE, rig);
+          _spawnLaser(muzzle2, crosshair, _lScn, THREE, rig);
           /* Broadcast fire — carry both wing origins via right vector */
           if (_ws && _ws.readyState === 1) {
             _ws.send(JSON.stringify({ type: "fire",
