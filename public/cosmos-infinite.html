@@ -56758,6 +56758,22 @@
         /* Crosshair always visible */
         if (crosshair) crosshair.style.display = "block";
 
+        /* ── Mobile RAM reduction: hide heavy particle components ────────── */
+        var _isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent) ||
+          (window.innerWidth < 1024 && navigator.maxTouchPoints > 0);
+        if (_isMobile) {
+          var _heavySel = '[d480-galaxy],[starfield],[cosmic-storm],[binary-star],' +
+            '[gamma-ray-burst],[gamma-ray-burst-afterglow],[molecular-cloud],[cosmic-tornado]';
+          var _hideHeavy = function() {
+            document.querySelectorAll(_heavySel).forEach(function(el) {
+              el.setAttribute('visible', 'false');
+            });
+          };
+          var _ms = document.querySelector('a-scene');
+          if (_ms && _ms.hasLoaded) _hideHeavy();
+          else (_ms || document).addEventListener('loaded', _hideHeavy);
+        }
+
         /* ── Left stick state ── */
         var joyActive = false, joyTouchId = -1;
         var joyDX = 0,
