@@ -2,11 +2,9 @@
 // MERKABA_geoqode OS — Railway HTTP Service
 // Exposes the GeoQode interpreter as a REST API for the Storm ecosystem.
 
-import { createServer, request as httpRequest } from "http";
-import { WebSocketServer, WebSocket as WsClient } from "ws";
+import { createServer } from "http";
+import { WebSocketServer } from "ws";
 import { readFileSync, writeFileSync, existsSync, mkdirSync, readdirSync } from "fs";
-import { spawn } from "child_process";
-import { homedir } from "os";
 import { extname, join, dirname, resolve, relative, sep } from "path";
 import { fileURLToPath } from "url";
 import { StormAdapter } from "./geo/bridge/storm-adapter.js";
@@ -110,11 +108,6 @@ function withMeta(html) {
 // ─── Static assets ───────────────────────────────────────────────────────────
 const __dirname_static = dirname(fileURLToPath(import.meta.url));
 const PUBLIC_DIR = join(__dirname_static, "public");
-const PIXEL_AGENTS_VENDOR_DIR = join(__dirname_static, "vendor", "pixel-agents");
-const PIXEL_AGENTS_WEBVIEW_DIR = join(PIXEL_AGENTS_VENDOR_DIR, "webview");
-const PIXEL_AGENTS_HTML = existsSync(join(PIXEL_AGENTS_WEBVIEW_DIR, "index.html"))
-  ? readFileSync(join(PIXEL_AGENTS_WEBVIEW_DIR, "index.html"), "utf-8")
-  : null;
 
 // VR taxonomy MUST be loaded before any withMeta() call so token replacement uses real data
 const VR_TAXONOMY_PATH = join(__dirname_static, "data", "vr-taxonomy.json");
@@ -3446,15 +3439,6 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
       return;
     }
 
-    // ── GET /cosmos-pixel — pixel-agents office webview (proxied) ──────────────
-    if (req.method === "GET" && (pathname === "/cosmos-pixel" || pathname === "/cosmos-pixel.html" || pathname === "/cosmos-pixel/")) {
-      if (!PIXEL_AGENTS_HTML)
-        return json(res, 404, { ok: false, error: "Pixel Agents webview not found" });
-      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-cache, no-store" });
-      res.end(PIXEL_AGENTS_HTML);
-      return;
-    }
-
     // ── GET /cosmos-agents — AIOS Agent Registry (Merkaba 3D lattice, permanent) ─
     if (req.method === "GET" && (pathname === "/cosmos-agents" || pathname === "/cosmos-agents.html" || pathname === "/cosmos-agents/")) {
       if (!COSMOS_AGENTS_HTML)
@@ -3462,33 +3446,6 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
       res.writeHead(200, { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-cache, no-store" });
       res.end(COSMOS_AGENTS_HTML);
       return;
-    }
-
-    // ── GET /pixel-agents/* — pixel-agents webview static assets ───────────────
-    if (req.method === "GET" && pathname.startsWith("/pixel-agents/")) {
-      const safeSuffix = pathname.slice("/pixel-agents/".length).replace(/\.\./g, "");
-      const assetPath = join(PIXEL_AGENTS_WEBVIEW_DIR, safeSuffix);
-      if (existsSync(assetPath)) {
-        const ext2 = extname(assetPath).toLowerCase();
-        const mimeMap = {
-          ".js": "application/javascript",
-          ".css": "text/css",
-          ".png": "image/png",
-          ".jpg": "image/jpeg",
-          ".json": "application/json",
-          ".ttf": "font/ttf",
-          ".woff": "font/woff",
-          ".woff2": "font/woff2",
-          ".svg": "image/svg+xml",
-          ".webp": "image/webp",
-        };
-        const ct = mimeMap[ext2] || "application/octet-stream";
-        const fileData = readFileSync(assetPath);
-        res.writeHead(200, { "Content-Type": ct, "Cache-Control": "public, max-age=86400" });
-        res.end(fileData);
-        return;
-      }
-      return json(res, 404, { ok: false, error: "Asset not found" });
     }
 
     // ── GET /cosmos-lab-landing — Cosmos-Lab Landing Page ───────────────────
@@ -5622,62 +5579,6 @@ function _runAwarePulse() {
 setTimeout(_runAwarePulse, 5_000);
 setInterval(_runAwarePulse, 5 * 60 * 1000);
 
-// ── AIOS agent names injected into pixel-agents office ───────────────────────
-const _AIOS_PA_AGENTS = [
-  "STORM Chat Orchestrator", "Q-DD Engine", "PLAIStore Manager",
-  "AIOS API Gateway", "GeoQode Kernel", "Merkaba Theatre Engine",
-  "Cosmos WebSocket Hub", "Railway Deploy Proxy",
-  "HYPER-SWARM x150", "AIOSOverwatch", "MerkabaLLM", "MerkabAware",
-  "MerkabaDualAttestation", "MerkabaBeEyeSwarm", "Hebrew Geometric Ops",
-  "MerkabaLabAgent CF", "AIOSAssetMinerAgent", "AIOSEmergentSeedAgent",
-  "CinemaVirtualizer", "AIOSmux DeployAgent", "StormAdapter Bridge",
-  "MerkabaBridge", "MerkabaALM Audio", "s4ai-core Module", "Merkaba48OS CLI",
-  "GeoQode Native Engine", "Storm Chat Front Orchestr", "169-Agent Governance",
-  "BullMQ Redis Queue", "PostgreSQL Store", "D1 Knowledge Base",
-  "VR Taxonomy Layer", "Cosmos Lab VR", "Cosmos Infinite VR",
-  "Cosmos-Pixel VR", "Stripe Billing Agent", "Cloudflare Pages CDN",
-  "Enterprise Certifier", "Lattice Transform-420", "Pixel-Relay Bridge",
-  "MAL Injector", "VR Scene Generator",
-];
-
-function _injectAiosAgents() {
-  const serverJsonPath = join(homedir(), ".pixel-agents", "server.json");
-  if (!existsSync(serverJsonPath)) {
-    setTimeout(_injectAiosAgents, 5000);
-    return;
-  }
-  let token;
-  try {
-    token = JSON.parse(readFileSync(serverJsonPath, "utf-8")).token;
-  } catch (_) { return; }
-  console.log("[pixel-agents] injecting", _AIOS_PA_AGENTS.length, "AIOS agents");
-  _AIOS_PA_AGENTS.forEach(function(name, i) {
-    setTimeout(function() {
-      const body = JSON.stringify({
-        hook_event_name: "SessionStart",
-        session_id: "aios-" + i + "-" + Date.now(),
-        cwd: "/app/aios/" + name.toLowerCase().replace(/[^a-z0-9]+/g, "-"),
-        transcript_path: "/app/aios/transcripts/agent-" + i + ".jsonl",
-      });
-      const req = httpRequest({
-        hostname: "127.0.0.1", port: 3101,
-        path: "/api/hooks/claude", method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Content-Length": Buffer.byteLength(body),
-          "Authorization": "Bearer " + token,
-        },
-      }, (res) => {
-        if (res.statusCode >= 400)
-          console.warn("[pixel-agents] inject", res.statusCode, name);
-      });
-      req.on("error", () => {});
-      req.write(body);
-      req.end();
-    }, i * 300);
-  });
-}
-
 server.listen(PORT, () => {
   console.log(`[GeoQode OS] MERKABA_geoqode OS running on port ${PORT}`);
   console.log(
@@ -5687,29 +5588,6 @@ server.listen(PORT, () => {
   console.log(
     `[GeoQode OS] Available playbooks: ${BUILT_IN_PLAYBOOKS.join(", ")}`,
   );
-
-  // ── Spawn pixel-agents standalone server ──────────────────────
-  const paCliPath = join(PIXEL_AGENTS_VENDOR_DIR, "cli.js");
-  if (existsSync(paCliPath)) {
-    const pa = spawn(process.execPath, [paCliPath, "--port", "3101", "--host", "127.0.0.1"], {
-      stdio: ["ignore", "pipe", "pipe"],
-    });
-    let _paInjected = false;
-    pa.stdout.on("data", (d) => {
-      process.stdout.write("[pixel-agents] " + d);
-      if (!_paInjected && d.toString().toLowerCase().includes("listening")) {
-        _paInjected = true;
-        setTimeout(_injectAiosAgents, 1500);
-      }
-    });
-    pa.stderr.on("data", (d) => process.stderr.write("[pixel-agents] " + d));
-    pa.on("exit", (code) => console.warn("[pixel-agents] exited code", code));
-    console.log("[pixel-agents] spawned on port 3101");
-    // Fallback: inject after 10s in case the "listening" log is missed
-    setTimeout(() => { if (!_paInjected) { _paInjected = true; _injectAiosAgents(); } }, 10000);
-  } else {
-    console.warn("[pixel-agents] cli.js not found, skipping spawn");
-  }
 
   // Startup page manifest — logs which HTML files loaded OK vs missing
   const pageManifest = [
@@ -6101,11 +5979,7 @@ _pixelWss.on("connection", (ws) => {
 
 console.log("[CosmosPixel] WebSocket ready at /ws/pixel");
 
-// ── /ws — pixel-agents webview proxy ─────────────────────────────────────────
-// All four WSS use noServer:true. A single upgrade router dispatches by path
-// so no WSS ever calls abortHandshake on a socket it doesn't own.
-const _paWss = new WebSocketServer({ noServer: true });
-
+// ── WebSocket upgrade router ──────────────────────────────────────────────────
 server.on("upgrade", (req, socket, head) => {
   const wsPathname = (req.url || "").split("?")[0];
   if (wsPathname === "/ws/presence") {
@@ -6114,67 +5988,10 @@ server.on("upgrade", (req, socket, head) => {
     _labWss.handleUpgrade(req, socket, head, (ws) => _labWss.emit("connection", ws, req));
   } else if (wsPathname === "/ws/pixel") {
     _pixelWss.handleUpgrade(req, socket, head, (ws) => _pixelWss.emit("connection", ws, req));
-  } else if (wsPathname === "/ws") {
-    _paWss.handleUpgrade(req, socket, head, (ws) => _paWss.emit("connection", ws, req));
   } else {
     socket.destroy();
   }
 });
-
-_paWss.on("connection", (clientWs) => {
-  let upstream = null;
-  let clientBuffer = [];
-
-  function connectUpstream() {
-    const up = new WsClient("ws://127.0.0.1:3101/ws");
-    upstream = up;
-
-    up.on("open", () => {
-      // Flush buffered client messages
-      clientBuffer.forEach((m) => up.send(m));
-      clientBuffer = [];
-    });
-
-    up.on("message", (data) => {
-      if (clientWs.readyState === 1) clientWs.send(data.toString());
-    });
-
-    up.on("close", () => {
-      // Retry after 2s if client still connected
-      if (clientWs.readyState === 1) {
-        setTimeout(connectUpstream, 2000);
-      }
-    });
-
-    up.on("error", () => {
-      if (clientWs.readyState === 1) {
-        setTimeout(connectUpstream, 2000);
-      }
-    });
-  }
-
-  connectUpstream();
-
-  clientWs.on("message", (data) => {
-    const str = data.toString();
-    if (upstream && upstream.readyState === 1) {
-      upstream.send(str);
-    } else if (clientBuffer.length < 100) {
-      clientBuffer.push(str);
-    }
-  });
-
-  clientWs.on("close", () => {
-    if (upstream) upstream.close();
-    clientBuffer = [];
-  });
-
-  clientWs.on("error", () => {
-    if (upstream) upstream.close();
-  });
-});
-
-console.log("[PixelProxy] WebSocket proxy ready at /ws → localhost:3101/ws");
 
 // ── AIOSmux DeployAgent — Autonomous Explorer ─────────────────────────────────
 // Orbits through the D480 lattice on a schedule. Appears as a gold orb to

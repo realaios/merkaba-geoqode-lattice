@@ -56762,7 +56762,8 @@
         var _isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent) ||
           (window.innerWidth < 1024 && navigator.maxTouchPoints > 0);
         if (_isMobile) {
-          var _heavySel = '[d480-galaxy],[starfield],[cosmic-storm]';
+          var _heavySel = '[d480-galaxy],[starfield],[cosmic-storm],[binary-star],' +
+            '[gamma-ray-burst],[gamma-ray-burst-afterglow],[molecular-cloud],[cosmic-tornado]';
           var _hideHeavy = function() {
             document.querySelectorAll(_heavySel).forEach(function(el) {
               el.setAttribute('visible', 'false');
