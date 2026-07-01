@@ -55935,6 +55935,7 @@
         }
 
         window._sendReady = function() {
+          if (_myTeam) return; // already assigned — idempotent
           if (_ws && _ws.readyState === 1) {
             _ws.send(JSON.stringify({ type: 'ready' }));
             var btn = document.getElementById('dtc-ready-btn');
@@ -56132,8 +56133,20 @@
                 /* Send callsign after welcome */
                 if (_ws && _ws.readyState === 1) _ws.send(JSON.stringify({ type: "callsign", name: _myCallsign }));
                 _updateFighterHUD();
-                /* Auto-join DTC mode from ?mode=dtc URL param */
-                if (_gameMode === 'dtc') setTimeout(window._sendReady, 800);
+                /* Restore team assignment on reconnect (server sends team in welcome) */
+                if (msg.team) {
+                  _myTeam = msg.team;
+                  var _wb = document.getElementById('dtc-team-badge');
+                  if (_wb) {
+                    _wb.className = msg.team === 'ATTACKER' ? 'attacker' : 'defender';
+                    _wb.textContent = msg.team === 'ATTACKER' ? '\u2694 STORM VANGUARD' : '\uD83D\uDEE1 MERKABA GUARD';
+                    _wb.style.display = 'block';
+                  }
+                  var _wrb = document.getElementById('dtc-ready-btn');
+                  if (_wrb) _wrb.classList.add('hidden');
+                }
+                /* Auto-join DTC mode — only if not already on a team */
+                if (_gameMode === 'dtc' && !_myTeam) setTimeout(window._sendReady, 800);
                 /* Seed existing explorers */
                 if (Array.isArray(msg.explorers)) {
                   msg.explorers.forEach(function (e) {
@@ -56336,6 +56349,17 @@
               case 'teamUpdate':
                 if (Array.isArray(msg.roster)) {
                   msg.roster.forEach(function(r) {
+                    /* Update own team badge when team is swapped after round end */
+                    if (r.id === _myId && r.team && r.team !== _myTeam) {
+                      _myTeam = r.team;
+                      var _tub = document.getElementById('dtc-team-badge');
+                      if (_tub) {
+                        _tub.className = r.team === 'ATTACKER' ? 'attacker' : 'defender';
+                        _tub.textContent = r.team === 'ATTACKER' ? '\u2694 STORM VANGUARD' : '\uD83D\uDEE1 MERKABA GUARD';
+                        _tub.style.display = 'block';
+                      }
+                      _addFeedEntry('TEAM SWAPPED: ' + r.team, false);
+                    }
                     if (!_ghostMap[r.id]) return;
                     _ghostMap[r.id].team = r.team;
                     var _gh = _ghostMap[r.id];
@@ -56470,7 +56494,7 @@
                     setTimeout(function() { if (_ov) _ov.style.display = 'none'; }, 8000);
                   }
                   var _rb = document.getElementById('dtc-ready-btn');
-                  if (_rb) setTimeout(function() { _rb.classList.remove('hidden'); }, 5000);
+                  if (_rb && !_myTeam) setTimeout(function() { _rb.classList.remove('hidden'); }, 5000);
                   /* Hide core bar during lobby */
                   var _cw = document.getElementById('dtc-core-wrap');
                   if (_cw) setTimeout(function() { _cw.style.display = 'none'; }, 8000);

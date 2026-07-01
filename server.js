@@ -5637,8 +5637,9 @@ let _gameState = {
   teams: {},
   roundTimer: null,
   drainLoop: null,
+  lobbyTimer: null,
   lastBroadcastHealth: 100,
-  coreBreachPilots: new Set(), // pilots who earned the <50au breach bonus this round
+  coreBreachPilots: new Set(),
 };
 
 // 480 GeoQode galaxy positions (D48 lattice, scaled to cosmos space)
@@ -5717,6 +5718,9 @@ function _broadcast(msg, skipId) {
 }
 
 function _startRound() {
+  if (_gameState.phase === 'active') return; // prevent duplicate starts
+  clearTimeout(_gameState.lobbyTimer);
+  _gameState.lobbyTimer = null;
   _gameState.phase = 'active';
   _gameState.coreHealth = 100;
   _gameState.lastBroadcastHealth = 100;
@@ -5842,7 +5846,12 @@ function _endRound(winner) {
   _broadcast({ type: 'roundEnd', winner, round: _gameState.round, scores: roundTop, bonus: bonusPts }, null);
   // 30-second lobby countdown
   _broadcast({ type: 'roundTick', sec: 30 }, null);
-  setTimeout(_startRound, 30000);
+  // Broadcast updated roster so clients see their new (swapped) team badge
+  const swappedRoster = Array.from(_presenceMap.entries())
+    .filter(([pid]) => _gameState.teams[pid])
+    .map(([pid, e]) => ({ id: pid, name: e.name || 'PILOT', team: _gameState.teams[pid] }));
+  _broadcast({ type: 'teamUpdate', roster: swappedRoster }, null);
+  _gameState.lobbyTimer = setTimeout(_startRound, 30000);
 }
 
 _wss.on("connection", (ws) => {
@@ -5970,6 +5979,7 @@ _wss.on("connection", (ws) => {
         id,
       );
     } else if (msg.type === 'ready') {
+      if (_gameState.teams[id]) return; // already assigned — idempotent
       // Auto-balance: assign to whichever team has fewer pilots
       const allIds = Array.from(_presenceMap.keys());
       const atkCount = allIds.filter(pid => _gameState.teams[pid] === 'ATTACKER').length;
