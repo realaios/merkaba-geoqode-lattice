@@ -51271,7 +51271,7 @@
       ==================================================================== */
       (function initGeoNav() {
         var MIN_DIST = 1.2,
-          MAX_DIST = 48000;
+          MAX_DIST = 1260; /* canonical limit: D480 SPECTRUM end ≈ 480×φ² */
         /* True Merkaba resonance: anchor D480=480, PHI-stepped zones.
            MERKABA CORE (0-183 au) = one inner zone -- everything is close. */
         var _PHI = 1.6180339887;
@@ -51303,31 +51303,6 @@
             label: "D480 SPECTRUM",
             color: "#7dd3fc",
           } /* 777-1257 au */,
-          {
-            max: _D480 * _PHI * _PHI * _PHI,
-            label: "GALAXY",
-            color: "#22c55e",
-          } /* 1257-2033 au */,
-          {
-            max: _D480 * Math.pow(_PHI, 4),
-            label: "OUTER GALAXY",
-            color: "#c084fc",
-          } /* 2033-3290 au */,
-          {
-            max: _D480 * Math.pow(_PHI, 5),
-            label: "UNIVERSE",
-            color: "#fde68a",
-          } /* 3290-5323 au */,
-          {
-            max: 16000,
-            label: "DEEP COSMOS",
-            color: "#e879f9",
-          } /* 5323-16000 au */,
-          {
-            max: 48000,
-            label: "HORIZON",
-            color: "#f59e0b",
-          } /* 16000-48000 au */,
         ];
 
         var _curLevelIdx = -1;
@@ -51594,16 +51569,17 @@
           if (document.body.classList.contains("a-fullscreen")) return;
           window._updateScaleHUD(null, null);
         }, 2000);
+        /* Clamp WASD flight within canonical D480 boundary */
+        setInterval(function () {
+          var _r = document.getElementById('cameraRig');
+          if (!_r || !_r.object3D) return;
+          var d = _r.object3D.position.length();
+          if (d > MAX_DIST) _r.object3D.position.multiplyScalar(MAX_DIST / d);
+        }, 120);
       })();
 
       window._checkHorizon = function (dist) {
-        var el = document.getElementById("horizon-overlay");
-        if (!el) return;
-        if (dist >= 47500) {
-          el.classList.add("hz-visible");
-        } else if (dist < 46000) {
-          el.classList.remove("hz-visible");
-        }
+        /* Horizon unreachable with canonical MAX_DIST — overlay disabled */
       };
 
       /* ═══════════════════════════════════════════════════════════════════
