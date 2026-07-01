@@ -6159,7 +6159,7 @@ _paWss.on("connection", (clientWs) => {
     const str = data.toString();
     if (upstream && upstream.readyState === 1) {
       upstream.send(str);
-    } else {
+    } else if (clientBuffer.length < 100) {
       clientBuffer.push(str);
     }
   });

@@ -124,9 +124,10 @@ export class MerkabAware {
       this.#coherenceHistory.shift();
     }
 
-    // Record drift
+    // Record drift (cap at 500 to prevent unbounded growth)
     if (driftSignals.length > 0) {
       this.#driftEvents.push(...driftSignals);
+      if (this.#driftEvents.length > 500) this.#driftEvents.splice(0, this.#driftEvents.length - 500);
     }
 
     // Governance decision
