@@ -56093,6 +56093,18 @@
         pointer-events: none;
         transition: transform 0.05s linear;
       }
+      /* Core-Merkaba compass dot — orbits right joystick ring edge */
+      #joy2-core-dot {
+        position: absolute;
+        width: 11px; height: 11px;
+        border-radius: 50%;
+        background: radial-gradient(circle at 38% 36%, #FF6666, #FF0000);
+        box-shadow: 0 0 7px rgba(255,30,30,0.95), 0 0 14px rgba(255,0,0,0.45);
+        transform: translate(-50%, -50%);
+        pointer-events: none;
+        display: none;
+        z-index: 2;
+      }
       /* ── Combat targeting reticle ── */
       #crosshair {
         display: none;
@@ -56677,6 +56689,7 @@
     <div id="mobile-joy-wrap2">
       <div id="mobile-joy-base2">
         <div id="mobile-joy-stick2"></div>
+        <div id="joy2-core-dot"></div>
       </div>
     </div>
 
@@ -56817,6 +56830,10 @@
       <div class="opts-row">
         <label class="opts-label" for="opt-inv-yaw">Invert Yaw (turn)</label>
         <label class="opts-toggle"><input type="checkbox" id="opt-inv-yaw"><span class="opts-slider"></span></label>
+      </div>
+      <div class="opts-row">
+        <label class="opts-label" for="opt-cross-yaw-roll">Cross Yaw+Roll → Right Stick</label>
+        <label class="opts-toggle"><input type="checkbox" id="opt-cross-yaw-roll"><span class="opts-slider"></span></label>
       </div>
       <h3>Speed</h3>
       <div id="opts-speed-type">
@@ -57057,8 +57074,8 @@
               /* power 0.5: reaches ~71% thrust at 50% stick — sensitive, hits max sooner */
               var _thr = Math.sign(_thrRaw) * Math.pow(Math.abs(_thrRaw), 0.5);
               rig.object3D.position.addScaledVector(fwd, _thr * SPEED);
-              /* left/right = yaw around CRAFT local up (use cam quat — includes roll) */
-              if (Math.abs(joyDX) > DEAD) {
+              /* left/right = yaw (suppressed when Cross Yaw+Roll mode active) */
+              if (!window._cross_yaw_roll && Math.abs(joyDX) > DEAD) {
                 var _yawRaw = (window._inv_yaw ? joyDX : -joyDX);
                 /* exponential curve: less sensitive near centre, same max at edges */
                 var _yw = Math.sign(_yawRaw) * Math.pow(Math.abs(_yawRaw), 1.8);
@@ -57070,11 +57087,9 @@
             /* Expose thrust level for rocket audio */
             window._thrustLevel = joyActive ? Math.abs(joyDY) : 0;
 
-            /* ── Right stick: flight-stick — pitch + roll (craft-frame) ─────── */
+            /* ── Right stick: pitch + roll (+ optional Cross Yaw+Roll mode) ── */
             var lc = camEl.components && camEl.components["look-controls"];
             if (joy2Active && (Math.abs(joy2DX) > DEAD || Math.abs(joy2DY) > DEAD)) {
-              /* Pitch: rotate rig around craft right-vector (rig X in world).
-                 Roll right + pitch up = right-hand turn. Pilot visor look ignored. */
               if (Math.abs(joy2DY) > DEAD) {
                 var _pit = (window._inv_pitch ? -joy2DY : joy2DY);
                 _pit = Math.sign(_pit) * Math.pow(Math.abs(_pit), 1.8);
@@ -57088,9 +57103,47 @@
               var _rl = (window._inv_roll ? -joy2DX : joy2DX);
               _rl = Math.sign(_rl) * Math.pow(Math.abs(_rl), 1.8);
               window._joyRollDelta = (window._joyRollDelta || 0) - _rl * 0.08;
+              /* Cross Yaw+Roll: right stick L/R also yaws — V-tail elevon style.
+                 Left stick yaw is suppressed when this mode is active. */
+              if (window._cross_yaw_roll && Math.abs(joy2DX) > DEAD) {
+                var _cyr = (window._inv_yaw ? joy2DX : -joy2DX);
+                _cyr = Math.sign(_cyr) * Math.pow(Math.abs(_cyr), 1.8);
+                camEl.object3D.getWorldQuaternion(_mlYawQ);
+                var _xCraftUp = _mlCraftUp.set(0, 1, 0).applyQuaternion(_mlYawQ).normalize();
+                rig.object3D.rotateOnWorldAxis(_xCraftUp, _cyr * 0.032);
+              }
             }
             /* used by cosmos-pilot-controls to suppress auto-level (now removed) */
             window._joyRollActive = joy2Active && Math.abs(joy2DX) > DEAD;
+
+            /* ── Core-Merkaba compass dot on right joystick ring ─────────── */
+            /* Red dot orbits ring edge, points toward origin (0,0,0).
+               Push right stick toward dot + thrust = head to Merkaba Core. */
+            var _jDot = document.getElementById('joy2-core-dot');
+            if (_jDot) {
+              var _rp = rig.object3D.position;
+              if (_rp.length() < 1.0) {
+                _jDot.style.display = 'none'; /* at origin — no guidance needed */
+              } else {
+                camEl.object3D.getWorldQuaternion(_mlYawQ);
+                /* direction from pilot to core in world space */
+                var _coreDir = _mlFwd.set(-_rp.x, -_rp.y, -_rp.z).normalize();
+                /* how aligned is the craft nose with the core direction? */
+                var _fwdDot = _mlRightVec.set(0, 0, -1).applyQuaternion(_mlYawQ).dot(_coreDir);
+                if (_fwdDot > 0.97) {
+                  _jDot.style.display = 'none'; /* already facing core */
+                } else {
+                  /* project core direction onto camera right and up to get 2D ring pos */
+                  var _dX = _mlRightVec.set(1, 0, 0).applyQuaternion(_mlYawQ).dot(_coreDir);
+                  var _dY = -_mlCraftUp.set(0, 1, 0).applyQuaternion(_mlYawQ).dot(_coreDir);
+                  var _dMag = Math.sqrt(_dX * _dX + _dY * _dY);
+                  if (_dMag > 0.001) { _dX /= _dMag; _dY /= _dMag; }
+                  _jDot.style.display = 'block';
+                  _jDot.style.left = (55 + _dX * 46) + 'px';
+                  _jDot.style.top  = (55 + _dY * 46) + 'px';
+                }
+              }
+            }
           }
           requestAnimationFrame(mobileLoop);
         }
@@ -58037,6 +58090,12 @@
           cb.addEventListener("change", function () {
             window["_inv_" + axis] = cb.checked;
           });
+        });
+
+        /* Cross Yaw+Roll mode: right stick L/R gives combined yaw+roll (V-tail style) */
+        var cbCross = document.getElementById("opt-cross-yaw-roll");
+        if (cbCross) cbCross.addEventListener("change", function () {
+          window._cross_yaw_roll = cbCross.checked;
         });
 
         /* Speed setting — default Medium; gradient multiplied by setting */
