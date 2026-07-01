@@ -4519,6 +4519,39 @@
           this.ring2Mesh.rotation.x = Math.PI / 3;
           group.add(this.ring2Mesh);
 
+          /* 8. Star Tetrahedron pair — the Merkaba vehicle */
+          /* Up-tetra: gold, pointing toward +Y */
+          var tetraGeo = new THREE.TetrahedronGeometry(7.2, 0);
+          this.tetraUp = new THREE.LineSegments(
+            new THREE.EdgesGeometry(tetraGeo),
+            new THREE.LineBasicMaterial({
+              color: 0xffd700,
+              transparent: true,
+              opacity: 0.88,
+              blending: THREE.AdditiveBlending,
+              depthWrite: false,
+            })
+          );
+          group.add(this.tetraUp);
+          /* Down-tetra: electric blue, rotated 180° around Z — interlocks with up */
+          this.tetraDn = new THREE.LineSegments(
+            new THREE.EdgesGeometry(tetraGeo),
+            new THREE.LineBasicMaterial({
+              color: 0x00ccff,
+              transparent: true,
+              opacity: 0.82,
+              blending: THREE.AdditiveBlending,
+              depthWrite: false,
+            })
+          );
+          this.tetraDn.rotation.z = Math.PI; /* flip to point toward -Y */
+          group.add(this.tetraDn);
+
+          /* 9. Shockwave pool — rings that expand outward at <20% health */
+          this._shockwaves = [];
+          this._lastShock = -999;
+          this._group = group; /* reference for dynamic shockwave add/remove */
+
           this.el.setObject3D("merkaba-core-group", group);
           this.t = 0;
           /* proximity state (cached — no GC in tick) */
@@ -4610,6 +4643,64 @@
               (0.28 + Math.sin(t * 1.8 + 1) * 0.15 + px * 0.4) * (isDanger ? pulse : 1);
             this.ring2Mesh.material.emissiveIntensity = 2.8 + glowMult * 0.8;
           }
+
+          /* ── Star Tetrahedra (Merkaba vehicle) ──────────────────────────── */
+          if (this.tetraUp) {
+            /* Counter-rotating pair: PHI-ratio speed offset for sacred geometry feel */
+            this.tetraUp.rotation.y = t * 0.18 * speedMult;
+            this.tetraUp.rotation.x = t * 0.09;
+            var tuOpacity = 0.72 + Math.sin(t * 1.6) * 0.18 + burst * 0.3;
+            this.tetraUp.material.opacity = tuOpacity * (isDanger ? pulse : 1);
+            /* Gold → fiery red as health drops */
+            var tuR = 1, tuG = hpFrac * 0.84, tuB = hpFrac * 0.0;
+            this.tetraUp.material.color.setRGB(tuR, tuG, tuB);
+          }
+          if (this.tetraDn) {
+            this.tetraDn.rotation.y = -t * 0.18 * PHI * speedMult;
+            this.tetraDn.rotation.x = Math.PI - t * 0.09;
+            var tdOpacity = 0.66 + Math.sin(t * 1.9 + 1.2) * 0.16 + burst * 0.3;
+            this.tetraDn.material.opacity = tdOpacity * (isDanger ? pulse : 1);
+            /* Cyan → magenta as health drops */
+            var tdR = 1 - hpFrac, tdG = hpFrac * 0.8, tdB = 1.0;
+            this.tetraDn.material.color.setRGB(tdR, tdG, tdB);
+          }
+
+          /* ── Shockwave system — spawns every 3s at <20% health ───────────── */
+          var THREE = AFRAME.THREE;
+          if (isCritical && this._group) {
+            if (t - this._lastShock > 3) {
+              this._lastShock = t;
+              var swGeo = new THREE.TorusGeometry(1, 0.06, 6, 72);
+              var swMat = new THREE.MeshBasicMaterial({
+                color: 0xff2200,
+                transparent: true,
+                opacity: 0.85,
+                blending: THREE.AdditiveBlending,
+                depthWrite: false,
+              });
+              var swMesh = new THREE.Mesh(swGeo, swMat);
+              swMesh.rotation.x = Math.PI / 2; /* horizontal ring */
+              this._group.add(swMesh);
+              this._shockwaves.push({ mesh: swMesh, mat: swMat, geo: swGeo, born: t });
+            }
+          }
+          /* Animate + cull shockwaves */
+          var alive = [];
+          for (var si = 0; si < this._shockwaves.length; si++) {
+            var sw = this._shockwaves[si];
+            var swP = Math.min(1, (t - sw.born) / 2.5);
+            var swScale = 1 + swP * 18; /* expand 1→19 units */
+            sw.mesh.scale.setScalar(swScale);
+            sw.mat.opacity = 0.85 * (1 - swP);
+            if (swP < 1) {
+              alive.push(sw);
+            } else {
+              this._group.remove(sw.mesh);
+              sw.geo.dispose();
+              sw.mat.dispose();
+            }
+          }
+          this._shockwaves = alive;
         },
       });
 
@@ -56145,6 +56236,71 @@
               case 'roundEnd':
                 _addFeedEntry('\u25A0 ROUND OVER \u2014 ' + (msg.winner === 'ATTACKER' ? '\u2694 STORM VANGUARD WINS' : '\uD83D\uDEE1 MERKABA GUARD WINS'), true);
                 window._coreHealth = 100;
+                /* Core destruction sequence when attackers win */
+                if (msg.winner === 'ATTACKER') {
+                  (function() {
+                    var _dScene = document.querySelector('a-scene');
+                    if (!_dScene) return;
+                    var _T = AFRAME.THREE;
+                    var _origin = new _T.Vector3(0, 0, 0);
+                    /* Staggered mega-explosions at origin */
+                    [0, 120, 260, 420, 600].forEach(function(delay, idx) {
+                      setTimeout(function() {
+                        /* Custom large burst: 200 particles, high velocity, long life */
+                        var N = 200;
+                        var pos = new Float32Array(N * 3);
+                        var vels = [];
+                        for (var i = 0; i < N; i++) {
+                          var vel = new _T.Vector3(
+                            (Math.random() - 0.5) * 2,
+                            (Math.random() - 0.5) * 2,
+                            (Math.random() - 0.5) * 2
+                          ).normalize().multiplyScalar(8 + Math.random() * 24);
+                          vels.push(vel);
+                        }
+                        var geo = new _T.BufferGeometry();
+                        geo.setAttribute('position', new _T.BufferAttribute(pos, 3));
+                        var colors = [0xFF4400, 0xFF8800, 0xFFCC00, 0xFF0066, 0xFFFFFF];
+                        var mat = new _T.PointsMaterial({
+                          color: colors[idx % colors.length],
+                          size: idx === 0 ? 16 : 10,
+                          sizeAttenuation: false,
+                          transparent: true,
+                          opacity: 1,
+                          blending: _T.AdditiveBlending,
+                          depthWrite: false,
+                        });
+                        var burst = new _T.Points(geo, mat);
+                        _dScene.object3D.add(burst);
+                        var t0 = performance.now();
+                        var dur = 1800 + idx * 200;
+                        (function boom() {
+                          var p = Math.min(1, (performance.now() - t0) / dur);
+                          mat.opacity = Math.pow(1 - p, 1.4);
+                          var arr = geo.attributes.position.array;
+                          for (var j = 0; j < N; j++) {
+                            arr[j*3]   += vels[j].x * 0.7;
+                            arr[j*3+1] += vels[j].y * 0.7;
+                            arr[j*3+2] += vels[j].z * 0.7;
+                          }
+                          geo.attributes.position.needsUpdate = true;
+                          if (p < 1) requestAnimationFrame(boom);
+                          else { _dScene.object3D.remove(burst); geo.dispose(); mat.dispose(); }
+                        })();
+                      }, delay);
+                    });
+                    /* Screen flash: white then fades through red */
+                    var _df = document.getElementById('damage-flash');
+                    if (_df) {
+                      _df.style.transition = 'none';
+                      _df.style.background = 'rgba(255,255,255,0.95)';
+                      setTimeout(function() {
+                        _df.style.transition = 'background 2.2s ease';
+                        _df.style.background = 'rgba(0,0,0,0)';
+                      }, 200);
+                    }
+                  })();
+                }
                 /* Re-show READY button for next round */
                 (function() {
                   var _rb = document.getElementById('dtc-ready-btn');
