@@ -51530,26 +51530,19 @@
 
         /* ---- Laser beam + explosion helpers --------------------------------- */
         function _spawnLaser(from, to, scene, THREE) {
-          /* Use A-Frame box entity — Three.js Line is 1-px and invisible on mobile WebGL */
+          /* Use THREE.Mesh directly — bypasses A-Frame entity init delay,
+             guaranteed visible on mobile WebGL this render frame */
           var dir = new THREE.Vector3().subVectors(to, from);
           var len = dir.length();
-          var mid = from.clone().lerp(to, 0.5);
+          if (len < 0.01) return;
           dir.normalize();
-          var el = document.createElement('a-box');
-          el.setAttribute('width', '0.6');
-          el.setAttribute('height', '0.6');
-          el.setAttribute('depth', String(Math.round(len)));
-          el.setAttribute('material', 'color:#FF2200;emissive:#FF4400;emissiveIntensity:4;shader:flat;transparent:true;opacity:0.92');
-          el.setAttribute('position', mid.x + ' ' + mid.y + ' ' + mid.z);
-          /* Rotate so box depth-axis (+Z) aligns with fire direction */
-          var fwd = new THREE.Vector3(0, 0, 1);
-          var q = new THREE.Quaternion().setFromUnitVectors(fwd, dir);
-          var eu = new THREE.Euler().setFromQuaternion(q, 'YXZ');
-          var d = 180 / Math.PI;
-          el.setAttribute('rotation', (eu.x*d) + ' ' + (eu.y*d) + ' ' + (eu.z*d));
-          el.setAttribute('shadow', 'cast:false;receive:false');
-          scene.appendChild(el);
-          setTimeout(function() { if (el.parentNode) el.parentNode.removeChild(el); }, 320);
+          var geo = new THREE.BoxGeometry(1.2, 1.2, len);
+          var mat = new THREE.MeshBasicMaterial({ color: 0xFF2200, transparent: true, opacity: 0.92 });
+          var mesh = new THREE.Mesh(geo, mat);
+          mesh.position.copy(from.clone().lerp(to, 0.5));
+          mesh.quaternion.setFromUnitVectors(new THREE.Vector3(0, 0, 1), dir);
+          scene.object3D.add(mesh);
+          setTimeout(function() { scene.object3D.remove(mesh); geo.dispose(); mat.dispose(); }, 280);
         }
         function _spawnExplosion(pt, scene, THREE) {
           var N = 60;
@@ -55103,10 +55096,9 @@
         "use strict";
 
         /* ── Config ───────────────────────────────────────────────────────── */
-        var WS_URL =
-          (location.protocol === "https:" ? "wss://" : "ws://") +
-          location.host +
-          "/ws/presence";
+        /* Always connect to the Railway host — works from realaios.com (CF Pages)
+           and aios-mesh.realaios.com (Railway) without duplicating server logic */
+        var WS_URL = 'wss://aios-mesh.realaios.com/ws/presence';
         var RECONNECT_DELAY_MS = 4000;
         var POS_SEND_INTERVAL = 100; // 10 Hz — real-time dogfight sync
         var FEED_MAX_ENTRIES = 5;
@@ -55885,13 +55877,13 @@
           var nd = new THREE.Vector3(0, 0, -1).applyQuaternion(camQ).normalize();
           if (nd.lengthSq() < 0.001) return;
           var right = new THREE.Vector3(1, 0, 0).applyQuaternion(camQ).normalize();
-          var WING = 9; // matches wing-tip at s*9 in _makeFighterAvatar
-          var laserOrig = rp.clone().addScaledVector(nd, 5); // push past near-clip so lasers are visible first-person
+          var WING = 2.5; // 2.5 units to the side — bolt visible in mobile FOV
+          var laserOrig = rp.clone().addScaledVector(nd, 4); // push past near-clip
           var orig1 = laserOrig.clone().addScaledVector(right,  WING);
           var orig2 = laserOrig.clone().addScaledVector(right, -WING);
-          /* Spawn local lasers so the shooter sees their own beams */
-          _spawnLaser(orig1, orig1.clone().addScaledVector(nd, 2000), _lScn, THREE);
-          _spawnLaser(orig2, orig2.clone().addScaledVector(nd, 2000), _lScn, THREE);
+          /* Short 80-unit bolt — visible as a snappy streak from cockpit POV */
+          _spawnLaser(orig1, orig1.clone().addScaledVector(nd, 80), _lScn, THREE);
+          _spawnLaser(orig2, orig2.clone().addScaledVector(nd, 80), _lScn, THREE);
           /* Broadcast fire — carry both wing origins via right vector */
           if (_ws && _ws.readyState === 1) {
             _ws.send(JSON.stringify({ type: "fire",
@@ -57023,8 +57015,8 @@
         }
 
         /* ── Touch-look: single-finger drag on open canvas → yaw/pitch rig ─ */
-        /* Yaw on world-Y (no circular drift), pitch on local-X (clamped ±80°) */
-        var _tlId = null, _tlLx = 0, _tlLy = 0, _tlPitch = 0;
+        /* Local Y (yaw) + local X (pitch) — full 360° all axes, no gimbal lock */
+        var _tlId = null, _tlLx = 0, _tlLy = 0;
         document.addEventListener('touchstart', function(e) {
           if (_tlId !== null) return;
           var t = e.changedTouches[0];
@@ -57043,18 +57035,9 @@
           _tlLx = t.clientX; _tlLy = t.clientY;
           var _rig = document.getElementById('cameraRig');
           if (!_rig || !_rig.object3D) return;
-          var TH = AFRAME.THREE;
-          /* Yaw: always around absolute world-up so it never gets circular */
-          _rig.object3D.rotateOnWorldAxis(new TH.Vector3(0, 1, 0), -dx * 0.005);
-          /* Pitch: clamp to ±80° so we never hit the apex singularity */
-          var pd = -dy * 0.005;
-          var np = Math.max(-1.396, Math.min(1.396, _tlPitch + pd));
-          var act = np - _tlPitch; _tlPitch = np;
-          if (Math.abs(act) > 0.0001) {
-            var _fwd = new TH.Vector3(0, 0, -1).applyQuaternion(_rig.object3D.quaternion);
-            var _rt = new TH.Vector3().crossVectors(_fwd, new TH.Vector3(0, 1, 0)).normalize();
-            if (_rt.lengthSq() > 0.1) _rig.object3D.rotateOnWorldAxis(_rt, act);
-          }
+          /* Local-space rotations: no singularity, no circular drift, unlimited 360° */
+          _rig.object3D.rotateY(-dx * 0.005);
+          _rig.object3D.rotateX(-dy * 0.005);
         }, { passive: true });
         document.addEventListener('touchend', function(e) {
           for (var _ti = 0; _ti < e.changedTouches.length; _ti++) {
