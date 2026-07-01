@@ -55174,6 +55174,70 @@
       #dfs-title { font-size:11px; font-weight:bold; margin-bottom:4px; letter-spacing:1px; }
       .dfs-row { display:flex; justify-content:space-between; padding:1px 0; }
       .dfs-row.me { color:#fff; }
+
+      /* ── Defend the Core: READY button + team badge ─────────────────────── */
+      #dtc-ready-wrap {
+        position: fixed;
+        bottom: 90px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+        z-index: 5200;
+        pointer-events: auto;
+      }
+      #dtc-ready-btn {
+        background: linear-gradient(135deg, #001133 0%, #003366 100%);
+        border: 1.5px solid #00CCFF;
+        color: #00EEFF;
+        font-family: monospace;
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        padding: 10px 28px;
+        border-radius: 4px;
+        cursor: pointer;
+        text-transform: uppercase;
+        box-shadow: 0 0 18px rgba(0,180,255,0.45), inset 0 0 8px rgba(0,120,255,0.18);
+        transition: box-shadow 0.2s ease;
+      }
+      #dtc-ready-btn:hover { box-shadow: 0 0 32px rgba(0,220,255,0.75), inset 0 0 14px rgba(0,160,255,0.35); }
+      #dtc-ready-btn.hidden { display: none !important; }
+      #dtc-team-badge {
+        font-family: monospace;
+        font-size: 15px;
+        font-weight: 900;
+        letter-spacing: 3px;
+        padding: 6px 20px;
+        border-radius: 3px;
+        display: none;
+        animation: dtc-badge-in 0.5s cubic-bezier(0.22,1,0.36,1) both;
+      }
+      #dtc-team-badge.attacker {
+        color: #FF4444;
+        border: 1.5px solid #FF2222;
+        background: rgba(80,0,0,0.55);
+        box-shadow: 0 0 20px rgba(255,40,40,0.5), inset 0 0 8px rgba(200,0,0,0.2);
+        text-shadow: 0 0 8px rgba(255,80,80,0.9);
+      }
+      #dtc-team-badge.defender {
+        color: #44AAFF;
+        border: 1.5px solid #2277FF;
+        background: rgba(0,20,80,0.55);
+        box-shadow: 0 0 20px rgba(40,100,255,0.5), inset 0 0 8px rgba(0,60,200,0.2);
+        text-shadow: 0 0 8px rgba(80,160,255,0.9);
+      }
+      @keyframes dtc-badge-in {
+        from { opacity: 0; transform: scale(0.7) translateY(12px); }
+        to   { opacity: 1; transform: scale(1) translateY(0); }
+      }
+      @media (pointer: coarse) {
+        #dtc-ready-wrap { bottom: 140px; }
+      }
+
+
       #damage-flash {
         position: fixed;
         inset: 0;
@@ -55202,13 +55266,14 @@
         /* ── State ────────────────────────────────────────────────────────── */
         var _ws = null;
         var _myId = null;
-        var _ghostMap = {}; // id -> { el, group, ts, isAgent, health, score, kills, pos, targetPos, quat, targetQuat }
+        var _ghostMap = {}; // id -> { el, group, ts, isAgent, health, score, kills, pos, targetPos, quat, targetQuat, team }
         var _ghostScene = null; // a-entity container for ghosts
         var _myCallsign = "PILOT-" + Math.random().toString(36).slice(2, 5).toUpperCase();
         var _myHealth = 100;
         var _myKills = 0;
         var _myDeaths = 0;
         var _myScore = 0;
+        var _myTeam = null; // 'ATTACKER' | 'DEFENDER' | null
         var _lastFire = 0; // fire cooldown timestamp
         var _beaconEl = null; // pulsing beacon ring in A-Frame
         var _beaconCode = null;
@@ -55339,7 +55404,9 @@
           var THREE = AFRAME.THREE;
           var existing = _ghostMap[entry.id];
           var isAgent = entry.isAgent;
-          var color = isAgent ? "#ffc83c" : "#00d4ff";
+          var knownTeam = (existing && existing.team) || entry.team || null;
+          var teamColor = knownTeam === 'ATTACKER' ? '#FF3333' : knownTeam === 'DEFENDER' ? '#3388FF' : '#00d4ff';
+          var color = isAgent ? '#ffc83c' : teamColor;
 
           if (!existing) {
             /* Create A-Frame entity to hold the Three.js fighter group */
@@ -55584,6 +55651,14 @@
           var ckKills = document.getElementById("ck-kills-val"); if (ckKills) ckKills.textContent = _myKills;
           var ckScore = document.getElementById("ck-score-val"); if (ckScore) ckScore.textContent = _myScore;
         }
+
+        window._sendReady = function() {
+          if (_ws && _ws.readyState === 1) {
+            _ws.send(JSON.stringify({ type: 'ready' }));
+            var btn = document.getElementById('dtc-ready-btn');
+            if (btn) btn.classList.add('hidden');
+          }
+        };
 
         function _updateScoreboard() {
           if (!_dfsListEl) _initHudRefs();
@@ -55942,6 +56017,55 @@
                   }, 3000);
                 }
                 _updateScoreboard();
+                break;
+
+              case 'teamAssign':
+                _myTeam = msg.team;
+                var _dtcBadge = document.getElementById('dtc-team-badge');
+                if (_dtcBadge) {
+                  _dtcBadge.className = msg.team === 'ATTACKER' ? 'attacker' : 'defender';
+                  _dtcBadge.textContent = msg.team === 'ATTACKER' ? '\u2694 STORM VANGUARD' : '\uD83D\uDEE1 MERKABA GUARD';
+                  _dtcBadge.style.display = 'block';
+                }
+                _addFeedEntry('TEAM ASSIGNED: ' + msg.team, false);
+                _playSfx('lock');
+                break;
+
+              case 'teamUpdate':
+                if (Array.isArray(msg.roster)) {
+                  msg.roster.forEach(function(r) {
+                    if (!_ghostMap[r.id]) return;
+                    _ghostMap[r.id].team = r.team;
+                    var _gh = _ghostMap[r.id];
+                    if (_gh && _gh.group) {
+                      var _tint = r.team === 'ATTACKER' ? 0xFF3333 : 0x3388FF;
+                      _gh.group.traverse(function(obj) {
+                        if (obj.material) {
+                          if (obj.material.color) obj.material.color.setHex(_tint);
+                          if (obj.material.emissive) obj.material.emissive.setHex(_tint);
+                        }
+                      });
+                    }
+                  });
+                }
+                break;
+
+              case 'roundStart':
+                _addFeedEntry('\u25B6 ROUND ' + msg.round + ' \u2014 DEFEND THE CORE!', true);
+                _playSfx('lock');
+                break;
+
+              case 'roundEnd':
+                _addFeedEntry('\u25A0 ROUND OVER \u2014 ' + (msg.winner === 'ATTACKER' ? '\u2694 STORM VANGUARD WINS' : '\uD83D\uDEE1 MERKABA GUARD WINS'), true);
+                /* Re-show READY button for next round */
+                (function() {
+                  var _rb = document.getElementById('dtc-ready-btn');
+                  if (_rb) setTimeout(function() { _rb.classList.remove('hidden'); }, 5000);
+                })();
+                break;
+
+              case 'roundTick':
+                /* Phase 3D: wire to round timer display */
                 break;
             }
           };
@@ -56892,6 +57016,11 @@
     <div id="dogfight-scoreboard">
       <div id="dfs-title">&#x1F3C6; LEADERBOARD</div>
       <div id="dfs-list"></div>
+    </div>
+    <!-- Defend the Core: READY button + team badge -->
+    <div id="dtc-ready-wrap">
+      <button id="dtc-ready-btn" onclick="window._sendReady()">&#x2694; READY TO FIGHT</button>
+      <div id="dtc-team-badge"></div>
     </div>
     <!-- Damage flash overlay -->
     <div id="damage-flash"></div>

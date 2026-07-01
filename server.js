@@ -5625,8 +5625,18 @@ server.listen(PORT, () => {
 // Ghost explorers, discovery feed, convergence beacon, AIOSmux DeployAgent
 // ══════════════════════════════════════════════════════════════════════════════
 
-// Presence state: clientId -> { id, x, y, z, geoCode, freq, ts, isAgent, name }
+// Presence state: clientId -> { id, x, y, z, geoCode, freq, ts, isAgent, name, team }
 const _presenceMap = new Map();
+
+// Defend the Core game state
+let _gameState = {
+  round: 0,
+  phase: 'lobby',   // 'lobby' | 'active' | 'roundEnd'
+  coreHealth: 100,
+  timerSec: 300,
+  teams: {},         // id -> 'ATTACKER' | 'DEFENDER'
+  roundTimer: null,
+};
 
 // 480 GeoQode galaxy positions (D48 lattice, scaled to cosmos space)
 // Same generation as cosmos-infinite.html _galaxyData
@@ -5703,6 +5713,38 @@ function _broadcast(msg, skipId) {
   });
 }
 
+function _startRound() {
+  _gameState.phase = 'active';
+  _gameState.coreHealth = 100;
+  _gameState.timerSec = 300;
+  _gameState.round++;
+  _broadcast({ type: 'roundStart', round: _gameState.round, timerSec: 300, teams: _gameState.teams }, null);
+  clearInterval(_gameState.roundTimer);
+  _gameState.roundTimer = setInterval(() => {
+    _gameState.timerSec--;
+    if (_gameState.timerSec <= 0 || _gameState.coreHealth <= 0) {
+      clearInterval(_gameState.roundTimer);
+      _endRound(_gameState.coreHealth <= 0 ? 'ATTACKER' : 'DEFENDER');
+    } else if (_gameState.timerSec % 10 === 0) {
+      _broadcast({ type: 'roundTick', sec: _gameState.timerSec }, null);
+    }
+  }, 1000);
+}
+
+function _endRound(winner) {
+  _gameState.phase = 'lobby';
+  clearInterval(_gameState.roundTimer);
+  // Swap teams for next round
+  Object.keys(_gameState.teams).forEach(pid => {
+    _gameState.teams[pid] = _gameState.teams[pid] === 'ATTACKER' ? 'DEFENDER' : 'ATTACKER';
+    const e = _presenceMap.get(pid);
+    if (e) e.team = _gameState.teams[pid];
+  });
+  _broadcast({ type: 'roundEnd', winner, round: _gameState.round }, null);
+  // 30-second lobby before next round
+  setTimeout(_startRound, 30000);
+}
+
 _wss.on("connection", (ws) => {
   const id = Math.random().toString(36).slice(2, 10);
   ws._presenceId = id;
@@ -5723,6 +5765,9 @@ _wss.on("connection", (ws) => {
       allTimeTop: Object.entries(_dogfightScores)
         .sort((a, b) => b[1].score - a[1].score).slice(0, 10)
         .map(([name, s]) => ({ name, kills: s.kills, score: s.score })),
+      team: _gameState.teams[id] || null,
+      phase: _gameState.phase,
+      round: _gameState.round,
     }),
   );
 
@@ -5758,6 +5803,7 @@ _wss.on("connection", (ws) => {
         ts: Date.now(),
         isAgent: false,
         name: prev.name || "EXPLORER",
+        team: prev.team || _gameState.teams[id] || null,
       };
       _presenceMap.set(id, entry);
       _broadcast({ type: "pos", ...entry }, id);
@@ -5809,11 +5855,41 @@ _wss.on("connection", (ws) => {
         },
         id,
       );
+    } else if (msg.type === 'ready') {
+      // Auto-balance: assign to whichever team has fewer pilots
+      const allIds = Array.from(_presenceMap.keys());
+      const atkCount = allIds.filter(pid => _gameState.teams[pid] === 'ATTACKER').length;
+      const defCount = allIds.filter(pid => _gameState.teams[pid] === 'DEFENDER').length;
+      const team = atkCount <= defCount ? 'ATTACKER' : 'DEFENDER';
+      _gameState.teams[id] = team;
+      const entry = _presenceMap.get(id);
+      if (entry) entry.team = team;
+
+      // Tell this pilot their team assignment
+      ws.send(JSON.stringify({
+        type: 'teamAssign',
+        team,
+        coreHealth: _gameState.coreHealth,
+        round: _gameState.round,
+        phase: _gameState.phase,
+      }));
+
+      // Broadcast updated roster to ALL (skipId=null so everyone gets it)
+      const roster = Array.from(_presenceMap.entries())
+        .filter(([pid]) => _gameState.teams[pid])
+        .map(([pid, e]) => ({ id: pid, name: e.name || 'PILOT', team: _gameState.teams[pid] }));
+      _broadcast({ type: 'teamUpdate', roster }, null);
+
+      // Auto-start round when ≥2 pilots ready and still in lobby
+      if (Object.keys(_gameState.teams).length >= 2 && _gameState.phase === 'lobby') {
+        _startRound();
+      }
     }
   });
 
   ws.on("close", () => {
     _presenceMap.delete(id);
+    delete _gameState.teams[id];
     _broadcast({ type: "left", id });
     console.log(
       `[AIOSmux] Explorer left: ${id} (${_presenceMap.size} remaining)`,
