@@ -286,6 +286,50 @@
     </style>
   </head>
   <body>
+    <script>
+      AFRAME.registerComponent('cp-orbit', {
+        schema: { minDist: { default: 8 }, maxDist: { default: 180 }, startDist: { default: 55 } },
+        init: function () {
+          var self = this;
+          this._theta = 0; this._phi = 1.1; this._r = this.data.startDist;
+          this._drag = false; this._px = 0; this._py = 0;
+          var onDown = function (e) {
+            if (e.button !== 0) return;
+            self._drag = true; self._px = e.clientX; self._py = e.clientY;
+            e.currentTarget.style.cursor = 'grabbing';
+          };
+          var onMove = function (e) {
+            if (!self._drag) return;
+            var dx = e.clientX - self._px, dy = e.clientY - self._py;
+            self._px = e.clientX; self._py = e.clientY;
+            self._theta -= dx * 0.008;
+            self._phi = Math.max(0.08, Math.min(Math.PI - 0.08, self._phi - dy * 0.008));
+            self._apply();
+          };
+          var onUp = function (e) { self._drag = false; e.currentTarget.style.cursor = 'grab'; };
+          var onWheel = function (e) {
+            e.preventDefault();
+            self._r = Math.max(self.data.minDist, Math.min(self.data.maxDist, self._r + e.deltaY * 0.08));
+            self._apply();
+          };
+          this.el.sceneEl.addEventListener('renderstart', function () {
+            var c = self.el.sceneEl.canvas;
+            c.style.cursor = 'grab';
+            c.addEventListener('mousedown', onDown);
+            c.addEventListener('mousemove', onMove);
+            c.addEventListener('mouseup', onUp);
+            c.addEventListener('mouseleave', onUp);
+            c.addEventListener('wheel', onWheel, { passive: false });
+            self._apply();
+          });
+        },
+        _apply: function () {
+          var s = Math.sin(this._phi), c = Math.cos(this._phi);
+          this.el.object3D.position.set(s * Math.sin(this._theta) * this._r, c * this._r, s * Math.cos(this._theta) * this._r);
+          this.el.object3D.lookAt(0, 0, 0);
+        }
+      });
+    </script>
     <!-- ══════════════════════════════════════════════════════════════════════════
      A-FRAME SCENE
 ══════════════════════════════════════════════════════════════════════════ -->
@@ -392,11 +436,10 @@
       <a-entity id="cp-lines"></a-entity>
 
       <!-- Camera rig -->
-      <a-entity id="cp-rig" position="0 0 55">
+      <a-entity id="cp-rig" position="0 0 0">
         <a-camera
           id="cp-camera"
-          look-controls="pointerLockEnabled: true"
-          wasd-controls="acceleration: 80"
+          cp-orbit
           near="0.1"
           far="3000"
           fov="72"
