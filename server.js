@@ -3,8 +3,9 @@
 // Exposes the GeoQode interpreter as a REST API for the Storm ecosystem.
 
 import { createServer } from "http";
-import { WebSocketServer } from "ws";
+import { WebSocketServer, WebSocket as WsClient } from "ws";
 import { readFileSync, writeFileSync, existsSync, mkdirSync, readdirSync } from "fs";
+import { spawn } from "child_process";
 import { extname, join, dirname, resolve, relative, sep } from "path";
 import { fileURLToPath } from "url";
 import { StormAdapter } from "./geo/bridge/storm-adapter.js";
@@ -108,6 +109,11 @@ function withMeta(html) {
 // ─── Static assets ───────────────────────────────────────────────────────────
 const __dirname_static = dirname(fileURLToPath(import.meta.url));
 const PUBLIC_DIR = join(__dirname_static, "public");
+const PIXEL_AGENTS_VENDOR_DIR = join(__dirname_static, "vendor", "pixel-agents");
+const PIXEL_AGENTS_WEBVIEW_DIR = join(PIXEL_AGENTS_VENDOR_DIR, "webview");
+const PIXEL_AGENTS_HTML = existsSync(join(PIXEL_AGENTS_WEBVIEW_DIR, "index.html"))
+  ? readFileSync(join(PIXEL_AGENTS_WEBVIEW_DIR, "index.html"), "utf-8")
+  : null;
 
 // VR taxonomy MUST be loaded before any withMeta() call so token replacement uses real data
 const VR_TAXONOMY_PATH = join(__dirname_static, "data", "vr-taxonomy.json");
@@ -3435,13 +3441,40 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
       return;
     }
 
-    // ── GET /cosmos-pixel — AIOS Agent Lattice Visualizer ───────────────────
-    if (req.method === "GET" && (pathname === "/cosmos-pixel" || pathname === "/cosmos-pixel.html")) {
-      if (!COSMOS_PIXEL_HTML)
-        return json(res, 404, { ok: false, error: "Cosmos Pixel not found" });
+    // ── GET /cosmos-pixel — pixel-agents office webview (proxied) ──────────────
+    if (req.method === "GET" && (pathname === "/cosmos-pixel" || pathname === "/cosmos-pixel.html" || pathname === "/cosmos-pixel/")) {
+      if (!PIXEL_AGENTS_HTML)
+        return json(res, 404, { ok: false, error: "Pixel Agents webview not found" });
       res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
-      res.end(COSMOS_PIXEL_HTML);
+      res.end(PIXEL_AGENTS_HTML);
       return;
+    }
+
+    // ── GET /pixel-agents/* — pixel-agents webview static assets ───────────────
+    if (req.method === "GET" && pathname.startsWith("/pixel-agents/")) {
+      const safeSuffix = pathname.slice("/pixel-agents/".length).replace(/\.\./g, "");
+      const assetPath = join(PIXEL_AGENTS_WEBVIEW_DIR, safeSuffix);
+      if (existsSync(assetPath)) {
+        const ext2 = extname(assetPath).toLowerCase();
+        const mimeMap = {
+          ".js": "application/javascript",
+          ".css": "text/css",
+          ".png": "image/png",
+          ".jpg": "image/jpeg",
+          ".json": "application/json",
+          ".ttf": "font/ttf",
+          ".woff": "font/woff",
+          ".woff2": "font/woff2",
+          ".svg": "image/svg+xml",
+          ".webp": "image/webp",
+        };
+        const ct = mimeMap[ext2] || "application/octet-stream";
+        const fileData = readFileSync(assetPath);
+        res.writeHead(200, { "Content-Type": ct, "Cache-Control": "public, max-age=86400" });
+        res.end(fileData);
+        return;
+      }
+      return json(res, 404, { ok: false, error: "Asset not found" });
     }
 
     // ── GET /cosmos-lab-landing — Cosmos-Lab Landing Page ───────────────────
@@ -5585,6 +5618,20 @@ server.listen(PORT, () => {
     `[GeoQode OS] Available playbooks: ${BUILT_IN_PLAYBOOKS.join(", ")}`,
   );
 
+  // ── Spawn pixel-agents standalone server ──────────────────────
+  const paCliPath = join(PIXEL_AGENTS_VENDOR_DIR, "cli.js");
+  if (existsSync(paCliPath)) {
+    const pa = spawn(process.execPath, [paCliPath, "--port", "3101", "--host", "127.0.0.1"], {
+      stdio: ["ignore", "pipe", "pipe"],
+    });
+    pa.stdout.on("data", (d) => process.stdout.write("[pixel-agents] " + d));
+    pa.stderr.on("data", (d) => process.stderr.write("[pixel-agents] " + d));
+    pa.on("exit", (code) => console.warn("[pixel-agents] exited code", code));
+    console.log("[pixel-agents] spawned on port 3101");
+  } else {
+    console.warn("[pixel-agents] cli.js not found, skipping spawn");
+  }
+
   // Startup page manifest — logs which HTML files loaded OK vs missing
   const pageManifest = [
     ["index", AIOS_HTML],
@@ -5974,6 +6021,65 @@ _pixelWss.on("connection", (ws) => {
 });
 
 console.log("[CosmosPixel] WebSocket ready at /ws/pixel");
+
+// ── /ws — pixel-agents webview proxy ─────────────────────────────────────────
+// The pixel-agents React webview connects to wss://[host]/ws.
+// We proxy each client connection to the local pixel-agents server (port 3101).
+const _paWss = new WebSocketServer({ server, path: "/ws" });
+_paWss.on("connection", (clientWs) => {
+  let upstream = null;
+  let clientBuffer = [];
+
+  function connectUpstream() {
+    const up = new WsClient("ws://127.0.0.1:3101/ws");
+    upstream = up;
+
+    up.on("open", () => {
+      // Flush buffered client messages
+      clientBuffer.forEach((m) => up.send(m));
+      clientBuffer = [];
+    });
+
+    up.on("message", (data) => {
+      if (clientWs.readyState === 1) clientWs.send(data.toString());
+    });
+
+    up.on("close", () => {
+      // Retry after 2s if client still connected
+      if (clientWs.readyState === 1) {
+        setTimeout(connectUpstream, 2000);
+      }
+    });
+
+    up.on("error", () => {
+      if (clientWs.readyState === 1) {
+        setTimeout(connectUpstream, 2000);
+      }
+    });
+  }
+
+  connectUpstream();
+
+  clientWs.on("message", (data) => {
+    const str = data.toString();
+    if (upstream && upstream.readyState === 1) {
+      upstream.send(str);
+    } else {
+      clientBuffer.push(str);
+    }
+  });
+
+  clientWs.on("close", () => {
+    if (upstream) upstream.close();
+    clientBuffer = [];
+  });
+
+  clientWs.on("error", () => {
+    if (upstream) upstream.close();
+  });
+});
+
+console.log("[PixelProxy] WebSocket proxy ready at /ws → localhost:3101/ws");
 
 // ── AIOSmux DeployAgent — Autonomous Explorer ─────────────────────────────────
 // Orbits through the D480 lattice on a schedule. Appears as a gold orb to
