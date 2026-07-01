@@ -55320,6 +55320,21 @@
       }
       #dtc-ready-btn:hover { box-shadow: 0 0 32px rgba(0,220,255,0.75), inset 0 0 14px rgba(0,160,255,0.35); }
       #dtc-ready-btn.hidden { display: none !important; }
+      #dtc-share-btn {
+        background: transparent;
+        border: 1px solid rgba(0,200,255,0.35);
+        color: rgba(0,220,255,0.7);
+        font-family: monospace;
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 2px;
+        padding: 5px 16px;
+        border-radius: 3px;
+        cursor: pointer;
+        text-transform: uppercase;
+        transition: all 0.2s ease;
+      }
+      #dtc-share-btn:hover { border-color: #00CCFF; color: #00EEFF; box-shadow: 0 0 12px rgba(0,180,255,0.35); }
       #dtc-team-badge {
         font-family: monospace;
         font-size: 15px;
@@ -55534,6 +55549,7 @@
         var _ghostMap = {}; // id -> { el, group, ts, isAgent, health, score, kills, pos, targetPos, quat, targetQuat, team }
         var _ghostScene = null; // a-entity container for ghosts
         var _myCallsign = "PILOT-" + Math.random().toString(36).slice(2, 5).toUpperCase();
+        var _gameMode = new URLSearchParams(location.search).get('mode'); // 'dtc' | null
         var _myHealth = 100;
         var _myKills = 0;
         var _myDeaths = 0;
@@ -55926,6 +55942,24 @@
           }
         };
 
+        window._shareDtc = function() {
+          var url = location.origin + location.pathname + '?mode=dtc&invite=' + encodeURIComponent(_myCallsign);
+          var btn = document.getElementById('dtc-share-btn');
+          if (navigator.share) {
+            navigator.share({
+              title: 'Defend the Core — MERKABA',
+              text: 'Fly with ' + _myCallsign + ' — Defend the Merkaba Core!',
+              url: url,
+            }).catch(function() {});
+          } else {
+            navigator.clipboard.writeText(url).then(function() {
+              if (btn) { var orig = btn.textContent; btn.textContent = 'LINK COPIED!'; setTimeout(function() { btn.textContent = orig; }, 2200); }
+            }).catch(function() {
+              if (btn) { var orig2 = btn.textContent; btn.textContent = url; setTimeout(function() { btn.textContent = orig2; }, 4000); }
+            });
+          }
+        };
+
         function _updateScoreboard() {
           if (!_dfsListEl) _initHudRefs();
           if (!_dfsListEl) return;
@@ -56098,6 +56132,8 @@
                 /* Send callsign after welcome */
                 if (_ws && _ws.readyState === 1) _ws.send(JSON.stringify({ type: "callsign", name: _myCallsign }));
                 _updateFighterHUD();
+                /* Auto-join DTC mode from ?mode=dtc URL param */
+                if (_gameMode === 'dtc') setTimeout(window._sendReady, 800);
                 /* Seed existing explorers */
                 if (Array.isArray(msg.explorers)) {
                   msg.explorers.forEach(function (e) {
@@ -57455,6 +57491,7 @@
     <div id="dtc-ready-wrap">
       <button id="dtc-ready-btn" onclick="window._sendReady()">&#x2694; READY TO FIGHT</button>
       <div id="dtc-team-badge"></div>
+      <button id="dtc-share-btn" onclick="window._shareDtc()">&#x238B; INVITE A PILOT</button>
     </div>
     <!-- Damage flash overlay -->
     <div id="damage-flash"></div>
