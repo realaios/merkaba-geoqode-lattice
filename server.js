@@ -5748,7 +5748,7 @@ function _saveScores() {
 }
 
 // ── WebSocket Server ──────────────────────────────────────────────────────────
-const _wss = new WebSocketServer({ server, path: "/ws/presence" });
+const _wss = new WebSocketServer({ noServer: true });
 
 function _broadcast(msg, skipId) {
   const raw = JSON.stringify(msg);
@@ -5885,7 +5885,7 @@ console.log("[AIOSmux] Presence WebSocket ready at /ws/presence");
 
 // ── Cosmos-Lab WebSocket (/ws/lab) ────────────────────────────────────────────
 // Multi-user lab presence: join/leave/pos/lab_switch/experiment_state/chat
-const _labWss = new WebSocketServer({ server, path: "/ws/lab" });
+const _labWss = new WebSocketServer({ noServer: true });
 const _labMap = new Map(); // id → { id, name, lab, x, y, z, experiment, ts }
 
 function _labBroadcast(msg, skipId) {
@@ -5986,7 +5986,7 @@ _labWss.on("connection", (ws) => {
 console.log("[CosmosLab] Lab WebSocket ready at /ws/lab");
 
 // ── Cosmos-Pixel WebSocket /ws/pixel ─────────────────────────────────────────
-const _pixelWss = new WebSocketServer({ server, path: "/ws/pixel" });
+const _pixelWss = new WebSocketServer({ noServer: true });
 const _pixelMap = new Map(); // id → { id, name, ts }
 let _agentStatuses = {};     // agentId → { status, ts }
 
@@ -6036,17 +6036,25 @@ _pixelWss.on("connection", (ws) => {
 console.log("[CosmosPixel] WebSocket ready at /ws/pixel");
 
 // ── /ws — pixel-agents webview proxy ─────────────────────────────────────────
-// The pixel-agents React webview connects to wss://[host]/ws.
-// Use noServer + prependListener so our handler runs before the /ws/presence
-// and /ws/lab WebSocketServers can send a 400 for path mismatch.
+// All four WSS use noServer:true. A single upgrade router dispatches by path
+// so no WSS ever calls abortHandshake on a socket it doesn't own.
 const _paWss = new WebSocketServer({ noServer: true });
-server.prependListener("upgrade", (req, socket, head) => {
+
+server.on("upgrade", (req, socket, head) => {
   const wsPathname = (req.url || "").split("?")[0];
-  if (wsPathname !== "/ws") return;
-  _paWss.handleUpgrade(req, socket, head, (ws) => {
-    _paWss.emit("connection", ws, req);
-  });
+  if (wsPathname === "/ws/presence") {
+    _wss.handleUpgrade(req, socket, head, (ws) => _wss.emit("connection", ws, req));
+  } else if (wsPathname === "/ws/lab") {
+    _labWss.handleUpgrade(req, socket, head, (ws) => _labWss.emit("connection", ws, req));
+  } else if (wsPathname === "/ws/pixel") {
+    _pixelWss.handleUpgrade(req, socket, head, (ws) => _pixelWss.emit("connection", ws, req));
+  } else if (wsPathname === "/ws") {
+    _paWss.handleUpgrade(req, socket, head, (ws) => _paWss.emit("connection", ws, req));
+  } else {
+    socket.destroy();
+  }
 });
+
 _paWss.on("connection", (clientWs) => {
   let upstream = null;
   let clientBuffer = [];
