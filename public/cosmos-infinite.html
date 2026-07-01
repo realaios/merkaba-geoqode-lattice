@@ -4353,13 +4353,7 @@
         var _fsEl = document.documentElement;
         var _fsReq = _fsEl.requestFullscreen || _fsEl.webkitRequestFullscreen || _fsEl.mozRequestFullScreen;
         if (_fsReq) {
-          Promise.resolve(_fsReq.call(_fsEl)).then(function() {
-            if (screen.orientation && screen.orientation.lock) {
-              screen.orientation.lock('landscape').catch(function(){});
-            }
-          }).catch(function(){});
-        } else if (screen.orientation && screen.orientation.lock) {
-          screen.orientation.lock('landscape').catch(function(){});
+          Promise.resolve(_fsReq.call(_fsEl)).catch(function(){});
         }
         var modal = document.getElementById("introModal");
         modal.classList.add("fade-out");
@@ -55872,9 +55866,15 @@
           if (!rig || !rig.object3D) return;
           var rp = new THREE.Vector3(); rig.object3D.getWorldPosition(rp);
           var _lScn = document.querySelector('a-scene');
-          if (!_lScn || !_lScn.camera) return;
+          if (!_lScn) return;
           var camQ = new THREE.Quaternion();
-          _lScn.camera.getWorldQuaternion(camQ);
+          var _isFireTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
+          if (_isFireTouch) {
+            rig.object3D.getWorldQuaternion(camQ);
+          } else {
+            if (!_lScn.camera) return;
+            _lScn.camera.getWorldQuaternion(camQ);
+          }
           var nd = new THREE.Vector3(0, 0, -1).applyQuaternion(camQ).normalize();
           if (nd.lengthSq() < 0.001) return;
           var right = new THREE.Vector3(1, 0, 0).applyQuaternion(camQ).normalize();
@@ -56762,8 +56762,7 @@
         var _isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent) ||
           (window.innerWidth < 1024 && navigator.maxTouchPoints > 0);
         if (_isMobile) {
-          var _heavySel = '[d480-galaxy],[starfield],[cosmic-storm],[binary-star],' +
-            '[gamma-ray-burst],[gamma-ray-burst-afterglow],[molecular-cloud],[cosmic-tornado]';
+          var _heavySel = '[d480-galaxy],[starfield],[cosmic-storm]';
           var _hideHeavy = function() {
             document.querySelectorAll(_heavySel).forEach(function(el) {
               el.setAttribute('visible', 'false');

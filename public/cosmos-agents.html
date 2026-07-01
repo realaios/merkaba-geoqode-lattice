@@ -293,33 +293,33 @@
           var self = this;
           this._theta = 0; this._phi = 1.1; this._r = this.data.startDist;
           this._drag = false; this._px = 0; this._py = 0;
+          var canvas = null;
           var onDown = function (e) {
             if (e.button !== 0) return;
             self._drag = true; self._px = e.clientX; self._py = e.clientY;
-            e.currentTarget.style.cursor = 'grabbing';
+            if (canvas) canvas.style.cursor = 'grabbing';
           };
           var onMove = function (e) {
             if (!self._drag) return;
             var dx = e.clientX - self._px, dy = e.clientY - self._py;
             self._px = e.clientX; self._py = e.clientY;
-            self._theta -= dx * 0.008;
-            self._phi = Math.max(0.08, Math.min(Math.PI - 0.08, self._phi - dy * 0.008));
+            self._theta -= dx * 0.006;
+            self._phi = Math.max(0.08, Math.min(Math.PI - 0.08, self._phi - dy * 0.006));
             self._apply();
           };
-          var onUp = function (e) { self._drag = false; e.currentTarget.style.cursor = 'grab'; };
+          var onUp = function () { self._drag = false; if (canvas) canvas.style.cursor = 'grab'; };
           var onWheel = function (e) {
             e.preventDefault();
             self._r = Math.max(self.data.minDist, Math.min(self.data.maxDist, self._r + e.deltaY * 0.08));
             self._apply();
           };
           this.el.sceneEl.addEventListener('renderstart', function () {
-            var c = self.el.sceneEl.canvas;
-            c.style.cursor = 'grab';
-            c.addEventListener('mousedown', onDown);
-            c.addEventListener('mousemove', onMove);
-            c.addEventListener('mouseup', onUp);
-            c.addEventListener('mouseleave', onUp);
-            c.addEventListener('wheel', onWheel, { passive: false });
+            canvas = self.el.sceneEl.canvas;
+            canvas.style.cursor = 'grab';
+            canvas.addEventListener('mousedown', onDown);
+            canvas.addEventListener('wheel', onWheel, { passive: false });
+            document.addEventListener('mousemove', onMove);
+            document.addEventListener('mouseup', onUp);
             self._apply();
           });
         },
@@ -436,13 +436,12 @@
       <a-entity id="cp-lines"></a-entity>
 
       <!-- Camera rig -->
-      <a-entity id="cp-rig" position="0 0 0">
+      <a-entity id="cp-rig" cp-orbit>
         <a-camera
           id="cp-camera"
-          cp-orbit
           near="0.1"
           far="3000"
-          fov="72"
+          fov="60"
         >
         </a-camera>
       </a-entity>
