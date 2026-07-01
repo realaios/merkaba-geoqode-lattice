@@ -51271,7 +51271,7 @@
       ==================================================================== */
       (function initGeoNav() {
         var MIN_DIST = 1.2,
-          MAX_DIST = 1260; /* canonical limit: D480 SPECTRUM end ≈ 480×φ² */
+          MAX_DIST = 48000;
         /* True Merkaba resonance: anchor D480=480, PHI-stepped zones.
            MERKABA CORE (0-183 au) = one inner zone -- everything is close. */
         var _PHI = 1.6180339887;
@@ -51504,7 +51504,7 @@
         });
 
         /* ---- Laser beam + explosion helpers --------------------------------- */
-        function _spawnLaser(from, to, scene, THREE) {
+        window._spawnLaser = function(from, to, scene, THREE) {
           /* Points-based tracer — screen-space pixels, visible at any angle/FOV.
              BoxGeometry viewed nose-on is sub-pixel; sizeAttenuation:false points are not. */
           var dir = new THREE.Vector3().subVectors(to, from);
@@ -51529,7 +51529,7 @@
           scene.object3D.add(pts);
           setTimeout(function() { scene.object3D.remove(pts); geo.dispose(); mat.dispose(); }, 260);
         }
-        function _spawnExplosion(pt, scene, THREE) {
+        window._spawnExplosion = function(pt, scene, THREE) {
           var N = 60;
           var pos = new Float32Array(N * 3);
           var vels = [];
@@ -51569,13 +51569,6 @@
           if (document.body.classList.contains("a-fullscreen")) return;
           window._updateScaleHUD(null, null);
         }, 2000);
-        /* Clamp WASD flight within canonical D480 boundary */
-        setInterval(function () {
-          var _r = document.getElementById('cameraRig');
-          if (!_r || !_r.object3D) return;
-          var d = _r.object3D.position.length();
-          if (d > MAX_DIST) _r.object3D.position.multiplyScalar(MAX_DIST / d);
-        }, 120);
       })();
 
       window._checkHorizon = function (dist) {
