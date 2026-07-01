@@ -1716,7 +1716,7 @@
 
     <!-- Home Vector Compass HUD -->
     <div id="compass-hud">
-      <div class="ch-title">&#x25C8; EARTH / HOME</div>
+      <div class="ch-title">&#x25C8; CORE-MERKABA</div>
       <div class="ch-row">
         <span class="ch-label">BEAR</span
         ><span class="ch-val" id="ch-bear">---&#xB0; --</span>
@@ -51511,7 +51511,7 @@
           var len = dir.length();
           if (len < 0.01) return;
           dir.normalize();
-          var N = 14;
+          var N = 28;
           var pos = new Float32Array(N * 3);
           for (var i = 0; i < N; i++) {
             var t = (i + 0.5) / N;
@@ -51521,7 +51521,7 @@
           var geo = new THREE.BufferGeometry();
           geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
           var mat = new THREE.PointsMaterial({
-            color: 0xFF2200, size: 22, sizeAttenuation: false,
+            color: 0xFF2200, size: 7, sizeAttenuation: false,
             transparent: true, opacity: 0.95,
             depthTest: false
           });
@@ -54459,13 +54459,8 @@
           var ptchDeg =
             (Math.asin(Math.max(-1, Math.min(1, _fwd.y))) * 180) / Math.PI;
 
-          // Earth world position (tracks the live orbit)
-          var earthEl = document.getElementById("earth-sphere");
-          if (earthEl) {
-            earthEl.object3D.getWorldPosition(_hPos);
-          } else {
-            _hPos.set(0, -5, -5000); // solar system centre fallback
-          }
+          // Core-merkaba is the canonical origin (0,0,0)
+          _hPos.set(0, 0, 0);
 
           // Player (rig) world position
           rigEl.object3D.getWorldPosition(_rPos);
@@ -55856,13 +55851,13 @@
           var nd = new THREE.Vector3(0, 0, -1).applyQuaternion(camQ).normalize();
           if (nd.lengthSq() < 0.001) return;
           var right = new THREE.Vector3(1, 0, 0).applyQuaternion(camQ).normalize();
-          var WING = 1.0; // 1u offset: 14° from center at near end, within portrait 18° half-FOV
-          var laserOrig = rp.clone().addScaledVector(nd, 4); // push past near-clip
-          var orig1 = laserOrig.clone().addScaledVector(right,  WING);
-          var orig2 = laserOrig.clone().addScaledVector(right, -WING);
-          /* 80-unit tracer bolt — snappy streak visible from cockpit POV */
-          _spawnLaser(orig1, orig1.clone().addScaledVector(nd, 80), _lScn, THREE);
-          _spawnLaser(orig2, orig2.clone().addScaledVector(nd, 80), _lScn, THREE);
+          var up = new THREE.Vector3(0, 1, 0).applyQuaternion(camQ).normalize();
+          /* Guns at joystick-level bottom corners → beams converge at crosshair center */
+          var crosshair = rp.clone().addScaledVector(nd, 500);
+          var muzzle1 = rp.clone().addScaledVector(nd, 25).addScaledVector(right, -6).addScaledVector(up, -10);
+          var muzzle2 = rp.clone().addScaledVector(nd, 25).addScaledVector(right,  6).addScaledVector(up, -10);
+          _spawnLaser(muzzle1, crosshair, _lScn, THREE);
+          _spawnLaser(muzzle2, crosshair, _lScn, THREE);
           /* Broadcast fire — carry both wing origins via right vector */
           if (_ws && _ws.readyState === 1) {
             _ws.send(JSON.stringify({ type: "fire",
