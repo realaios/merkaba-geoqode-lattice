@@ -55335,6 +55335,37 @@
         transition: all 0.2s ease;
       }
       #dtc-share-btn:hover { border-color: #00CCFF; color: #00EEFF; box-shadow: 0 0 12px rgba(0,180,255,0.35); }
+
+      /* ── Kill share button ──────────────────────────────────────────────── */
+      #kill-share-wrap {
+        position: fixed;
+        top: 14px;
+        right: 14px;
+        z-index: 5500;
+        pointer-events: auto;
+        display: none;
+      }
+      #kill-share-btn {
+        background: linear-gradient(135deg, #1a0000 0%, #330000 100%);
+        border: 1.5px solid #FF3333;
+        color: #FF6666;
+        font-family: monospace;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        padding: 9px 20px;
+        border-radius: 3px;
+        cursor: pointer;
+        text-transform: uppercase;
+        box-shadow: 0 0 18px rgba(255,40,40,0.4), inset 0 0 6px rgba(200,0,0,0.12);
+        animation: kill-share-in 0.35s cubic-bezier(0.22,1,0.36,1) both;
+        transition: box-shadow 0.2s ease;
+      }
+      #kill-share-btn:hover { box-shadow: 0 0 28px rgba(255,60,60,0.7), inset 0 0 10px rgba(200,0,0,0.25); }
+      @keyframes kill-share-in {
+        from { opacity: 0; transform: scale(0.75) translateX(20px); }
+        to   { opacity: 1; transform: scale(1) translateX(0); }
+      }
       #dtc-team-badge {
         font-family: monospace;
         font-size: 15px;
@@ -55550,6 +55581,8 @@
         var _ghostScene = null; // a-entity container for ghosts
         var _myCallsign = "PILOT-" + Math.random().toString(36).slice(2, 5).toUpperCase();
         var _gameMode = new URLSearchParams(location.search).get('mode'); // 'dtc' | null
+        var _lastKillData = null;   // last own-kill metadata for share card
+        var _killShareTimer = null; // auto-hide timeout for kill share button
         var _myHealth = 100;
         var _myKills = 0;
         var _myDeaths = 0;
@@ -55961,6 +55994,135 @@
           }
         };
 
+        /* ── Phase 4B: Kill share card ────────────────────────────────────── */
+        function _renderKillCard(data) {
+          var W = 1080, H = 1920;
+          var cv = document.createElement('canvas');
+          cv.width = W; cv.height = H;
+          var ctx = cv.getContext('2d');
+
+          /* Space background — deep navy radial */
+          var bg = ctx.createRadialGradient(W/2, H*0.38, 0, W/2, H*0.38, W*0.85);
+          bg.addColorStop(0, '#0b0b1e'); bg.addColorStop(0.65, '#050511'); bg.addColorStop(1, '#000009');
+          ctx.fillStyle = bg; ctx.fillRect(0, 0, W, H);
+
+          /* Star field — deterministic RNG so card looks same each kill */
+          var _r = 0x7b3c1a;
+          function _rng() { _r = (_r * 1664525 + 1013904223) & 0x7fffffff; return _r / 0x7fffffff; }
+          for (var i = 0; i < 260; i++) {
+            ctx.beginPath();
+            ctx.arc(_rng()*W, _rng()*H, _rng()*1.7+0.25, 0, Math.PI*2);
+            ctx.fillStyle = 'rgba(210,225,255,' + (0.28 + _rng()*0.65) + ')';
+            ctx.fill();
+          }
+
+          /* Top accent line */
+          var tl = ctx.createLinearGradient(0,0,W,0);
+          tl.addColorStop(0,'transparent'); tl.addColorStop(0.5,'rgba(255,70,70,0.7)'); tl.addColorStop(1,'transparent');
+          ctx.fillStyle = tl; ctx.fillRect(0, 0, W, 3);
+
+          /* Helper: glowing text */
+          function gText(text, x, y, size, color, glow, blur) {
+            ctx.save(); ctx.textAlign = 'center'; ctx.font = size;
+            ctx.shadowColor = glow || color; ctx.shadowBlur = blur || 20;
+            ctx.fillStyle = color; ctx.fillText(text, x, y); ctx.restore();
+          }
+
+          /* MERKABA title */
+          gText('MERKABA', W/2, 144, 'bold 58px Orbitron,monospace', '#FFD700', 'rgba(255,200,0,0.85)', 28);
+          gText('DEFEND  THE  CORE', W/2, 194, '22px Orbitron,monospace', '#00CCFF', 'rgba(0,180,255,0.7)', 16);
+
+          /* Skull */
+          gText('\u2620', W/2, 468, '196px sans-serif', '#FF3300', 'rgba(255,50,0,0.9)', 48);
+
+          /* KILL CONFIRMED */
+          gText('KILL  CONFIRMED', W/2, 556, 'bold 32px Orbitron,monospace', '#FF4444', 'rgba(255,40,40,0.9)', 22);
+
+          /* Killer callsign */
+          gText((_myCallsign||'PILOT').toUpperCase(), W/2, 678, 'bold 92px Orbitron,monospace', '#FFFFFF', 'rgba(255,255,255,0.45)', 32);
+
+          /* Arrow */
+          gText('\u2192', W/2, 760, '50px monospace', '#00DDFF', 'rgba(0,200,255,0.8)', 18);
+
+          /* Victim callsign */
+          gText((data.victim||'UNKNOWN').toUpperCase(), W/2, 858, 'bold 68px Orbitron,monospace', 'rgba(255,110,110,0.92)', 'rgba(255,40,40,0.5)', 22);
+
+          /* Separator */
+          ctx.save();
+          var sep = ctx.createLinearGradient(90,0,W-90,0);
+          sep.addColorStop(0,'transparent'); sep.addColorStop(0.3,'rgba(255,80,80,0.45)');
+          sep.addColorStop(0.7,'rgba(255,80,80,0.45)'); sep.addColorStop(1,'transparent');
+          ctx.fillStyle = sep; ctx.fillRect(90, 912, W-180, 2); ctx.restore();
+
+          /* Score */
+          gText('+100 PTS', W/2, 1010, 'bold 70px Orbitron,monospace', '#FFD700', 'rgba(255,200,0,0.85)', 26);
+          gText('K: '+(data.kills||0)+'   \u2022   D: '+(_myDeaths||0)+'   \u2022   SCORE: '+(data.score||0),
+            W/2, 1076, '28px monospace', 'rgba(175,200,220,0.8)', 'rgba(150,170,200,0.2)', 8);
+
+          /* Coordinates */
+          gText('POSITION FROM MERKABA CORE', W/2, 1164, '23px monospace', 'rgba(0,175,255,0.55)', null, 6);
+          gText((data.dist||0).toLocaleString()+' AU', W/2, 1216, 'bold 38px Orbitron,monospace', '#00CCFF', 'rgba(0,180,255,0.65)', 14);
+
+          /* Team badge */
+          if (data.team) {
+            var isAtk = data.team === 'ATTACKER';
+            gText(isAtk ? '\u2694 STORM VANGUARD' : '\uD83D\uDEE1 MERKABA GUARD', W/2, 1286,
+              'bold 28px Orbitron,monospace',
+              isAtk ? '#FF4444' : '#4488FF',
+              isAtk ? 'rgba(255,50,50,0.7)' : 'rgba(50,120,255,0.7)', 18);
+          }
+
+          /* Bottom separator */
+          ctx.save();
+          var sep2 = ctx.createLinearGradient(90,0,W-90,0);
+          sep2.addColorStop(0,'transparent'); sep2.addColorStop(0.4,'rgba(0,175,255,0.3)');
+          sep2.addColorStop(0.6,'rgba(0,175,255,0.3)'); sep2.addColorStop(1,'transparent');
+          ctx.fillStyle = sep2; ctx.fillRect(90, 1580, W-180, 1); ctx.restore();
+
+          /* Branding */
+          gText('realaios.com', W/2, 1660, 'bold 36px Orbitron,monospace', '#00DDFF', 'rgba(0,200,255,0.7)', 18);
+          gText('realaios.com/?mode=dtc', W/2, 1708, '22px monospace', 'rgba(0,175,255,0.52)', null, 6);
+          gText('POWERED BY MERKABA480 \u2014 AIOS', W/2, 1780, '17px monospace', 'rgba(140,155,175,0.38)', null, 0);
+
+          /* Bottom accent line */
+          ctx.save();
+          var bl = ctx.createLinearGradient(0,0,W,0);
+          bl.addColorStop(0,'transparent'); bl.addColorStop(0.5,'rgba(0,140,255,0.5)'); bl.addColorStop(1,'transparent');
+          ctx.fillStyle = bl; ctx.fillRect(0, H-3, W, 3); ctx.restore();
+
+          return cv;
+        }
+
+        window._shareKill = function() {
+          if (!_lastKillData) return;
+          var _ksw = document.getElementById('kill-share-wrap');
+          if (_ksw) { clearTimeout(_killShareTimer); _ksw.style.display = 'none'; }
+          var canvas = _renderKillCard(_lastKillData);
+          canvas.toBlob(function(blob) {
+            if (!blob) return;
+            var file = new File([blob], 'merkaba-kill.png', { type: 'image/png' });
+            var objUrl = URL.createObjectURL(blob);
+            if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+              navigator.share({
+                title: (_myCallsign||'PILOT') + ' eliminated ' + _lastKillData.victim,
+                text: 'Defend the Core — MERKABA\nrealaios.com/?mode=dtc',
+                files: [file],
+              }).catch(function() { _downloadKillCard(objUrl); });
+            } else {
+              _downloadKillCard(objUrl);
+            }
+          }, 'image/png');
+        };
+
+        function _downloadKillCard(objUrl) {
+          var a = document.createElement('a');
+          a.href = objUrl;
+          a.download = 'merkaba-kill-' + (_myCallsign||'pilot').toLowerCase().replace(/[^a-z0-9]/g,'-') + '.png';
+          document.body.appendChild(a);
+          a.click();
+          setTimeout(function() { document.body.removeChild(a); URL.revokeObjectURL(objUrl); }, 1200);
+        }
+
         function _updateScoreboard() {
           if (!_dfsListEl) _initHudRefs();
           if (!_dfsListEl) return;
@@ -56304,6 +56466,27 @@
                   _myScore += 100;
                   _playSfx('kill');
                   _updateFighterHUD();
+                  /* Capture kill data + show share button for 6s */
+                  (function() {
+                    var _rig = document.getElementById('cameraRig');
+                    var _kp = _rig && _rig.object3D ? _rig.object3D.position : { x:0, y:0, z:0 };
+                    _lastKillData = {
+                      victim: msg.targetName || 'UNKNOWN',
+                      score: _myScore,
+                      kills: _myKills,
+                      dist: Math.round(Math.sqrt(_kp.x*_kp.x + _kp.y*_kp.y + _kp.z*_kp.z)),
+                      team: _myTeam,
+                    };
+                    var _ksw = document.getElementById('kill-share-wrap');
+                    if (_ksw) {
+                      clearTimeout(_killShareTimer);
+                      _ksw.style.display = 'block';
+                      /* Re-trigger pop-in animation on rapid repeat kills */
+                      var _ksb = document.getElementById('kill-share-btn');
+                      if (_ksb) { _ksb.style.animation = 'none'; void _ksb.offsetWidth; _ksb.style.animation = ''; }
+                      _killShareTimer = setTimeout(function() { _ksw.style.display = 'none'; }, 6000);
+                    }
+                  })();
                 }
                 /* Sync shooter ghost score from enriched packet */
                 if (msg.shooterName && msg.shooterId !== _myId) {
@@ -57519,6 +57702,10 @@
     </div>
     <!-- Damage flash overlay -->
     <div id="damage-flash"></div>
+    <!-- Kill share button (appears 6s after own kill) -->
+    <div id="kill-share-wrap">
+      <button id="kill-share-btn" onclick="window._shareKill()">&#x1F4E4; SHARE THIS KILL</button>
+    </div>
     <!-- Sketchfab 3D Model button (shown on all screens) -->
     <div id="sketchfab-btn" title="3D Model Viewer">&#x1F9CA;</div>
 
