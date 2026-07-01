@@ -6024,8 +6024,16 @@ console.log("[CosmosPixel] WebSocket ready at /ws/pixel");
 
 // ── /ws — pixel-agents webview proxy ─────────────────────────────────────────
 // The pixel-agents React webview connects to wss://[host]/ws.
-// We proxy each client connection to the local pixel-agents server (port 3101).
-const _paWss = new WebSocketServer({ server, path: "/ws" });
+// Use noServer + prependListener so our handler runs before the /ws/presence
+// and /ws/lab WebSocketServers can send a 400 for path mismatch.
+const _paWss = new WebSocketServer({ noServer: true });
+server.prependListener("upgrade", (req, socket, head) => {
+  const wsPathname = (req.url || "").split("?")[0];
+  if (wsPathname !== "/ws") return;
+  _paWss.handleUpgrade(req, socket, head, (ws) => {
+    _paWss.emit("connection", ws, req);
+  });
+});
 _paWss.on("connection", (clientWs) => {
   let upstream = null;
   let clientBuffer = [];
