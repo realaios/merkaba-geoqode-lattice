@@ -5770,9 +5770,9 @@ function _startRound() {
     _presenceMap.forEach((entry) => {
       if (_gameState.teams[entry.id] !== 'ATTACKER') return;
       const dist = Math.sqrt(entry.x * entry.x + entry.y * entry.y + entry.z * entry.z);
-      if (dist < 500) {
+      if (dist < 2500) {
         _gameState.coreHealth -= 0.25; // 0.5/sec at 500ms interval
-        if (dist < 50) _gameState.coreHealth -= 1.5; // +3/sec when touching
+        if (dist < 400) _gameState.coreHealth -= 1.5; // +3/sec when touching
         drained = true;
 
         // 3C: Proximity scoring — +10pts/sec = +5pts per 500ms tick
@@ -5783,8 +5783,8 @@ function _startRound() {
         if (!_dogfightScores[eName]) _dogfightScores[eName] = { kills: 0, score: 0 };
         _dogfightScores[eName].score += pts;
 
-        // 3C: Core breach bonus (+300) — one-time per pilot per round when dist < 50
-        if (dist < 50 && !_gameState.coreBreachPilots.has(entry.id)) {
+        // 3C: Core breach bonus (+300) — one-time per pilot per round when dist < 400
+        if (dist < 400 && !_gameState.coreBreachPilots.has(entry.id)) {
           _gameState.coreBreachPilots.add(entry.id);
           const bonus = 300;
           entry.roundScore = (entry.roundScore || 0) + bonus;
@@ -6034,7 +6034,7 @@ _wss.on("connection", (ws) => {
       let defBonus = 0;
       if (shooterEntry && _gameState.teams[id] === 'DEFENDER' && targetEntry) {
         const tDist = Math.sqrt(targetEntry.x ** 2 + targetEntry.y ** 2 + targetEntry.z ** 2);
-        if (tDist < 500) {
+        if (tDist < 2500) {
           defBonus = 150; // +250 total (100 base + 150 bonus)
           shooterEntry.score = (shooterEntry.score || 0) + defBonus;
           shooterEntry.roundScore = (shooterEntry.roundScore || 0) + defBonus;
@@ -6118,8 +6118,8 @@ console.log("[AIOSmux] Presence WebSocket ready at /ws/presence");
     { id: "dtc-agent-lyra",  name: "LYRA-DEF",   team: "DEFENDER" },
   ];
   const TICK_MS = 150;
-  const FIRE_RANGE = 380;     // engage enemies within this range
-  const KILL_RANGE = 120;     // damage lands within this range
+  const FIRE_RANGE = 6000;    // engage enemies within this range (48000au arena)
+  const KILL_RANGE = 1800;    // damage lands within this range
   const dt = TICK_MS / 1000;
 
   // Oriented look rotation for a jet: nose (-Z) → fwd, +Y → up, plus a `bank`
@@ -6153,9 +6153,9 @@ console.log("[AIOSmux] Presence WebSocket ready at /ws/presence");
 
   function _spawnPoint(team) {
     const ang = Math.random() * Math.PI * 2;
-    // Keep the fight dense and near the core/player spawn (~150au) rather than
-    // way out in empty space where the ships are invisible.
-    const r = team === "ATTACKER" ? 600 + Math.random() * 500 : 240 + Math.random() * 120;
+    // 48000au arena: attackers stream in from the far reaches; defenders patrol
+    // a wide ring around the core. Big enough to fill the playable space.
+    const r = team === "ATTACKER" ? 8000 + Math.random() * 16000 : 3000 + Math.random() * 3000;
     return {
       x: Math.cos(ang) * r,
       y: (Math.random() - 0.5) * 120,
@@ -6231,7 +6231,7 @@ console.log("[AIOSmux] Presence WebSocket ready at /ws/presence");
     let defBonus = 0;
     if (shooterEntry && _gameState.teams[shooterId] === "DEFENDER" && targetEntry) {
       const tDist = Math.hypot(targetEntry.x, targetEntry.y, targetEntry.z);
-      if (tDist < 500) {
+      if (tDist < 2500) {
         defBonus = 150;
         shooterEntry.score += defBonus;
         shooterEntry.roundScore = (shooterEntry.roundScore || 0) + defBonus;
@@ -6270,47 +6270,48 @@ console.log("[AIOSmux] Presence WebSocket ready at /ws/presence");
       a.phase += dt;
       let tx, ty, tz;
       if (team === "ATTACKER") {
-        // Strafing run: orbit inward while the radius dives toward the core and
-        // pulls back out; jink sideways when a defender closes in (evasive).
-        a.ang += a.turnDir * 0.5 * dt;
-        let r = Math.max(30, 150 + 150 * Math.sin(a.phase * 0.22)); // ~0..300
+        // Big attack runs across the 48000au arena: orbit while the radius dives
+        // from the outer reaches toward the core and pulls back out; jink when a
+        // defender closes in (evasive).
+        a.ang += a.turnDir * 0.18 * dt;
+        let r = Math.max(400, 7000 + 6600 * Math.sin(a.phase * 0.07)); // ~400..13600
         tx = Math.cos(a.ang) * r;
         tz = Math.sin(a.ang) * r;
-        ty = 40 * Math.sin(a.phase * 0.5);
+        ty = 1200 * Math.sin(a.phase * 0.4);
         const foe = _nearestEnemy(a, team);
-        if (foe && foe.d < 220) { // evasive jink perpendicular to the threat
+        if (foe && foe.d < 5000) { // evasive jink perpendicular to the threat
           const jx = -(foe.e.z - a.z), jz = foe.e.x - a.x;
           const jl = Math.hypot(jx, jz) || 1;
-          const j = 90 * Math.sin(a.phase * 3) * a.turnDir;
+          const j = 2600 * Math.sin(a.phase * 3) * a.turnDir;
           tx += (jx / jl) * j; tz += (jz / jl) * j;
         }
       } else {
-        // Defender: cut off the nearest attacker by aiming ~120au core-ward of
+        // Defender: cut off the nearest attacker by aiming ~2500au core-ward of
         // it (intercept its run), with a weaving pursuit so it reads as a
         // dogfight rather than a beeline. Orbit standoff when the sky is clear.
         const tgt = _nearestEnemy(a, team);
         if (tgt) {
           const ex = tgt.e.x, ey = tgt.e.y, ez = tgt.e.z;
           const eL = Math.hypot(ex, ey, ez) || 1;
-          tx = ex - (ex / eL) * 120;
-          ty = ey - (ey / eL) * 120;
-          tz = ez - (ez / eL) * 120;
+          tx = ex - (ex / eL) * 2500;
+          ty = ey - (ey / eL) * 2500;
+          tz = ez - (ez / eL) * 2500;
           const wx = -(tz - a.z), wz = tx - a.x; // lateral weave
           const wl = Math.hypot(wx, wz) || 1;
-          const w = 70 * Math.sin(a.phase * 2.2);
+          const w = 2000 * Math.sin(a.phase * 2.2);
           tx += (wx / wl) * w; tz += (wz / wl) * w;
         } else {
-          a.ang += a.turnDir * 0.35 * dt;
-          const r = 230;
+          a.ang += a.turnDir * 0.13 * dt;
+          const r = 5000;
           tx = Math.cos(a.ang) * r;
           tz = Math.sin(a.ang) * r;
-          ty = 30 * Math.sin(a.phase);
+          ty = 800 * Math.sin(a.phase);
         }
       }
       // Kinematic move with speed variation: afterburner when far, ease when close.
       const dx = tx - a.x, dy = ty - a.y, dz = tz - a.z;
       const dist = Math.hypot(dx, dy, dz) || 1;
-      let spd = 80 + 85 * Math.min(1, dist / 450);
+      let spd = 2200 + 2400 * Math.min(1, dist / 12000);
       spd *= 0.92 + 0.13 * Math.sin(a.phase * 1.3 + a.burnOff);
       const step = Math.min(dist, spd * dt);
       const nfx = dx / dist, nfy = dy / dist, nfz = dz / dist; // heading (unit)
