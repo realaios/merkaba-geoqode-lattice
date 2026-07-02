@@ -85,16 +85,24 @@ system (timer/end/side-swap) · round history (`dtc-rounds.json`) · spectator m
 
 Two next unlocks the experience's own strengths imply — **both already half-seeded**:
 
-### 1. Frictionless-but-identifiable
+### 1. Frictionless-but-identifiable ✅ SHIPPED (Pilot Key)
 
-"No account" is the right *entry*, but the persistence we already have (callsigns +
-`dogfight-scores.json` + round history) means we can offer an **optional identity later without
-ever adding a signup wall.** That's the sweet spot: **anonymous entry, opt-in memory.**
+"No account" is the right *entry*, but persistence (callsigns + `dogfight-scores.json` + round
+history) lets us offer **optional identity without ever adding a signup wall** — **anonymous
+entry, opt-in memory.**
 
-- Callsign persists locally today; add optional lightweight claim (magic link / passkey) that
-  *binds* an existing callsign's stats — never gates entry.
-- Carry stats across devices once claimed; stay anonymous until then.
-- Foundation for profiles, cosmetics, and squads without breaking instant access.
+Shipped as the **Pilot Key** claim code (chosen over email magic-link / WebAuthn passkey: no
+email or WebAuthn backend needed, works end-to-end today, truly frictionless):
+
+- ✅ Entry stays anonymous — random callsign, play instantly.
+- ✅ **Claim** your callsign (Options → Callsign) → reserves the name + issues a one-time ~20-char
+  Pilot Key. Server stores only a sha256 hash (`data/dtc-identities.json`).
+- ✅ **Restore** on any device with callsign + key → rebinds your persistent stats (stats are
+  already keyed by callsign). Auto-restores on the same device via localStorage.
+- ✅ Claimed names are protected — another session can't wear your callsign (name rejected, never
+  entry).
+- Next: this is the foundation for profiles, cosmetics, and squads; magic-link/passkey can layer
+  on the same binding model later without rework.
 
 ### 2. "Instant access" as the share unit
 
