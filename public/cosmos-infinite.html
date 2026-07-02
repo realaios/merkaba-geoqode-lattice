@@ -55484,12 +55484,7 @@
         pointer-events: none;
       }
       #spec-minimap { border-radius: 3px; }
-      #spec-minimap-label {
-        font-family: monospace;
-        font-size: 8px;
-        letter-spacing: 2px;
-        color: rgba(0,155,210,0.45);
-      }
+      #spec-minimap-label { display: none; } /* no tiny text — just the radar */
       #minimap-toggle-btn {
         position: fixed;
         top: 14px;
@@ -55781,7 +55776,8 @@
       }
       @media (pointer: coarse) {
         #dtc-ready-wrap { bottom: 140px; }
-        #minimap-toggle-btn { top: 52px; left: 8px; }
+        /* Minimap toggle down by the left joystick for easy thumb access */
+        #minimap-toggle-btn { top: auto; bottom: 150px; left: 30px; }
         #autopilot-btn { top: 96px; left: 8px; }
       }
 
@@ -56729,9 +56725,9 @@
           if (_mmRig && _mmRig.object3D){ var _sp = _mmRig.object3D.position; var _sd = Math.hypot(_sp.x, _sp.y, _sp.z); if (_sd > _maxD) _maxD = _sd; }
           var SCALE = Math.min(48000, _maxD * 1.15); // AU radius shown
 
-          /* Background */
+          /* Background — slightly more transparent */
           ctx.clearRect(0, 0, W, H);
-          ctx.fillStyle = 'rgba(0,5,16,0.93)';
+          ctx.fillStyle = 'rgba(0,5,16,0.5)';
           ctx.fillRect(0, 0, W, H);
 
           /* Range rings */
@@ -56750,23 +56746,17 @@
           ctx.fillStyle = cc; ctx.shadowColor = cc; ctx.shadowBlur = 10; ctx.fill();
           ctx.shadowBlur = 0;
 
-          /* Pilot ghosts */
+          /* ENEMY ships only — plain red dots, no labels (clear + simple). */
           Object.keys(_ghostMap).forEach(function(gid) {
             var g = _ghostMap[gid];
+            if (_myTeam && g.team === _myTeam) return; // skip allies
             var pos = g.targetPos || g.pos;
             if (!pos) return;
             var sx = Math.max(3, Math.min(W-3, CX + (pos.x / SCALE) * CX));
             var sy = Math.max(3, Math.min(H-3, CY - (pos.z / SCALE) * CY));
-            var tc = g.team === 'ATTACKER' ? '#FF4444' : g.team === 'DEFENDER' ? '#4488FF' : '#00d4ff';
-            ctx.beginPath(); ctx.arc(sx, sy, 3.5, 0, Math.PI*2);
-            ctx.fillStyle = tc; ctx.shadowColor = tc; ctx.shadowBlur = 7; ctx.fill();
+            ctx.beginPath(); ctx.arc(sx, sy, 4, 0, Math.PI*2);
+            ctx.fillStyle = '#FF3B3B'; ctx.shadowColor = '#FF3B3B'; ctx.shadowBlur = 8; ctx.fill();
             ctx.shadowBlur = 0;
-            /* Short callsign label */
-            var lbl = g.label ? (g.label.getAttribute('value') || '') : '';
-            if (lbl) {
-              ctx.font = '8px monospace'; ctx.fillStyle = 'rgba(200,220,240,0.65)';
-              ctx.fillText(lbl.slice(0,6), sx+5, sy+3);
-            }
           });
 
           /* Spectator own position */
@@ -58264,8 +58254,8 @@
         position: fixed;
         bottom: 155px;
         right: 18px;
-        width: 92px;
-        height: 92px;
+        width: 78px;
+        height: 78px;
         border-radius: 50%;
         background: radial-gradient(circle at 38% 34%, rgba(255,50,0,0.55) 0%, rgba(160,0,0,0.22) 70%);
         border: 2.5px solid rgba(255,75,0,0.82);
