@@ -55743,14 +55743,14 @@
       #dtc-history-empty { text-align: center; color: #7f93aa; padding: 24px 0; font-size: 12px; }
       #dtc-team-badge {
         position: fixed;      /* always visible so you know your team colour */
-        top: 44px;
+        top: 42px;
         left: 56px;
         z-index: 5101;
         font-family: monospace;
-        font-size: 13px;
-        font-weight: 900;
-        letter-spacing: 2px;
-        padding: 4px 12px;
+        font-size: 9px;
+        font-weight: 800;
+        letter-spacing: 1px;
+        padding: 2px 7px;
         border-radius: 3px;
         display: none;
         pointer-events: none;
@@ -57476,7 +57476,7 @@
         window.addEventListener("cosmos-fire", function() {
           if (_spectatorMode) return; // spectators cannot fire
           var _now = Date.now();
-          if (_now - _lastFire < 400) return; // 400ms fire cooldown
+          if (_now - _lastFire < 330) return; // ~3 shots/sec
           _lastFire = _now;
           _playSfx('fire');
           /* Crosshair fire animation */
@@ -57558,19 +57558,17 @@
               dx: nd.x, dy: nd.y, dz: nd.z,
               rx: right.x, ry: right.y, rz: right.z }));
           }
-          /* Hit detection — aim-assist on touch (wider cone) */
-          var _isTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
-          /* Big hit box so enemy jets are easy to hit at combat range. */
-          var _hitRadius = _isTouch ? 1800 : 1400;
+          /* Hit detection — ANGULAR (distance-independent): any enemy inside the
+             red cone (~5°) is hit, near or far. */
+          var _RED_COS = Math.cos(5 * Math.PI / 180);
           var _hitTarget = false;
           Object.keys(_ghostMap).forEach(function(id) {
             var g = _ghostMap[id];
-            if (!g.group || !g.group.visible) return;
+            if (!g.group || !g.group.visible || !g.targetPos) return;
+            if (_myTeam && g.team && g.team === _myTeam) return; // don't hit allies
             var _toG = new THREE.Vector3().subVectors(g.targetPos, rp);
-            var _t = _toG.dot(nd);
-            if (_t <= 0) return;
-            var _closest = rp.clone().addScaledVector(nd, _t);
-            if (_closest.distanceTo(g.targetPos) < _hitRadius) {
+            var _d = _toG.length(); if (_d < 1) return;
+            if (_toG.dot(nd) / _d > _RED_COS) {
               if (_ws && _ws.readyState === 1) _ws.send(JSON.stringify({ type: "hit", targetId: id }));
               _hitTarget = true;
             }
@@ -57583,7 +57581,7 @@
             var _tc = -rp.x * nd.x - rp.y * nd.y - rp.z * nd.z; // (origin - rp)·nd
             if (_tc > 0) {
               var _ccx = rp.x + nd.x * _tc, _ccy = rp.y + nd.y * _tc, _ccz = rp.z + nd.z * _tc;
-              if (Math.sqrt(_ccx*_ccx + _ccy*_ccy + _ccz*_ccz) < 700) {
+              if (Math.sqrt(_ccx*_ccx + _ccy*_ccy + _ccz*_ccz) < 2500) { // big core hit box
                 _ws.send(JSON.stringify({ type: "coreShot" }));
               }
             }
@@ -57627,18 +57625,16 @@
           }, 500);
         })();
 
-        /* ── Auto-Fire: fire when an enemy sits in the crosshairs ───────────
-           Uses the SAME hit test as the manual Fire button (forward projection
-           onto the aim ray + perpendicular distance < hit radius; no fixed
-           angular cone, no max-range cap) so auto-fire locks whenever a manual
-           shot would land. The old fixed 5° cone + 6000au cap almost never
-           matched in the 48000au arena — that was the "no auto-fire" bug.
-           Respects the 400ms cooldown. Toggle in Options → Combat. */
+        /* ── Auto-Fire / target lock — ANGULAR cones (distance-independent) ──
+           Any enemy within the GREEN cone (~11°) auto-fires; within the tighter
+           RED cone (~5°) the crosshair GLOWS red and the shot lands. Because it's
+           angular, an enemy that appears in your crosshairs is targeted at ANY
+           distance (not just the nearest one the arrow points at). Fires at ~3/s. */
         (function _autoFireLoop() {
-          var AF_MS = 110;
-          var _isTouchAF = "ontouchstart" in window || navigator.maxTouchPoints > 0;
-          var HIT_R = _isTouchAF ? 1800 : 1400; // big hit box so enemy jets are easy to lock
-          var _afTmp = null, _afClosest = null;
+          var AF_MS = 90;
+          var GREEN_COS = Math.cos(11 * Math.PI / 180); // wide: auto-fire cone
+          var RED_COS   = Math.cos(5  * Math.PI / 180); // tight: hit / glow cone
+          var _afTmp = null;
           setInterval(function () {
             if (_spectatorMode) return;
             var _ch = document.getElementById('crosshair');
@@ -57651,23 +57647,22 @@
             var rig = document.getElementById('cameraRig');
             var rp = new THREE.Vector3();
             if (rig && rig.object3D) rig.object3D.getWorldPosition(rp);
-            if (!_afTmp) { _afTmp = new THREE.Vector3(); _afClosest = new THREE.Vector3(); }
-            var locked = false;
+            if (!_afTmp) _afTmp = new THREE.Vector3();
+            var greenLock = false, redLock = false;
             var keys = Object.keys(_ghostMap);
             for (var i = 0; i < keys.length; i++) {
               var g = _ghostMap[keys[i]];
               if (!g || !g.group || !g.group.visible || !g.targetPos) continue;
               if (_myTeam && g.team && g.team === _myTeam) continue; // never shoot teammates
               _afTmp.subVectors(g.targetPos, rp);
-              var t = _afTmp.dot(nd);      // forward projection onto aim ray
-              if (t <= 0) continue;        // enemy is behind us
-              _afClosest.copy(rp).addScaledVector(nd, t);
-              if (_afClosest.distanceTo(g.targetPos) < HIT_R) { locked = true; break; }
+              var dist = _afTmp.length(); if (dist < 1) continue;
+              var aim = _afTmp.dot(nd) / dist; // cos(angle off the crosshair) — no distance term
+              if (aim > GREEN_COS) greenLock = true;
+              if (aim > RED_COS) { redLock = true; break; }
             }
-            /* Crosshair glows RED whenever an enemy is locked in the box (continuous
-               feedback), and — when auto-fire is on — it FIRES while locked. */
-            if (_ch) _ch.classList.toggle('locked', locked);
-            if (locked && window._autoFireEnabled && Date.now() - _lastFire >= 400) {
+            /* Glow when a target is in the cone (red = precisely on it). */
+            if (_ch) _ch.classList.toggle('locked', greenLock || redLock);
+            if (greenLock && window._autoFireEnabled && Date.now() - _lastFire >= 330) {
               window.dispatchEvent(new CustomEvent('cosmos-fire'));
             }
           }, AF_MS);
@@ -57706,7 +57701,12 @@
               var d = Math.hypot(tp.x - _cp.x, tp.y - _cp.y, tp.z - _cp.z);
               if (d < bestD) { bestD = d; best = g; }
             }
-            if (!best) { el.style.display = 'none'; return; }
+            var _lc = document.getElementById('lead-line-canvas');
+            if (!best) {
+              el.style.display = 'none';
+              if (_lc) { var _c0 = _lc.getContext('2d'); _c0.clearRect(0, 0, _lc.width, _lc.height); }
+              return;
+            }
             var tp2 = best.targetPos || best.pos;
             _tmp.set(tp2.x - _cp.x, tp2.y - _cp.y, tp2.z - _cp.z).applyQuaternion(invQ); // → camera space
             var lx = _tmp.x, ly = _tmp.y, lz = _tmp.z, front = -lz; // ship forward = -Z
@@ -57714,14 +57714,35 @@
                               : Math.atan2(lx, -Math.hypot(lx, ly) - 0.0001); // behind → lower half
             var W = window.innerWidth, H = window.innerHeight;
             var R = Math.min(W, H) * 0.32, cx = W / 2, cy = H / 2;
-            el.style.left = (cx + R * Math.sin(a)) + 'px';
-            el.style.top  = (cy - R * Math.cos(a)) + 'px';
+            var ax = cx + R * Math.sin(a), ay = cy - R * Math.cos(a);
+            el.style.left = ax + 'px';
+            el.style.top  = ay + 'px';
             /* glyph ➤ points right by default → rotate to point outward along bearing */
             tip.style.transform = 'rotate(' + (a * 180 / Math.PI - 90) + 'deg)';
             var centered = front > 0 && Math.hypot(lx, ly) < Math.abs(lz) * 0.12;
             el.classList.toggle('locked', centered);
             if (dst) dst.textContent = Math.round(bestD) + ' au';
             el.style.display = 'block';
+            /* Curved lead line: from near the crosshair to the arrow, bending UP if
+               you must pitch up to reach the target and DOWN if you must pitch
+               down (bend ∝ the target's vertical angle). */
+            if (_lc) {
+              if (_lc.width !== W || _lc.height !== H) { _lc.width = W; _lc.height = H; }
+              var lctx = _lc.getContext('2d');
+              lctx.clearRect(0, 0, W, H);
+              var pitchFrac = ly / (Math.hypot(lx, ly, lz) || 1); // -1..1, + = target above
+              var bend = pitchFrac * Math.min(W, H) * 0.22;
+              var sx = cx + Math.sin(a) * 46, sy = cy - Math.cos(a) * 46; // start just outside the crosshair
+              var mxp = (sx + ax) / 2, myp = (sy + ay) / 2 - bend;       // control point → vertical bend = pitch
+              lctx.beginPath();
+              lctx.moveTo(sx, sy);
+              lctx.quadraticCurveTo(mxp, myp, ax, ay);
+              lctx.lineWidth = 2.5;
+              lctx.strokeStyle = centered ? 'rgba(90,255,160,0.85)' : 'rgba(255,80,80,0.6)';
+              lctx.shadowColor = lctx.strokeStyle; lctx.shadowBlur = 7;
+              lctx.stroke();
+              lctx.shadowBlur = 0;
+            }
           }, 80);
         })();
 
@@ -57853,8 +57874,18 @@
         transition: border-color 0.12s, box-shadow 0.12s;
       }
       #crosshair.locked .ch-ring {
-        border-color: rgba(255,30,0,0.95);
-        box-shadow: 0 0 10px rgba(255,40,0,0.55);
+        border-color: rgba(255,25,0,1);
+        box-shadow: 0 0 22px 4px rgba(255,40,0,0.9), inset 0 0 12px rgba(255,40,0,0.6);
+        animation: ch-lock-pulse 0.5s ease-in-out infinite;
+      }
+      @keyframes ch-lock-pulse { 0%,100%{opacity:1;} 50%{opacity:0.6;} }
+      #crosshair.locked .ch-top, #crosshair.locked .ch-bot,
+      #crosshair.locked .ch-left, #crosshair.locked .ch-right {
+        background: rgba(255,30,0,1);
+        box-shadow: 0 0 8px rgba(255,40,0,0.9);
+      }
+      #crosshair.locked #crosshair-dot {
+        box-shadow: 0 0 12px 3px rgba(255,40,0,0.95);
       }
       .ch-top, .ch-bot {
         position: absolute;
@@ -58806,6 +58837,8 @@
     <div id="damage-flash"></div>
     <!-- 2D laser bolt canvas — renders above scene, immune to WebGL depth issues -->
     <canvas id="laser-fx-canvas" style="position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:3500;"></canvas>
+    <!-- Curved lead line from the crosshair to the enemy arrow (encodes pitch) -->
+    <canvas id="lead-line-canvas" style="position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:2450;"></canvas>
     <!-- Kill share button (appears 6s after own kill) -->
     <div id="kill-share-wrap">
       <button id="kill-share-btn" onclick="window._shareKill()">&#x1F4E4; SHARE THIS KILL</button>
@@ -59188,9 +59221,7 @@
             var lc = camEl.components && camEl.components["look-controls"];
             if (joy2Active && (Math.abs(joy2DX) > DEAD || Math.abs(joy2DY) > DEAD)) {
               if (Math.abs(joy2DY) > DEAD) {
-                /* Pitch inverted by default (push down = nose down); the Invert
-                   Pitch option flips it back. */
-                var _pit = (window._inv_pitch ? joy2DY : -joy2DY);
+                var _pit = (window._inv_pitch ? -joy2DY : joy2DY);
                 _pit = Math.sign(_pit) * Math.pow(Math.abs(_pit), 1.8);
                 camEl.object3D.getWorldQuaternion(_mlPitchQ);
                 var _rightVec = _mlRightVec.set(1, 0, 0).applyQuaternion(_mlPitchQ).normalize();
@@ -59239,7 +59270,7 @@
                   if (_dMag > 0.001) { _dX /= _dMag; _dY /= _dMag; }
                   _jDot.style.display = 'block';
                   _jDot.style.left = (55 + _dX * 46) + 'px';
-                  _jDot.style.top  = (55 + _dY * 46) + 'px';
+                  _jDot.style.top  = (55 - _dY * 46) + 'px'; /* pitch inverted */
                 }
               }
             }

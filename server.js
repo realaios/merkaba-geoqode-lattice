@@ -6024,10 +6024,8 @@ _wss.on("connection", (ws) => {
         const e = _presenceMap.get(id);
         if (e) { e.score = (e.score || 0) + 3; e.roundScore = (e.roundScore || 0) + 3; }
         const h = _gameState.coreHealth;
-        if (Math.floor(_gameState.lastBroadcastHealth) !== Math.floor(h) || h <= 0) {
-          _gameState.lastBroadcastHealth = h;
-          _broadcast({ type: "coreState", health: Math.round(h * 10) / 10 }, null);
-        }
+        _gameState.lastBroadcastHealth = h; // broadcast every hit so the drain is visible
+        _broadcast({ type: "coreState", health: Math.round(h * 10) / 10 }, null);
         if (h <= 0) _endRound("ATTACKER");
       }
     } else if (msg.type === "kill") {
