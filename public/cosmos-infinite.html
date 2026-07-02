@@ -11408,7 +11408,7 @@
         init: function () {
           var self = this;
           this._started = false;
-          this._muted = false;
+          this._muted = true;
           this._shTime = 0;
 
           var tryStart = function () {
@@ -11466,7 +11466,7 @@
           master.gain.value = 0;
           master.connect(ctx.destination);
           this._masterGain = master;
-          master.gain.setTargetAtTime(0.35, ctx.currentTime, 3.0);
+          master.gain.value = 0; /* start muted — M key to unmute */
 
           /* Deep drone: two detuned oscillators (gentle beating at 3 Hz) */
           var osc1 = ctx.createOscillator();
@@ -11527,7 +11527,7 @@
           noiseSrc.start();
           this._noiseGain = noiseGain;
 
-          this._showMuteHint("🔊 Cosmic audio ON  (M = mute)");
+          this._showMuteHint("🔇 Sound OFF  (M = unmute)");
         },
 
         _playWarpWhoosh: function () {
@@ -51699,7 +51699,7 @@
           var len = Math.sqrt(dx*dx + dy*dy + dz*dz);
           if (len < 0.01) return;
           dx /= len; dy /= len; dz /= len;
-          var DURATION = 160;
+          var DURATION = 350;
 
           /* Capture rig position at fire time for velocity compensation */
           var rigPos0 = new THREE.Vector3();
@@ -51717,9 +51717,9 @@
           var bGeo = new THREE.BufferGeometry();
           bGeo.setAttribute('position', new THREE.BufferAttribute(bArr, 3));
           var bMat = new THREE.PointsMaterial({
-            color: 0xCCFFFF, size: 5, sizeAttenuation: false,
+            color: 0xFF8844, size: 22, sizeAttenuation: false,
             transparent: true, opacity: 1.0,
-            blending: THREE.AdditiveBlending, depthWrite: false
+            blending: THREE.AdditiveBlending, depthWrite: false, depthTest: false
           });
           var blob = new THREE.Points(bGeo, bMat);
           scene.object3D.add(blob);
@@ -51730,9 +51730,9 @@
           var tGeo = new THREE.BufferGeometry();
           tGeo.setAttribute('position', new THREE.BufferAttribute(tArr, 3));
           var tMat = new THREE.PointsMaterial({
-            color: 0x44AAFF, size: 2, sizeAttenuation: false,
+            color: 0x00CCFF, size: 10, sizeAttenuation: false,
             transparent: true, opacity: 0.85,
-            blending: THREE.AdditiveBlending, depthWrite: false
+            blending: THREE.AdditiveBlending, depthWrite: false, depthTest: false
           });
           var wake = new THREE.Points(tGeo, tMat);
           scene.object3D.add(wake);
@@ -55296,7 +55296,7 @@
         bottom: 90px;
         left: 50%;
         transform: translateX(-50%);
-        display: flex;
+        display: none;
         flex-direction: column;
         align-items: center;
         gap: 8px;
@@ -55319,6 +55319,7 @@
         transition: box-shadow 0.2s ease;
       }
       #dtc-ready-btn:hover { box-shadow: 0 0 32px rgba(0,220,255,0.75), inset 0 0 14px rgba(0,160,255,0.35); }
+      #dtc-ready-btn { display: none !important; }
       #dtc-ready-btn.hidden { display: none !important; }
       #dtc-share-btn {
         background: transparent;
@@ -55471,6 +55472,7 @@
       }
       @media (pointer: coarse) {
         #dtc-ready-wrap { bottom: 140px; }
+        #minimap-toggle-btn { top: 52px; left: 8px; }
       }
 
       /* ── Core health bar ────────────────────────────────────────────────── */
@@ -55657,6 +55659,7 @@
         var _myCallsign = "PILOT-" + Math.random().toString(36).slice(2, 5).toUpperCase();
         var _gameMode = new URLSearchParams(location.search).get('mode'); // 'dtc' | 'spectate' | null
         var _spectatorMode = (_gameMode === 'spectate');
+        if (_gameMode === 'dtc') { var _rwEl = document.getElementById('dtc-ready-wrap'); if (_rwEl) _rwEl.style.display = 'flex'; }
         var _lastKillData = null;   // last own-kill metadata for share card
         var _killShareTimer = null; // auto-hide timeout for kill share button
         var _myHealth = 100;
@@ -56972,6 +56975,41 @@
           if (rig && rig.object3D) rig.object3D.getWorldPosition(rp);
           _spawnLaser(muzzle1, crosshair, _lScn, THREE, rig);
           _spawnLaser(muzzle2, crosshair, _lScn, THREE, rig);
+          /* 2D canvas bolt — always-visible overlay, immune to depth/precision issues */
+          (function() {
+            var fc = document.getElementById('laser-fx-canvas');
+            if (!fc) return;
+            fc.width = window.innerWidth; fc.height = window.innerHeight;
+            var cx = fc.getContext('2d');
+            var W = fc.width, H = fc.height;
+            var mL = {x: W * 0.18, y: H * 0.88};
+            var mR = {x: W * 0.82, y: H * 0.88};
+            var tgt = {x: W * 0.50, y: H * 0.50};
+            var t0 = performance.now(), DUR = 350;
+            (function fx() {
+              var p = Math.min(1, (performance.now() - t0) / DUR);
+              var fade = 1 - p;
+              var tipLx = mL.x + (tgt.x - mL.x) * p, tipLy = mL.y + (tgt.y - mL.y) * p;
+              var tipRx = mR.x + (tgt.x - mR.x) * p, tipRy = mR.y + (tgt.y - mR.y) * p;
+              cx.clearRect(0, 0, W, H);
+              cx.lineCap = 'round';
+              /* glow */
+              cx.globalAlpha = fade * 0.35; cx.strokeStyle = '#00DDFF'; cx.lineWidth = 9;
+              cx.beginPath(); cx.moveTo(mL.x, mL.y); cx.lineTo(tipLx, tipLy); cx.stroke();
+              cx.beginPath(); cx.moveTo(mR.x, mR.y); cx.lineTo(tipRx, tipRy); cx.stroke();
+              /* core */
+              cx.globalAlpha = fade * 0.95; cx.strokeStyle = '#FFFFFF'; cx.lineWidth = 3;
+              cx.beginPath(); cx.moveTo(mL.x, mL.y); cx.lineTo(tipLx, tipLy); cx.stroke();
+              cx.beginPath(); cx.moveTo(mR.x, mR.y); cx.lineTo(tipRx, tipRy); cx.stroke();
+              /* tip dot */
+              cx.globalAlpha = fade * 0.9; cx.fillStyle = '#FF9944';
+              cx.beginPath(); cx.arc(tipLx, tipLy, 5, 0, Math.PI*2); cx.fill();
+              cx.beginPath(); cx.arc(tipRx, tipRy, 5, 0, Math.PI*2); cx.fill();
+              cx.globalAlpha = 1;
+              if (p < 1) requestAnimationFrame(fx);
+              else cx.clearRect(0, 0, W, H);
+            })();
+          })();
           /* Broadcast fire — carry both wing origins via right vector */
           if (_ws && _ws.readyState === 1) {
             _ws.send(JSON.stringify({ type: "fire",
@@ -57608,6 +57646,13 @@
       /* On touch, show cockpit elements */
       @media (pointer: coarse) {
         #fighter-hud { display: none !important; }
+        /* Radar: centre-bottom between the two joysticks, above bottom dash */
+        #ck-radar {
+          bottom: 52px;
+          right: auto;
+          left: 50%;
+          transform: translateX(-50%);
+        }
 
         /* ── Mobile HUD: enterprise layout, zero overlap ──────────────────── */
 
@@ -57896,6 +57941,8 @@
     </div>
     <!-- Damage flash overlay -->
     <div id="damage-flash"></div>
+    <!-- 2D laser bolt canvas — renders above scene, immune to WebGL depth issues -->
+    <canvas id="laser-fx-canvas" style="position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:3500;"></canvas>
     <!-- Kill share button (appears 6s after own kill) -->
     <div id="kill-share-wrap">
       <button id="kill-share-btn" onclick="window._shareKill()">&#x1F4E4; SHARE THIS KILL</button>
@@ -58175,7 +58222,7 @@
                 } else {
                   /* project core direction onto camera right and up to get 2D ring pos */
                   var _dX = _mlRightVec.set(1, 0, 0).applyQuaternion(_mlYawQ).dot(_coreDir);
-                  var _dY = -_mlCraftUp.set(0, 1, 0).applyQuaternion(_mlYawQ).dot(_coreDir);
+                  var _dY = _mlCraftUp.set(0, 1, 0).applyQuaternion(_mlYawQ).dot(_coreDir);
                   var _dMag = Math.sqrt(_dX * _dX + _dY * _dY);
                   if (_dMag > 0.001) { _dX /= _dMag; _dY /= _dMag; }
                   _jDot.style.display = 'block';
