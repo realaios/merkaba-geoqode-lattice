@@ -56717,60 +56717,59 @@
           if (!cv) return;
           var ctx = cv.getContext('2d');
           var W = cv.width, H = cv.height, CX = W/2, CY = H/2;
-          /* Auto-scale the radar to frame the action across the 48000au arena:
-             fit the farthest ship (and self), clamped to a sane range. */
-          var _maxD = 3000;
-          Object.keys(_ghostMap).forEach(function(gid){ var p = _ghostMap[gid].targetPos || _ghostMap[gid].pos; if (p){ var d = Math.hypot(p.x, p.y, p.z); if (d > _maxD) _maxD = d; } });
+          /* ── HEADING-UP, player-centred radar ─────────────────────────────
+             You are at the centre pointing UP; enemy dots are placed relative to
+             the direction you are facing (rotate the world by your heading). */
           var _mmRig = document.getElementById('cameraRig');
-          if (_mmRig && _mmRig.object3D){ var _sp = _mmRig.object3D.position; var _sd = Math.hypot(_sp.x, _sp.y, _sp.z); if (_sd > _maxD) _maxD = _sd; }
-          var SCALE = Math.min(48000, _maxD * 1.15); // AU radius shown
+          var Px = 0, Py = 0, Pz = 0;
+          if (_mmRig && _mmRig.object3D) { var _sp = _mmRig.object3D.position; Px = _sp.x; Py = _sp.y; Pz = _sp.z; }
+          var fhx = 0, fhz = -1; // player forward, horizontal
+          var _mmScn = document.querySelector('a-scene');
+          if (_mmScn && _mmScn.camera) {
+            var _T = AFRAME.THREE;
+            var _fw = new _T.Vector3(0, 0, -1).applyQuaternion(_mmScn.camera.getWorldQuaternion(new _T.Quaternion()));
+            var _fl = Math.hypot(_fw.x, _fw.z) || 1; fhx = _fw.x / _fl; fhz = _fw.z / _fl;
+          }
+          /* scale to the farthest enemy (distance from YOU) + the core */
+          var _maxD = 3000;
+          Object.keys(_ghostMap).forEach(function(gid){ var g = _ghostMap[gid]; if (_myTeam && g.team === _myTeam) return; var p = g.targetPos || g.pos; if (p){ var d = Math.hypot(p.x-Px, p.y-Py, p.z-Pz); if (d > _maxD) _maxD = d; } });
+          var _dCore = Math.hypot(Px, Py, Pz); if (_dCore > _maxD) _maxD = _dCore;
+          var SCALE = Math.min(48000, _maxD * 1.15);
+          /* world (x,z) → screen, heading-up + player-centred */
+          function _mm(wx, wz) {
+            var rx = wx - Px, rz = wz - Pz;
+            var fc = rx * fhx + rz * fhz;   // forward (→ up)
+            var rc = rx * fhz - rz * fhx;   // right  (→ +x)
+            return { x: Math.max(3, Math.min(W-3, CX + (rc / SCALE) * CX)),
+                     y: Math.max(3, Math.min(H-3, CY - (fc / SCALE) * CY)) };
+          }
 
-          /* Background — slightly more transparent */
           ctx.clearRect(0, 0, W, H);
-          ctx.fillStyle = 'rgba(0,5,16,0.5)';
-          ctx.fillRect(0, 0, W, H);
+          ctx.fillStyle = 'rgba(0,5,16,0.5)'; ctx.fillRect(0, 0, W, H);
+          ctx.strokeStyle = 'rgba(0,80,120,0.28)'; ctx.lineWidth = 1;
+          [0.25, 0.5, 0.75, 1.0].forEach(function(f) { ctx.beginPath(); ctx.arc(CX, CY, f * CX * 0.98, 0, Math.PI*2); ctx.stroke(); });
 
-          /* Range rings */
-          ctx.strokeStyle = 'rgba(0,80,120,0.28)';
-          ctx.lineWidth = 1;
-          [0.25, 0.5, 0.75, 1.0].forEach(function(f) {
-            ctx.beginPath();
-            ctx.arc(CX, CY, f * CX * 0.98, 0, Math.PI*2);
-            ctx.stroke();
-          });
-
-          /* Merkaba Core */
+          /* Merkaba Core (relative) */
           var hp2 = typeof window._coreHealth === 'number' ? window._coreHealth : 100;
           var cc = hp2 > 60 ? '#00ff88' : hp2 > 30 ? '#ffcc00' : '#ff3300';
-          ctx.beginPath(); ctx.arc(CX, CY, 4, 0, Math.PI*2);
-          ctx.fillStyle = cc; ctx.shadowColor = cc; ctx.shadowBlur = 10; ctx.fill();
-          ctx.shadowBlur = 0;
+          var _cpt = _mm(0, 0);
+          ctx.beginPath(); ctx.arc(_cpt.x, _cpt.y, 4, 0, Math.PI*2);
+          ctx.fillStyle = cc; ctx.shadowColor = cc; ctx.shadowBlur = 10; ctx.fill(); ctx.shadowBlur = 0;
 
-          /* ENEMY ships only — plain red dots, no labels (clear + simple). */
+          /* ENEMY ships only — plain red dots */
           Object.keys(_ghostMap).forEach(function(gid) {
             var g = _ghostMap[gid];
             if (_myTeam && g.team === _myTeam) return; // skip allies
-            var pos = g.targetPos || g.pos;
-            if (!pos) return;
-            var sx = Math.max(3, Math.min(W-3, CX + (pos.x / SCALE) * CX));
-            var sy = Math.max(3, Math.min(H-3, CY - (pos.z / SCALE) * CY));
-            ctx.beginPath(); ctx.arc(sx, sy, 4, 0, Math.PI*2);
-            ctx.fillStyle = '#FF3B3B'; ctx.shadowColor = '#FF3B3B'; ctx.shadowBlur = 8; ctx.fill();
-            ctx.shadowBlur = 0;
+            var pos = g.targetPos || g.pos; if (!pos) return;
+            var s = _mm(pos.x, pos.z);
+            ctx.beginPath(); ctx.arc(s.x, s.y, 4, 0, Math.PI*2);
+            ctx.fillStyle = '#FF3B3B'; ctx.shadowColor = '#FF3B3B'; ctx.shadowBlur = 8; ctx.fill(); ctx.shadowBlur = 0;
           });
 
-          /* Spectator own position */
-          var rig = document.getElementById('cameraRig');
-          if (rig && rig.object3D) {
-            var sp = rig.object3D.position;
-            var spx = Math.max(3, Math.min(W-3, CX + (sp.x / SCALE) * CX));
-            var spy = Math.max(3, Math.min(H-3, CY - (sp.z / SCALE) * CY));
-            ctx.beginPath(); ctx.arc(spx, spy, 3, 0, Math.PI*2);
-            ctx.fillStyle = '#FFFFFF'; ctx.shadowColor = 'rgba(255,255,255,0.85)'; ctx.shadowBlur = 8; ctx.fill();
-            ctx.shadowBlur = 0;
-          }
+          /* You — a triangle at the centre pointing UP (forward) */
+          ctx.beginPath(); ctx.moveTo(CX, CY - 6); ctx.lineTo(CX - 4.5, CY + 5); ctx.lineTo(CX + 4.5, CY + 5); ctx.closePath();
+          ctx.fillStyle = '#FFFFFF'; ctx.shadowColor = 'rgba(255,255,255,0.85)'; ctx.shadowBlur = 7; ctx.fill(); ctx.shadowBlur = 0;
 
-          /* Border */
           ctx.strokeStyle = 'rgba(0,120,180,0.4)'; ctx.lineWidth = 1;
           ctx.strokeRect(0.5, 0.5, W-1, H-1);
         }
@@ -57631,7 +57630,7 @@
            angular, an enemy that appears in your crosshairs is targeted at ANY
            distance (not just the nearest one the arrow points at). Fires at ~3/s. */
         (function _autoFireLoop() {
-          var AF_MS = 90;
+          var AF_MS = 40; // very responsive — fires the instant an enemy enters the sight
           var GREEN_COS = Math.cos(11 * Math.PI / 180); // wide: auto-fire cone
           var RED_COS   = Math.cos(5  * Math.PI / 180); // tight: hit / glow cone
           var _afTmp = null;
@@ -57683,7 +57682,12 @@
             var tip = document.getElementById('enemy-arrow-tip');
             var dst = document.getElementById('enemy-arrow-dist');
             if (!el || !tip) return;
-            if (_spectatorMode) { el.style.display = 'none'; return; }
+            var _lcOff = document.getElementById('lead-line-canvas');
+            if (_spectatorMode || !window._enemyArrowEnabled) {
+              el.style.display = 'none';
+              if (_lcOff) { var _cc = _lcOff.getContext('2d'); _cc.clearRect(0, 0, _lcOff.width, _lcOff.height); }
+              return;
+            }
             var scn = document.querySelector('a-scene');
             if (!scn || !scn.camera) { el.style.display = 'none'; return; }
             var THREE = AFRAME.THREE;
@@ -58644,6 +58648,10 @@
         <label class="opts-label" for="opt-autofire">Auto-Fire (lock on enemy)</label>
         <label class="opts-toggle"><input type="checkbox" id="opt-autofire" checked><span class="opts-slider"></span></label>
       </div>
+      <div class="opts-row">
+        <label class="opts-label" for="opt-enemy-arrow">Enemy Locator Arrow</label>
+        <label class="opts-toggle"><input type="checkbox" id="opt-enemy-arrow"><span class="opts-slider"></span></label>
+      </div>
       <h3>Sound</h3>
       <div class="opts-row">
         <label class="opts-label" for="opt-bg-sound">Background Drone (off by default)</label>
@@ -58960,6 +58968,16 @@
           afCb.addEventListener("change", function () {
             window._autoFireEnabled = afCb.checked;
             localStorage.setItem("cosmos-autofire", afCb.checked ? "1" : "0");
+          });
+        }
+        /* Enemy locator arrow — OFF by default */
+        window._enemyArrowEnabled = localStorage.getItem("cosmos-enemyarrow") === "1";
+        var eaCb = document.getElementById("opt-enemy-arrow");
+        if (eaCb) {
+          eaCb.checked = window._enemyArrowEnabled;
+          eaCb.addEventListener("change", function () {
+            window._enemyArrowEnabled = eaCb.checked;
+            localStorage.setItem("cosmos-enemyarrow", eaCb.checked ? "1" : "0");
           });
         }
 
