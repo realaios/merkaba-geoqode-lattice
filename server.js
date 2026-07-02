@@ -6062,21 +6062,37 @@ console.log("[AIOSmux] Presence WebSocket ready at /ws/presence");
     { id: "dtc-agent-lyra",  name: "LYRA-DEF",   team: "DEFENDER" },
   ];
   const TICK_MS = 150;
-  const SPEED = 95;           // au/sec cruise speed
   const FIRE_RANGE = 380;     // engage enemies within this range
   const KILL_RANGE = 120;     // damage lands within this range
   const dt = TICK_MS / 1000;
 
-  // Rotation from ship nose (-Z) to a world direction → {qx,qy,qz,qw}.
-  // q = [ cross(a, f), 1 + dot(a, f) ] with a = (0,0,-1), then normalise.
-  function _quatFromDir(x, y, z) {
-    const len = Math.hypot(x, y, z) || 1;
-    const fx = x / len, fy = y / len, fz = z / len;
-    // cross((0,0,-1), f) = (fy, -fx, 0); dot((0,0,-1), f) = -fz
-    let qx = fy, qy = -fx, qz = 0, qw = 1 - fz;
-    const qlen = Math.hypot(qx, qy, qz, qw);
-    if (qlen < 1e-6) return { qx: 0, qy: 1, qz: 0, qw: 0 }; // f ≈ +Z → 180° about Y
-    return { qx: qx / qlen, qy: qy / qlen, qz: qz / qlen, qw: qw / qlen };
+  // Oriented look rotation for a jet: nose (-Z) → fwd, +Y → up, plus a `bank`
+  // roll about the nose so the craft banks into its turns. Returns {qx,qy,qz,qw}.
+  // Uses the THREE.lookAt basis (z = -fwd, x = up×z, y = z×x) then rolls x,y
+  // about fwd and converts the matrix to a quaternion.
+  function _lookQuat(fx, fy, fz, bank) {
+    const fl = Math.hypot(fx, fy, fz) || 1;
+    fx /= fl; fy /= fl; fz /= fl;
+    let ux = 0, uy = 1, uz = 0;
+    if (Math.abs(fy) > 0.99) { uy = 0; uz = 1; } // near-vertical → alternate up
+    let zx = -fx, zy = -fy, zz = -fz;             // z = -fwd
+    let xx = uy * zz - uz * zy, xy = uz * zx - ux * zz, xz = ux * zy - uy * zx; // x = up×z
+    const xl = Math.hypot(xx, xy, xz) || 1; xx /= xl; xy /= xl; xz /= xl;
+    let yx = zy * xz - zz * xy, yy = zz * xx - zx * xz, yz = zx * xy - zy * xx; // y = z×x
+    // Roll x,y about fwd: fwd×x = -y, fwd×y = x
+    const cb = Math.cos(bank), sb = Math.sin(bank);
+    const nxx = xx * cb - yx * sb, nxy = xy * cb - yy * sb, nxz = xz * cb - yz * sb;
+    const nyx = yx * cb + xx * sb, nyy = yy * cb + xy * sb, nyz = yz * cb + xz * sb;
+    xx = nxx; xy = nxy; xz = nxz; yx = nyx; yy = nyy; yz = nyz;
+    const m00 = xx, m01 = yx, m02 = zx, m10 = xy, m11 = yy, m12 = zy, m20 = xz, m21 = yz, m22 = zz;
+    const tr = m00 + m11 + m22;
+    let qw, qx, qy, qz;
+    if (tr > 0) { const s = Math.sqrt(tr + 1) * 2; qw = 0.25 * s; qx = (m21 - m12) / s; qy = (m02 - m20) / s; qz = (m10 - m01) / s; }
+    else if (m00 > m11 && m00 > m22) { const s = Math.sqrt(1 + m00 - m11 - m22) * 2; qw = (m21 - m12) / s; qx = 0.25 * s; qy = (m01 + m10) / s; qz = (m02 + m20) / s; }
+    else if (m11 > m22) { const s = Math.sqrt(1 + m11 - m00 - m22) * 2; qw = (m02 - m20) / s; qx = (m01 + m10) / s; qy = 0.25 * s; qz = (m12 + m21) / s; }
+    else { const s = Math.sqrt(1 + m22 - m00 - m11) * 2; qw = (m10 - m01) / s; qx = (m02 + m20) / s; qy = (m12 + m21) / s; qz = 0.25 * s; }
+    const ql = Math.hypot(qx, qy, qz, qw) || 1;
+    return { qx: qx / ql, qy: qy / ql, qz: qz / ql, qw: qw / ql };
   }
 
   function _spawnPoint(team) {
@@ -6113,6 +6129,11 @@ console.log("[AIOSmux] Presence WebSocket ready at /ws/presence");
       qx: 0, qy: 0, qz: 0, qw: 1,
       hp: 100, phase: Math.random() * Math.PI * 2,
       lastFire: 0, kills: 0,
+      // Flight dynamics (jet feel): heading history, smoothed bank, per-agent
+      // orbit direction + afterburner phase offset so they don't move in lockstep.
+      bank: 0, pfx: 0, pfy: 0, pfz: -1,
+      burnOff: Math.random() * Math.PI * 2,
+      turnDir: Math.random() < 0.5 ? 1 : -1,
     };
     _dtcAgents.set(cfg.id, a);
     _gameState.teams[cfg.id] = cfg.team;
@@ -6188,38 +6209,60 @@ console.log("[AIOSmux] Presence WebSocket ready at /ws/presence");
     const now = Date.now();
     _dtcAgents.forEach((a) => {
       const team = _gameState.teams[a.id] || a.baseTeam;
+      a.phase += dt;
       let tx, ty, tz;
       if (team === "ATTACKER") {
-        // Weave inward: orbit while radius dives toward the core and pulls back.
-        a.ang += 0.5 * dt;
-        a.phase += dt;
-        let r = 150 + 150 * Math.sin(a.phase * 0.22); // ~0..300, dips near core
-        r = Math.max(30, r);
+        // Strafing run: orbit inward while the radius dives toward the core and
+        // pulls back out; jink sideways when a defender closes in (evasive).
+        a.ang += a.turnDir * 0.5 * dt;
+        let r = Math.max(30, 150 + 150 * Math.sin(a.phase * 0.22)); // ~0..300
         tx = Math.cos(a.ang) * r;
         tz = Math.sin(a.ang) * r;
         ty = 40 * Math.sin(a.phase * 0.5);
+        const foe = _nearestEnemy(a, team);
+        if (foe && foe.d < 220) { // evasive jink perpendicular to the threat
+          const jx = -(foe.e.z - a.z), jz = foe.e.x - a.x;
+          const jl = Math.hypot(jx, jz) || 1;
+          const j = 90 * Math.sin(a.phase * 3) * a.turnDir;
+          tx += (jx / jl) * j; tz += (jz / jl) * j;
+        }
       } else {
-        // Defender: intercept nearest attacker, else orbit at standoff radius.
+        // Defender: cut off the nearest attacker by aiming ~120au core-ward of
+        // it (intercept its run), with a weaving pursuit so it reads as a
+        // dogfight rather than a beeline. Orbit standoff when the sky is clear.
         const tgt = _nearestEnemy(a, team);
         if (tgt) {
-          tx = tgt.e.x; ty = tgt.e.y; tz = tgt.e.z;
+          const ex = tgt.e.x, ey = tgt.e.y, ez = tgt.e.z;
+          const eL = Math.hypot(ex, ey, ez) || 1;
+          tx = ex - (ex / eL) * 120;
+          ty = ey - (ey / eL) * 120;
+          tz = ez - (ez / eL) * 120;
+          const wx = -(tz - a.z), wz = tx - a.x; // lateral weave
+          const wl = Math.hypot(wx, wz) || 1;
+          const w = 70 * Math.sin(a.phase * 2.2);
+          tx += (wx / wl) * w; tz += (wz / wl) * w;
         } else {
-          a.ang += 0.35 * dt;
+          a.ang += a.turnDir * 0.35 * dt;
           const r = 230;
           tx = Math.cos(a.ang) * r;
           tz = Math.sin(a.ang) * r;
-          ty = 30 * Math.sin(a.phase += dt);
+          ty = 30 * Math.sin(a.phase);
         }
       }
-      // Kinematic move toward target, capped at cruise speed.
+      // Kinematic move with speed variation: afterburner when far, ease when close.
       const dx = tx - a.x, dy = ty - a.y, dz = tz - a.z;
       const dist = Math.hypot(dx, dy, dz) || 1;
-      const step = Math.min(dist, SPEED * dt);
-      a.x += (dx / dist) * step;
-      a.y += (dy / dist) * step;
-      a.z += (dz / dist) * step;
-      // Face travel direction.
-      const q = _quatFromDir(dx, dy, dz);
+      let spd = 80 + 85 * Math.min(1, dist / 450);
+      spd *= 0.92 + 0.13 * Math.sin(a.phase * 1.3 + a.burnOff);
+      const step = Math.min(dist, spd * dt);
+      const nfx = dx / dist, nfy = dy / dist, nfz = dz / dist; // heading (unit)
+      a.x += nfx * step; a.y += nfy * step; a.z += nfz * step;
+      // Bank into the turn from the signed yaw change vs the previous heading.
+      const cpy = a.pfz * nfx - a.pfx * nfz; // (prevHeading × heading)·up
+      const targetBank = Math.max(-1.05, Math.min(1.05, cpy * 11)); // ≤ ~60°
+      a.bank += (targetBank - a.bank) * 0.25; // smooth to avoid jitter
+      a.pfx = nfx; a.pfy = nfy; a.pfz = nfz;
+      const q = _lookQuat(nfx, nfy, nfz, a.bank);
       a.qx = q.qx; a.qy = q.qy; a.qz = q.qz; a.qw = q.qw;
 
       // Sync presence + broadcast position.
