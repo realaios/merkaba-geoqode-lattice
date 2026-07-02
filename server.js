@@ -6125,9 +6125,11 @@ console.log("[AIOSmux] Presence WebSocket ready at /ws/presence");
   // heading turns toward the target at a limited rate (banked arcs, no snapping).
   // TURN_RATE is well below the player's yaw (~1.9 rad/s) so a human can out-turn
   // and get on a bot's tail — that's the chase-to-lock dogfight.
-  const CRUISE = 3000;        // au/s constant forward speed
-  const TURN_RATE = 0.85;     // rad/s max turn rate
+  const CRUISE = 2200;        // au/s constant forward speed (a bit slower)
+  const TURN_RATE = 0.4;      // rad/s max turn rate — wide, lazy turns; way below the
+                              // player so you easily out-turn and get on their tail
   const MAX_BANK = 1.05;      // bank into turns (~60°)
+  const CORE_STANDOFF = 2000; // attackers never come closer than this to the core
 
   // Oriented look rotation for a jet: nose (-Z) → fwd, +Y → up, plus a `bank`
   // roll about the nose so the craft banks into its turns. Returns {qx,qy,qz,qw}.
@@ -6203,6 +6205,10 @@ console.log("[AIOSmux] Presence WebSocket ready at /ws/presence");
       burnOff: Math.random() * Math.PI * 2,
       turnDir: Math.random() < 0.5 ? 1 : -1,
     };
+    // Initial strafing aim: a direction perpendicular to the spawn→core approach.
+    { const iy = a.fy; let ux = 0, uy = 1, uz = 0; if (Math.abs(iy) > 0.9) { ux = 1; uy = 0; }
+      let px = a.fy * uz - a.fz * uy, py = a.fz * ux - a.fx * uz, pz = a.fx * uy - a.fy * ux;
+      const pl = Math.hypot(px, py, pz) || 1; a.rax = px / pl; a.ray = py / pl; a.raz = pz / pl; }
     _dtcAgents.set(cfg.id, a);
     _gameState.teams[cfg.id] = cfg.team;
     _presenceMap.set(cfg.id, Object.assign(_presence(a), { kills: 0, score: 0, roundScore: 0 }));
@@ -6283,12 +6289,26 @@ console.log("[AIOSmux] Presence WebSocket ready at /ws/presence");
       // ── Pick a goal point ───────────────────────────────────────────────
       let gx, gy, gz;
       if (team === "ATTACKER") {
-        // Strafe the core: aim at a slowly-orbiting point near it so the jet
-        // arcs past and comes back around for another pass (it never stops).
-        a.ang += a.turnDir * 0.15 * dt;
-        gx = Math.cos(a.ang) * 1400;
-        gy = 700 * Math.sin(a.phase * 0.5);
-        gz = Math.sin(a.ang) * 1400;
+        // Straight strafing runs: fly a straight line that GRAZES the core at the
+        // standoff distance (aim at a fixed point ~2400au off-centre, not dead
+        // centre, so a slow-turning jet never dives through). Then egress straight
+        // out to the far reaches, come about, and start a fresh run. No floating.
+        const dcore = Math.hypot(a.x, a.y, a.z) || 1;
+        if (a.egress) {
+          if (dcore > 24000) {
+            a.egress = false; // begin a new run — pick a strafing aim point off the core
+            const il = Math.hypot(a.x, a.y, a.z) || 1;
+            const ix = -a.x / il, iy = -a.y / il, iz = -a.z / il; // inward (toward core)
+            let ux = 0, uy = 1, uz = 0; if (Math.abs(iy) > 0.9) { ux = 1; uy = 0; }
+            let px = iy * uz - iz * uy, py = iz * ux - ix * uz, pz = ix * uy - iy * ux; // ⊥ inward
+            const pl = Math.hypot(px, py, pz) || 1;
+            a.rax = px / pl; a.ray = py / pl; a.raz = pz / pl;
+          }
+          gx = (a.x / dcore) * 44000; gy = (a.y / dcore) * 44000; gz = (a.z / dcore) * 44000;
+        } else {
+          if (dcore < CORE_STANDOFF + 600) a.egress = true; // pull out just past standoff
+          gx = a.rax * 2400; gy = a.ray * 2400; gz = a.raz * 2400; // grazing point, never dead centre
+        }
       } else {
         // Defender: pursue the nearest attacker (dogfight); patrol if the sky is clear.
         const tgt = _nearestEnemy(a, team);
@@ -6322,6 +6342,12 @@ console.log("[AIOSmux] Presence WebSocket ready at /ws/presence");
       a.fx = fx; a.fy = fy; a.fz = fz;
       // ── Constant forward flight — never stops, never reverses ───────────
       a.x += fx * CRUISE * dt; a.y += fy * CRUISE * dt; a.z += fz * CRUISE * dt;
+      // Gentle standoff insurance (no teleport): if an attacker somehow dips inside
+      // the standoff, ease it back out along the radius so it never sits on the core.
+      if (team === "ATTACKER") {
+        const dc = Math.hypot(a.x, a.y, a.z);
+        if (dc < CORE_STANDOFF) { const k = (CORE_STANDOFF * 0.9 + dc * 0.1) / (dc || 1); a.x *= k; a.y *= k; a.z *= k; }
+      }
       // ── Smooth roll into the turn ───────────────────────────────────────
       a.bank += (bankTarget - a.bank) * 0.12;
       const q = _lookQuat(fx, fy, fz, a.bank);

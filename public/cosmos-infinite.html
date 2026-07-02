@@ -55420,8 +55420,8 @@
       }
       #spec-minimap-wrap {
         position: fixed;
-        bottom: 14px;
-        left: 14px;
+        top: 60px;      /* top-left, clear of the bottom joysticks */
+        left: 56px;     /* right of the top-left button column */
         display: none;
         flex-direction: column;
         align-items: center;
@@ -55539,18 +55539,18 @@
       /* Defend the Core: attacker-approaching alert (defender side) */
       #dtc-core-approach {
         position: fixed;
-        top: 92px;
+        top: 40px;
         left: 50%;
         transform: translateX(-50%);
         display: none;
         align-items: center;
-        gap: 9px;
-        padding: 7px 18px;
+        gap: 6px;
+        padding: 3px 10px;
         border-radius: 4px;
         font-family: monospace;
-        font-size: 13px;
-        font-weight: 800;
-        letter-spacing: 2px;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 1px;
         color: #ffd24a;
         background: rgba(60,30,0,0.62);
         border: 1.5px solid rgba(255,170,40,0.7);
@@ -55693,13 +55693,18 @@
       .dtc-hist-top { color: #a8c0d8; font-size: 11px; opacity: 0.85; text-align: right; }
       #dtc-history-empty { text-align: center; color: #7f93aa; padding: 24px 0; font-size: 12px; }
       #dtc-team-badge {
+        position: fixed;      /* always visible so you know your team colour */
+        top: 44px;
+        left: 56px;
+        z-index: 5101;
         font-family: monospace;
-        font-size: 15px;
+        font-size: 13px;
         font-weight: 900;
-        letter-spacing: 3px;
-        padding: 6px 20px;
+        letter-spacing: 2px;
+        padding: 4px 12px;
         border-radius: 3px;
         display: none;
+        pointer-events: none;
         animation: dtc-badge-in 0.5s cubic-bezier(0.22,1,0.36,1) both;
       }
       #dtc-team-badge.attacker {
@@ -55724,10 +55729,6 @@
         #dtc-ready-wrap { bottom: 140px; }
         #minimap-toggle-btn { top: 52px; left: 8px; }
         #autopilot-btn { top: 96px; left: 8px; }
-        /* Radar/minimap: on mobile the default bottom-left sits UNDER the left
-           joystick — move it to the mid-left, clear of joysticks + HUD. It opens
-           on tap and stays open until tapped closed (no auto-hide). */
-        #spec-minimap-wrap { bottom: auto !important; top: 188px !important; left: 8px !important; }
       }
 
       /* ── Core health bar ────────────────────────────────────────────────── */
@@ -55978,9 +55979,12 @@
           var THREE = AFRAME.THREE;
           var g = new THREE.Group();
           var hex = parseInt(color.replace("#", ""), 16);
+          /* Solid hull — opaque, normal blending, writes depth so the craft reads
+             as a real ship rather than a semi-transparent additive ghost. The
+             glowing accents (nacelles, lights, shield, glow beacon) stay additive. */
           function _m(c, op) {
-            return new THREE.MeshBasicMaterial({ color: c, transparent: true, opacity: op,
-              depthWrite: false, blending: THREE.AdditiveBlending, side: THREE.DoubleSide });
+            return new THREE.MeshBasicMaterial({ color: c, transparent: false, opacity: 1,
+              depthWrite: true, side: THREE.DoubleSide });
           }
           /* ── FUSELAGE ── */
           var fGeo = new THREE.CylinderGeometry(0.9, 0.3, 13, 8);
@@ -58282,7 +58286,7 @@
       .ck-disp span { display: block; font-size: 10px; color: rgba(0,205,255,0.72); }
       /* Radar */
       #ck-radar {
-        display: none;
+        display: none !important; /* round cockpit radar removed — minimap covers it */
         position: fixed; bottom: 50px; right: 128px;
         width: 72px; height: 72px;
         pointer-events: none; z-index: 4100;
