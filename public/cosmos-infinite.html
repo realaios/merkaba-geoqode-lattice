@@ -55880,7 +55880,11 @@
         var _myId = null;
         var _ghostMap = {}; // id -> { el, group, ts, isAgent, health, score, kills, pos, targetPos, quat, targetQuat, team }
         var _ghostScene = null; // a-entity container for ghosts
-        var _myCallsign = "PILOT-" + Math.random().toString(36).slice(2, 5).toUpperCase();
+        /* Callsign: prefer a previously-claimed identity on this device, else a
+           fresh anonymous callsign. Claiming is optional (see _claimCallsign). */
+        var _myCallsign = localStorage.getItem("pilot-callsign") || ("PILOT-" + Math.random().toString(36).slice(2, 5).toUpperCase());
+        var _pilotKey = localStorage.getItem("pilot-key") || null; // secret; only stored locally after claim/restore
+        var _callsignClaimed = false; // set true once this session is authenticated for _myCallsign
         var _gameMode = new URLSearchParams(location.search).get('mode'); // 'dtc' | 'spectate' | null
         var _spectatorMode = (_gameMode === 'spectate');
         /* Defend the Core runs 24/7. Always surface the JOIN button (except for
@@ -56281,6 +56285,62 @@
             var btn = document.getElementById('dtc-ready-btn');
             if (btn) btn.classList.add('hidden');
           }
+        };
+
+        /* ── Optional pilot identity ("Pilot Key") — anonymous entry, opt-in memory ── */
+        window._claimCallsign = function() {
+          var el = document.getElementById('opt-callsign');
+          if (el && el.value.trim()) _myCallsign = el.value.trim();
+          if (_ws && _ws.readyState === 1) _ws.send(JSON.stringify({ type: 'claim', name: _myCallsign }));
+        };
+        window._restoreCallsign = function() {
+          var nEl = document.getElementById('opt-restore-name');
+          var kEl = document.getElementById('opt-restore-key');
+          var n = nEl && nEl.value.trim(), k = kEl && kEl.value.trim();
+          if (!n || !k) { window._onIdentityError({ reason: 'noinput' }); return; }
+          if (_ws && _ws.readyState === 1) _ws.send(JSON.stringify({ type: 'restore', name: n, key: k }));
+        };
+        window._forgetIdentity = function() {
+          localStorage.removeItem('pilot-key'); localStorage.removeItem('pilot-callsign');
+          _pilotKey = null; _callsignClaimed = false;
+          window._updateClaimStatus();
+          _addFeedEntry('Identity forgotten on this device', false);
+        };
+        window._copyPilotKey = function() {
+          var kv = document.getElementById('opt-key-val'); if (!kv) return;
+          kv.focus(); kv.select();
+          var done = function() { var b = document.getElementById('opt-key-copy'); if (b) { var o = b.textContent; b.textContent = 'COPIED'; setTimeout(function(){ b.textContent = o; }, 1500); } };
+          if (navigator.clipboard) navigator.clipboard.writeText(kv.value).then(done).catch(function(){ try{ document.execCommand('copy'); done(); }catch(_){} });
+          else { try { document.execCommand('copy'); done(); } catch (_) {} }
+        };
+        window._updateClaimStatus = function() {
+          var st = document.getElementById('opt-claim-status');
+          if (st) {
+            st.classList.remove('claimed', 'err');
+            if (_callsignClaimed) { st.textContent = '✓ Claimed — synced across devices'; st.classList.add('claimed'); }
+            else { st.textContent = 'Anonymous — claim to keep your callsign & stats'; }
+          }
+          var cb = document.getElementById('opt-claim-btn');
+          if (cb) cb.style.display = _callsignClaimed ? 'none' : 'block';
+          var fb = document.getElementById('opt-forget-btn');
+          if (fb) fb.style.display = _callsignClaimed ? 'block' : 'none';
+        };
+        window._onIdentityClaimed = function(msg) {
+          if (!msg.key) return; // 'already' claimed → nothing new to reveal
+          var kw = document.getElementById('opt-key-wrap');
+          var kv = document.getElementById('opt-key-val');
+          if (kv) kv.value = msg.key;
+          if (kw) kw.style.display = 'block';
+        };
+        window._onIdentityError = function(msg) {
+          var m = msg.reason === 'taken' ? 'That callsign is already claimed — pick another, or restore it with its Pilot Key.'
+                : msg.reason === 'badkey' ? 'Wrong Pilot Key for that callsign.'
+                : msg.reason === 'unknown' ? 'That callsign has not been claimed yet.'
+                : msg.reason === 'noinput' ? 'Enter both the callsign and its Pilot Key.'
+                : 'Identity error.';
+          var st = document.getElementById('opt-claim-status');
+          if (st) { st.classList.remove('claimed'); st.classList.add('err'); st.textContent = '⚠ ' + m; }
+          _addFeedEntry('⚠ ' + m, false);
         };
 
         window._shareDtc = function() {
@@ -56760,9 +56820,17 @@
                 } else if (_csIn && !_csIn.value) {
                   _csIn.value = _myCallsign;
                 }
-                /* Send callsign after welcome */
-                if (_ws && _ws.readyState === 1) _ws.send(JSON.stringify({ type: "callsign", name: _myCallsign }));
+                /* Send callsign after welcome — or silently re-authenticate a
+                   claimed identity so stats/name follow the pilot across sessions. */
+                if (_ws && _ws.readyState === 1) {
+                  if (_pilotKey && _myCallsign) {
+                    _ws.send(JSON.stringify({ type: "restore", name: _myCallsign, key: _pilotKey }));
+                  } else {
+                    _ws.send(JSON.stringify({ type: "callsign", name: _myCallsign }));
+                  }
+                }
                 _updateFighterHUD();
+                if (window._updateClaimStatus) window._updateClaimStatus();
                 /* Restore team assignment on reconnect (server sends team in welcome) */
                 if (msg.team) {
                   _myTeam = msg.team;
@@ -57223,6 +57291,38 @@
                   }
                   window._lastCoreAlertHealth = h;
                 })();
+                break;
+
+              case 'claimed':
+                /* Callsign reserved. Persist the one-time key locally + show it once. */
+                _myCallsign = msg.callsign || _myCallsign;
+                _callsignClaimed = true;
+                if (msg.key) {
+                  _pilotKey = msg.key;
+                  localStorage.setItem('pilot-callsign', _myCallsign);
+                  localStorage.setItem('pilot-key', _pilotKey);
+                }
+                localStorage.setItem('pilot-callsign', _myCallsign);
+                if (window._onIdentityClaimed) window._onIdentityClaimed(msg);
+                if (window._updateClaimStatus) window._updateClaimStatus();
+                _updateFighterHUD();
+                _addFeedEntry('✓ CALLSIGN CLAIMED — ' + _myCallsign, false);
+                break;
+
+              case 'restored':
+                /* Re-authenticated — name + persistent stats are ours again. */
+                _myCallsign = msg.callsign || _myCallsign;
+                _callsignClaimed = true;
+                localStorage.setItem('pilot-callsign', _myCallsign);
+                if (typeof msg.kills === 'number') _myKills = msg.kills;
+                if (typeof msg.score === 'number') _myScore = msg.score;
+                var _csR = document.getElementById('opt-callsign'); if (_csR) _csR.value = _myCallsign;
+                if (window._updateClaimStatus) window._updateClaimStatus();
+                _updateFighterHUD();
+                break;
+
+              case 'claimError':
+                if (window._onIdentityError) window._onIdentityError(msg);
                 break;
             }
           };
@@ -57876,6 +57976,33 @@
         padding: 3px 0;
       }
       .opts-label { color: #a8cfee; font-size: 12px; cursor: pointer; flex: 1; }
+      /* Optional pilot identity (Pilot Key) controls */
+      .opts-identity { padding: 4px 2px 2px; font-family: monospace; }
+      #opt-claim-status { font-size: 11px; color: #8fb6d8; margin-bottom: 7px; letter-spacing: 0.5px; }
+      #opt-claim-status.claimed { color: #7CFFB0; }
+      #opt-claim-status.err { color: #ff8a6a; }
+      #opt-claim-btn, #opt-forget-btn, .opt-restore button, #opt-key-copy {
+        background: rgba(0,10,30,0.78);
+        border: 1px solid rgba(0,212,255,0.35);
+        color: #00d4ff;
+        font-family: monospace;
+        font-size: 0.62rem;
+        letter-spacing: 0.08em;
+        padding: 6px 12px;
+        border-radius: 4px;
+        cursor: pointer;
+        outline: none;
+      }
+      #opt-claim-btn { display: block; width: 100%; margin-bottom: 6px; border-color: rgba(90,255,160,0.5); color: #9dffca; }
+      #opt-claim-btn:hover, .opt-restore button:hover, #opt-key-copy:hover { box-shadow: 0 0 10px rgba(0,180,255,0.35); }
+      #opt-forget-btn { display: none; width: 100%; margin-top: 8px; border-color: rgba(255,120,90,0.35); color: #ffa088; font-size: 0.58rem; }
+      #opt-key-wrap { display: none; margin: 4px 0 8px; padding: 8px; background: rgba(0,20,10,0.5); border: 1px solid rgba(90,255,160,0.35); border-radius: 5px; }
+      .opt-key-note { font-size: 10px; color: #9dffca; margin-bottom: 6px; line-height: 1.35; }
+      #opt-key-val { flex: 1; background: rgba(0,0,0,0.6); border: 1px solid rgba(90,255,160,0.5); border-radius: 4px; color: #d6ffe8; font-size: 12px; padding: 5px 7px; outline: none; font-family: monospace; }
+      .opt-restore { margin-top: 4px; }
+      .opt-restore summary { font-size: 11px; color: #8fb6d8; cursor: pointer; padding: 3px 0; }
+      .opt-restore input { display: block; width: 100%; margin: 5px 0; background: rgba(0,0,0,0.55); border: 1.5px solid rgba(0,212,255,0.45); border-radius: 5px; color: #00d4ff; font-size: 12px; padding: 5px 8px; outline: none; font-family: monospace; box-sizing: border-box; }
+      .opt-restore button { width: 100%; }
       .opts-toggle { position: relative; width: 36px; height: 20px; flex-shrink: 0; }
       .opts-toggle input { opacity: 0; width: 0; height: 0; }
       .opts-slider {
@@ -58289,6 +58416,25 @@
         <label class="opts-label" for="opt-callsign">Fighter Name</label>
         <input id="opt-callsign" type="text" maxlength="12" placeholder="PILOT-XXX"
           style="background:rgba(0,0,0,0.55);border:1.5px solid rgba(0,212,255,0.5);border-radius:6px;color:#00d4ff;font-size:13px;padding:4px 8px;width:96px;outline:none;font-family:monospace;">
+      </div>
+      <!-- Optional pilot identity: anonymous entry, opt-in memory (Pilot Key) -->
+      <div class="opts-identity">
+        <div id="opt-claim-status">Anonymous — claim to keep your callsign &amp; stats</div>
+        <button id="opt-claim-btn" onclick="window._claimCallsign()">&#x1F511; CLAIM CALLSIGN</button>
+        <div id="opt-key-wrap">
+          <div class="opt-key-note">YOUR PILOT KEY — save it to fly as this callsign on any device (shown once):</div>
+          <div style="display:flex;gap:6px;">
+            <input id="opt-key-val" readonly onclick="this.select()">
+            <button id="opt-key-copy" onclick="window._copyPilotKey()">COPY</button>
+          </div>
+        </div>
+        <details class="opt-restore">
+          <summary>Restore on this device</summary>
+          <input id="opt-restore-name" type="text" maxlength="16" placeholder="CALLSIGN">
+          <input id="opt-restore-key" type="text" placeholder="PILOT KEY">
+          <button onclick="window._restoreCallsign()">RESTORE</button>
+        </details>
+        <button id="opt-forget-btn" onclick="window._forgetIdentity()">Forget identity on this device</button>
       </div>
       <h3>Defend the Core</h3>
       <div class="opts-row" style="justify-content:space-between;align-items:center;">

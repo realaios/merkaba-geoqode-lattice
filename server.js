@@ -7,6 +7,7 @@ import { WebSocketServer } from "ws";
 import { readFileSync, writeFileSync, existsSync, mkdirSync, readdirSync } from "fs";
 import { extname, join, dirname, resolve, relative, sep } from "path";
 import { fileURLToPath } from "url";
+import { createHash, randomBytes } from "crypto";
 import { StormAdapter } from "./geo/bridge/storm-adapter.js";
 import { MerkabaBridge } from "./geo/bridge/merkaba-bridge.js";
 import { MERKABA_LATTICE } from "./geo/certification/enterprise-certifier.js";
@@ -5709,6 +5710,21 @@ function _saveScores() {
   try { writeFileSync(SCORES_FILE, JSON.stringify(_dogfightScores)); } catch (_) {}
 }
 
+// ── Optional pilot identity ("Pilot Key") ─────────────────────────────────────
+// Frictionless-but-identifiable: entry is always anonymous. A pilot may OPTIONALLY
+// *claim* their callsign, which reserves the name and issues a secret key. On any
+// device they can *restore* with callsign+key to reclaim their persistent stats
+// (stats already live in _dogfightScores keyed by callsign). We store only a hash
+// of the key. Claiming never gates entry — only protects a name.
+const IDENTITIES_FILE = join(__dirname_static, "data", "dtc-identities.json");
+let _identities = {};
+try { if (existsSync(IDENTITIES_FILE)) _identities = JSON.parse(readFileSync(IDENTITIES_FILE, "utf8")); } catch (_) {}
+function _saveIdentities() {
+  try { writeFileSync(IDENTITIES_FILE, JSON.stringify(_identities)); } catch (_) {}
+}
+const _hashKey = (k) => createHash("sha256").update(String(k)).digest("hex");
+const _normName = (n) => String(n || "").slice(0, 16).trim();
+
 // ── WebSocket Server ──────────────────────────────────────────────────────────
 const _wss = new WebSocketServer({ noServer: true });
 
@@ -5861,6 +5877,7 @@ function _endRound(winner) {
 _wss.on("connection", (ws) => {
   const id = Math.random().toString(36).slice(2, 10);
   ws._presenceId = id;
+  ws._authedCallsign = null; // set once this session claims/restores a callsign
 
   // Send welcome with own ID + current beacon + all present explorers
   const beaconGalaxy = _GEO_GALAXIES[_beaconIdx];
@@ -5932,10 +5949,49 @@ _wss.on("connection", (ws) => {
       _broadcast({ type: "pos", ...entry }, id);
     } else if (msg.type === "callsign") {
       const entry = _presenceMap.get(id);
+      const want = _normName(msg.name);
+      if (!want) return;
+      // A claimed name is protected: an un-authenticated session can't wear it.
+      // This never blocks entry — only the name choice.
+      if (_identities[want] && ws._authedCallsign !== want) {
+        ws.send(JSON.stringify({ type: "claimError", reason: "taken", callsign: want }));
+        return;
+      }
       if (entry) {
-        entry.name = String(msg.name || "").slice(0, 16) || entry.name;
+        entry.name = want || entry.name;
         _broadcast({ type: "callsign", id, name: entry.name }, id);
       }
+    } else if (msg.type === "claim") {
+      // Reserve the caller's callsign and issue a one-time secret key.
+      const want = _normName(msg.name) || _normName(_presenceMap.get(id)?.name);
+      if (!want) { ws.send(JSON.stringify({ type: "claimError", reason: "noname" })); return; }
+      if (_identities[want] && ws._authedCallsign !== want) {
+        ws.send(JSON.stringify({ type: "claimError", reason: "taken", callsign: want })); return;
+      }
+      if (_identities[want] && ws._authedCallsign === want) {
+        ws.send(JSON.stringify({ type: "claimed", callsign: want, already: true })); return;
+      }
+      const key = randomBytes(15).toString("base64url"); // ~20-char Pilot Key
+      _identities[want] = { keyHash: _hashKey(key), created: Date.now() };
+      _saveIdentities();
+      ws._authedCallsign = want;
+      const e = _presenceMap.get(id); if (e) e.name = want;
+      ws.send(JSON.stringify({ type: "claimed", callsign: want, key }));
+      _broadcast({ type: "callsign", id, name: want }, id);
+    } else if (msg.type === "restore") {
+      // Reclaim a callsign (and its persistent stats) on any device via callsign+key.
+      const want = _normName(msg.name);
+      const rec = _identities[want];
+      if (!rec) { ws.send(JSON.stringify({ type: "claimError", reason: "unknown", callsign: want })); return; }
+      if (_hashKey(msg.key) !== rec.keyHash) {
+        ws.send(JSON.stringify({ type: "claimError", reason: "badkey", callsign: want })); return;
+      }
+      ws._authedCallsign = want;
+      rec.lastSeen = Date.now(); _saveIdentities();
+      const e = _presenceMap.get(id); if (e) e.name = want;
+      const s = _dogfightScores[want] || { kills: 0, score: 0 };
+      ws.send(JSON.stringify({ type: "restored", callsign: want, kills: s.kills || 0, score: s.score || 0 }));
+      _broadcast({ type: "callsign", id, name: want }, id);
     } else if (msg.type === "fire") {
       _broadcast(
         {
