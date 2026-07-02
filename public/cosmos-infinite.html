@@ -11124,13 +11124,37 @@
           if (!rig || !rig.object3D) return;
           var rigO = rig.object3D;
 
+          /* ── Deterministic fighter-jet TOUR flight ──────────────────────────
+             Pick a Merkaba waypoint, turn the nose toward it at a limited rate
+             (banking into the turn), and thrust forward — always facing its
+             trajectory. This replaces the untrained-FLM output that made the
+             craft spin in place. */
+          var tgt = this._tourTarget(rigO, THREE);
+          if (tgt) {
+            var d = this._v0 || (this._v0 = new THREE.Vector3());
+            d.subVectors(tgt, rigO.position).normalize();
+            var fwd = (this._v1 || (this._v1 = new THREE.Vector3())).set(0, 0, -1).applyQuaternion(rigO.quaternion);
+            /* bank ∝ how much horizontal turn is needed */
+            var cross = (this._v2 || (this._v2 = new THREE.Vector3())).crossVectors(fwd, d);
+            var bank = Math.max(-0.9, Math.min(0.9, -cross.y * 2.2));
+            var up = (this._v3 || (this._v3 = new THREE.Vector3())).set(0, 1, 0);
+            up.applyQuaternion((this._bq || (this._bq = new THREE.Quaternion())).setFromAxisAngle(d, bank));
+            var m = (this._m0 || (this._m0 = new THREE.Matrix4())).lookAt(rigO.position, tgt, up);
+            var desiredQ = (this._dq || (this._dq = new THREE.Quaternion())).setFromRotationMatrix(m);
+            rigO.quaternion.rotateTowards(desiredQ, 0.9 * dt); /* limited turn rate → smooth banked arc */
+            var nf = (this._v4 || (this._v4 = new THREE.Vector3())).set(0, 0, -1).applyQuaternion(rigO.quaternion);
+            var _sm = window._speedSetting === "fast" ? 10 : window._speedSetting === "medium" ? 4 : 1;
+            rigO.position.addScaledVector(nf, _sm * 500 * dt); /* constant forward cruise */
+            if (typeof window._updateScaleHUD === "function") window._updateScaleHUD(rigO.position.length(), null);
+          }
+
+          /* Keep the FLM learning in the background (narrative + it imitates the
+             good flight above). */
           var obs = this._observe(rigO, THREE);
           var action = this.flm.forward(obs);
-          this._applyAction(action, rigO, THREE, dt);
           var reward = this._reward(rigO, THREE);
           this._traj.push({ o: Array.from(obs), a: Array.from(action), r: reward });
           this._steps++;
-
           if (this._steps >= 200) {
             this.flm.trainREINFORCE(this._traj, 0.0008, 0.97);
             this._traj = []; this._steps = 0;
@@ -11138,6 +11162,36 @@
             this.flm.save();
             this._toast("R2 · FLM UPDATE #" + this._trainCount);
           }
+        },
+
+        _tourTarget: function (rigO, THREE) {
+          /* Refresh the waypoint list occasionally. If there are several Merkaba
+             cores, tour between them; if only one (or origin), build a ring of
+             waypoints around it so the craft actually flies a grand tour. */
+          if (!this._tourPts || (this._steps - (this._tourCacheStep || -9999)) > 400) {
+            this._tourCacheStep = this._steps;
+            this._nearestMerkaba(rigO.position, THREE); /* populates this._merkabas */
+            var list = this._merkabas || [];
+            if (list.length >= 2) {
+              this._tourPts = list.slice();
+            } else {
+              var c = list[0] || new THREE.Vector3(0, 0, 0);
+              this._tourPts = [];
+              for (var i = 0; i < 6; i++) {
+                var a = (i / 6) * Math.PI * 2;
+                this._tourPts.push(new THREE.Vector3(
+                  c.x + Math.cos(a) * 15000, c.y + Math.sin(a * 2) * 4000, c.z + Math.sin(a) * 15000));
+              }
+            }
+          }
+          if (!this._tourPts.length) return null;
+          if (this._tourIdx == null) this._tourIdx = 0;
+          var t = this._tourPts[this._tourIdx % this._tourPts.length];
+          if (rigO.position.distanceTo(t) < 3500) { /* reached → next waypoint */
+            this._tourIdx = (this._tourIdx + 1) % this._tourPts.length;
+            t = this._tourPts[this._tourIdx];
+          }
+          return t;
         },
 
         _observe: function (rigO, THREE) {

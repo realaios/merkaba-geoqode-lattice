@@ -6020,7 +6020,7 @@ _wss.on("connection", (ws) => {
       // An attacker shot the Merkaba Core — drain its health (rate-limited by the
       // client's 400ms fire cooldown) and reward the shooter a little.
       if (_gameState.phase === "active" && _gameState.teams[id] === "ATTACKER") {
-        _gameState.coreHealth = Math.max(0, _gameState.coreHealth - 0.6);
+        _gameState.coreHealth = Math.max(0, _gameState.coreHealth - 1.0);
         const e = _presenceMap.get(id);
         if (e) { e.score = (e.score || 0) + 3; e.roundScore = (e.roundScore || 0) + 3; }
         const h = _gameState.coreHealth;
