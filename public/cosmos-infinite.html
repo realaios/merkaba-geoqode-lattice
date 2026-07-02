@@ -3859,7 +3859,7 @@
 
       <!-- Solar system removed -->
       <!-- Camera rig -->
-      <a-entity id="cameraRig" position="0 24 150">
+      <a-entity id="cameraRig" position="0 900 8000">
         <a-camera
           wasd-controls="acceleration: 20000; fly: true"
           look-controls="pointerLockEnabled: false; touchEnabled: false; magicWindowTrackingEnabled: false"
@@ -56073,7 +56073,7 @@
                Scale ships up so they read as real craft at combat range; agents
                patrol/attack from farther out, so they get the largest boost. */
             var group = _makeFighterAvatar(color);
-            var _shipScale = isAgent ? 36 : 18; // 48000au arena — ships must be large to read at combat range
+            var _shipScale = isAgent ? 360 : 180; // 48000au arena — capital-ship sized so they read across the battlefield
             group.scale.setScalar(_shipScale);
             if (el.object3D) {
               el.object3D.add(group);
@@ -56087,8 +56087,8 @@
             label.setAttribute("value", callsign);
             label.setAttribute("align", "center");
             label.setAttribute("color", color);
-            label.setAttribute("scale", (isAgent ? "26 26 26" : "16 16 16"));
-            label.setAttribute("position", "0 " + (7 * _shipScale) + " 0");
+            label.setAttribute("scale", (isAgent ? "220 220 220" : "120 120 120"));
+            label.setAttribute("position", "0 " + (3.2 * _shipScale) + " 0");
             label.setAttribute("look-at", "[camera]");
             el.appendChild(label);
 
@@ -57573,12 +57573,15 @@
            target is on-screen, off-screen, or behind you) and turns green when
            you're lined up on it. */
         (function _enemyArrowLoop() {
-          var el = document.getElementById('enemy-arrow');
-          var tip = document.getElementById('enemy-arrow-tip');
-          var dst = document.getElementById('enemy-arrow-dist');
-          if (!el || !tip) return;
+          /* NOTE: look up the elements INSIDE the loop — #enemy-arrow is defined
+             later in the HTML than this script runs, so caching it here would be
+             null and the loop would never draw (this was the "no arrow" bug). */
           var _tmp = null, _cq = null, _cp = null;
           setInterval(function () {
+            var el = document.getElementById('enemy-arrow');
+            var tip = document.getElementById('enemy-arrow-tip');
+            var dst = document.getElementById('enemy-arrow-dist');
+            if (!el || !tip) return;
             if (_spectatorMode) { el.style.display = 'none'; return; }
             var scn = document.querySelector('a-scene');
             if (!scn || !scn.camera) { el.style.display = 'none'; return; }
@@ -58606,29 +58609,29 @@
           scn.object3D.add(grp);
           /* Glowing heart */
           var coreMat = mat(0x00ff88, 0.9, false);
-          var core = new THREE.Mesh(new THREE.IcosahedronGeometry(90, 1), coreMat); grp.add(core);
+          var core = new THREE.Mesh(new THREE.IcosahedronGeometry(900, 1), coreMat); grp.add(core);
           var haloMat = mat(0x00ff88, 0.18, false, true);
-          var halo = new THREE.Mesh(new THREE.SphereGeometry(220, 20, 16), haloMat); grp.add(halo);
+          var halo = new THREE.Mesh(new THREE.SphereGeometry(2200, 20, 16), haloMat); grp.add(halo);
           /* Merkaba star tetrahedron — two counter-rotating tetrahedra */
           var upMat = mat(0x8fffcf, 0.6, true);
-          var tetU = new THREE.Mesh(new THREE.TetrahedronGeometry(300), upMat); grp.add(tetU);
+          var tetU = new THREE.Mesh(new THREE.TetrahedronGeometry(3000), upMat); grp.add(tetU);
           var dnMat = mat(0x00ddff, 0.6, true);
-          var tetD = new THREE.Mesh(new THREE.TetrahedronGeometry(300), dnMat); tetD.rotation.x = Math.PI; grp.add(tetD);
+          var tetD = new THREE.Mesh(new THREE.TetrahedronGeometry(3000), dnMat); tetD.rotation.x = Math.PI; grp.add(tetD);
           /* Outer lattice shell */
           var shellMat = mat(0x00ff88, 0.32, true);
-          var shell = new THREE.Mesh(new THREE.IcosahedronGeometry(420, 1), shellMat); grp.add(shell);
+          var shell = new THREE.Mesh(new THREE.IcosahedronGeometry(4200, 1), shellMat); grp.add(shell);
           /* Gyroscopic rings */
           var rings = [];
-          [[520, 'x'], [560, 'y'], [600, 'z']].forEach(function (rc) {
+          [[5200, 'x'], [5600, 'y'], [6000, 'z']].forEach(function (rc) {
             var rm = mat(0x00ddff, 0.5, false);
-            var r = new THREE.Mesh(new THREE.TorusGeometry(rc[0], 8, 8, 64), rm);
+            var r = new THREE.Mesh(new THREE.TorusGeometry(rc[0], 50, 8, 72), rm);
             if (rc[1] === 'x') r.rotation.x = Math.PI / 2;
             else if (rc[1] === 'y') r.rotation.y = Math.PI / 2;
             grp.add(r); rings.push(r);
           });
           /* Low-health shockwave (reused) */
           var shockMat = mat(0xff3300, 0, false);
-          var shock = new THREE.Mesh(new THREE.TorusGeometry(380, 9, 8, 64), shockMat);
+          var shock = new THREE.Mesh(new THREE.TorusGeometry(3800, 45, 8, 72), shockMat);
           shock.rotation.x = Math.PI / 2; shock.visible = false; grp.add(shock);
           var shockStart = -9999;
           function setColor(hex) { coreMat.color.setHex(hex); haloMat.color.setHex(hex); shellMat.color.setHex(hex); }
@@ -58689,7 +58692,7 @@
       <span id="spec-status"></span>
     </div>
     <!-- Minimap toggle button (regular pilots: N key / mobile tap) -->
-    <button id="minimap-toggle-btn" onclick="window._toggleMinimap(true)" title="Toggle minimap (N)">&#x1F5FA;</button>
+    <button id="minimap-toggle-btn" onclick="window._toggleMinimap()" title="Toggle radar (N)">&#x1F5FA;</button>
     <!-- How-to-play (DTC): one-time card + persistent help button -->
     <button id="dtc-help-btn" onclick="window._openHowto&&window._openHowto()" title="How to play">?</button>
     <div id="dtc-howto" onclick="if(event.target===this)window._closeHowto()">

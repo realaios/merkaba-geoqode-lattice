@@ -6153,12 +6153,13 @@ console.log("[AIOSmux] Presence WebSocket ready at /ws/presence");
 
   function _spawnPoint(team) {
     const ang = Math.random() * Math.PI * 2;
-    // 48000au arena: attackers stream in from the far reaches; defenders patrol
-    // a wide ring around the core. Big enough to fill the playable space.
-    const r = team === "ATTACKER" ? 8000 + Math.random() * 16000 : 3000 + Math.random() * 3000;
+    // 48000au arena: attackers stream in from across the far reaches; defenders
+    // patrol a wide ring. Spread wide (incl. big vertical spread) so the fleet
+    // fills the battlefield instead of clustering.
+    const r = team === "ATTACKER" ? 10000 + Math.random() * 38000 : 4000 + Math.random() * 10000;
     return {
       x: Math.cos(ang) * r,
-      y: (Math.random() - 0.5) * 120,
+      y: (Math.random() - 0.5) * 12000,
       z: Math.sin(ang) * r,
       ang,
     };
@@ -6273,16 +6274,16 @@ console.log("[AIOSmux] Presence WebSocket ready at /ws/presence");
         // Big attack runs across the 48000au arena: orbit while the radius dives
         // from the outer reaches toward the core and pulls back out; jink when a
         // defender closes in (evasive).
-        a.ang += a.turnDir * 0.18 * dt;
-        let r = Math.max(400, 7000 + 6600 * Math.sin(a.phase * 0.07)); // ~400..13600
+        a.ang += a.turnDir * 0.06 * dt;
+        let r = Math.max(1500, 18000 + 15000 * Math.sin(a.phase * 0.04)); // big slow sweeps ~3000..33000
         tx = Math.cos(a.ang) * r;
         tz = Math.sin(a.ang) * r;
-        ty = 1200 * Math.sin(a.phase * 0.4);
+        ty = 5000 * Math.sin(a.phase * 0.3);
         const foe = _nearestEnemy(a, team);
-        if (foe && foe.d < 5000) { // evasive jink perpendicular to the threat
+        if (foe && foe.d < 9000) { // evasive jink perpendicular to the threat
           const jx = -(foe.e.z - a.z), jz = foe.e.x - a.x;
           const jl = Math.hypot(jx, jz) || 1;
-          const j = 2600 * Math.sin(a.phase * 3) * a.turnDir;
+          const j = 6000 * Math.sin(a.phase * 1.5) * a.turnDir;
           tx += (jx / jl) * j; tz += (jz / jl) * j;
         }
       } else {
@@ -6301,17 +6302,17 @@ console.log("[AIOSmux] Presence WebSocket ready at /ws/presence");
           const w = 2000 * Math.sin(a.phase * 2.2);
           tx += (wx / wl) * w; tz += (wz / wl) * w;
         } else {
-          a.ang += a.turnDir * 0.13 * dt;
-          const r = 5000;
+          a.ang += a.turnDir * 0.05 * dt;
+          const r = 9000;
           tx = Math.cos(a.ang) * r;
           tz = Math.sin(a.ang) * r;
-          ty = 800 * Math.sin(a.phase);
+          ty = 3000 * Math.sin(a.phase);
         }
       }
       // Kinematic move with speed variation: afterburner when far, ease when close.
       const dx = tx - a.x, dy = ty - a.y, dz = tz - a.z;
       const dist = Math.hypot(dx, dy, dz) || 1;
-      let spd = 2200 + 2400 * Math.min(1, dist / 12000);
+      let spd = 110 + 130 * Math.min(1, dist / 12000); // ~20x slower — majestic capital-ship pace
       spd *= 0.92 + 0.13 * Math.sin(a.phase * 1.3 + a.burnOff);
       const step = Math.min(dist, spd * dt);
       const nfx = dx / dist, nfy = dy / dist, nfz = dz / dist; // heading (unit)
