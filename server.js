@@ -6121,6 +6121,13 @@ console.log("[AIOSmux] Presence WebSocket ready at /ws/presence");
   const FIRE_RANGE = 6000;    // engage enemies within this range (48000au arena)
   const KILL_RANGE = 1800;    // damage lands within this range
   const dt = TICK_MS / 1000;
+  // Realistic jet flight model: constant forward speed (never stops/reverses),
+  // heading turns toward the target at a limited rate (banked arcs, no snapping).
+  // TURN_RATE is well below the player's yaw (~1.9 rad/s) so a human can out-turn
+  // and get on a bot's tail — that's the chase-to-lock dogfight.
+  const CRUISE = 3000;        // au/s constant forward speed
+  const TURN_RATE = 0.85;     // rad/s max turn rate
+  const MAX_BANK = 1.05;      // bank into turns (~60°)
 
   // Oriented look rotation for a jet: nose (-Z) → fwd, +Y → up, plus a `bank`
   // roll about the nose so the craft banks into its turns. Returns {qx,qy,qz,qw}.
@@ -6188,9 +6195,11 @@ console.log("[AIOSmux] Presence WebSocket ready at /ws/presence");
       qx: 0, qy: 0, qz: 0, qw: 1,
       hp: 100, phase: Math.random() * Math.PI * 2,
       lastFire: 0, kills: 0,
-      // Flight dynamics (jet feel): heading history, smoothed bank, per-agent
-      // orbit direction + afterburner phase offset so they don't move in lockstep.
-      bank: 0, pfx: 0, pfy: 0, pfz: -1,
+      // Flight dynamics: fx/fy/fz = current heading (nose), bank = roll into turns.
+      bank: 0,
+      fx: -sp.x / (Math.hypot(sp.x, sp.y, sp.z) || 1),
+      fy: -sp.y / (Math.hypot(sp.x, sp.y, sp.z) || 1),
+      fz: -sp.z / (Math.hypot(sp.x, sp.y, sp.z) || 1),
       burnOff: Math.random() * Math.PI * 2,
       turnDir: Math.random() < 0.5 ? 1 : -1,
     };
@@ -6206,6 +6215,8 @@ console.log("[AIOSmux] Presence WebSocket ready at /ws/presence");
     const team = _gameState.teams[id] || a.baseTeam;
     const sp = _spawnPoint(team);
     a.x = sp.x; a.y = sp.y; a.z = sp.z; a.ang = sp.ang; a.hp = 100;
+    const _hl = Math.hypot(sp.x, sp.y, sp.z) || 1; // re-aim nose at the core
+    a.fx = -sp.x / _hl; a.fy = -sp.y / _hl; a.fz = -sp.z / _hl; a.bank = 0;
     const e = _presenceMap.get(id);
     if (e) { e.x = a.x; e.y = a.y; e.z = a.z; }
   };
@@ -6269,60 +6280,51 @@ console.log("[AIOSmux] Presence WebSocket ready at /ws/presence");
     _dtcAgents.forEach((a) => {
       const team = _gameState.teams[a.id] || a.baseTeam;
       a.phase += dt;
-      let tx, ty, tz;
+      // ── Pick a goal point ───────────────────────────────────────────────
+      let gx, gy, gz;
       if (team === "ATTACKER") {
-        // Big attack runs across the 48000au arena: orbit while the radius dives
-        // from the outer reaches toward the core and pulls back out; jink when a
-        // defender closes in (evasive).
-        a.ang += a.turnDir * 0.06 * dt;
-        let r = Math.max(1500, 18000 + 15000 * Math.sin(a.phase * 0.04)); // big slow sweeps ~3000..33000
-        tx = Math.cos(a.ang) * r;
-        tz = Math.sin(a.ang) * r;
-        ty = 5000 * Math.sin(a.phase * 0.3);
-        const foe = _nearestEnemy(a, team);
-        if (foe && foe.d < 9000) { // evasive jink perpendicular to the threat
-          const jx = -(foe.e.z - a.z), jz = foe.e.x - a.x;
-          const jl = Math.hypot(jx, jz) || 1;
-          const j = 6000 * Math.sin(a.phase * 1.5) * a.turnDir;
-          tx += (jx / jl) * j; tz += (jz / jl) * j;
-        }
+        // Strafe the core: aim at a slowly-orbiting point near it so the jet
+        // arcs past and comes back around for another pass (it never stops).
+        a.ang += a.turnDir * 0.15 * dt;
+        gx = Math.cos(a.ang) * 1400;
+        gy = 700 * Math.sin(a.phase * 0.5);
+        gz = Math.sin(a.ang) * 1400;
       } else {
-        // Defender: cut off the nearest attacker by aiming ~2500au core-ward of
-        // it (intercept its run), with a weaving pursuit so it reads as a
-        // dogfight rather than a beeline. Orbit standoff when the sky is clear.
+        // Defender: pursue the nearest attacker (dogfight); patrol if the sky is clear.
         const tgt = _nearestEnemy(a, team);
-        if (tgt) {
-          const ex = tgt.e.x, ey = tgt.e.y, ez = tgt.e.z;
-          const eL = Math.hypot(ex, ey, ez) || 1;
-          tx = ex - (ex / eL) * 2500;
-          ty = ey - (ey / eL) * 2500;
-          tz = ez - (ez / eL) * 2500;
-          const wx = -(tz - a.z), wz = tx - a.x; // lateral weave
-          const wl = Math.hypot(wx, wz) || 1;
-          const w = 2500 * Math.sin(a.phase * 2.2);
-          tx += (wx / wl) * w; tz += (wz / wl) * w;
-        } else {
-          a.ang += a.turnDir * 0.05 * dt;
-          const r = 8000;
-          tx = Math.cos(a.ang) * r;
-          tz = Math.sin(a.ang) * r;
-          ty = 3000 * Math.sin(a.phase);
-        }
+        if (tgt) { gx = tgt.e.x; gy = tgt.e.y; gz = tgt.e.z; }
+        else { a.ang += a.turnDir * 0.12 * dt; gx = Math.cos(a.ang) * 6000; gy = 900 * Math.sin(a.phase); gz = Math.sin(a.ang) * 6000; }
       }
-      // Kinematic move with speed variation: afterburner when far, ease when close.
-      const dx = tx - a.x, dy = ty - a.y, dz = tz - a.z;
-      const dist = Math.hypot(dx, dy, dz) || 1;
-      let spd = 3000 + 1800 * Math.min(1, dist / 12000); // 3000–4800 au/s ≈ player default (mobile medium)
-      spd *= 0.92 + 0.13 * Math.sin(a.phase * 1.3 + a.burnOff);
-      const step = Math.min(dist, spd * dt);
-      const nfx = dx / dist, nfy = dy / dist, nfz = dz / dist; // heading (unit)
-      a.x += nfx * step; a.y += nfy * step; a.z += nfz * step;
-      // Bank into the turn from the signed yaw change vs the previous heading.
-      const cpy = a.pfz * nfx - a.pfx * nfz; // (prevHeading × heading)·up
-      const targetBank = Math.max(-1.05, Math.min(1.05, cpy * 11)); // ≤ ~60°
-      a.bank += (targetBank - a.bank) * 0.25; // smooth to avoid jitter
-      a.pfx = nfx; a.pfy = nfy; a.pfz = nfz;
-      const q = _lookQuat(nfx, nfy, nfz, a.bank);
+      // ── Desired heading toward the goal ─────────────────────────────────
+      let ddx = gx - a.x, ddy = gy - a.y, ddz = gz - a.z;
+      const dl = Math.hypot(ddx, ddy, ddz) || 1;
+      ddx /= dl; ddy /= dl; ddz /= dl;
+      // ── Turn the nose toward it at a LIMITED rate (a banked arc, no snapping) ─
+      let fx = a.fx, fy = a.fy, fz = a.fz;
+      let d0 = Math.max(-1, Math.min(1, fx * ddx + fy * ddy + fz * ddz));
+      const turnAng = Math.acos(d0);
+      const maxTurn = TURN_RATE * dt;
+      let bankTarget = 0;
+      if (turnAng > 1e-4) {
+        let kx = fy * ddz - fz * ddy;   // rotation axis = heading × desired
+        let ky = fz * ddx - fx * ddz;
+        let kz = fx * ddy - fy * ddx;
+        let kl = Math.hypot(kx, ky, kz);
+        if (kl < 1e-6) { kx = 0; ky = 1; kz = 0; kl = 1; } // ~180° → turn about world-up
+        kx /= kl; ky /= kl; kz /= kl;
+        const th = Math.min(turnAng, maxTurn), c = Math.cos(th), s = Math.sin(th);
+        const cxx = ky * fz - kz * fy, cxy = kz * fx - kx * fz, cxz = kx * fy - ky * fx; // axis × heading
+        fx = fx * c + cxx * s; fy = fy * c + cxy * s; fz = fz * c + cxz * s;
+        const fl = Math.hypot(fx, fy, fz) || 1; fx /= fl; fy /= fl; fz /= fl;
+        // Bank into horizontal turns (axis mostly vertical → hard bank; pitch → none).
+        bankTarget = Math.max(-MAX_BANK, Math.min(MAX_BANK, -ky * (th / maxTurn) * 1.5));
+      }
+      a.fx = fx; a.fy = fy; a.fz = fz;
+      // ── Constant forward flight — never stops, never reverses ───────────
+      a.x += fx * CRUISE * dt; a.y += fy * CRUISE * dt; a.z += fz * CRUISE * dt;
+      // ── Smooth roll into the turn ───────────────────────────────────────
+      a.bank += (bankTarget - a.bank) * 0.12;
+      const q = _lookQuat(fx, fy, fz, a.bank);
       a.qx = q.qx; a.qy = q.qy; a.qz = q.qz; a.qw = q.qw;
 
       // Sync presence + broadcast position.
@@ -6333,22 +6335,21 @@ console.log("[AIOSmux] Presence WebSocket ready at /ws/presence");
       _presenceMap.set(a.id, entry);
       _broadcast({ type: "pos", ...entry }, null);
 
-      // Engage: fire at nearest enemy in range (during active rounds only).
+      // Engage: fire only when an enemy is in range AND ahead of the nose (a
+      // real firing solution — you have to get on their tail, like a dogfight).
       if (_gameState.phase === "active") {
         const tgt = _nearestEnemy(a, team);
-        if (tgt && tgt.d < FIRE_RANGE && now - a.lastFire > 900) {
-          a.lastFire = now;
+        if (tgt && tgt.d < FIRE_RANGE && now - a.lastFire > 700) {
           const ex = tgt.e.x - a.x, ey = tgt.e.y - a.y, ez = tgt.e.z - a.z;
           const el = Math.hypot(ex, ey, ez) || 1;
-          _broadcast({
-            type: "fire", id: a.id,
-            ox: a.x, oy: a.y, oz: a.z,
-            dx: ex / el, dy: ey / el, dz: ez / el,
-          }, null);
-          // Land a hit at close range (agents damage humans + other agents).
-          if (tgt.d < KILL_RANGE) {
-            _broadcast({ type: "hit", shooterId: a.id, shooterName: a.name, targetId: tgt.e.id }, null);
-            if (_dtcAgents.has(tgt.e.id)) globalThis._dtcDamageAgent(tgt.e.id, a.id, 25);
+          const aim = (ex / el) * a.fx + (ey / el) * a.fy + (ez / el) * a.fz; // cos(angle off nose)
+          if (aim > 0.9) { // within ~25° of the nose
+            a.lastFire = now;
+            _broadcast({ type: "fire", id: a.id, ox: a.x, oy: a.y, oz: a.z, dx: ex / el, dy: ey / el, dz: ez / el }, null);
+            if (tgt.d < KILL_RANGE) {
+              _broadcast({ type: "hit", shooterId: a.id, shooterName: a.name, targetId: tgt.e.id }, null);
+              if (_dtcAgents.has(tgt.e.id)) globalThis._dtcDamageAgent(tgt.e.id, a.id, 25);
+            }
           }
         }
       }

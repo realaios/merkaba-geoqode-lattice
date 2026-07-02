@@ -56082,8 +56082,18 @@
                Scale ships up so they read as real craft at combat range; agents
                patrol/attack from farther out, so they get the largest boost. */
             var group = _makeFighterAvatar(color);
-            var _shipScale = isAgent ? 90 : 60; // reads as a ship (~20-30°) at combat range, not a screen-filling wedge
+            var _shipScale = isAgent ? 130 : 90; // a bit bigger — clearly visible fighters at combat range
             group.scale.setScalar(_shipScale);
+            /* Brightness beacon — additive glow so the fighter reads as a bright
+               point at long range (space stays dark, ships pop). */
+            var _glowHex = parseInt(color.replace('#',''), 16);
+            var _glow = new THREE.Mesh(
+              new THREE.SphereGeometry(2.6, 12, 12),
+              new THREE.MeshBasicMaterial({ color: _glowHex, transparent: true, opacity: 0.9,
+                blending: THREE.AdditiveBlending, depthWrite: false })
+            );
+            _glow.userData.noFlash = true;
+            group.add(_glow);
             if (el.object3D) {
               el.object3D.add(group);
             } else {
@@ -56096,8 +56106,8 @@
             label.setAttribute("value", callsign);
             label.setAttribute("align", "center");
             label.setAttribute("color", color);
-            label.setAttribute("scale", (isAgent ? "60 60 60" : "45 45 45"));
-            label.setAttribute("position", "0 " + (3.2 * _shipScale) + " 0");
+            label.setAttribute("scale", (isAgent ? "90 90 90" : "65 65 65"));
+            label.setAttribute("position", "0 " + (2.6 * _shipScale) + " 0");
             label.setAttribute("look-at", "[camera]");
             el.appendChild(label);
 
@@ -56907,7 +56917,9 @@
                   if (_wrb) _wrb.classList.add('hidden');
                 }
                 /* Auto-join DTC mode — only if not already on a team */
-                if (_gameMode === 'dtc' && !_myTeam) setTimeout(window._sendReady, 800);
+                /* Auto-join everyone into the endless battle — no confusing JOIN
+                   step. You get a team + badge automatically and just start flying. */
+                if (!_spectatorMode && !_myTeam) setTimeout(window._sendReady, 800);
                 /* Spectator mode setup */
                 if (_spectatorMode) {
                   if (_ws && _ws.readyState === 1) _ws.send(JSON.stringify({ type: 'spectate' }));
@@ -58646,29 +58658,29 @@
           scn.object3D.add(grp);
           /* Glowing heart */
           var coreMat = mat(0x00ff88, 0.9, false);
-          var core = new THREE.Mesh(new THREE.IcosahedronGeometry(300, 1), coreMat); grp.add(core);
+          var core = new THREE.Mesh(new THREE.IcosahedronGeometry(150, 1), coreMat); grp.add(core);
           var haloMat = mat(0x00ff88, 0.18, false, true);
-          var halo = new THREE.Mesh(new THREE.SphereGeometry(750, 20, 16), haloMat); grp.add(halo);
+          var halo = new THREE.Mesh(new THREE.SphereGeometry(380, 20, 16), haloMat); grp.add(halo);
           /* Merkaba star tetrahedron — two counter-rotating tetrahedra */
           var upMat = mat(0x8fffcf, 0.6, true);
-          var tetU = new THREE.Mesh(new THREE.TetrahedronGeometry(1000), upMat); grp.add(tetU);
+          var tetU = new THREE.Mesh(new THREE.TetrahedronGeometry(520), upMat); grp.add(tetU);
           var dnMat = mat(0x00ddff, 0.6, true);
-          var tetD = new THREE.Mesh(new THREE.TetrahedronGeometry(1000), dnMat); tetD.rotation.x = Math.PI; grp.add(tetD);
+          var tetD = new THREE.Mesh(new THREE.TetrahedronGeometry(520), dnMat); tetD.rotation.x = Math.PI; grp.add(tetD);
           /* Outer lattice shell */
           var shellMat = mat(0x00ff88, 0.32, true);
-          var shell = new THREE.Mesh(new THREE.IcosahedronGeometry(1400, 1), shellMat); grp.add(shell);
+          var shell = new THREE.Mesh(new THREE.IcosahedronGeometry(720, 1), shellMat); grp.add(shell);
           /* Gyroscopic rings */
           var rings = [];
-          [[1700, 'x'], [1850, 'y'], [2000, 'z']].forEach(function (rc) {
+          [[880, 'x'], [960, 'y'], [1040, 'z']].forEach(function (rc) {
             var rm = mat(0x00ddff, 0.5, false);
-            var r = new THREE.Mesh(new THREE.TorusGeometry(rc[0], 18, 8, 72), rm);
+            var r = new THREE.Mesh(new THREE.TorusGeometry(rc[0], 10, 8, 72), rm);
             if (rc[1] === 'x') r.rotation.x = Math.PI / 2;
             else if (rc[1] === 'y') r.rotation.y = Math.PI / 2;
             grp.add(r); rings.push(r);
           });
           /* Low-health shockwave (reused) */
           var shockMat = mat(0xff3300, 0, false);
-          var shock = new THREE.Mesh(new THREE.TorusGeometry(1300, 18, 8, 72), shockMat);
+          var shock = new THREE.Mesh(new THREE.TorusGeometry(700, 10, 8, 72), shockMat);
           shock.rotation.x = Math.PI / 2; shock.visible = false; grp.add(shock);
           var shockStart = -9999;
           function setColor(hex) { coreMat.color.setHex(hex); haloMat.color.setHex(hex); shellMat.color.setHex(hex); }
@@ -58693,6 +58705,13 @@
             if (low && sp >= 0 && sp < 1) {
               shock.visible = true; shock.scale.setScalar(1 + sp * 4.5); shockMat.opacity = 0.7 * (1 - sp);
             } else { shock.visible = false; }
+            /* Universe boundary — hard-cap the player at 48000au (keeps play in the
+               populated volume and avoids wandering into empty far space). */
+            var rig = document.getElementById('cameraRig');
+            if (rig && rig.object3D) {
+              var pp = rig.object3D.position, pd = Math.hypot(pp.x, pp.y, pp.z);
+              if (pd > 48000) { var pk = 48000 / pd; pp.x *= pk; pp.y *= pk; pp.z *= pk; }
+            }
             requestAnimationFrame(tick);
           })();
         }
