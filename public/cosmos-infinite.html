@@ -55750,9 +55750,18 @@
         "use strict";
 
         /* ── Config ───────────────────────────────────────────────────────── */
-        /* Always connect to the Railway host — works from realaios.com (CF Pages)
-           and aios-mesh.realaios.com (Railway) without duplicating server logic */
-        var WS_URL = 'wss://aios-mesh.realaios.com/ws/presence';
+        /* Presence/game server. cosmos-infinite is served by the same Railway
+           service (merkaba-geoqode-os → realaios.com) that hosts /ws/presence,
+           so connect SAME-ORIGIN. (The old hardcoded 'aios-mesh.realaios.com'
+           is not a configured domain on any service and 502s — the valid hosts
+           are realaios.com and mesh.realaios.com.) Falls back to realaios.com
+           for file:// or when opened without a host. */
+        var WS_URL = (function () {
+          var h = location.host;
+          if (!h || location.protocol === 'file:') return 'wss://realaios.com/ws/presence';
+          if (/^localhost|^127\.|^0\.0\.0\.0/.test(h)) return 'ws://' + h + '/ws/presence';
+          return (location.protocol === 'https:' ? 'wss://' : 'ws://') + h + '/ws/presence';
+        })();
         var RECONNECT_DELAY_MS = 4000;
         var POS_SEND_INTERVAL = 100; // 10 Hz — real-time dogfight sync
         var FEED_MAX_ENTRIES = 5;
@@ -55766,7 +55775,10 @@
         var _myCallsign = "PILOT-" + Math.random().toString(36).slice(2, 5).toUpperCase();
         var _gameMode = new URLSearchParams(location.search).get('mode'); // 'dtc' | 'spectate' | null
         var _spectatorMode = (_gameMode === 'spectate');
-        if (_gameMode === 'dtc') { var _rwEl = document.getElementById('dtc-ready-wrap'); if (_rwEl) _rwEl.style.display = 'flex'; }
+        /* Defend the Core runs 24/7. Always surface the JOIN button (except for
+           spectators) so any visitor can enter the ongoing endless battle by
+           tapping it — no ?mode=dtc required. */
+        if (!_spectatorMode) { var _rwEl = document.getElementById('dtc-ready-wrap'); if (_rwEl) _rwEl.style.display = 'flex'; }
         var _lastKillData = null;   // last own-kill metadata for share card
         var _killShareTimer = null; // auto-hide timeout for kill share button
         var _myHealth = 100;
@@ -57200,6 +57212,45 @@
           }, 500);
         })();
 
+        /* ── Auto-Fire: fire when an enemy sits in the crosshairs ───────────
+           Reuses the cosmos-fire pipeline (laser + hit detection + broadcast +
+           lock-on crosshair), just triggered automatically when a valid enemy
+           is within a ~5° aim cone ahead of the craft. Respects the 400ms fire
+           cooldown. Toggle in Options → Combat. Fire button still works too. */
+        (function _autoFireLoop() {
+          var AF_MS = 160;
+          var COS_CONE = 0.9962; // cos(~5°)
+          var _afTmp = null;
+          setInterval(function () {
+            if (!window._autoFireEnabled) return;
+            if (_spectatorMode) return;
+            if (Date.now() - _lastFire < 400) return; // honour fire cooldown
+            var scn = document.querySelector('a-scene');
+            if (!scn || !scn.camera) return;
+            var THREE = AFRAME.THREE;
+            var camQ = new THREE.Quaternion();
+            scn.camera.getWorldQuaternion(camQ);
+            var nd = new THREE.Vector3(0, 0, -1).applyQuaternion(camQ).normalize();
+            var rig = document.getElementById('cameraRig');
+            var rp = new THREE.Vector3();
+            if (rig && rig.object3D) rig.object3D.getWorldPosition(rp);
+            if (!_afTmp) _afTmp = new THREE.Vector3();
+            var locked = false;
+            var keys = Object.keys(_ghostMap);
+            for (var i = 0; i < keys.length; i++) {
+              var g = _ghostMap[keys[i]];
+              if (!g || !g.group || !g.group.visible) continue;
+              if (_myTeam && g.team && g.team === _myTeam) continue; // never shoot teammates
+              _afTmp.subVectors(g.targetPos, rp);
+              var dist = _afTmp.length();
+              if (dist < 8 || dist > 6000) continue;
+              _afTmp.multiplyScalar(1 / dist);
+              if (_afTmp.dot(nd) >= COS_CONE) { locked = true; break; }
+            }
+            if (locked) window.dispatchEvent(new CustomEvent('cosmos-fire'));
+          }, AF_MS);
+        })();
+
         /* ── Boot: wait for scene ready, then connect ─────────────────────── */
         var _scene = document.querySelector("a-scene");
         /* Initialize HUD immediately with default callsign */
@@ -58051,6 +58102,11 @@
         <label class="opts-label" for="opt-speed-gradient">Speed Gradient (dist)</label>
         <label class="opts-toggle"><input type="checkbox" id="opt-speed-gradient"><span class="opts-slider"></span></label>
       </div>
+      <h3>Combat</h3>
+      <div class="opts-row">
+        <label class="opts-label" for="opt-autofire">Auto-Fire (lock on enemy)</label>
+        <label class="opts-toggle"><input type="checkbox" id="opt-autofire" checked><span class="opts-slider"></span></label>
+      </div>
       <h3>Sound</h3>
       <div class="opts-row">
         <label class="opts-label" for="opt-bg-sound">Background Drone (off by default)</label>
@@ -58125,7 +58181,7 @@
     </div>
     <!-- Defend the Core: READY button + team badge -->
     <div id="dtc-ready-wrap">
-      <button id="dtc-ready-btn" onclick="window._sendReady()">&#x2694; READY TO FIGHT</button>
+      <button id="dtc-ready-btn" onclick="window._sendReady()">&#x2694; JOIN DEFEND THE CORE</button>
       <div id="dtc-team-badge"></div>
       <button id="dtc-share-btn" onclick="window._shareDtc()">&#x238B; INVITE A PILOT</button>
     </div>
@@ -58172,6 +58228,17 @@
           });
         }
         window._syncBgSoundToggle();
+
+        /* Auto-fire: ON by default; persisted in localStorage 'cosmos-autofire'. */
+        window._autoFireEnabled = localStorage.getItem("cosmos-autofire") !== "0";
+        var afCb = document.getElementById("opt-autofire");
+        if (afCb) {
+          afCb.checked = window._autoFireEnabled;
+          afCb.addEventListener("change", function () {
+            window._autoFireEnabled = afCb.checked;
+            localStorage.setItem("cosmos-autofire", afCb.checked ? "1" : "0");
+          });
+        }
 
         /* Round history panel */
         window._renderDtcHistory = function () {
