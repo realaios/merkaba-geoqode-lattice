@@ -5642,6 +5642,10 @@ let _gameState = {
   coreBreachPilots: new Set(),
 };
 
+// Defend-the-Core agent pilots (bots). id -> AI state. Populated by the
+// DTC agent module below; declared here so the hit handler can damage them.
+const _dtcAgents = new Map();
+
 // 480 GeoQode galaxy positions (D48 lattice, scaled to cosmos space)
 // Same generation as cosmos-infinite.html _galaxyData
 const _GEO_GALAXIES = (function () {
@@ -5877,6 +5881,15 @@ _wss.on("connection", (ws) => {
       team: _gameState.teams[id] || null,
       phase: _gameState.phase,
       round: _gameState.round,
+      // Recent Defend-the-Core round results (most recent first) for the in-game history tab
+      dtcRounds: (function () {
+        try {
+          const p = path.join(__dirname, "data", "dtc-rounds.json");
+          return JSON.parse(fs.readFileSync(p, "utf8")).slice(-12).reverse();
+        } catch (_) {
+          return [];
+        }
+      })(),
     }),
   );
 
@@ -5940,10 +5953,13 @@ _wss.on("connection", (ws) => {
     } else if (msg.type === "hit") {
       const sEntry = _presenceMap.get(id);
       const sName = sEntry?.name || ("PILOT-" + id.slice(0, 4).toUpperCase());
+      const _tid = String(msg.targetId || "");
       _broadcast(
-        { type: "hit", shooterId: id, shooterName: sName, targetId: String(msg.targetId || "") },
+        { type: "hit", shooterId: id, shooterName: sName, targetId: _tid },
         id,
       );
+      // Agents have no client to self-report death — apply damage server-side.
+      if (_dtcAgents.has(_tid)) _dtcDamageAgent(_tid, id, 25);
     } else if (msg.type === "kill") {
       const shooterEntry = _presenceMap.get(id);
       const targetEntry  = _presenceMap.get(String(msg.targetId || ""));
@@ -6030,6 +6046,227 @@ _wss.on("connection", (ws) => {
 });
 
 console.log("[AIOSmux] Presence WebSocket ready at /ws/presence");
+
+// ── Defend the Core: Agent Pilots ─────────────────────────────────────────────
+// Four autonomous bot pilots that keep Defend-the-Core playable 24/7 with zero
+// or few humans online. They live in _presenceMap and _gameState.teams exactly
+// like human pilots, so they drain the core, earn proximity/kill scoring, appear
+// on the roster, and swap sides between rounds automatically. Attackers weave
+// toward the Merkaba Core at (0,0,0); defenders orbit and intercept attackers.
+// @alignment 8,26,48:480
+(function _startDtcAgentPilots() {
+  const AGENTS = [
+    { id: "dtc-agent-vega",  name: "VEGA-ATK",   team: "ATTACKER" },
+    { id: "dtc-agent-rigel", name: "RIGEL-ATK",  team: "ATTACKER" },
+    { id: "dtc-agent-orion", name: "ORION-DEF",  team: "DEFENDER" },
+    { id: "dtc-agent-lyra",  name: "LYRA-DEF",   team: "DEFENDER" },
+  ];
+  const TICK_MS = 150;
+  const SPEED = 95;           // au/sec cruise speed
+  const FIRE_RANGE = 380;     // engage enemies within this range
+  const KILL_RANGE = 120;     // damage lands within this range
+  const dt = TICK_MS / 1000;
+
+  // Rotation from ship nose (-Z) to a world direction → {qx,qy,qz,qw}.
+  // q = [ cross(a, f), 1 + dot(a, f) ] with a = (0,0,-1), then normalise.
+  function _quatFromDir(x, y, z) {
+    const len = Math.hypot(x, y, z) || 1;
+    const fx = x / len, fy = y / len, fz = z / len;
+    // cross((0,0,-1), f) = (fy, -fx, 0); dot((0,0,-1), f) = -fz
+    let qx = fy, qy = -fx, qz = 0, qw = 1 - fz;
+    const qlen = Math.hypot(qx, qy, qz, qw);
+    if (qlen < 1e-6) return { qx: 0, qy: 1, qz: 0, qw: 0 }; // f ≈ +Z → 180° about Y
+    return { qx: qx / qlen, qy: qy / qlen, qz: qz / qlen, qw: qw / qlen };
+  }
+
+  function _spawnPoint(team) {
+    const ang = Math.random() * Math.PI * 2;
+    const r = team === "ATTACKER" ? 1600 + Math.random() * 800 : 240 + Math.random() * 120;
+    return {
+      x: Math.cos(ang) * r,
+      y: (Math.random() - 0.5) * 120,
+      z: Math.sin(ang) * r,
+      ang,
+    };
+  }
+
+  function _presence(a) {
+    return {
+      id: a.id,
+      x: a.x, y: a.y, z: a.z,
+      qx: a.qx, qy: a.qy, qz: a.qz, qw: a.qw,
+      geoCode: "geo://DTC.AGENT",
+      freq: 528,
+      ts: Date.now(),
+      isAgent: true,
+      name: a.name,
+      team: _gameState.teams[a.id] || a.team,
+    };
+  }
+
+  // Register each agent into presence + team map.
+  AGENTS.forEach((cfg) => {
+    const sp = _spawnPoint(cfg.team);
+    const a = {
+      id: cfg.id, name: cfg.name, baseTeam: cfg.team,
+      x: sp.x, y: sp.y, z: sp.z, ang: sp.ang,
+      qx: 0, qy: 0, qz: 0, qw: 1,
+      hp: 100, phase: Math.random() * Math.PI * 2,
+      lastFire: 0, kills: 0,
+    };
+    _dtcAgents.set(cfg.id, a);
+    _gameState.teams[cfg.id] = cfg.team;
+    _presenceMap.set(cfg.id, Object.assign(_presence(a), { kills: 0, score: 0, roundScore: 0 }));
+  });
+
+  // Respawn an agent (after death) far from the core so it flies back in.
+  globalThis._respawnDtcAgent = function (id) {
+    const a = _dtcAgents.get(id);
+    if (!a) return;
+    const team = _gameState.teams[id] || a.baseTeam;
+    const sp = _spawnPoint(team);
+    a.x = sp.x; a.y = sp.y; a.z = sp.z; a.ang = sp.ang; a.hp = 100;
+    const e = _presenceMap.get(id);
+    if (e) { e.x = a.x; e.y = a.y; e.z = a.z; }
+  };
+
+  // Damage an agent (hoisted for the hit handler). Credits killer on death.
+  globalThis._dtcDamageAgent = function (agentId, shooterId, dmg) {
+    const a = _dtcAgents.get(agentId);
+    if (!a) return;
+    a.hp -= dmg;
+    if (a.hp > 0) return;
+    // Death → credit shooter with a kill (mirrors the human kill path).
+    const shooterEntry = _presenceMap.get(shooterId);
+    const targetEntry = _presenceMap.get(agentId);
+    const shooterName = shooterEntry?.name || ("PILOT-" + String(shooterId).slice(0, 4).toUpperCase());
+    const targetName = targetEntry?.name || a.name;
+    if (shooterEntry) {
+      shooterEntry.kills = (shooterEntry.kills || 0) + 1;
+      shooterEntry.score = (shooterEntry.score || 0) + 100;
+      shooterEntry.roundScore = (shooterEntry.roundScore || 0) + 100;
+    }
+    if (!_dogfightScores[shooterName]) _dogfightScores[shooterName] = { kills: 0, score: 0 };
+    _dogfightScores[shooterName].kills++;
+    _dogfightScores[shooterName].score += 100;
+    let defBonus = 0;
+    if (shooterEntry && _gameState.teams[shooterId] === "DEFENDER" && targetEntry) {
+      const tDist = Math.hypot(targetEntry.x, targetEntry.y, targetEntry.z);
+      if (tDist < 500) {
+        defBonus = 150;
+        shooterEntry.score += defBonus;
+        shooterEntry.roundScore = (shooterEntry.roundScore || 0) + defBonus;
+        _dogfightScores[shooterName].score += defBonus;
+      }
+    }
+    _saveScores();
+    _broadcast({
+      type: "kill", shooterId, targetId: agentId,
+      shooterName, targetName,
+      shooterScore: shooterEntry?.score || 0, shooterKills: shooterEntry?.kills || 0,
+      defBonus,
+    }, null);
+    globalThis._respawnDtcAgent(agentId);
+  };
+
+  // Nearest enemy (opposite team, valid position, not spectator, not self).
+  function _nearestEnemy(a, myTeam) {
+    let best = null, bestD = Infinity;
+    _presenceMap.forEach((e) => {
+      if (e.id === a.id || e.isSpectator) return;
+      const t = _gameState.teams[e.id];
+      if (!t || t === myTeam) return;
+      const dx = e.x - a.x, dy = e.y - a.y, dz = e.z - a.z;
+      const d = Math.hypot(dx, dy, dz);
+      if (d < bestD) { bestD = d; best = e; }
+    });
+    return best ? { e: best, d: bestD } : null;
+  }
+
+  let _rosterTick = 0;
+  setInterval(() => {
+    const now = Date.now();
+    _dtcAgents.forEach((a) => {
+      const team = _gameState.teams[a.id] || a.baseTeam;
+      let tx, ty, tz;
+      if (team === "ATTACKER") {
+        // Weave inward: orbit while radius dives toward the core and pulls back.
+        a.ang += 0.5 * dt;
+        a.phase += dt;
+        let r = 150 + 150 * Math.sin(a.phase * 0.22); // ~0..300, dips near core
+        r = Math.max(30, r);
+        tx = Math.cos(a.ang) * r;
+        tz = Math.sin(a.ang) * r;
+        ty = 40 * Math.sin(a.phase * 0.5);
+      } else {
+        // Defender: intercept nearest attacker, else orbit at standoff radius.
+        const tgt = _nearestEnemy(a, team);
+        if (tgt) {
+          tx = tgt.e.x; ty = tgt.e.y; tz = tgt.e.z;
+        } else {
+          a.ang += 0.35 * dt;
+          const r = 230;
+          tx = Math.cos(a.ang) * r;
+          tz = Math.sin(a.ang) * r;
+          ty = 30 * Math.sin(a.phase += dt);
+        }
+      }
+      // Kinematic move toward target, capped at cruise speed.
+      const dx = tx - a.x, dy = ty - a.y, dz = tz - a.z;
+      const dist = Math.hypot(dx, dy, dz) || 1;
+      const step = Math.min(dist, SPEED * dt);
+      a.x += (dx / dist) * step;
+      a.y += (dy / dist) * step;
+      a.z += (dz / dist) * step;
+      // Face travel direction.
+      const q = _quatFromDir(dx, dy, dz);
+      a.qx = q.qx; a.qy = q.qy; a.qz = q.qz; a.qw = q.qw;
+
+      // Sync presence + broadcast position.
+      const entry = _presenceMap.get(a.id) || {};
+      Object.assign(entry, _presence(a));
+      entry.kills = entry.kills || 0;
+      entry.score = entry.score || 0;
+      _presenceMap.set(a.id, entry);
+      _broadcast({ type: "pos", ...entry }, null);
+
+      // Engage: fire at nearest enemy in range (during active rounds only).
+      if (_gameState.phase === "active") {
+        const tgt = _nearestEnemy(a, team);
+        if (tgt && tgt.d < FIRE_RANGE && now - a.lastFire > 900) {
+          a.lastFire = now;
+          const ex = tgt.e.x - a.x, ey = tgt.e.y - a.y, ez = tgt.e.z - a.z;
+          const el = Math.hypot(ex, ey, ez) || 1;
+          _broadcast({
+            type: "fire", id: a.id,
+            ox: a.x, oy: a.y, oz: a.z,
+            dx: ex / el, dy: ey / el, dz: ez / el,
+          }, null);
+          // Land a hit at close range (agents damage humans + other agents).
+          if (tgt.d < KILL_RANGE) {
+            _broadcast({ type: "hit", shooterId: a.id, shooterName: a.name, targetId: tgt.e.id }, null);
+            if (_dtcAgents.has(tgt.e.id)) globalThis._dtcDamageAgent(tgt.e.id, a.id, 25);
+          }
+        }
+      }
+    });
+
+    // Periodically re-broadcast the roster so late joiners tint agents correctly.
+    if (++_rosterTick % 40 === 0) { // every ~6s
+      const roster = Array.from(_presenceMap.entries())
+        .filter(([pid]) => _gameState.teams[pid])
+        .map(([pid, e]) => ({ id: pid, name: e.name || "PILOT", team: _gameState.teams[pid] }));
+      if (roster.length) _broadcast({ type: "teamUpdate", roster }, null);
+    }
+  }, TICK_MS);
+
+  // With 4 agents already on teams, kick off a round if we're idling in lobby.
+  if (_gameState.phase === "lobby") {
+    setTimeout(() => { if (_gameState.phase === "lobby") _startRound(); }, 3000);
+  }
+
+  console.log(`[DTC] ${AGENTS.length} agent pilots online — Defend the Core is live 24/7`);
+})();
 
 // ── Cosmos-Lab WebSocket (/ws/lab) ────────────────────────────────────────────
 // Multi-user lab presence: join/leave/pos/lab_switch/experiment_state/chat

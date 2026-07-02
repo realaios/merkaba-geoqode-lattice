@@ -4161,12 +4161,23 @@
 ══════════════════════════════════════════════════════════════════════════ */
       let audioCtx = null;
 
+      /* Full-volume level for the ambient background drone. */
+      var BG_AUDIO_VOL = 0.26;
+      window.BG_AUDIO_VOL = BG_AUDIO_VOL;
+      /* TODO(audio): background drone is MUTED BY DEFAULT (esp. mobile — no M key
+         there). Persisted in localStorage 'cosmos-bg-muted'. Toggle via
+         Options → Sound → "Background Drone" (#opt-bg-sound). Default = muted. */
       function initAudio() {
         if (audioCtx) return;
         audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        window.audioCtx = audioCtx;
         const master = audioCtx.createGain();
-        master.gain.setValueAtTime(0.26, audioCtx.currentTime);
+        /* Start muted by default; only unmute if the user previously opted in. */
+        var _bgWanted = localStorage.getItem("cosmos-bg-muted") === "0";
+        master.gain.setValueAtTime(_bgWanted ? BG_AUDIO_VOL : 0, audioCtx.currentTime);
         master.connect(audioCtx.destination);
+        window._bgMuted = !_bgWanted;
+        setTimeout(function () { if (window._syncBgSoundToggle) window._syncBgSoundToggle(); }, 0);
 
         function mkOsc(type, freq, gain, detune) {
           const o = audioCtx.createOscillator();
@@ -55442,6 +55453,102 @@
         background: rgba(0,30,60,0.92);
         box-shadow: 0 0 14px rgba(0,180,255,0.5);
       }
+      /* Defend the Core: attacker-approaching alert (defender side) */
+      #dtc-core-approach {
+        position: fixed;
+        top: 92px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: none;
+        align-items: center;
+        gap: 9px;
+        padding: 7px 18px;
+        border-radius: 4px;
+        font-family: monospace;
+        font-size: 13px;
+        font-weight: 800;
+        letter-spacing: 2px;
+        color: #ffd24a;
+        background: rgba(60,30,0,0.62);
+        border: 1.5px solid rgba(255,170,40,0.7);
+        box-shadow: 0 0 18px rgba(255,150,30,0.45), inset 0 0 10px rgba(200,90,0,0.25);
+        text-shadow: 0 0 8px rgba(255,180,60,0.85);
+        z-index: 5101;
+        pointer-events: none;
+        white-space: nowrap;
+      }
+      #dtc-core-approach.critical {
+        color: #ff5a5a;
+        border-color: rgba(255,40,40,0.85);
+        background: rgba(70,0,0,0.68);
+        box-shadow: 0 0 26px rgba(255,40,40,0.6), inset 0 0 12px rgba(220,0,0,0.3);
+        text-shadow: 0 0 10px rgba(255,90,90,0.95);
+        animation: dtc-approach-pulse 0.7s ease-in-out infinite;
+      }
+      #dtc-approach-dist { opacity: 0.85; font-weight: 600; }
+      @keyframes dtc-approach-pulse {
+        0%,100% { opacity: 1; }
+        50%     { opacity: 0.55; }
+      }
+      /* Defend the Core: round-history overlay */
+      #dtc-history-overlay {
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background: rgba(0,4,14,0.72);
+        z-index: 9990;
+        -webkit-backdrop-filter: blur(3px);
+        backdrop-filter: blur(3px);
+      }
+      #dtc-history-panel {
+        width: min(440px, 92vw);
+        max-height: 78vh;
+        overflow-y: auto;
+        background: rgba(2,10,26,0.96);
+        border: 1.5px solid rgba(0,180,255,0.5);
+        border-radius: 10px;
+        box-shadow: 0 0 40px rgba(0,150,255,0.35);
+        font-family: monospace;
+        color: #cfe8ff;
+        padding: 16px 18px 18px;
+      }
+      #dtc-history-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 12px;
+        letter-spacing: 1.5px;
+        color: #7fdcff;
+        border-bottom: 1px solid rgba(0,140,220,0.35);
+        padding-bottom: 10px;
+        margin-bottom: 10px;
+      }
+      #dtc-history-close {
+        background: none;
+        border: 1px solid rgba(0,180,255,0.4);
+        color: #7fdcff;
+        border-radius: 5px;
+        width: 26px;
+        height: 26px;
+        cursor: pointer;
+        font-size: 13px;
+      }
+      .dtc-hist-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 7px 6px;
+        border-bottom: 1px solid rgba(255,255,255,0.06);
+        font-size: 12px;
+      }
+      .dtc-hist-round { color: #8fa8c8; min-width: 46px; }
+      .dtc-hist-winner { font-weight: 800; letter-spacing: 1px; flex: 1; }
+      .dtc-hist-winner.attacker { color: #ff6060; }
+      .dtc-hist-winner.defender { color: #5aa8ff; }
+      .dtc-hist-top { color: #a8c0d8; font-size: 11px; opacity: 0.85; text-align: right; }
+      #dtc-history-empty { text-align: center; color: #7f93aa; padding: 24px 0; font-size: 12px; }
       #dtc-team-badge {
         font-family: monospace;
         font-size: 15px;
@@ -55829,12 +55936,13 @@
             var pos = new THREE.Vector3(entry.x || 0, entry.y || 0, entry.z || 0);
             _ghostMap[entry.id] = {
               el: el, group: group, label: label, ts: Date.now(), isAgent: isAgent,
-              health: 100, score: 0, kills: 0,
+              health: 100, score: 0, kills: 0, team: knownTeam,
               pos: pos.clone(), targetPos: pos.clone(),
               quat: new THREE.Quaternion(), targetQuat: new THREE.Quaternion(),
             };
           } else {
             /* Update target position and orientation for interpolation */
+            if (entry.team) existing.team = entry.team;
             existing.targetPos.set(entry.x || 0, entry.y || 0, entry.z || 0);
             if (entry.qx != null) {
               existing.targetQuat.set(entry.qx, entry.qy, entry.qz, entry.qw);
@@ -56518,6 +56626,11 @@
                 if (Array.isArray(msg.allTimeTop) && msg.allTimeTop.length) {
                   window._allTimeTop = msg.allTimeTop;
                 }
+                /* Seed Defend-the-Core round history (most recent first) */
+                if (Array.isArray(msg.dtcRounds)) {
+                  window._dtcRounds = msg.dtcRounds;
+                  if (window._renderDtcHistory) window._renderDtcHistory();
+                }
                 _addFeedEntry(
                   "CONNECTED \u2014 ID " + _myId.toUpperCase(),
                   false,
@@ -56783,6 +56896,13 @@
               case 'roundEnd':
                 _addFeedEntry('\u25A0 ROUND OVER \u2014 ' + (msg.winner === 'ATTACKER' ? '\u2694 STORM VANGUARD WINS' : '\uD83D\uDEE1 MERKABA GUARD WINS'), true);
                 window._coreHealth = 100;
+                /* Keep round-history tab fresh without a reconnect */
+                (function() {
+                  if (!Array.isArray(window._dtcRounds)) window._dtcRounds = [];
+                  window._dtcRounds.unshift({ round: msg.round, winner: msg.winner, ts: Date.now(), scores: msg.scores || [] });
+                  window._dtcRounds = window._dtcRounds.slice(0, 12);
+                  if (window._renderDtcHistory) window._renderDtcHistory();
+                })();
                 /* Core destruction sequence when attackers win */
                 if (msg.winner === 'ATTACKER') {
                   (function() {
@@ -56973,8 +57093,18 @@
           var rig   = document.getElementById('cameraRig');
           var rp    = new THREE.Vector3();
           if (rig && rig.object3D) rig.object3D.getWorldPosition(rp);
-          _spawnLaser(muzzle1, crosshair, _lScn, THREE, rig);
-          _spawnLaser(muzzle2, crosshair, _lScn, THREE, rig);
+          /* Own-fire visual: 3D world-space plasma particles render as blocky
+             screen-space squares and, because they live in fixed world space,
+             appear to smear/lag to the side when the pilot yaws (reported on
+             mobile as "blocks on the opposite side of the crosshairs"). On
+             touch devices we skip them entirely and rely on the crisp 2D canvas
+             bolt below, which is screen-locked and immune to roll/yaw/velocity.
+             Desktop keeps the volumetric 3D bolt. */
+          var _touchFire = "ontouchstart" in window || navigator.maxTouchPoints > 0;
+          if (!_touchFire) {
+            _spawnLaser(muzzle1, crosshair, _lScn, THREE, rig);
+            _spawnLaser(muzzle2, crosshair, _lScn, THREE, rig);
+          }
           /* 2D canvas bolt — always-visible overlay, immune to depth/precision issues */
           (function() {
             var fc = document.getElementById('laser-fx-canvas');
@@ -57036,6 +57166,39 @@
           /* Lock-on crosshair state */
           if (_ch) { if (_hitTarget) _ch.classList.add("locked"); else _ch.classList.remove("locked"); }
         });
+
+        /* ── Defend the Core: warn defenders when an attacker nears the core ──
+           Attackers try to reach the Merkaba Core at (0,0,0). This shows the
+           nearest attacker's distance to the core so DEFENDER pilots know to
+           break off and intercept. Escalates to a red pulse inside 500au. */
+        (function _dtcCoreApproachMonitor() {
+          var WARN_AU = 1500;     // start warning inside this range
+          var CRIT_AU = 500;      // core-drain range → critical
+          setInterval(function () {
+            var alertEl = document.getElementById('dtc-core-approach');
+            if (!alertEl) return;
+            /* Only relevant to active defenders. */
+            if (_myTeam !== 'DEFENDER') { alertEl.style.display = 'none'; return; }
+            var nearest = Infinity;
+            Object.keys(_ghostMap).forEach(function (id) {
+              var g = _ghostMap[id];
+              if (!g || g.team !== 'ATTACKER') return;
+              if (!g.group || !g.group.visible) return;
+              var tp = g.targetPos || g.pos;
+              if (!tp) return;
+              var d = Math.sqrt(tp.x * tp.x + tp.y * tp.y + tp.z * tp.z);
+              if (d < nearest) nearest = d;
+            });
+            if (nearest > WARN_AU) { alertEl.style.display = 'none'; return; }
+            var critical = nearest <= CRIT_AU;
+            alertEl.classList.toggle('critical', critical);
+            var txt = document.getElementById('dtc-approach-txt');
+            var dst = document.getElementById('dtc-approach-dist');
+            if (txt) txt.textContent = critical ? 'CORE UNDER ATTACK — INTERCEPT' : 'ATTACKER NEARING CORE';
+            if (dst) dst.textContent = Math.round(nearest) + ' au';
+            alertEl.style.display = 'flex';
+          }, 500);
+        })();
 
         /* ── Boot: wait for scene ready, then connect ─────────────────────── */
         var _scene = document.querySelector("a-scene");
@@ -57888,11 +58051,22 @@
         <label class="opts-label" for="opt-speed-gradient">Speed Gradient (dist)</label>
         <label class="opts-toggle"><input type="checkbox" id="opt-speed-gradient"><span class="opts-slider"></span></label>
       </div>
+      <h3>Sound</h3>
+      <div class="opts-row">
+        <label class="opts-label" for="opt-bg-sound">Background Drone (off by default)</label>
+        <label class="opts-toggle"><input type="checkbox" id="opt-bg-sound"><span class="opts-slider"></span></label>
+      </div>
       <h3>Callsign</h3>
       <div class="opts-row" style="gap:6px;">
         <label class="opts-label" for="opt-callsign">Fighter Name</label>
         <input id="opt-callsign" type="text" maxlength="12" placeholder="PILOT-XXX"
           style="background:rgba(0,0,0,0.55);border:1.5px solid rgba(0,212,255,0.5);border-radius:6px;color:#00d4ff;font-size:13px;padding:4px 8px;width:96px;outline:none;font-family:monospace;">
+      </div>
+      <h3>Defend the Core</h3>
+      <div class="opts-row" style="justify-content:space-between;align-items:center;">
+        <span class="opts-label">Round History</span>
+        <button id="opt-history-btn" onclick="if(window._toggleDtcHistory)window._toggleDtcHistory();"
+          style="background:rgba(0,10,30,0.78);border:1px solid rgba(0,212,255,0.32);border-radius:3px;color:#00d4ff;font-family:monospace;font-size:0.62rem;letter-spacing:0.08em;padding:4px 10px;cursor:pointer;outline:none;">&#x1F4DC; VIEW ROUNDS</button>
       </div>
       <h3>Navigation</h3>
       <div class="opts-row" style="justify-content:space-between;align-items:center;">
@@ -57933,6 +58107,22 @@
       </div>
       <div id="dtc-core-pct">100%</div>
     </div>
+    <!-- Defend the Core: attacker-approaching-core alert (defenders only) -->
+    <div id="dtc-core-approach">
+      <span id="dtc-approach-icon">&#x26A0;</span>
+      <span id="dtc-approach-txt">ATTACKER NEARING CORE</span>
+      <span id="dtc-approach-dist"></span>
+    </div>
+    <!-- Defend the Core: Round history panel (opened from Options → View Rounds) -->
+    <div id="dtc-history-overlay" onclick="if(event.target===this)window._toggleDtcHistory(false)">
+      <div id="dtc-history-panel">
+        <div id="dtc-history-head">
+          <span>&#x1F4DC; DEFEND THE CORE — ROUND HISTORY</span>
+          <button id="dtc-history-close" onclick="window._toggleDtcHistory(false)">&#x2715;</button>
+        </div>
+        <div id="dtc-history-list"></div>
+      </div>
+    </div>
     <!-- Defend the Core: READY button + team badge -->
     <div id="dtc-ready-wrap">
       <button id="dtc-ready-btn" onclick="window._sendReady()">&#x2694; READY TO FIGHT</button>
@@ -57954,6 +58144,65 @@
     </div>
     <!-- Minimap toggle button (regular pilots: N key / mobile tap) -->
     <button id="minimap-toggle-btn" onclick="window._toggleMinimap(true)" title="Toggle minimap (N)">&#x1F5FA;</button>
+    <script>
+      /* ── Options: background-drone toggle (muted by default) + round history ── */
+      (function () {
+        /* Background drone: OFF by default, persisted in localStorage. */
+        window._setBgMuted = function (muted) {
+          window._bgMuted = muted;
+          localStorage.setItem("cosmos-bg-muted", muted ? "1" : "0");
+          if (window._audioMaster && window.audioCtx) {
+            try {
+              window._audioMaster.gain.setTargetAtTime(
+                muted ? 0 : (window.BG_AUDIO_VOL || 0.26),
+                window.audioCtx.currentTime, 0.4
+              );
+            } catch (_) {}
+          }
+          if (window._syncBgSoundToggle) window._syncBgSoundToggle();
+        };
+        var cb = document.getElementById("opt-bg-sound");
+        window._syncBgSoundToggle = function () {
+          if (cb) cb.checked = window._bgMuted === false; /* checked = sound ON */
+        };
+        if (cb) {
+          cb.checked = localStorage.getItem("cosmos-bg-muted") === "0";
+          cb.addEventListener("change", function () {
+            window._setBgMuted(!cb.checked);
+          });
+        }
+        window._syncBgSoundToggle();
+
+        /* Round history panel */
+        window._renderDtcHistory = function () {
+          var list = document.getElementById("dtc-history-list");
+          if (!list) return;
+          var rounds = Array.isArray(window._dtcRounds) ? window._dtcRounds : [];
+          if (!rounds.length) {
+            list.innerHTML = '<div id="dtc-history-empty">No rounds recorded yet — play a round of Defend the Core.</div>';
+            return;
+          }
+          list.innerHTML = rounds.map(function (r) {
+            var atk = r.winner === "ATTACKER";
+            var top = (r.scores && r.scores[0]) ? r.scores[0] : null;
+            var topTxt = top ? ((top.name || "PILOT") + " · " + (top.score || 0) + " pts") : "—";
+            return '<div class="dtc-hist-row">' +
+              '<span class="dtc-hist-round">R' + (r.round || "?") + '</span>' +
+              '<span class="dtc-hist-winner ' + (atk ? "attacker" : "defender") + '">' +
+                (atk ? "⚔ VANGUARD" : "🛡 GUARD") + '</span>' +
+              '<span class="dtc-hist-top">' + topTxt + '</span>' +
+            '</div>';
+          }).join("");
+        };
+        window._toggleDtcHistory = function (show) {
+          var ov = document.getElementById("dtc-history-overlay");
+          if (!ov) return;
+          var open = typeof show === "boolean" ? show : ov.style.display !== "flex";
+          if (open) window._renderDtcHistory();
+          ov.style.display = open ? "flex" : "none";
+        };
+      })();
+    </script>
     <!-- Spectator minimap -->
     <div id="spec-minimap-wrap">
       <canvas id="spec-minimap" width="160" height="160"></canvas>
