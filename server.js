@@ -6153,7 +6153,9 @@ console.log("[AIOSmux] Presence WebSocket ready at /ws/presence");
 
   function _spawnPoint(team) {
     const ang = Math.random() * Math.PI * 2;
-    const r = team === "ATTACKER" ? 1600 + Math.random() * 800 : 240 + Math.random() * 120;
+    // Keep the fight dense and near the core/player spawn (~150au) rather than
+    // way out in empty space where the ships are invisible.
+    const r = team === "ATTACKER" ? 600 + Math.random() * 500 : 240 + Math.random() * 120;
     return {
       x: Math.cos(ang) * r,
       y: (Math.random() - 0.5) * 120,

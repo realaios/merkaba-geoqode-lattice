@@ -11191,9 +11191,14 @@
           var SPEED = _sm * (window._speedGradient
             ? (dist >= 16000 ? 400 : dist >= 8000 ? 200 : dist >= 3000 ? 80 : 20)
             : 20);
-          /* Thrust along craft nose */
+          /* Thrust along craft nose. The FLM's thrust output (action[0] ∈ [-1,1])
+             is ~0 when the net is untrained, which made autopilot pitch/roll on
+             the spot without moving. Map it to an always-forward cruise
+             [0.4 … 1.0] so the ship always flies while the policy still learns
+             to modulate speed. */
+          var thrust = Math.max(0.4, (action[0] + 1) * 0.5);
           var fwd = new THREE.Vector3(0, 0, -1).applyQuaternion(rigO.quaternion);
-          rigO.position.addScaledVector(fwd, action[0] * SPEED * dt * 60);
+          rigO.position.addScaledVector(fwd, thrust * SPEED * dt * 60);
           /* Yaw around craft up */
           if (Math.abs(action[1]) > 0.04) {
             var up = new THREE.Vector3(0, 1, 0)
@@ -51719,72 +51724,38 @@
            When provided, bolt position tracks ship movement so it doesn't drift
            relative to the pilot's frame of reference during movement. */
         window._spawnLaser = function(from, to, scene, THREE, rigRef) {
+          /* Clean volumetric BEAM (thin bright cylinder + additive glow halo),
+             not screen-space square points. Points with sizeAttenuation:false
+             render as fat blocks up close — which is exactly what incoming fire
+             looked like ("big white blocks"). A cylinder reads as a laser at any
+             range and any device. Flashes then fades over DURATION. */
           var dx = to.x - from.x, dy = to.y - from.y, dz = to.z - from.z;
           var len = Math.sqrt(dx*dx + dy*dy + dz*dz);
           if (len < 0.01) return;
-          dx /= len; dy /= len; dz /= len;
-          var DURATION = 350;
-
-          /* Capture rig position at fire time for velocity compensation */
-          var rigPos0 = new THREE.Vector3();
-          var rigPosNow = new THREE.Vector3();
-          if (rigRef && rigRef.object3D) rigRef.object3D.getWorldPosition(rigPos0);
-
-          /* ── plasma head: 6 tightly clustered bright particles ── */
-          var NC = 6;
-          var bArr = new Float32Array(NC * 3);
-          for (var i = 0; i < NC; i++) {
-            bArr[i*3]   = (Math.random()-0.5) * 0.10;
-            bArr[i*3+1] = (Math.random()-0.5) * 0.10;
-            bArr[i*3+2] = (Math.random()-0.5) * 0.10;
-          }
-          var bGeo = new THREE.BufferGeometry();
-          bGeo.setAttribute('position', new THREE.BufferAttribute(bArr, 3));
-          var bMat = new THREE.PointsMaterial({
-            color: 0xFF8844, size: 22, sizeAttenuation: false,
-            transparent: true, opacity: 1.0,
-            blending: THREE.AdditiveBlending, depthWrite: false, depthTest: false
-          });
-          var blob = new THREE.Points(bGeo, bMat);
-          scene.object3D.add(blob);
-
-          /* ── plasma trail: 20 dots stretched along travel direction ── */
-          var NT = 20;
-          var tArr = new Float32Array(NT * 3);
-          var tGeo = new THREE.BufferGeometry();
-          tGeo.setAttribute('position', new THREE.BufferAttribute(tArr, 3));
-          var tMat = new THREE.PointsMaterial({
-            color: 0x00CCFF, size: 10, sizeAttenuation: false,
-            transparent: true, opacity: 0.85,
-            blending: THREE.AdditiveBlending, depthWrite: false, depthTest: false
-          });
-          var wake = new THREE.Points(tGeo, tMat);
-          scene.object3D.add(wake);
-
+          var DURATION = 260;
+          var beamLen = Math.min(len, 1400); /* cap so a 2000au ray isn't sky-spanning */
+          var dir = new THREE.Vector3(dx/len, dy/len, dz/len);
+          var grp = new THREE.Group();
+          grp.position.set(from.x + dir.x*beamLen*0.5, from.y + dir.y*beamLen*0.5, from.z + dir.z*beamLen*0.5);
+          grp.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0), dir);
+          var coreMat = new THREE.MeshBasicMaterial({ color: 0xbfffff, transparent: true,
+            opacity: 0.95, blending: THREE.AdditiveBlending, depthWrite: false });
+          var core = new THREE.Mesh(new THREE.CylinderGeometry(0.6, 0.6, beamLen, 6, 1, true), coreMat);
+          grp.add(core);
+          var glowMat = new THREE.MeshBasicMaterial({ color: 0x22ccff, transparent: true,
+            opacity: 0.35, blending: THREE.AdditiveBlending, depthWrite: false });
+          var glow = new THREE.Mesh(new THREE.CylinderGeometry(2.2, 2.2, beamLen, 6, 1, true), glowMat);
+          grp.add(glow);
+          scene.object3D.add(grp);
           var t0 = performance.now();
           (function frame() {
             var p = Math.min(1, (performance.now() - t0) / DURATION);
-            /* Velocity compensation: keep bolt in pilot's reference frame */
-            var vdx = 0, vdy = 0, vdz = 0;
-            if (rigRef && rigRef.object3D) {
-              rigRef.object3D.getWorldPosition(rigPosNow);
-              vdx = rigPosNow.x - rigPos0.x;
-              vdy = rigPosNow.y - rigPos0.y;
-              vdz = rigPosNow.z - rigPos0.z;
-            }
-            blob.position.set(from.x + dx*p*len + vdx, from.y + dy*p*len + vdy, from.z + dz*p*len + vdz);
-            bMat.opacity = p < 0.70 ? 1.0 : (1-p) / 0.30;
-            for (var j = 0; j < NT; j++) {
-              var tp = Math.max(0, p - (j+1) * 0.018);
-              tArr[j*3]   = from.x + dx*tp*len + vdx;
-              tArr[j*3+1] = from.y + dy*tp*len + vdy;
-              tArr[j*3+2] = from.z + dz*tp*len + vdz;
-            }
-            tGeo.attributes.position.needsUpdate = true;
-            tMat.opacity = (1-p) * 0.80;
+            var f = 1 - p;
+            coreMat.opacity = 0.95 * f;
+            glowMat.opacity = 0.35 * f;
             if (p < 1) { requestAnimationFrame(frame); return; }
-            scene.object3D.remove(blob); scene.object3D.remove(wake);
-            bGeo.dispose(); bMat.dispose(); tGeo.dispose(); tMat.dispose();
+            scene.object3D.remove(grp);
+            core.geometry.dispose(); coreMat.dispose(); glow.geometry.dispose(); glowMat.dispose();
           })();
         }
         window._spawnExplosion = function(pt, scene, THREE) {
@@ -55597,6 +55568,66 @@
         0%,100% { opacity: 1; }
         50%     { opacity: 0.55; }
       }
+      /* Enemy locator arrow — orbits screen center, points to nearest enemy ship */
+      #enemy-arrow {
+        position: fixed;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        display: none;
+        z-index: 5102;
+        pointer-events: none;
+        text-align: center;
+      }
+      #enemy-arrow-tip {
+        display: block;
+        font-size: 30px;
+        line-height: 1;
+        color: #ff5a5a;
+        text-shadow: 0 0 10px rgba(255,60,60,0.95), 0 0 4px rgba(255,255,255,0.6);
+        transition: transform 0.08s linear;
+      }
+      #enemy-arrow-dist {
+        display: block;
+        font-family: monospace;
+        font-size: 10px;
+        letter-spacing: 1px;
+        color: #ffb0b0;
+        margin-top: 1px;
+        text-shadow: 0 0 6px rgba(255,60,60,0.7);
+      }
+      #enemy-arrow.locked #enemy-arrow-tip { color: #7CFFB0; text-shadow: 0 0 12px rgba(90,255,160,0.95); }
+      #enemy-arrow.locked #enemy-arrow-dist { color: #b6ffcf; }
+      /* How-to-play: help button + one-time card */
+      #dtc-help-btn {
+        position: fixed; top: 102px; left: 14px; width: 38px; height: 38px;
+        background: rgba(0,8,24,0.78); border: 1px solid rgba(0,140,200,0.45);
+        border-radius: 7px; color: rgba(0,210,255,0.85); font: 700 18px monospace;
+        cursor: pointer; z-index: 5090; display: flex; align-items: center; justify-content: center;
+        pointer-events: auto; -webkit-tap-highlight-color: transparent; touch-action: manipulation;
+      }
+      #dtc-help-btn:active { background: rgba(0,30,60,0.92); }
+      #dtc-howto {
+        position: fixed; inset: 0; display: none; align-items: center; justify-content: center;
+        background: rgba(0,4,14,0.8); z-index: 9995;
+        -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px);
+      }
+      #dtc-howto-card {
+        width: min(440px, 92vw); background: rgba(2,10,26,0.97);
+        border: 1.5px solid rgba(0,180,255,0.5); border-radius: 12px;
+        box-shadow: 0 0 40px rgba(0,150,255,0.4); font-family: monospace; color: #cfe8ff; padding: 20px 22px;
+      }
+      #dtc-howto-title { font-size: 14px; font-weight: 800; letter-spacing: 1.5px; color: #7fdcff; text-align: center; margin-bottom: 14px; text-shadow: 0 0 10px rgba(0,180,255,0.5); }
+      #dtc-howto-card ul { margin: 0 0 16px; padding-left: 18px; }
+      #dtc-howto-card li { font-size: 12.5px; line-height: 1.5; margin-bottom: 9px; color: #bcd6ee; }
+      #dtc-howto-card b { color: #eaf6ff; }
+      #dtc-howto-ok {
+        display: block; width: 100%; padding: 11px; background: linear-gradient(135deg,#062a1a,#0a3d24);
+        border: 1.5px solid #5aff9c; color: #9dffca; font: 800 13px monospace; letter-spacing: 2px;
+        border-radius: 6px; cursor: pointer; box-shadow: 0 0 18px rgba(60,255,140,0.35);
+      }
+      #dtc-howto-ok:hover { box-shadow: 0 0 28px rgba(60,255,140,0.6); }
+      @media (pointer: coarse) { #dtc-help-btn { top: 140px; left: 8px; } }
       /* Defend the Core: round-history overlay */
       #dtc-history-overlay {
         position: fixed;
@@ -56038,8 +56069,12 @@
             var el = document.createElement("a-entity");
             _ghostScene.appendChild(el);
 
-            /* Attach Three.js group — one path only to prevent double-add */
+            /* Attach Three.js group — one path only to prevent double-add.
+               Scale ships up so they read as real craft at combat range; agents
+               patrol/attack from farther out, so they get the largest boost. */
             var group = _makeFighterAvatar(color);
+            var _shipScale = isAgent ? 4.5 : 2.4;
+            group.scale.setScalar(_shipScale);
             if (el.object3D) {
               el.object3D.add(group);
             } else {
@@ -56052,8 +56087,8 @@
             label.setAttribute("value", callsign);
             label.setAttribute("align", "center");
             label.setAttribute("color", color);
-            label.setAttribute("scale", "12 12 12");
-            label.setAttribute("position", "0 10 0");
+            label.setAttribute("scale", (isAgent ? "26 26 26" : "16 16 16"));
+            label.setAttribute("position", "0 " + (7 * _shipScale) + " 0");
             label.setAttribute("look-at", "[camera]");
             el.appendChild(label);
 
@@ -56592,7 +56627,7 @@
           if (!cv) return;
           var ctx = cv.getContext('2d');
           var W = cv.width, H = cv.height, CX = W/2, CY = H/2;
-          var SCALE = 3000; // AU radius shown
+          var SCALE = 1200; // AU radius shown — scaled to the DTC arena so ships aren't a dot in the center
 
           /* Background */
           ctx.clearRect(0, 0, W, H);
@@ -56602,7 +56637,7 @@
           /* Range rings */
           ctx.strokeStyle = 'rgba(0,80,120,0.28)';
           ctx.lineWidth = 1;
-          [500, 1000, 2000, 3000].forEach(function(r) {
+          [300, 600, 900, 1200].forEach(function(r) {
             ctx.beginPath();
             ctx.arc(CX, CY, (r / SCALE) * CX, 0, Math.PI*2);
             ctx.stroke();
@@ -57521,6 +57556,55 @@
             }
             if (locked) window.dispatchEvent(new CustomEvent('cosmos-fire'));
           }, AF_MS);
+        })();
+
+        /* ── Enemy locator arrow — orbits screen center, points at nearest enemy ──
+           Solves "I can't find the ships": the arrow rides a ring around the
+           crosshair at the bearing of the nearest enemy craft (works whether the
+           target is on-screen, off-screen, or behind you) and turns green when
+           you're lined up on it. */
+        (function _enemyArrowLoop() {
+          var el = document.getElementById('enemy-arrow');
+          var tip = document.getElementById('enemy-arrow-tip');
+          var dst = document.getElementById('enemy-arrow-dist');
+          if (!el || !tip) return;
+          var _tmp = null, _cq = null, _cp = null;
+          setInterval(function () {
+            if (_spectatorMode) { el.style.display = 'none'; return; }
+            var scn = document.querySelector('a-scene');
+            if (!scn || !scn.camera) { el.style.display = 'none'; return; }
+            var THREE = AFRAME.THREE;
+            var cam = scn.camera;
+            if (!_tmp) { _tmp = new THREE.Vector3(); _cq = new THREE.Quaternion(); _cp = new THREE.Vector3(); }
+            cam.getWorldPosition(_cp);
+            cam.getWorldQuaternion(_cq);
+            var invQ = _cq.clone().invert();
+            var best = null, bestD = Infinity, keys = Object.keys(_ghostMap);
+            for (var i = 0; i < keys.length; i++) {
+              var g = _ghostMap[keys[i]];
+              if (!g || !g.group || !g.group.visible) continue;
+              if (_myTeam && g.team && g.team === _myTeam) continue; // skip teammates
+              var tp = g.targetPos || g.pos; if (!tp) continue;
+              var d = Math.hypot(tp.x - _cp.x, tp.y - _cp.y, tp.z - _cp.z);
+              if (d < bestD) { bestD = d; best = g; }
+            }
+            if (!best) { el.style.display = 'none'; return; }
+            var tp2 = best.targetPos || best.pos;
+            _tmp.set(tp2.x - _cp.x, tp2.y - _cp.y, tp2.z - _cp.z).applyQuaternion(invQ); // → camera space
+            var lx = _tmp.x, ly = _tmp.y, lz = _tmp.z, front = -lz; // ship forward = -Z
+            var a = front > 0 ? Math.atan2(lx, ly)
+                              : Math.atan2(lx, -Math.hypot(lx, ly) - 0.0001); // behind → lower half
+            var W = window.innerWidth, H = window.innerHeight;
+            var R = Math.min(W, H) * 0.32, cx = W / 2, cy = H / 2;
+            el.style.left = (cx + R * Math.sin(a)) + 'px';
+            el.style.top  = (cy - R * Math.cos(a)) + 'px';
+            /* glyph ➤ points right by default → rotate to point outward along bearing */
+            tip.style.transform = 'rotate(' + (a * 180 / Math.PI - 90) + 'deg)';
+            var centered = front > 0 && Math.hypot(lx, ly) < Math.abs(lz) * 0.12;
+            el.classList.toggle('locked', centered);
+            if (dst) dst.textContent = Math.round(bestD) + ' au';
+            el.style.display = 'block';
+          }, 80);
         })();
 
         /* ── Boot: wait for scene ready, then connect ─────────────────────── */
@@ -58488,6 +58572,84 @@
       <span id="dtc-approach-txt">ATTACKER NEARING CORE</span>
       <span id="dtc-approach-dist"></span>
     </div>
+    <!-- Enemy locator: arrow orbits screen center, points to nearest enemy ship -->
+    <div id="enemy-arrow">
+      <span id="enemy-arrow-tip">&#x27A4;</span>
+      <span id="enemy-arrow-dist"></span>
+    </div>
+    <script>
+      /* DTC objective beacon — a big, health-reactive MERKABA CORE at origin: a
+         counter-rotating star tetrahedron (Merkaba) inside a gyroscopic ring
+         lattice with a glowing heart, health-reactive color, and expanding red
+         shockwaves when the core is failing. Overlay marker only (separate from
+         the structural merkaba-core exclusion zone). @alignment 8,26,48:480 */
+      (function () {
+        function add() {
+          var scn = document.querySelector('a-scene');
+          if (!scn || !scn.object3D || !window.AFRAME || !AFRAME.THREE) { return setTimeout(add, 600); }
+          var THREE = AFRAME.THREE;
+          function mat(color, opacity, wire, backside) {
+            return new THREE.MeshBasicMaterial({ color: color, wireframe: !!wire, transparent: true,
+              opacity: opacity, blending: THREE.AdditiveBlending, depthWrite: false,
+              side: backside ? THREE.BackSide : THREE.DoubleSide });
+          }
+          var grp = new THREE.Group();
+          scn.object3D.add(grp);
+          /* Glowing heart */
+          var coreMat = mat(0x00ff88, 0.9, false);
+          var core = new THREE.Mesh(new THREE.IcosahedronGeometry(16, 1), coreMat); grp.add(core);
+          var haloMat = mat(0x00ff88, 0.18, false, true);
+          var halo = new THREE.Mesh(new THREE.SphereGeometry(40, 20, 16), haloMat); grp.add(halo);
+          /* Merkaba star tetrahedron — two counter-rotating tetrahedra */
+          var upMat = mat(0x8fffcf, 0.6, true);
+          var tetU = new THREE.Mesh(new THREE.TetrahedronGeometry(46), upMat); grp.add(tetU);
+          var dnMat = mat(0x00ddff, 0.6, true);
+          var tetD = new THREE.Mesh(new THREE.TetrahedronGeometry(46), dnMat); tetD.rotation.x = Math.PI; grp.add(tetD);
+          /* Outer lattice shell */
+          var shellMat = mat(0x00ff88, 0.32, true);
+          var shell = new THREE.Mesh(new THREE.IcosahedronGeometry(62, 1), shellMat); grp.add(shell);
+          /* Gyroscopic rings */
+          var rings = [];
+          [[74, 'x'], [82, 'y'], [90, 'z']].forEach(function (rc) {
+            var rm = mat(0x00ddff, 0.5, false);
+            var r = new THREE.Mesh(new THREE.TorusGeometry(rc[0], 1.3, 8, 56), rm);
+            if (rc[1] === 'x') r.rotation.x = Math.PI / 2;
+            else if (rc[1] === 'y') r.rotation.y = Math.PI / 2;
+            grp.add(r); rings.push(r);
+          });
+          /* Low-health shockwave (reused) */
+          var shockMat = mat(0xff3300, 0, false);
+          var shock = new THREE.Mesh(new THREE.TorusGeometry(50, 2.2, 8, 64), shockMat);
+          shock.rotation.x = Math.PI / 2; shock.visible = false; grp.add(shock);
+          var shockStart = -9999;
+          function setColor(hex) { coreMat.color.setHex(hex); haloMat.color.setHex(hex); shellMat.color.setHex(hex); }
+          var t0 = performance.now();
+          (function tick() {
+            var now = performance.now(), t = (now - t0) / 1000;
+            var hp = typeof window._coreHealth === 'number' ? window._coreHealth : 100;
+            var low = hp < 30;
+            setColor(hp > 60 ? 0x00ff88 : hp > 30 ? 0xffcc00 : 0xff3300);
+            var beat = low ? (0.45 + 0.55 * Math.sin(t * 7)) : (0.8 + 0.2 * Math.sin(t * 1.6));
+            coreMat.opacity = 0.9 * beat;
+            haloMat.opacity = (low ? 0.34 : 0.18) * beat;
+            core.rotation.y = t * 0.6; core.rotation.x = t * 0.3;
+            tetU.rotation.y = t * 0.4; tetU.rotation.x = t * 0.12;
+            tetD.rotation.y = -t * 0.4; tetD.rotation.z = t * 0.15;
+            shell.rotation.y = -t * 0.16; shell.rotation.x = t * 0.09;
+            for (var i = 0; i < rings.length; i++) rings[i].rotation.z = t * (0.3 + 0.1 * i) * (i % 2 ? -1 : 1);
+            grp.scale.setScalar(1 + (low ? 0.06 : 0.03) * Math.sin(t * (low ? 5 : 1.3)));
+            /* Shockwaves while failing */
+            if (low && now - shockStart > 1600) shockStart = now;
+            var sp = (now - shockStart) / 1200;
+            if (low && sp >= 0 && sp < 1) {
+              shock.visible = true; shock.scale.setScalar(1 + sp * 4.5); shockMat.opacity = 0.7 * (1 - sp);
+            } else { shock.visible = false; }
+            requestAnimationFrame(tick);
+          })();
+        }
+        if (document.readyState !== 'loading') add(); else document.addEventListener('DOMContentLoaded', add);
+      })();
+    </script>
     <!-- Defend the Core: Round history panel (opened from Options → View Rounds) -->
     <div id="dtc-history-overlay" onclick="if(event.target===this)window._toggleDtcHistory(false)">
       <div id="dtc-history-panel">
@@ -58519,6 +58681,34 @@
     </div>
     <!-- Minimap toggle button (regular pilots: N key / mobile tap) -->
     <button id="minimap-toggle-btn" onclick="window._toggleMinimap(true)" title="Toggle minimap (N)">&#x1F5FA;</button>
+    <!-- How-to-play (DTC): one-time card + persistent help button -->
+    <button id="dtc-help-btn" onclick="window._openHowto&&window._openHowto()" title="How to play">?</button>
+    <div id="dtc-howto" onclick="if(event.target===this)window._closeHowto()">
+      <div id="dtc-howto-card">
+        <div id="dtc-howto-title">&#x2694; DEFEND THE CORE &mdash; HOW TO PLAY</div>
+        <ul>
+          <li><b>Join</b> &mdash; tap <b>&#x2694; JOIN DEFEND THE CORE</b> to pick a side (auto-balanced).</li>
+          <li><b>Find enemies</b> &mdash; the red <b>&#x27A4;</b> arrow orbits the crosshair pointing at the nearest enemy ship; it turns green when you're lined up.</li>
+          <li><b>Fire</b> &mdash; auto-fire locks on when an enemy is centered, or tap <b>FIRE</b>.</li>
+          <li><b>Objective</b> &mdash; <b>Attackers</b> reach the glowing Merkaba Core at the center; <b>Defenders</b> stop them.</li>
+          <li><b>Fly</b> &mdash; left stick = thrust/steer, right stick = pitch/roll. <b>&#x1F916;</b> hands control to AIOS autopilot.</li>
+        </ul>
+        <button id="dtc-howto-ok" onclick="window._closeHowto()">GOT IT</button>
+      </div>
+    </div>
+    <script>
+      /* How-to-play card: show once (localStorage), reopen via the ? button. */
+      (function () {
+        window._openHowto = function () { var o = document.getElementById('dtc-howto'); if (o) o.style.display = 'flex'; };
+        window._closeHowto = function () {
+          var o = document.getElementById('dtc-howto'); if (o) o.style.display = 'none';
+          try { localStorage.setItem('dtc-howto-seen', '1'); } catch (_) {}
+        };
+        if (localStorage.getItem('dtc-howto-seen') !== '1') {
+          setTimeout(function () { if (localStorage.getItem('dtc-howto-seen') !== '1') window._openHowto(); }, 2600);
+        }
+      })();
+    </script>
     <!-- AIOS Autopilot (FLM) toggle — works on touch; also P key on desktop -->
     <button id="autopilot-btn" title="AIOS Autopilot — let the Flight Learning Model fly (P)">&#x1F916;</button>
     <!-- AIOS Autopilot active indicator -->
