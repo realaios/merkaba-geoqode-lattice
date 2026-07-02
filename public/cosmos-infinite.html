@@ -56069,6 +56069,10 @@
           _ensureScene();
           if (!_ghostScene) return;
           if (entry.id === _myId) return; // skip self
+          /* aiosmux-1 is the legacy explorer orb that hops galaxies near the
+             centre — it read as a "gold fighter that never moves" during DTC.
+             Don't render it as a combat ghost. */
+          if (entry.id === 'aiosmux-1') return;
 
           var THREE = AFRAME.THREE;
           var existing = _ghostMap[entry.id];
@@ -57512,10 +57516,8 @@
           }
           /* Hit detection — aim-assist on touch (wider cone) */
           var _isTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
-          /* 48000au arena + big ships: the ray must pass within this of an enemy
-             centre to count as a hit. Generous (esp. touch) so aiming near a ship
-             at range actually lands. */
-          var _hitRadius = _isTouch ? 700 : 450;
+          /* Big hit box so enemy jets are easy to hit at combat range. */
+          var _hitRadius = _isTouch ? 1800 : 1400;
           var _hitTarget = false;
           Object.keys(_ghostMap).forEach(function(id) {
             var g = _ghostMap[id];
@@ -57531,6 +57533,17 @@
           });
           /* Lock-on crosshair state */
           if (_ch) { if (_hitTarget) _ch.classList.add("locked"); else _ch.classList.remove("locked"); }
+          /* Shooting the Merkaba Core damages it (attackers only). Ray-to-origin
+             distance < core hit box → tell the server to drain a chunk of health. */
+          if (_myTeam === 'ATTACKER' && _ws && _ws.readyState === 1) {
+            var _tc = -rp.x * nd.x - rp.y * nd.y - rp.z * nd.z; // (origin - rp)·nd
+            if (_tc > 0) {
+              var _ccx = rp.x + nd.x * _tc, _ccy = rp.y + nd.y * _tc, _ccz = rp.z + nd.z * _tc;
+              if (Math.sqrt(_ccx*_ccx + _ccy*_ccy + _ccz*_ccz) < 700) {
+                _ws.send(JSON.stringify({ type: "coreShot" }));
+              }
+            }
+          }
         });
 
         /* ── Defend the Core: warn defenders when an attacker nears the core ──
@@ -57578,16 +57591,15 @@
            matched in the 48000au arena — that was the "no auto-fire" bug.
            Respects the 400ms cooldown. Toggle in Options → Combat. */
         (function _autoFireLoop() {
-          var AF_MS = 160;
+          var AF_MS = 110;
           var _isTouchAF = "ontouchstart" in window || navigator.maxTouchPoints > 0;
-          var HIT_R = _isTouchAF ? 700 : 450;
+          var HIT_R = _isTouchAF ? 1800 : 1400; // big hit box so enemy jets are easy to lock
           var _afTmp = null, _afClosest = null;
           setInterval(function () {
-            if (!window._autoFireEnabled) return;
             if (_spectatorMode) return;
-            if (Date.now() - _lastFire < 400) return; // honour fire cooldown
+            var _ch = document.getElementById('crosshair');
             var scn = document.querySelector('a-scene');
-            if (!scn || !scn.camera) return;
+            if (!scn || !scn.camera) { if (_ch) _ch.classList.remove('locked'); return; }
             var THREE = AFRAME.THREE;
             var camQ = new THREE.Quaternion();
             scn.camera.getWorldQuaternion(camQ);
@@ -57608,7 +57620,12 @@
               _afClosest.copy(rp).addScaledVector(nd, t);
               if (_afClosest.distanceTo(g.targetPos) < HIT_R) { locked = true; break; }
             }
-            if (locked) window.dispatchEvent(new CustomEvent('cosmos-fire'));
+            /* Crosshair glows RED whenever an enemy is locked in the box (continuous
+               feedback), and — when auto-fire is on — it FIRES while locked. */
+            if (_ch) _ch.classList.toggle('locked', locked);
+            if (locked && window._autoFireEnabled && Date.now() - _lastFire >= 400) {
+              window.dispatchEvent(new CustomEvent('cosmos-fire'));
+            }
           }, AF_MS);
         })();
 
@@ -58662,29 +58679,29 @@
           scn.object3D.add(grp);
           /* Glowing heart */
           var coreMat = mat(0x00ff88, 0.9, false);
-          var core = new THREE.Mesh(new THREE.IcosahedronGeometry(150, 1), coreMat); grp.add(core);
+          var core = new THREE.Mesh(new THREE.IcosahedronGeometry(75, 1), coreMat); grp.add(core);
           var haloMat = mat(0x00ff88, 0.18, false, true);
-          var halo = new THREE.Mesh(new THREE.SphereGeometry(380, 20, 16), haloMat); grp.add(halo);
+          var halo = new THREE.Mesh(new THREE.SphereGeometry(190, 20, 16), haloMat); grp.add(halo);
           /* Merkaba star tetrahedron — two counter-rotating tetrahedra */
           var upMat = mat(0x8fffcf, 0.6, true);
-          var tetU = new THREE.Mesh(new THREE.TetrahedronGeometry(520), upMat); grp.add(tetU);
+          var tetU = new THREE.Mesh(new THREE.TetrahedronGeometry(260), upMat); grp.add(tetU);
           var dnMat = mat(0x00ddff, 0.6, true);
-          var tetD = new THREE.Mesh(new THREE.TetrahedronGeometry(520), dnMat); tetD.rotation.x = Math.PI; grp.add(tetD);
+          var tetD = new THREE.Mesh(new THREE.TetrahedronGeometry(260), dnMat); tetD.rotation.x = Math.PI; grp.add(tetD);
           /* Outer lattice shell */
           var shellMat = mat(0x00ff88, 0.32, true);
-          var shell = new THREE.Mesh(new THREE.IcosahedronGeometry(720, 1), shellMat); grp.add(shell);
+          var shell = new THREE.Mesh(new THREE.IcosahedronGeometry(360, 1), shellMat); grp.add(shell);
           /* Gyroscopic rings */
           var rings = [];
-          [[880, 'x'], [960, 'y'], [1040, 'z']].forEach(function (rc) {
+          [[440, 'x'], [480, 'y'], [520, 'z']].forEach(function (rc) {
             var rm = mat(0x00ddff, 0.5, false);
-            var r = new THREE.Mesh(new THREE.TorusGeometry(rc[0], 10, 8, 72), rm);
+            var r = new THREE.Mesh(new THREE.TorusGeometry(rc[0], 6, 8, 72), rm);
             if (rc[1] === 'x') r.rotation.x = Math.PI / 2;
             else if (rc[1] === 'y') r.rotation.y = Math.PI / 2;
             grp.add(r); rings.push(r);
           });
           /* Low-health shockwave (reused) */
           var shockMat = mat(0xff3300, 0, false);
-          var shock = new THREE.Mesh(new THREE.TorusGeometry(700, 10, 8, 72), shockMat);
+          var shock = new THREE.Mesh(new THREE.TorusGeometry(350, 6, 8, 72), shockMat);
           shock.rotation.x = Math.PI / 2; shock.visible = false; grp.add(shock);
           var shockStart = -9999;
           function setColor(hex) { coreMat.color.setHex(hex); haloMat.color.setHex(hex); shellMat.color.setHex(hex); }
@@ -58733,9 +58750,12 @@
       </div>
     </div>
     <!-- Defend the Core: READY button + team badge -->
+    <!-- Team badge is a TOP-LEVEL element (not inside dtc-ready-wrap, which is
+         never shown because it's queried before it exists in the DOM) so it's
+         always visible once you're auto-joined. -->
+    <div id="dtc-team-badge"></div>
     <div id="dtc-ready-wrap">
       <button id="dtc-ready-btn" onclick="window._sendReady()">&#x2694; JOIN DEFEND THE CORE</button>
-      <div id="dtc-team-badge"></div>
       <button id="dtc-share-btn" onclick="window._shareDtc()">&#x238B; INVITE A PILOT</button>
     </div>
     <!-- Damage flash overlay -->
@@ -59124,7 +59144,9 @@
             var lc = camEl.components && camEl.components["look-controls"];
             if (joy2Active && (Math.abs(joy2DX) > DEAD || Math.abs(joy2DY) > DEAD)) {
               if (Math.abs(joy2DY) > DEAD) {
-                var _pit = (window._inv_pitch ? -joy2DY : joy2DY);
+                /* Pitch inverted by default (push down = nose down); the Invert
+                   Pitch option flips it back. */
+                var _pit = (window._inv_pitch ? joy2DY : -joy2DY);
                 _pit = Math.sign(_pit) * Math.pow(Math.abs(_pit), 1.8);
                 camEl.object3D.getWorldQuaternion(_mlPitchQ);
                 var _rightVec = _mlRightVec.set(1, 0, 0).applyQuaternion(_mlPitchQ).normalize();

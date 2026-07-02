@@ -6016,6 +6016,20 @@ _wss.on("connection", (ws) => {
       );
       // Agents have no client to self-report death — apply damage server-side.
       if (_dtcAgents.has(_tid)) _dtcDamageAgent(_tid, id, 25);
+    } else if (msg.type === "coreShot") {
+      // An attacker shot the Merkaba Core — drain its health (rate-limited by the
+      // client's 400ms fire cooldown) and reward the shooter a little.
+      if (_gameState.phase === "active" && _gameState.teams[id] === "ATTACKER") {
+        _gameState.coreHealth = Math.max(0, _gameState.coreHealth - 0.6);
+        const e = _presenceMap.get(id);
+        if (e) { e.score = (e.score || 0) + 3; e.roundScore = (e.roundScore || 0) + 3; }
+        const h = _gameState.coreHealth;
+        if (Math.floor(_gameState.lastBroadcastHealth) !== Math.floor(h) || h <= 0) {
+          _gameState.lastBroadcastHealth = h;
+          _broadcast({ type: "coreState", health: Math.round(h * 10) / 10 }, null);
+        }
+        if (h <= 0) _endRound("ATTACKER");
+      }
     } else if (msg.type === "kill") {
       const shooterEntry = _presenceMap.get(id);
       const targetEntry  = _presenceMap.get(String(msg.targetId || ""));
@@ -6316,7 +6330,10 @@ console.log("[AIOSmux] Presence WebSocket ready at /ws/presence");
         else { a.ang += a.turnDir * 0.12 * dt; gx = Math.cos(a.ang) * 6000; gy = 900 * Math.sin(a.phase); gz = Math.sin(a.ang) * 6000; }
       }
       // ── Desired heading toward the goal ─────────────────────────────────
-      let ddx = gx - a.x, ddy = gy - a.y, ddz = gz - a.z;
+      // Dampen the vertical component so jets fly mostly level (banked turns in
+      // the horizontal plane) instead of looking like they "vertical-thrust" up
+      // and down while facing forward.
+      let ddx = gx - a.x, ddy = (gy - a.y) * 0.3, ddz = gz - a.z;
       const dl = Math.hypot(ddx, ddy, ddz) || 1;
       ddx /= dl; ddy /= dl; ddz /= dl;
       // ── Turn the nose toward it at a LIMITED rate (a banked arc, no snapping) ─
