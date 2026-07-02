@@ -64,6 +64,11 @@ Loading `realaios.com/cosmos-infinite` right now gives you:
   (~5° cone); crosshair locks red; 25-dmg / health-bar damage model. Manual fire button still works.
 - **Core-approach alert** for defenders, **round-history** panel (Options → Defend the Core),
   **background drone muted by default** (Options → Sound), and a **mobile-optimized laser**.
+- **AIOS Autopilot showcase** — 🤖 button (touch + P key) hands your craft to the in-browser
+  Flight Learning Model, which visibly learns to fly; "AIOS FLYING — watch it learn" indicator.
+- **Share / invite loop live** — rich social-preview card on every shared link (Open Graph +
+  Twitter, 1200×630); invite attribution ("X invited you to Defend the Core"); one-tap **kill**
+  and **round-victory** share cards (1080×1920, Web Share + download).
 - **End-to-end verified** against the live server: connect → welcome → callsign → ready →
   teamAssign → fire → **kill credited & persisted to the leaderboard**.
 
@@ -97,17 +102,20 @@ The `?mode=dtc&invite=CALLSIGN` link + kill-share card are the growth loop: **th
 the ad.** Every match is a shareable moment that opens in one tap on any device — no other
 immersive platform can say that.
 
-- Every kill/round-win → one-tap share card (Instagram-story dimensions) already scaffolded.
-- Invite links deep-link straight into the live round (skip lobby).
-- Optimize the share card for autoplay previews so the shared artifact *is* a trailer.
+- ✅ Every kill **and round-win** → one-tap share card (1080×1920 Instagram-story).
+- ✅ Invite links deep-link straight into the live round (`?mode=dtc` auto-ready) + show
+  attribution ("X invited you").
+- ✅ Rich link preview (Open Graph + Twitter card) so the pasted link *is* the trailer.
+- Next: animated/video preview variant; server-rendered per-pilot OG image (dynamic card in the
+  link unfurl, not just the static one).
 
 ### Also queued
 
-- **Agent flight via the FLM** — the in-browser Flight Learning Model (`MerkabaFLM`, 12→24→4
-  REINFORCE policy, `window.MERKABA_FLM`) is trained to navigate toward Merkaba cores — exactly
-  the attacker objective. Its `forward()` pass is pure math and portable to the server; export
-  trained weights → ship as JSON → drive attacker navigation with learned flight. (Current bot
-  flight is hand-tuned and does not depend on this.)
+- **FLM decision (2026-07-02): keep hand-tuned agents; the FLM is the *player* autopilot
+  showcase, not agent flight** — a REINFORCE core-seeker would beeline and can't reproduce the
+  banking/jinking/intercept behavior the bots already have, and only Brad's browser holds trained
+  weights. Shipped: 🤖 autopilot button + "watch it learn" indicator. If learned *agents* are ever
+  wanted, that's a deliberate combat-reward training project, not a weight-drop onto the bots.
 - Distinct attacker/defender agent tint (currently shared agent gold).
 - Voice proximity chat (WebRTC), 3D minimap polish, spectator tournaments.
 - AIOS semantic-mesh integration: game-announcer / matchmaker / anti-grief agents driving the
