@@ -17,6 +17,19 @@
       name="description"
       content="Explore the living Merkaba Dimensional OS. D480 holographic lattice: 8 foundation nodes, 26 bosonic nodes, 48 canonical nodes, 480 harmonic nodes. PHI=1.618 BASE_HZ=72."
     />
+    <!-- Social preview — every shared link renders a rich card ("the experience is the ad") -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="AIOSuniverse" />
+    <meta property="og:title" content="Cosmos Infinite — Defend the Core" />
+    <meta property="og:description" content="Tap in and fly. A living Merkaba universe with a 24/7 space battle — Defend the Core. No install, no account, any browser." />
+    <meta property="og:url" content="https://realaios.com/cosmos-infinite" />
+    <meta property="og:image" content="https://realaios.com/public/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Cosmos Infinite — Defend the Core" />
+    <meta name="twitter:description" content="Tap in and fly. A living Merkaba universe with a 24/7 space battle. No install, no account." />
+    <meta name="twitter:image" content="https://realaios.com/public/og-image.png" />
     <script src="/vendor/aframe-1.4.0.min.js"></script>
     <script src="/public/geoanchor.js"></script>
     <style>
@@ -55378,6 +55391,25 @@
         from { opacity: 0; transform: scale(0.75) translateX(20px); }
         to   { opacity: 1; transform: scale(1) translateX(0); }
       }
+      /* Round-victory share button (shown in end overlay only when your team wins) */
+      #dtc-end-share {
+        display: none;
+        margin: 14px auto 2px;
+        background: linear-gradient(135deg, #0a1a0e 0%, #10240f 100%);
+        border: 1.5px solid #5aff9c;
+        color: #9dffca;
+        font-family: monospace;
+        font-size: 13px;
+        font-weight: 800;
+        letter-spacing: 2px;
+        padding: 10px 24px;
+        border-radius: 4px;
+        cursor: pointer;
+        text-transform: uppercase;
+        box-shadow: 0 0 20px rgba(60,255,140,0.4);
+        transition: box-shadow 0.2s ease;
+      }
+      #dtc-end-share:hover { box-shadow: 0 0 30px rgba(60,255,140,0.7); }
 
       /* ── Spectator mode ─────────────────────────────────────────────────── */
       #spec-overlay {
@@ -55452,6 +55484,81 @@
       #minimap-toggle-btn:active {
         background: rgba(0,30,60,0.92);
         box-shadow: 0 0 14px rgba(0,180,255,0.5);
+      }
+      /* AIOS Autopilot (FLM) toggle — sits just below the minimap button */
+      #autopilot-btn {
+        position: fixed;
+        top: 58px;
+        left: 14px;
+        width: 38px;
+        height: 38px;
+        background: rgba(0,8,24,0.78);
+        border: 1px solid rgba(0,140,200,0.45);
+        border-radius: 7px;
+        color: rgba(0,210,255,0.85);
+        font-size: 17px;
+        cursor: pointer;
+        z-index: 5090;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        pointer-events: auto;
+        -webkit-tap-highlight-color: transparent;
+        touch-action: manipulation;
+        transition: box-shadow 0.15s ease, background 0.15s ease;
+      }
+      #autopilot-btn.on {
+        color: #7CFFB0;
+        border-color: rgba(90,255,160,0.7);
+        box-shadow: 0 0 16px rgba(60,255,140,0.55);
+        animation: ap-pulse 1.6s ease-in-out infinite;
+      }
+      #autopilot-btn:active { background: rgba(0,30,60,0.92); }
+      @keyframes ap-pulse { 0%,100%{box-shadow:0 0 12px rgba(60,255,140,0.4);} 50%{box-shadow:0 0 22px rgba(60,255,140,0.75);} }
+      /* Invite attribution banner — shows above the intro modal so an invited
+         pilot immediately sees who sent them ("the experience is the ad"). */
+      #invite-banner {
+        position: fixed;
+        top: 22px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 10000;
+        max-width: 92vw;
+        text-align: center;
+        padding: 12px 22px;
+        border-radius: 8px;
+        font-family: monospace;
+        font-size: 15px;
+        color: #ffe08a;
+        background: rgba(10,6,26,0.92);
+        border: 1.5px solid rgba(255,200,90,0.6);
+        box-shadow: 0 0 26px rgba(255,180,60,0.45);
+        text-shadow: 0 0 8px rgba(255,200,90,0.7);
+        transition: opacity 0.8s ease;
+        pointer-events: none;
+      }
+      #invite-banner b { color: #fff; }
+      #invite-banner span { display: block; margin-top: 4px; font-size: 12px; color: #8fd0ff; letter-spacing: 1px; }
+      #autopilot-indicator {
+        position: fixed;
+        top: 58px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: none;
+        padding: 6px 16px;
+        border-radius: 4px;
+        font-family: monospace;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 1.5px;
+        color: #9dffca;
+        background: rgba(0,30,16,0.66);
+        border: 1.5px solid rgba(90,255,160,0.6);
+        box-shadow: 0 0 16px rgba(60,255,140,0.4);
+        text-shadow: 0 0 8px rgba(120,255,180,0.8);
+        z-index: 5101;
+        pointer-events: none;
+        white-space: nowrap;
       }
       /* Defend the Core: attacker-approaching alert (defender side) */
       #dtc-core-approach {
@@ -55580,6 +55687,7 @@
       @media (pointer: coarse) {
         #dtc-ready-wrap { bottom: 140px; }
         #minimap-toggle-btn { top: 52px; left: 8px; }
+        #autopilot-btn { top: 96px; left: 8px; }
       }
 
       /* ── Core health bar ────────────────────────────────────────────────── */
@@ -56322,6 +56430,63 @@
           setTimeout(function() { document.body.removeChild(a); URL.revokeObjectURL(objUrl); }, 1200);
         }
 
+        /* ── Round-victory share card (Instagram-story 1080×1920) ─────────── */
+        function _renderVictoryCard(v) {
+          var W = 1080, H = 1920;
+          var cv = document.createElement('canvas'); cv.width = W; cv.height = H;
+          var ctx = cv.getContext('2d');
+          var atk = v.winner === 'ATTACKER';
+          var accent = atk ? '#FF5A5A' : '#5AA8FF';
+          var glow = atk ? 'rgba(255,60,60,0.8)' : 'rgba(60,140,255,0.8)';
+          var bg = ctx.createRadialGradient(W/2, H*0.4, 0, W/2, H*0.4, W*0.9);
+          bg.addColorStop(0,'#0b0b1e'); bg.addColorStop(0.65,'#050511'); bg.addColorStop(1,'#000009');
+          ctx.fillStyle = bg; ctx.fillRect(0,0,W,H);
+          var _r = 0x51a9f3; function rng(){ _r = (_r*1664525+1013904223)&0x7fffffff; return _r/0x7fffffff; }
+          for (var i=0;i<260;i++){ ctx.beginPath(); ctx.arc(rng()*W, rng()*H, rng()*1.7+0.25, 0, Math.PI*2); ctx.fillStyle='rgba(210,225,255,'+(0.28+rng()*0.6)+')'; ctx.fill(); }
+          var tl = ctx.createLinearGradient(0,0,W,0); tl.addColorStop(0,'transparent'); tl.addColorStop(0.5,glow); tl.addColorStop(1,'transparent');
+          ctx.fillStyle = tl; ctx.fillRect(0,0,W,3);
+          function gText(t,x,y,f,c,g,b){ ctx.save(); ctx.textAlign='center'; ctx.font=f; ctx.shadowColor=g||c; ctx.shadowBlur=b||20; ctx.fillStyle=c; ctx.fillText(t,x,y); ctx.restore(); }
+          gText('MERKABA', W/2, 150, 'bold 58px Orbitron,monospace', '#FFD700', 'rgba(255,200,0,0.85)', 28);
+          gText('DEFEND  THE  CORE', W/2, 200, '22px Orbitron,monospace', '#00CCFF', 'rgba(0,180,255,0.7)', 16);
+          gText('♚', W/2, 470, '190px sans-serif', '#FFD700', 'rgba(255,210,0,0.85)', 44);
+          gText('VICTORY', W/2, 600, 'bold 96px Orbitron,monospace', '#FFFFFF', 'rgba(255,255,255,0.5)', 34);
+          gText(atk ? '⚔ STORM VANGUARD' : '🛡 MERKABA GUARD', W/2, 700, 'bold 40px Orbitron,monospace', accent, glow, 22);
+          gText('ROUND ' + (v.round||1) + ' — ' + (atk ? 'CORE DESTROYED' : 'CORE DEFENDED'), W/2, 772, '26px monospace', 'rgba(180,200,220,0.85)', null, 8);
+          gText((_myCallsign||'PILOT').toUpperCase(), W/2, 930, 'bold 76px Orbitron,monospace', '#FFFFFF', 'rgba(255,255,255,0.4)', 26);
+          gText('K: '+(_myKills||0)+'   •   SCORE: '+(_myScore||0)+'   •   +'+(v.bonus||0)+' TEAM', W/2, 1000, '26px monospace', 'rgba(175,200,220,0.8)', null, 8);
+          if (Array.isArray(v.scores) && v.scores.length) {
+            gText('TOP PILOTS', W/2, 1112, '22px monospace', 'rgba(0,175,255,0.6)', null, 6);
+            v.scores.slice(0,3).forEach(function(r,i){ gText((i+1)+'. '+(r.name||'PILOT')+'  •  '+(r.score||0)+' PTS', W/2, 1174+i*50, '26px monospace', 'rgba(200,220,240,0.85)', null, 6); });
+          }
+          var sep = ctx.createLinearGradient(90,0,W-90,0); sep.addColorStop(0,'transparent'); sep.addColorStop(0.5,glow); sep.addColorStop(1,'transparent');
+          ctx.fillStyle = sep; ctx.fillRect(90, 1560, W-180, 1);
+          gText('realaios.com', W/2, 1660, 'bold 36px Orbitron,monospace', '#00DDFF', 'rgba(0,200,255,0.7)', 18);
+          gText('realaios.com/?mode=dtc', W/2, 1708, '22px monospace', 'rgba(0,175,255,0.52)', null, 6);
+          gText('POWERED BY MERKABA480 — AIOS', W/2, 1780, '17px monospace', 'rgba(140,155,175,0.38)', null, 0);
+          var bl = ctx.createLinearGradient(0,0,W,0); bl.addColorStop(0,'transparent'); bl.addColorStop(0.5,glow); bl.addColorStop(1,'transparent');
+          ctx.fillStyle = bl; ctx.fillRect(0, H-3, W, 3);
+          return cv;
+        }
+
+        window._shareVictory = function() {
+          var v = window._lastVictory; if (!v) return;
+          var canvas = _renderVictoryCard(v);
+          canvas.toBlob(function(blob) {
+            if (!blob) return;
+            var file = new File([blob], 'merkaba-victory.png', { type: 'image/png' });
+            var objUrl = URL.createObjectURL(blob);
+            if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+              navigator.share({
+                title: (_myCallsign||'PILOT') + ' won Defend the Core',
+                text: 'Defend the Core — MERKABA\nrealaios.com/?mode=dtc',
+                files: [file],
+              }).catch(function() { _downloadKillCard(objUrl); });
+            } else {
+              _downloadKillCard(objUrl);
+            }
+          }, 'image/png');
+        };
+
         /* ── Phase 4C/4D: Minimap ─────────────────────────────────────────── */
         var _specMinimapTimer  = null;
         var _minimapVisible    = false;
@@ -57001,8 +57166,15 @@
                         return '<div class="end-score-row">' + (r.name || 'PILOT') + ' &nbsp; ' + (r.score || 0) + ' PTS &nbsp; ' + (r.kills || 0) + ' KILLS</div>';
                       }).join('');
                     }
+                    /* SHARE VICTORY — only when your team won this round */
+                    var _esh = document.getElementById('dtc-end-share');
+                    var _iWon = _myTeam && msg.winner === _myTeam;
+                    if (_iWon) {
+                      window._lastVictory = { winner: msg.winner, round: msg.round, bonus: msg.bonus || 0, scores: msg.scores || [] };
+                    }
+                    if (_esh) _esh.style.display = _iWon ? 'block' : 'none';
                     _ov.style.display = 'flex';
-                    setTimeout(function() { if (_ov) _ov.style.display = 'none'; }, 8000);
+                    setTimeout(function() { if (_ov) _ov.style.display = 'none'; }, _iWon ? 15000 : 8000);
                   }
                   var _rb = document.getElementById('dtc-ready-btn');
                   if (_rb && !_myTeam) setTimeout(function() { _rb.classList.remove('hidden'); }, 5000);
@@ -58153,6 +58325,7 @@
       <div id="dtc-end-winner"></div>
       <div id="dtc-end-bonus"></div>
       <div id="dtc-end-scores"></div>
+      <button id="dtc-end-share" onclick="event.stopPropagation(); window._shareVictory()">&#x1F4E4; SHARE VICTORY</button>
       <div id="dtc-end-dismiss">TAP TO CONTINUE</div>
     </div>
     <!-- Defend the Core: Core health bar (hidden until round active) -->
@@ -58200,6 +58373,51 @@
     </div>
     <!-- Minimap toggle button (regular pilots: N key / mobile tap) -->
     <button id="minimap-toggle-btn" onclick="window._toggleMinimap(true)" title="Toggle minimap (N)">&#x1F5FA;</button>
+    <!-- AIOS Autopilot (FLM) toggle — works on touch; also P key on desktop -->
+    <button id="autopilot-btn" title="AIOS Autopilot — let the Flight Learning Model fly (P)">&#x1F916;</button>
+    <!-- AIOS Autopilot active indicator -->
+    <div id="autopilot-indicator">&#x1F916; AIOS FLYING &mdash; watch it learn</div>
+    <script>
+      /* ── AIOS Autopilot (FLM) — discoverable toggle + persistent indicator ──
+         Reuses the existing P-key path in merkaba-pilot-agent by dispatching a
+         synthetic KeyP keydown (keeps one source of truth + its toast). The
+         indicator reads window._pilotAgentActive so it stays in sync whether
+         toggled by the button or the P key. This is the FLM's showcase: a human
+         hands their craft to an agent that visibly learns to fly. */
+      (function () {
+        var btn = document.getElementById("autopilot-btn");
+        var ind = document.getElementById("autopilot-indicator");
+        if (btn) {
+          btn.addEventListener("click", function (e) {
+            e.stopPropagation();
+            window.dispatchEvent(new KeyboardEvent("keydown", { code: "KeyP" }));
+          });
+        }
+        setInterval(function () {
+          var on = !!window._pilotAgentActive;
+          if (btn) btn.classList.toggle("on", on);
+          if (ind) ind.style.display = on ? "block" : "none";
+        }, 400);
+      })();
+
+      /* ── Invite attribution — read ?invite=CALLSIGN and greet the new pilot ── */
+      (function () {
+        var inv = new URLSearchParams(location.search).get("invite");
+        if (!inv) return;
+        inv = inv.replace(/[^A-Za-z0-9 _\-]/g, "").slice(0, 16).trim();
+        if (!inv) return;
+        var el = document.createElement("div");
+        el.id = "invite-banner";
+        el.innerHTML =
+          "⚔ <b>" + inv + "</b> invited you to <b>DEFEND THE CORE</b>" +
+          "<span>Tap ENTER UNIVERSE, then JOIN to fly — it's on now</span>";
+        document.body.appendChild(el);
+        setTimeout(function () {
+          el.style.opacity = "0";
+          setTimeout(function () { if (el.parentNode) el.parentNode.removeChild(el); }, 900);
+        }, 7000);
+      })();
+    </script>
     <script>
       /* ── Options: background-drone toggle (muted by default) + round history ── */
       (function () {
