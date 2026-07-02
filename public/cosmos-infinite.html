@@ -3859,7 +3859,7 @@
 
       <!-- Solar system removed -->
       <!-- Camera rig -->
-      <a-entity id="cameraRig" position="0 900 8000">
+      <a-entity id="cameraRig" position="0 900 7000">
         <a-camera
           wasd-controls="acceleration: 20000; fly: true"
           look-controls="pointerLockEnabled: false; touchEnabled: false; magicWindowTrackingEnabled: false"
@@ -55281,7 +55281,13 @@
           left: 12px;
         }
       }
-      #dfs-title { font-size:11px; font-weight:bold; margin-bottom:4px; letter-spacing:1px; }
+      #dfs-title { font-size:11px; font-weight:bold; margin-bottom:4px; letter-spacing:1px;
+        display:flex; align-items:center; justify-content:space-between; gap:8px; cursor:pointer; }
+      #dfs-caret { font-size:8px; opacity:0.7; transition:transform 0.2s; }
+      #dfs-list { max-height:170px; overflow-y:auto; }
+      #dogfight-scoreboard.collapsed #dfs-list { display:none; }
+      #dogfight-scoreboard.collapsed #dfs-title { margin-bottom:0; }
+      #dogfight-scoreboard.collapsed #dfs-caret { transform:rotate(-90deg); }
       .dfs-row { display:flex; justify-content:space-between; padding:1px 0; }
       .dfs-row.me { color:#fff; }
 
@@ -55314,7 +55320,6 @@
         transition: box-shadow 0.2s ease;
       }
       #dtc-ready-btn:hover { box-shadow: 0 0 32px rgba(0,220,255,0.75), inset 0 0 14px rgba(0,160,255,0.35); }
-      #dtc-ready-btn { display: none !important; }
       #dtc-ready-btn.hidden { display: none !important; }
       #dtc-share-btn {
         background: transparent;
@@ -55719,6 +55724,10 @@
         #dtc-ready-wrap { bottom: 140px; }
         #minimap-toggle-btn { top: 52px; left: 8px; }
         #autopilot-btn { top: 96px; left: 8px; }
+        /* Radar/minimap: on mobile the default bottom-left sits UNDER the left
+           joystick — move it to the mid-left, clear of joysticks + HUD. It opens
+           on tap and stays open until tapped closed (no auto-hide). */
+        #spec-minimap-wrap { bottom: auto !important; top: 188px !important; left: 8px !important; }
       }
 
       /* ── Core health bar ────────────────────────────────────────────────── */
@@ -56073,7 +56082,7 @@
                Scale ships up so they read as real craft at combat range; agents
                patrol/attack from farther out, so they get the largest boost. */
             var group = _makeFighterAvatar(color);
-            var _shipScale = isAgent ? 360 : 180; // 48000au arena — capital-ship sized so they read across the battlefield
+            var _shipScale = isAgent ? 90 : 60; // reads as a ship (~20-30°) at combat range, not a screen-filling wedge
             group.scale.setScalar(_shipScale);
             if (el.object3D) {
               el.object3D.add(group);
@@ -56087,7 +56096,7 @@
             label.setAttribute("value", callsign);
             label.setAttribute("align", "center");
             label.setAttribute("color", color);
-            label.setAttribute("scale", (isAgent ? "220 220 220" : "120 120 120"));
+            label.setAttribute("scale", (isAgent ? "60 60 60" : "45 45 45"));
             label.setAttribute("position", "0 " + (3.2 * _shipScale) + " 0");
             label.setAttribute("look-at", "[camera]");
             el.appendChild(label);
@@ -56286,12 +56295,25 @@
         var _fhudCallsign = null, _fhudHpBar = null, _fhudHpNum = null;
         var _fhudStats = null, _dfsListEl = null;
 
+        var _sbInit = false;
         function _initHudRefs() {
           _fhudCallsign = document.getElementById("fhud-callsign");
           _fhudHpBar = document.getElementById("fhud-hp-bar");
           _fhudHpNum = document.getElementById("fhud-hp-num");
           _fhudStats = document.getElementById("fhud-stats");
           _dfsListEl = document.getElementById("dfs-list");
+          if (!_sbInit) {
+            _sbInit = true;
+            var _sb = document.getElementById("dogfight-scoreboard");
+            var _t = document.getElementById("dfs-title");
+            if (_sb && _t) {
+              _t.addEventListener("click", function() { _sb.classList.toggle("collapsed"); });
+              /* Default-collapse on mobile so it never dominates the screen */
+              if (window.matchMedia && window.matchMedia("(pointer: coarse)").matches) {
+                _sb.classList.add("collapsed");
+              }
+            }
+          }
         }
 
         function _updateFighterHUD() {
@@ -56695,7 +56717,7 @@
           if (!_dfsListEl) _initHudRefs();
           if (!_dfsListEl) return;
           var _online = Object.keys(_ghostMap).length + 1;
-          var _titleEl = document.getElementById("dfs-title");
+          var _titleEl = document.getElementById("dfs-title-text");
           if (_titleEl) _titleEl.innerHTML = '&#x1F3C6; LEADERBOARD &nbsp;<span style="font-size:9px;opacity:0.75;">&#x1F7E2;&nbsp;' + _online + ' online</span>';
           var rows = [{ id: "me", name: _myCallsign, kills: _myKills, score: _myScore, me: true }];
           Object.keys(_ghostMap).forEach(function(id) {
@@ -57501,12 +57523,14 @@
            break off and intercept. Escalates to a red pulse inside 500au. */
         (function _dtcCoreApproachMonitor() {
           var WARN_AU = 8000;     // start warning inside this range (48000au arena)
-          var CRIT_AU = 2500;     // core-drain range → critical
+          var CRIT_AU = 3500;     // core-drain range → critical
           setInterval(function () {
             var alertEl = document.getElementById('dtc-core-approach');
             if (!alertEl) return;
-            /* Only relevant to active defenders. */
-            if (_myTeam !== 'DEFENDER') { alertEl.style.display = 'none'; return; }
+            /* Environmental battle-stakes indicator — driven purely by ghost
+               positions (always populated), so it works for defenders, attackers,
+               AND un-joined visitors. Only spectators are excluded. */
+            if (_spectatorMode) { alertEl.style.display = 'none'; return; }
             var nearest = Infinity;
             Object.keys(_ghostMap).forEach(function (id) {
               var g = _ghostMap[id];
@@ -57522,21 +57546,26 @@
             alertEl.classList.toggle('critical', critical);
             var txt = document.getElementById('dtc-approach-txt');
             var dst = document.getElementById('dtc-approach-dist');
-            if (txt) txt.textContent = critical ? 'CORE UNDER ATTACK — INTERCEPT' : 'ATTACKER NEARING CORE';
+            if (txt) txt.textContent = critical
+              ? (_myTeam === 'ATTACKER' ? 'CORE BREACH IMMINENT' : 'CORE UNDER ATTACK — INTERCEPT')
+              : (_myTeam === 'ATTACKER' ? 'VANGUARD NEARING CORE' : 'ATTACKER NEARING CORE');
             if (dst) dst.textContent = Math.round(nearest) + ' au';
             alertEl.style.display = 'flex';
           }, 500);
         })();
 
         /* ── Auto-Fire: fire when an enemy sits in the crosshairs ───────────
-           Reuses the cosmos-fire pipeline (laser + hit detection + broadcast +
-           lock-on crosshair), just triggered automatically when a valid enemy
-           is within a ~5° aim cone ahead of the craft. Respects the 400ms fire
-           cooldown. Toggle in Options → Combat. Fire button still works too. */
+           Uses the SAME hit test as the manual Fire button (forward projection
+           onto the aim ray + perpendicular distance < hit radius; no fixed
+           angular cone, no max-range cap) so auto-fire locks whenever a manual
+           shot would land. The old fixed 5° cone + 6000au cap almost never
+           matched in the 48000au arena — that was the "no auto-fire" bug.
+           Respects the 400ms cooldown. Toggle in Options → Combat. */
         (function _autoFireLoop() {
           var AF_MS = 160;
-          var COS_CONE = 0.9962; // cos(~5°)
-          var _afTmp = null;
+          var _isTouchAF = "ontouchstart" in window || navigator.maxTouchPoints > 0;
+          var HIT_R = _isTouchAF ? 700 : 450;
+          var _afTmp = null, _afClosest = null;
           setInterval(function () {
             if (!window._autoFireEnabled) return;
             if (_spectatorMode) return;
@@ -57550,18 +57579,18 @@
             var rig = document.getElementById('cameraRig');
             var rp = new THREE.Vector3();
             if (rig && rig.object3D) rig.object3D.getWorldPosition(rp);
-            if (!_afTmp) _afTmp = new THREE.Vector3();
+            if (!_afTmp) { _afTmp = new THREE.Vector3(); _afClosest = new THREE.Vector3(); }
             var locked = false;
             var keys = Object.keys(_ghostMap);
             for (var i = 0; i < keys.length; i++) {
               var g = _ghostMap[keys[i]];
-              if (!g || !g.group || !g.group.visible) continue;
+              if (!g || !g.group || !g.group.visible || !g.targetPos) continue;
               if (_myTeam && g.team && g.team === _myTeam) continue; // never shoot teammates
               _afTmp.subVectors(g.targetPos, rp);
-              var dist = _afTmp.length();
-              if (dist < 8 || dist > 6000) continue;
-              _afTmp.multiplyScalar(1 / dist);
-              if (_afTmp.dot(nd) >= COS_CONE) { locked = true; break; }
+              var t = _afTmp.dot(nd);      // forward projection onto aim ray
+              if (t <= 0) continue;        // enemy is behind us
+              _afClosest.copy(rp).addScaledVector(nd, t);
+              if (_afClosest.distanceTo(g.targetPos) < HIT_R) { locked = true; break; }
             }
             if (locked) window.dispatchEvent(new CustomEvent('cosmos-fire'));
           }, AF_MS);
@@ -58293,12 +58322,17 @@
           right: 0 !important;
           left: auto !important;
           bottom: auto !important;
-          width: 164px !important;
+          width: 118px !important;
+          max-width: 40vw !important;
           border-radius: 0 0 0 10px !important;
           border-top: none !important;
-          padding: 4px 8px !important;
+          padding: 3px 6px !important;
+          font-size: 8px !important;
         }
-        #dfs-title { font-size: 10px; margin-bottom: 2px; }
+        #dfs-title { font-size: 9px; margin-bottom: 2px; }
+        /* Cap the list to ~5 rows and scroll the rest so it never dominates the screen */
+        #dfs-list { max-height: 74px !important; overflow-y: auto; }
+        .dfs-row { padding: 0 !important; }
 
         /* Zone/scale label: raise above bottom dash bar */
         #scale-indicator {
@@ -58554,7 +58588,10 @@
     </div>
     <!-- Dogfight Scoreboard -->
     <div id="dogfight-scoreboard">
-      <div id="dfs-title">&#x1F3C6; LEADERBOARD</div>
+      <div id="dfs-title">
+        <span id="dfs-title-text">&#x1F3C6; LEADERBOARD</span>
+        <span id="dfs-caret">&#x25BC;</span>
+      </div>
       <div id="dfs-list"></div>
     </div>
     <!-- Defend the Core: Round timer (top-center, hidden in lobby) -->
@@ -58609,29 +58646,29 @@
           scn.object3D.add(grp);
           /* Glowing heart */
           var coreMat = mat(0x00ff88, 0.9, false);
-          var core = new THREE.Mesh(new THREE.IcosahedronGeometry(900, 1), coreMat); grp.add(core);
+          var core = new THREE.Mesh(new THREE.IcosahedronGeometry(300, 1), coreMat); grp.add(core);
           var haloMat = mat(0x00ff88, 0.18, false, true);
-          var halo = new THREE.Mesh(new THREE.SphereGeometry(2200, 20, 16), haloMat); grp.add(halo);
+          var halo = new THREE.Mesh(new THREE.SphereGeometry(750, 20, 16), haloMat); grp.add(halo);
           /* Merkaba star tetrahedron — two counter-rotating tetrahedra */
           var upMat = mat(0x8fffcf, 0.6, true);
-          var tetU = new THREE.Mesh(new THREE.TetrahedronGeometry(3000), upMat); grp.add(tetU);
+          var tetU = new THREE.Mesh(new THREE.TetrahedronGeometry(1000), upMat); grp.add(tetU);
           var dnMat = mat(0x00ddff, 0.6, true);
-          var tetD = new THREE.Mesh(new THREE.TetrahedronGeometry(3000), dnMat); tetD.rotation.x = Math.PI; grp.add(tetD);
+          var tetD = new THREE.Mesh(new THREE.TetrahedronGeometry(1000), dnMat); tetD.rotation.x = Math.PI; grp.add(tetD);
           /* Outer lattice shell */
           var shellMat = mat(0x00ff88, 0.32, true);
-          var shell = new THREE.Mesh(new THREE.IcosahedronGeometry(4200, 1), shellMat); grp.add(shell);
+          var shell = new THREE.Mesh(new THREE.IcosahedronGeometry(1400, 1), shellMat); grp.add(shell);
           /* Gyroscopic rings */
           var rings = [];
-          [[5200, 'x'], [5600, 'y'], [6000, 'z']].forEach(function (rc) {
+          [[1700, 'x'], [1850, 'y'], [2000, 'z']].forEach(function (rc) {
             var rm = mat(0x00ddff, 0.5, false);
-            var r = new THREE.Mesh(new THREE.TorusGeometry(rc[0], 50, 8, 72), rm);
+            var r = new THREE.Mesh(new THREE.TorusGeometry(rc[0], 18, 8, 72), rm);
             if (rc[1] === 'x') r.rotation.x = Math.PI / 2;
             else if (rc[1] === 'y') r.rotation.y = Math.PI / 2;
             grp.add(r); rings.push(r);
           });
           /* Low-health shockwave (reused) */
           var shockMat = mat(0xff3300, 0, false);
-          var shock = new THREE.Mesh(new THREE.TorusGeometry(3800, 45, 8, 72), shockMat);
+          var shock = new THREE.Mesh(new THREE.TorusGeometry(1300, 18, 8, 72), shockMat);
           shock.rotation.x = Math.PI / 2; shock.visible = false; grp.add(shock);
           var shockStart = -9999;
           function setColor(hex) { coreMat.color.setHex(hex); haloMat.color.setHex(hex); shellMat.color.setHex(hex); }
@@ -60074,9 +60111,16 @@
 
         /* Cross Yaw+Roll mode: right stick L/R gives combined yaw+roll (V-tail style) */
         var cbCross = document.getElementById("opt-cross-yaw-roll");
-        if (cbCross) cbCross.addEventListener("change", function () {
+        if (cbCross) {
+          /* Default ON (unless the user previously turned it off) */
+          var _crossPref = localStorage.getItem("cosmos-crossyawroll");
+          cbCross.checked = _crossPref === null ? true : _crossPref === "1";
           window._cross_yaw_roll = cbCross.checked;
-        });
+          cbCross.addEventListener("change", function () {
+            window._cross_yaw_roll = cbCross.checked;
+            localStorage.setItem("cosmos-crossyawroll", cbCross.checked ? "1" : "0");
+          });
+        }
 
         /* Speed setting — default Medium; gradient multiplied by setting */
         window._speedSetting = "medium";

@@ -6156,10 +6156,10 @@ console.log("[AIOSmux] Presence WebSocket ready at /ws/presence");
     // 48000au arena: attackers stream in from across the far reaches; defenders
     // patrol a wide ring. Spread wide (incl. big vertical spread) so the fleet
     // fills the battlefield instead of clustering.
-    const r = team === "ATTACKER" ? 10000 + Math.random() * 38000 : 4000 + Math.random() * 10000;
+    const r = team === "ATTACKER" ? 12000 + Math.random() * 20000 : 4000 + Math.random() * 8000;
     return {
       x: Math.cos(ang) * r,
-      y: (Math.random() - 0.5) * 12000,
+      y: (Math.random() - 0.5) * 8000, // ±4000 — stay near the ecliptic where core/player sit
       z: Math.sin(ang) * r,
       ang,
     };
@@ -6299,11 +6299,11 @@ console.log("[AIOSmux] Presence WebSocket ready at /ws/presence");
           tz = ez - (ez / eL) * 2500;
           const wx = -(tz - a.z), wz = tx - a.x; // lateral weave
           const wl = Math.hypot(wx, wz) || 1;
-          const w = 2000 * Math.sin(a.phase * 2.2);
+          const w = 2500 * Math.sin(a.phase * 2.2);
           tx += (wx / wl) * w; tz += (wz / wl) * w;
         } else {
           a.ang += a.turnDir * 0.05 * dt;
-          const r = 9000;
+          const r = 8000;
           tx = Math.cos(a.ang) * r;
           tz = Math.sin(a.ang) * r;
           ty = 3000 * Math.sin(a.phase);
@@ -6312,7 +6312,7 @@ console.log("[AIOSmux] Presence WebSocket ready at /ws/presence");
       // Kinematic move with speed variation: afterburner when far, ease when close.
       const dx = tx - a.x, dy = ty - a.y, dz = tz - a.z;
       const dist = Math.hypot(dx, dy, dz) || 1;
-      let spd = 110 + 130 * Math.min(1, dist / 12000); // ~20x slower — majestic capital-ship pace
+      let spd = 3000 + 1800 * Math.min(1, dist / 12000); // 3000–4800 au/s ≈ player default (mobile medium)
       spd *= 0.92 + 0.13 * Math.sin(a.phase * 1.3 + a.burnOff);
       const step = Math.min(dist, spd * dt);
       const nfx = dx / dist, nfy = dy / dist, nfz = dz / dist; // heading (unit)
