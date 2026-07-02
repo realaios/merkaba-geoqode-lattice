@@ -6017,17 +6017,22 @@ _wss.on("connection", (ws) => {
       // Agents have no client to self-report death — apply damage server-side.
       if (_dtcAgents.has(_tid)) _dtcDamageAgent(_tid, id, 25);
     } else if (msg.type === "coreShot") {
-      // An attacker shot the Merkaba Core — drain its health (rate-limited by the
-      // client's 400ms fire cooldown) and reward the shooter a little.
-      if (_gameState.phase === "active" && _gameState.teams[id] === "ATTACKER") {
-        _gameState.coreHealth = Math.max(0, _gameState.coreHealth - 1.0);
-        const e = _presenceMap.get(id);
-        if (e) { e.score = (e.score || 0) + 3; e.roundScore = (e.roundScore || 0) + 3; }
-        const h = _gameState.coreHealth;
-        _gameState.lastBroadcastHealth = h; // broadcast every hit so the drain is visible
-        _broadcast({ type: "coreState", health: Math.round(h * 10) / 10 }, null);
-        if (h <= 0) _endRound("ATTACKER");
+      // FFA: you can drain the core ONLY if you've killed a jet since your last
+      // core shot (a kill "arms" one core shot). -1 core, +1 you, then disarmed.
+      if (_gameState.phase !== "active") return;
+      const e = _presenceMap.get(id);
+      if (!e || !e.coreArmed) {
+        ws.send(JSON.stringify({ type: "coreArmed", id, armed: false })); // need a kill first
+        return;
       }
+      e.coreArmed = false;
+      _gameState.coreHealth = Math.max(0, _gameState.coreHealth - 1.0);
+      e.score = (e.score || 0) + 1; e.roundScore = (e.roundScore || 0) + 1;
+      const h = _gameState.coreHealth;
+      _gameState.lastBroadcastHealth = h;
+      _broadcast({ type: "coreState", health: Math.round(h * 10) / 10 }, null);
+      ws.send(JSON.stringify({ type: "coreArmed", id, armed: false })); // consumed
+      if (h <= 0) _endRound("ATTACKER");
     } else if (msg.type === "kill") {
       const shooterEntry = _presenceMap.get(id);
       const targetEntry  = _presenceMap.get(String(msg.targetId || ""));
@@ -6254,7 +6259,9 @@ console.log("[AIOSmux] Presence WebSocket ready at /ws/presence");
       shooterEntry.kills = (shooterEntry.kills || 0) + 1;
       shooterEntry.score = (shooterEntry.score || 0) + 100;
       shooterEntry.roundScore = (shooterEntry.roundScore || 0) + 100;
+      shooterEntry.coreArmed = true; // FFA: a kill arms your next core shot
     }
+    _broadcast({ type: "coreArmed", id: shooterId, armed: true }, null);
     if (!_dogfightScores[shooterName]) _dogfightScores[shooterName] = { kills: 0, score: 0 };
     _dogfightScores[shooterName].kills++;
     _dogfightScores[shooterName].score += 100;

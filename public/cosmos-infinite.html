@@ -55586,6 +55586,34 @@
         white-space: nowrap;
       }
       /* Defend the Core: attacker-approaching alert (defender side) */
+      #ffa-core-status {
+        position: fixed;
+        bottom: 82px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: none;
+        padding: 3px 12px;
+        border-radius: 4px;
+        font-family: monospace;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        color: #8fa8c8;
+        background: rgba(10,14,26,0.6);
+        border: 1px solid rgba(120,140,170,0.4);
+        z-index: 5101;
+        pointer-events: none;
+        white-space: nowrap;
+      }
+      #ffa-core-status.armed {
+        color: #7CFFB0;
+        background: rgba(0,30,16,0.66);
+        border-color: rgba(90,255,160,0.7);
+        box-shadow: 0 0 14px rgba(60,255,140,0.45);
+        text-shadow: 0 0 8px rgba(120,255,180,0.8);
+        animation: ffa-arm-pulse 0.8s ease-in-out infinite;
+      }
+      @keyframes ffa-arm-pulse { 0%,100%{opacity:1;} 50%{opacity:0.65;} }
       #dtc-core-approach {
         position: fixed;
         top: 40px;
@@ -56200,11 +56228,15 @@
             if (!g.group) continue;
             g.pos.lerp(g.targetPos, 0.15);
             g.quat.slerp(g.targetQuat, 0.15);
-            g.group.position.copy(g.pos);
-            g.group.quaternion.copy(g.quat);
+            /* group is a CHILD of el.object3D — put the world transform on the el
+               ONLY. Setting both doubled the position, so ships rendered at ~2x
+               their real location and shots aimed at the visible ship missed. */
             if (g.el && g.el.object3D) {
               g.el.object3D.position.copy(g.pos);
               g.el.object3D.quaternion.copy(g.quat);
+            } else {
+              g.group.position.copy(g.pos);
+              g.group.quaternion.copy(g.quat);
             }
             /* ── Fighter FX: pulse nacelles, strobe lights, spin shield, corona ── */
             var gr = g.group;
@@ -56732,14 +56764,14 @@
           }
           /* scale to the farthest enemy (distance from YOU) + the core */
           var _maxD = 3000;
-          Object.keys(_ghostMap).forEach(function(gid){ var g = _ghostMap[gid]; if (_myTeam && g.team === _myTeam) return; var p = g.targetPos || g.pos; if (p){ var d = Math.hypot(p.x-Px, p.y-Py, p.z-Pz); if (d > _maxD) _maxD = d; } });
+          Object.keys(_ghostMap).forEach(function(gid){ var p = _ghostMap[gid].pos || _ghostMap[gid].targetPos; if (p){ var d = Math.hypot(p.x-Px, p.y-Py, p.z-Pz); if (d > _maxD) _maxD = d; } });
           var _dCore = Math.hypot(Px, Py, Pz); if (_dCore > _maxD) _maxD = _dCore;
           var SCALE = Math.min(48000, _maxD * 1.15);
           /* world (x,z) → screen, heading-up + player-centred */
           function _mm(wx, wz) {
             var rx = wx - Px, rz = wz - Pz;
             var fc = rx * fhx + rz * fhz;   // forward (→ up)
-            var rc = rx * fhz - rz * fhx;   // right  (→ +x)
+            var rc = rz * fhx - rx * fhz;   // right  (→ +x) — matches what you see (was mirrored)
             return { x: Math.max(3, Math.min(W-3, CX + (rc / SCALE) * CX)),
                      y: Math.max(3, Math.min(H-3, CY - (fc / SCALE) * CY)) };
           }
@@ -56756,11 +56788,10 @@
           ctx.beginPath(); ctx.arc(_cpt.x, _cpt.y, 4, 0, Math.PI*2);
           ctx.fillStyle = cc; ctx.shadowColor = cc; ctx.shadowBlur = 10; ctx.fill(); ctx.shadowBlur = 0;
 
-          /* ENEMY ships only — plain red dots */
+          /* Every jet is a target (FFA) — plain red dots */
           Object.keys(_ghostMap).forEach(function(gid) {
             var g = _ghostMap[gid];
-            if (_myTeam && g.team === _myTeam) return; // skip allies
-            var pos = g.targetPos || g.pos; if (!pos) return;
+            var pos = g.pos || g.targetPos; if (!pos) return;
             var s = _mm(pos.x, pos.z);
             ctx.beginPath(); ctx.arc(s.x, s.y, 4, 0, Math.PI*2);
             ctx.fillStyle = '#FF3B3B'; ctx.shadowColor = '#FF3B3B'; ctx.shadowBlur = 8; ctx.fill(); ctx.shadowBlur = 0;
@@ -56971,6 +57002,8 @@
                 /* Auto-join everyone into the endless battle — no confusing JOIN
                    step. You get a team + badge automatically and just start flying. */
                 if (!_spectatorMode && !_myTeam) setTimeout(window._sendReady, 800);
+                /* Show the FFA kill-to-arm-core status */
+                if (!_spectatorMode) { var _fca0 = document.getElementById('ffa-core-status'); if (_fca0) _fca0.style.display = 'block'; }
                 /* Spectator mode setup */
                 if (_spectatorMode) {
                   if (_ws && _ws.readyState === 1) _ws.send(JSON.stringify({ type: 'spectate' }));
@@ -57399,6 +57432,18 @@
                 _playSfx('lock');
                 break;
 
+              case 'coreArmed':
+                if (msg.id === _myId) {
+                  window._coreArmed = !!msg.armed;
+                  var _fca = document.getElementById('ffa-core-status');
+                  if (_fca) {
+                    _fca.className = window._coreArmed ? 'armed' : '';
+                    _fca.textContent = window._coreArmed ? '⚡ CORE SHOT ARMED' : '☠ KILL A JET TO ARM CORE';
+                    _fca.style.display = 'block';
+                  }
+                }
+                break;
+
               case 'coreState':
                 window._coreHealth = typeof msg.health === 'number' ? msg.health : 100;
                 (function() {
@@ -57557,15 +57602,15 @@
               dx: nd.x, dy: nd.y, dz: nd.z,
               rx: right.x, ry: right.y, rz: right.z }));
           }
-          /* Hit detection — ANGULAR (distance-independent): any enemy inside the
-             red cone (~5°) is hit, near or far. */
-          var _RED_COS = Math.cos(5 * Math.PI / 180);
+          /* Hit detection — ANGULAR + against the RENDERED position (g.pos, what
+             you actually see). Everyone is a target (no team filter). */
+          var _RED_COS = Math.cos(6 * Math.PI / 180);
           var _hitTarget = false;
           Object.keys(_ghostMap).forEach(function(id) {
             var g = _ghostMap[id];
-            if (!g.group || !g.group.visible || !g.targetPos) return;
-            if (_myTeam && g.team && g.team === _myTeam) return; // don't hit allies
-            var _toG = new THREE.Vector3().subVectors(g.targetPos, rp);
+            var gp = g.pos || g.targetPos;
+            if (!g.group || !g.group.visible || !gp) return;
+            var _toG = new THREE.Vector3().subVectors(gp, rp);
             var _d = _toG.length(); if (_d < 1) return;
             if (_toG.dot(nd) / _d > _RED_COS) {
               if (_ws && _ws.readyState === 1) _ws.send(JSON.stringify({ type: "hit", targetId: id }));
@@ -57574,9 +57619,9 @@
           });
           /* Lock-on crosshair state */
           if (_ch) { if (_hitTarget) _ch.classList.add("locked"); else _ch.classList.remove("locked"); }
-          /* Shooting the Merkaba Core damages it (attackers only). Ray-to-origin
-             distance < core hit box → tell the server to drain a chunk of health. */
-          if (_myTeam === 'ATTACKER' && _ws && _ws.readyState === 1) {
+          /* Shooting the Merkaba Core: tell the server (it drains only if you've
+             armed a shot with a kill — FFA rule). Ray-to-origin < core hit box. */
+          if (_ws && _ws.readyState === 1) {
             var _tc = -rp.x * nd.x - rp.y * nd.y - rp.z * nd.z; // (origin - rp)·nd
             if (_tc > 0) {
               var _ccx = rp.x + nd.x * _tc, _ccy = rp.y + nd.y * _tc, _ccz = rp.z + nd.z * _tc;
@@ -57651,9 +57696,9 @@
             var keys = Object.keys(_ghostMap);
             for (var i = 0; i < keys.length; i++) {
               var g = _ghostMap[keys[i]];
-              if (!g || !g.group || !g.group.visible || !g.targetPos) continue;
-              if (_myTeam && g.team && g.team === _myTeam) continue; // never shoot teammates
-              _afTmp.subVectors(g.targetPos, rp);
+              var gp = g && (g.pos || g.targetPos);
+              if (!g || !g.group || !g.group.visible || !gp) continue;
+              _afTmp.subVectors(gp, rp); // aim at the RENDERED position (what you see)
               var dist = _afTmp.length(); if (dist < 1) continue;
               var aim = _afTmp.dot(nd) / dist; // cos(angle off the crosshair) — no distance term
               if (aim > GREEN_COS) greenLock = true;
@@ -57700,8 +57745,7 @@
             for (var i = 0; i < keys.length; i++) {
               var g = _ghostMap[keys[i]];
               if (!g || !g.group || !g.group.visible) continue;
-              if (_myTeam && g.team && g.team === _myTeam) continue; // skip teammates
-              var tp = g.targetPos || g.pos; if (!tp) continue;
+              var tp = g.pos || g.targetPos; if (!tp) continue; // any jet (FFA)
               var d = Math.hypot(tp.x - _cp.x, tp.y - _cp.y, tp.z - _cp.z);
               if (d < bestD) { bestD = d; best = g; }
             }
@@ -58737,6 +58781,8 @@
       <span id="dtc-approach-txt">ATTACKER NEARING CORE</span>
       <span id="dtc-approach-dist"></span>
     </div>
+    <!-- FFA: kill-to-arm-core-shot status -->
+    <div id="ffa-core-status">&#x2620; KILL A JET TO ARM CORE</div>
     <!-- Enemy locator: arrow orbits screen center, points to nearest enemy ship -->
     <div id="enemy-arrow">
       <span id="enemy-arrow-tip">&#x27A4;</span>
@@ -59239,7 +59285,8 @@
             var lc = camEl.components && camEl.components["look-controls"];
             if (joy2Active && (Math.abs(joy2DX) > DEAD || Math.abs(joy2DY) > DEAD)) {
               if (Math.abs(joy2DY) > DEAD) {
-                var _pit = (window._inv_pitch ? -joy2DY : joy2DY);
+                /* Pitch inverted by default; Invert Pitch option flips it back. */
+                var _pit = (window._inv_pitch ? joy2DY : -joy2DY);
                 _pit = Math.sign(_pit) * Math.pow(Math.abs(_pit), 1.8);
                 camEl.object3D.getWorldQuaternion(_mlPitchQ);
                 var _rightVec = _mlRightVec.set(1, 0, 0).applyQuaternion(_mlPitchQ).normalize();
